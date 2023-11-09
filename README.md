@@ -11,7 +11,7 @@ Mod is under heavy development and still far from completion.
 - Recruitment Menu : Spawn any troop, with customizable costs
 - Game Mode Launcher : Launch any game mode with plenty of customizable options, directly in-game
 - Animation Player : Play any animation on any agent, with customizable access for players
-- Scatter Around Expanded : Easily place your archers precisely where you want them !
+- [Scatter Around Expanded](https://www.nexusmods.com/mountandblade2bannerlord/mods/4134/?tab=description&jump_to_comment=116945223) : Easily place your archers precisely where you want them !
 - Custom Scripts : Drive a car, a chariot, heal yourself, release fireworks, refill any type of ammo...
 - Custom Maps
 - Custom Models
