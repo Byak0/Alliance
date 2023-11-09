@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34003.232
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alliance.Common", "Alliance.Common\Alliance.Common.csproj", "{7FD0414A-DF22-4234-8744-857B5880589A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alliance.Client", "Alliance.Client\Alliance.Client.csproj", "{4A36A725-0920-49A0-AE3E-5037A61EA05B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alliance.Server", "Alliance.Server\Alliance.Server.csproj", "{D7819BB5-5122-4087-A8E2-F9546080C1BC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alliance.Editor", "Alliance.Editor\Alliance.Editor.csproj", "{C211171F-9278-4C9E-994F-E9E5612A5D4E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7FD0414A-DF22-4234-8744-857B5880589A}.Debug|x64.ActiveCfg = Debug|x64
+		{7FD0414A-DF22-4234-8744-857B5880589A}.Debug|x64.Build.0 = Debug|x64
+		{7FD0414A-DF22-4234-8744-857B5880589A}.Release|x64.ActiveCfg = Release|x64
+		{7FD0414A-DF22-4234-8744-857B5880589A}.Release|x64.Build.0 = Release|x64
+		{4A36A725-0920-49A0-AE3E-5037A61EA05B}.Debug|x64.ActiveCfg = Debug|x64
+		{4A36A725-0920-49A0-AE3E-5037A61EA05B}.Debug|x64.Build.0 = Debug|x64
+		{4A36A725-0920-49A0-AE3E-5037A61EA05B}.Release|x64.ActiveCfg = Release|x64
+		{4A36A725-0920-49A0-AE3E-5037A61EA05B}.Release|x64.Build.0 = Release|x64
+		{D7819BB5-5122-4087-A8E2-F9546080C1BC}.Debug|x64.ActiveCfg = Debug|x64
+		{D7819BB5-5122-4087-A8E2-F9546080C1BC}.Debug|x64.Build.0 = Debug|x64
+		{D7819BB5-5122-4087-A8E2-F9546080C1BC}.Release|x64.ActiveCfg = Release|x64
+		{D7819BB5-5122-4087-A8E2-F9546080C1BC}.Release|x64.Build.0 = Release|x64
+		{C211171F-9278-4C9E-994F-E9E5612A5D4E}.Debug|x64.ActiveCfg = Debug|x64
+		{C211171F-9278-4C9E-994F-E9E5612A5D4E}.Debug|x64.Build.0 = Debug|x64
+		{C211171F-9278-4C9E-994F-E9E5612A5D4E}.Release|x64.ActiveCfg = Release|x64
+		{C211171F-9278-4C9E-994F-E9E5612A5D4E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EB8942CA-4648-422F-B73E-13F2EEB3ECBC}
+	EndGlobalSection
+EndGlobal

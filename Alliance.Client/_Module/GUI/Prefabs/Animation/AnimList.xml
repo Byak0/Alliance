@@ -1,0 +1,36 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- List of animations -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" Sprite="BlankWhiteSquare_9" Color="#da95a3D9" >
+          <Children>
+            <ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\Animations" VerticalScrollbar="..\VerticalScrollbar">
+              <Children>
+                <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+                  <Children>
+                    <ListPanel Id="Animations" DataSource="{AnimationsList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">                     
+                      <ItemTemplate>
+                        <ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Center"  Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1">
+                          <Children>
+                            <TextWidget SuggestedHeight="50" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" Text="@Name" />
+                          </Children>
+                        </ButtonWidget>
+                      </ItemTemplate>
+                    </ListPanel>
+                  </Children>
+                </Widget>
+              </Children>
+            </ScrollablePanel>
+            <ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+              <Children>
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+                <ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+              </Children>
+            </ScrollbarWidget>
+          </Children>
+		</Widget>
+	</Window>
+</Prefab>

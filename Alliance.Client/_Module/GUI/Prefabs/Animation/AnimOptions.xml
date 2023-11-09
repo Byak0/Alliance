@@ -1,0 +1,11 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Animation preview -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" Sprite="BlankWhiteSquare_9" Color="#daFFa3D9" >
+		</Widget>
+	</Window>
+</Prefab>

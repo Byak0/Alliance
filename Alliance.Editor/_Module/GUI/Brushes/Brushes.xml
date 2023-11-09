@@ -1,0 +1,155 @@
+<Brushes>
+	<Brush Name="Alliance.MainFrame">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="warm_overlay" Color="#6f645cCC" />
+			<BrushLayer Name="GradientRight" Sprite="MPLobby\Home\news_grid_box_gradient" Color="#6f645cCC"  />
+			<BrushLayer Name="GradientLeft" Sprite="General\InitialMenu\main_menu_gradient_left" Color="#6f645cDA" />
+			<BrushLayer Name="Frame" ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1"/>
+				<BrushLayer Name="Frame" AlphaFactor="1"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.UniformFrame">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#090909FF" />
+			<BrushLayer Name="Frame" ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.9"/>
+				<BrushLayer Name="Frame" AlphaFactor="1"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.TransparentBrush">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="Frame1_canvas" />
+			<BrushLayer Name="Frame" ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0"/>
+				<BrushLayer Name="Frame" AlphaFactor="0"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.BasicLayout">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="warm_overlay" Color="#6f645cCC" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.6"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.RosterIcon">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Generic\clan_roster_icon" Color="#FEC157FF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" Sprite="MPLobby\Generic\clan_roster_icon" AlphaFactor="0.9"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.CrossSwords">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Matchmaking\quick_play" Color="#FEC157FF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" Sprite="MPLobby\Matchmaking\quick_play" AlphaFactor="0.9" />
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.Soldiers" TransitionDuration="0.2">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Armory\body_items" IsHidden="true"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.4" Color="#FEC157FF" IsHidden="false"/>
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor="0.7" Color="#FEC157FF" IsHidden="false"/>
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" AlphaFactor="0.3" Color="#FEC157FF" IsHidden="false"/>
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default"  AlphaFactor="1" Color="#FEC157FF" IsHidden="false"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.SoldierGreen" TransitionDuration="0.2">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Armory\body_items" IsHidden="true"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" Color="#56af36FF" IsHidden="false"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.SoldierOrange" TransitionDuration="0.2">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Armory\body_items" IsHidden="true"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" Color="#f2cb30FF" IsHidden="false"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.SoldierRed" TransitionDuration="0.2">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Armory\body_items" IsHidden="true"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" Color="#be1818FF" IsHidden="false"/>
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.HeaderGlow" TransitionDuration="0.3">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Home\top_header_hover_glow_1" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.8" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.HeaderGlowFlip" TransitionDuration="0.3">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Home\top_header_hover_glow_1" VerticalFlip="true" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.8" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Alliance.FlippedTopHeader">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPLobby\Generic\top_header" ExtendTop="32" VerticalFlip="true" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0.8"/>
+			</Style>
+		</Styles>
+	</Brush>	
+</Brushes>

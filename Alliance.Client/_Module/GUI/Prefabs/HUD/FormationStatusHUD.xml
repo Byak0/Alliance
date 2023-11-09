@@ -1,0 +1,11 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Formation Status icon. See FormationStatusWidget.cs for details -->
+		<FormationStatusWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="50"
+			HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginRight="10" MarginBottom="90" SoldierIcons="@NbSoldiers" IsVisible="@ShowFormationStatus"/>
+	</Window>
+</Prefab>

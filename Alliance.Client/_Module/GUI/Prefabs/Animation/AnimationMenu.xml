@@ -1,0 +1,55 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+
+		<!-- Transparent background covering all the screen. If user clicks on it, close the menu -->
+		<ButtonWidget IsVisible="@IsVisible" Command.Click="CloseMenu" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.TransparentBrush">
+			<Children>
+
+				<!-- Player window -->
+				<BrushWidget IsVisible="@ShowPlayerMenu" WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.MainFrame">
+					<Children>
+
+						<!-- Animation set selection -->
+						<ListPanel DataSource="{AnimationSetsVM}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="1500" SuggestedHeight="400" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="20" StackLayout.LayoutMethod="HorizontalCentered">
+							<ItemTemplate>
+								<AnimationSetCard/>
+							</ItemTemplate>
+						</ListPanel>
+
+						<!-- List of shortcuts binded to animations with their previews -->
+						<AnimationShortcutsWithPreview WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="30" />
+
+					</Children>
+				</BrushWidget>
+
+				<!-- Admin window -->
+				<BrushWidget IsVisible="@ShowAdminMenu" WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.MainFrame">
+					<Children>
+
+						<!-- List of all available animations -->
+						<AnimationsList WidthSizePolicy="Fixed" SuggestedWidth="400" HeightSizePolicy ="Fixed" SuggestedHeight="750" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+						<!-- Preview of the animation -->
+						<AnimationPreview WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+						<!-- List of shortcuts binded to animations -->
+						<AnimationShortcuts WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+
+						<!-- Animations options -->
+						<AnimationOptions WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="250" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="150" />
+
+						<!-- Current selection of animation(s) -->
+						<AnimationSelection WidthSizePolicy="Fixed" SuggestedWidth="400" HeightSizePolicy ="Fixed" SuggestedHeight="750" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+					</Children>
+				</BrushWidget>
+
+			</Children>
+		</ButtonWidget>
+
+	</Window>
+</Prefab>

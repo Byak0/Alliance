@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<AllianceCharacters>
+  <AllianceCharacter id="NPCCharacter.mp_character" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.dummy_no_armor" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.dummy_light_armor" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.dummy_medium_armor" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.dummy_heavy_armor" troop_limit="1" />
+  <!-- Vlandian Heros -->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_vlandia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_vlandia_hero" troop_limit="1" />
+  <!-- Empire Heros -->
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_empire_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_empire_hero" troop_limit="1" />
+  <!--Khuzait Heros-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_horse_archer_khuzait_hero" troop_limit="1" />
+  <!--Aserai Heros-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_aserai_hero" troop_limit="1" />
+  <!--Sturgia Heros-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_sturgia_hero" troop_limit="1" />
+  <!--Battanian Heros-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_battania_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_battania_hero" troop_limit="1" />
+  <!-- Troops -->
+  <!-- Vlandian Troops -->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_vlandia_troop" troop_limit="2400" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_vlandia_troop" troop_limit="3400" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_vlandia_troop" troop_limit="2400" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_vlandia_troop" troop_limit="1000" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_vlandia_troop" troop_limit="850" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_vlandia_troop" troop_limit="800" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_vlandia_troop" troop_limit="150" />
+  <!-- Empire Troops -->
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_empire_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_empire_troop" troop_limit="1" />
+  <!--Khuzait Troops-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_horse_archer_khuzait_troop" troop_limit="1" />
+  <!--Aserai Troops-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_aserai_troop" troop_limit="1" />
+  <!--Sturgia Troops-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_sturgia_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_sturgia_troop" troop_limit="1" />
+  <!--Battanian Troops-->
+  <AllianceCharacter id="NPCCharacter.mp_light_infantry_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_shock_infantry_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_skirmisher_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_ranged_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_light_cavalry_battania_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_aserai_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_khuzait_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_sturgia_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_line_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_guard_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_voltigeur_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_coldstream_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_highland_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_rifle_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_infantry_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_grenadier_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_rifleman_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_grenzer_hero" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_highland_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_coldstream_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_british_rifle_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_infantry_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_grenadier_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_rifle_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_austrian_grenzer_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_aserai_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_line_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_voltigeur_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_france_guard_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_khuzait_troop" troop_limit="1" />
+  <AllianceCharacter id="NPCCharacter.mp_template_sturgia_troop" troop_limit="1" />
+</AllianceCharacters>

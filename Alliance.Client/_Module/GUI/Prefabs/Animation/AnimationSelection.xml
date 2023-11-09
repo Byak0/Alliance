@@ -1,0 +1,143 @@
+<Prefab>
+	<Constants>
+		<Constant Name="DropdownHeader.Width" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Width"/>
+		<Constant Name="DropdownHeader.Height" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Height"/>
+	</Constants>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" >
+			<Children>
+				<!-- Animation sequence -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="586" MarginTop="64" >
+					<Children>
+						<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\IntermediateList" VerticalScrollbar="..\VerticalScrollbar">
+							<Children>
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+									<Children>
+										<ListPanel Id="IntermediateList" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+											<Children>
+												<ListPanel Id="Animations" DataSource="{UserAnimSeqListVM\AnimationSequenceVM}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+													<ItemTemplate>
+
+														<!-- Animation item -->
+														<Widget WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Center" IsHidden="@IsFiltered" >
+															<Children>
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" MarginLeft="0" Brush="MPLobby.ClassFilter.ClassTuple.Background" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="SelectAnimation" >
+																	<Children>
+																		<!-- Animation position -->
+																		<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="30" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="2" MarginLeft="8" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" IntText="@Position" />
+																		<!-- Animation position -->
+																		<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="10" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="2" MarginLeft="25" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" Text="-" />
+																		<!-- Animation name -->
+																		<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="260" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="2" MarginLeft="40" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" Text="@Name" />
+																	</Children>
+																</ButtonWidget>
+																<!-- Move animation up -->
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="12" HeightSizePolicy="Fixed" SuggestedHeight="14" MarginBottom="6" MarginRight="65" HorizontalAlignment="Right" VerticalAlignment="Center" IsDisabled="@IsFirst" Brush="Alliance.SortArrowUp" Command.Click="MoveUp" />
+																<!-- Move animation down -->
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="12" HeightSizePolicy="Fixed" SuggestedHeight="14" MarginBottom="2" MarginRight="50" HorizontalAlignment="Right" VerticalAlignment="Center" IsDisabled="@IsLast" Brush="Alliance.SortArrowDown" Command.Click="MoveDown"/>
+																<!-- Remove animation -->
+																<ButtonWidget WidthSizePolicy="Fixed" SuggestedWidth="28" HeightSizePolicy="Fixed" SuggestedHeight="28" MarginBottom="2" MarginRight="5" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="Popup.CloseButton" Command.Click="Remove" />
+															</Children>
+														</Widget>
+
+													</ItemTemplate>
+												</ListPanel>
+												<!-- Add animation -->
+												<Widget DataSource="{UserAnimSeqListVM}" WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center">
+													<Children>
+														<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="60" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddAnimation" />
+													</Children>
+												</Widget>
+											</Children>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ScrollablePanel>
+						<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="15" HorizontalAlignment="Right" VerticalAlignment="Center" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="6" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+								<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="12" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+
+
+				<Widget DataSource="{UserAnimSeqListVM}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="100" MarginTop="670" >
+					<Children>
+						<!-- New animation sequence button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" Brush="FaceGen.Extension.Button" Command.Click="NewAnimationSequence" >
+							<Children>
+								<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="50" MarginBottom="2" MarginLeft="60" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="30" Text="New" />
+							</Children>
+						</ButtonWidget>
+
+						<!-- Save button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="140" Brush="FaceGen.Extension.Button" Command.Click="SaveAnimationSequence" >
+							<Children>
+								<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="50" MarginBottom="2" MarginLeft="60" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="30" Text="Save" />
+							</Children>
+						</ButtonWidget>
+
+						<!-- Remove button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="270" Brush="FaceGen.Extension.Button" Command.Click="RemoveAnimationSequence" >
+							<Children>
+								<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="50" MarginBottom="2" MarginLeft="50" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="30" Text="Delete" />
+							</Children>
+						</ButtonWidget>
+					</Children>
+				</Widget>
+
+
+				<!-- Selector of animations sequences -->
+				<NavigationScopeTargeter ScopeID="DropdownAnimationsScope" ScopeParent="..\DropdownParent" ScopeMovements="Vertical" ExtendDiscoveryAreaLeft="18" />
+				<DirectionalListPanelDropdownWidget Id="DropdownParent" DataSource="{UserAnimSeqListVM\AnimationSequenceSelector}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="380" MarginLeft="10" MarginTop="10" DoNotHandleDropdownListPanel="true" CurrentSelectedIndex="@SelectedIndex" Button="DropdownButton" ListPanelContainer="ListContainer" ListPanel="ListContainer\PrimaryUsageSelectorList" RichTextWidget="DropdownButton\Container\ContainerChild\SelectedTextWidget" GamepadNavigationIndex="0">
+					<Children>
+						<!-- Currently selected animation sequence -->
+						<ButtonWidget Id="DropdownButton" Type="Toggle" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top">
+							<Children>
+								<Widget Id="Container" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+									<Children>
+										<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="55" Brush="GameMenu.Tournament.Frame"/>
+										<ListPanel Id="ContainerChild" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+											<Children>
+												<RichTextWidget Id="SelectedTextWidget" Text=" " WidthSizePolicy="Fixed" SuggestedWidth="300" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="50" Brush="MPLobby.GameMode.Dropdown.Text"/>
+												<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="12" SuggestedHeight="12" HorizontalAlignment="Right" VerticalAlignment="Center" PositionYOffset="-2" Brush="MPLobby.GameMode.Dropdown.Arrow"  />
+											</Children>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ButtonWidget>
+
+						<!-- List of animations sequences -->
+						<BrushWidget Id="ListContainer" IsVisible="false" WidthSizePolicy="Fixed" SuggestedWidth="350" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80" Brush="MPLobby.Popup.Frame" >
+							<Children>
+								<ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="20" MarginBottom="10" MinIndex="1">
+									<ItemTemplate>
+										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
+											<Children>
+												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="10">
+													<Children>
+														<RichTextWidget Text="@StringItem" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Matchmaking.Region.ItemText"/>
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+									</ItemTemplate>
+								</ListPanel>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="210" SuggestedHeight="!DropdownHeader.Height" HorizontalAlignment="Center" PositionYOffset="-3" Sprite="MPLobby\Matchmaking\region_combobox_header" />
+							</Children>
+						</BrushWidget>
+					</Children>
+				</DirectionalListPanelDropdownWidget>
+
+				<!-- Rename animation sequence -->
+				<ButtonWidget DataSource="{UserAnimSeqListVM}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="40" MarginLeft="22" MarginTop="14" Brush="MPLobby.Clan.EditInfo.Button" Command.Click="RenameAnimationSequence" />
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

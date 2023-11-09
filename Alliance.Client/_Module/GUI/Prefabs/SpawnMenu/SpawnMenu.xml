@@ -1,0 +1,18 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Transparent background covering all the screen. If user clicks on it, close the menu -->
+		<ButtonWidget IsVisible="@IsVisible" Command.Click="CloseMenu" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.TransparentBrush">
+			<Children>
+
+				<!-- See SpawnTroopWidget.cs for details -->
+				<SpawnTroopsWidget IsVisible="@IsVisible"/>
+
+			</Children>
+		</ButtonWidget>
+
+	</Window>
+</Prefab>

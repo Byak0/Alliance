@@ -1,0 +1,60 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" >
+			<Children>
+
+				<!-- Text filter -->
+				<Widget WidthSizePolicy="Fixed" SuggestedWidth="385" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="13" MarginTop="10" Sprite="StdAssets\tabbar_long_namebox">
+					<Children>
+						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" Brush="MPLobby.Profile.Rank.Leaderboard.Button" Brush.Color="#da95a3FF"/>
+						<EditableTextWidget WidthSizePolicy="Fixed" SuggestedWidth="350" HeightSizePolicy="Fixed" SuggestedHeight="45" MarginLeft="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" DefaultSearchText="Search..." Text="@FilterText" />
+					</Children>
+				</Widget>
+
+				<!-- List of animations -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="64" >
+					<Children>
+						<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\Animations" VerticalScrollbar="..\VerticalScrollbar">
+							<Children>
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+									<Children>
+										<ListPanel Id="Animations" DataSource="{AnimationsList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+											<ItemTemplate>
+
+												<!-- Animation item -->
+												<Widget WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Center" IsHidden="@IsFiltered" >
+													<Children>
+														<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" MarginLeft="0" Brush="MPLobby.ClassFilter.ClassTuple.Background" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="SelectAnimation" >
+															<Children>
+																<!-- Animation name -->
+																<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="330" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="2" MarginLeft="40" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" Text="@Name" />
+															</Children>
+														</ButtonWidget>
+														<!-- Favorite icon -->
+														<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" MarginBottom="3" MarginLeft="7" Brush="Alliance.Button.Favorite" IsSelected="@IsFavorite" Command.Click="ToggleFavorite" />
+													</Children>
+												</Widget>
+
+											</ItemTemplate>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ScrollablePanel>
+						<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="15" HorizontalAlignment="Right" VerticalAlignment="Center" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="6" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+								<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="12" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+			</Children>
+		</Widget>
+
+	</Window>
+</Prefab>

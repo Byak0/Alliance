@@ -1,0 +1,15 @@
+<Prefab>
+	<Window>
+		<!-- GameMode card -->
+		<Widget WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy="Fixed" SuggestedHeight="120" HorizontalAlignment="Center" >
+			<Children>
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="220" HeightSizePolicy="Fixed" SuggestedHeight="100" HorizontalAlignment="Center" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="Select">
+					<Children>
+						<!-- GameMode name -->
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="160" HeightSizePolicy="CoverChildren" MarginTop="-5" VerticalAlignment="Center" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="28" Text="@Name" />
+					</Children>
+				</ButtonWidget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

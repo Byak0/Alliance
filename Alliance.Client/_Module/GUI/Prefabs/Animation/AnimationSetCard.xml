@@ -1,0 +1,15 @@
+<Prefab>
+	<Window>
+		<!-- Animation set card -->
+		<Widget WidthSizePolicy="Fixed" SuggestedWidth="400" HeightSizePolicy="Fixed" SuggestedHeight="250" HorizontalAlignment="Center" >
+			<Children>
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="300" HeightSizePolicy="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Background" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="Select">
+					<Children>
+						<!-- Set name -->
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="250" HeightSizePolicy="CoverChildren" MarginTop="-5" VerticalAlignment="Center" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="40" Text="@Name" />
+					</Children>
+				</ButtonWidget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

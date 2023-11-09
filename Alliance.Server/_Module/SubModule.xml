@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module>
+  <Id value="Alliance" />
+  <Name value="Alliance" />
+  <Version value="v0.0.1" />
+  <ModuleCategory value="Multiplayer" />
+  <DependedModules>
+    <DependedModule Id="Native" />
+		<DependedModule Id="Multiplayer" />
+  </DependedModules>
+  <SubModules>
+		<SubModule>
+			<Name value="Alliance" />
+			<DLLName value="Alliance.Common.dll" />
+			<SubModuleClassType value="Alliance.Common.SubModule" />
+			<Tags />
+		</SubModule>
+    <SubModule>
+      <Name value="Alliance" />
+      <DLLName value="Alliance.Server.dll" />
+      <SubModuleClassType value="Alliance.Server.SubModule" />
+      <Tags />
+    </SubModule>
+  </SubModules>
+	<Xmls>
+		<XmlNode>
+			<XmlName id="GameText" path="multiplayer_strings"/>
+		</XmlNode>
+		<XmlNode>
+			<XmlName id="AllianceCharacters" path="AllianceCharacters"/>
+		</XmlNode>
+		<XmlNode>
+			<XmlName id="MPCharacters" path="mpcharacters"/>
+		</XmlNode>
+		<XmlNode>
+			<XmlName id="MPClassDivisions" path="mpclassdivisions"/>
+		</XmlNode>
+		<XmlNode>
+		  <XmlName id="Items" path="banners"/>
+		</XmlNode>
+	</Xmls>
+</Module>

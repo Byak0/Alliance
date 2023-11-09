@@ -1,0 +1,21 @@
+<Prefab>
+	<Window>
+		<NameMarkerScreenWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Brush.AlphaFactor="0" Brush.Color="#000000FF" IsMarkersEnabled="@IsEnabled" TargetAlphaValue="0.0" MarkersContainer="MarkersContainer">
+			<Children>
+
+				<Widget Id="MarkersContainer" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+					<Children>
+
+						<Widget DataSource="{FlagTargets}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+							<ItemTemplate>
+								<MPMarkerCaptureZone />
+							</ItemTemplate>
+						</Widget>
+
+					</Children>
+				</Widget>
+
+			</Children>
+		</NameMarkerScreenWidget>
+	</Window>
+</Prefab>

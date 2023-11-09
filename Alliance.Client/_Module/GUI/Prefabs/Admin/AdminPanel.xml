@@ -1,0 +1,368 @@
+﻿<Prefab>
+	<Parameters>
+		<Parameter Name="HintText" DefaultValue="NoHint"/>
+	</Parameters>
+	<Constants>
+		<Constant Name="Encyclopedia.Frame.Width" BrushLayer="Default" BrushName="Encyclopedia.Frame" BrushValueType="Width" />
+		<Constant Name="Encyclopedia.Frame.Height" BrushLayer="Default" BrushName="Encyclopedia.Frame" BrushValueType="Height" />
+	</Constants>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="140" MarginLeft="80" MarginRight="80" MarginBottom="100" Brush="Alliance.MainFrame">
+			<Children>
+				<!-- TITRE DE L'UI -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="100" HorizontalAlignment="Center" VerticalAlignment="Top" PositionXOffset="6" PositionYOffset="-18" Sprite="StdAssets\tabbar_popup" IsDisabled="true">
+					<Children>
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="-13"  Brush.FontSize="25" IsDisabled="true" Text="Admin Tool" />
+					</Children>
+				</Widget>
+
+				<!-- PANEL GAUCHE -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Left" ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay">
+					<Children>
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="10" MarginLeft="10">
+							<Children>
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Pseudo :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Username" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Health :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Health" />
+									</Children>
+								</ListPanel>
+
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Position :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Position" />
+									</Children>
+								</ListPanel>
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Kill :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Kill" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Assist :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Assist" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Death :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Death" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Score :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@Score" />
+									</Children>
+								</ListPanel>
+
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Kick : 0" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Ban : 0" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Warning : 0" />
+									</Children>
+								</ListPanel>
+
+								<CharacterTableauWidget DataSource="{UnitCharacter}" WidthSizePolicy="Fixed" SuggestedWidth="300" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Left" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" IsEnabled="false" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race"/>
+
+							</Children>
+						</ListPanel>
+					</Children>
+				</Widget>
+
+				<!-- PANEL CENTRE -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Center" MarginTop="85" >
+					<Children>
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="10" MarginLeft="10">
+							<Children>
+
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Heal">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text"  Text="Heal" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="GodMod">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="GodMode" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="KillPlayer">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Kill" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+									</Children>
+								</ListPanel>
+
+								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="TeleportToPlayer" >
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="TP to player" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="TeleportPlayerToYou">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="TP to you" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Switch Team" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+									</Children>
+								</ListPanel>
+
+								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Warning" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="KickPlayer">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Kick" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="BanPlayer">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Ban" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+									</Children>
+								</ListPanel>
+
+								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Respawn" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<!-- Temporary set as admin button, need proper roles later -->
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsEnabled="@IsSudo" Command.Click="SetAdmin">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Set Admin" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+
+										<!--<Widget DataSource="{Roles}" WidthSizePolicy="Fixed" SuggestedWidth="590" HorizontalAlignment="Center" HeightSizePolicy="CoverChildren" MarginLeft="!InnerPanel.LeftRight.Padding" MarginRight="!InnerPanel.LeftRight.Padding" MarginTop="15">
+                      <Children>
+                        <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" Text="Role" />
+                        <Standard.DropdownWithHorizontalControl HorizontalAlignment="Right" Parameter.SelectorDataSource="{Role}" GamepadNavigationIndex="4" />
+                      </Children>
+                    </Widget>-->
+
+
+										<!--<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1">
+                      <Children>
+                        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+                          <Children>
+                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Kill" />
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </ButtonWidget>-->
+									</Children>
+								</ListPanel>
+
+								<Widget DoNotAcceptEvents="true"  HeightSizePolicy="Fixed" SuggestedHeight="2" SuggestedWidth="500" MarginRight="10" HorizontalAlignment="Center" MarginTop="5" Sprite="GradientDivider" Color="#F4E1C4FF" AlphaFactor="0.4" />
+
+								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Heal All" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="GodMod All" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Kill All" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+									</Children>
+								</ListPanel>
+
+								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="TP All" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Change Map" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										<!--<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1">
+                      <Children>
+                        <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+                          <Children>
+                            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Kill" />
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </ButtonWidget>-->
+									</Children>
+								</ListPanel>
+
+								<Widget DoNotAcceptEvents="true"  HeightSizePolicy="Fixed" SuggestedHeight="2" SuggestedWidth="500" MarginRight="10" HorizontalAlignment="Center" MarginTop="5" Sprite="GradientDivider" Color="#F4E1C4FF" AlphaFactor="0.4" />
+
+								<!-- Log Message From Server -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="520" MarginBottom="20" MarginTop="20" MarginRight="10" MarginLeft="20" HorizontalAlignment="Center"  Sprite="BlankWhiteSquare_9" Color="#F4E1C4FF" AlphaFactor="0.1">
+									<Children>
+										<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\NetworkPeers" VerticalScrollbar="..\VerticalScrollbar" MarginTop="10" MarginBottom="10">
+											<Children>
+												<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+													<Children>
+														<ListPanel Id="NetworkPeers" DataSource="{ServerMessage}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="5">
+															<ItemTemplate>
+																<RichTextWidget MarginLeft="10"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="@Color" Text="@Message"/>
+															</ItemTemplate>
+														</ListPanel>
+													</Children>
+												</Widget>
+											</Children>
+										</ScrollablePanel>
+										<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+											<Children>
+												<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+												<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+											</Children>
+										</ScrollbarWidget>
+									</Children>
+								</Widget>
+
+								<!-- DIVIDER TEMPLATE -->
+								<!--<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="20" MarginTop="75" ClipContents="true">
+                  <Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="1288" HorizontalAlignment="Center" Sprite="MPLobby\Armory\divider_notched_for_item_icons" />
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="1288" HorizontalAlignment="Center" Sprite="MPLobby\Armory\divider_notched_for_item_icons" VerticalFlip="true" />
+                  </Children>
+                </Widget>
+                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="20" Sprite="MPLobby\Matchmaking\information_panel_header" MarginLeft="60" MarginRight="60" MarginBottom="20"/>
+                <Widget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" MarginTop="5" Sprite="GradientDivider" Color="#F4E1C4FF" AlphaFactor="0.4" />-->
+								<!-- DIVIDER TEMPLATE -->
+
+							</Children>
+						</ListPanel>
+					</Children>
+				</Widget>
+
+				<!-- PANEL DROIT -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Right"  ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay">
+					<Children>
+						<!-- Text filter -->
+						<Widget WidthSizePolicy="Fixed" SuggestedWidth="385" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="13" MarginTop="10" Sprite="StdAssets\tabbar_long_namebox">
+							<Children>
+								<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" Brush="MPLobby.Profile.Rank.Leaderboard.Button" Brush.Color="#da95a3FF"/>
+								<EditableTextWidget WidthSizePolicy="Fixed" SuggestedWidth="350" HeightSizePolicy="Fixed" SuggestedHeight="45" MarginLeft="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" DefaultSearchText="Search..." Text="@FilterText" />
+							</Children>
+						</Widget>
+						<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\NetworkPeers" VerticalScrollbar="..\VerticalScrollbar" MarginTop="50">
+							<Children>
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+									<Children>
+										<ListPanel Id="NetworkPeers" DataSource="{NetworkPeers}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">
+											<ItemTemplate>
+												<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Center" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsHidden="@IsFiltered" IsSelected="@IsSelected" Command.Click="SelectPeer">
+													<Children>
+														<TextWidget SuggestedHeight="100" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" Text="@Username" />
+													</Children>
+												</ButtonWidget>
+											</ItemTemplate>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ScrollablePanel>
+						<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+								<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+			</Children>
+		</BrushWidget>
+		<!--<Widget Id="Hint" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" Color="#FF0000D9">
+      <Children>
+        <RichTextWidget Id="HintText" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="Tooltip.Description.Text" MaxWidth="200" Text="@Name"/>
+      </Children>
+    </Widget>-->
+
+
+	</Window>
+</Prefab>
+

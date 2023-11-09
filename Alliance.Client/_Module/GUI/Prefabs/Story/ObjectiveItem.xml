@@ -1,0 +1,15 @@
+<Prefab>
+	<Window>
+		<!-- Objective item -->
+		<ListPanel WidthSizePolicy="Fixed" SuggestedWidth="800" HeightSizePolicy="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+			<Children>
+				<!-- Objective name -->
+				<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="40" Text="@Name" />
+				<!-- Objective description -->
+				<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="28" Text="@Description" />
+				<!-- Objective progress -->
+				<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="32" Text="@Progress" />
+			</Children>
+		</ListPanel>
+	</Window>
+</Prefab>

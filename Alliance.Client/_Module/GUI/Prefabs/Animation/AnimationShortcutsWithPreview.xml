@@ -1,0 +1,96 @@
+<Prefab>
+	<Constants>
+		<Constant Name="DropdownHeader.Width" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Width"/>
+		<Constant Name="DropdownHeader.Height" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Height"/>
+	</Constants>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" >
+			<Children>
+
+				<!--List of shorcuts-->
+				<ListPanel DataSource="{ShortcutBinders}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" LayoutImp.LayoutMethod="HorizontalLeftToRight" MarginLeft="-5" >
+					<ItemTemplate>
+
+						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="140" SuggestedHeight="350" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="25" >
+							<Children>
+
+								<!-- Animation preview -->
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" UpdateChildrenStates="true" Command.Click="PlayAnimation">
+									<Children>
+										<CharacterTableauWidget DataSource="{AnimationPreview}" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" />
+									</Children>
+								</ButtonWidget>
+
+								<!--Shortcut-->
+								<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="Frame1.Border">
+									<Children>
+
+										<!--Shortcut icon-->
+										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-5"  UpdateChildrenStates="true" >
+											<Children>
+												<!--Shortcut name-->
+												<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="8" MarginLeft="85" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="30" Text="@Shortcut" />
+											</Children>
+										</ButtonWidget>
+
+
+										<!--Dropdown animation list-->
+										<NavigationScopeTargeter ScopeID="DropdownAnimationsScope" ScopeParent="..\DropdownParent" ScopeMovements="Vertical" />
+										<DirectionalListPanelDropdownWidget Id="DropdownParent" DataSource="{AnimationSequenceSelector}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="140" MarginLeft="5" MarginTop="10" DoNotHandleDropdownListPanel="false" CurrentSelectedIndex="@SelectedIndex" Button="DropdownButton" ListPanelContainer="ListContainer" ListPanel="ListContainer\PrimaryUsageSelectorList" RichTextWidget="DropdownButton\Container\ContainerChild\SelectedTextWidget" >
+											<Children>
+
+												<!--Currently selected animation-->
+												<ButtonWidget Id="DropdownButton" IsDisabled="true" Type="Toggle" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="-15">
+													<Children>
+														<Widget Id="Container" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+															<Children>
+																<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="Fixed" SuggestedHeight="40" Brush="MPLobby.ClassFilter.ClassTuple.Background"/>
+																<ListPanel Id="ContainerChild" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+																	<Children>
+																		<RichTextWidget Id="SelectedTextWidget" Text=" " WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="5" Brush="MPLobby.ClassFilter.ClassTuple.Text"/>
+																		<!--<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="12" SuggestedHeight="12" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="-2" PositionXOffset="-15" Brush="MPLobby.GameMode.Dropdown.Arrow"  />-->
+																	</Children>
+																</ListPanel>
+															</Children>
+														</Widget>
+													</Children>
+												</ButtonWidget>
+
+												<!--List of custom animations-->
+												<BrushWidget Id="ListContainer" IsVisible="false" WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" >
+													<Children>
+
+														<BrushListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" PositionYOffset="370" PositionXOffset="-4" HorizontalAlignment="Left" MinIndex="1" Brush="Alliance.ListFrame">
+															<ItemTemplate>
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
+																	<Children>
+																		<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="5" MarginRight="5">
+																			<Children>
+																				<RichTextWidget Text="@StringItem" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Matchmaking.Region.ItemText"/>
+																			</Children>
+																		</ListPanel>
+																	</Children>
+																</ButtonWidget>
+															</ItemTemplate>
+														</BrushListPanel>
+
+													</Children>
+												</BrushWidget>
+											</Children>
+										</DirectionalListPanelDropdownWidget>
+									</Children>
+								</BrushWidget>
+
+							</Children>
+						</Widget>
+					</ItemTemplate>
+
+				</ListPanel>
+
+
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

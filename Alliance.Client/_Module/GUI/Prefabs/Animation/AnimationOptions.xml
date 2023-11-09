@@ -1,0 +1,38 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Animation options -->
+		<Widget DataSource="{AnimationOptionsVM}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" Sprite="BlankWhiteSquare_9" Color="#daFFa300" >
+			<Children>
+				<!-- Header -->
+				<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="30" HorizontalAlignment="Center" Brush="Alliance.HeaderGlow" />
+
+				<!-- Title - Animation name-->
+				<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="30" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="24" Text="@Name" />
+
+				<!-- Left side -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="195" HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="10" MarginTop="65" >
+					<Children>
+						<!-- Descriptions -->
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="10" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" Text="ActionSet" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="45" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" Text="Skeleton" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="80" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" Text="Duration" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="115" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" Text="Speed" />
+					</Children>
+				</Widget>
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="500" SuggestedHeight="195" HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="110" MarginTop="65" >
+					<Children>
+						<!-- Values -->
+						<ScrollingTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="10" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" IsAutoScrolling="false" Text="@ActionSet" />
+						<ScrollingTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="45" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" IsAutoScrolling="false" Text="@Skeleton" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="80" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" FloatText="@MaxDuration" />
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="115" Brush="MPLobby.GameMode.Dropdown.Text" Brush.FontSize="20" FloatText="@Speed" />
+					</Children>
+				</Widget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

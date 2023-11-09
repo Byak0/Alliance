@@ -1,0 +1,54 @@
+﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+using TaleWorlds.Core;
+using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Source.Missions;
+
+namespace Alliance.Client.GameModes.CaptainX
+{
+    public class CaptainGameMode : MissionBasedMultiplayerGameMode
+    {
+        public CaptainGameMode(string name) : base(name) { }
+
+        [MissionMethod]
+        public override void StartMultiplayerGame(string scene)
+        {
+            MissionState.OpenNew("CaptainX", new MissionInitializerRecord(scene), delegate (Mission missionController)
+            {
+                return GetMissionBehaviors();
+            }, true, true);
+        }
+
+        private MissionBehavior[] GetMissionBehaviors()
+        {
+            MissionBehavior[] behaviors = new MissionBehavior[]
+                {
+                    MissionLobbyComponent.CreateBehavior(),
+                    new FormationBehavior(),
+
+                    new MultiplayerAchievementComponent(),
+                    new MultiplayerWarmupComponent(),
+                    new MissionMultiplayerGameModeFlagDominationClient(),
+                    new MultiplayerRoundComponent(),
+                    new MultiplayerTimerComponent(),
+                    new MultiplayerMissionAgentVisualSpawnComponent(),
+                    new ConsoleMatchStartEndHandler(),
+                    new MissionLobbyEquipmentNetworkComponent(),
+                    new MultiplayerTeamSelectComponent(),
+                    new MissionHardBorderPlacer(),
+                    new MissionBoundaryPlacer(),
+                    new AgentVictoryLogic(),
+                    new MissionBoundaryCrossingHandler(),
+                    new MultiplayerPollComponent(),
+                    new MultiplayerGameNotificationsComponent(),
+                    new MissionOptionsComponent(),
+                    new MissionScoreboardComponent(new CaptainScoreboardData()),
+                    new MissionMatchHistoryComponent(),
+                    new EquipmentControllerLeaveLogic(),
+                    new MissionRecentPlayersComponent(),
+                    new MultiplayerPreloadHelper()
+                };
+
+            return behaviors;
+        }
+    }
+}

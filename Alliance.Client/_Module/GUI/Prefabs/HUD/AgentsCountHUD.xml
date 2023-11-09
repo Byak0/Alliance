@@ -1,0 +1,22 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Counter of alive/total agents spawned.-->
+		<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="50"
+			HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="10" MarginTop="10" IsVisible="@IsVisible" Brush="Alliance.BasicLayout">
+			<Children>
+				<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50"
+			HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="20" MarginTop="-10" Brush="Alliance.RosterIcon" Brush.Color="#00ff00FF"/>
+				<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="50"
+			HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="115" MarginTop="-10" Brush="Alliance.CrossSwords" Brush.Color="#ff0000FF"/>
+				<TextWidget IntText="@AgentsAlive" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="40"
+			HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="20" MarginTop="18" Brush="MPHUD.GoldAmount.Text" Brush.FontSize="26"/>
+				<TextWidget IntText="@AgentsDead" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="40"
+			HorizontalAlignment="Left" VerticalAlignment="Top" MarginLeft="120" MarginTop="18" Brush="MPHUD.GoldAmount.Text" Brush.FontSize="26"/>
+			</Children>
+		</BrushWidget>
+	</Window>
+</Prefab>

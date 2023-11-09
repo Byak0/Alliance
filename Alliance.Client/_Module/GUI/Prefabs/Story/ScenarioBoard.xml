@@ -1,0 +1,65 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+			<Children>
+
+				<!-- Scenario intro -->
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowIntro">
+					<Children>
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="80" Text="@ActTitle"  />
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="20" Text="press TAB to see the objectives" />
+					</Children>
+				</BrushWidget>
+
+				<!-- Scenario board -->
+				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowBoard">
+					<Children>
+						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+							<Children>
+								<!-- Act title -->
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="60" Text="@ActTitle"  />
+										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="Alliance.HeaderGlow" />
+									</Children>
+								</Widget>
+								<!-- Act description -->
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+									<Children>
+										<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="36" Text="@ActDescription"  />
+										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="800" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-40" Brush="Alliance.HeaderGlowFlip" />
+									</Children>
+								</Widget>
+								<!-- Objectives -->
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500">
+									<Children>
+										<ListPanel DataSource="{Objectives}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="100" StackLayout.LayoutMethod="VerticalBottomToTop">
+											<ItemTemplate>
+												<ObjectiveItem/>
+											</ItemTemplate>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ListPanel>
+					</Children>
+				</BrushWidget>
+
+				<!-- Victory/Lose screen -->
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowResult">
+					<Children>
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="@ResultColor"  Brush.FontSize="80" Text="@ResultTitle"  />
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="@ResultColor"  Brush.FontSize="30" Text="@ResultDescription" />
+					</Children>
+				</BrushWidget>
+
+			</Children>
+		</Widget>
+
+	</Window>
+</Prefab>
