@@ -28,7 +28,7 @@ Mod is under heavy development and still far from completion.
 - Enable Alliance in the Bannerlord launcher.
 
 # Contributing
-Join us on [Discord](https://discord.gg/mDjr28Jc).
+Join us on [Discord](https://discord.gg/Bn6d22wECX).
 
 # License
 Alliance is released under the MIT License. Please read the license for more information about usage and redistribution.
