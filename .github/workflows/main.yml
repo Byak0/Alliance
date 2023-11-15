@@ -176,7 +176,7 @@ jobs:
         if: contains(github.ref, 'refs/tags/release-')
 
       - name: Zip Alliance Editor
-        run: Compress-Archive -Path "$PWD\BannerlordServer\Modules\Alliance" -DestinationPath "Alliance.Editor.zip"
+        run: Compress-Archive -Path "$PWD\BannerlordClient\Modules\Alliance.Editor" -DestinationPath "Alliance.Editor.zip"
         if: contains(github.ref, 'refs/tags/release-')        
 
       - name: Zip Alliance Server
