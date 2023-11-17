@@ -3,6 +3,7 @@ using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
 using Alliance.Server.Core.Security;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -89,10 +90,16 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
             {
                 if (admin.Heal)
                     return HealPlayer(peer, admin);
+                if (admin.HealAll)
+                    return HealAll(peer);
                 if (admin.GodMod)
                     return GodMod(peer, admin);
+                if (admin.GodModAll)
+                    return GodModAll(peer);
                 if (admin.Kill)
                     return Kill(peer, admin);
+                if (admin.KillAll)
+                    return KillAll(peer);
                 if (admin.Kick)
                     return Kick(peer, admin);
                 if (admin.Ban)
@@ -145,31 +152,56 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
-            // Check si joueur existe et contrôle un agent
-            if (playerSelected == null || playerSelected.ControlledAgent == null) return false;
-
-            playerSelected.ControlledAgent.Health = playerSelected.ControlledAgent.HealthLimit;
+            healPlayers(new List<NetworkCommunicator> { playerSelected });
+            
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+            return true;
+        }
+
+        public bool HealAll(NetworkCommunicator peer)
+        {
+            List<NetworkCommunicator> playersSelected = GameNetwork.NetworkPeers.ToList();
+
+            healPlayers(playersSelected);
+
+            Log($"[AdminPanel] Tous les joueurs ont été soignés par l'administrateur {peer.UserName}.", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été soignés par l'administrateur {peer.UserName}.", AdminServerLog.ColorList.Success, true);
             return true;
         }
 
         public bool GodMod(NetworkCommunicator peer, AdminClient admin)
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
+            
+            godModPlayers(new List<NetworkCommunicator> { playerSelected });
 
-            // Check si joueur existe et contrôle un agent
-            if (playerSelected == null || playerSelected.ControlledAgent == null) return false;
-
-            playerSelected.ControlledAgent.BaseHealthLimit = 2000;
-            playerSelected.ControlledAgent.HealthLimit = 2000;
-            playerSelected.ControlledAgent.Health = 2000;
-            playerSelected.ControlledAgent.SetMinimumSpeed(10);
-            playerSelected.ControlledAgent.SetMaximumSpeedLimit(10, false);
-
-            Log($"[AdminPanel] Le joueur : {playerSelected.UserName} est en GodMod.", LogLevel.Information);
+            Log($"[AdminPanel] Le joueur : {playerSelected.UserName} est en GodMod grâce à l'admin {peer.UserName}.", LogLevel.Information);
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mis en GodMod par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 
+            return true;
+        }
+
+        public bool GodModAll(NetworkCommunicator peer)
+        {
+            List<NetworkCommunicator> playersSelected = GameNetwork.NetworkPeers.ToList();
+
+            godModPlayers(playersSelected);
+
+            Log($"[AdminPanel] Tous les joueurs entrent en GodMod grâce à l'admin {peer.UserName}.", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Tous les joueurs entrent en GodMod grâce à l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+
+            return true;
+        }
+
+        public bool KillAll(NetworkCommunicator peer)
+        {
+            List<NetworkCommunicator> playersToKill = GameNetwork.NetworkPeers.ToList();
+
+            killPlayers(playersToKill);
+
+            Log($"[AdminPanel] Tous les joueurs ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
             return true;
         }
 
@@ -177,26 +209,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
-            // Check si joueur existe et contrôle un agent
-            if (playerSelected == null || playerSelected.ControlledAgent == null) return false;
-
-            Blow blow = new Blow(playerSelected.ControlledAgent.Index);
-            blow.DamageType = DamageTypes.Pierce;
-            blow.BoneIndex = playerSelected.ControlledAgent.Monster.HeadLookDirectionBoneIndex;
-            blow.Position = playerSelected.ControlledAgent.Position;
-            blow.Position.z = blow.Position.z + playerSelected.ControlledAgent.GetEyeGlobalHeight();
-            blow.BaseMagnitude = 2000f;
-            blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
-            blow.InflictedDamage = 2000;
-            blow.SwingDirection = playerSelected.ControlledAgent.LookDirection;
-            MatrixFrame frame = playerSelected.ControlledAgent.Frame;
-            blow.SwingDirection = frame.rotation.TransformToParent(new Vec3(-1f, 0f, 0f, -1f));
-            blow.SwingDirection.Normalize();
-            blow.Direction = blow.SwingDirection;
-            blow.DamageCalculated = true;
-            sbyte mainHandItemBoneIndex = playerSelected.ControlledAgent.Monster.MainHandItemBoneIndex;
-            AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.Position, Vec3.Zero, Vec3.Zero, playerSelected.ControlledAgent.Velocity, Vec3.Up);
-            playerSelected.ControlledAgent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
+            killPlayers(new List<NetworkCommunicator> { playerSelected });
 
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été tué par l'admin {peer.UserName}.", LogLevel.Information);
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été tué par {peer.UserName}", AdminServerLog.ColorList.Success, true);
@@ -299,6 +312,60 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                 GameNetwork.BeginModuleEventAsServer(peer);
                 GameNetwork.WriteMessage(new AdminServerLog(message, color));
                 GameNetwork.EndModuleEventAsServer();
+            }
+        }
+
+        private void killPlayers(List<NetworkCommunicator> playersToKill)
+        {
+            foreach (NetworkCommunicator playerToKill in playersToKill)
+            {
+                // Check si joueur existe et contrôle un agent
+                if (playerToKill == null || playerToKill.ControlledAgent == null) continue;
+
+                Blow blow = new Blow(playerToKill.ControlledAgent.Index);
+                blow.DamageType = DamageTypes.Pierce;
+                blow.BoneIndex = playerToKill.ControlledAgent.Monster.HeadLookDirectionBoneIndex;
+                blow.Position = playerToKill.ControlledAgent.Position;
+                blow.Position.z = blow.Position.z + playerToKill.ControlledAgent.GetEyeGlobalHeight();
+                blow.BaseMagnitude = 2000f;
+                blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
+                blow.InflictedDamage = 2000;
+                blow.SwingDirection = playerToKill.ControlledAgent.LookDirection;
+                MatrixFrame frame = playerToKill.ControlledAgent.Frame;
+                blow.SwingDirection = frame.rotation.TransformToParent(new Vec3(-1f, 0f, 0f, -1f));
+                blow.SwingDirection.Normalize();
+                blow.Direction = blow.SwingDirection;
+                blow.DamageCalculated = true;
+                sbyte mainHandItemBoneIndex = playerToKill.ControlledAgent.Monster.MainHandItemBoneIndex;
+                AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.Position, Vec3.Zero, Vec3.Zero, playerToKill.ControlledAgent.Velocity, Vec3.Up);
+                playerToKill.ControlledAgent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
+            }
+
+        }
+
+        private void godModPlayers(List<NetworkCommunicator> playersSelected)
+        {
+            foreach (NetworkCommunicator playerSelected in playersSelected)
+            {
+                // Check si joueur existe et contrôle un agent
+                if (playerSelected == null || playerSelected.ControlledAgent == null) continue;
+
+                playerSelected.ControlledAgent.BaseHealthLimit = 2000;
+                playerSelected.ControlledAgent.HealthLimit = 2000;
+                playerSelected.ControlledAgent.Health = 2000;
+                playerSelected.ControlledAgent.SetMinimumSpeed(10);
+                playerSelected.ControlledAgent.SetMaximumSpeedLimit(10, false);
+            }
+        }
+
+        private void healPlayers(List<NetworkCommunicator> playersSelected)
+        {
+            foreach (NetworkCommunicator playerSelected in playersSelected)
+            {
+                // Check si joueur existe et contrôle un agent
+                if (playerSelected == null || playerSelected.ControlledAgent == null) continue;
+
+                playerSelected.ControlledAgent.Health = playerSelected.ControlledAgent.HealthLimit;
             }
         }
     }
