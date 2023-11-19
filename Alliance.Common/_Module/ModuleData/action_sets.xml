@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<action_sets>
+	<action_set id="as_human_warrior" skeleton="human_skeleton" movement_system="bipedal">
+		<action type="act_car_pilot" animation="act_car_pilot" />
+		<action type="act_coche_chariot" animation="act_car_pilot" />
+	</action_set>
+</action_sets>

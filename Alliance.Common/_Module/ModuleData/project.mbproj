@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="solution">
 	<outputDirectory>..\MBModule\MBModule\</outputDirectory>
-	<XMLDirectory>..\WOTS\Modules\PvC\</XMLDirectory>
+	<XMLDirectory>..\WOTS\Modules\Alliance\</XMLDirectory>
 	<ModuleAssemblyDirectory>..\WOTS\bin\</ModuleAssemblyDirectory>
-  <!--<file id="soln_action_sets" name="ModuleData/action_sets.xml" type="action_set" />-->
+	<file id="soln_action_sets" name="ModuleData/action_sets.xml" type="action_set" />
+	<file id="soln_action_types" name="ModuleData/action_types.xml" type="action_type" />
+	<file id="soln_module_sound" name="ModuleData/module_sounds.xml" type="module_sound" />
 </base>
