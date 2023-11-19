@@ -14,6 +14,16 @@ namespace Alliance.Common.Utilities
         /// </summary>
         public static void Log(string message, LogLevel level = LogLevel.Information)
         {
+#if DEBUG
+            // In Debug build, log everything
+#else
+            // In Release build, skip Debug logs
+            if (level == LogLevel.Debug)
+            {
+                return;
+            }
+#endif
+
             if (GameNetwork.IsClient)
             {
                 // Print to in-game chat
@@ -31,9 +41,9 @@ namespace Alliance.Common.Utilities
             switch (level)
             {
                 case LogLevel.Information:
-                    return Colors.White;
+                    return Colors.Cyan;
                 case LogLevel.Debug:
-                    return Colors.Magenta;
+                    return Colors.Cyan;
                 case LogLevel.Warning:
                     return Colors.Yellow;
                 case LogLevel.Error:
@@ -48,9 +58,9 @@ namespace Alliance.Common.Utilities
             switch (level)
             {
                 case LogLevel.Information:
-                    return DebugColor.White;
+                    return DebugColor.Cyan;
                 case LogLevel.Debug:
-                    return DebugColor.Purple;
+                    return DebugColor.DarkCyan;
                 case LogLevel.Warning:
                     return DebugColor.Yellow;
                 case LogLevel.Error:

@@ -4632,6 +4632,8 @@
     <float>4.2</float>
     <float>6</float>
     <float>6</float>
+    <float>1.333</float>
+    <float>1.333</float>
     <float>1.3</float>
   </DefaultDurations>
 </AnimationDefaultStore>

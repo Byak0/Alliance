@@ -156,7 +156,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
         public override void OnMissionScreenInitialize()
         {
             AnimationSystem.Instance.Init();
-            Log($"Alliance - Loaded {AnimationSystem.Instance.DefaultAnimations.Count} animations.", LogLevel.Information);
         }
 
         public override void OnMissionScreenFinalize()

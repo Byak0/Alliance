@@ -51,23 +51,23 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
             {
                 case ColorList.Success:
                     {
-                        return "Vulcain.Text.Success";
+                        return "Alliance.Text.Success";
                     }
                 case ColorList.Info:
                     {
-                        return "Vulcain.Text.Info";
+                        return "Alliance.Text.Info";
                     }
                 case ColorList.Warning:
                     {
-                        return "Vulcain.Text.Warning";
+                        return "Alliance.Text.Warning";
                     }
                 case ColorList.Danger:
                     {
-                        return "Vulcain.Text.Danger";
+                        return "Alliance.Text.Danger";
                     }
                 default:
                     {
-                        return "Vulcain.Text.Danger";
+                        return "Alliance.Text.Danger";
                     }
             }
         }

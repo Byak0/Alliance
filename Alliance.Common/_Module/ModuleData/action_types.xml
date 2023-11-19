@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<action_types>
+	<action name="act_car_pilot" />
+	<action name="act_coche_chariot" />
+</action_types>

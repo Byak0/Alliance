@@ -11,7 +11,7 @@ namespace Alliance.Common
 
         protected override void OnSubModuleLoad()
         {
-            Log("Alliance.Common initialized", LogLevel.Information);
+            Log("Alliance.Common initialized", LogLevel.Debug);
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()

@@ -55,7 +55,7 @@ namespace Alliance.Client
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
 
-            Log("Alliance initialized.", LogLevel.Information);
+            Log("Alliance initialized.", LogLevel.Debug);
         }
 
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
