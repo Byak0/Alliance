@@ -93,7 +93,7 @@ namespace Alliance.Client.Core.KeyBinder
                     }
                 }
 
-                Log($"Alliance - Successfully registered {KeysCategories.Count} key binding categories", LogLevel.Information);
+                Log($"Alliance - Successfully registered {KeysCategories.Count} key binding categories", LogLevel.Debug);
             }
             catch (Exception ex)
             {

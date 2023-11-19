@@ -85,7 +85,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 
             if (refreshDefaultDurations) AnimationDefaultStore.Instance.Serialize();
 
-            Log("Alliance - Loaded " + Instance.DefaultAnimations.Count + " animations.", LogLevel.Information);
+            Log("Alliance - Loaded " + Instance.DefaultAnimations.Count + " animations.", LogLevel.Debug);
 
             AnimationUserStore.Instance.Init();
         }
@@ -96,7 +96,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
         /// <param name="synchronize">Set to true to synchronize with all clients</param>
         public void PlayAnimation(Agent agent, Animation animation, bool synchronize = false)
         {
-            Log($"Alliance - Playing animation {animation.Name} for player {agent.Name}", LogLevel.Information);
+            Log($"Alliance - Playing animation {animation.Name} for player {agent.Name}", LogLevel.Debug);
             // TODO : add part to hold item in hand       
 
             bool correctActionSet = true;

@@ -118,7 +118,7 @@ namespace Alliance.Common.Core.Security
             if (remove) oldList.Remove(player);
             else oldList.Add(player);
 
-            Log("Alliance Role Manager - " + player.Name + " (" + player.Id + ")" + (remove ? " removed from " : " added to ") + RolesFields[fieldIndex].Name + ".");
+            Log("Alliance Role Manager - " + player.Name + " (" + player.Id + ")" + (remove ? " removed from " : " added to ") + RolesFields[fieldIndex].Name + ".", LogLevel.Debug);
         }
 
         public void SyncPlayersRoles(int fieldIndex, PlayerId player, bool remove = false)

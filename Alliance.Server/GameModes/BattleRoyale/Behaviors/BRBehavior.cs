@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
@@ -188,8 +189,17 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 
         private void InitShrinkingZone()
         {
-            MatrixFrame randomSpawnLocation = SpawnComponent.SpawnFrameBehavior.GetSpawnFrame(Mission.AttackerTeam, false, true);
-            Vec3 zoneOrigin = randomSpawnLocation.origin;
+            Vec3 zoneOrigin;
+            GameEntity lastStand = Mission.Current.Scene.FindEntityWithTag("last_stand");
+            if (lastStand != null)
+            {
+                zoneOrigin = lastStand.GlobalPosition;
+            }
+            else
+            {
+                MatrixFrame randomSpawnLocation = SpawnComponent.SpawnFrameBehavior.GetSpawnFrame(Mission.AttackerTeam, false, true);
+                zoneOrigin = randomSpawnLocation.origin;
+            }
             float zoneRadius = 10f;
 
             // Find the farthest agent

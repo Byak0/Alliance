@@ -62,8 +62,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
                     string log = "Alliance - Favorites : " + FavoriteAnimations.Count +
                         " / Sequences : " + AnimationSequences.Count +
                         " / Sets : " + AnimationSets.Count;
-                    Log("Alliance - Loaded user custom animations :", LogLevel.Information);
-                    Log(log, LogLevel.Information);
+                    Log("Alliance - Loaded user custom animations :", LogLevel.Debug);
+                    Log(log, LogLevel.Debug);
                 }
                 else
                 {

@@ -135,11 +135,11 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
                 GameNetwork.BeginModuleEventAsClient();
                 GameNetwork.WriteMessage(new TeleportRequest(groundPosition));
                 GameNetwork.EndModuleEventAsClient();
-                Log($"Requesting teleport to {groundPosition}", LogLevel.Information);
+                Log($"Requesting teleport to {groundPosition}", LogLevel.Debug);
             }
             else
             {
-                Log($"Invalid target position", LogLevel.Information);
+                Log($"Invalid teleport position", LogLevel.Information);
             }
         }
 
