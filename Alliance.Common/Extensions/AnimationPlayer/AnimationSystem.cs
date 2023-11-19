@@ -85,7 +85,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 
             if (refreshDefaultDurations) AnimationDefaultStore.Instance.Serialize();
 
-            Log("Alliance - Loaded " + Instance.DefaultAnimations.Count + " animations.", LogLevel.Information);
+            Log("Alliance - Loaded " + Instance.DefaultAnimations.Count + " animations.", LogLevel.Debug);
 
             AnimationUserStore.Instance.Init();
         }

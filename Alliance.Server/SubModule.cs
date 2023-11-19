@@ -59,7 +59,7 @@ namespace Alliance.Server
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();
 
-            Log("Alliance initialized.", LogLevel.Information);
+            Log("Alliance initialized.", LogLevel.Debug);
         }
 
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)

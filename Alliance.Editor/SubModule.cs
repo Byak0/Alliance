@@ -12,7 +12,7 @@ namespace Alliance.Editor
 
         protected override void OnSubModuleLoad()
         {
-            Log("Alliance.Editor initialized", LogLevel.Information);
+            Log("Alliance.Editor initialized", LogLevel.Debug);
         }
 
         protected override void OnBeforeInitialModuleScreenSetAsRoot()
