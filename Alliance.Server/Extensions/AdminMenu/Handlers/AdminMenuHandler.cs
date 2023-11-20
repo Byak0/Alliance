@@ -111,6 +111,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     return TeleportToPlayer(peer, admin);
                 if (admin.TeleportPlayerToYou)
                     return TeleportPlayerToYou(peer, admin);
+                if (admin.TeleportAllPlayerToYou)
+                    return TeleportAllPlayerToYou(peer);
             }
             if (peer.IsDev())
             {
@@ -125,13 +127,21 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
-            // Check if admin and target player both have an agent
-            if (playerSelected == null || playerSelected.ControlledAgent == null || peer.ControlledAgent == null) return false;
-
-            playerSelected.ControlledAgent.TeleportToPosition(peer.ControlledAgent.Position);
+            teleportPlayersToYou(new List<NetworkCommunicator> { playerSelected }, peer);
 
             Log($"[AdminPanel] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+            return true;
+        }
+
+        public bool TeleportAllPlayerToYou(NetworkCommunicator peer)
+        {
+            List<NetworkCommunicator> playerSelected = GameNetwork.NetworkPeers.ToList();
+
+            teleportPlayersToYou(playerSelected, peer);
+
+            Log($"[AdminPanel] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
             return true;
         }
 
@@ -407,5 +417,36 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                 SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction healPlayers.", AdminServerLog.ColorList.Danger, true);
             }
         }
+
+        /// <summary>
+        /// Teleporte les joueurs passés en paramètre au Networkcommunicator passé en paramètre.
+        /// </summary>
+        /// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
+        /// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
+        private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
+        {
+            try
+            {
+                foreach (NetworkCommunicator playerToTeleport in playersToTeleport)
+                {
+                    // Check if admin and target player both have an agent, also prevent admin from teleporting to himself
+                    if (playerToTeleport == null
+                        || playerToTeleport.ControlledAgent == null
+                        || peer.ControlledAgent == null
+                        || peer.VirtualPlayer.Id == playerToTeleport.VirtualPlayer.Id)
+                    {
+                        continue;
+                    }
+
+                    playerToTeleport.ControlledAgent.TeleportToPosition(peer.ControlledAgent.Position);
+                }
+            }
+            catch (Exception e)
+            {
+                Log($"[AdminPanel] Erreur lors de l'execution de la fonction teleportPlayersToYou. ({e.Message})", LogLevel.Error);
+                SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction teleportPlayersToYou.", AdminServerLog.ColorList.Danger, true);
+            }
+        }
+
     }
 }

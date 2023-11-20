@@ -349,6 +349,14 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
+        public void TeleportAllPlayerToYou()
+        {
+            if (_selectedPeer == null) { return; }
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
         public void SetAdmin()
         {
             if (_selectedPeer == null) { return; }

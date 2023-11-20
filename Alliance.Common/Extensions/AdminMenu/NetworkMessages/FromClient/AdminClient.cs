@@ -22,6 +22,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
         public bool ToggleInvulnerable { get; set; }
         public bool TeleportToPlayer { get; set; }
         public bool TeleportPlayerToYou { get; set; }
+        public bool TeleportAllPlayerToYou { get; set; }
 
         protected override void OnWrite()
         {
@@ -37,6 +38,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
             WriteBoolToPacket(ToggleInvulnerable);
             WriteBoolToPacket(TeleportToPlayer);
             WriteBoolToPacket(TeleportPlayerToYou);
+            WriteBoolToPacket(TeleportAllPlayerToYou);
             WriteStringToPacket(PlayerSelected);
         }
 
@@ -55,6 +57,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
             ToggleInvulnerable = ReadBoolFromPacket(ref bufferReadValid);
             TeleportToPlayer = ReadBoolFromPacket(ref bufferReadValid);
             TeleportPlayerToYou = ReadBoolFromPacket(ref bufferReadValid);
+            TeleportAllPlayerToYou = ReadBoolFromPacket(ref bufferReadValid);
             PlayerSelected = ReadStringFromPacket(ref bufferReadValid);
 
             return bufferReadValid;
