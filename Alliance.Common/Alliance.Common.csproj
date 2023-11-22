@@ -24,4 +24,8 @@
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Extensions\Revive\NetworkMessages\FromServer\" />
+	</ItemGroup>
+
 </Project>

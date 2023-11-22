@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.Revive.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
@@ -55,6 +56,8 @@ namespace Alliance.Server
 
             // Add main server handler
             mission.AddMissionBehavior(new ServerAutoHandler());
+
+            mission.AddMissionBehavior(new ReviveBehavior());
 
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();

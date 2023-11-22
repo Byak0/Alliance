@@ -22,6 +22,8 @@ namespace Alliance.Common.Patch
             CompressionBasic.NumberOfBotsPerFormationCompressionInfo = new CompressionInfo.Integer(0, 4096, true);
             // Increase gold max
             CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);
+            // Fix native lag when lot of arrows
+            CompressionBasic.BigRangeLowResLocalPositionCompressionInfo = new CompressionInfo.Float(-2000f, 2000f, 16);
 
             // Test :)))
             CompressionBasic.PlayerCompressionInfo = new CompressionInfo.Integer(-1, 20000, true);

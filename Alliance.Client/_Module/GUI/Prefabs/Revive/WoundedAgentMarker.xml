@@ -1,0 +1,30 @@
+<Prefab>
+	<Constants>
+		<Constant Name="PowerBar.Flag.Width" BrushLayer="Default" BrushName="Alliance.Parchment" BrushValueType="Width" Value="120"/>
+		<Constant Name="PowerBar.Flag.Height" BrushLayer="Default" BrushName="Alliance.Parchment" BrushValueType="Height" Value="50"/>
+	</Constants>
+	<Window>
+		<MultiplayerMissionMarkerListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" CloseDistanceCutoff="25" Distance="@Distance" FarAlphaTarget="0.5" FarDistanceCutoff="250" IsMarkerEnabled="@IsEnabled" IsVisible="@IsVisible" StackLayout.LayoutMethod="VerticalBottomToTop" MarkerType="@MarkerType" PeerWidget="PeerWidget" Position="@ScreenPosition" >
+			<Children>
+
+				<Widget Id="PeerWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height"  HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="@IsVisible">
+					<Children>
+						<!--<FillBarVerticalClipWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height" Color="@Color2" ClipWidget="ClipWidget" FillWidget="ClipWidget\FillWidget" InitialAmountAsFloat="@RezProgress" IsDirectionUpward="true" MaxAmountAsFloat="1">
+							<Children>
+								<ImageWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.GlobalColor="@Color2" Brush="Alliance.Parchment" Brush.GlobalAlphaFactor="0.6" ForcePixelPerfectRenderPlacement="true"/>
+								<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.Parchment" IsDisabled="false"  Brush.GlobalColor="@Color2" Brush.GlobalAlphaFactor="0.0" ForcePixelPerfectRenderPlacement="true"/>
+								<Widget Id="ClipWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height" AlphaFactor="0">
+									<Children>
+										<ImageWidget Id="FillWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height" Brush="Alliance.Parchment" Brush.GlobalColor="@Color" IsDisabled="@IsKeepFlag" ForcePixelPerfectRenderPlacement="true"/>
+									</Children>
+								</Widget>
+							</Children>
+						</FillBarVerticalClipWidget>-->
+						<TextWidget Id="NameTextWidget" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CenterAlignedFont" Brush.FontSize="20" Brush.FontColor="@Color2" ClipContents="false" OverrideDefaultStateSwitchingEnabled="true" Text="@Name" />
+					</Children>
+				</Widget>
+
+			</Children>
+		</MultiplayerMissionMarkerListPanel>
+	</Window>
+</Prefab>

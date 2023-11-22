@@ -3,8 +3,6 @@ using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
-using Alliance.Server.GameModes.Story;
-using Alliance.Server.GameModes.Story.Behaviors;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -267,7 +265,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
                     // TODO : send info to clients
 
                 }
-                Log($"DEBUG : Spawned {nbBotsToSpawn} bots for {team.Side} side. {TeamRemainingLives[team]} lives remaining for team.");
+                Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {TeamRemainingLives[team]} lives remaining for team.", LogLevel.Debug);
             }
 
             _haveBotsBeenSpawned[(int)team.Side] = true;
