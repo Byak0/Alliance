@@ -325,6 +325,14 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
+        public void SendWarningToPlayer()
+        {
+            if (_selectedPeer == null) { return; }
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
         public void BanPlayer()
         {
             if (_selectedPeer == null) { return; }
