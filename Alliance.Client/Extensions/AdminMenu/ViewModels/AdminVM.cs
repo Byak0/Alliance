@@ -359,7 +359,6 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
         public void TeleportAllPlayerToYou()
         {
-            if (_selectedPeer == null) { return; }
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
             GameNetwork.EndModuleEventAsClient();
