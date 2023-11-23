@@ -113,6 +113,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     return TeleportPlayerToYou(peer, admin);
                 if (admin.TeleportAllPlayerToYou)
                     return TeleportAllPlayerToYou(peer);
+                if (admin.SendWarningToPlayer)
+                    return SendWarningToPlayer(peer, admin);
             }
             if (peer.IsDev())
             {
@@ -226,6 +228,23 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été tué par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 
             return true;
+        }
+        
+        public bool SendWarningToPlayer(NetworkCommunicator peer, AdminClient admin)
+        {
+            NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
+
+            // Check si joueur existe
+            if (playerSelected == null) return false;
+
+            GameNetwork.BeginModuleEventAsServer(playerSelected);
+            GameNetwork.WriteMessage(new SendNotification($"Vous avez reçu un avertissement d'un Admin ({peer.UserName}) !", 0));
+            GameNetwork.EndModuleEventAsServer();
+
+            Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}.", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+            return true;
+
         }
 
         public bool Kick(NetworkCommunicator peer, AdminClient admin)
