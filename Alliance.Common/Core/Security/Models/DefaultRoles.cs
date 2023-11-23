@@ -36,11 +36,13 @@ namespace Alliance.Common.Core.Security.Models
         {
             Commanders = new List<Player>
             {
-                new Player("[COMB] Byako", "2.0.0.76561198029123129")
+                new Player("[COMB] Byako", "2.0.0.76561198029123129"),
+                new Player("Jeandelaville", "2.0.0.76561197971698668")
             };
             Officers = new List<Player>
             {
-                new Player("[COMB] Byako", "2.0.0.76561198029123129")
+                new Player("[COMB] Byako", "2.0.0.76561198029123129"),
+                new Player("Jeandelaville", "2.0.0.76561197971698668")
             };
             Admins = new List<Player>()
             {
@@ -51,12 +53,14 @@ namespace Alliance.Common.Core.Security.Models
                 new Player("Smooth", "2.0.0.76561198026238164"),
                 new Player("Voda", "2.0.0.76561198026723199"),
                 new Player("Redfield", "2.0.0.76561198004394006"),
-                new Player("Thasom", "2.0.0.76561198239584448")
+                new Player("Thasom", "2.0.0.76561198239584448"),
+                new Player("Jeandelaville", "2.0.0.76561197971698668")
             };
             Devs = new List<Player>()
             {
                 new Player("[COMB] Byako", "2.0.0.76561198029123129"),
-                new Player("Redfield", "2.0.0.76561198004394006")
+                new Player("Redfield", "2.0.0.76561198004394006"),
+                new Player("Jeandelaville", "2.0.0.76561197971698668")
             };
         }
     }

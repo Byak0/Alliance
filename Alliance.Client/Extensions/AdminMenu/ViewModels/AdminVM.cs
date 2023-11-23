@@ -280,6 +280,13 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
+        public void HealAll()
+        {
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { HealAll = true, PlayerSelected = null });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
         public void GodMod()
         {
             if (_selectedPeer == null) { return; }
@@ -288,11 +295,25 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
+        public void GodModAll()
+        {
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { GodModAll = true, PlayerSelected = null });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
         public void KillPlayer()
         {
             if (_selectedPeer == null) { return; }
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
+        public void KillAll()
+        {
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { KillAll = true, PlayerSelected =  null });
             GameNetwork.EndModuleEventAsClient();
         }
 
@@ -325,6 +346,14 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             if (_selectedPeer == null) { return; }
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.EndModuleEventAsClient();
+        }
+
+        public void TeleportAllPlayerToYou()
+        {
+            if (_selectedPeer == null) { return; }
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
             GameNetwork.EndModuleEventAsClient();
         }
 

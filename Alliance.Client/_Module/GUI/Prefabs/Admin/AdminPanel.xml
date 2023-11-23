@@ -214,7 +214,7 @@
 
 								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
 									<Children>
-										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="HealAll">
 											<Children>
 												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
 													<Children>
@@ -223,7 +223,7 @@
 												</ListPanel>
 											</Children>
 										</ButtonWidget>
-										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="GodModAll">
 											<Children>
 												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
 													<Children>
@@ -232,7 +232,7 @@
 												</ListPanel>
 											</Children>
 										</ButtonWidget>
-										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="KillAll">
 											<Children>
 												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
 													<Children>
@@ -246,7 +246,7 @@
 
 								<ListPanel MarginTop="10" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
 									<Children>
-										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsDisabled="true">
+										<ButtonWidget MarginLeft="45" MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="TPAll">
 											<Children>
 												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
 													<Children>
