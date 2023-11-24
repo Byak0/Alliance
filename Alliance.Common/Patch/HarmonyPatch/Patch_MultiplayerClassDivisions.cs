@@ -23,10 +23,10 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
                 _patched = true;
 
-                MethodInfo? originalMethod = typeof(MultiplayerClassDivisions).GetMethod("GetMPHeroClassForCharacter",
+                MethodInfo originalMethod = typeof(MultiplayerClassDivisions).GetMethod("GetMPHeroClassForCharacter",
                     BindingFlags.Static | BindingFlags.Public);
 
-                MethodInfo? prefixMethod = typeof(Patch_MultiplayerClassDivisions).GetMethod(
+                MethodInfo prefixMethod = typeof(Patch_MultiplayerClassDivisions).GetMethod(
                     nameof(Prefix_GetMPHeroClassForCharacter), BindingFlags.Static | BindingFlags.Public);
 
                 Harmony.Patch(originalMethod, prefix: new HarmonyMethod(prefixMethod));

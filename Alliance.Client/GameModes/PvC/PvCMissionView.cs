@@ -1,8 +1,15 @@
 ﻿using Alliance.Client.Extensions.AgentsCount.Views;
-using Alliance.Client.Extensions.ExNativeUI.Views;
+using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
+using Alliance.Client.Extensions.ExNativeUI.KillNotification.Views;
+using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views;
+using Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views;
+using Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.TroopSpawner.Views;
+using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
@@ -49,16 +56,11 @@ namespace Alliance.Client.GameModes.PvC
                 new MissionAgentContourControllerView(),
                 ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
                 ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission)
+                ViewCreator.CreateMissionMainAgentEquipDropView(mission),
+                ViewCreator.CreateMissionBoundaryCrossingView(),
+                new MissionBoundaryWallView(),
+                new SpectatorView()
             };
-            if (!GameNetwork.IsClient)
-            {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
-            //list.Add(new SpectatorCameraView());
-            list.Add(new SpectatorView());
 
             return list.ToArray();
         }
