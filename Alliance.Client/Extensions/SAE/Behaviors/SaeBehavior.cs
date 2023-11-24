@@ -266,7 +266,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             //Crouch troops
             if (Input.IsKeyPressed(InputKey.M))
             {
-                Log("Crouch !");
+                Log("Crouch !", LogLevel.Information);
 
                 MBReadOnlyList<Formation> formations = Mission.Current.PlayerTeam?.PlayerOrderController?.SelectedFormations;
                 if (formations != null && formations.Count > 0)
@@ -484,7 +484,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         public void RemoveMarkersFromList(List<int> markersToDelete)
         {
             //Remove all markers from the list of IDs
-            Log("Markers before suppression = " + visualMarkersList.Count);
+            Log("Markers before suppression = " + visualMarkersList.Count, LogLevel.Debug);
 
             visualMarkersList.FindAll(e => markersToDelete.Contains(e.Id)).ForEach(markerToDelete =>
             {
@@ -496,7 +496,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 visualMarkersList.Remove(markerToDelete);
             });
 
-            Log("Markers after suppression = " + visualMarkersList.Count);
+            Log("Markers after suppression = " + visualMarkersList.Count, LogLevel.Debug);
         }
 
         public MatrixFrame GetMousePosition()
@@ -611,7 +611,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 }
                 else
                 {
-                    Log("Can't init sphereEntity due to missing properties");
+                    Log("Can't init sphereEntity due to missing properties", LogLevel.Error);
                 }
             }
         }
@@ -797,7 +797,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 }
                 else
                 {
-                    Log("Can't init Marker due to missing properties");
+                    Log("Can't init Marker due to missing properties", LogLevel.Error);
                 }
             }
         }
