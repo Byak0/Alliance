@@ -13,30 +13,27 @@ namespace Alliance.Client.GameModes.Lobby
         [ViewMethod("Lobby")]
         public static MissionView[] OpenLobbyMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>();
-            list.Add(new GameModeMenuView());
-            list.Add(new SpawnTroopsView());
-
-            list.Add(ViewCreator.CreateMissionServerStatusUIHandler());
-            list.Add(ViewCreator.CreateMissionMultiplayerPreloadView(mission));
-            list.Add(ViewCreator.CreateMissionMultiplayerFFAView());
-            list.Add(ViewCreator.CreateMissionKillNotificationUIHandler());
-            list.Add(ViewCreator.CreateMissionAgentStatusUIHandler(mission));
-            list.Add(ViewCreator.CreateMissionMainAgentEquipmentController(mission));
-            list.Add(ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission));
-            list.Add(ViewCreator.CreateMissionMultiplayerEscapeMenu("Lobby"));
-            //list.Add(ViewCreator.CreateMultiplayerEndOfBattleUIHandler());
-            list.Add(ViewCreator.CreateMissionScoreBoardUIHandler(mission, true));
-            list.Add(ViewCreator.CreatePollProgressUIHandler());
-            list.Add(ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null));
-            list.Add(ViewCreator.CreateOptionsUIHandler());
-            list.Add(ViewCreator.CreateMissionMainAgentEquipDropView(mission));
-            if (!GameNetwork.IsClient)
+            List<MissionView> list = new List<MissionView>
             {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
+                new GameModeMenuView(),
+                new SpawnTroopsView(),
+
+                ViewCreator.CreateMissionServerStatusUIHandler(),
+                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
+                ViewCreator.CreateMissionMultiplayerFFAView(),
+                ViewCreator.CreateMissionKillNotificationUIHandler(),
+                ViewCreator.CreateMissionAgentStatusUIHandler(mission),
+                ViewCreator.CreateMissionMainAgentEquipmentController(mission),
+                ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
+                ViewCreator.CreateMissionMultiplayerEscapeMenu("Lobby"),
+                ViewCreator.CreateMissionScoreBoardUIHandler(mission, true),
+                ViewCreator.CreatePollProgressUIHandler(),
+                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
+                ViewCreator.CreateOptionsUIHandler(),
+                ViewCreator.CreateMissionMainAgentEquipDropView(mission),
+                ViewCreator.CreateMissionBoundaryCrossingView(),
+                new MissionBoundaryWallView()
+            };
             return list.ToArray();
         }
     }

@@ -1,12 +1,15 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Models;
+﻿using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 {
-    public class AgentsInfoHandler
+    public class AgentsInfoHandler : IHandlerRegister
     {
-        public AgentsInfoHandler()
+        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
         {
+            reg.Register<AgentsInfoMessage>(HandleServerEventAgentsInfoMessage);
         }
 
         public void HandleServerEventAgentsInfoMessage(AgentsInfoMessage message)

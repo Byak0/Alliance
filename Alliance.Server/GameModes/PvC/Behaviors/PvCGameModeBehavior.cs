@@ -258,9 +258,14 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     }
                 }
             }
-            foreach (MissionPeer peer in commanders)
+            if (commanders.Count > 0)
             {
-                ChangeCurrentGoldForPeer(peer, Config.Instance.StartingGold + playerTeamValue / commanders.Count);
+                int goldToGive = Config.Instance.StartingGold + playerTeamValue / commanders.Count;
+                foreach (MissionPeer peer in commanders)
+                {
+                    Log($"Giving {goldToGive}g to {peer.Name}", LogLevel.Debug);
+                    ChangeCurrentGoldForPeer(peer, goldToGive);
+                }
             }
         }
 
@@ -413,6 +418,12 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
         private void OnPostRoundEnd()
         {
+            // Reset  all spawn slots
+            for (int i = 0; i < AgentsInfoModel.Instance.Agents.Count; i++)
+            {
+                AgentsInfoModel.Instance.RemoveAgentInfo(i);
+            }
+
             if (RoundController.IsMatchEnding)
             {
                 GameModeStarter.Instance.StartLobby("Lobby", "empire", "vlandia");

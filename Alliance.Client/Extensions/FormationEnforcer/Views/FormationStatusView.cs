@@ -53,7 +53,7 @@ namespace Alliance.Client.Extensions.FormationEnforcer.Views
         {
             // Tick every 0.5second
             _lastFormationCheck += dt;
-            if (_lastFormationCheck >= 0.5f)
+            if (_lastFormationCheck >= 0.25f)
             {
                 _lastFormationCheck = 0;
                 if (FormationComponent.Main != null) _dataSource.FormationStatusState = FormationComponent.Main.State;
