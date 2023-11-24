@@ -258,9 +258,14 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     }
                 }
             }
-            foreach (MissionPeer peer in commanders)
+            if (commanders.Count > 0)
             {
-                ChangeCurrentGoldForPeer(peer, Config.Instance.StartingGold + playerTeamValue / commanders.Count);
+                int goldToGive = Config.Instance.StartingGold + playerTeamValue / commanders.Count;
+                foreach (MissionPeer peer in commanders)
+                {
+                    Log($"Giving {goldToGive}g to {peer.Name}", LogLevel.Debug);
+                    ChangeCurrentGoldForPeer(peer, goldToGive);
+                }
             }
         }
 
