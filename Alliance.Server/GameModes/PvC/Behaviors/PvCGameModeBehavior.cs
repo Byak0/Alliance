@@ -22,7 +22,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
     {
         private bool _goldGivenThisRound;
 
-        public PvCGameModeBehavior(MissionLobbyComponent.MultiplayerGameType gameType) : base(gameType)
+        public PvCGameModeBehavior(MultiplayerGameType gameType) : base(gameType)
         {
         }
 

@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Captain.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.BattleX
@@ -23,7 +24,7 @@ namespace Alliance.Server.GameModes.BattleX
 
                     new MultiplayerRoundController(),
                     //new MissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Battle),
-                    new PvCMissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Battle),
+                    new PvCMissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
                     //new MissionMultiplayerGameModeFlagDominationClient(),
                     new PvCMissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerWarmupComponent(),

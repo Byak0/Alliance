@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.PvC
@@ -38,7 +39,7 @@ namespace Alliance.Server.GameModes.PvC
 
                     // Custom components
                     new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
-                    new PvCGameModeBehavior(MissionLobbyComponent.MultiplayerGameType.Captain),
+                    new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new PvCGameModeClientBehavior(),
                     new MissionScoreboardComponent(new PvCScoreboardData()),
                     new PvCTeamSelectBehavior(),

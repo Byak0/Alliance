@@ -3,6 +3,7 @@ using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.GameModes.Lobby.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.Lobby

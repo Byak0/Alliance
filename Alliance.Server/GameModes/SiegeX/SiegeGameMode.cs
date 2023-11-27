@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Siege.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.SiegeX

@@ -24,9 +24,9 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             }
         }
 
-        public override MissionLobbyComponent.MultiplayerGameType GetMissionType()
+        public override MultiplayerGameType GetMissionType()
         {
-            return MissionLobbyComponent.MultiplayerGameType.FreeForAll;
+            return MultiplayerGameType.FreeForAll;
         }
 
         public override void AfterStart()

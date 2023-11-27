@@ -18,6 +18,9 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+    <Reference Include="$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\*.dll">
+      <HintPath>%(Identity)</HintPath>
+    </Reference>
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
 		</Reference>

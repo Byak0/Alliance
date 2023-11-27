@@ -49,9 +49,9 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
             }
         }
 
-        public override MissionLobbyComponent.MultiplayerGameType GetMissionType()
+        public override MultiplayerGameType GetMissionType()
         {
-            return MissionLobbyComponent.MultiplayerGameType.FreeForAll;
+            return MultiplayerGameType.FreeForAll;
         }
 
         public override void OnBehaviorInitialize()
@@ -171,8 +171,8 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
             Blow blow = new Blow(agent.Index);
             blow.DamageType = DamageTypes.Blunt;
             blow.BoneIndex = agent.Monster.HeadLookDirectionBoneIndex;
-            blow.Position = agent.Position;
-            blow.Position.z = blow.Position.z + agent.GetEyeGlobalHeight();
+            blow.GlobalPosition = agent.Position;
+            blow.GlobalPosition.z = blow.GlobalPosition.z + agent.GetEyeGlobalHeight();
             blow.BaseMagnitude = 10f;
             blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
             blow.InflictedDamage = 10;
@@ -183,7 +183,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
             blow.Direction = blow.SwingDirection;
             blow.DamageCalculated = true;
             sbyte mainHandItemBoneIndex = agent.Monster.MainHandItemBoneIndex;
-            AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, Agent.UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.Position, Vec3.Zero, Vec3.Zero, agent.Velocity, Vec3.Up);
+            AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, Agent.UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.GlobalPosition, Vec3.Zero, Vec3.Zero, agent.Velocity, Vec3.Up);
             agent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
         }
 
@@ -216,9 +216,9 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 
         private bool EnoughPlayersJoined()
         {
-            int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(MBNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(MBNetwork.NetworkPeers.Count - 1, 1));
+            int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
             int playersReady = 0;
-            foreach (ICommunicator peer in MBNetwork.NetworkPeers)
+            foreach (ICommunicator peer in GameNetwork.NetworkPeers)
             {
                 if (peer.IsSynchronized) playersReady++;
             }

@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.BattleRoyale
