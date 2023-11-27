@@ -6,12 +6,11 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
-using TaleWorlds.MountAndBlade.View.MissionViews.Multiplayer;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views
 {
-    [OverrideView(typeof(MissionMultiplayerHUDExtensionUIHandler))]
+    //[OverrideView(typeof(MissionMultiplayerHUDExtensionUIHandler))]
     public class HUDExtensionUIHandlerView : MissionView
     {
         public HUDExtensionUIHandlerView()

@@ -15,7 +15,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
         public override bool IsGameModeUsingGold => true;
         public override bool IsGameModeTactical => true;
         public override bool IsGameModeUsingRoundCountdown => false;
-        public override MissionLobbyComponent.MultiplayerGameType GameType => MissionLobbyComponent.MultiplayerGameType.Captain;
+        public override MultiplayerGameType GameType => MultiplayerGameType.Captain;
 
         private MissionRepresentativeBase _myRepresentative;
 

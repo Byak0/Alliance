@@ -26,7 +26,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
         protected override void OnWrite()
         {
             WriteNetworkPeerReferenceToPacket(Peer);
-            WriteIntToPacket((int)Formation, CompressionOrder.FormationClassCompressionInfo);
+            WriteIntToPacket((int)Formation, CompressionMission.FormationClassCompressionInfo);
             WriteBoolToPacket(Delete);
         }
 
@@ -34,7 +34,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
         {
             bool bufferReadValid = true;
             Peer = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-            Formation = (FormationClass)ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
+            Formation = (FormationClass)ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             Delete = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }

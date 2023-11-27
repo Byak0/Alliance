@@ -6,14 +6,14 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncSoundObject : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
-        public Agent UserAgent { get; private set; }
+        public int AgentIndex { get; private set; }
 
-        public SyncSoundObject(MissionObject missionObject, Agent userAgent)
+        public SyncSoundObject(MissionObjectId missionObjectId, int agentIndex)
         {
-            MissionObject = missionObject;
-            UserAgent = userAgent;
+            MissionObjectId = missionObjectId;
+            AgentIndex = agentIndex;
         }
 
         public SyncSoundObject()
@@ -23,15 +23,15 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
-            UserAgent = ReadAgentReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
+            AgentIndex = ReadAgentIndexFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
-            WriteAgentReferenceToPacket(UserAgent);
+            WriteMissionObjectIdToPacket(MissionObjectId);
+            WriteAgentIndexToPacket(AgentIndex);
         }
 
         protected override MultiplayerMessageFilter OnGetLogFilter()
@@ -41,7 +41,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize sound of UserAgent ", UserAgent.Name, " with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Synchronize sound of UserAgent ", AgentIndex, " with Id: ", MissionObjectId.Id);
         }
     }
 }

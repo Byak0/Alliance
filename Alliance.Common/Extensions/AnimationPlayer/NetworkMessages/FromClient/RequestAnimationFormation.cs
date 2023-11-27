@@ -29,8 +29,9 @@ namespace Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            Team = ReadTeamReferenceFromPacket(ref bufferReadValid);
-            FormationIndex = ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
+            int teamIndex = ReadTeamIndexFromPacket(ref bufferReadValid);
+            Team = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(teamIndex);
+            FormationIndex = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             ActionIndex = ReadIntFromPacket(new CompressionInfo.Integer(-1, 5000, true), ref bufferReadValid);
             Speed = ReadFloatFromPacket(new CompressionInfo.Float(0f, 5, 0.1f), ref bufferReadValid);
             return bufferReadValid;
@@ -38,8 +39,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromClient
 
         protected override void OnWrite()
         {
-            WriteTeamReferenceToPacket(Team);
-            WriteIntToPacket(FormationIndex, CompressionOrder.FormationClassCompressionInfo);
+            WriteTeamIndexToPacket(Team.TeamIndex);
+            WriteIntToPacket(FormationIndex, CompressionMission.FormationClassCompressionInfo);
             WriteIntToPacket(ActionIndex, new CompressionInfo.Integer(-1, 5000, true));
             WriteFloatToPacket(Speed, new CompressionInfo.Float(0f, 5, 0.1f));
         }

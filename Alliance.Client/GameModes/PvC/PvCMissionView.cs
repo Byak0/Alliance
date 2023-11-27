@@ -39,7 +39,7 @@ namespace Alliance.Client.GameModes.PvC
                 new GameModeMenuView(),
 
                 // Native views from Captain mode
-                ViewCreator.CreateMissionServerStatusUIHandler(),
+				ViewCreator.CreateMissionServerStatusUIHandler(),
                 ViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
                 ViewCreator.CreateMissionMultiplayerPreloadView(mission),
                 ViewCreator.CreateMissionMainAgentEquipmentController(mission),

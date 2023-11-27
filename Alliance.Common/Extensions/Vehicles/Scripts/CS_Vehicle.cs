@@ -409,7 +409,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestForward(this, move));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestForward(Id, move));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -422,7 +422,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerMoveForward(bool move)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncForward(this, move));
+            GameNetwork.WriteMessage(new CS_VehicleSyncForward(Id, move));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _moveForward = move;
         }
@@ -434,7 +434,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestBackward(this, move));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestBackward(Id, move));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -447,7 +447,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerMoveBackward(bool move)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncBackward(this, move));
+            GameNetwork.WriteMessage(new CS_VehicleSyncBackward(Id, move));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _moveBackward = move;
         }
@@ -459,7 +459,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestUpward(this, move));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestUpward(Id, move));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -472,7 +472,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerMoveUpward(bool move)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncUpward(this, move));
+            GameNetwork.WriteMessage(new CS_VehicleSyncUpward(Id, move));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _moveUpward = move;
         }
@@ -484,7 +484,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestDownward(this, move));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestDownward(Id, move));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -497,7 +497,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerMoveDownward(bool move)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncDownward(this, move));
+            GameNetwork.WriteMessage(new CS_VehicleSyncDownward(Id, move));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _moveDownward = move;
         }
@@ -509,7 +509,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestTurnLeft(this, turn));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestTurnLeft(Id, turn));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -522,7 +522,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerTurnLeft(bool turn)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncTurnLeft(this, turn));
+            GameNetwork.WriteMessage(new CS_VehicleSyncTurnLeft(Id, turn));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _turnLeft = turn;
         }
@@ -534,7 +534,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestTurnRight(this, turn));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestTurnRight(Id, turn));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -547,7 +547,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerTurnRight(bool turn)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncTurnRight(this, turn));
+            GameNetwork.WriteMessage(new CS_VehicleSyncTurnRight(Id, turn));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             _turnRight = turn;
         }
@@ -667,17 +667,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public override void Disable()
         {
             base.Disable();
-        }
-
-        public override bool ReadFromNetwork()
-        {
-            bool flag = base.ReadFromNetwork();
-            return flag;
-        }
-
-        public override void WriteToNetwork()
-        {
-            base.WriteToNetwork();
         }
 
         public override TextObject GetActionTextForStandingPoint(UsableMissionObject usableGameObject)

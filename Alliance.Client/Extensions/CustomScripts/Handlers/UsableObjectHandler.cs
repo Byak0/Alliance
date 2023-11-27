@@ -21,17 +21,17 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncSetActionChannel(SyncSetActionChannel message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = message.MissionObjectId;
             if (missionObject == null)
             {
                 return;
             }
-            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSetActionChannel(message.UserAgent, message.Action);
+            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSetActionChannel(message.AgentIndex, message.Action);
         }
 
         public void CS_HandleSyncNumberOfUse(SyncNumberOfUse message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = message.MissionObjectId;
             if (missionObject == null)
             {
                 return;
@@ -41,17 +41,17 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncSound(SyncSoundObject message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = message.MissionObjectId;
             if (missionObject == null)
             {
                 return;
             }
-            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSound(message.UserAgent);
+            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSound(message.AgentIndex);
         }
 
         public void CS_HandleSyncParticle(SyncParticleObject message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = message.MissionObjectId;
             if (missionObject == null)
             {
                 return;

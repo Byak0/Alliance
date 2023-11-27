@@ -8,7 +8,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
 using TaleWorlds.ObjectSystem;
 using TaleWorlds.TwoDimension;
 
@@ -563,13 +562,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             NetworkCommunicator.OnPeerComponentAdded += OnPeerComponentAdded;
             Mission.Current.OnMissionReset += OnMissionReset;
             MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
-            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MissionLobbyComponent.MultiplayerGameType.Duel;
+            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
             _missionLobbyEquipmentNetworkComponent = mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown;
             IsRoundCountdownSuspended = false;
             // Disable Score depending on config
             _isTeamScoresEnabled = _isTeamsEnabled && Config.Instance.ShowScore;
-            _isTeamMemberCountsEnabled = missionBehavior.MissionType == MissionLobbyComponent.MultiplayerGameType.Battle;
+            _isTeamMemberCountsEnabled = missionBehavior.MissionType == MultiplayerGameType.Battle;
             UpdateShowTeamScores();
             Teammates = new MBBindingList<MPPlayerVM>();
             Enemies = new MBBindingList<MPPlayerVM>();
@@ -610,7 +609,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
                     OnRefreshEnemyMembers();
                 }
 
-                ShowPowerLevels = _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle;
+                ShowPowerLevels = _gameMode.GameType == MultiplayerGameType.Battle;
             }
         }
 

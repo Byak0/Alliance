@@ -6,11 +6,11 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class BurstAllHeavyHitParticles : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
-        public BurstAllHeavyHitParticles(MissionObject missionObject)
+        public BurstAllHeavyHitParticles(MissionObjectId missionObjectId)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
         }
 
         public BurstAllHeavyHitParticles()
@@ -20,13 +20,13 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
         }
 
         protected override MultiplayerMessageFilter OnGetLogFilter()
@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Bursting all heavy-hit particles for the DestructableComponent of MissionObject with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Bursting all heavy-hit particles for the DestructableComponent of MissionObject with Id: ", MissionObjectId);
         }
     }
 }

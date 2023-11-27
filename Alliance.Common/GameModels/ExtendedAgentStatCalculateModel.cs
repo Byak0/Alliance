@@ -50,7 +50,7 @@ namespace Alliance.Common.GameModels
 
         public override int GetEffectiveSkillForWeapon(Agent agent, WeaponComponentData weapon)
         {
-            int num = (int)(GetEffectiveSkill(agent.Character, agent.Origin, agent.Formation, weapon.RelevantSkill) * GetSkillDifficultyModifier(agent));
+            int num = (int)(GetEffectiveSkill(agent, weapon.RelevantSkill) * GetSkillDifficultyModifier(agent));
 
             if (num > 0 && weapon.IsRangedWeapon)
             {
@@ -272,7 +272,7 @@ namespace Alliance.Common.GameModels
             agentDrivenProperties.AttributeShieldMissileCollisionBodySizeAdder = 0.3f;
             float num6 = agent.MountAgent?.GetAgentDrivenPropertyValue(DrivenProperty.AttributeRiding) ?? 1f;
             agentDrivenProperties.AttributeRiding = skillValue * num6;
-            agentDrivenProperties.AttributeHorseArchery = Game.Current.BasicModels.StrikeMagnitudeModel.CalculateHorseArcheryFactor(character);
+            agentDrivenProperties.AttributeHorseArchery = MissionGameModels.Current.StrikeMagnitudeModel.CalculateHorseArcheryFactor(character);
             agentDrivenProperties.BipedalRangedReadySpeedMultiplier = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalRangedReadySpeedMultiplier);
             agentDrivenProperties.BipedalRangedReloadSpeedMultiplier = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalRangedReloadSpeedMultiplier);
             if (perkHandler != null)
@@ -295,7 +295,7 @@ namespace Alliance.Common.GameModels
         {
             int meleeSkill = GetMeleeSkill(agent, equippedItem, secondaryItem);
             SkillObject skill = equippedItem == null ? DefaultSkills.Athletics : equippedItem.RelevantSkill;
-            int effectiveSkill = GetEffectiveSkill(agent.Character, agent.Origin, agent.Formation, skill);
+            int effectiveSkill = GetEffectiveSkill(agent, skill);
             float num = CalculateAILevel(agent, meleeSkill);
             float num2 = CalculateAILevel(agent, effectiveSkill);
             float num3 = num + agent.Defensiveness;

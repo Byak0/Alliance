@@ -6,14 +6,14 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncParticleObject : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
         public int EmitterIndex { get; private set; }
         public int ParticleIndex { get; private set; }
 
-        public SyncParticleObject(MissionObject missionObject, int emitterIndex, int particleIndex)
+        public SyncParticleObject(MissionObjectId missionObjectId, int emitterIndex, int particleIndex)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             EmitterIndex = emitterIndex;
             ParticleIndex = particleIndex;
         }
@@ -25,7 +25,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             EmitterIndex = ReadIntFromPacket(new CompressionInfo.Integer(0, 100, true), ref bufferReadValid);
             ParticleIndex = ReadIntFromPacket(new CompressionInfo.Integer(0, 4, true), ref bufferReadValid);
             return bufferReadValid;
@@ -33,7 +33,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteIntToPacket(EmitterIndex, new CompressionInfo.Integer(0, 100, true));
             WriteIntToPacket(ParticleIndex, new CompressionInfo.Integer(0, 4, true));
         }
@@ -45,7 +45,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize particle ", ParticleIndex, " on emitter ", EmitterIndex, " with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Synchronize particle ", ParticleIndex, " on emitter ", EmitterIndex, " with Id: ", MissionObjectId.Id);
         }
     }
 }

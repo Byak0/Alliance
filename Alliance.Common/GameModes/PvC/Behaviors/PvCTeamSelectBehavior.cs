@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlatformService;
 using TaleWorlds.PlayerServices;
@@ -73,7 +72,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
         {
             // Ask for server to auto assign player's team
             GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new TeamChange(autoAssign: true, null));
+            GameNetwork.WriteMessage(new TeamChange(autoAssign: true, -1));
             GameNetwork.EndModuleEventAsClient();
 
             //Mission.GetMissionBehavior<MissionNetworkComponent>().OnMyClientSynchronized -= OnMyClientSynchronized;                        
@@ -150,7 +149,8 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 }
                 else
                 {
-                    ChangeTeamServer(peer, message.Team);
+                    Team teamFromTeamIndex = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.TeamIndex);
+                    ChangeTeamServer(peer, teamFromTeamIndex);
                 }
 
             }
@@ -202,32 +202,11 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             }
         }
 
-        public static int GetAutoTeamBalanceDifference(AutoTeamBalanceLimits limit)
-        {
-            switch (limit)
-            {
-                case AutoTeamBalanceLimits.Off:
-                    return 0;
-                case AutoTeamBalanceLimits.LimitTo2:
-                    return 2;
-                case AutoTeamBalanceLimits.LimitTo3:
-                    return 3;
-                case AutoTeamBalanceLimits.LimitTo5:
-                    return 5;
-                case AutoTeamBalanceLimits.LimitTo10:
-                    return 10;
-                case AutoTeamBalanceLimits.LimitTo20:
-                    return 20;
-                default:
-                    Debug.FailedAssert("Unknown auto team balance limit!", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\Missions\\Multiplayer\\MissionNetworkLogics\\MultiplayerTeamSelectComponent.cs", "GetAutoTeamBalanceDifference", 195);
-                    return 0;
-            }
-        }
-
         public List<Team> GetDisabledTeams()
         {
             List<Team> list = new List<Team>();
-            if (MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue() == 0)
+            int autoTeamBalanceDiff = MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue();
+            if (autoTeamBalanceDiff == 0)
             {
                 return list;
             }
@@ -249,7 +228,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 {
                     num2--;
                 }
-                if (num - num2 >= GetAutoTeamBalanceDifference((AutoTeamBalanceLimits)MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue()))
+                if (num - num2 >= autoTeamBalanceDiff)
                 {
                     list.Add(team);
                 }
@@ -266,7 +245,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 Blow b = new Blow(component.ControlledAgent.Index);
                 b.DamageType = DamageTypes.Invalid;
                 b.BaseMagnitude = 10000f;
-                b.Position = component.ControlledAgent.Position;
+                b.GlobalPosition = component.ControlledAgent.Position;
                 b.DamagedPercentage = 1f;
                 component.ControlledAgent.Die(b, Agent.KillInfo.TeamSwitch);
             }
@@ -311,7 +290,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                     networkPeer.GetComponent<MissionPeer>()?.ClearAllVisuals();
                 }
                 GameNetwork.BeginModuleEventAsClient();
-                GameNetwork.WriteMessage(new TeamChange(autoAssign: false, team));
+                GameNetwork.WriteMessage(new TeamChange(autoAssign: false, team.TeamIndex));
                 GameNetwork.EndModuleEventAsClient();
             }
             if (OnMyTeamChange != null)
@@ -381,8 +360,9 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 return;
             }
             int num = GetPlayerCountForTeam(Mission.Current.AttackerTeam);
+            int autoTeamBalanceDiff = MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue();
             int i;
-            for (i = GetPlayerCountForTeam(Mission.Current.DefenderTeam); num > i + GetAutoTeamBalanceDifference((AutoTeamBalanceLimits)MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue()); i++)
+            for (i = GetPlayerCountForTeam(Mission.Current.DefenderTeam); num > i + autoTeamBalanceDiff; i++)
             {
                 MissionPeer missionPeer = null;
                 foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
@@ -399,7 +379,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 ChangeTeamServer(missionPeer.GetNetworkPeer(), Mission.Current.DefenderTeam);
                 num--;
             }
-            while (i > num + GetAutoTeamBalanceDifference((AutoTeamBalanceLimits)MultiplayerOptions.OptionType.AutoTeamBalanceThreshold.GetIntValue()))
+            while (i > num + autoTeamBalanceDiff)
             {
                 MissionPeer missionPeer2 = null;
                 foreach (NetworkCommunicator networkPeer2 in GameNetwork.NetworkPeers)
@@ -472,7 +452,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             else
             {
                 GameNetwork.BeginModuleEventAsClient();
-                GameNetwork.WriteMessage(new TeamChange(autoAssign: true, null));
+                GameNetwork.WriteMessage(new TeamChange(autoAssign: true, -1));
                 GameNetwork.EndModuleEventAsClient();
                 if (OnMyTeamChange != null)
                 {

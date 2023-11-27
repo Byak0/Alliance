@@ -11,13 +11,11 @@ using TaleWorlds.MountAndBlade.Diamond;
 using TaleWorlds.MountAndBlade.GauntletUI.Mission;
 using TaleWorlds.MountAndBlade.Source.Missions;
 using TaleWorlds.MountAndBlade.View;
-using TaleWorlds.MountAndBlade.View.MissionViews.Multiplayer;
 using TaleWorlds.MountAndBlade.ViewModelCollection.EscapeMenu;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
 
 namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 {
-    [OverrideView(typeof(MissionMultiplayerEscapeMenu))]
+    [OverrideView(typeof(MissionGauntletEscapeMenuBase))]
     public class EscapeMenuView : MissionGauntletEscapeMenuBase
     {
         public EscapeMenuView(string gameType)
@@ -32,12 +30,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
             _missionOptionsComponent = Mission.GetMissionBehavior<MissionOptionsComponent>();
             _missionLobbyEquipmentNetworkComponent = Mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             _missionLobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
-            _missionAdminComponent = Mission.GetMissionBehavior<MultiplayerAdminComponent>();
             _missionTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             _pvcMissionTeamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
             _gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
             TextObject textObject = GameTexts.FindText("str_multiplayer_game_type", _gameType);
-            DataSource = new MPEscapeMenuVM(null, textObject);
+            DataSource = new EscapeMenuVM(null, textObject);
         }
 
         public override void OnMissionScreenTick(float dt)
@@ -170,7 +167,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 
         private MissionLobbyComponent _missionLobbyComponent;
 
-        private MultiplayerAdminComponent _missionAdminComponent;
         private MultiplayerTeamSelectComponent _missionTeamSelectComponent;
         private PvCTeamSelectBehavior _pvcMissionTeamSelectComponent;
 

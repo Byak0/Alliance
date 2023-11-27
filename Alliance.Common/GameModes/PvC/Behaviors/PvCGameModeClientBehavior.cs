@@ -104,7 +104,7 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             {
                 if (missionPeer.Team != Mission.SpectatorTeam)
                 {
-                    if (GameType == MissionLobbyComponent.MultiplayerGameType.Captain && IsRoundInProgress)
+                    if (GameType == MultiplayerGameType.Captain && IsRoundInProgress)
                     {
                         spectatorCameraTypes = SpectatorCameraTypes.Free;
                         //Formation controlledFormation = missionPeer.ControlledFormation;

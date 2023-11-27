@@ -9,7 +9,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
     {
         private MatrixFrame spawnPosition;
         private bool spawnAtExactPosition;
-        private string characterToSpawn;
+        private string characterToSpawn; // TODO replace this string with an index or something for optimization
         private int formation;
         private int troopCount;
         private float difficulty;
@@ -103,7 +103,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             WriteMatrixFrameToPacket(SpawnPosition);
             WriteBoolToPacket(SpawnAtExactPosition);
             WriteStringToPacket(CharacterToSpawn);
-            WriteIntToPacket(Formation, CompressionOrder.FormationClassCompressionInfo);
+            WriteIntToPacket(Formation, CompressionMission.FormationClassCompressionInfo);
             WriteIntToPacket(TroopCount, new CompressionInfo.Integer(0, 9999, true));
             WriteFloatToPacket(Difficulty, new CompressionInfo.Float(0f, 5, 0.1f));
         }
@@ -114,7 +114,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             SpawnPosition = ReadMatrixFrameFromPacket(ref bufferReadValid);
             SpawnAtExactPosition = ReadBoolFromPacket(ref bufferReadValid);
             CharacterToSpawn = ReadStringFromPacket(ref bufferReadValid);
-            Formation = ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
+            Formation = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             TroopCount = ReadIntFromPacket(new CompressionInfo.Integer(0, 9999, true), ref bufferReadValid);
             Difficulty = ReadFloatFromPacket(new CompressionInfo.Float(0f, 5, 0.1f), ref bufferReadValid);
 

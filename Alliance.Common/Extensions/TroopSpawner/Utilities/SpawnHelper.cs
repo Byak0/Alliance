@@ -132,6 +132,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
                 MultiplayerMissionAgentVisualSpawnComponent agentVisualSpawnComponent = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
                 MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
+                MissionMultiplayerGameModeBase gameMode = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
 
                 Formation form;
                 if (selectedFormation > -1)
@@ -153,7 +154,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 Banner banner = new Banner(component.Peer.BannerCode, color3, color4);
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
-                Log("Formation = " + form.PrimaryClass.GetName(), LogLevel.Debug);
+                Log("Formation = " + form.PhysicalClass.GetName(), LogLevel.Debug);
                 AgentBuildData agentBuildData = new AgentBuildData(character)
                     .VisualsIndex(randomSeed)
                     .Team(component.Team)
@@ -189,7 +190,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 // Use player custom bodyproperties only if allowed
                 if (Config.Instance.AllowCustomBody)
                 {
-                    agentVisualSpawnComponent.AddCosmeticItemsToEquipment(equipment, agentVisualSpawnComponent.GetUsedCosmeticsFromPeer(component, character));
+                    gameMode.AddCosmeticItemsToEquipment(equipment, gameMode.GetUsedCosmeticsFromPeer(component, character));
                     agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture));
                     agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
                     agentBuildData.IsFemale(component.Peer.IsFemale);
@@ -355,7 +356,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 .ClothingColor1(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
                 .ClothingColor2(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2)
                 .IsFemale(troopCharacter.IsFemale);
-            agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, !(Game.Current.GameType is MultiplayerGame), isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
+            agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
             agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.HairTags, troopCharacter.BeardTags, troopCharacter.TattooTags));
             return agentBuildData2.AgentBodyProperties;
         }

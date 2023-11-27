@@ -62,7 +62,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
                     if (GameNetwork.IsServerOrRecorder)
                     {
                         GameNetwork.BeginBroadcastModuleEvent();
-                        GameNetwork.WriteMessage(new SyncNumberOfUse(this, value));
+                        GameNetwork.WriteMessage(new SyncNumberOfUse(Id, value));
                         GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
                     }
                 }
@@ -320,7 +320,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             else if (GameNetwork.IsServerOrRecorder)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncSoundObject(this, userAgent));
+                GameNetwork.WriteMessage(new SyncSoundObject(Id, userAgent.Index));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }
@@ -338,7 +338,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             if (GameNetwork.IsServerOrRecorder)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncSetActionChannel(this, userAgent, act));
+                GameNetwork.WriteMessage(new SyncSetActionChannel(Id, userAgent.Index, act));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }

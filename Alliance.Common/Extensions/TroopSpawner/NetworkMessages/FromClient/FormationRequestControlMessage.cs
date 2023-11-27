@@ -24,14 +24,14 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
         protected override void OnWrite()
         {
             WriteNetworkPeerReferenceToPacket(Peer);
-            WriteIntToPacket((int)Formation, CompressionOrder.FormationClassCompressionInfo);
+            WriteIntToPacket((int)Formation, CompressionMission.FormationClassCompressionInfo);
         }
 
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
             Peer = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-            Formation = (FormationClass)ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
+            Formation = (FormationClass)ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             return bufferReadValid;
         }
 
