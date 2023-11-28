@@ -64,7 +64,6 @@ namespace Alliance.Server.GameModes.PvC
                     // Native behaviors
                     new MultiplayerRoundController(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
                     new AgentHumanAILogic(),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MissionHardBorderPlacer(),

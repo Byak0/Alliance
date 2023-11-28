@@ -36,7 +36,7 @@ namespace Alliance.Client.GameModes.BattleX
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new BattleScoreboardData()),
-                    new MissionMatchHistoryComponent(),
+                    MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
                     new EquipmentControllerLeaveLogic(),
                     new MultiplayerPreloadHelper()
                 };

@@ -503,12 +503,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.ViewModels
                             break;
                     }
 
-                    if (!dictionary.ContainsKey(formation.PrimaryClass))
+                    if (!dictionary.ContainsKey(formation.PhysicalClass))
                     {
-                        TextObject localizedName = formation.PrimaryClass.GetLocalizedName();
+                        TextObject localizedName = formation.PhysicalClass.GetLocalizedName();
                         TextObject textObject = GameTexts.FindText("str_troop_group_name_definite");
                         textObject.SetTextVariable("FORMATION_CLASS", localizedName);
-                        dictionary.Add(formation.PrimaryClass, textObject);
+                        dictionary.Add(formation.PhysicalClass, textObject);
                     }
 
                     formations[i] = null;
@@ -898,7 +898,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.ViewModels
                 {
                     foreach (OrderTroopItemVM item2 in TroopController.TroopList.Where((item) => item.IsSelected))
                     {
-                        list.Add(GameTexts.FindText("str_formation_class_string", item2.Formation.PrimaryClass.GetName()));
+                        list.Add(GameTexts.FindText("str_formation_class_string", item2.Formation.PhysicalClass.GetName()));
                     }
                 }
             }

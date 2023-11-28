@@ -16,7 +16,10 @@ namespace Alliance.Client.Patch
             patchSuccess &= Patch_GameKeyOptionsCategory.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
             patchSuccess &= Patch_HeroClassVM.Patch();
-            patchSuccess &= Patch_WidgetsMultiplayerHelper.Patch();
+
+            //TODO : Check if can be completely removed from 1.2
+            //patchSuccess &= Patch_WidgetsMultiplayerHelper.Patch(); 
+
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;
         }

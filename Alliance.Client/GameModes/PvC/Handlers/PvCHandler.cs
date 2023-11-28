@@ -44,11 +44,14 @@ namespace Alliance.Client.GameModes.PvC.Handlers
         {
             PvCGameModeClientBehavior gameModeClient = Mission.Current.GetMissionBehavior<PvCGameModeClientBehavior>();
             if (gameModeClient == null) return;
+
+            Team ownerTeam = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.OwnerTeamIndex);
+
             foreach (FlagCapturePoint flagCapturePoint in gameModeClient.AllCapturePoints)
             {
                 if (flagCapturePoint.FlagIndex == message.FlagIndex)
                 {
-                    gameModeClient.OnCapturePointOwnerChanged(flagCapturePoint, message.OwnerTeam);
+                    gameModeClient.OnCapturePointOwnerChanged(flagCapturePoint, ownerTeam);
                     break;
                 }
             }

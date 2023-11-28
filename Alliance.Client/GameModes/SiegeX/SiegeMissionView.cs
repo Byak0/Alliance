@@ -3,6 +3,7 @@ using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.TroopSpawner.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
@@ -20,34 +21,31 @@ namespace Alliance.Client.GameModes.SiegeX
                 new GameModeMenuView(),
                 new FormationStatusView(),
 
-                ViewCreator.CreateMissionServerStatusUIHandler(),
-                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
-                ViewCreator.CreateMissionKillNotificationUIHandler(),
+                MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
+                MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
+                MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
                 ViewCreator.CreateMissionAgentStatusUIHandler(mission),
                 ViewCreator.CreateMissionMainAgentEquipmentController(mission),
                 ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                ViewCreator.CreateMissionMultiplayerEscapeMenu("Siege"),
-                ViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
+                MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("Siege"),
+                MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
                 ViewCreator.CreateMissionAgentLabelUIHandler(mission),
-                ViewCreator.CreateMultiplayerTeamSelectUIHandler(),
-                ViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-                ViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                ViewCreator.CreateLobbyEquipmentUIHandler(),
-                ViewCreator.CreatePollProgressUIHandler(),
-                ViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
-                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
+                MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
+                MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
+                MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
+                MultiplayerViewCreator.CreateLobbyEquipmentUIHandler(),
+                MultiplayerViewCreator.CreatePollProgressUIHandler(),
+                MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
+                MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
                 new MissionItemContourControllerView(),
                 new MissionAgentContourControllerView(),
-                ViewCreator.CreateMissionFlagMarkerUIHandler(),
+                MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
                 ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission)
+                ViewCreator.CreateMissionMainAgentEquipDropView(mission),
+                ViewCreator.CreateMissionBoundaryCrossingView(),
+                new MissionBoundaryWallView()
             };
-            if (!GameNetwork.IsClient)
-            {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
+
             return list.ToArray();
         }
     }

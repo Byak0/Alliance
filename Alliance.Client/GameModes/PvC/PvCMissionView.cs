@@ -12,6 +12,7 @@ using Alliance.Client.Extensions.TroopSpawner.Views;
 using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
@@ -39,22 +40,21 @@ namespace Alliance.Client.GameModes.PvC
                 new GameModeMenuView(),
 
                 // Native views from Captain mode
-				ViewCreator.CreateMissionServerStatusUIHandler(),
-                ViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
-                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
+				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
+                MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
+                MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
                 ViewCreator.CreateMissionMainAgentEquipmentController(mission),
                 ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                ViewCreator.CreateMissionMultiplayerEscapeMenu("PvC"),
-                ViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
+                MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("PvC"),
+                MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
                 ViewCreator.CreateMissionAgentLabelUIHandler(mission),
                 ViewCreator.CreateOrderTroopPlacerView(mission),
-                ViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-                ViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                //list.Add(ViewCreator.CreateMultiplayerEndOfBattleUIHandler());
-                ViewCreator.CreatePollProgressUIHandler(),
+                MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
+                MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
+                MultiplayerViewCreator.CreatePollProgressUIHandler(),
                 new MissionItemContourControllerView(),
                 new MissionAgentContourControllerView(),
-                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
+                MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
                 ViewCreator.CreateOptionsUIHandler(),
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
                 ViewCreator.CreateMissionBoundaryCrossingView(),

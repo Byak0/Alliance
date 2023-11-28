@@ -223,13 +223,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
         public override void OnPhotoModeActivated()
         {
             base.OnPhotoModeActivated();
-            _gauntletLayer._gauntletUIContext.ContextAlpha = 0f;
+            _gauntletLayer.UIContext.ContextAlpha = 0f;
         }
 
         public override void OnPhotoModeDeactivated()
         {
             base.OnPhotoModeDeactivated();
-            _gauntletLayer._gauntletUIContext.ContextAlpha = 1f;
+            _gauntletLayer.UIContext.ContextAlpha = 1f;
         }
 
         private GauntletLayer _gauntletLayer;

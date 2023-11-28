@@ -49,6 +49,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
             BasicCharacterObject character = message.Character;
             NetworkCommunicator peer = message.Peer;
             MissionPeer missionPeer = peer != null ? peer.GetComponent<MissionPeer>() : null;
+            Team teamFromTeamIndex = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.TeamIndex);
             AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(message.IsPlayerAgent ? missionPeer : null).Monster(message.Monster).TroopOrigin(new BasicBattleAgentOrigin(character))
             .Equipment(message.SpawnEquipment)
                 .EquipmentSeed(message.BodyPropertiesSeed);
@@ -56,16 +57,16 @@ namespace Alliance.Client.Patch.HarmonyPatch
             AgentBuildData agentBuildData2 = agentBuildData.InitialPosition(position);
             Vec2 vec = message.Direction;
             vec = vec.Normalized();
-            AgentBuildData agentBuildData3 = agentBuildData2.InitialDirection(vec).MissionEquipment(message.SpawnMissionEquipment).Team(message.Team)
+            AgentBuildData agentBuildData3 = agentBuildData2.InitialDirection(vec).MissionEquipment(message.MissionEquipment).Team(teamFromTeamIndex)
             .Index(message.AgentIndex)
             .MountIndex(message.MountAgentIndex)
             .IsFemale(message.IsFemale)
                 .ClothingColor1(message.ClothingColor1)
                 .ClothingColor2(message.ClothingColor2);
             Formation formation = null;
-            if (message.Team != null && message.FormationIndex >= 0 && !GameNetwork.IsReplay)
+            if (teamFromTeamIndex != null && message.FormationIndex >= 0 && !GameNetwork.IsReplay)
             {
-                formation = message.Team.GetFormation((FormationClass)message.FormationIndex);
+                formation = teamFromTeamIndex.GetFormation((FormationClass)message.FormationIndex);
                 agentBuildData3.Formation(formation);
             }
             // Use peer.BodyProperties only if allowed
@@ -79,7 +80,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
                 agentBuildData3.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData3.AgentRace, agentBuildData3.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData3.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData3.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
             }
 
-            Banner banner = message.Team.Banner;
+            Banner banner = teamFromTeamIndex.Banner;
 
             agentBuildData3.Banner(banner);
             Agent mountAgent = Mission.Current.SpawnAgent(agentBuildData3, false).MountAgent;

@@ -679,98 +679,96 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.ViewModels
             }
         }
 
-        private void OrderController_OnTroopOrderIssued(OrderType orderType, IEnumerable<Formation> appliedFormations, params object[] delegateParams)
+        private void OrderController_OnTroopOrderIssued(OrderType orderType, IEnumerable<Formation> appliedFormations, OrderController orderController, params object[] delegateParams)
         {
-            foreach (OrderSetVM value in _missionOrder.OrderSetsWithOrdersByType.Values)
+            foreach (OrderSetVM orderSetVM in _missionOrder.OrderSetsWithOrdersByType.Values)
             {
-                value.TitleOrder.IsActive = value.TitleOrder.SelectionState != 0;
+                orderSetVM.TitleOrder.IsActive = orderSetVM.TitleOrder.SelectionState != 0;
             }
-
             _missionOrder.OrderSetsWithOrdersByType[OrderSetType.Movement].ShowOrders = false;
             if (orderType == OrderType.Transfer)
             {
                 if (!(delegateParams[1] is object[]))
                 {
-                    _ = (int)delegateParams[1];
+                    int num = (int)delegateParams[1];
                 }
-
                 Formation formation = delegateParams[0] as Formation;
-                OrderTroopItemVM PvCOrderTroopItemVM = TroopList.FirstOrDefault((item) => item.Formation == formation);
-                if (PvCOrderTroopItemVM == null)
+                OrderTroopItemVM orderTroopItemVM = Enumerable.FirstOrDefault<OrderTroopItemVM>(TroopList, (OrderTroopItemVM item) => item.Formation == formation);
+                if (orderTroopItemVM == null)
                 {
-                    int index = -1;
+                    int num2 = -1;
                     for (int i = 0; i < TroopList.Count; i++)
                     {
                         if (TroopList[i].Formation.Index > formation.Index)
                         {
-                            index = i;
+                            num2 = i;
                             break;
                         }
                     }
-
-                    OrderTroopItemVM troopItem = new OrderTroopItemVM(formation, OnSelectFormation, GetFormationMorale);
-                    troopItem = AddTroopItemIfNotExist(troopItem, index);
-                    SetTroopActiveOrders(troopItem);
-                    troopItem.IsSelectable = OrderController.IsFormationSelectable(formation);
-                    if (troopItem.IsSelectable && OrderController.IsFormationListening(formation))
+                    OrderTroopItemVM orderTroopItemVM2 = new OrderTroopItemVM(formation, new Action<OrderTroopItemVM>(OnSelectFormation), new Func<Formation, int>(GetFormationMorale));
+                    orderTroopItemVM2 = AddTroopItemIfNotExist(orderTroopItemVM2, num2);
+                    SetTroopActiveOrders(orderTroopItemVM2);
+                    orderTroopItemVM2.IsSelectable = OrderController.IsFormationSelectable(formation);
+                    if (orderTroopItemVM2.IsSelectable && OrderController.IsFormationListening(formation))
                     {
-                        troopItem.IsSelected = true;
+                        orderTroopItemVM2.IsSelected = true;
                     }
-
                     OnFiltersSet(_filterData);
                 }
                 else
                 {
-                    PvCOrderTroopItemVM.SetFormationClassFromFormation(formation);
+                    orderTroopItemVM.SetFormationClassFromFormation(formation);
                 }
-
-                foreach (Formation sourceFormation2 in appliedFormations)
+                using (IEnumerator<Formation> enumerator2 = appliedFormations.GetEnumerator())
                 {
-                    OrderTroopItemVM PvCOrderTroopItemVM2 = TroopList.FirstOrDefault((item) => item.Formation == sourceFormation2);
-                    if (PvCOrderTroopItemVM2 == null)
+                    while (enumerator2.MoveNext())
                     {
-                        int index2 = -1;
-                        for (int j = 0; j < TroopList.Count; j++)
+                        Formation sourceFormation2 = enumerator2.Current;
+                        OrderTroopItemVM orderTroopItemVM3 = Enumerable.FirstOrDefault<OrderTroopItemVM>(TroopList, (OrderTroopItemVM item) => item.Formation == sourceFormation2);
+                        if (orderTroopItemVM3 == null)
                         {
-                            if (TroopList[j].Formation.Index > sourceFormation2.Index)
+                            int num3 = -1;
+                            for (int j = 0; j < TroopList.Count; j++)
                             {
-                                index2 = j;
-                                break;
+                                if (TroopList[j].Formation.Index > sourceFormation2.Index)
+                                {
+                                    num3 = j;
+                                    break;
+                                }
                             }
+                            OrderTroopItemVM orderTroopItemVM4 = new OrderTroopItemVM(sourceFormation2, new Action<OrderTroopItemVM>(OnSelectFormation), new Func<Formation, int>(GetFormationMorale));
+                            orderTroopItemVM4 = AddTroopItemIfNotExist(orderTroopItemVM4, num3);
+                            SetTroopActiveOrders(orderTroopItemVM4);
+                            orderTroopItemVM4.IsSelectable = OrderController.IsFormationSelectable(sourceFormation2);
+                            if (orderTroopItemVM4.IsSelectable && OrderController.IsFormationListening(sourceFormation2))
+                            {
+                                orderTroopItemVM4.IsSelected = true;
+                            }
+                            OnFiltersSet(_filterData);
                         }
-
-                        OrderTroopItemVM troopItem2 = new OrderTroopItemVM(sourceFormation2, OnSelectFormation, GetFormationMorale);
-                        troopItem2 = AddTroopItemIfNotExist(troopItem2, index2);
-                        SetTroopActiveOrders(troopItem2);
-                        troopItem2.IsSelectable = OrderController.IsFormationSelectable(sourceFormation2);
-                        if (troopItem2.IsSelectable && OrderController.IsFormationListening(sourceFormation2))
+                        else
                         {
-                            troopItem2.IsSelected = true;
+                            orderTroopItemVM3.SetFormationClassFromFormation(sourceFormation2);
                         }
-
-                        OnFiltersSet(_filterData);
-                    }
-                    else
-                    {
-                        PvCOrderTroopItemVM2.SetFormationClassFromFormation(sourceFormation2);
                     }
                 }
-
-                int num = 1;
-                foreach (Formation sourceFormation in appliedFormations)
+                int num4 = 1;
+                using (IEnumerator<Formation> enumerator2 = appliedFormations.GetEnumerator())
                 {
-                    TroopList.FirstOrDefault((item) => item.Formation.Index == sourceFormation.Index).SetFormationClassFromFormation(sourceFormation);
-                    num++;
+                    while (enumerator2.MoveNext())
+                    {
+                        Formation sourceFormation = enumerator2.Current;
+                        Enumerable.FirstOrDefault<OrderTroopItemVM>(TroopList, (OrderTroopItemVM item) => item.Formation.Index == sourceFormation.Index).SetFormationClassFromFormation(sourceFormation);
+                        num4++;
+                    }
                 }
             }
-
             UpdateTroops();
             SortFormations();
-            foreach (OrderTroopItemVM item in TroopList.Where((item) => item.IsSelected))
+            foreach (OrderTroopItemVM orderTroopItemVM5 in Enumerable.Where<OrderTroopItemVM>(TroopList, (OrderTroopItemVM item) => item.IsSelected))
             {
-                SetTroopActiveOrders(item);
+                SetTroopActiveOrders(orderTroopItemVM5);
             }
-
             _missionOrder.SetActiveOrders();
             CheckSelectableFormations();
         }
@@ -876,8 +874,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.ViewModels
             {
                 if (!agent.Equipment[equipmentIndex].IsEmpty && agent.Equipment[equipmentIndex].CurrentUsageItem.IsRangedWeapon)
                 {
-                    currentAmmo = agent.Equipment.GetAmmoAmount(agent.Equipment[equipmentIndex].CurrentUsageItem.AmmoClass);
-                    maxAmmo = agent.Equipment.GetMaxAmmo(agent.Equipment[equipmentIndex].CurrentUsageItem.AmmoClass);
+                    currentAmmo = agent.Equipment.GetAmmoAmount(equipmentIndex);
+                    maxAmmo = agent.Equipment.GetMaxAmmo(equipmentIndex);
                     break;
                 }
             }

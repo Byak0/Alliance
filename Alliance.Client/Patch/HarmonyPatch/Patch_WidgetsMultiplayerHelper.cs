@@ -1,9 +1,5 @@
-﻿using Alliance.Common.Utilities;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
-using System.Reflection;
-using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade.GauntletUI.Widgets.Multiplayer;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Patch.HarmonyPatch
@@ -20,11 +16,11 @@ namespace Alliance.Client.Patch.HarmonyPatch
                 if (_patched)
                     return false;
                 _patched = true;
-                Harmony.Patch(
-                    typeof(WidgetsMultiplayerHelper).GetMethod(nameof(WidgetsMultiplayerHelper.GetFactionColorCode),
-                        BindingFlags.Static | BindingFlags.Public),
-                    prefix: new HarmonyMethod(typeof(Patch_WidgetsMultiplayerHelper).GetMethod(
-                        nameof(Prefix_GetFactionColorCode), BindingFlags.Static | BindingFlags.Public)));
+                //Harmony.Patch(
+                //    typeof(WidgetsMultiplayerHelper).GetMethod(nameof(WidgetsMultiplayerHelper.GetFactionColorCode),
+                //        BindingFlags.Static | BindingFlags.Public),
+                //    prefix: new HarmonyMethod(typeof(Patch_WidgetsMultiplayerHelper).GetMethod(
+                //        nameof(Prefix_GetFactionColorCode), BindingFlags.Static | BindingFlags.Public)));
             }
             catch (Exception e)
             {
@@ -37,12 +33,12 @@ namespace Alliance.Client.Patch.HarmonyPatch
         }
 
         // Use faction code color instead of hard fixed code
-        public static bool Prefix_GetFactionColorCode(ref string __result, string lowercaseFactionCode, bool useSecondary)
-        {
-            __result = Color.FromUint(useSecondary ? Factions.Instance.AvailableCultures[lowercaseFactionCode].ForegroundColor1 : Factions.Instance.AvailableCultures[lowercaseFactionCode].BackgroundColor1).ToString();
+        //public static bool Prefix_GetFactionColorCode(ref string __result, string lowercaseFactionCode, bool useSecondary)
+        //{
+        //    __result = Color.FromUint(useSecondary ? Factions.Instance.AvailableCultures[lowercaseFactionCode].ForegroundColor1 : Factions.Instance.AvailableCultures[lowercaseFactionCode].BackgroundColor1).ToString();
 
-            return false;
-        }
+        //    return false;
+        //}
 
         /* Original method
         public static string GetFactionColorCode(string lowercaseFactionCode, bool useSecondary)
