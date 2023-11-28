@@ -118,7 +118,11 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
                 OnPeerSpawnedFromVisuals(component);
                 OnAllAgentsFromPeerSpawnedFromVisuals(component);
-                AgentVisualSpawnComponent.RemoveAgentVisuals(component, sync: true);
+
+                GameNetwork.BeginBroadcastModuleEvent();
+                GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(networkPeer));
+                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+
                 MPPerkObject.GetPerkHandler(component)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
             }
 
@@ -363,7 +367,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                 .IsFemale(@object.IsFemale)
                 .ClothingColor1(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
                 .ClothingColor2(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2);
-            Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, !(Game.Current.GameType is MultiplayerGame), false, MBRandom.RandomInt());
+            Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, false, false, MBRandom.RandomInt());
             if (alternativeEquipments != null)
             {
                 foreach (ValueTuple<EquipmentIndex, EquipmentElement> valueTuple in alternativeEquipments)
@@ -374,9 +378,10 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             agentBuildData.Equipment(randomEquipmentElements);
             agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, @object.GetBodyPropertiesMin(false), @object.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, @object.HairTags, @object.BeardTags, @object.TattooTags));
             NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
-            if (GameMode.ShouldSpawnVisualsForServer(networkPeer))
+            if (GameMode.ShouldSpawnVisualsForServer(networkPeer) && agentBuildData.AgentVisualsIndex == 0)
             {
-                AgentVisualSpawnComponent.SpawnAgentVisualsForPeer(missionPeer, agentBuildData, -1, true, totalCount);
+                missionPeer.HasSpawnedAgentVisuals = true;
+                missionPeer.EquipmentUpdatingExpired = false;
             }
             GameMode.HandleAgentVisualSpawning(networkPeer, agentBuildData, totalCount, false);
         }

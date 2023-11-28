@@ -135,8 +135,9 @@ namespace Alliance.Server.Extensions.SAE.Handlers
 
         public bool OnCrouchMessageReceived(NetworkCommunicator peer, SaeCrouchNetworkClientMessage message)
         {
-            Log($"{peer.UserName} requesting crouch for {message.TeamIndex.Side} - Formation {message.FormationIndex}", LogLevel.Information);
-            Formation formation = message.TeamIndex.GetFormation((FormationClass)message.FormationIndex);
+            Team team = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.TeamIndex);
+            Log($"{peer.UserName} requesting crouch for {team.Side} - Formation {message.FormationIndex}", LogLevel.Information);
+            Formation formation = team.GetFormation((FormationClass)message.FormationIndex);
 
             // Check if peer is authorized to request animation
             if (peer.ControlledAgent != formation.PlayerOwner && !peer.IsAdmin()) return false;

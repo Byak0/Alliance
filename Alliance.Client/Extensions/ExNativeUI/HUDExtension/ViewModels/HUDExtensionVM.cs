@@ -8,6 +8,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
 using TaleWorlds.ObjectSystem;
 using TaleWorlds.TwoDimension;
 
@@ -600,7 +601,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
                 MissionRepresentativeBase missionRepresentative = GameNetwork.MyPeer?.VirtualPlayer.GetComponent<MissionRepresentativeBase>();
                 AllyTeamScore = _missionScoreboardComponent.GetRoundScore(BattleSideEnum.Attacker);
                 EnemyTeamScore = _missionScoreboardComponent.GetRoundScore(BattleSideEnum.Defender);
-                _isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>() && _gameMode.GameType != MissionLobbyComponent.MultiplayerGameType.Battle;
+                _isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>() && _gameMode.GameType != MultiplayerGameType.Battle;
                 CommanderInfo = new PvCInfoVM(missionRepresentative);
                 ShowCommanderInfo = true;
                 if (_isTeammateAndEnemiesRelevant)
@@ -702,7 +703,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
         {
             if (peer.IsMine)
             {
-                if (_isTeamScoresEnabled || _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle)
+                if (_isTeamScoresEnabled || _gameMode.GameType == MultiplayerGameType.Battle)
                 {
                     _isAttackerTeamAlly = newTeam.Side == BattleSideEnum.Attacker;
                     UpdateTeamScores();
@@ -718,7 +719,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
             Teammates.SingleOrDefault((x) => x.Peer.GetNetworkPeer() == peer)?.RefreshTeam();
             GetTeamColors(Mission.Current.AttackerTeam, out var color, out var color2);
-            if (_isTeamScoresEnabled || _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle)
+            if (_isTeamScoresEnabled || _gameMode.GameType == MultiplayerGameType.Battle)
             {
                 GetTeamColors(Mission.Current.DefenderTeam, out var color3, out var color4);
                 if (_isAttackerTeamAlly)
@@ -842,7 +843,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
         private void UpdateShowTeamScores()
         {
-            ShowTeamScores = !_gameMode.IsInWarmup && ShowCommanderInfo && _gameMode.GameType != MissionLobbyComponent.MultiplayerGameType.Siege && Config.Instance.ShowScore;
+            ShowTeamScores = !_gameMode.IsInWarmup && ShowCommanderInfo && _gameMode.GameType != MultiplayerGameType.Siege && Config.Instance.ShowScore;
         }
     }
 }

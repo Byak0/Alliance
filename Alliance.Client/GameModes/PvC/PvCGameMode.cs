@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.PvC

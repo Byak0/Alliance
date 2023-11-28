@@ -44,7 +44,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
         // Replace original OnBehaviorInitialize to prevent crash when capture points > 3 (ie in siege)
         public static bool Prefix_OnBehaviorInitialize(MissionMultiplayerGameModeFlagDominationClient __instance,
                                                        ref MissionScoreboardComponent ____scoreboardComponent,
-                                                       ref MissionLobbyComponent.MultiplayerGameType ____currentGameType,
+                                                       ref MultiplayerGameType ____currentGameType,
                                                        ref Team[] ____capturePointOwners)
         {
             Patch_MissionMultiplayerGameModeBaseClient.OnBehaviorInitialize(__instance);
@@ -53,11 +53,11 @@ namespace Alliance.Client.Patch.HarmonyPatch
 
             if (MultiplayerOptions.OptionType.SingleSpawn.GetBoolValue())
             {
-                ____currentGameType = MultiplayerOptions.OptionType.NumberOfBotsPerFormation.GetIntValue() > 0 ? MissionLobbyComponent.MultiplayerGameType.Captain : MissionLobbyComponent.MultiplayerGameType.Battle;
+                ____currentGameType = MultiplayerOptions.OptionType.NumberOfBotsPerFormation.GetIntValue() > 0 ? MultiplayerGameType.Captain : MultiplayerGameType.Battle;
             }
             else
             {
-                ____currentGameType = MissionLobbyComponent.MultiplayerGameType.Skirmish;
+                ____currentGameType = MultiplayerGameType.Skirmish;
             }
 
             MethodInfo ResetTeamPowers = __instance.GetType().GetMethod("ResetTeamPowers", BindingFlags.NonPublic | BindingFlags.Instance);

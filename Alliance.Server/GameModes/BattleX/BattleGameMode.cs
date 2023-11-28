@@ -29,8 +29,6 @@ namespace Alliance.Server.GameModes.BattleX
                     new PvCMissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerWarmupComponent(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
                     new SpawnComponent(new PvCFlagDominationSpawnFrameBehavior(), new PvCFlagDominationSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MultiplayerTeamSelectComponent(),

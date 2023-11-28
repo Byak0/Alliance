@@ -25,7 +25,6 @@ namespace Alliance.Server.GameModes.Lobby
                     new PollBehavior(),
                     //new ConsoleMatchStartEndHandler(), ??
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
                     new SpawnComponent(new LobbySpawnFrameBehavior(), new LobbySpawningBehavior()),
                     new AgentHumanAILogic(),
                     new MissionLobbyEquipmentNetworkComponent(),

@@ -11,8 +11,8 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.ClassLoadout;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
@@ -581,7 +581,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 {
                     IsSpawnTimerVisible = false;
                     IsSpawnLabelVisible = true;
-                    if (_missionMultiplayerGameMode.IsRoundInProgress && _missionMultiplayerGameMode is MissionMultiplayerGameModeFlagDominationClient && _missionMultiplayerGameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Skirmish && GameNetwork.MyPeer.GetComponent<MissionPeer>() != null)
+                    if (_missionMultiplayerGameMode.IsRoundInProgress && _missionMultiplayerGameMode is MissionMultiplayerGameModeFlagDominationClient && _missionMultiplayerGameMode.GameType == MultiplayerGameType.Skirmish && GameNetwork.MyPeer.GetComponent<MissionPeer>() != null)
                     {
                         IsSpawnForfeitLabelVisible = true;
                         string keyHyperlinkText2 = HyperlinkTexts.GetKeyHyperlinkText(HotKeyManager.GetHotKeyId("CombatHotKeyCategory", "ForfeitSpawn"));

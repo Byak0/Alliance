@@ -3,10 +3,10 @@ using System;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.KillFeed;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
-using TaleWorlds.MountAndBlade.View.MissionViews.Multiplayer;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.KillFeed;
 
 namespace Alliance.Client.Extensions.ExNativeUI.KillNotification.Views
 {

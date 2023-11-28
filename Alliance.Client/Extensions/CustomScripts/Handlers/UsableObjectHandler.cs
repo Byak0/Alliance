@@ -21,17 +21,18 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncSetActionChannel(SyncSetActionChannel message)
         {
-            MissionObject missionObject = message.MissionObjectId;
-            if (missionObject == null)
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
+            Agent agent = Mission.MissionNetworkHelper.GetAgentFromIndex(message.AgentIndex);
+            if (missionObject == null || agent == null)
             {
                 return;
             }
-            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSetActionChannel(message.AgentIndex, message.Action);
+            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSetActionChannel(agent, message.Action);
         }
 
         public void CS_HandleSyncNumberOfUse(SyncNumberOfUse message)
         {
-            MissionObject missionObject = message.MissionObjectId;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;
@@ -41,17 +42,18 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncSound(SyncSoundObject message)
         {
-            MissionObject missionObject = message.MissionObjectId;
-            if (missionObject == null)
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
+            Agent agent = Mission.MissionNetworkHelper.GetAgentFromIndex(message.AgentIndex);
+            if (missionObject == null || agent == null)
             {
                 return;
             }
-            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSound(message.AgentIndex);
+            missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSound(agent);
         }
 
         public void CS_HandleSyncParticle(SyncParticleObject message)
         {
-            MissionObject missionObject = message.MissionObjectId;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;

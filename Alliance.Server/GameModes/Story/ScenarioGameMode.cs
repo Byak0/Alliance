@@ -48,9 +48,7 @@ namespace Alliance.Server.GameModes.Story
                     new CapturableZoneBehavior(),
 
                     // Native components
-                    //new MultiplayerRoundController(), // todo : remove (replace with scenario system)
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
                     new AgentHumanAILogic(),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MissionHardBorderPlacer(),

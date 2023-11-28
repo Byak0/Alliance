@@ -25,7 +25,6 @@ namespace Alliance.Server.GameModes.BattleRoyale
                     new ShrinkingZoneBehavior(),
 
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
                     new SpawnComponent(new BRSpawnFrameBehavior(), new BRSpawningBehavior()),
                     new AgentHumanAILogic(),
                     new MissionLobbyEquipmentNetworkComponent(),

@@ -38,8 +38,6 @@ namespace Alliance.Server.GameModes.CaptainX
                     new MultiplayerRoundController(),
                     new MultiplayerWarmupComponent(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
                     //new SpawnComponent(new FlagDominationSpawnFrameBehavior(), new FlagDominationSpawningBehavior()),
                     new SpawnComponent(new PvCFlagDominationSpawnFrameBehavior(), new PvCFlagDominationSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),

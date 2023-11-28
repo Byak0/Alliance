@@ -208,7 +208,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
                     allCapturePoint.SetTeamColorsWithAllSynched(color, color2);
                     ____capturePointOwners[allCapturePoint.FlagIndex] = team2;
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new FlagDominationCapturePointMessage(allCapturePoint.FlagIndex, team2));
+                    GameNetwork.WriteMessage(new FlagDominationCapturePointMessage(allCapturePoint.FlagIndex, team2.TeamIndex));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
                     ____gameModeFlagDominationClient?.OnCapturePointOwnerChanged(allCapturePoint, team2);
                     ___NotificationsComponent.FlagXCapturedByTeamX(allCapturePoint, agent.Team);

@@ -3,8 +3,6 @@ using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
-using Alliance.Server.GameModes.Story;
-using Alliance.Server.GameModes.Story.Behaviors;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -171,7 +169,10 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
                 UpdateBotControlState(peer, player);
             }
 
-            SpawnBehavior.AgentVisualSpawnComponent.RemoveAgentVisuals(peer, sync: true);
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(player));
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+
             GetPerkHandler(peer)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
             UpdatePlayerLives(peer);
         }
@@ -275,7 +276,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
         public virtual bool CanBotSpawn(Team team)
         {
-            if (MBNetwork.NetworkPeers.Count > 5) return false;
+            if (GameNetwork.NetworkPeers.Count > 5) return false;
 
             switch (SpawnLogic.RespawnStrategies[(int)team.Side])
             {

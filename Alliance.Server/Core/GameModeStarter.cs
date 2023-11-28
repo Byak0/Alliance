@@ -90,7 +90,7 @@ namespace Alliance.Server.Core
             MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
             EndingCurrentMissionThenStartingNewMission = true;
             missionListener.SetGameModeSettings(gameModeSettings);
-            DedicatedCustomServerSubModule.Instance.EndMission();
+            DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.EndMission();
         }
 
         public void ApplyGameModeSettings(GameModeSettings gameModeSettings)
@@ -105,7 +105,7 @@ namespace Alliance.Server.Core
             if (!MissionIsRunning)
             {
                 ApplyGameModeSettings(gameModeSettings);
-                DedicatedCustomServerSubModule.Instance.StartMission();
+                DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.StartMission();
                 return true;
             }
             return false;
@@ -115,7 +115,7 @@ namespace Alliance.Server.Core
         {
             if (MissionIsRunning)
             {
-                DedicatedCustomServerSubModule.Instance.StartMission();
+                DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.StartMission();
             }
             return false;
         }

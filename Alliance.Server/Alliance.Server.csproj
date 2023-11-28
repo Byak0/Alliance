@@ -12,10 +12,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Server\TaleWorlds.Native.dll">
-			<HintPath>%(Identity)</HintPath>
-		</Reference>
-		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Server\*.dll">
+		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll" >
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
 	</ItemGroup>

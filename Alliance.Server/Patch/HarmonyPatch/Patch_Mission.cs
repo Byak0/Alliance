@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -36,11 +34,11 @@ namespace Alliance.Server.Patch.HarmonyPatch
                         BindingFlags.Instance | BindingFlags.NonPublic),
                     prefix: new HarmonyMethod(typeof(Patch_Mission).GetMethod(
                         nameof(Prefix_CreateAgent), BindingFlags.Static | BindingFlags.Public)));
-                Harmony.Patch(
-                    typeof(Mission).GetMethod(nameof(Mission.SpawnWeaponAsDropFromAgentAux),
-                        BindingFlags.Instance | BindingFlags.Public),
-                    prefix: new HarmonyMethod(typeof(Patch_Mission).GetMethod(
-                        nameof(Prefix_SpawnWeaponAsDropFromAgentAux), BindingFlags.Static | BindingFlags.Public)));
+                //Harmony.Patch(
+                //    typeof(Mission).GetMethod(nameof(Mission.SpawnWeaponAsDropFromAgentAux),
+                //        BindingFlags.Instance | BindingFlags.Public),
+                //    prefix: new HarmonyMethod(typeof(Patch_Mission).GetMethod(
+                //        nameof(Prefix_SpawnWeaponAsDropFromAgentAux), BindingFlags.Static | BindingFlags.Public)));
             }
             catch (Exception e)
             {
@@ -53,67 +51,68 @@ namespace Alliance.Server.Patch.HarmonyPatch
         }
 
         // Replace SpawnWeaponAsDropFromAgentAux and disable log spam
-        public static bool Prefix_SpawnWeaponAsDropFromAgentAux(Mission __instance, Agent agent, EquipmentIndex equipmentIndex, ref Vec3 velocity, ref Vec3 angularVelocity, Mission.WeaponSpawnFlags spawnFlags, int forcedSpawnIndex)
-        {
-            MissionWeapon weapon = agent.Equipment[equipmentIndex];
+        //public static bool Prefix_SpawnWeaponAsDropFromAgentAux(Mission __instance, Agent agent, EquipmentIndex equipmentIndex, ref Vec3 velocity, ref Vec3 angularVelocity, Mission.WeaponSpawnFlags spawnFlags, int forcedSpawnIndex)
+        //{
+        //    MissionWeapon weapon = agent.Equipment[equipmentIndex];
 
-            // Check if the weapon is a banner
-            if (weapon.IsBanner())
-            {
-                // Set the initial velocity of the banner based on the agent's velocity
-                velocity = agent.Velocity + new Vec3(0f, 0f, -2f);
-            }
+        //    // Check if the weapon is a banner
+        //    if (weapon.IsBanner())
+        //    {
+        //        // Set the initial velocity of the banner based on the agent's velocity
+        //        velocity = agent.Velocity + new Vec3(0f, 0f, -2f);
+        //    }
 
-            agent.AgentVisuals.GetSkeleton().ForceUpdateBoneFrames();
-            agent.PrepareWeaponForDropInEquipmentSlot(equipmentIndex, (spawnFlags & Mission.WeaponSpawnFlags.WithHolster) > Mission.WeaponSpawnFlags.None);
-            GameEntity weaponEntityFromEquipmentSlot = agent.GetWeaponEntityFromEquipmentSlot(equipmentIndex);
-            weaponEntityFromEquipmentSlot.CreateAndAddScriptComponent(typeof(SpawnedItemEntity).Name);
-            SpawnedItemEntity firstScriptOfType = weaponEntityFromEquipmentSlot.GetFirstScriptOfType<SpawnedItemEntity>();
-            if (forcedSpawnIndex >= 0)
-            {
-                firstScriptOfType.Id = new MissionObjectId(forcedSpawnIndex, true);
-            }
-            float maximumValue = CompressionMission.SpawnedItemVelocityCompressionInfo.GetMaximumValue();
-            float maximumValue2 = CompressionMission.SpawnedItemAngularVelocityCompressionInfo.GetMaximumValue();
-            if (velocity.LengthSquared > maximumValue * maximumValue)
-            {
-                velocity = velocity.NormalizedCopy() * maximumValue;
-            }
-            if (angularVelocity.LengthSquared > maximumValue2 * maximumValue2)
-            {
-                angularVelocity = angularVelocity.NormalizedCopy() * maximumValue2;
-            }
-            MissionWeapon missionWeapon = agent.Equipment[equipmentIndex];
-            if (GameNetwork.IsServerOrRecorder)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SpawnWeaponAsDropFromAgent(agent, equipmentIndex, velocity, angularVelocity, spawnFlags, firstScriptOfType.Id.Id));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-            }
+        //    agent.AgentVisuals.GetSkeleton().ForceUpdateBoneFrames();
+        //    agent.PrepareWeaponForDropInEquipmentSlot(equipmentIndex, (spawnFlags & Mission.WeaponSpawnFlags.WithHolster) > Mission.WeaponSpawnFlags.None);
+        //    GameEntity weaponEntityFromEquipmentSlot = agent.GetWeaponEntityFromEquipmentSlot(equipmentIndex);
+        //    weaponEntityFromEquipmentSlot.CreateAndAddScriptComponent(typeof(SpawnedItemEntity).Name);
+        //    SpawnedItemEntity firstScriptOfType = weaponEntityFromEquipmentSlot.GetFirstScriptOfType<SpawnedItemEntity>();
+        //    if (forcedSpawnIndex >= 0)
+        //    {
+        //        firstScriptOfType.Id = new MissionObjectId(forcedSpawnIndex, true);
+        //    }
+        //    float maximumValue = CompressionMission.SpawnedItemVelocityCompressionInfo.GetMaximumValue();
+        //    float maximumValue2 = CompressionMission.SpawnedItemAngularVelocityCompressionInfo.GetMaximumValue();
+        //    if (velocity.LengthSquared > maximumValue * maximumValue)
+        //    {
+        //        velocity = velocity.NormalizedCopy() * maximumValue;
+        //    }
+        //    if (angularVelocity.LengthSquared > maximumValue2 * maximumValue2)
+        //    {
+        //        angularVelocity = angularVelocity.NormalizedCopy() * maximumValue2;
+        //    }
+        //    MissionWeapon missionWeapon = agent.Equipment[equipmentIndex];
+        //    if (GameNetwork.IsServerOrRecorder)
+        //    {
+        //        GameNetwork.BeginBroadcastModuleEvent();
+        //        GameNetwork.WriteMessage(new SpawnWeaponAsDropFromAgent(agent.Index, equipmentIndex, velocity, angularVelocity, spawnFlags, firstScriptOfType.Id.Id));
+        //        GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
+        //    }
 
-            typeof(Mission).GetMethod("SpawnWeaponAux",
-                        BindingFlags.Instance | BindingFlags.NonPublic)?
-                        .Invoke(__instance, new object[] { weaponEntityFromEquipmentSlot, missionWeapon, spawnFlags, velocity, angularVelocity, true });
+        //    typeof(Mission).GetMethod("SpawnWeaponAux",
+        //                BindingFlags.Instance | BindingFlags.NonPublic)?
+        //                .Invoke(__instance, new object[] { weaponEntityFromEquipmentSlot, missionWeapon, spawnFlags, velocity, angularVelocity, true });
 
-            if (!GameNetwork.IsClientOrReplay)
-            {
-                for (int i = 0; i < missionWeapon.GetAttachedWeaponsCount(); i++)
-                {
-                    if (missionWeapon.GetAttachedWeapon(i).Item.ItemFlags.HasAnyFlag(ItemFlags.CanBePickedUpFromCorpse))
-                    {
-                        __instance.SpawnAttachedWeaponOnSpawnedWeapon(firstScriptOfType, i, -1);
-                    }
-                }
-            }
-            agent.OnWeaponDrop(equipmentIndex);
-            foreach (MissionBehavior missionBehavior in __instance.MissionBehaviors)
-            {
-                missionBehavior.OnItemDrop(agent, firstScriptOfType);
-            }
+        //    if (!GameNetwork.IsClientOrReplay)
+        //    {
+        //        for (int i = 0; i < missionWeapon.GetAttachedWeaponsCount(); i++)
+        //        {
+        //            if (missionWeapon.GetAttachedWeapon(i).Item.ItemFlags.HasAnyFlag(ItemFlags.CanBePickedUpFromCorpse))
+        //            {
+        //                __instance.SpawnAttachedWeaponOnSpawnedWeapon(firstScriptOfType, i, -1);
+        //            }
+        //        }
+        //    }
+        //    agent.OnWeaponDrop(equipmentIndex);
 
-            // Return false to skip original method
-            return false;
-        }
+        //    foreach (MissionBehavior missionBehavior in __instance.MissionBehaviors)
+        //    {
+        //        missionBehavior.OnItemDrop(agent, firstScriptOfType);
+        //    }
+
+        //    // Return false to skip original method
+        //    return false;
+        //}
 
         /* Original method 
          * 

@@ -31,8 +31,6 @@ namespace Alliance.Server.GameModes.SiegeX
                     //new MissionMultiplayerSiegeClient(),
                     new PvCMissionMultiplayerSiegeClient(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
                     //new SpawnComponent(new SiegeSpawnFrameBehavior(), new SiegeSpawningBehavior()),
                     new SpawnComponent(new SiegeXSpawnFrameBehavior(), new SiegeXSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI.Mission.Multiplayer;
+using TaleWorlds.MountAndBlade.Multiplayer.GauntletUI.Mission;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.TwoDimension;
 
@@ -50,8 +50,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             _myRepresentative = myPeer != null ? myPeer.VirtualPlayer.GetComponent<MissionRepresentativeBase>() : null;
             if (_myRepresentative != null)
             {
-                MissionRepresentativeBase myRepresentative = _myRepresentative;
-                myRepresentative.OnGoldUpdated = (Action)Delegate.Combine(myRepresentative.OnGoldUpdated, new Action(OnGoldUpdated));
+                _myRepresentative.OnGoldUpdated += OnGoldUpdated;
             }
         }
 
@@ -98,8 +97,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
                 _missionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
                 if (_myRepresentative != null)
                 {
-                    MissionRepresentativeBase myRepresentative = _myRepresentative;
-                    myRepresentative.OnGoldUpdated = (Action)Delegate.Remove(myRepresentative.OnGoldUpdated, new Action(OnGoldUpdated));
+                    _myRepresentative.OnGoldUpdated -= OnGoldUpdated;
                 }
             }
             _missionLobbyEquipmentNetworkComponent.OnToggleLoadout -= OnTryToggle;
@@ -210,7 +208,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private void OnPeerEquipmentRefreshed(MissionPeer peer)
         {
-            if (_gameModeClient.GameType == MissionLobbyComponent.MultiplayerGameType.Skirmish || _gameModeClient.GameType == MissionLobbyComponent.MultiplayerGameType.Captain)
+            if (_gameModeClient.GameType == MultiplayerGameType.Skirmish || _gameModeClient.GameType == MultiplayerGameType.Captain)
             {
                 LobbyEquipmentVM dataSource = _dataSource;
                 if (dataSource == null)

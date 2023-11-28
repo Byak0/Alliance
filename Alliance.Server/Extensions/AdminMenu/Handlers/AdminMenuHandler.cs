@@ -166,7 +166,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
             healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
-            
+
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
             SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
             return true;
@@ -186,7 +186,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         public bool GodMod(NetworkCommunicator peer, AdminClient admin)
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
-            
+
             godModPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} est en GodMod grâce à l'admin {peer.UserName}.", LogLevel.Information);
@@ -229,7 +229,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
             return true;
         }
-        
+
         public bool SendWarningToPlayer(NetworkCommunicator peer, AdminClient admin)
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
@@ -362,8 +362,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     Blow blow = new Blow(playerToKill.ControlledAgent.Index);
                     blow.DamageType = DamageTypes.Pierce;
                     blow.BoneIndex = playerToKill.ControlledAgent.Monster.HeadLookDirectionBoneIndex;
-                    blow.Position = playerToKill.ControlledAgent.Position;
-                    blow.Position.z = blow.Position.z + playerToKill.ControlledAgent.GetEyeGlobalHeight();
+                    blow.GlobalPosition = playerToKill.ControlledAgent.Position;
+                    blow.GlobalPosition.z = blow.GlobalPosition.z + playerToKill.ControlledAgent.GetEyeGlobalHeight();
                     blow.BaseMagnitude = 2000f;
                     blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
                     blow.InflictedDamage = 2000;
@@ -374,11 +374,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     blow.Direction = blow.SwingDirection;
                     blow.DamageCalculated = true;
                     sbyte mainHandItemBoneIndex = playerToKill.ControlledAgent.Monster.MainHandItemBoneIndex;
-                    AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.Position, Vec3.Zero, Vec3.Zero, playerToKill.ControlledAgent.Velocity, Vec3.Up);
+                    AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.GlobalPosition, Vec3.Zero, Vec3.Zero, playerToKill.ControlledAgent.Velocity, Vec3.Up);
                     playerToKill.ControlledAgent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log($"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers. ({e.Message})", LogLevel.Error);
                 SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers.", AdminServerLog.ColorList.Danger, true);
@@ -402,11 +402,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     playerSelected.ControlledAgent.BaseHealthLimit = 2000;
                     playerSelected.ControlledAgent.HealthLimit = 2000;
                     playerSelected.ControlledAgent.Health = 2000;
-                    playerSelected.ControlledAgent.SetMinimumSpeed(10);
                     playerSelected.ControlledAgent.SetMaximumSpeedLimit(10, false);
                 }
             }
-            catch(Exception e )
+            catch (Exception e)
             {
                 Log($"[AdminPanel] Erreur lors de l'execution de la fonction godModPlayers. ({e.Message})", LogLevel.Error);
                 SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction godModPlayers.", AdminServerLog.ColorList.Danger, true);

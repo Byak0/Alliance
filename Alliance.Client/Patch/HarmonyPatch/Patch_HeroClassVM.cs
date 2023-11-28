@@ -3,7 +3,7 @@ using HarmonyLib;
 using System;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.ClassLoadout;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Patch.HarmonyPatch

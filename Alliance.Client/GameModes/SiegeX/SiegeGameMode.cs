@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Siege.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.SiegeX
@@ -39,7 +40,7 @@ namespace Alliance.Client.GameModes.SiegeX
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new SiegeScoreboardData()),
-                    new MissionMatchHistoryComponent(),
+                    MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
                     new EquipmentControllerLeaveLogic(),
                     new MissionRecentPlayersComponent(),
                     new MultiplayerPreloadHelper()
