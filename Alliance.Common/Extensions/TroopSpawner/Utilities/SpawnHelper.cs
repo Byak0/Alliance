@@ -130,7 +130,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 //SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
                 MissionPeer component = networkPeer.GetComponent<MissionPeer>();
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MultiplayerMissionAgentVisualSpawnComponent agentVisualSpawnComponent = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
                 MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
                 MissionMultiplayerGameModeBase gameMode = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
 

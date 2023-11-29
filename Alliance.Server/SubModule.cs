@@ -1,6 +1,4 @@
-﻿using Alliance.Common.Core.ExtendedCharacter;
-using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.GameModels;
+﻿using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
@@ -57,7 +55,7 @@ namespace Alliance.Server
             mission.AddMissionBehavior(new ServerAutoHandler());
 
             // Initialize animation system and all the game animations
-            AnimationSystem.Instance.Init();
+            //AnimationSystem.Instance.Init();
 
             Log("Alliance initialized.", LogLevel.Debug);
         }
@@ -65,7 +63,7 @@ namespace Alliance.Server
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
         {
             // Increase native network compression limits to prevent crashes
-            DirtyCommonPatcher.IncreaseNativeLimits();
+            //DirtyCommonPatcher.IncreaseNativeLimits();
 
             // Add player connection watcher for auto-kick
             game.AddGameHandler<PlayerConnectionWatcher>();
@@ -74,7 +72,7 @@ namespace Alliance.Server
         public override void OnGameInitializationFinished(Game game)
         {
             // Load AllianceCharacter.xml into usable ExtendedCharacterObjects
-            ExtendedCharacterLoader.Init();
+            //ExtendedCharacterLoader.Init();
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarter)

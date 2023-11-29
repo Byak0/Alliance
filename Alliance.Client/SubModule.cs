@@ -1,7 +1,6 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
 using Alliance.Client.Extensions.AdminMenu.Views;
-using Alliance.Client.Extensions.AnimationPlayer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.SAE.Behaviors;
 using Alliance.Client.Extensions.Vehicles.Views;
@@ -14,7 +13,6 @@ using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedCharacter;
-using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
@@ -44,13 +42,13 @@ namespace Alliance.Client
         {
             // TODO : Check if can be init there or need to be init later in the MissionView?
             // Initialize animation system and all the game animations
-            AnimationSystem.Instance.Init();
+            //AnimationSystem.Instance.Init();
 
             SceneList.Initialize();
 
             mission.AddMissionBehavior(new ClientAutoHandler());
             mission.AddMissionBehavior(new AdminSystem());
-            mission.AddMissionBehavior(new AnimationView());
+            //mission.AddMissionBehavior(new AnimationView());
             mission.AddMissionBehavior(new VehicleView());
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
@@ -61,7 +59,7 @@ namespace Alliance.Client
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
         {
             // Increase native network compression limits to prevent crashes
-            DirtyCommonPatcher.IncreaseNativeLimits();
+            //DirtyCommonPatcher.IncreaseNativeLimits();
         }
 
         public override void OnGameInitializationFinished(Game game)
