@@ -13,7 +13,7 @@ namespace Alliance.Client.Patch
         {
             bool patchSuccess = true;
             patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
-            patchSuccess &= Patch_GameKeyOptionsCategory.Patch();
+            patchSuccess &= Patch_KeyBinder.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
             patchSuccess &= Patch_HeroClassVM.Patch();
 

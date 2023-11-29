@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
-using TaleWorlds.InputSystem;
 using TaleWorlds.Localization;
 using static Alliance.Common.Utilities.Logger;
 using Module = TaleWorlds.MountAndBlade.Module;
@@ -22,9 +21,9 @@ namespace Alliance.Client.Core.KeyBinder
         /// </summary>
         public static bool DontUseKeyBinder = false;
 
-        internal static readonly ICollection<BindedKeyCategory> KeysCategories = new List<BindedKeyCategory>();
+        public static readonly ICollection<BindedKeyCategory> KeysCategories = new List<BindedKeyCategory>();
 
-        private static readonly IDictionary<string, GameKeyBinderContext> keyContexts = new Dictionary<string, GameKeyBinderContext>();
+        public static readonly IDictionary<string, GameKeyBinderContext> KeyContexts = new Dictionary<string, GameKeyBinderContext>();
 
         /// <summary>
         /// Register a new category of keys
@@ -45,16 +44,16 @@ namespace Alliance.Client.Core.KeyBinder
 
             AutoRegister();
 
-            foreach (var cat in KeysCategories)
+            foreach (BindedKeyCategory cat in KeysCategories)
             {
                 // Create the games context for each category
-                keyContexts[cat.CategoryId] = new GameKeyBinderContext(cat.CategoryId, cat.Keys);
+                KeyContexts[cat.CategoryId] = new GameKeyBinderContext(cat.CategoryId, cat.Keys);
 
                 // Set up category name in the menu
                 GameText gameText = Module.CurrentModule.GlobalTextManager.GetGameText("str_key_category_name");
                 gameText.AddVariationWithId(cat.CategoryId, new TextObject(cat.Category, null), new List<GameTextManager.ChoiceTag>());
 
-                foreach (var key in cat.Keys)
+                foreach (BindedKey key in cat.Keys)
                 {
                     // Set up key name in the menu
                     string text = cat.CategoryId;
@@ -70,7 +69,8 @@ namespace Alliance.Client.Core.KeyBinder
             }
 
             // Register all GameKeyContext
-            HotKeyManager.RegisterInitialContexts(keyContexts.Values, true);
+            // Deprecated - HotKeyManager.RegisterInitialContexts(KeyContexts.Values, true);
+            // -> Since 1.2, the registering is now done through Patch_KeyBinder.PrefixRegisterInitialContexts
         }
 
         /// <summary>
