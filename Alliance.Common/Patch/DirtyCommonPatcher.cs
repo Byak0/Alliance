@@ -1,4 +1,5 @@
-﻿using TaleWorlds.MountAndBlade;
+﻿using Alliance.Common.Patch.HarmonyPatch;
+using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Patch
@@ -36,7 +37,7 @@ namespace Alliance.Common.Patch
             //typeof(CompressionBasic).GetField(nameof(CompressionBasic.BigRangeLowResLocalPositionCompressionInfo), BindingFlags.Static).
             //    SetValue(null, new CompressionInfo.Float(-2000f, 2000f, 16));
 
-            // Test :))) => Cool but what's the purpose of this
+            // Test :))) Increase max number of players
             //typeof(CompressionBasic).GetField(nameof(CompressionBasic.PlayerCompressionInfo), BindingFlags.Static).
             //    SetValue(null, new CompressionInfo.Integer(-1, 20000, true));
         }
@@ -44,10 +45,10 @@ namespace Alliance.Common.Patch
         public static bool Patch()
         {
             bool patchSuccess = true;
-            //patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
-            //patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
-            //patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
-            //patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
+            patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
+            patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
+            patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
+            patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;
         }

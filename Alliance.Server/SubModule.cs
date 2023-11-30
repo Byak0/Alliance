@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModels;
+﻿using Alliance.Common.Core.ExtendedCharacter;
+using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
@@ -72,7 +73,7 @@ namespace Alliance.Server
         public override void OnGameInitializationFinished(Game game)
         {
             // Load AllianceCharacter.xml into usable ExtendedCharacterObjects
-            //ExtendedCharacterLoader.Init();
+            ExtendedCharacterLoader.Init();
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarter)
