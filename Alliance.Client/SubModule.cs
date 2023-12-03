@@ -18,6 +18,7 @@ using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client
@@ -52,6 +53,10 @@ namespace Alliance.Client
             mission.AddMissionBehavior(new VehicleView());
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
+
+            // Add native admin options
+            mission.AddMissionBehavior(new MultiplayerAdminComponent());
+            mission.AddMissionBehavior(MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler());
 
             Log("Alliance initialized.", LogLevel.Debug);
         }

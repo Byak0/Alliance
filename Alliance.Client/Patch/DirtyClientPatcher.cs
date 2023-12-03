@@ -16,6 +16,7 @@ namespace Alliance.Client.Patch
             patchSuccess &= Patch_KeyBinder.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
             patchSuccess &= Patch_HeroClassVM.Patch();
+            patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
 
             //TODO : Check if can be completely removed from 1.2
             //patchSuccess &= Patch_WidgetsMultiplayerHelper.Patch(); 

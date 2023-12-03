@@ -55,6 +55,9 @@ namespace Alliance.Server
             // Add main server handler
             mission.AddMissionBehavior(new ServerAutoHandler());
 
+            // Add native admin options
+            mission.AddMissionBehavior(new MultiplayerAdminComponent());
+
             // Initialize animation system and all the game animations
             //AnimationSystem.Instance.Init();
 
