@@ -402,7 +402,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     playerSelected.ControlledAgent.BaseHealthLimit = 2000;
                     playerSelected.ControlledAgent.HealthLimit = 2000;
                     playerSelected.ControlledAgent.Health = 2000;
-                    playerSelected.ControlledAgent.SetMaximumSpeedLimit(10, false);
+                    playerSelected.ControlledAgent.AgentDrivenProperties.MaxSpeedMultiplier = 10f;
+                    playerSelected.ControlledAgent.UpdateCustomDrivenProperties();
                 }
             }
             catch (Exception e)

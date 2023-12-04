@@ -34,6 +34,7 @@ namespace Alliance.Client.GameModes.PvC
                     new FormationBehavior(),
 
                     // Native components from Captain mode
+                    new MultiplayerAdminComponent(),
                     new MultiplayerAchievementComponent(),
                     new MultiplayerRoundComponent(),
                     new AgentVictoryLogic(),

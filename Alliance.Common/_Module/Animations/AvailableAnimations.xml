@@ -2,18 +2,6 @@
 <AnimationUserStore xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<AnimationSequences>
 		<AnimationSequence>
-			<Index>2</Index>
-			<Name>Sit</Name>
-			<Animations>
-				<Animation>
-					<Index>4077</Index>
-					<Name>act_sit_down_on_floor_1</Name>
-					<Speed>1</Speed>
-					<MaxDuration>6</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
 			<Index>4</Index>
 			<Name>Dance</Name>
 			<Animations>
@@ -46,6 +34,18 @@
 					<Name>act_cheering_high_01</Name>
 					<Speed>1</Speed>
 					<MaxDuration>22</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>35</Index>
+			<Name>Idle</Name>
+			<Animations>
+				<Animation>
+					<Index>4340</Index>
+					<Name>act_sturgia_mp_huskarl_idle</Name>
+					<Speed>1</Speed>
+					<MaxDuration>13</MaxDuration>
 				</Animation>
 			</Animations>
 		</AnimationSequence>
@@ -86,26 +86,194 @@
 			</Animations>
 		</AnimationSequence>
 		<AnimationSequence>
-			<Index>35</Index>
-			<Name>Idle</Name>
+			<Index>37</Index>
+			<Name>Bow</Name>
 			<Animations>
 				<Animation>
-					<Index>4340</Index>
-					<Name>act_sturgia_mp_huskarl_idle</Name>
+					<Index>3989</Index>
+					<Name>act_taunt_02</Name>
 					<Speed>1</Speed>
-					<MaxDuration>13</MaxDuration>
+					<MaxDuration>3.8</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>41</Index>
+			<Name>Surrender</Name>
+			<Animations>
+				<Animation>
+					<Index>4015</Index>
+					<Name>act_taunt_28</Name>
+					<Speed>1</Speed>
+					<MaxDuration>5</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>42</Index>
+			<Name>Threaten</Name>
+			<Animations>
+				<Animation>
+					<Index>4018</Index>
+					<Name>act_taunt_31</Name>
+					<Speed>1</Speed>
+					<MaxDuration>6</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>43</Index>
+			<Name>Shield bash</Name>
+			<Animations>
+				<Animation>
+					<Index>3995</Index>
+					<Name>act_taunt_08</Name>
+					<Speed>1</Speed>
+					<MaxDuration>5</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>44</Index>
+			<Name>Come</Name>
+			<Animations>
+				<Animation>
+					<Index>4000</Index>
+					<Name>act_taunt_13</Name>
+					<Speed>1</Speed>
+					<MaxDuration>2</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>45</Index>
+			<Name>Respect</Name>
+			<Animations>
+				<Animation>
+					<Index>4007</Index>
+					<Name>act_taunt_20</Name>
+					<Speed>1</Speed>
+					<MaxDuration>3.5</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>46</Index>
+			<Name>Look around</Name>
+			<Animations>
+				<Animation>
+					<Index>4011</Index>
+					<Name>act_taunt_24</Name>
+					<Speed>1</Speed>
+					<MaxDuration>4</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>47</Index>
+			<Name>Despair</Name>
+			<Animations>
+				<Animation>
+					<Index>3993</Index>
+					<Name>act_taunt_06</Name>
+					<Speed>1</Speed>
+					<MaxDuration>6</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>36</Index>
+			<Name>Spare me</Name>
+			<Animations>
+				<Animation>
+					<Index>3988</Index>
+					<Name>act_taunt_01</Name>
+					<Speed>1</Speed>
+					<MaxDuration>4</MaxDuration>
 				</Animation>
 			</Animations>
 		</AnimationSequence>
 		<AnimationSequence>
 			<Index>34</Index>
-			<Name>Guard</Name>
+			<Name>Guard (spear)</Name>
 			<Animations>
 				<Animation>
-					<Index>3843</Index>
+					<Index>3851</Index>
 					<Name>act_main_story_troop_guard_idle_2</Name>
 					<Speed>1</Speed>
 					<MaxDuration>4</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>38</Index>
+			<Name>Kneel</Name>
+			<Animations>
+				<Animation>
+					<Index>3882</Index>
+					<Name>act_main_story_conspirator_kneel_down_2_continue</Name>
+					<Speed>1</Speed>
+					<MaxDuration>11</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>48</Index>
+			<Name>Come here</Name>
+			<Animations>
+				<Animation>
+					<Index>3998</Index>
+					<Name>act_taunt_11</Name>
+					<Speed>1</Speed>
+					<MaxDuration>2</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>50</Index>
+			<Name>Threaten 2</Name>
+			<Animations>
+				<Animation>
+					<Index>4017</Index>
+					<Name>act_taunt_30</Name>
+					<Speed>1</Speed>
+					<MaxDuration>3.5</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>51</Index>
+			<Name>Shield bash 2</Name>
+			<Animations>
+				<Animation>
+					<Index>3996</Index>
+					<Name>act_taunt_09</Name>
+					<Speed>1</Speed>
+					<MaxDuration>4.5</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>2</Index>
+			<Name>Sit</Name>
+			<Animations>
+				<Animation>
+					<Index>4077</Index>
+					<Name>act_sit_down_on_floor_1</Name>
+					<Speed>1</Speed>
+					<MaxDuration>6</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>52</Index>
+			<Name>Cross arms</Name>
+			<Animations>
+				<Animation>
+					<Index>4396</Index>
+					<Name>act_pose_lord_4</Name>
+					<Speed>1</Speed>
+					<MaxDuration>1</MaxDuration>
 				</Animation>
 			</Animations>
 		</AnimationSequence>
@@ -121,7 +289,7 @@
 				</BindedAnimation>
 				<BindedAnimation>
 					<Keybind>2</Keybind>
-					<AnimSequenceIndex>34</AnimSequenceIndex>
+					<AnimSequenceIndex>45</AnimSequenceIndex>
 				</BindedAnimation>
 				<BindedAnimation>
 					<Keybind>3</Keybind>
@@ -129,7 +297,7 @@
 				</BindedAnimation>
 				<BindedAnimation>
 					<Keybind>4</Keybind>
-					<AnimSequenceIndex>35</AnimSequenceIndex>
+					<AnimSequenceIndex>52</AnimSequenceIndex>
 				</BindedAnimation>
 				<BindedAnimation>
 					<Keybind>5</Keybind>
@@ -146,6 +314,90 @@
 				<BindedAnimation>
 					<Keybind>8</Keybind>
 					<AnimSequenceIndex>28</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>9</Keybind>
+					<AnimSequenceIndex>5</AnimSequenceIndex>
+				</BindedAnimation>
+			</BindedAnimSequence>
+		</AnimationSet>
+		<AnimationSet>
+			<Index>1</Index>
+			<Name>Soldier</Name>
+			<BindedAnimSequence>
+				<BindedAnimation>
+					<Keybind>1</Keybind>
+					<AnimSequenceIndex>37</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>2</Keybind>
+					<AnimSequenceIndex>45</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>3</Keybind>
+					<AnimSequenceIndex>38</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>4</Keybind>
+					<AnimSequenceIndex>34</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>5</Keybind>
+					<AnimSequenceIndex>44</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>6</Keybind>
+					<AnimSequenceIndex>36</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>7</Keybind>
+					<AnimSequenceIndex>41</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>8</Keybind>
+					<AnimSequenceIndex>47</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>9</Keybind>
+					<AnimSequenceIndex>5</AnimSequenceIndex>
+				</BindedAnimation>
+			</BindedAnimSequence>
+		</AnimationSet>
+		<AnimationSet>
+			<Index>2</Index>
+			<Name>Taunt</Name>
+			<BindedAnimSequence>
+				<BindedAnimation>
+					<Keybind>1</Keybind>
+					<AnimSequenceIndex>43</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>2</Keybind>
+					<AnimSequenceIndex>51</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>3</Keybind>
+					<AnimSequenceIndex>48</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>4</Keybind>
+					<AnimSequenceIndex>46</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>5</Keybind>
+					<AnimSequenceIndex>42</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>6</Keybind>
+					<AnimSequenceIndex>50</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>7</Keybind>
+					<AnimSequenceIndex>5</AnimSequenceIndex>
+				</BindedAnimation>
+				<BindedAnimation>
+					<Keybind>8</Keybind>
+					<AnimSequenceIndex>5</AnimSequenceIndex>
 				</BindedAnimation>
 				<BindedAnimation>
 					<Keybind>9</Keybind>

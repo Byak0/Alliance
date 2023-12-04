@@ -12,10 +12,10 @@ namespace Alliance.Client.Patch
         public static bool Patch()
         {
             bool patchSuccess = true;
-            patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
+            //patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
             patchSuccess &= Patch_KeyBinder.Patch();
-            patchSuccess &= Patch_MissionNetworkComponent.Patch();
-            patchSuccess &= Patch_HeroClassVM.Patch();
+            //patchSuccess &= Patch_MissionNetworkComponent.Patch();
+            //patchSuccess &= Patch_HeroClassVM.Patch();
             patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
 
             //TODO : Check if can be completely removed from 1.2

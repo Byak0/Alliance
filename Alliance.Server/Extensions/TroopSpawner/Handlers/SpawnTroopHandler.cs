@@ -165,7 +165,13 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 int botsUnderControlAlive = missionPeer.BotsUnderControlAlive = Math.Max(missionPeer.BotsUnderControlAlive, missionPeer.ControlledFormation.CountOfUnits);
                 int botsUnderControlTotal = Math.Max(missionPeer.BotsUnderControlTotal, missionPeer.BotsUnderControlAlive);
 
-                if (gameModeClient != null)
+                if (botsUnderControlAlive <= 0 || botsUnderControlTotal <= 0)
+                {
+                    string error = $"OBCC - {missionPeer.Name} - {(FormationClass)model.Formation} - alive: {botsUnderControlAlive} - total: {botsUnderControlTotal}";
+                    Log(error, LogLevel.Error);
+                    SendMessageToAll(error);
+                }
+                else if (gameModeClient != null)
                 {
                     GameNetwork.BeginBroadcastModuleEvent();
                     GameNetwork.WriteMessage(new BotsControlledChange(networkPeer, botsUnderControlAlive, botsUnderControlTotal));

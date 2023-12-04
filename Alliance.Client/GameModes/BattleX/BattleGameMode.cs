@@ -17,9 +17,9 @@ namespace Alliance.Client.GameModes.BattleX
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
 
+                    MissionLobbyComponent.CreateBehavior(),
                     new MultiplayerRoundComponent(),
                     new MultiplayerWarmupComponent(),
                     new MissionMultiplayerGameModeFlagDominationClient(),
@@ -30,9 +30,9 @@ namespace Alliance.Client.GameModes.BattleX
                     new MultiplayerTeamSelectComponent(),
                     new MissionHardBorderPlacer(),
                     new MissionBoundaryPlacer(),
-                    new AgentVictoryLogic(),
                     new MissionBoundaryCrossingHandler(),
                     new MultiplayerPollComponent(),
+                    new MultiplayerAdminComponent(),
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new BattleScoreboardData()),

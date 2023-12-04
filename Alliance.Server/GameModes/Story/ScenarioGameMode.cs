@@ -7,6 +7,7 @@ using Alliance.Server.Extensions.FlagsTracker.Behaviors;
 using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.Story.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -32,7 +33,7 @@ namespace Alliance.Server.GameModes.Story
         {
             List<MissionBehavior> behaviors = new List<MissionBehavior>()
             {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
 
                     // Custom components
                     new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),

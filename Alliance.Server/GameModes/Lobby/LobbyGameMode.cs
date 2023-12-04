@@ -1,6 +1,7 @@
 using Alliance.Common.GameModes.Lobby.Behaviors;
 using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.GameModes.Lobby.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -19,13 +20,14 @@ namespace Alliance.Server.GameModes.Lobby
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new LobbyBehavior(),
                     new LobbyClientBehavior(),
                     new PollBehavior(),
                     //new ConsoleMatchStartEndHandler(), ??
                     new MultiplayerTimerComponent(),
                     new SpawnComponent(new LobbySpawnFrameBehavior(), new LobbySpawningBehavior()),
+                    new MultiplayerAdminComponent(),
                     new AgentHumanAILogic(),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MissionHardBorderPlacer(),

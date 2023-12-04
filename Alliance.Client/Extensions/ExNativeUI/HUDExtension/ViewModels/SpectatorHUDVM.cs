@@ -445,10 +445,16 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
         internal void OnSpectatedAgentFocusIn(Agent followedAgent)
         {
+            MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+
+            if (component?.Team == null)
+            {
+                return;
+            }
+
             _spectatedAgent = followedAgent;
             int spectatedPlayerNeutrality = 0;
-            MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-            if (component != null && component.Team != _mission.SpectatorTeam && component.Team == followedAgent.Team && _isTeamsEnabled)
+            if (component.Team != _mission.SpectatorTeam && component.Team == followedAgent.Team && _isTeamsEnabled)
             {
                 spectatedPlayerNeutrality = 1;
             }

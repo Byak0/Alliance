@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -28,7 +29,7 @@ namespace Alliance.Server.GameModes.CaptainX
         {
             List<MissionBehavior> behaviors = new List<MissionBehavior>()
             {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new FormationBehavior(),
 
                     //new MissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Captain),

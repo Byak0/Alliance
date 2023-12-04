@@ -1,6 +1,7 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
 using Alliance.Client.Extensions.AdminMenu.Views;
+using Alliance.Client.Extensions.AnimationPlayer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.SAE.Behaviors;
 using Alliance.Client.Extensions.Vehicles.Views;
@@ -13,12 +14,12 @@ using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedCharacter;
+using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client
@@ -43,20 +44,16 @@ namespace Alliance.Client
         {
             // TODO : Check if can be init there or need to be init later in the MissionView?
             // Initialize animation system and all the game animations
-            //AnimationSystem.Instance.Init();
+            AnimationSystem.Instance.Init();
 
             SceneList.Initialize();
 
             mission.AddMissionBehavior(new ClientAutoHandler());
             mission.AddMissionBehavior(new AdminSystem());
-            //mission.AddMissionBehavior(new AnimationView());
+            mission.AddMissionBehavior(new AnimationView());
             mission.AddMissionBehavior(new VehicleView());
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
-
-            // Add native admin options
-            mission.AddMissionBehavior(new MultiplayerAdminComponent());
-            mission.AddMissionBehavior(MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler());
 
             Log("Alliance initialized.", LogLevel.Debug);
         }

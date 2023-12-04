@@ -19,6 +19,7 @@ namespace Alliance.Client.GameModes.Lobby
                 new GameModeMenuView(),
                 new SpawnTroopsView(),
 
+                MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
                 MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
                 MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),

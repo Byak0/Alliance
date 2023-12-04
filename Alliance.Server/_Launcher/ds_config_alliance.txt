@@ -2,6 +2,7 @@ ServerName Alliance - Test Server
 GameType Lobby
 AdminPassword test123
 Map Lobby
+add_map_to_automated_battle_pool Lobby
 add_map_to_usable_maps Lobby
 add_map_to_usable_maps MontStCombattant
 add_map_to_usable_maps Palmap_4
@@ -24,4 +25,5 @@ RoundTotal 11
 MapTimeLimit 360
 WarmupTimeLimit 1
 SingleSpawn true
+enable_automated_battle_switching
 start_game_and_mission

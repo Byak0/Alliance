@@ -20,6 +20,7 @@ namespace Alliance.Client.GameModes.Lobby
                     MissionLobbyComponent.CreateBehavior(),
                     new LobbyClientBehavior(),
 
+                    new MultiplayerAdminComponent(),
                     new MultiplayerTimerComponent(),
                     new MultiplayerMissionAgentVisualSpawnComponent(),
                     new MissionLobbyEquipmentNetworkComponent(),

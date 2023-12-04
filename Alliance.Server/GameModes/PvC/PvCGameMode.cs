@@ -6,6 +6,7 @@ using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -35,7 +36,7 @@ namespace Alliance.Server.GameModes.PvC
         {
             List<MissionBehavior> behaviors = new List<MissionBehavior>
             {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
 
                     // Custom components
                     new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
@@ -62,6 +63,7 @@ namespace Alliance.Server.GameModes.PvC
             return new List<MissionBehavior>()
             {
                     // Native behaviors
+                    new MultiplayerAdminComponent(),
                     new MultiplayerRoundController(),
                     new MultiplayerTimerComponent(),
                     new AgentHumanAILogic(),

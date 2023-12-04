@@ -44,6 +44,7 @@ namespace Alliance.Client.GameModes.BattleX
                 MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
                 ViewCreator.CreateOptionsUIHandler(),
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
+                MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView(),
                 new SpectatorCameraView()

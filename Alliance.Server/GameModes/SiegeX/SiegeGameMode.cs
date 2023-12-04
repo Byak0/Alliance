@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Siege.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -23,7 +24,7 @@ namespace Alliance.Server.GameModes.SiegeX
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new FormationBehavior(),
 
                     new MissionMultiplayerSiege(),

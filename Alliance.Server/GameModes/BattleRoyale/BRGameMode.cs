@@ -1,6 +1,7 @@
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -19,7 +20,7 @@ namespace Alliance.Server.GameModes.BattleRoyale
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new BRBehavior(),
                     new BRCommonBehavior(),
                     new ShrinkingZoneBehavior(),
