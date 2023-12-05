@@ -2,10 +2,11 @@
 using System;
 using System.Linq;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 
 namespace Alliance.Server.Patch.Behaviors
 {
-    public class AllianceLobbyComponent : MissionLobbyComponent
+    public class AllianceLobbyComponent : MissionCustomGameServerComponent
     {
         protected override void OnBotDies(Agent botAgent, MissionPeer affectorPeer, MissionPeer assistorPeer)
         {
