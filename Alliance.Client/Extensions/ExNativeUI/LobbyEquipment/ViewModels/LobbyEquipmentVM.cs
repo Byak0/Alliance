@@ -1,7 +1,7 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels;
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -473,11 +473,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             _missionLobbyEquipmentNetworkComponent = Mission.Current.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
 
             // Enable Gold for Commanders only
-            IsGoldEnabled = PvCRepresentative.Main.IsCommander && Config.Instance.UseTroopCost;
-            if (IsGoldEnabled)
-            {
-                Gold = PvCRepresentative.Main.Gold;
-            }
+            IsGoldEnabled = GameNetwork.MyPeer.IsCommander() && Config.Instance.UseTroopCost;
+            if (IsGoldEnabled) Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
 
             HeroClassVM heroClassVM = null;
             UseSecondary = team.Side == BattleSideEnum.Defender;
@@ -642,7 +639,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             _missionLobbyEquipmentNetworkComponent.EquipmentUpdated();
             if (IsGoldEnabled)
             {
-                Gold = PvCRepresentative.Main.Gold;
+                Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
             }
 
             List<IReadOnlyPerkObject> perks = heroClass.Perks.Select((x) => x.SelectedPerk).ToList();
@@ -696,7 +693,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 
                 if (IsGoldEnabled)
                 {
-                    Gold = PvCRepresentative.Main.Gold;
+                    Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
                 }
 
                 foreach (HeroClassGroupVM @class in Classes)

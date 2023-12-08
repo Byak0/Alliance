@@ -1,6 +1,5 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
@@ -40,7 +39,6 @@ namespace Alliance.Server.GameModes.Story
                     new ScenarioBehavior(),
                     new ScenarioClientBehavior(),
                     new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with custom objectives ui
-                    new PvCTeamSelectBehavior(),
                     new ScenarioRespawnBehavior(),
                     new PollBehavior(),
                     new FormationBehavior(),

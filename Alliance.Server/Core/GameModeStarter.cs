@@ -111,15 +111,6 @@ namespace Alliance.Server.Core
             return false;
         }
 
-        public bool EndMission()
-        {
-            if (MissionIsRunning)
-            {
-                DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.StartMission();
-            }
-            return false;
-        }
-
         public void StartLobby(string map, string culture1, string culture2, int nbBots = -1)
         {
             LobbyGameModeSettings lobby = new LobbyGameModeSettings();
@@ -183,9 +174,9 @@ namespace Alliance.Server.Core
     {
         public static void ThreadProc(object gameModeSettings)
         {
-            Thread.Sleep(500);
-            GameModeStarter.Instance.StartMissionOnly((GameModeSettings)gameModeSettings);
+            Thread.Sleep(1000);
             GameModeStarter.Instance.EndingCurrentMissionThenStartingNewMission = false;
+            GameModeStarter.Instance.StartMissionOnly((GameModeSettings)gameModeSettings);
         }
 
         public StartMissionThread()

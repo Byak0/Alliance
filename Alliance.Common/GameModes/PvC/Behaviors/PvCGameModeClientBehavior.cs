@@ -8,6 +8,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.PvC.Behaviors
 {
@@ -25,15 +26,27 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
         {
             base.OnBehaviorInitialize();
 
+            RoundComponent.OnPostRoundEnded += OnPostRoundEnd;
+            MissionPeer.OnTeamChanged += OnTeamChanged;
+
             // Fix to allow more then 3 flags. Use Reflection to init private variable of parent class with correct amount of flags.
             FieldInfo capturePointOwners = typeof(MissionMultiplayerGameModeFlagDominationClient).GetField("_capturePointOwners", BindingFlags.Instance | BindingFlags.NonPublic);
             capturePointOwners.SetValue(this, new Team[AllCapturePoints.Count()]);
         }
 
-        public override void AfterStart()
+        public override void OnRemoveBehavior()
         {
-            base.AfterStart();
-            RoundComponent.OnPostRoundEnded += OnPostRoundEnd;
+            base.OnRemoveBehavior();
+
+            RoundComponent.OnPostRoundEnded -= OnPostRoundEnd;
+            MissionPeer.OnTeamChanged -= OnTeamChanged;
+        }
+
+
+        private void OnTeamChanged(NetworkCommunicator peer, Team oldTeam, Team newTeam)
+        {
+            bool isCommanderSide = newTeam.Side == (BattleSideEnum)Config.Instance.CommanderSide;
+            Log($"{peer.UserName} joined the {(isCommanderSide ? "commander" : "player")}s' side.", LogLevel.Debug);
         }
 
         private void OnPostRoundEnd()
@@ -48,16 +61,6 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             }
         }
 
-        public override void OnMissionTick(float dt)
-        {
-            base.OnMissionTick(dt);
-        }
-
-        protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        {
-            networkPeer.AddComponent<PvCRepresentative>();
-        }
-
         public override void OnGoldAmountChangedForRepresentative(MissionRepresentativeBase representative, int goldAmount)
         {
             if (representative != null)
@@ -69,11 +72,6 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
         protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
         {
             // Moved to GameModeHandler
-        }
-
-        public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow blow)
-        {
-            // Prevent native code from running. It's doing stupid.
         }
 
         protected override int GetWarningTimer()
@@ -94,56 +92,6 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
                 }
             }
             return num;
-        }
-
-        public override SpectatorCameraTypes GetMissionCameraLockMode(bool lockedToMainPlayer)
-        {
-            SpectatorCameraTypes spectatorCameraTypes = SpectatorCameraTypes.Invalid;
-            MissionPeer missionPeer = GameNetwork.IsMyPeerReady ? GameNetwork.MyPeer.GetComponent<MissionPeer>() : null;
-            if (!lockedToMainPlayer && missionPeer != null)
-            {
-                if (missionPeer.Team != Mission.SpectatorTeam)
-                {
-                    if (GameType == MultiplayerGameType.Captain && IsRoundInProgress)
-                    {
-                        spectatorCameraTypes = SpectatorCameraTypes.Free;
-                        //Formation controlledFormation = missionPeer.ControlledFormation;
-                        //if (controlledFormation != null && controlledFormation.HasUnitsWithCondition((Agent agent) => !agent.IsPlayerControlled && agent.IsActive()))
-                        //{
-                        //    spectatorCameraTypes = SpectatorCameraTypes.LockToTeamMembers;
-                        //}
-                    }
-                }
-                else
-                {
-                    spectatorCameraTypes = SpectatorCameraTypes.Free;
-                }
-
-                //            if (missionPeer.Team != Mission.SpectatorTeam)
-                //{
-                //                spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                if (GameType == MissionLobbyComponent.MultiplayerGameType.Captain && IsRoundInProgress)
-                //                {
-                //                    if (GameNetwork.MyPeer.IsCommander())
-                //                    {
-                //                        spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                    }
-                //                    else
-                //                    {
-                //                        spectatorCameraTypes = SpectatorCameraTypes.LockToTeamMembers;
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                }
-                //            }
-                //else
-                //{
-                //	spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //}
-            }
-            return spectatorCameraTypes;
         }
     }
 }

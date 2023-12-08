@@ -258,12 +258,10 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             try
             {
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MultiplayerMissionAgentVisualSpawnComponent agentVisualSpawnComponent = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
                 MissionMultiplayerGameModeBase gameMode = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
                 MissionPeer peer = player.GetComponent<MissionPeer>();
                 if (peer != null && peer.ControlledAgent == null && !peer.HasSpawnedAgentVisuals && peer.Team != null && peer.Team != Mission.Current.SpectatorTeam && peer.TeamInitialPerkInfoReady && peer.SpawnTimer.Check(Mission.Current.CurrentTime))
                 {
-                    IAgentVisual agentVisualForPeer = peer.GetAgentVisualForPeer(0);
                     int num = peer.SelectedTroopIndex;
                     IEnumerable<MultiplayerClassDivisions.MPHeroClass> mpheroClasses = MultiplayerClassDivisions.GetMPHeroClasses(culture);
                     MultiplayerClassDivisions.MPHeroClass mpheroClass = num < 0 ? null : mpheroClasses.ElementAt(num);
@@ -295,15 +293,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                         }
                     }
                     MatrixFrame matrixFrame;
-                    if (agentVisualForPeer == null)
-                    {
-                        matrixFrame = spawnComponent.GetSpawnFrame(peer.Team, character.Equipment.Horse.Item != null, false);
-                    }
-                    else
-                    {
-                        matrixFrame = agentVisualForPeer.GetFrame();
-                        matrixFrame.rotation.MakeUnit();
-                    }
+                    matrixFrame = spawnComponent.GetSpawnFrame(peer.Team, character.Equipment.Horse.Item != null, false);
                     AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(peer).Equipment(equipment).Team(peer.Team)
                         .TroopOrigin(new BasicBattleAgentOrigin(character))
                         .InitialPosition(matrixFrame.origin);
@@ -317,10 +307,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     agentBuildData2.VisualsIndex(0)
                         .ClothingColor1(peer.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
                         .ClothingColor2(peer.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2);
-                    if (gameMode.ShouldSpawnVisualsForServer(player))
-                    {
-                        agentVisualSpawnComponent.SpawnAgentVisualsForPeer(peer, agentBuildData2, num, false, 0);
-                    }
                     gameMode.HandleAgentVisualSpawning(player, agentBuildData2, 0, Config.Instance.AllowCustomBody);
 
                     Log("Alliance : Spawned visuals for player " + peer.Name, LogLevel.Information);

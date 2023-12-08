@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -34,7 +33,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
             _missionAdminComponent = Mission.GetMissionBehavior<MultiplayerAdminComponent>();
             _missionTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             _gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
-            _pvcMissionTeamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
             TextObject textObject = GameTexts.FindText("str_multiplayer_game_type", _gameType);
             DataSource = new MPEscapeMenuVM(null, textObject);
         }
@@ -100,13 +98,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
             // Change Team
             if (gameType != "Scenario" || GameNetwork.MyPeer.IsAdmin())
             {
-                // TODO : remove pvc custom component, shouldn't have to dup code here
-                if (_pvcMissionTeamSelectComponent != null && _pvcMissionTeamSelectComponent.TeamSelectionEnabled)
+                if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
                 {
                     list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
                     {
                         OnEscapeMenuToggled(false);
-                        _pvcMissionTeamSelectComponent.SelectTeam();
+                        _missionTeamSelectComponent.SelectTeam();
                     }, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
                 }
                 else if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
@@ -160,8 +157,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
         private MultiplayerAdminComponent _missionAdminComponent;
 
         private MultiplayerTeamSelectComponent _missionTeamSelectComponent;
-
-        private PvCTeamSelectBehavior _pvcMissionTeamSelectComponent;
 
         private MissionMultiplayerGameModeBaseClient _gameModeClient;
 

@@ -41,16 +41,16 @@ namespace Alliance.Server.Patch.HarmonyPatch
                         BindingFlags.Instance | BindingFlags.NonPublic),
                     prefix: new HarmonyMethod(typeof(Patch_MissionMultiplayerFlagDomination).GetMethod(
                         nameof(Prefix_CheckPlayerBeingDetached), BindingFlags.Static | BindingFlags.Public)));
-                Harmony.Patch(
-                    typeof(MissionMultiplayerFlagDomination).GetMethod(nameof(MissionMultiplayerFlagDomination.OnBehaviorInitialize),
-                        BindingFlags.Instance | BindingFlags.Public),
-                    prefix: new HarmonyMethod(typeof(Patch_MissionMultiplayerFlagDomination).GetMethod(
-                        nameof(Prefix_OnBehaviorInitialize), BindingFlags.Static | BindingFlags.Public)));
+                //Harmony.Patch(
+                //    typeof(MissionMultiplayerFlagDomination).GetMethod(nameof(MissionMultiplayerFlagDomination.OnBehaviorInitialize),
+                //        BindingFlags.Instance | BindingFlags.Public),
+                //    prefix: new HarmonyMethod(typeof(Patch_MissionMultiplayerFlagDomination).GetMethod(
+                //        nameof(Prefix_OnBehaviorInitialize), BindingFlags.Static | BindingFlags.Public)));
 
-                Harmony.ReversePatch(
-                    typeof(MissionMultiplayerGameModeBase).GetMethod(
-                        nameof(MissionMultiplayerGameModeBase.OnBehaviorInitialize), BindingFlags.Instance | BindingFlags.Public),
-                    new HarmonyMethod(typeof(ReversePatch_MissionMultiplayerGameModeBase).GetMethod(nameof(ReversePatch_MissionMultiplayerGameModeBase.OnBehaviorInitialize))));
+                //Harmony.ReversePatch(
+                //    typeof(MissionMultiplayerGameModeBase).GetMethod(
+                //        nameof(MissionMultiplayerGameModeBase.OnBehaviorInitialize), BindingFlags.Instance | BindingFlags.Public),
+                //    new HarmonyMethod(typeof(ReversePatch_MissionMultiplayerGameModeBase).GetMethod(nameof(ReversePatch_MissionMultiplayerGameModeBase.OnBehaviorInitialize))));
             }
             catch (Exception e)
             {
@@ -262,52 +262,6 @@ namespace Alliance.Server.Patch.HarmonyPatch
 
             return false;
         }
-
-        // Original method
-        //private void CheckForPlayersSpawningAsBots()
-        //{
-        //    foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
-        //    {
-        //        if (networkCommunicator.IsSynchronized)
-        //        {
-        //            MissionPeer component = networkCommunicator.GetComponent<MissionPeer>();
-        //            if (component != null && component.ControlledAgent == null && component.Team != null && component.ControlledFormation != null && component.SpawnCountThisRound > 0)
-        //            {
-        //                if (!component.HasSpawnTimerExpired && component.SpawnTimer.Check(base.Mission.CurrentTime))
-        //                {
-        //                    component.HasSpawnTimerExpired = true;
-        //                }
-        //                if (component.HasSpawnTimerExpired && component.WantsToSpawnAsBot)
-        //                {
-        //                    if (component.ControlledFormation.HasUnitsWithCondition((Agent agent) => agent.IsActive() && agent.IsAIControlled))
-        //                    {
-        //                        Agent newAgent = null;
-        //                        Agent followingAgent = component.FollowedAgent;
-        //                        if (followingAgent != null && followingAgent.IsActive() && followingAgent.IsAIControlled && component.ControlledFormation.HasUnitsWithCondition((Agent agent) => agent == followingAgent))
-        //                        {
-        //                            newAgent = followingAgent;
-        //                        }
-        //                        else
-        //                        {
-        //                            float maxHealth = 0f;
-        //                            component.ControlledFormation.ApplyActionOnEachUnit(delegate (Agent agent)
-        //                            {
-        //                                if (agent.Health > maxHealth)
-        //                                {
-        //                                    maxHealth = agent.Health;
-        //                                    newAgent = agent;
-        //                                }
-        //                            }, null);
-        //                        }
-        //                        Mission.Current.ReplaceBotWithPlayer(newAgent, component);
-        //                        component.WantsToSpawnAsBot = false;
-        //                        component.HasSpawnTimerExpired = false;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     // Reverse patch to access base implementation of MissionMultiplayerGameModeBase.OnBehaviorInitialize

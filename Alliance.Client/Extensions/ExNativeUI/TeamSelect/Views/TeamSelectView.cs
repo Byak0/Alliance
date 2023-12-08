@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels;
 using Alliance.Client.Extensions.TroopSpawner.Models;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +26,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
         {
             base.OnMissionScreenInitialize();
             _missionNetworkComponent = Mission.GetMissionBehavior<MissionNetworkComponent>();
-            _multiplayerTeamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
+            _multiplayerTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             _classLoadoutGauntletComponent = Mission.GetMissionBehavior<MissionGauntletClassLoadout>();
             _lobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
             _missionNetworkComponent.OnMyClientSynchronized += OnMyClientSynchronized;
@@ -262,7 +261,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 
         private MissionNetworkComponent _missionNetworkComponent;
 
-        private PvCTeamSelectBehavior _multiplayerTeamSelectComponent;
+        private MultiplayerTeamSelectComponent _multiplayerTeamSelectComponent;
 
         private MissionGauntletMultiplayerScoreboard _scoreboardGauntletComponent;
 

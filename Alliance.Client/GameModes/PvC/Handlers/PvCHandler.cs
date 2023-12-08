@@ -22,7 +22,7 @@ namespace Alliance.Client.GameModes.PvC.Handlers
         public void HandleServerEventUpdateGold(SyncGoldsForSkirmish message)
         {
             MissionMultiplayerGameModeBaseClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
-            gameModeClient.OnGoldAmountChangedForRepresentative(message.VirtualPlayer.GetComponent<PvCRepresentative>(), message.GoldAmount);
+            gameModeClient.OnGoldAmountChangedForRepresentative(message.VirtualPlayer.GetComponent<MissionRepresentativeBase>(), message.GoldAmount);
         }
 
         // Works only for PvC GameMode

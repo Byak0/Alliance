@@ -1,6 +1,5 @@
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Behaviors;
-using Alliance.Common.GameModes.PvC.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -15,10 +14,7 @@ namespace Alliance.Client.GameModes.PvC
         [MissionMethod]
         public override void StartMultiplayerGame(string scene)
         {
-            MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                return GetMissionBehaviors();
-            }, true, true);
+            MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
         }
 
         private MissionBehavior[] GetMissionBehaviors()
@@ -26,27 +22,29 @@ namespace Alliance.Client.GameModes.PvC
             MissionBehavior[] behaviors = new MissionBehavior[]
                 {
                     MissionLobbyComponent.CreateBehavior(),
-                    
-                    // Custom components
-                    new PvCGameModeClientBehavior(),
-                    new MissionScoreboardComponent(new PvCScoreboardData()),
-                    new PvCTeamSelectBehavior(),
                     new FormationBehavior(),
 
-                    // Native components from Captain mode
-                    new MultiplayerAdminComponent(),
                     new MultiplayerAchievementComponent(),
+                    new MultiplayerWarmupComponent(),
+                    new PvCGameModeClientBehavior(),
                     new MultiplayerRoundComponent(),
-                    new AgentVictoryLogic(),
                     new MultiplayerTimerComponent(),
                     new MultiplayerMissionAgentVisualSpawnComponent(),
+                    new ConsoleMatchStartEndHandler(),
                     new MissionLobbyEquipmentNetworkComponent(),
+                    new MultiplayerTeamSelectComponent(),
                     new MissionHardBorderPlacer(),
                     new MissionBoundaryPlacer(),
                     new MissionBoundaryCrossingHandler(),
                     new MultiplayerPollComponent(),
+                    new MultiplayerAdminComponent(),
                     new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent()
+                    new MissionOptionsComponent(),
+                    new MissionScoreboardComponent(new CaptainScoreboardData()),
+                    MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
+                    new EquipmentControllerLeaveLogic(),
+                    new MissionRecentPlayersComponent(),
+                    new MultiplayerPreloadHelper()
                 };
 
             return behaviors;

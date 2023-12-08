@@ -1,11 +1,10 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModels;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Server.Core;
 using NetworkMessages.FromServer;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -52,7 +51,11 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         {
             RoundController.OnRoundStarted += OnPreparationStart;
             MissionPeer.OnPreTeamChanged += OnPreTeamChanged;
-            RoundController.OnPreparationEnded += OnPreparationEnded;
+            if (WarmupComponent != null)
+            {
+                WarmupComponent.OnWarmupEnding += OnWarmupEnding;
+            }
+
             RoundController.OnPreRoundEnding += OnRoundEnd;
             RoundController.OnPostRoundEnded += OnPostRoundEnd;
             BasicCultureObject @object = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
@@ -63,22 +66,15 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             Mission.Teams.Add(BattleSideEnum.Defender, object2.BackgroundColor2, object2.ForegroundColor2, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
         }
 
-        // Override to prevent call to WarmupComponent (we removed it duh)
         public override void OnRemoveBehavior()
         {
+            base.OnRemoveBehavior();
+
             // Reset  all spawn slots
             for (int i = 0; i < AgentsInfoModel.Instance.Agents.Count; i++)
             {
                 AgentsInfoModel.Instance.RemoveAgentInfo(i);
             }
-            RoundController.OnRoundStarted -= OnPreparationStart;
-            MissionPeer.OnPreTeamChanged -= OnPreTeamChanged;
-            RoundController.OnPreparationEnded -= OnPreparationEnded;
-            //WarmupComponent.OnWarmupEnding -= this.OnWarmupEnding;
-            RoundController.OnPreRoundEnding -= OnRoundEnd;
-            RoundController.OnPostRoundEnded -= OnPostRoundEnd;
-            GameNetwork.RemoveNetworkHandler(this);
-            //base.OnRemoveBehavior();
         }
 
         public override void OnMissionTick(float dt)
@@ -96,13 +92,16 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         }
 
         // Override to prevent FlagDominationMissionRepresentative being added to peer
-        protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        {
-        }
+        //protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
+        //{
+        //}
 
         public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
         {
-            ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+            if (oldTeam != null && oldTeam != newTeam && UseGold() && (WarmupComponent == null || !WarmupComponent.IsInWarmup))
+            {
+                ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+            }
         }
 
         public override void OnAgentBuild(Agent agent, Banner banner)
@@ -154,8 +153,8 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     {
                         foreach (var (missionPeer, num) in enumerable)
                         {
-                            PvCRepresentative PvCRepresentative3;
-                            if (num > 0 && (PvCRepresentative3 = missionPeer?.Representative as PvCRepresentative) != null)
+                            MissionRepresentativeBase MissionRepresentativeBase3;
+                            if (num > 0 && (MissionRepresentativeBase3 = missionPeer?.Representative) != null)
                             {
                                 int goldGainsFromAllyDeathReward = Config.Instance.GoldPerAllyDead;
                                 if (goldGainsFromAllyDeathReward > 0)
@@ -170,12 +169,12 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                 if (killer?.MissionPeer != null && killer.Team != victim.Team)
                 {
                     // Gold gain for a kill
-                    PvCRepresentative player = killer.MissionPeer.Representative as PvCRepresentative;
+                    MissionRepresentativeBase player = killer.MissionPeer.Representative;
                     int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
                     AddGoldForPeer(killer.MissionPeer, goldGainFromKillDataAndUpdateFlags);
 
                     // Send report to commander if bonus gold obtained
-                    if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.IsCommander)
+                    if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.Peer.IsCommander())
                     {
                         ReportBonusGoldFromKill(victim, player, goldGainFromKillDataAndUpdateFlags);
                     }
@@ -183,7 +182,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                 else if (killer.Team != victim.Team)
                 {
                     // Gold gain for the commander when a bot kill an enemy
-                    PvCRepresentative commander = (PvCRepresentative)(killer.Formation?.PlayerOwner?.MissionPeer?.Representative);
+                    MissionRepresentativeBase commander = killer.Formation?.PlayerOwner?.MissionPeer?.Representative;
                     if (commander != null)
                     {
                         int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
@@ -211,7 +210,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
-        private void ReportBonusGoldFromKill(Agent victim, PvCRepresentative commander, int goldGainFromKillDataAndUpdateFlags)
+        private void ReportBonusGoldFromKill(Agent victim, MissionRepresentativeBase commander, int goldGainFromKillDataAndUpdateFlags)
         {
             string victimName = victim.MissionPeer?.DisplayedName != null ? victim.MissionPeer.DisplayedName : victim.Name;
             string report = "You killed " + victimName + " for " + goldGainFromKillDataAndUpdateFlags + " golds ("
@@ -231,12 +230,9 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         {
         }
 
-        private void OnPreparationEnded()
+        private void OnWarmupEnding()
         {
-            if (!UseGold() || RoundController.IsMatchEnding || RoundController.RoundCount <= 0)
-            {
-                return;
-            }
+            NotificationsComponent.WarmupEnding();
         }
 
         private void SetStartingGold()
@@ -428,17 +424,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             {
                 GameModeStarter.Instance.StartLobby("Lobby", "empire", "vlandia");
             }
-
-            // TODO : check if necessary. MB OnPreparationEnded is enough.
-            /*if (!UseGold() || RoundController.IsMatchEnding || RoundController.RoundCount <= 0) 
-            { 
-                return; 
-            }
-            foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
-            {
-                MissionPeer component = networkCommunicator.GetComponent<MissionPeer>();
-                if(component != null) ChangeCurrentGoldForPeer(component, Config.Instance.StartingGoldAmount);
-            }*/
         }
 
         public void AddGoldForPeer(MissionPeer peer, int amount)
@@ -449,26 +434,21 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         // Mask parent method and remove gold limit
         public new void ChangeCurrentGoldForPeer(MissionPeer peer, int newAmount)
         {
-            try
+            if (newAmount >= 0)
             {
                 newAmount = MBMath.ClampInt(newAmount, 0, CompressionBasic.RoundGoldAmountCompressionInfo.GetMaximumValue());
-
-                if (peer.Peer.Communicator.IsConnectionActive)
-                {
-                    GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
-                    GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-                }
-
-                if (GameModeBaseClient != null)
-                {
-                    GameModeBaseClient.OnGoldAmountChangedForRepresentative(peer.Representative, newAmount);
-                }
             }
-            catch (Exception ex)
+
+            if (peer.Peer.Communicator.IsConnectionActive)
             {
-                Debug.Print("PvC : ERROR giving gold to " + peer, 0, Debug.DebugColor.Red);
-                Debug.Print(ex.ToString(), 0, Debug.DebugColor.Red);
+                GameNetwork.BeginBroadcastModuleEvent();
+                GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
+                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+            }
+
+            if (GameModeBaseClient != null)
+            {
+                GameModeBaseClient.OnGoldAmountChangedForRepresentative(peer.Representative, newAmount);
             }
         }
     }

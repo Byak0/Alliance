@@ -1,5 +1,4 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
@@ -11,7 +10,6 @@ using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 {
-    // TODO : Seems unused ?
     //[OverrideView(typeof(MissionLobbyEquipmentUIHandler))]
     public class LobbyEquipmentView : MissionView
     {
@@ -23,7 +21,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             ViewOrderPriority = 20;
             _missionLobbyEquipmentNetworkComponent = Mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             _gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
-            _teamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
+            _teamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             if (_teamSelectComponent != null)
             {
                 _teamSelectComponent.OnSelectingTeam += OnSelectingTeam;
@@ -245,7 +243,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private MissionMultiplayerGameModeBaseClient _gameModeClient;
 
-        private PvCTeamSelectBehavior _teamSelectComponent;
+        private MultiplayerTeamSelectComponent _teamSelectComponent;
 
         private MissionGauntletMultiplayerScoreboard _scoreboardGauntletComponent;
 

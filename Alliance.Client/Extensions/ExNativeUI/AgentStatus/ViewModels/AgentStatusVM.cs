@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.GameModes.PvC.Behaviors;
+using Alliance.Common.Core.Security.Extension;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -132,8 +132,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
             MissionMultiplayerGameModeBaseClient mpGameMode = _mpGameMode;
 
             // Activate gold for commanders only
-            IsGoldActive = PvCRepresentative.Main != null && PvCRepresentative.Main.IsCommander && Config.Instance.UseTroopCost;
-            if (IsGoldActive) GoldAmount = PvCRepresentative.Main.Gold;
+            IsGoldActive = GameNetwork.MyPeer.IsCommander() && Config.Instance.UseTroopCost;
+            if (IsGoldActive) GoldAmount = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
 
             MissionAgentTakenDamageVM takenDamageController = TakenDamageController;
             if (takenDamageController == null)

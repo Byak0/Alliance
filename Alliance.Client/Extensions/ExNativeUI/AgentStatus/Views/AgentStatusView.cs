@@ -5,13 +5,12 @@ using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.GauntletUI.Mission;
 using TaleWorlds.MountAndBlade.Missions.Handlers;
-using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.MissionViews.Singleplayer;
 
 namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 {
-    [OverrideView(typeof(MissionAgentStatusUIHandler))]
+    //[OverrideView(typeof(MissionAgentStatusUIHandler))]
     public class AgentStatusView : MissionGauntletBattleUIBase
     {
         public AgentStatusView()

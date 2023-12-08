@@ -29,7 +29,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             _roundController.OnRoundStarted += RequestStartSpawnSession;
             _roundController.OnRoundEnding += RequestStopSpawnSession;
             _roundController.OnRoundEnding += SetRemainingAgentsInvulnerable;
-            if (MultiplayerOptions.OptionType.NumberOfBotsPerFormation.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions) == 0)
+            if (MultiplayerOptions.OptionType.NumberOfBotsPerFormation.GetIntValue() == 0)
             {
                 _roundController.EnableEquipmentUpdate();
             }

@@ -5,7 +5,6 @@ using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -73,12 +72,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
         private int _nbClick;
         private float _lastClick;
 
+        MissionRepresentativeBase MyRepresentative => GameNetwork.MyPeer?.VirtualPlayer.GetComponent<MissionRepresentativeBase>();
+
         public SpawnTroopsWidget(UIContext context) : base(context)
         {
             _unitCharacterVM = new CharacterViewModel(CharacterViewModel.StanceTypes.CelebrateVictory);
 
             // Get PvCRepresentative for gold and refresh when needed
-            if (Config.Instance.UseTroopCost && PvCRepresentative.Main != null) PvCRepresentative.Main.OnGoldUpdated += RefreshGold;
+            if (Config.Instance.UseTroopCost && MyRepresentative != null) MyRepresentative.OnGoldUpdated += RefreshGold;
 
             // Root widget
             this.Init(width: SP.Fixed, height: SP.Fixed, 1500, 900, hAlign: HAlign.Center, vAlign: VAlign.Center, brush: Context.GetBrush("Alliance.MainFrame"));
@@ -93,6 +94,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
             RefreshRecruitButton();
         }
 
+
+
         // Main widget englobing everything
         private Widget MainList()
         {
@@ -100,9 +103,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
             mainList.Init(width: SP.StretchToParent, height: SP.CoverChildren);
             mainList.AddChild(LeftList());
             mainList.AddChild(RightList());
-            if (Config.Instance.UseTroopCost && PvCRepresentative.Main != null) mainList.AddChild(TotalTroopCost());
+            if (Config.Instance.UseTroopCost && MyRepresentative != null) mainList.AddChild(TotalTroopCost());
             mainList.AddChild(SpawnButton());
-            if (Config.Instance.UseTroopCost && PvCRepresentative.Main != null) mainList.AddChild(TotalGold());
+            if (Config.Instance.UseTroopCost && MyRepresentative != null) mainList.AddChild(TotalGold());
             return mainList;
         }
 
@@ -423,7 +426,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
             totalGoldText.PositionYOffset = 3;
             totalGoldText.ClipContents = false;
             totalGoldText.Brush.FontSize = 40;
-            totalGoldText.IntText = PvCRepresentative.Main.Gold;
+            totalGoldText.IntText = MyRepresentative?.Gold ?? 0;
 
             Widget goldIcon = new Widget(Context);
             goldIcon.Init(width: SP.Fixed, height: SP.Fixed, suggestedWidth: 33, suggestedHeight: 30,
@@ -440,7 +443,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
 
         private void RefreshGold()
         {
-            totalGoldText.IntText = PvCRepresentative.Main.Gold;
+            totalGoldText.IntText = MyRepresentative?.Gold ?? 0;
             RefreshFormationCards();
         }
 
@@ -500,12 +503,12 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
 
         private void RefreshCost()
         {
-            if (!Config.Instance.UseTroopCost || PvCRepresentative.Main == null) return;
+            if (!Config.Instance.UseTroopCost || MyRepresentative == null) return;
             if (totalTroopCostText == null) mainList.AddChild(TotalTroopCost());
 
             int newCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty);
             totalTroopCostText.IntText = -newCost;
-            if (newCost > PvCRepresentative.Main.Gold)
+            if (newCost > MyRepresentative.Gold)
             {
                 totalTroopCostText.Brush.FontColor = Colors.Red;
             }
@@ -517,10 +520,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
 
         private void RefreshRecruitButton()
         {
-            if (PvCRepresentative.Main == null) return;
+            if (MyRepresentative == null) return;
 
             bool troopOverLimit = Config.Instance.UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
-            bool troopTooCostly = Config.Instance.UseTroopCost && SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty) > PvCRepresentative.Main.Gold;
+            bool troopTooCostly = Config.Instance.UseTroopCost && SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty) > MyRepresentative.Gold;
             spawnButton.IsDisabled = !GameNetwork.MyPeer.IsCommander() && (troopOverLimit || troopTooCostly);
         }
 

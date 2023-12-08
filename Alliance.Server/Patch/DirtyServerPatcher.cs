@@ -16,12 +16,12 @@ namespace Alliance.Server.Patch
             bool patchSuccess = true;
             patchSuccess &= Patch_MissionPeer.Patch();
             //patchSuccess &= Patch_MissionLobbyComponent.Patch();
-            //patchSuccess &= Patch_MissionMultiplayerFlagDomination.Patch();
+            patchSuccess &= Patch_MissionMultiplayerFlagDomination.Patch();
             //patchSuccess &= Patch_MissionMultiplayerGameModeBase.Patch();
             //patchSuccess &= Patch_SpawnedItemEntity.Patch();
             //patchSuccess &= Patch_MultiplayerRoundController.Patch();
-            //patchSuccess &= Patch_SpawnComponent.Patch();
-            //patchSuccess &= Patch_MultiplayerWarmupComponent.Patch();
+            patchSuccess &= Patch_SpawnComponent.Patch();
+            patchSuccess &= Patch_MultiplayerWarmupComponent.Patch();
             //patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
             //patchSuccess &= Patch_MissionNetworkComponent.Patch();
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
