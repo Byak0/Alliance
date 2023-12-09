@@ -840,7 +840,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
             if (GameNetwork.IsClient)
             {
-                PilotAgent.AgentVisuals.SetVisible(false);
+                PilotAgent?.AgentVisuals?.SetVisible(false);
             }
         }
 
@@ -850,7 +850,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
             if (GameNetwork.IsClient)
             {
-                PilotAgent.AgentVisuals.SetVisible(true);
+                PilotAgent?.AgentVisuals?.SetVisible(true);
             }
         }
     }
