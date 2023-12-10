@@ -561,7 +561,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
                 GameNetwork.WriteMessage(new RequestSpawnTroop(
                     _spawnFrame,
                     false,
-                    SpawnTroopsModel.Instance.SelectedTroop.StringId.ToString(),
+                    SpawnTroopsModel.Instance.SelectedTroop,
                     SpawnTroopsModel.Instance.FormationSelected,
                     SpawnTroopsModel.Instance.TroopCount,
                     SpawnTroopsModel.Instance.Difficulty));

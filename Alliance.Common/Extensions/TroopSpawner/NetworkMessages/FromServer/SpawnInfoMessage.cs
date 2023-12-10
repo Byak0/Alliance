@@ -8,58 +8,22 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SpawnInfoMessage : GameNetworkMessage
     {
-        private BasicCharacterObject troop;
-        private int troopCount;
-        private int troopLeft;
+        public BasicCharacterObject Troop { get; private set; }
+        public int TroopCount { get; private set; }
+        public int TroopLeft { get; private set; }
 
         public SpawnInfoMessage() { }
 
         public SpawnInfoMessage(BasicCharacterObject troop, int troopCount, int troopLeft)
         {
-            this.troop = troop;
-            this.troopCount = troopCount;
-            this.troopLeft = troopLeft;
-        }
-
-        public BasicCharacterObject Troop
-        {
-            get
-            {
-                return troop;
-            }
-            private set
-            {
-                troop = value;
-            }
-        }
-
-        public int TroopCount
-        {
-            get
-            {
-                return troopCount;
-            }
-            private set
-            {
-                troopCount = value;
-            }
-        }
-
-        public int TroopLeft
-        {
-            get
-            {
-                return troopLeft;
-            }
-            private set
-            {
-                troopLeft = value;
-            }
+            Troop = troop;
+            TroopCount = troopCount;
+            TroopLeft = troopLeft;
         }
 
         protected override void OnWrite()
         {
-            WriteObjectReferenceToPacket(troop, CompressionBasic.GUIDCompressionInfo);
+            WriteObjectReferenceToPacket(Troop, CompressionBasic.GUIDCompressionInfo);
             WriteIntToPacket(TroopCount, new CompressionInfo.Integer(0, 9999, true));
             WriteIntToPacket(TroopLeft, new CompressionInfo.Integer(0, 9999, true));
         }

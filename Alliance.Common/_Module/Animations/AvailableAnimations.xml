@@ -1,18 +1,7 @@
 <?xml version="1.0"?>
 <AnimationUserStore xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<FavoriteAnimations />
 	<AnimationSequences>
-		<AnimationSequence>
-			<Index>4</Index>
-			<Name>Dance</Name>
-			<Animations>
-				<Animation>
-					<Index>4073</Index>
-					<Name>act_dance_norse</Name>
-					<Speed>1</Speed>
-					<MaxDuration>29</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
 		<AnimationSequence>
 			<Index>5</Index>
 			<Name>Unlock</Name>
@@ -22,66 +11,6 @@
 					<Name>act_none</Name>
 					<Speed>1</Speed>
 					<MaxDuration>1.3</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
-			<Index>15</Index>
-			<Name>Cheer (high)</Name>
-			<Animations>
-				<Animation>
-					<Index>3525</Index>
-					<Name>act_cheering_high_01</Name>
-					<Speed>1</Speed>
-					<MaxDuration>22</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
-			<Index>35</Index>
-			<Name>Idle</Name>
-			<Animations>
-				<Animation>
-					<Index>4340</Index>
-					<Name>act_sturgia_mp_huskarl_idle</Name>
-					<Speed>1</Speed>
-					<MaxDuration>13</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
-			<Index>27</Index>
-			<Name>Applaud</Name>
-			<Animations>
-				<Animation>
-					<Index>3900</Index>
-					<Name>act_cutscene_wedding_crowd_04</Name>
-					<Speed>1</Speed>
-					<MaxDuration>7.4</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
-			<Index>28</Index>
-			<Name>Applaud 2</Name>
-			<Animations>
-				<Animation>
-					<Index>3862</Index>
-					<Name>act_main_story_become_king_female_crowd_1</Name>
-					<Speed>1</Speed>
-					<MaxDuration>40</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
-			<Index>29</Index>
-			<Name>Cheer (low)</Name>
-			<Animations>
-				<Animation>
-					<Index>3533</Index>
-					<Name>act_cheering_low_01</Name>
-					<Speed>1</Speed>
-					<MaxDuration>32</MaxDuration>
 				</Animation>
 			</Animations>
 		</AnimationSequence>
@@ -254,18 +183,6 @@
 			</Animations>
 		</AnimationSequence>
 		<AnimationSequence>
-			<Index>2</Index>
-			<Name>Sit</Name>
-			<Animations>
-				<Animation>
-					<Index>4077</Index>
-					<Name>act_sit_down_on_floor_1</Name>
-					<Speed>1</Speed>
-					<MaxDuration>6</MaxDuration>
-				</Animation>
-			</Animations>
-		</AnimationSequence>
-		<AnimationSequence>
 			<Index>52</Index>
 			<Name>Cross arms</Name>
 			<Animations>
@@ -274,6 +191,78 @@
 					<Name>act_pose_lord_4</Name>
 					<Speed>1</Speed>
 					<MaxDuration>1</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>2</Index>
+			<Name>Sit</Name>
+			<Animations>
+				<Animation>
+					<Index>4164</Index>
+					<Name>act_sit_down_on_floor_1</Name>
+					<Speed>1</Speed>
+					<MaxDuration>6</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>4</Index>
+			<Name>Dance</Name>
+			<Animations>
+				<Animation>
+					<Index>4160</Index>
+					<Name>act_dance_norse</Name>
+					<Speed>1</Speed>
+					<MaxDuration>29</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>29</Index>
+			<Name>Cheer (low)</Name>
+			<Animations>
+				<Animation>
+					<Index>3541</Index>
+					<Name>act_cheering_low_01</Name>
+					<Speed>1</Speed>
+					<MaxDuration>32</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>15</Index>
+			<Name>Cheer (high)</Name>
+			<Animations>
+				<Animation>
+					<Index>3533</Index>
+					<Name>act_cheering_high_01</Name>
+					<Speed>1</Speed>
+					<MaxDuration>22</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>27</Index>
+			<Name>Applaud</Name>
+			<Animations>
+				<Animation>
+					<Index>3908</Index>
+					<Name>act_cutscene_wedding_crowd_04</Name>
+					<Speed>1</Speed>
+					<MaxDuration>7.4</MaxDuration>
+				</Animation>
+			</Animations>
+		</AnimationSequence>
+		<AnimationSequence>
+			<Index>28</Index>
+			<Name>Applaud 2</Name>
+			<Animations>
+				<Animation>
+					<Index>3870</Index>
+					<Name>act_main_story_become_king_female_crowd_1</Name>
+					<Speed>1</Speed>
+					<MaxDuration>40</MaxDuration>
 				</Animation>
 			</Animations>
 		</AnimationSequence>

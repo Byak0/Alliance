@@ -14,7 +14,6 @@ using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.TroopSpawner.Handlers
@@ -257,12 +256,11 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
         }
 
         /// <summary>
-        /// Get appropriate BasicCharacterObject from troop name
+        /// Get appropriate BasicCharacterObject
         /// </summary>
-        private static BasicCharacterObject GetTroopToSpawn(string troopName, bool heroVersion = false)
+        private static BasicCharacterObject GetTroopToSpawn(BasicCharacterObject troop, bool heroVersion = false)
         {
-            BasicCharacterObject troopToSpawn = MBObjectManager.Instance.GetObject<BasicCharacterObject>(troopName);
-            MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troopToSpawn);
+            MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
 
             if (heroVersion)
             {

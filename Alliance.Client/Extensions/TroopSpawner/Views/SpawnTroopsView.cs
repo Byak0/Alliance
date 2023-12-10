@@ -204,7 +204,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
             GameNetwork.WriteMessage(new RequestSpawnTroop(
                 _spawnFrame,
                 true,
-                SpawnTroopsModel.Instance.SelectedTroop.StringId.ToString(),
+                SpawnTroopsModel.Instance.SelectedTroop,
                 SpawnTroopsModel.Instance.FormationSelected,
                 1,
                 SpawnTroopsModel.Instance.Difficulty));
@@ -244,7 +244,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
             GameNetwork.WriteMessage(new RequestSpawnTroop(
                 _spawnFrame,
                 false,
-                SpawnTroopsModel.Instance.SelectedTroop.StringId.ToString(),
+                SpawnTroopsModel.Instance.SelectedTroop,
                 SpawnTroopsModel.Instance.FormationSelected,
                 SpawnTroopsModel.Instance.TroopCount,
                 SpawnTroopsModel.Instance.Difficulty));
