@@ -14,12 +14,13 @@
 					<ItemTemplate>
 
 						<!--Shortcut-->
-						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="25" Brush="Frame1.Border">
+						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginLeft="25" >
 							<Children>
 
+								<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="30" Brush="Frame1.Border"/>
 
 								<!--Shortcut icon-->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-5"  UpdateChildrenStates="true" >
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="25"  UpdateChildrenStates="true" >
 									<Children>
 										<!--Shortcut name-->
 										<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="8" MarginLeft="85" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="30" Text="@Shortcut" />
@@ -29,11 +30,11 @@
 
 								<!--Dropdown animation list-->
 								<NavigationScopeTargeter ScopeID="DropdownAnimationsScope" ScopeParent="..\DropdownParent" ScopeMovements="Vertical" />
-								<DirectionalListPanelDropdownWidget Id="DropdownParent" DataSource="{AnimationSequenceSelector}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="140" MarginLeft="5" MarginTop="10" DoNotHandleDropdownListPanel="false" CurrentSelectedIndex="@SelectedIndex" Button="DropdownButton" ListPanelContainer="ListContainer" ListPanel="ListContainer\PrimaryUsageSelectorList" RichTextWidget="DropdownButton\Container\ContainerChild\SelectedTextWidget" >
+								<DirectionalListPanelDropdownWidget Id="DropdownParent" DataSource="{AnimationSequenceSelector}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="140" MarginLeft="5" DoNotHandleDropdownListPanel="true" CurrentSelectedIndex="@SelectedIndex" Button="DropdownButton" ListPanelContainer="ListContainer" ListPanel="ListContainer\ScrollablePanel\ClipRect\PrimaryUsageSelectorList" RichTextWidget="DropdownButton\Container\ContainerChild\SelectedTextWidget" >
 									<Children>
 
 										<!--Currently selected animation-->
-										<ButtonWidget Id="DropdownButton" Type="Toggle" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="-15" >
+										<ButtonWidget Id="DropdownButton" Type="Toggle" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="33"  >
 											<Children>
 												<Widget Id="Container" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
 													<Children>
@@ -50,22 +51,39 @@
 										</ButtonWidget>
 
 										<!--List of custom animations-->
-										<BrushWidget Id="ListContainer" IsVisible="false" WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" >
+										<BrushWidget Id="ListContainer" IsVisible="false" WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginLeft="-10" MarginBottom="-2" Brush="MPLobby.Popup.Frame" >
 											<Children>
 
-												<BrushListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" SuggestedWidth="140" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" PositionYOffset="370" PositionXOffset="-4" HorizontalAlignment="Left" MinIndex="1" Brush="Alliance.ListFrame">
-													<ItemTemplate>
-														<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
+												<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\PrimaryUsageSelectorList" VerticalScrollbar="..\VerticalScrollbar">
+													<Children>
+														<Widget Id="ClipRect" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 															<Children>
-																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="5" MarginRight="5">
-																	<Children>
-																		<RichTextWidget Text="@StringItem" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Matchmaking.Region.ItemText"/>
-																	</Children>
-																</ListPanel>
+																<BrushListPanel Id="PrimaryUsageSelectorList" IsVisible="false" DataSource="{ItemList}" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+																	<ItemTemplate>
+
+																		<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
+																			<Children>
+																				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="10">
+																					<Children>
+																						<RichTextWidget Text="@StringItem" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Matchmaking.Region.ItemText"/>
+																					</Children>
+																				</ListPanel>
+																			</Children>
+																		</ButtonWidget>
+r
+																	</ItemTemplate>
+																</BrushListPanel>
 															</Children>
-														</ButtonWidget>
-													</ItemTemplate>
-												</BrushListPanel>
+														</Widget>
+													</Children>
+												</ScrollablePanel>
+												<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+													<Children>
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="6" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+														<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+													</Children>
+												</ScrollbarWidget>
+
 
 											</Children>
 										</BrushWidget>
