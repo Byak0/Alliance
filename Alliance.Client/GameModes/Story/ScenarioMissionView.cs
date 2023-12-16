@@ -7,7 +7,6 @@ using Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views;
 using Alliance.Client.Extensions.FlagsTracker.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
 using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using Alliance.Client.GameModes.Story.Views;
 using System.Collections.Generic;
@@ -27,7 +26,6 @@ namespace Alliance.Client.GameModes.Story
             List<MissionView> list = new List<MissionView>
             {
                 // Custom views
-                new SpawnTroopsView(),
                 new KillNotificationView(),
                 new LobbyEquipmentView(),
                 new AgentStatusView(),

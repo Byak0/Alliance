@@ -54,7 +54,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
             if (formation.CountOfUnits == 0)
             {
                 Log($"Formation {formation.Index} was empty, giving control to {networkPeer.UserName}", LogLevel.Information);
-                FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), formation.PhysicalClass, true);
+                FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), formation.FormationIndex, true);
             }
 
             int number = message.Number;

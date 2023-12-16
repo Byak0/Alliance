@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
+using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -16,6 +17,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         private static readonly FormationControlModel instance = new();
         public static FormationControlModel Instance { get { return instance; } }
 
+        public event Action FormationControlChanged;
         private readonly Dictionary<MissionPeer, List<FormationClass>> playerFormationMapping = new();
 
         public FormationControlModel()
@@ -25,7 +27,18 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         public void Clear()
         {
             playerFormationMapping.Clear();
-            Log($"Cleared formation control model");
+            Log($"Cleared formation control model", LogLevel.Debug);
+        }
+
+        /// <summary>
+        /// Request to assign control of a formation to a player.
+        /// </summary>
+        public void RequestAssignControlToPlayer(MissionPeer missionPeer, FormationClass formationClass)
+        {
+            Log($"Request assign control of {formationClass} to {missionPeer.Name}", LogLevel.Debug);
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new FormationRequestControlMessage(missionPeer.GetNetworkPeer(), formationClass));
+            GameNetwork.EndModuleEventAsClient();
         }
 
         /// <summary>
@@ -76,8 +89,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             {
                 playerFormationMapping[missionPeer].Add(formationClass);
                 if (GameNetwork.IsServer) missionPeer.ControlledAgent?.Team.AssignPlayerAsSergeantOfFormation(missionPeer, formationClass);
+                FormationControlChanged?.Invoke();
 
-                Log($"Assigned {missionPeer.Name} control over formation {formationClass}");
+                Log($"Assigned {missionPeer.Name} control over formation {formationClass}", LogLevel.Debug);
             }
 
             if (sync)
@@ -86,17 +100,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
                 GameNetwork.WriteMessage(new FormationControlMessage(missionPeer.GetNetworkPeer(), formationClass));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
-        }
-
-        /// <summary>
-        /// Request control of a formation to a player.
-        /// </summary>
-        public void RequestAssignControlToPlayer(MissionPeer missionPeer, FormationClass formationClass)
-        {
-            Log($"Request assign control of {formationClass} to {missionPeer.Name}");
-            GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new FormationRequestControlMessage(missionPeer.GetNetworkPeer(), formationClass));
-            GameNetwork.EndModuleEventAsClient();
         }
 
         /// <summary>
@@ -111,6 +114,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
                 {
                     controlledFormations.Remove(formationClass);
                     if (GameNetwork.IsServer) missionPeer.ControlledFormation = null;
+                    FormationControlChanged?.Invoke();
                 }
 
                 if (controlledFormations.Count == 0)
@@ -118,7 +122,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
                     playerFormationMapping.Remove(missionPeer);
                 }
 
-                Log($"Removed {missionPeer.Name} control over formation {formationClass}");
+                Log($"Removed {missionPeer.Name} control over formation {formationClass}", LogLevel.Debug);
             }
 
             if (sync)
@@ -129,9 +133,15 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             }
         }
 
+        public void TransferControl(MissionPeer fromPeer, MissionPeer toPeer, FormationClass formationClass, bool sync = false)
+        {
+            RemoveControlFromPlayer(fromPeer, formationClass, sync);
+            AssignControlToPlayer(toPeer, formationClass, sync);
+        }
+
         public void SendMappingToClient(NetworkCommunicator peer)
         {
-            Log($"Sending formation mapping info to {peer.UserName}. Commanders : {playerFormationMapping.Count}");
+            Log($"Sending formation mapping info to {peer.UserName}. Commanders : {playerFormationMapping.Count}", LogLevel.Debug);
 
             foreach (KeyValuePair<MissionPeer, List<FormationClass>> kvp in playerFormationMapping)
             {
@@ -156,12 +166,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             return new List<FormationClass>();
         }
 
-        public void TransferControl(MissionPeer fromPeer, MissionPeer toPeer, FormationClass formationClass, bool sync = false)
-        {
-            RemoveControlFromPlayer(fromPeer, formationClass, sync);
-            AssignControlToPlayer(toPeer, formationClass, sync);
-        }
-
         public List<string> GetAllControllersFromTeam(Team team)
         {
             List<string> controllers = new();
@@ -182,6 +186,19 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             foreach (KeyValuePair<MissionPeer, List<FormationClass>> kvp in playerFormationMapping)
             {
                 if (kvp.Key.Team == team && kvp.Value.Contains(i))
+                {
+                    return kvp.Key;
+                }
+            }
+
+            return null;
+        }
+
+        public MissionPeer GetControllerOfFormation(Formation formation)
+        {
+            foreach (KeyValuePair<MissionPeer, List<FormationClass>> kvp in playerFormationMapping)
+            {
+                if (kvp.Key.Team == formation.Team && kvp.Value.Contains(formation.FormationIndex))
                 {
                     return kvp.Key;
                 }

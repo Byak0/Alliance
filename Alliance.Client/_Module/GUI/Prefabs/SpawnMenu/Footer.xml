@@ -1,0 +1,47 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Footer -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+			<Children>
+				<!-- Total Troop cost -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="80" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginBottom="20" MarginLeft="140" IsVisible="@UseTroopCost" >
+					<Children>
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="45">
+							<Children>
+								<!-- Text -->
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginRight="5" Brush="MPHUD.GoldAmount.Text" PositionYOffset="3" ClipContents="false" Brush.FontSize="40" Brush.FontColor="@TotalCostColor" IntText="@TotalCost" />
+								<!-- Gold icon -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="33" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="8" Sprite="General\Mission\PersonalKillfeed\bracelet_icon_shadow" />
+							</Children>
+						</ListPanel>
+					</Children>
+				</Widget>
+
+				<!-- Recruit button -->
+				<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="240" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="20" Brush="ButtonBrush1" DoNotPassEventsToChildren="true" Command.Click="RecruitTroop" IsEnabled="@CanRecruit">
+					<Children>
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Popup.Button.Text" Brush.FontSize="30" Text="Recruit !"/>
+					</Children>
+				</ButtonWidget>
+
+				<!-- Current gold -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginBottom="20" MarginRight="140" IsVisible="@UseTroopCost" >
+					<Children>
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="45">
+							<Children>
+								<!-- Text -->
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginRight="5" Brush="MPHUD.GoldAmount.Text" PositionYOffset="3" ClipContents="false" Brush.FontSize="40" IntText="@TotalGold" />
+								<!-- Gold icon -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="33" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="8" Sprite="General\Mission\PersonalKillfeed\bracelet_icon_shadow" />
+							</Children>
+						</ListPanel>
+					</Children>
+				</Widget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

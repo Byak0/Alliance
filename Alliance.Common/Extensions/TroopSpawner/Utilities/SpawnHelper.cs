@@ -153,7 +153,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 Banner banner = new Banner(component.Peer.BannerCode, color3, color4);
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
-                Log("Formation = " + form.PhysicalClass.GetName(), LogLevel.Debug);
+                Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
                 AgentBuildData agentBuildData = new AgentBuildData(character)
                     .VisualsIndex(randomSeed)
                     .Team(component.Team)

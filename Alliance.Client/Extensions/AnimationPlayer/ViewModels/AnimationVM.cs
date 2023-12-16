@@ -260,6 +260,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.ViewModels
 
             // Initialize Animation preview
             AnimationPreview = new CharacterViewModel();
+            AnimationPreview.ShouldLoopCustomAnimation = true;
             BasicCharacterObject bco = Mission.Current.MainAgent != null ? Mission.Current.MainAgent.Character : MBObjectManager.Instance.GetFirstObject<BasicCharacterObject>();
             AnimationPreview.FillFrom(bco);
 

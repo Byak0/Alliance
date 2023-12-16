@@ -1,0 +1,14 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Troop preview -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+			<Children>
+				<CharacterTableauWidget DataSource="{TroopPreview}" WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" />
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

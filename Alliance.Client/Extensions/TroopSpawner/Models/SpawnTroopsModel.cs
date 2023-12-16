@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 
@@ -9,26 +8,81 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
 {
     public sealed class SpawnTroopsModel
     {
-        public int TroopCount = 1;
-        public int CustomTroopCount = 0;
+        public event Action OnFactionSelected;
+        public event Action OnTroopSelected;
+        public event Action OnTroopCountUpdated;
+        public event Action OnFormationUpdated;
+        public event Action OnDifficultyUpdated;
+        public event Action<TroopSpawnedEventArgs> OnTroopSpawned;
+
+        public int CustomTroopCount = 100;
         public int TroopCountButtonSelected = 0;
         public int FormationSelected = 1;
         public bool SpawnTroopOnCursor = true;
+
+        private int _troopCount = 1;
+        private BasicCultureObject _selectedFaction;
+        private BasicCharacterObject _selectedTroop;
+        private float _difficulty;
+        private int _difficultyLevel;
+
+        public int TroopCount
+        {
+            get
+            {
+                return _troopCount;
+            }
+            set
+            {
+                if (_troopCount != value)
+                {
+                    _troopCount = value;
+                    OnTroopCountUpdated?.Invoke();
+                }
+            }
+        }
+
+        public int DifficultyLevel
+        {
+            get
+            {
+                return _difficultyLevel;
+            }
+            set
+            {
+                if (_difficultyLevel != value)
+                {
+                    _difficultyLevel = value;
+                    switch (value)
+                    {
+                        case 0:
+                            Difficulty = 0.5f; break;
+                        case 1:
+                            Difficulty = 1f; break;
+                        case 2:
+                            Difficulty = 1.5f; break;
+                        case 3:
+                            Difficulty = 2f; break;
+                        case 4:
+                            Difficulty = 2.5f; break;
+                    }
+                    OnDifficultyUpdated?.Invoke();
+                }
+            }
+        }
+
         public float Difficulty
         {
             get
             {
                 return _difficulty;
             }
-            set
+            private set
             {
-                if (_difficulty != value)
-                {
-                    _difficulty = value;
-                    OnDifficultyUpdated?.Invoke(this, EventArgs.Empty);
-                }
+                _difficulty = value;
             }
         }
+
         public BasicCultureObject SelectedFaction
         {
             get
@@ -41,7 +95,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 {
                     _selectedFaction = value;
                     SelectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
-                    OnFactionSelected?.Invoke(this, EventArgs.Empty);
+                    OnFactionSelected?.Invoke();
                 }
             }
         }
@@ -57,52 +111,32 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_selectedTroop != value)
                 {
                     _selectedTroop = value;
-                    OnTroopSelected?.Invoke(this, EventArgs.Empty);
+                    OnTroopSelected?.Invoke();
                 }
             }
         }
 
-        private BasicCultureObject _selectedFaction;
-        private BasicCharacterObject _selectedTroop;
-        private float _difficulty;
-
-        public event EventHandler OnFactionSelected;
-        public event EventHandler OnTroopSelected;
-        public event EventHandler OnFormationUpdated;
-        public event EventHandler OnDifficultyUpdated;
-        public event EventHandler<TroopSpawnedEventArgs> OnTroopSpawned;
-
         public void RefreshFormations()
         {
-            if (OnFormationUpdated != null) OnFormationUpdated.Invoke(this, EventArgs.Empty);
-        }
-
-        public void RefreshTroopSpawn()
-        {
-            if (OnTroopSpawned == null) return;
-
-            MBReadOnlyList<BasicCharacterObject> troops = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
-            foreach (BasicCharacterObject troop in troops)
-            {
-                OnTroopSpawned.Invoke(this, new TroopSpawnedEventArgs(troop, 0));
-            }
+            OnFormationUpdated?.Invoke();
         }
 
         public void RefreshTroopSpawn(BasicCharacterObject troop, int troopCount)
         {
-            if (OnTroopSpawned != null) OnTroopSpawned.Invoke(this, new TroopSpawnedEventArgs(troop, troopCount));
+            OnTroopSpawned?.Invoke(new TroopSpawnedEventArgs(troop, troopCount));
         }
 
         // Singleton
         private static readonly SpawnTroopsModel instance = new();
         public static SpawnTroopsModel Instance { get { return instance; } }
 
-        static SpawnTroopsModel()
+        private SpawnTroopsModel()
         {
             BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
             BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-            instance._selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
-            instance._selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(instance._selectedFaction).First().TroopCharacter;
+            _selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
+            _selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
+            DifficultyLevel = 1;
         }
     }
 

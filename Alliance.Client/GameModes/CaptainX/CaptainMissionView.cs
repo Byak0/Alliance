@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -17,7 +16,6 @@ namespace Alliance.Client.GameModes.CaptainX
         {
             List<MissionView> list = new List<MissionView>
             {
-                new SpawnTroopsView(),
                 new GameModeMenuView(),
                 new FormationStatusView(),
 

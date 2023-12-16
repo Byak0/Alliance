@@ -4,12 +4,38 @@
 	<VisualDefinitions>
 	</VisualDefinitions>
 	<Window>
+
 		<!-- Transparent background covering all the screen. If user clicks on it, close the menu -->
 		<ButtonWidget IsVisible="@IsVisible" Command.Click="CloseMenu" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.TransparentBrush">
 			<Children>
 
-				<!-- See SpawnTroopWidget.cs for details -->
-				<SpawnTroopsWidget IsVisible="@IsVisible"/>
+				<!-- Main window -->
+				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.MainFrame">
+					<Children>
+
+						<!-- List of available troops -->
+						<TroopList DataSource="{TroopList}" WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="550" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+						<!-- Preview of the troop -->
+						<TroopPreview WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Center" VerticalAlignment="Top" />
+
+						<!-- Difficulty slider -->
+						<DifficultySliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="300" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" DifficultyValue="@Difficulty" />
+
+						<!-- Number of troops to recruit -->
+						<RecruitmentOptions WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="125" />
+
+						<!-- Selected troop infos -->
+						<TroopInfos WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="550" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+						<!-- Formation selection -->
+						<FormationList WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="150" />
+
+						<!-- Gold infos and Recruit button -->
+						<Footer WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+
+					</Children>
+				</BrushWidget>
 
 			</Children>
 		</ButtonWidget>

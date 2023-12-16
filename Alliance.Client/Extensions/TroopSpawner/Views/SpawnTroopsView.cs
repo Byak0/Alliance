@@ -1,8 +1,8 @@
 ﻿using Alliance.Client.Core.KeyBinder.Models;
 using Alliance.Client.Extensions.TroopSpawner.Models;
+using Alliance.Client.Extensions.TroopSpawner.Utilities;
 using Alliance.Client.Extensions.TroopSpawner.ViewModels;
 using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
@@ -108,6 +108,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
                 TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
                 ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
                 spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
+                spriteData.SpriteCategories["ui_order"].Load(resourceContext, uiResourceDepot);
                 MissionScreen.AddLayer(_layer);
                 _initialized = true;
             }
@@ -124,8 +125,6 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
             _layer.InputRestrictions.SetInputRestrictions();
             _layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
             ScreenManager.TrySetFocus(_layer);
-            SpawnTroopsModel.Instance.RefreshFormations();
-            SpawnTroopsModel.Instance.RefreshTroopSpawn();
             _dataSource.IsVisible = true;
             IsMenuOpen = true;
         }
@@ -167,7 +166,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
                 }
                 if (Input.IsKeyPressed(recruitKey.KeyboardKey.InputKey) || Input.IsKeyPressed(recruitKey.ControllerKey.InputKey))
                 {
-                    RecruitTroop();
+                    SpawnRequestHelper.RequestSpawnTroop();
                 }
                 if (Input.IsKeyDown(spawnKey.KeyboardKey.InputKey) || Input.IsKeyDown(spawnKey.ControllerKey.InputKey))
                 {
@@ -199,16 +198,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
                 Log("No troop selected for spawn", LogLevel.Error);
                 return;
             }
-            MatrixFrame _spawnFrame = new MatrixFrame(Mat3.Identity, groundPos);
-            GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new RequestSpawnTroop(
-                _spawnFrame,
-                true,
-                SpawnTroopsModel.Instance.SelectedTroop,
-                SpawnTroopsModel.Instance.FormationSelected,
-                1,
-                SpawnTroopsModel.Instance.Difficulty));
-            GameNetwork.EndModuleEventAsClient();
+
+            SpawnRequestHelper.AdminRequestSpawnTroop(groundPos);
         }
 
         // Dev command - Spawn the thing at exact location
@@ -222,33 +213,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
                 Log("Invalid spawn target area", LogLevel.Error);
                 return;
             }
-            MatrixFrame _spawnFrame = new MatrixFrame(Mat3.Identity, groundPos);
-            GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new RequestSpawnThing(_spawnFrame));
-            GameNetwork.EndModuleEventAsClient();
-        }
 
-        // Classic recruit command - Recruit selected troops at closest spawn point
-        private void RecruitTroop()
-        {
-            // Get either camera or agent position 
-            MatrixFrame _spawnFrame = Mission.Current.GetCameraFrame();
-            if (Agent.Main?.Position != null) _spawnFrame = new MatrixFrame(Mat3.Identity, Agent.Main.Position);
-
-            // Play a sound because why not
-            Vec3 position = _spawnFrame.origin + _spawnFrame.rotation.u;
-            MBSoundEvent.PlaySound(SoundEvent.GetEventIdFromString("event:/alerts/report/battle_winning"), position);
-
-            // Send a request to spawn to the server
-            GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new RequestSpawnTroop(
-                _spawnFrame,
-                false,
-                SpawnTroopsModel.Instance.SelectedTroop,
-                SpawnTroopsModel.Instance.FormationSelected,
-                SpawnTroopsModel.Instance.TroopCount,
-                SpawnTroopsModel.Instance.Difficulty));
-            GameNetwork.EndModuleEventAsClient();
+            SpawnRequestHelper.RequestSpawnTheThing(groundPos);
         }
 
         private void OnCloseMenu(object sender, EventArgs e)
