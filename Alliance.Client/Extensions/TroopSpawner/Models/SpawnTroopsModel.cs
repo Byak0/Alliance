@@ -6,25 +6,44 @@ using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Models
 {
+    /// <summary>
+    /// Singleton class to store current choice of troop to spawn (character, number, difficulty, formation, etc.).
+    /// Changes to a property send events to its corresponding listeners.
+    /// </summary>
     public sealed class SpawnTroopsModel
     {
         public event Action OnFactionSelected;
+        public event Action OnFormationSelected;
         public event Action OnTroopSelected;
         public event Action OnTroopCountUpdated;
+        public event Action OnCustomTroopCountUpdated;
         public event Action OnFormationUpdated;
         public event Action OnDifficultyUpdated;
         public event Action<TroopSpawnedEventArgs> OnTroopSpawned;
 
-        public int CustomTroopCount = 100;
-        public int TroopCountButtonSelected = 0;
-        public int FormationSelected = 1;
-        public bool SpawnTroopOnCursor = true;
-
+        private int _customTroopCount = 100;
         private int _troopCount = 1;
+        private int _formationSelected = 1;
         private BasicCultureObject _selectedFaction;
         private BasicCharacterObject _selectedTroop;
         private float _difficulty;
         private int _difficultyLevel;
+
+        public int CustomTroopCount
+        {
+            get
+            {
+                return _customTroopCount;
+            }
+            set
+            {
+                if (_customTroopCount != value)
+                {
+                    _customTroopCount = value;
+                    OnCustomTroopCountUpdated?.Invoke();
+                }
+            }
+        }
 
         public int TroopCount
         {
@@ -38,6 +57,22 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 {
                     _troopCount = value;
                     OnTroopCountUpdated?.Invoke();
+                }
+            }
+        }
+
+        public int FormationSelected
+        {
+            get
+            {
+                return _formationSelected;
+            }
+            set
+            {
+                if (_formationSelected != value)
+                {
+                    _formationSelected = value;
+                    OnFormationSelected?.Invoke();
                 }
             }
         }
@@ -116,17 +151,6 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
             }
         }
 
-        public void RefreshFormations()
-        {
-            OnFormationUpdated?.Invoke();
-        }
-
-        public void RefreshTroopSpawn(BasicCharacterObject troop, int troopCount)
-        {
-            OnTroopSpawned?.Invoke(new TroopSpawnedEventArgs(troop, troopCount));
-        }
-
-        // Singleton
         private static readonly SpawnTroopsModel instance = new();
         public static SpawnTroopsModel Instance { get { return instance; } }
 
@@ -137,6 +161,16 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
             _selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
             _selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
             DifficultyLevel = 1;
+        }
+
+        public void RefreshFormations()
+        {
+            OnFormationUpdated?.Invoke();
+        }
+
+        public void RefreshTroopSpawn(BasicCharacterObject troop, int troopCount)
+        {
+            OnTroopSpawned?.Invoke(new TroopSpawnedEventArgs(troop, troopCount));
         }
     }
 

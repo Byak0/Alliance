@@ -9,11 +9,14 @@ using TaleWorlds.MountAndBlade;
 namespace Alliance.Client.Extensions.TroopSpawner.Utilities
 {
     /// <summary>
-    /// Handle spawn requests to the server.
+    /// Helper for sending spawn requests to the server.
     /// </summary>
     public class SpawnRequestHelper
     {
-        // Classic recruit command - Recruit selected troops at closest spawn point
+        /// <summary>
+        /// "Classic" recruit command. Will request a recruitment based on the current SpawnTroopsModel content.
+        /// The troops will spawn at the closest spawnpoint available relative to the player.
+        /// </summary>
         public static void RequestSpawnTroop()
         {
             // Get either camera or agent position 
@@ -36,7 +39,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
             GameNetwork.EndModuleEventAsClient();
         }
 
-        // Classic recruit command - Recruit selected troops at closest spawn point
+        /// <summary>
+        /// "Classic" recruit command. Will request a recruitment based on the given parameters.
+        /// The troops will spawn at the closest spawnpoint available relative to the player.
+        /// </summary>
         public static void RequestSpawnTroop(BasicCharacterObject troop, int formation, int troopCount, float difficulty)
         {
             // Get either camera or agent position 
@@ -59,7 +65,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
             GameNetwork.EndModuleEventAsClient();
         }
 
-        // Admin command - Spawn troop at exact location
+        /// <summary>
+        /// Special recruit command for admins.
+        /// Will spawn one troop at the given position, based on the current SpawnTroopsModel content.
+        /// </summary>
         public static void AdminRequestSpawnTroop(Vec3 groundPos)
         {
             if (!GameNetwork.MyPeer.IsAdmin()) return;
@@ -75,7 +84,28 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
             GameNetwork.EndModuleEventAsClient();
         }
 
-        // Dev command - Spawn the thing at exact location
+        /// <summary>
+        /// Special recruit command for admins.
+        /// Will spawn troops from the given parameters.
+        /// </summary>
+        public static void AdminRequestSpawnTroop(Vec3 groundPos, BasicCharacterObject troop, int formation, int troopCount, float difficulty)
+        {
+            if (!GameNetwork.MyPeer.IsAdmin()) return;
+            MatrixFrame _spawnFrame = new MatrixFrame(Mat3.Identity, groundPos);
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new RequestSpawnTroop(
+                _spawnFrame,
+                true,
+                troop,
+                formation,
+                troopCount,
+                difficulty));
+            GameNetwork.EndModuleEventAsClient();
+        }
+
+        /// <summary>
+        /// Dev command. Spawn the thing at given location.
+        /// </summary>
         public static void RequestSpawnTheThing(Vec3 groundPos)
         {
             if (!GameNetwork.MyPeer.IsDev()) return;

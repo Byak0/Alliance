@@ -65,9 +65,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
         private void OpenAdminPanel(AdminVM adminVM)
         {
-            //if (_layerLoaded != null)
-            //    MissionScreen.RemoveLayer(_layerLoaded);
-
             _layerLoaded = new GauntletLayer(2);
             IGauntletMovie movie = _layerLoaded.LoadMovie("AdminPanel", adminVM);
             SpriteData spriteData = UIResourceManager.SpriteData;
