@@ -12,14 +12,14 @@ namespace Alliance.Client.Patch
         public static bool Patch()
         {
             bool patchSuccess = true;
+
+            //TODO : Following 1.2 -> Check if any patch can be removed
             //patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
             patchSuccess &= Patch_KeyBinder.Patch();
             //patchSuccess &= Patch_MissionNetworkComponent.Patch();
             //patchSuccess &= Patch_HeroClassVM.Patch();
             patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
 
-            //TODO : Check if can be completely removed from 1.2
-            //patchSuccess &= Patch_WidgetsMultiplayerHelper.Patch(); 
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;

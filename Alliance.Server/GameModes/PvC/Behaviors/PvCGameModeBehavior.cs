@@ -91,11 +91,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
-        // Override to prevent FlagDominationMissionRepresentative being added to peer
-        //protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        //{
-        //}
-
         public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
         {
             if (oldTeam != null && oldTeam != newTeam && UseGold() && (WarmupComponent == null || !WarmupComponent.IsInWarmup))

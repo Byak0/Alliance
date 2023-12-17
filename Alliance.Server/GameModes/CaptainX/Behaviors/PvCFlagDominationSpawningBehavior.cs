@@ -123,7 +123,12 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
                     BasicCultureObject basicCultureObject = (flag ? @object : object2);
                     MultiplayerClassDivisions.MPHeroClass mpheroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForPeer(component, false);
                     int num = ((_flagDominationMissionController.GetMissionType() == MultiplayerGameType.Battle) ? mpheroClassForPeer.TroopBattleCost : mpheroClassForPeer.TroopCost);
-                    if (component.ControlledAgent == null && !component.HasSpawnedAgentVisuals && component.Team != null && component.Team != Mission.SpectatorTeam && component.TeamInitialPerkInfoReady && component.SpawnTimer.Check(Mission.CurrentTime))
+                    if (component.ControlledAgent == null &&
+                        !component.HasSpawnedAgentVisuals &&
+                        component.Team != null &&
+                        component.Team != Mission.SpectatorTeam &&
+                        component.TeamInitialPerkInfoReady &&
+                        component.SpawnTimer.Check(Mission.CurrentTime))
                     {
                         int currentGoldForPeer = _flagDominationMissionController.GetCurrentGoldForPeer(component);
                         if (mpheroClassForPeer == null || (_flagDominationMissionController.UseGold() && num > currentGoldForPeer))

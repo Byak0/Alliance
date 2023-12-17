@@ -68,6 +68,7 @@ namespace Alliance.Server
 
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
         {
+            // TODO : Check which limits still need to be increased after 1.2
             // Increase native network compression limits to prevent crashes
             //DirtyCommonPatcher.IncreaseNativeLimits();
 

@@ -14,6 +14,8 @@ namespace Alliance.Server.Patch
         public static bool Patch()
         {
             bool patchSuccess = true;
+
+            //TODO : Following 1.2 -> Check if any patch can be removed
             patchSuccess &= Patch_MissionPeer.Patch();
             //patchSuccess &= Patch_MissionLobbyComponent.Patch();
             patchSuccess &= Patch_MissionMultiplayerFlagDomination.Patch();
@@ -24,6 +26,7 @@ namespace Alliance.Server.Patch
             patchSuccess &= Patch_MultiplayerWarmupComponent.Patch();
             //patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
+
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;
         }

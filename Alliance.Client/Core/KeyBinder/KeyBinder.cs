@@ -12,7 +12,8 @@ using Module = TaleWorlds.MountAndBlade.Module;
 namespace Alliance.Client.Core.KeyBinder
 {
     /// <summary>
-    /// Static class to help to register new keys in the system
+    /// Static class to help register new keys in the system.
+    /// Requires Patch_KeyBinder to work.
     /// </summary>
     public static class KeyBinder
     {
@@ -67,10 +68,6 @@ namespace Alliance.Client.Core.KeyBinder
                     gameText3.AddVariationWithId(variationId, new TextObject(key.Description, null), new List<GameTextManager.ChoiceTag>());
                 }
             }
-
-            // Register all GameKeyContext
-            // Deprecated - HotKeyManager.RegisterInitialContexts(KeyContexts.Values, true);
-            // -> Since 1.2, the registering is now done through Patch_KeyBinder.PrefixRegisterInitialContexts
         }
 
         /// <summary>
