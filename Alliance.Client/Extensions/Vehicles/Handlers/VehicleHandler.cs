@@ -25,7 +25,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncForward(CS_VehicleSyncForward message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -36,7 +36,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncBackward(CS_VehicleSyncBackward message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -47,7 +47,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncUpward(CS_VehicleSyncUpward message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -58,7 +58,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncDownward(CS_VehicleSyncDownward message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -69,7 +69,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncTurnLeft(CS_VehicleSyncTurnLeft message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -80,7 +80,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncTurnRight(CS_VehicleSyncTurnRight message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (vehicleScript != null)
@@ -91,7 +91,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncLight(CS_VehicleSyncLight message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Car vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Car>();
 
             if (vehicleScript != null)
@@ -102,7 +102,7 @@ namespace Alliance.Client.Extensions.Vehicles.Handlers
 
         public void HandleVehicleSyncHonk(CS_VehicleSyncHonk message)
         {
-            MissionObject vehicle = message.MissionObject;
+            MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             CS_Car vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Car>();
 
             if (vehicleScript != null)

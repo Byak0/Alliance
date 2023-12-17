@@ -6,12 +6,12 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class CS_VehicleRequestUpward : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
         public bool Move { get; private set; }
 
-        public CS_VehicleRequestUpward(MissionObject missionObject, bool move)
+        public CS_VehicleRequestUpward(MissionObjectId missionObjectId, bool move)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             Move = move;
         }
 
@@ -22,14 +22,14 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             Move = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteBoolToPacket(Move);
         }
 
@@ -40,7 +40,7 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
 
         protected override string OnGetLogFormat()
         {
-            return $"Requesting Entity with id: {MissionObject.Id} and name: {MissionObject.GameEntity.Name} to move upward ({Move})";
+            return $"Requesting vehicle with id: {MissionObjectId.Id} to move upward ({Move})";
         }
     }
 }

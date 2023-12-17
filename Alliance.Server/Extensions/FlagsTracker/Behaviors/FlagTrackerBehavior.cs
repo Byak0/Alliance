@@ -27,6 +27,20 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
             FlagsOnGround = new Dictionary<SpawnedItemEntity, FlagTracker>();
         }
 
+        public override void OnBehaviorInitialize()
+        {
+            base.OnBehaviorInitialize();
+            Mission.OnItemPickUp += OnItemPickup;
+            Mission.OnItemDrop += OnItemDrop;
+        }
+
+        protected override void OnEndMission()
+        {
+            base.OnEndMission();
+            Mission.OnItemPickUp -= OnItemPickup;
+            Mission.OnItemDrop -= OnItemDrop;
+        }
+
         public override void OnMissionTick(float dt)
         {
             _delay += dt;
@@ -57,7 +71,7 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
             }
         }
 
-        public override void OnItemDrop(Agent agent, SpawnedItemEntity item)
+        public void OnItemDrop(Agent agent, SpawnedItemEntity item)
         {
             // If a FlagBearer dropped a Banner, update the flag infos
             if (item.IsBanner() && FlagBearers.ContainsKey(agent))
@@ -70,7 +84,7 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
             }
         }
 
-        public override void OnItemPickup(Agent agent, SpawnedItemEntity item)
+        public void OnItemPickup(Agent agent, SpawnedItemEntity item)
         {
             // If a Flag is picked up, update the flag infos
             if (item.IsBanner() && FlagsOnGround.ContainsKey(item))

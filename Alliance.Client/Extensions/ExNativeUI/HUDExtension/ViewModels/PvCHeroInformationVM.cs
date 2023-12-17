@@ -5,7 +5,7 @@ using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.ClassLoadout;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 
 namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 {
@@ -442,7 +442,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             float num2 = MathF.Ceiling(num * heroClass.TroopMultiplier);
             if (onSpawnPerkHandler != null)
             {
-                num2 *= 1f + onSpawnPerkHandler.GetTroopCountMultiplier();
                 num2 += onSpawnPerkHandler.GetExtraTroopCount();
             }
 

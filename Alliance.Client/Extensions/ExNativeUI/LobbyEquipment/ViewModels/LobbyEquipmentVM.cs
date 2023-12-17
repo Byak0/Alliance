@@ -1,7 +1,7 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels;
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -11,8 +11,8 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.ClassLoadout;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
@@ -473,11 +473,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             _missionLobbyEquipmentNetworkComponent = Mission.Current.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
 
             // Enable Gold for Commanders only
-            IsGoldEnabled = PvCRepresentative.Main.IsCommander && Config.Instance.UseTroopCost;
-            if (IsGoldEnabled)
-            {
-                Gold = PvCRepresentative.Main.Gold;
-            }
+            IsGoldEnabled = GameNetwork.MyPeer.IsCommander() && Config.Instance.UseTroopCost;
+            if (IsGoldEnabled) Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
 
             HeroClassVM heroClassVM = null;
             UseSecondary = team.Side == BattleSideEnum.Defender;
@@ -581,7 +578,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 {
                     IsSpawnTimerVisible = false;
                     IsSpawnLabelVisible = true;
-                    if (_missionMultiplayerGameMode.IsRoundInProgress && _missionMultiplayerGameMode is MissionMultiplayerGameModeFlagDominationClient && _missionMultiplayerGameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Skirmish && GameNetwork.MyPeer.GetComponent<MissionPeer>() != null)
+                    if (_missionMultiplayerGameMode.IsRoundInProgress && _missionMultiplayerGameMode is MissionMultiplayerGameModeFlagDominationClient && _missionMultiplayerGameMode.GameType == MultiplayerGameType.Skirmish && GameNetwork.MyPeer.GetComponent<MissionPeer>() != null)
                     {
                         IsSpawnForfeitLabelVisible = true;
                         string keyHyperlinkText2 = HyperlinkTexts.GetKeyHyperlinkText(HotKeyManager.GetHotKeyId("CombatHotKeyCategory", "ForfeitSpawn"));
@@ -642,7 +639,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             _missionLobbyEquipmentNetworkComponent.EquipmentUpdated();
             if (IsGoldEnabled)
             {
-                Gold = PvCRepresentative.Main.Gold;
+                Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
             }
 
             List<IReadOnlyPerkObject> perks = heroClass.Perks.Select((x) => x.SelectedPerk).ToList();
@@ -696,7 +693,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 
                 if (IsGoldEnabled)
                 {
-                    Gold = PvCRepresentative.Main.Gold;
+                    Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
                 }
 
                 foreach (HeroClassGroupVM @class in Classes)

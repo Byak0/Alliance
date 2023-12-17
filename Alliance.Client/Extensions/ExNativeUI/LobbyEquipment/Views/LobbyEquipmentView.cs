@@ -1,17 +1,15 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI.Mission.Multiplayer;
+using TaleWorlds.MountAndBlade.Multiplayer.GauntletUI.Mission;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 {
-    // TODO : Seems unused ?
     //[OverrideView(typeof(MissionLobbyEquipmentUIHandler))]
     public class LobbyEquipmentView : MissionView
     {
@@ -23,7 +21,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             ViewOrderPriority = 20;
             _missionLobbyEquipmentNetworkComponent = Mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             _gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
-            _teamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
+            _teamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             if (_teamSelectComponent != null)
             {
                 _teamSelectComponent.OnSelectingTeam += OnSelectingTeam;
@@ -50,8 +48,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             _myRepresentative = myPeer != null ? myPeer.VirtualPlayer.GetComponent<MissionRepresentativeBase>() : null;
             if (_myRepresentative != null)
             {
-                MissionRepresentativeBase myRepresentative = _myRepresentative;
-                myRepresentative.OnGoldUpdated = (Action)Delegate.Combine(myRepresentative.OnGoldUpdated, new Action(OnGoldUpdated));
+                _myRepresentative.OnGoldUpdated += OnGoldUpdated;
             }
         }
 
@@ -98,8 +95,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
                 _missionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
                 if (_myRepresentative != null)
                 {
-                    MissionRepresentativeBase myRepresentative = _myRepresentative;
-                    myRepresentative.OnGoldUpdated = (Action)Delegate.Remove(myRepresentative.OnGoldUpdated, new Action(OnGoldUpdated));
+                    _myRepresentative.OnGoldUpdated -= OnGoldUpdated;
                 }
             }
             _missionLobbyEquipmentNetworkComponent.OnToggleLoadout -= OnTryToggle;
@@ -210,7 +206,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private void OnPeerEquipmentRefreshed(MissionPeer peer)
         {
-            if (_gameModeClient.GameType == MissionLobbyComponent.MultiplayerGameType.Skirmish || _gameModeClient.GameType == MissionLobbyComponent.MultiplayerGameType.Captain)
+            if (_gameModeClient.GameType == MultiplayerGameType.Skirmish || _gameModeClient.GameType == MultiplayerGameType.Captain)
             {
                 LobbyEquipmentVM dataSource = _dataSource;
                 if (dataSource == null)
@@ -247,7 +243,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private MissionMultiplayerGameModeBaseClient _gameModeClient;
 
-        private PvCTeamSelectBehavior _teamSelectComponent;
+        private MultiplayerTeamSelectComponent _teamSelectComponent;
 
         private MissionGauntletMultiplayerScoreboard _scoreboardGauntletComponent;
 

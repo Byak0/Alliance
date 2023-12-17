@@ -38,6 +38,12 @@ namespace Alliance.Common.GameModels
             //return baseDamage;
         }
 
+        public override float CalculateAlternativeAttackDamage(BasicCharacterObject attackerCharacter, WeaponComponentData weapon)
+        {
+            // TODO implement this correctly
+            return 1f; // random default value
+        }
+
         public override void DecideMissileWeaponFlags(Agent attackerAgent, MissionWeapon missileWeapon, ref WeaponFlags missileWeaponFlags)
         {
         }
@@ -71,7 +77,7 @@ namespace Alliance.Common.GameModels
             return MBMath.IsBetween((int)blow.VictimBodyPart, 0, 6) && (!attackerAgent.HasMount && blow.StrikeType == StrikeType.Swing && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanHook) || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanDismount));
         }
 
-        public override void CalculateCollisionStunMultipliers(Agent attackerAgent, Agent defenderAgent, bool isAlternativeAttack, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
+        public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
         {
             if (defenderAgent.Name.ToLower().Contains("troll"))
             {
@@ -162,9 +168,10 @@ namespace Alliance.Common.GameModels
             return 0.37f;
         }
 
-        public override float CalculateStaggerThresholdMultiplier(Agent defenderAgent)
+        // TODO : implement this correctly
+        public override float CalculateStaggerThresholdDamage(Agent defenderAgent, in Blow blow)
         {
-            return 1f;
+            return 1f; // default random value
         }
 
         public override float CalculatePassiveAttackDamage(BasicCharacterObject attackerCharacter, in AttackCollisionData collisionData, float baseDamage)
@@ -181,14 +188,14 @@ namespace Alliance.Common.GameModels
         {
             baseDamage *= 1.25f;
             MissionMultiplayerFlagDomination missionBehavior = Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>();
-            if (missionBehavior != null && missionBehavior.GetMissionType() == MissionLobbyComponent.MultiplayerGameType.Captain)
+            if (missionBehavior != null && missionBehavior.GetMissionType() == MultiplayerGameType.Captain)
             {
                 return baseDamage * 0.5f;
             }
             return baseDamage;
         }
 
-        public override float GetDamageMultiplierForBodyPart(BoneBodyPartType bodyPart, DamageTypes type, bool isHuman)
+        public override float GetDamageMultiplierForBodyPart(BoneBodyPartType bodyPart, DamageTypes type, bool isHuman, bool isMissile)
         {
             float num = 1f;
             switch (bodyPart)

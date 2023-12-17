@@ -3,9 +3,11 @@ using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.CaptainX
@@ -27,19 +29,14 @@ namespace Alliance.Server.GameModes.CaptainX
         {
             List<MissionBehavior> behaviors = new List<MissionBehavior>()
             {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new FormationBehavior(),
 
-                    //new MissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Captain),
-                    new PvCMissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Captain),
-                    //new MissionMultiplayerGameModeFlagDominationClient(),
+                    new PvCMissionMultiplayerFlagDomination(MultiplayerGameType.Captain),
                     new PvCMissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerRoundController(),
                     new MultiplayerWarmupComponent(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
-                    //new SpawnComponent(new FlagDominationSpawnFrameBehavior(), new FlagDominationSpawningBehavior()),
                     new SpawnComponent(new PvCFlagDominationSpawnFrameBehavior(), new PvCFlagDominationSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MultiplayerTeamSelectComponent(),

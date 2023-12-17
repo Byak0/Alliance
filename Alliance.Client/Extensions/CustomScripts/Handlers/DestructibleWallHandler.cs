@@ -22,15 +22,16 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncObjectHitpoints(SyncObjectHitpoints message)
         {
-            if (message.MissionObject != null)
+            if (message.MissionObjectId != null)
             {
-                message.MissionObject.GameEntity.GetFirstScriptOfType<CS_DestructibleWall>().HitPoint = message.Hitpoints;
+                MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
+                missionObject.GameEntity.GetFirstScriptOfType<CS_DestructibleWall>().HitPoint = message.Hitpoints;
             }
         }
 
         public void CS_HandleSyncObjectDestructionLevel(SyncObjectDestructionLevel message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;
@@ -40,7 +41,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleServerEventHitBurstAllHeavyHitParticles(BurstAllHeavyHitParticles message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;
@@ -50,7 +51,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncAbilityOfNavmesh(SyncAbilityOfNavmesh message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;
@@ -60,7 +61,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
         public void CS_HandleSyncSoundDestructible(SyncSoundDestructible message)
         {
-            MissionObject missionObject = message.MissionObject;
+            MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
             if (missionObject == null)
             {
                 return;

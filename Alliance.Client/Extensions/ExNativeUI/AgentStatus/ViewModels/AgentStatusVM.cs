@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.GameModes.PvC.Behaviors;
+using Alliance.Common.Core.Security.Extension;
 using System;
 using System.ComponentModel;
 using System.Reflection;
@@ -132,8 +132,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
             MissionMultiplayerGameModeBaseClient mpGameMode = _mpGameMode;
 
             // Activate gold for commanders only
-            IsGoldActive = PvCRepresentative.Main != null && PvCRepresentative.Main.IsCommander && Config.Instance.UseTroopCost;
-            if (IsGoldActive) GoldAmount = PvCRepresentative.Main.Gold;
+            IsGoldActive = GameNetwork.MyPeer.IsCommander() && Config.Instance.UseTroopCost;
+            if (IsGoldActive) GoldAmount = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
 
             MissionAgentTakenDamageVM takenDamageController = TakenDamageController;
             if (takenDamageController == null)
@@ -156,7 +156,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
                 {
                     if (_mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsRangedWeapon && _mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsConsumable)
                     {
-                        int ammoAmount = _mission.MainAgent.Equipment.GetAmmoAmount(_mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.AmmoClass);
+                        int ammoAmount = _mission.MainAgent.Equipment.GetAmmoAmount(wieldedItemIndex);
                         if (_mission.MainAgent.Equipment[wieldedItemIndex].ModifiedMaxAmount == 1 || ammoAmount > 0)
                         {
                             num = ammoAmount;
@@ -165,11 +165,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
                     else if (_mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsRangedWeapon)
                     {
                         bool flag2 = _mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.WeaponClass == WeaponClass.Crossbow;
-                        num = _mission.MainAgent.Equipment.GetAmmoAmount(_mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.AmmoClass) + (flag2 ? _mission.MainAgent.Equipment[wieldedItemIndex].Ammo : 0);
+                        num = _mission.MainAgent.Equipment.GetAmmoAmount(wieldedItemIndex) + (flag2 ? _mission.MainAgent.Equipment[wieldedItemIndex].Ammo : 0);
                     }
                     if (!_mission.MainAgent.Equipment[wieldedItemIndex].IsEmpty)
                     {
-                        int maxAmmo = _mission.MainAgent.Equipment.GetMaxAmmo(_mission.MainAgent.Equipment[wieldedItemIndex].CurrentUsageItem.AmmoClass);
+                        int maxAmmo = _mission.MainAgent.Equipment.GetMaxAmmo(wieldedItemIndex);
                         float num2 = maxAmmo * 0.2f;
                         flag = maxAmmo != AmmoCount && AmmoCount <= MathF.Ceiling(num2);
                     }
@@ -299,8 +299,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
             {
                 if (!agent.Equipment[equipmentIndex].IsEmpty && agent.Equipment[equipmentIndex].CurrentUsageItem.IsRangedWeapon)
                 {
-                    currentAmmo = agent.Equipment.GetAmmoAmount(agent.Equipment[equipmentIndex].CurrentUsageItem.AmmoClass);
-                    maxAmmo = agent.Equipment.GetMaxAmmo(agent.Equipment[equipmentIndex].CurrentUsageItem.AmmoClass);
+                    currentAmmo = agent.Equipment.GetAmmoAmount(equipmentIndex);
+                    maxAmmo = agent.Equipment.GetMaxAmmo(equipmentIndex);
                     return;
                 }
             }

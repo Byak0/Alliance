@@ -1,0 +1,14 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Troop infos -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+			<Children>
+				
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

@@ -18,6 +18,9 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+    <Reference Include="$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\*.dll">
+      <HintPath>%(Identity)</HintPath>
+    </Reference>
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
 		</Reference>
@@ -46,6 +49,9 @@
 		<!-- Add required dll -->
 		<Exec Command="xcopy &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Alliance.Common.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Core.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinMM.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />		
 		<!-- Copy Win64_Shipping_Client in Gaming.Desktop.x64_Shipping_Client for gamepass version -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Gaming.Desktop.x64_Shipping_Client\&quot; /C /I /Y /F" />
 

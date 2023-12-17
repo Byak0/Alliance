@@ -8,7 +8,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 {
     public class PvCMissionMultiplayerFlagDomination : MissionMultiplayerFlagDomination
     {
-        public PvCMissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType gameType) : base(gameType)
+        public PvCMissionMultiplayerFlagDomination(MultiplayerGameType gameType) : base(gameType)
         {
         }
 

@@ -3,7 +3,7 @@ using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.ClassLoadout;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 
 namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 {
@@ -364,7 +364,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
         {
             _mission = mission;
             MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
-            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MissionLobbyComponent.MultiplayerGameType.Duel;
+            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
             _isFlagDominationMode = Mission.Current.HasMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
             RefreshValues();
         }
@@ -415,7 +415,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             {
                 if (_spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsRangedWeapon && _spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsConsumable)
                 {
-                    int ammoAmount = _spectatedAgent.Equipment.GetAmmoAmount(_spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.AmmoClass);
+                    int ammoAmount = _spectatedAgent.Equipment.GetAmmoAmount(wieldedItemIndex);
                     if (_spectatedAgent.Equipment[wieldedItemIndex].ModifiedMaxAmount == 1 || ammoAmount > 0)
                     {
                         num = _spectatedAgent.Equipment[wieldedItemIndex].ModifiedMaxAmount == 1 ? -1 : ammoAmount;
@@ -424,7 +424,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
                 else if (_spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.IsRangedWeapon)
                 {
                     bool flag = _spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.WeaponClass == WeaponClass.Crossbow;
-                    num = _spectatedAgent.Equipment.GetAmmoAmount(_spectatedAgent.Equipment[wieldedItemIndex].CurrentUsageItem.AmmoClass) + (flag ? _spectatedAgent.Equipment[wieldedItemIndex].Ammo : 0);
+                    num = _spectatedAgent.Equipment.GetAmmoAmount(wieldedItemIndex) + (flag ? _spectatedAgent.Equipment[wieldedItemIndex].Ammo : 0);
                 }
             }
 
@@ -445,10 +445,16 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
         internal void OnSpectatedAgentFocusIn(Agent followedAgent)
         {
+            MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+
+            if (component?.Team == null)
+            {
+                return;
+            }
+
             _spectatedAgent = followedAgent;
             int spectatedPlayerNeutrality = 0;
-            MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-            if (component != null && component.Team != _mission.SpectatorTeam && component.Team == followedAgent.Team && _isTeamsEnabled)
+            if (component.Team != _mission.SpectatorTeam && component.Team == followedAgent.Team && _isTeamsEnabled)
             {
                 spectatedPlayerNeutrality = 1;
             }

@@ -27,7 +27,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             }
         }
 
-        public AnimationRequestEmitter() { }
+        private AnimationRequestEmitter() { }
 
         public async void RequestAnimationSequenceForTarget(AnimationSequence animationSequence, Agent target)
         {
@@ -70,7 +70,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             }
             catch (Exception ex)
             {
-                Log($"Failure in sequence {animationSequence.Name} on formation {target.PrimaryClass}", LogLevel.Error);
+                Log($"Failure in sequence {animationSequence.Name} on formation {target.FormationIndex}", LogLevel.Error);
                 Log(ex.Message, LogLevel.Error);
             }
         }

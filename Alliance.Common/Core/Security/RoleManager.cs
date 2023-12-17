@@ -20,17 +20,13 @@ namespace Alliance.Common.Core.Security
         /// </summary>
         public readonly Dictionary<int, FieldInfo> RolesFields = new Dictionary<int, FieldInfo>();
 
-        private static RoleManager instance = new RoleManager();
+        private static readonly RoleManager instance = new RoleManager();
 
         public static RoleManager Instance
         {
             get
             {
                 return instance;
-            }
-            set
-            {
-                instance = value;
             }
         }
 
@@ -43,8 +39,22 @@ namespace Alliance.Common.Core.Security
             }
         }
 
-        static RoleManager()
+        /// <summary>
+        /// Returns all the players presents in only one of the two lists.
+        /// List1 = [A,B,C]
+        /// List2 = [B,C,D]
+        /// Return value = [A,D]
+        /// </summary>
+        public static List<Player> SymmetricPlayerExceptWith(List<Player> list1, List<Player> list2)
         {
+            List<Player> tempList = new List<Player>(list1);
+            List<Player> newList = new List<Player>();
+
+            newList.AddRange(list2.Except(tempList));
+            tempList.RemoveAll(list2.Contains);
+            newList.AddRange(tempList);
+
+            return newList;
         }
 
         /// <summary>
@@ -57,26 +67,14 @@ namespace Alliance.Common.Core.Security
             {
                 List<Player> currentList = (List<Player>)role.Value.GetValue(Roles.Instance);
                 List<Player> deserializedList = (List<Player>)role.Value.GetValue(deserialized);
-                SymmetricPlayerExceptWith(ref currentList, deserializedList);
-                foreach (Player player in currentList)
+                List<Player> difference = SymmetricPlayerExceptWith(currentList, deserializedList);
+                foreach (Player player in difference)
                 {
                     bool removed = !deserializedList.Contains(player);
                     UpdatePlayersRoles(role.Key, player, removed);
                     if (synchronize) SyncPlayersRoles(role.Key, player.Id, removed);
                 }
             }
-        }
-
-        public static void SymmetricPlayerExceptWith(ref List<Player> currentList, List<Player> deserializedList)
-        {
-            List<Player> tempList = new List<Player>(currentList);
-            List<Player> newList = new List<Player>();
-
-            newList.AddRange(deserializedList.Except(tempList));
-            tempList.RemoveAll(deserializedList.Contains);
-            newList.AddRange(tempList);
-
-            currentList = newList;
         }
 
         public void SendPlayersRolesToPeer(NetworkCommunicator networkPeer)

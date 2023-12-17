@@ -1,15 +1,13 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Behaviors;
-using Alliance.Common.GameModes.PvC.Models;
-using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
-using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.PvC
@@ -21,30 +19,35 @@ namespace Alliance.Server.GameModes.PvC
         [MissionMethod]
         public override void StartMultiplayerGame(string scene)
         {
-            MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                Debug.Print("Loading of all Behaviors :", 0, Debug.DebugColor.Blue);
-                List<MissionBehavior> allBehaviors = GetCustomMissionBehaviors();
-                allBehaviors.AddRange(GetNativeMissionBehaviors());
-                return allBehaviors;
-            }, true, true);
+            MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
         }
 
-        private List<MissionBehavior> GetCustomMissionBehaviors()
+        private List<MissionBehavior> GetMissionBehaviors()
         {
             List<MissionBehavior> behaviors = new List<MissionBehavior>
             {
-                    MissionLobbyComponent.CreateBehavior(),
-
-                    // Custom components
-                    new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
-                    new PvCGameModeBehavior(MissionLobbyComponent.MultiplayerGameType.Captain),
+                    new AllianceLobbyComponent(),
+                    new FormationBehavior(),
+                    new PvCGameModeBehavior(MultiplayerGameType.Captain),
+                    new MultiplayerRoundController(),
                     new PvCGameModeClientBehavior(),
-                    new MissionScoreboardComponent(new PvCScoreboardData()),
-                    new PvCTeamSelectBehavior(),
-                    new RespawnBehavior(),
-                    new PollBehavior(),
-                    new FormationBehavior()
+                    new MultiplayerTimerComponent(),
+                    new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
+                    new MissionLobbyEquipmentNetworkComponent(),
+                    new MultiplayerTeamSelectComponent(),
+                    new MissionHardBorderPlacer(),
+                    new MissionBoundaryPlacer(),
+                    new AgentVictoryLogic(),
+                    new AgentHumanAILogic(),
+                    new MissionAgentPanicHandler(),
+                    new MissionBoundaryCrossingHandler(),
+                    new MultiplayerPollComponent(),
+                    new MultiplayerAdminComponent(),
+                    new MultiplayerGameNotificationsComponent(),
+                    new MissionOptionsComponent(),
+                    new MissionScoreboardComponent(new CaptainScoreboardData()),
+                    new EquipmentControllerLeaveLogic(),
+                    new MultiplayerPreloadHelper()
             };
 
             if (Config.Instance.ActivateSAE)
@@ -53,26 +56,6 @@ namespace Alliance.Server.GameModes.PvC
             }
 
             return behaviors;
-        }
-
-        private List<MissionBehavior> GetNativeMissionBehaviors()
-        {
-
-            return new List<MissionBehavior>()
-            {
-                    // Native behaviors
-                    new MultiplayerRoundController(),
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new AgentHumanAILogic(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent()
-            };
         }
     }
 }

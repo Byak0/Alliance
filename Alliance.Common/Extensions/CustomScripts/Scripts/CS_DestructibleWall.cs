@@ -94,7 +94,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
                     if (GameNetwork.IsServerOrRecorder)
                     {
                         GameNetwork.BeginBroadcastModuleEvent();
-                        GameNetwork.WriteMessage(new SyncObjectHitpoints(this, value));
+                        GameNetwork.WriteMessage(new SyncObjectHitpoints(Id, value));
                         GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
                     }
                 }
@@ -405,7 +405,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             else if (GameNetwork.IsServerOrRecorder)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncSoundDestructible(this));
+                GameNetwork.WriteMessage(new SyncSoundDestructible(Id));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }
@@ -433,7 +433,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             if (GameNetwork.IsServerOrRecorder)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncAbilityOfNavmesh(this, Navmesh1, Navmesh2));
+                GameNetwork.WriteMessage(new SyncAbilityOfNavmesh(Id, Navmesh1, Navmesh2));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }
@@ -448,7 +448,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             if (GameNetwork.IsServerOrRecorder)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new BurstAllHeavyHitParticles(this));
+                GameNetwork.WriteMessage(new BurstAllHeavyHitParticles(Id));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }
@@ -514,7 +514,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
                         }
                     }
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new SyncObjectDestructionLevel(this, state, forcedId, num, blowPosition, blowDirection));
+                    GameNetwork.WriteMessage(new SyncObjectDestructionLevel(Id, state, forcedId, num, blowPosition, blowDirection));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
                 }
             }
@@ -662,37 +662,55 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             }
         }
 
-        public override bool ReadFromNetwork()
+        public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
         {
-            bool flag = true;
-            flag = flag && base.ReadFromNetwork();
-            float num = GameNetworkMessage.ReadFloatFromPacket(CompressionMission.UsableGameObjectHealthCompressionInfo, ref flag);
-            int num2 = GameNetworkMessage.ReadIntFromPacket(CompressionMission.UsableGameObjectDestructionStateCompressionInfo, ref flag);
-            if (flag)
+            base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
+            CS_DestructibleWallRecord destructableComponentRecord = (CS_DestructibleWallRecord)synchedMissionObjectReadableRecord.Item2;
+            HitPoint = destructableComponentRecord.HitPoint;
+            if (destructableComponentRecord.DestructionState != 0)
             {
-                int num3 = -1;
-                if (num2 != 0 && GameNetworkMessage.ReadBoolFromPacket(ref flag))
+                if (IsDestroyed)
                 {
-                    num3 = GameNetworkMessage.ReadMissionObjectIdFromPacket(ref flag).Id;
+                    OnDestroyed?.Invoke(this, null, MissionWeapon.Invalid, null, 0);
                 }
-                if (flag)
+                SetDestructionLevel(destructableComponentRecord.DestructionState, destructableComponentRecord.ForceIndex, 0f, Vec3.Zero, Vec3.Zero, true);
+            }
+        }
+
+        [DefineSynchedMissionObjectTypeForMod(typeof(CS_DestructibleWall))]
+        public struct CS_DestructibleWallRecord : ISynchedMissionObjectReadableRecord
+        {
+            public float HitPoint { get; private set; }
+
+            public int DestructionState { get; private set; }
+
+            public int ForceIndex { get; private set; }
+
+            public bool IsMissionObject { get; private set; }
+
+            public CS_DestructibleWallRecord(float hitPoint, int destructionState, int forceIndex, bool isMissionObject)
+            {
+                HitPoint = hitPoint;
+                DestructionState = destructionState;
+                ForceIndex = forceIndex;
+                IsMissionObject = isMissionObject;
+            }
+
+            public bool ReadFromNetwork(ref bool bufferReadValid)
+            {
+                HitPoint = GameNetworkMessage.ReadFloatFromPacket(CompressionMission.UsableGameObjectHealthCompressionInfo, ref bufferReadValid);
+                DestructionState = GameNetworkMessage.ReadIntFromPacket(CompressionMission.UsableGameObjectDestructionStateCompressionInfo, ref bufferReadValid);
+                ForceIndex = -1;
+                if (DestructionState != 0)
                 {
-                    HitPoint = num;
-                    if (num2 != 0)
+                    IsMissionObject = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
+                    if (IsMissionObject)
                     {
-                        if (IsDestroyed)
-                        {
-                            OnHitTakenAndDestroyedDelegate onDestroyed = OnDestroyed;
-                            if (onDestroyed != null)
-                            {
-                                onDestroyed(this, null, MissionWeapon.Invalid, null, 0);
-                            }
-                        }
-                        SetDestructionLevel(num2, num3, 0f, Vec3.Zero, Vec3.Zero, true);
+                        ForceIndex = GameNetworkMessage.ReadMissionObjectIdFromPacket(ref bufferReadValid).Id;
                     }
                 }
+                return bufferReadValid;
             }
-            return flag;
         }
 
         public override void AddStuckMissile(GameEntity missileEntity)

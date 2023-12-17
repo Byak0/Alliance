@@ -182,9 +182,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
         private bool EnoughPlayersJoined()
         {
-            int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(MBNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(MBNetwork.NetworkPeers.Count - 1, 1));
+            int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
             int playersReady = 0;
-            foreach (ICommunicator peer in MBNetwork.NetworkPeers)
+            foreach (ICommunicator peer in GameNetwork.NetworkPeers)
             {
                 if (peer.IsSynchronized) playersReady++;
             }
@@ -427,9 +427,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
             return Config.Instance.UseTroopCost;
         }
 
-        public override MissionLobbyComponent.MultiplayerGameType GetMissionType()
+        public override MultiplayerGameType GetMissionType()
         {
-            return MissionLobbyComponent.MultiplayerGameType.Captain;
+            return MultiplayerGameType.Captain;
         }
     }
 }

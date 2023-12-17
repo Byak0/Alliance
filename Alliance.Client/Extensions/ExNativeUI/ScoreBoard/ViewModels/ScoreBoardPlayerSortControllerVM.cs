@@ -2,7 +2,7 @@
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer.Scoreboard;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.Scoreboard;
 
 namespace Alliance.Client.Extensions.ExNativeUI.ScoreBoard.ViewModels
 {

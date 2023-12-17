@@ -1,8 +1,8 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.GameModes.Captain.Behaviors;
-using Alliance.Server.GameModes.CaptainX.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.BattleX
@@ -18,19 +18,15 @@ namespace Alliance.Server.GameModes.BattleX
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new FormationBehavior(),
 
                     new MultiplayerRoundController(),
-                    //new MissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Battle),
-                    new PvCMissionMultiplayerFlagDomination(MissionLobbyComponent.MultiplayerGameType.Battle),
-                    //new MissionMultiplayerGameModeFlagDominationClient(),
-                    new PvCMissionMultiplayerGameModeFlagDominationClient(),
+                    new MissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
                     new MultiplayerWarmupComponent(),
+                    new MissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
-                    new SpawnComponent(new PvCFlagDominationSpawnFrameBehavior(), new PvCFlagDominationSpawningBehavior()),
+                    new SpawnComponent(new FlagDominationSpawnFrameBehavior(), new FlagDominationSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),
                     new MultiplayerTeamSelectComponent(),
                     new MissionHardBorderPlacer(),

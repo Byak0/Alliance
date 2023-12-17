@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.CaptainX
@@ -42,7 +43,7 @@ namespace Alliance.Client.GameModes.CaptainX
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new CaptainScoreboardData()),
-                    new MissionMatchHistoryComponent(),
+                    MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
                     new EquipmentControllerLeaveLogic(),
                     new MissionRecentPlayersComponent(),
                     new MultiplayerPreloadHelper()

@@ -8,7 +8,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
 using TaleWorlds.ObjectSystem;
 using TaleWorlds.TwoDimension;
 
@@ -563,13 +563,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             NetworkCommunicator.OnPeerComponentAdded += OnPeerComponentAdded;
             Mission.Current.OnMissionReset += OnMissionReset;
             MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
-            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MissionLobbyComponent.MultiplayerGameType.Duel;
+            _isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
             _missionLobbyEquipmentNetworkComponent = mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown;
             IsRoundCountdownSuspended = false;
             // Disable Score depending on config
             _isTeamScoresEnabled = _isTeamsEnabled && Config.Instance.ShowScore;
-            _isTeamMemberCountsEnabled = missionBehavior.MissionType == MissionLobbyComponent.MultiplayerGameType.Battle;
+            _isTeamMemberCountsEnabled = missionBehavior.MissionType == MultiplayerGameType.Battle;
             UpdateShowTeamScores();
             Teammates = new MBBindingList<MPPlayerVM>();
             Enemies = new MBBindingList<MPPlayerVM>();
@@ -601,7 +601,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
                 MissionRepresentativeBase missionRepresentative = GameNetwork.MyPeer?.VirtualPlayer.GetComponent<MissionRepresentativeBase>();
                 AllyTeamScore = _missionScoreboardComponent.GetRoundScore(BattleSideEnum.Attacker);
                 EnemyTeamScore = _missionScoreboardComponent.GetRoundScore(BattleSideEnum.Defender);
-                _isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>() && _gameMode.GameType != MissionLobbyComponent.MultiplayerGameType.Battle;
+                _isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>() && _gameMode.GameType != MultiplayerGameType.Battle;
                 CommanderInfo = new PvCInfoVM(missionRepresentative);
                 ShowCommanderInfo = true;
                 if (_isTeammateAndEnemiesRelevant)
@@ -610,7 +610,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
                     OnRefreshEnemyMembers();
                 }
 
-                ShowPowerLevels = _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle;
+                ShowPowerLevels = _gameMode.GameType == MultiplayerGameType.Battle;
             }
         }
 
@@ -703,7 +703,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
         {
             if (peer.IsMine)
             {
-                if (_isTeamScoresEnabled || _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle)
+                if (_isTeamScoresEnabled || _gameMode.GameType == MultiplayerGameType.Battle)
                 {
                     _isAttackerTeamAlly = newTeam.Side == BattleSideEnum.Attacker;
                     UpdateTeamScores();
@@ -719,7 +719,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
             Teammates.SingleOrDefault((x) => x.Peer.GetNetworkPeer() == peer)?.RefreshTeam();
             GetTeamColors(Mission.Current.AttackerTeam, out var color, out var color2);
-            if (_isTeamScoresEnabled || _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle)
+            if (_isTeamScoresEnabled || _gameMode.GameType == MultiplayerGameType.Battle)
             {
                 GetTeamColors(Mission.Current.DefenderTeam, out var color3, out var color4);
                 if (_isAttackerTeamAlly)
@@ -843,7 +843,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
         private void UpdateShowTeamScores()
         {
-            ShowTeamScores = !_gameMode.IsInWarmup && ShowCommanderInfo && _gameMode.GameType != MissionLobbyComponent.MultiplayerGameType.Siege && Config.Instance.ShowScore;
+            ShowTeamScores = !_gameMode.IsInWarmup && ShowCommanderInfo && _gameMode.GameType != MultiplayerGameType.Siege && Config.Instance.ShowScore;
         }
     }
 }

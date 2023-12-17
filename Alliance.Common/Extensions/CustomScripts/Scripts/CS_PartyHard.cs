@@ -105,7 +105,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             {
                 Log(log, LogLevel.Information);
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncParticleObject(this, emitterIndex, particleIndex));
+                GameNetwork.WriteMessage(new SyncParticleObject(Id, emitterIndex, particleIndex));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }

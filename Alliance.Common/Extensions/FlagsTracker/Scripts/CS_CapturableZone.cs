@@ -330,25 +330,6 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
             _flagHolder.SetFrameSynchedOverTime(ref targetFrame, duration, false);
         }
 
-        public override bool ReadFromNetwork()
-        {
-            bool flag = true;
-            Team ownerTeam = GameNetworkMessage.ReadTeamReferenceFromPacket(ref flag);
-            if (ownerTeam != OwnerTeam) OnOwnerChange?.Invoke(this, ownerTeam);
-            Owner = ownerTeam?.Side ?? BattleSideEnum.None;
-            Position = GameNetworkMessage.ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref flag);
-            return flag;
-        }
-
-        public override void WriteToNetwork()
-        {
-            if (GameNetwork.IsServer)
-            {
-                GameNetworkMessage.WriteTeamReferenceToPacket(OwnerTeam);
-                GameNetworkMessage.WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
-            }
-        }
-
         public virtual void ServerSynchronize()
         {
             if (GameNetwork.IsServer)
@@ -356,6 +337,46 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
                 GameNetwork.BeginBroadcastModuleEvent();
                 GameNetwork.WriteMessage(new SynchronizeMissionObject(this));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None, null);
+            }
+        }
+
+        public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
+        {
+            //base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
+            CS_CapturableZoneRecord destructableComponentRecord = (CS_CapturableZoneRecord)synchedMissionObjectReadableRecord.Item2;
+            Position = destructableComponentRecord.Position;
+            Team ownerTeam = Mission.Current.Teams[destructableComponentRecord.TeamIndex]; // TODO : Check if Teams[] are stored using the TeamIndex
+            if (ownerTeam != OwnerTeam) OnOwnerChange?.Invoke(this, ownerTeam);
+            Owner = ownerTeam?.Side ?? BattleSideEnum.None;
+        }
+
+        public override void WriteToNetwork()
+        {
+            if (GameNetwork.IsServer)
+            {
+                GameNetworkMessage.WriteTeamIndexToPacket(OwnerTeam.TeamIndex);
+                GameNetworkMessage.WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
+            }
+        }
+
+        [DefineSynchedMissionObjectTypeForMod(typeof(CS_CapturableZone))]
+        public struct CS_CapturableZoneRecord : ISynchedMissionObjectReadableRecord
+        {
+            public int TeamIndex { get; private set; }
+
+            public Vec3 Position { get; private set; }
+
+            public CS_CapturableZoneRecord(int teamIndex, Vec3 position)
+            {
+                TeamIndex = teamIndex;
+                Position = position;
+            }
+
+            public bool ReadFromNetwork(ref bool bufferReadValid)
+            {
+                TeamIndex = GameNetworkMessage.ReadTeamIndexFromPacket(ref bufferReadValid);
+                Position = GameNetworkMessage.ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref bufferReadValid);
+                return bufferReadValid;
             }
         }
     }

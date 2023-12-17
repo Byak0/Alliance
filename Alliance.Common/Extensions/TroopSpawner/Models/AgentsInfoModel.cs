@@ -77,7 +77,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent, DataType.All, diff, exp, lives));
+                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.All, diff, exp, lives));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }
@@ -92,7 +92,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent, DataType.Difficulty, difficulty: diff));
+                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Difficulty, difficulty: diff));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }
@@ -107,7 +107,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent, DataType.Experience, experience: exp));
+                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Experience, experience: exp));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }
@@ -122,7 +122,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent, DataType.Lives, lives: lives));
+                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Lives, lives: lives));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }

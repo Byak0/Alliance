@@ -130,8 +130,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 //SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
                 MissionPeer component = networkPeer.GetComponent<MissionPeer>();
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MultiplayerMissionAgentVisualSpawnComponent agentVisualSpawnComponent = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
                 MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
+                MissionMultiplayerGameModeBase gameMode = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
 
                 Formation form;
                 if (selectedFormation > -1)
@@ -153,7 +153,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 Banner banner = new Banner(component.Peer.BannerCode, color3, color4);
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
-                Log("Formation = " + form.PrimaryClass.GetName(), LogLevel.Debug);
+                Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
                 AgentBuildData agentBuildData = new AgentBuildData(character)
                     .VisualsIndex(randomSeed)
                     .Team(component.Team)
@@ -189,7 +189,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 // Use player custom bodyproperties only if allowed
                 if (Config.Instance.AllowCustomBody)
                 {
-                    agentVisualSpawnComponent.AddCosmeticItemsToEquipment(equipment, agentVisualSpawnComponent.GetUsedCosmeticsFromPeer(component, character));
+                    gameMode.AddCosmeticItemsToEquipment(equipment, gameMode.GetUsedCosmeticsFromPeer(component, character));
                     agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture));
                     agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
                     agentBuildData.IsFemale(component.Peer.IsFemale);
@@ -258,12 +258,10 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             try
             {
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MultiplayerMissionAgentVisualSpawnComponent agentVisualSpawnComponent = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
                 MissionMultiplayerGameModeBase gameMode = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
                 MissionPeer peer = player.GetComponent<MissionPeer>();
                 if (peer != null && peer.ControlledAgent == null && !peer.HasSpawnedAgentVisuals && peer.Team != null && peer.Team != Mission.Current.SpectatorTeam && peer.TeamInitialPerkInfoReady && peer.SpawnTimer.Check(Mission.Current.CurrentTime))
                 {
-                    IAgentVisual agentVisualForPeer = peer.GetAgentVisualForPeer(0);
                     int num = peer.SelectedTroopIndex;
                     IEnumerable<MultiplayerClassDivisions.MPHeroClass> mpheroClasses = MultiplayerClassDivisions.GetMPHeroClasses(culture);
                     MultiplayerClassDivisions.MPHeroClass mpheroClass = num < 0 ? null : mpheroClasses.ElementAt(num);
@@ -295,15 +293,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                         }
                     }
                     MatrixFrame matrixFrame;
-                    if (agentVisualForPeer == null)
-                    {
-                        matrixFrame = spawnComponent.GetSpawnFrame(peer.Team, character.Equipment.Horse.Item != null, false);
-                    }
-                    else
-                    {
-                        matrixFrame = agentVisualForPeer.GetFrame();
-                        matrixFrame.rotation.MakeUnit();
-                    }
+                    matrixFrame = spawnComponent.GetSpawnFrame(peer.Team, character.Equipment.Horse.Item != null, false);
                     AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(peer).Equipment(equipment).Team(peer.Team)
                         .TroopOrigin(new BasicBattleAgentOrigin(character))
                         .InitialPosition(matrixFrame.origin);
@@ -317,10 +307,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     agentBuildData2.VisualsIndex(0)
                         .ClothingColor1(peer.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
                         .ClothingColor2(peer.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2);
-                    if (gameMode.ShouldSpawnVisualsForServer(player))
-                    {
-                        agentVisualSpawnComponent.SpawnAgentVisualsForPeer(peer, agentBuildData2, num, false, 0);
-                    }
                     gameMode.HandleAgentVisualSpawning(player, agentBuildData2, 0, Config.Instance.AllowCustomBody);
 
                     Log("Alliance : Spawned visuals for player " + peer.Name, LogLevel.Information);
@@ -355,7 +341,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 .ClothingColor1(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
                 .ClothingColor2(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2)
                 .IsFemale(troopCharacter.IsFemale);
-            agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, !(Game.Current.GameType is MultiplayerGame), isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
+            agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
             agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.HairTags, troopCharacter.BeardTags, troopCharacter.TattooTags));
             return agentBuildData2.AgentBodyProperties;
         }

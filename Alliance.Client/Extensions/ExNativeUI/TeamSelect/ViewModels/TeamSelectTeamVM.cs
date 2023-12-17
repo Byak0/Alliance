@@ -8,7 +8,7 @@ using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection.Multiplayer;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
 
 namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 {

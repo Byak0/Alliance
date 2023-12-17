@@ -37,14 +37,14 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
             //if (GameNetwork.IsServerOrRecorder)
             //{
-            //UserAgent?.SetInitialFrame(GameEntity.GetGlobalFrame().Advance(0.4f).origin, GameEntity.GetGlobalFrame().rotation.f.AsVec2);
-            //MatrixFrame leftHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(-0.2f);
-            //leftHand.Rotate(-Utility.ToRadian(120), GameEntity.GetGlobalFrame().rotation.f);
-            //leftHand.Rotate(Utility.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
-            //MatrixFrame rightHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(0.2f);
-            //rightHand.Rotate(-Utility.ToRadian(90), GameEntity.GetGlobalFrame().rotation.f);
-            //rightHand.Rotate(Utility.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
-            //UserAgent?.SetHandInverseKinematicsFrame(ref leftHand, ref rightHand);
+            //    UserAgent?.SetInitialFrame(GameEntity.GetGlobalFrame().Advance(0.4f).origin, GameEntity.GetGlobalFrame().rotation.f.AsVec2);
+            //    MatrixFrame leftHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(-0.2f);
+            //    leftHand.Rotate(-MathHelper.ToRadian(120), GameEntity.GetGlobalFrame().rotation.f);
+            //    leftHand.Rotate(MathHelper.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
+            //    MatrixFrame rightHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(0.2f);
+            //    rightHand.Rotate(-MathHelper.ToRadian(90), GameEntity.GetGlobalFrame().rotation.f);
+            //    rightHand.Rotate(MathHelper.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
+            //    UserAgent?.SetHandInverseKinematicsFrame(ref leftHand, ref rightHand);
             //}
         }
 
@@ -70,30 +70,22 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
         public override void OnUseStopped(Agent userAgent, bool isSuccessful, int preferenceIndex)
         {
-            // Free hands
-            UserAgent?.ClearHandInverseKinematics();
-
-            //userAgent.SetActionChannel(0, ActionIndexValueCache.act_none);
-
-            //if (GameNetwork.IsClient)
-            //{
-            //    userAgent.FadeIn();
-            //}
-
-            OnUseStoppedEvent?.Invoke(userAgent);
-
             base.OnUseStopped(userAgent, isSuccessful, preferenceIndex);
 
             // Teleport agent to exact position
             if (GameNetwork.IsServerOrRecorder)
             {
+                // Free hands
+                UserAgent?.ClearHandInverseKinematics();
                 // Play animation
                 AnimationSystem.Instance.PlayAnimation(userAgent, AnimationOnStop, true);
-                // Make agent invulnerable
+                // Make agent mortal
                 userAgent.SetMortalityState(MortalityState.Mortal);
                 // Teleport agent to exact position
                 userAgent.TeleportToPosition(GameEntity.GlobalPosition);
             }
+
+            OnUseStoppedEvent?.Invoke(userAgent);
         }
     }
 }

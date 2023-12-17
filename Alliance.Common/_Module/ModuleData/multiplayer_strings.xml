@@ -38,6 +38,10 @@
 	<string id="str_multiplayer_scene_name.scn_bilbo2" text="{=str_alliance_scene_scn_bilbo2}???" />
 	<string id="str_multiplayer_scene_name.captain_french_castle" text="{=str_alliance_scene_captain_french_castle}French Castle by Path" />
 	<string id="str_multiplayer_scene_name.FrenchCastlePathEdC" text="{=str_alliance_scene_FrenchCastlePathEdC}The captive Eagle: Napoleon's Rescue" />
+	<string id="str_multiplayer_scene_name.Lobby" text="{=str_alliance_scene_Lobby}Lobby" />
+	<string id="str_multiplayer_scene_name.MontStCombattant" text="{=str_alliance_scene_MontStCombattant}Mont-Saint-Combattant" />
+	<string id="str_multiplayer_scene_name.PvC_Sanctuarium" text="{=str_alliance_scene_PvC_Sanctuarium}Sanctuarium" />
+	<string id="str_multiplayer_scene_name.VlandiaBR" text="{=str_alliance_scene_VlandiaBR}VlandiaBR" />
 
 	<!-- Scenario text for BFHD -->
 	<string id="str_alliance_scenario_name.BFHD" text="{=str_alliance_scenario_name_BFHD}Battle for Helm's Deep" />

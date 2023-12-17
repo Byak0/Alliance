@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels;
 using Alliance.Client.Extensions.TroopSpawner.Models;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +7,16 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI.Mission.Multiplayer;
+using TaleWorlds.MountAndBlade.Multiplayer.GauntletUI.Mission;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ObjectSystem;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 {
-    //[OverrideView(typeof(MultiplayerTeamSelectUIHandler))]
+    [OverrideView(typeof(MultiplayerTeamSelectUIHandler))]
     public class TeamSelectView : MissionView
     {
         public TeamSelectView()
@@ -27,7 +28,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
         {
             base.OnMissionScreenInitialize();
             _missionNetworkComponent = Mission.GetMissionBehavior<MissionNetworkComponent>();
-            _multiplayerTeamSelectComponent = Mission.GetMissionBehavior<PvCTeamSelectBehavior>();
+            _multiplayerTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
             _classLoadoutGauntletComponent = Mission.GetMissionBehavior<MissionGauntletClassLoadout>();
             _lobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
             _missionNetworkComponent.OnMyClientSynchronized += OnMyClientSynchronized;
@@ -262,7 +263,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 
         private MissionNetworkComponent _missionNetworkComponent;
 
-        private PvCTeamSelectBehavior _multiplayerTeamSelectComponent;
+        private MultiplayerTeamSelectComponent _multiplayerTeamSelectComponent;
 
         private MissionGauntletMultiplayerScoreboard _scoreboardGauntletComponent;
 

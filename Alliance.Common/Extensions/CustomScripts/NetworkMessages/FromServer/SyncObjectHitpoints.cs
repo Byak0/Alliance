@@ -7,13 +7,13 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncObjectHitpoints : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
         public float Hitpoints { get; private set; }
 
-        public SyncObjectHitpoints(MissionObject missionObject, float hitpoints)
+        public SyncObjectHitpoints(MissionObjectId missionObjectId, float hitpoints)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             Hitpoints = hitpoints;
         }
 
@@ -24,14 +24,14 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             Hitpoints = ReadFloatFromPacket(CompressionMission.UsableGameObjectHealthCompressionInfo, ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteFloatToPacket(MathF.Max(Hitpoints, 0f), CompressionMission.UsableGameObjectHealthCompressionInfo);
         }
 
@@ -42,7 +42,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize HitPoints: ", Hitpoints, " of MissionObject with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Synchronize HitPoints: ", Hitpoints, " of MissionObject with Id: ", MissionObjectId.Id);
         }
     }
 }

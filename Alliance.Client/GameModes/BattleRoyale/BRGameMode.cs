@@ -2,6 +2,7 @@ using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.BattleRoyale

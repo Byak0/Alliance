@@ -259,7 +259,7 @@
 		</Layers>
 		<Styles>
 			<Style Name="Default">
-				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
 			</Style>
 			<Style Name="Hovered">
 				<BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
@@ -271,7 +271,7 @@
 				<BrushLayer Name="Default" ColorFactor="1.2" />
 			</Style>
 			<Style Name="Disabled">
-				<BrushLayer Name="Default" AlphaFactor="0.5" />
+				<BrushLayer Name="Default" AlphaFactor="0.8" />
 			</Style>
 		</Styles>
 		<SoundProperties>

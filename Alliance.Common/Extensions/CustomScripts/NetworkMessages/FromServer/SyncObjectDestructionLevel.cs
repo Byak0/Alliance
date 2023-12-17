@@ -7,7 +7,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncObjectDestructionLevel : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
         public int DestructionLevel { get; private set; }
 
@@ -19,9 +19,9 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         public Vec3 BlowDirection { get; private set; }
 
-        public SyncObjectDestructionLevel(MissionObject missionObject, int destructionLevel, int forcedIndex, float blowMagnitude, Vec3 blowPosition, Vec3 blowDirection)
+        public SyncObjectDestructionLevel(MissionObjectId missionObjectId, int destructionLevel, int forcedIndex, float blowMagnitude, Vec3 blowPosition, Vec3 blowDirection)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             DestructionLevel = destructionLevel;
             ForcedIndex = forcedIndex;
             BlowMagnitude = blowMagnitude;
@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             DestructionLevel = ReadIntFromPacket(CompressionMission.UsableGameObjectDestructionStateCompressionInfo, ref bufferReadValid);
             ForcedIndex = ReadBoolFromPacket(ref bufferReadValid) ? ReadIntFromPacket(CompressionBasic.MissionObjectIDCompressionInfo, ref bufferReadValid) : -1;
             BlowMagnitude = ReadFloatFromPacket(CompressionMission.UsableGameObjectBlowMagnitude, ref bufferReadValid);
@@ -47,7 +47,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteIntToPacket(DestructionLevel, CompressionMission.UsableGameObjectDestructionStateCompressionInfo);
             WriteBoolToPacket(ForcedIndex != -1);
             if (ForcedIndex != -1)
@@ -67,7 +67,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize DestructionLevel: ", DestructionLevel, " of MissionObject with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name, ForcedIndex != -1 ? " (New object will have ID: " + ForcedIndex + ")" : "");
+            return string.Concat("Synchronize DestructionLevel: ", DestructionLevel, " of MissionObject with Id: ", MissionObjectId.Id, ForcedIndex != -1 ? " (New object will have ID: " + ForcedIndex + ")" : "");
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Siege.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
+using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.SiegeX
@@ -22,7 +24,7 @@ namespace Alliance.Server.GameModes.SiegeX
             {
                 return new MissionBehavior[]
                 {
-                    MissionLobbyComponent.CreateBehavior(),
+                    new AllianceLobbyComponent(),
                     new FormationBehavior(),
 
                     new MissionMultiplayerSiege(),
@@ -30,8 +32,6 @@ namespace Alliance.Server.GameModes.SiegeX
                     //new MissionMultiplayerSiegeClient(),
                     new PvCMissionMultiplayerSiegeClient(),
                     new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
                     //new SpawnComponent(new SiegeSpawnFrameBehavior(), new SiegeSpawningBehavior()),
                     new SpawnComponent(new SiegeXSpawnFrameBehavior(), new SiegeXSpawningBehavior()),
                     new MissionLobbyEquipmentNetworkComponent(),

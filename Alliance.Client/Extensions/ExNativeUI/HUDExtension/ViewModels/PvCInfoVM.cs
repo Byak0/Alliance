@@ -408,7 +408,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             if (_gameMode != null)
             {
                 UpdateWarmupDependentFlags(_gameMode.IsInWarmup);
-                UsePowerComparer = _gameMode.GameType == MissionLobbyComponent.MultiplayerGameType.Battle && _gameMode.ScoreboardComponent != null;
+                UsePowerComparer = _gameMode.GameType == MultiplayerGameType.Battle && _gameMode.ScoreboardComponent != null;
                 if (UsePowerComparer)
                 {
                     PowerLevelComparer = new PowerLevelComparer(1.0, 1.0);

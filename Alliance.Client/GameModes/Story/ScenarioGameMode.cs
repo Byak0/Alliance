@@ -1,9 +1,9 @@
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer;
 using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.Story
@@ -24,13 +24,11 @@ namespace Alliance.Client.GameModes.Story
                     // Custom components
                     new ScenarioClientBehavior(),
                     new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with scenario infos
-                    new PvCTeamSelectBehavior(),
                     new FormationBehavior(),
                     new ObjectivesBehavior(ScenarioPlayer.Instance),
 
                     // Native components from Captain mode
                     new MultiplayerAchievementComponent(),
-                    //new MultiplayerRoundComponent(), // todo : remove (replace with the scenario system)
                     new AgentVictoryLogic(),
                     new MultiplayerTimerComponent(),
                     new MultiplayerMissionAgentVisualSpawnComponent(),

@@ -1,0 +1,87 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Troop list -->
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+			<Children>
+
+				<!-- Culture selection -->
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-30"  >
+					<Children>
+						<!-- Decoration bar -->
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" Sprite="StdAssets\tabbar_long" />
+
+						<!-- Name container -->
+						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="240" SuggestedHeight="47" ClipContents="true" VerticalAlignment="Top" HorizontalAlignment="Center" MarginTop="1" Sprite="StdAssets\tabbar_long_namebox">
+							<Children>
+								<!-- Banner background -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" VerticalAlignment="Center" MarginLeft="46" MarginTop="4" Sprite="MPHud\banner_right" Color="@CultureBackgroundColor" />
+
+								<!-- Culture icon -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" MarginLeft="50" Sprite="@CultureSprite" Color="@CultureForegroundColor" />
+
+								<!-- Culture name -->
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="32" Brush="Clan.NameTitle.Text" VerticalAlignment="Center" MarginLeft="30" Text="@CultureName" />
+							</Children>
+						</Widget>
+
+						<!-- Left arrow -->
+						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="10" MarginLeft="100" Brush="ButtonRightArrowBrush1" Command.Click="SelectPreviousCulture" />
+
+						<!-- Right arrow -->
+						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Top" HorizontalAlignment="Right" MarginTop="10" MarginRight="100" Brush="ButtonLeftArrowBrush1" Command.Click="SelectNextCulture" />
+					</Children>
+				</Widget>
+
+
+				<!-- Troops of selected culture -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" MarginTop="60">
+					<Children>
+
+						<!-- Scrollable list -->
+						<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" VerticalScrollbar="Scrollbar" InnerPanel="ClipRect\InnerPanel" ClipRect="ClipRect" >
+							<Children>
+
+								<!-- Clip rect -->
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" >
+									<Children>
+
+										<!-- Inner panel -->
+										<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+											<ItemTemplate>
+
+												<!-- Troops grouped by type -->
+												<TroopGroup />
+
+											</ItemTemplate>
+										</ListPanel>
+
+									</Children>
+								</Widget>
+
+								<!-- Scrollbar -->
+								<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" UpdateChildrenStates="true" MarginTop="6" MarginLeft="15" MarginBottom="15" AlignmentAxis="Vertical" MaxValue="100" MinValue="0" Handle="Handle" >
+									<Children>
+										<!-- Background color -->
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+
+										<!-- Handle -->
+										<ImageWidget Id="Handle" WidthSizePolicy="Fixed" SuggestedWidth="8" MinHeight="50" HorizontalAlignment="Center" Brush="MPLobby.CustomServer.ScrollHandle" />
+									</Children>
+								</ScrollbarWidget>
+
+							</Children>
+						</ScrollablePanel>
+
+
+
+					</Children>
+				</Widget>
+
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

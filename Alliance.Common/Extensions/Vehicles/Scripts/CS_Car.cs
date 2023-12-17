@@ -192,7 +192,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 if (sync)
                 {
                     GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new CS_VehicleRequestLight(this, lightOn));
+                    GameNetwork.WriteMessage(new CS_VehicleRequestLight(Id, lightOn));
                     GameNetwork.EndModuleEventAsClient();
                 }
                 else
@@ -205,7 +205,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerToggleLight(bool lightOn)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncLight(this, lightOn));
+            GameNetwork.WriteMessage(new CS_VehicleSyncLight(Id, lightOn));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             LightOn = lightOn;
         }
@@ -215,7 +215,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
             if (sync)
             {
                 GameNetwork.BeginModuleEventAsClient();
-                GameNetwork.WriteMessage(new CS_VehicleRequestHonk(this));
+                GameNetwork.WriteMessage(new CS_VehicleRequestHonk(Id));
                 GameNetwork.EndModuleEventAsClient();
             }
             else
@@ -238,7 +238,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public virtual void ServerSyncHonk()
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new CS_VehicleSyncHonk(this));
+            GameNetwork.WriteMessage(new CS_VehicleSyncHonk(Id));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 
@@ -840,7 +840,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
             if (GameNetwork.IsClient)
             {
-                PilotAgent.AgentVisuals.SetVisible(false);
+                agent.AgentVisuals?.SetVisible(false);
             }
         }
 
@@ -850,7 +850,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
             if (GameNetwork.IsClient)
             {
-                PilotAgent.AgentVisuals.SetVisible(true);
+                agent.AgentVisuals?.SetVisible(true);
             }
         }
     }

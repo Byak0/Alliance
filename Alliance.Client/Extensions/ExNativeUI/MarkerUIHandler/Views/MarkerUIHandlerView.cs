@@ -1,8 +1,8 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
-using TaleWorlds.MountAndBlade.View.MissionViews.Multiplayer;
 
 namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views
 {

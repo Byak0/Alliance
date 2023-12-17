@@ -1,6 +1,12 @@
 ServerName Alliance - Test Server
 GameType Lobby
+AdminPassword test123
 Map Lobby
+add_map_to_usable_maps Lobby
+add_map_to_usable_maps MontStCombattant
+add_map_to_usable_maps Palmap_4
+add_map_to_usable_maps PvC_Sanctuarium
+add_map_to_usable_maps VlandiaBR
 CultureTeam1 vlandia
 CultureTeam2 battania
 MaxNumberOfPlayers 500
