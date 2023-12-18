@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.GameModeMenu.Views;
+using Alliance.Client.Extensions.VOIP.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -16,6 +17,7 @@ namespace Alliance.Client.GameModes.Lobby
             List<MissionView> list = new List<MissionView>
             {
                 new GameModeMenuView(),
+                new VoipView(),
 
                 MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),

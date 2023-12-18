@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
@@ -56,9 +55,6 @@ namespace Alliance.Server
 
             // Add main server handler
             mission.AddMissionBehavior(new ServerAutoHandler());
-
-            // VOIP
-            mission.AddMissionBehavior(new VoipHandler());
 
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();

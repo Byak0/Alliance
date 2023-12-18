@@ -112,7 +112,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
         public void RefreshCommanderVisual(Agent agent)
         {
-            if (agent != null) OrderTroopVM.CommanderImageIdentifier = new ImageIdentifierVM(CharacterCode.CreateFrom(agent.Character));
+            if (agent != null && OrderTroopVM != null) OrderTroopVM.CommanderImageIdentifier = new ImageIdentifierVM(CharacterCode.CreateFrom(agent.Character));
         }
 
         private void RefreshCommanderInfos()
