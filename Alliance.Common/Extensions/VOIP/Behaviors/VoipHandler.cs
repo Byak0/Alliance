@@ -435,7 +435,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                     }
 
                     // Apply panning to the left and right channels
-                    float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 20f);
+                    float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f) * 2;
 
                     _playerVoiceDataList[k].waveProvider.AddSamples(array, 0, array.Length);
                     _playerVoiceDataList[k].panProvider.Pan = -pan;
