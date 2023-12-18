@@ -292,6 +292,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopSelected += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopCountUpdated += RefreshGold;
+            _myRepresentative.OnGoldUpdated += RefreshGold;
             RefreshGold();
         }
 

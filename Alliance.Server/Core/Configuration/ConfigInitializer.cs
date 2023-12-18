@@ -13,6 +13,7 @@ namespace Alliance.Server.Core.Configuration
     public class ConfigInitializer
     {
         public static DateTime lastRead = DateTime.MinValue;
+        private static FileSystemWatcher _configWatcher;
 
         /// <summary>
         /// Initialize the player config and start watching the config file.
@@ -22,7 +23,7 @@ namespace Alliance.Server.Core.Configuration
             Config.Instance = SerializeHelper.LoadClassFromFile(SubModule.ConfigFilePath, Config.Instance);
 
             // Watch changes to the config file
-            SerializeHelper.CreateFileWatcher(SubModule.ConfigFilePath, OnConfigFileChanged);
+            _configWatcher = SerializeHelper.CreateFileWatcher(SubModule.ConfigFilePath, OnConfigFileChanged);
         }
 
         /// <summary>
