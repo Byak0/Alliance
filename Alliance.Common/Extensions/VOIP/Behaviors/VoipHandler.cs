@@ -438,7 +438,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                     float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 20f);
 
                     _playerVoiceDataList[k].waveProvider.AddSamples(array, 0, array.Length);
-                    _playerVoiceDataList[k].panProvider.Pan = pan;
+                    _playerVoiceDataList[k].panProvider.Pan = -pan;
                     _playerVoiceDataList[k].volumeProvider.Volume = clampedVolume;
 
                     _playerVoiceDataList[k].waveOut.Play();
