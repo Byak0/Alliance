@@ -2,6 +2,7 @@
 using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
 using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
+using Alliance.Client.Extensions.VOIP.Views;
 using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -24,6 +25,7 @@ namespace Alliance.Client.GameModes.PvC
                 new FormationStatusView(),
                 new HUDExtensionUIHandlerView(),
                 new HideWeaponTrail(),
+                new VoipView(),
 
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
                 MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
