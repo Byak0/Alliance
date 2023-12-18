@@ -22,7 +22,7 @@ namespace Alliance.Common.Patch
             CompressionMission.RoundTimeCompressionInfo = new CompressionInfo.Integer(0, 3600, true);
 
             // Increase formation max
-            CompressionBasic.NumberOfBotsPerFormationCompressionInfo = new CompressionInfo.Integer(0, 4096, true);
+            CompressionBasic.NumberOfBotsPerFormationCompressionInfo = new CompressionInfo.Integer(0, 2048, true);
 
             // Increase gold max
             CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);

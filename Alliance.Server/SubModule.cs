@@ -66,7 +66,7 @@ namespace Alliance.Server
         {
             // TODO : Check which limits still need to be increased after 1.2
             // Increase native network compression limits to prevent crashes
-            //DirtyCommonPatcher.IncreaseNativeLimits();
+            DirtyCommonPatcher.IncreaseNativeLimits();
 
             // Add player connection watcher for auto-kick
             game.AddGameHandler<PlayerConnectionWatcher>();
