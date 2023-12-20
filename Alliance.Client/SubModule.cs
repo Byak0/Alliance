@@ -5,6 +5,7 @@ using Alliance.Client.Extensions.AnimationPlayer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.SAE.Behaviors;
 using Alliance.Client.Extensions.TroopSpawner.Views;
+using Alliance.Client.Extensions.UsableEntity.Views;
 using Alliance.Client.Extensions.Vehicles.Views;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
@@ -16,6 +17,7 @@ using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
@@ -54,6 +56,8 @@ namespace Alliance.Client
             mission.AddMissionBehavior(new AnimationView());
             mission.AddMissionBehavior(new SpawnTroopsView());
             mission.AddMissionBehavior(new VehicleView());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new UsableEntityView());
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
 
@@ -77,7 +81,7 @@ namespace Alliance.Client
         {
             // Add our custom GameModels 
             gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+            //gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
         }
 
         private void AddGameModes()

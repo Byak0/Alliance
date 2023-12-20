@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<CraftedItem
+		id="wooden_sword_t1"
+		name="{=1HWRwbwT}Wooden Sword"
+		is_merchandise="false"
+		crafting_template="OneHandedSword"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="wood_blade_1"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="wood_guard_1"
+				Type="Guard" />
+			<Piece
+				id="wood_grip_1"
+				Type="Handle"
+				scale_factor="110" />
+			<Piece
+				id="wood_pommel_1"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+			id="wooden_sword_t2"
+			name="{=1HWRwbwT}Wooden Sword"
+			is_merchandise="false"
+			crafting_template="OneHandedSword"
+			has_modifier="false">
+		<Pieces>
+			<Piece
+				id="wood_blade_2"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="wood_guard_1"
+				Type="Guard" />
+			<Piece
+				id="wood_grip_1"
+				Type="Handle"
+				scale_factor="110" />
+			<Piece
+				id="wood_pommel_1"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="wooden_2hsword_t1"
+		name="{=bt0uFefo}Wooden Twohander"
+		is_merchandise="false"
+		crafting_template="TwoHandedSword"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="wood_blade_1"
+				Type="Blade"
+				scale_factor="105" />
+			<Piece
+				id="wood_guard_1"
+				Type="Guard" />
+			<Piece
+				id="wood_grip_2"
+				Type="Handle" />
+			<Piece
+				id="wood_pommel_1"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="practice_spear_t1"
+		name="{=H9hzBJz3}Practice Spear"
+		is_merchandise="false"
+		crafting_template="TwoHandedPolearm"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_34"
+				Type="Blade" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard" />
+			<Piece
+				id="spear_handle_3"
+				Type="Handle" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
+	<Item
+		id="horse_whip"
+		name="{=HclLXEaT}Horse Whip"
+		is_merchandise="false"
+		body_name="bo_mace_a"
+		recalculate_body="true"
+		mesh="horse_whip"
+		weight="0.2"
+		value="1"
+		Type="OneHandedWeapon"
+		item_holsters="sword_left_hip">
+		<ItemComponent>
+			<Weapon
+				weapon_class="OneHandedSword"
+				weapon_balance="100"
+				thrust_speed="79"
+				speed_rating="99"
+				physics_material="wood_weapon"
+				missile_speed="0"
+				weapon_length="95"
+				thrust_damage="6"
+				thrust_damage_type="Blunt"
+				swing_damage="5"
+				swing_damage_type="Blunt"
+				item_usage="onehanded_block_shield_swing">
+				<WeaponFlags
+					MeleeWeapon="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags />
+	</Item>
+</Items>

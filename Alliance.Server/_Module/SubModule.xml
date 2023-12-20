@@ -38,5 +38,8 @@
 		<XmlNode>
 		  <XmlName id="Items" path="banners"/>
 		</XmlNode>
+		<XmlNode>
+			<XmlName id="Items" path="items"/>
+		</XmlNode>
 	</Xmls>
 </Module>

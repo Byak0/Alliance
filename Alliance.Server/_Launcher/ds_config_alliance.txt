@@ -12,6 +12,8 @@ add_map_to_usable_maps captain_battlefield_O
 add_map_to_usable_maps captain_battlefield_v
 add_map_to_usable_maps comb_pvc_scn_01_a
 add_map_to_usable_maps Oasis
+add_map_to_usable_maps mp_longisland_bullero
+add_map_to_usable_maps mp_meteoraterra_yurek
 CultureTeam1 vlandia
 CultureTeam2 battania
 MaxNumberOfPlayers 500
