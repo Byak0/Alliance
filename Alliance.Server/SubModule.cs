@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
@@ -47,14 +48,10 @@ namespace Alliance.Server
             // Apply additional native fixes through MissionBehaviors
             DirtyServerPatcher.AddFixBehaviors(mission);
 
-            // Synchronize player roles and access level
             mission.AddMissionBehavior(new SyncRolesBehavior());
-
-            // Synchronize mod configuration
             mission.AddMissionBehavior(new SyncConfigBehavior());
-
-            // Add main server handler
             mission.AddMissionBehavior(new ServerAutoHandler());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
 
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();
@@ -82,7 +79,7 @@ namespace Alliance.Server
         {
             // Add our custom GameModels 
             gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+            //gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
         }
 
         public override void OnGameEnd(Game game)

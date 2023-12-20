@@ -3,7 +3,7 @@ using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
 using Color = TaleWorlds.Library.Color;
 
-namespace PvC.Client.Widgets
+namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.Widgets
 {
     /*
      *  Banner Widget used by HUDExtension.xml to show banners of factions.
