@@ -147,7 +147,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         static AgentsInfoModel()
         {
             instance.Agents = new Dictionary<int, AgentInfo>();
-            for (int i = 0; i < 2045; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 instance.Agents[i] = new AgentInfo(null, 1f, 0, 0);
             }
