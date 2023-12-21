@@ -17,6 +17,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
     {
         public static int TotalBots = 0;
 
+        static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
+        static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
+
         public static void RemoveBot(Agent bot, int waitTime = 10000)
         {
             Log($"Freeing slot n.{bot.Index} in {waitTime / 1000}s", LogLevel.Debug);
@@ -30,22 +33,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             AgentsInfoModel.Instance.RemoveAgentInfo(index);
         }
 
-        public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+        public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
         {
             try
             {
-                // Find a free slot to spawn the bot
-                int forcedIndex = AgentsInfoModel.Instance.GetAvailableSlotIndex();
-                if (forcedIndex == -1)
-                {
-                    Log("Alliance : Cannot spawn - no slot available.", LogLevel.Error);
-                    return false;
-                }
 
-                Log($"Alliance : Trying to spawn bot n.{TotalBots} on slot {forcedIndex} \n Team : {team.Side} | character : {character.Name} | origin : {origin} | formation : {selectedFormation}", LogLevel.Debug);
-
-                SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
 
                 Formation form;
                 if (selectedFormation > -1)
@@ -59,42 +51,43 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     if (form == null) form = new Formation(team, character.DefaultFormationGroup);
                 }
 
-                //string orders = " | OrderLocalAveragePosition=" + form.OrderLocalAveragePosition.ToString();
-                //orders += " | OrderPosition=" + form.OrderPosition.ToString();
-                //orders += " | OrderPositionIsValid=" + form.OrderPositionIsValid;
-                //orders += " | ArrangementOrder=" + form.ArrangementOrder.OrderEnum;
-                //orders += " | AttackEntityOrderDetachment=" + form.AttackEntityOrderDetachment?.ToString();
-                //orders += " | FacingOrder=" + form.FacingOrder.OrderEnum;
-                //orders += " | FiringOrder=" + form.FiringOrder.OrderEnum;
-                //orders += " | FormOrder=" + form.FormOrder.OrderEnum;
-                //orders += " | RidingOrder=" + form.RidingOrder.OrderEnum;
-                //orders += " | WeaponUsageOrder=" + form.WeaponUsageOrder.OrderEnum;
-
-                //Log("Formation " + form.Index + " current orders : \n" + orders, 0, Debug.DebugColor.Yellow);
-
-                MatrixFrame spawnFrame = (MatrixFrame)(origin != null ? origin : spawnComponent.GetSpawnFrame(team, character.HasMount(), false));
+                MatrixFrame spawnFrame = (MatrixFrame)(position != null ? position : SpawnComponent.GetSpawnFrame(team, character.HasMount(), false));
                 AgentBuildData agentBuildData = new AgentBuildData(character).Team(team).InitialPosition(spawnFrame.origin);
                 Vec2 vec = spawnFrame.rotation.f.AsVec2;
                 vec = vec.Normalized();
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
                 AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(vec).TroopOrigin(new BasicBattleAgentOrigin(character))
                     .VisualsIndex(randomSeed)
-                    .EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex))
+                    .EquipmentSeed(MissionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex))
                     .ClothingColor1(team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
                     .ClothingColor2(team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
                     .Banner(team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner)
                     .Formation(form)
-                    //.Formation(team.FormationsIncludingSpecialAndEmpty.FirstOrDefault())
                     .IsFemale(character.IsFemale);
                 agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(character, true, false, agentBuildData2.AgentEquipmentSeed));
                 agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
                 agentBuildData2.Age((int)agentBuildData2.AgentBodyProperties.Age);
 
-                //agentBuildData.EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(basicCharacterObject, agentBuildData.AgentVisualsIndex));
-                //agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, basicCharacterObject.GetBodyPropertiesMin(false), basicCharacterObject.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, basicCharacterObject.HairTags, basicCharacterObject.BeardTags, basicCharacterObject.TattooTags));
+                // Whether the agent has a mount or not
+                ItemObject horseSlot = agentBuildData2.AgentData.AgentOverridenEquipment[EquipmentIndex.ArmorItemEndSlot].Item;
+                bool hasMount = horseSlot != null && horseSlot.HasHorseComponent && horseSlot.HorseComponent.IsRideable;
 
-                // Force agent index to prevent duplicate
-                agentBuildData2.Index(forcedIndex);
+                // Find free slots to spawn the bot
+                List<int> forcedIndex = new List<int>();
+                forcedIndex = AgentsInfoModel.Instance.GetAvailableSlotIndex(hasMount ? 2 : 1);
+                if (forcedIndex.IsEmpty())
+                {
+                    Log("Alliance : Cannot spawn - no slots available.", LogLevel.Error);
+                    return false;
+                }
+
+                string slotsUsed = forcedIndex.Count > 1 ? $"slots {forcedIndex[0]}-{forcedIndex[1]}" : $"slot {forcedIndex[0]}";
+                string mountInfo = hasMount ? " (mounted)" : "";
+                string originInfo = position?.origin.ToString() ?? "Unknown";
+                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation}", LogLevel.Debug);
+
+                agentBuildData2.Index(forcedIndex[0]);
+                if (hasMount) agentBuildData2.MountIndex(forcedIndex[1]);
                 Agent agent = Mission.Current.SpawnAgent(agentBuildData2, false);
 
                 if (mortalityState != Agent.MortalityState.Mortal)
@@ -105,12 +98,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 agent.AIStateFlags |= Agent.AIStateFlag.Alarmed;
                 AgentsInfoModel.Instance.AddAgentInfo(agent, botDifficulty, synchronize: true);
+                if (hasMount) AgentsInfoModel.Instance.AddAgentInfo(agent.MountAgent, botDifficulty, synchronize: true);
                 agent.UpdateAgentProperties();
-
-                // Adjust bot difficulty
-                //GameNetwork.BeginBroadcastModuleEvent();
-                //GameNetwork.WriteMessage(new BotDifficultyMultiplierMessage(forcedIndex, botDifficulty));
-                //GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
                 Log("Alliance : Spawned bot n." + TotalBots++, LogLevel.Debug);
                 return true;
