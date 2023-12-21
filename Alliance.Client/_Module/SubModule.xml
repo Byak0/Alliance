@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance" />
   <Name value="Alliance" />
-  <Version value="v0.0.3" />
+  <Version value="v0.0.4" />
   <ModuleCategory value="Multiplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
