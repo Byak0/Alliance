@@ -1,45 +1,101 @@
 <Prefab>
-	<Variables>
-	</Variables>
-	<VisualDefinitions>
-	</VisualDefinitions>
+  <Constants>
+    <Constant Name="TroopBanner.Frame.Width" Value="451" />
+    <Constant Name="TroopBanner.Frame.Height" Value="115" />
+
+    <Constant Name="Perks.Frame.Width" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Width" />
+    <Constant Name="Perks.Frame.Height" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Height" />
+
+    <Constant Name="TroopBanner.ItemBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Width" />
+    <Constant Name="TroopBanner.ItemBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Height" />
+
+    <Constant Name="MPClassLoadout.ItemCultureBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Width" />
+    <Constant Name="MPClassLoadout.ItemCultureBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Height" />
+
+    <Constant Name="SubClassButton.MarginTop" Value="5" />
+
+    <Constant Name="Extension.Hidden.MarginTop" Value="2" />
+    <Constant Name="Extension.Hidden.Height" Value="0" />
+    <Constant Name="Extension.Selected.MarginTop" Value="48" />
+    <Constant Name="Extension.Height" Value="100" />
+  </Constants>
+  <VisualDefinitions>
+    <VisualDefinition Name="Extension" EaseIn="true" TransitionDuration="0.25">
+      <VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Default" />
+      <VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Pressed" />
+      <VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Hovered" />
+      <VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Disabled" />
+      <VisualState SuggestedHeight="!Extension.Height" MarginTop="!Extension.Selected.MarginTop" State="Selected" />
+    </VisualDefinition>
+  </VisualDefinitions>
 	<Window>
 		<!-- Troop group -->
-		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.Matchmaking.Region.DropdownItem" MarginTop="10" >
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
 			<Children>
-				<!-- Group type name -->
-				<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" Brush="MPLobby.ClassFilter.ClassTuple.Text" MarginLeft="24" DoNotAcceptEvents="true" Text="@GroupName" />
-
 				<!-- Troops of that type -->
-				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="30" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
 					<ItemTemplate>
 
 						<!-- Troop button -->
-						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="44" >
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" UpdateChildrenStates="true">
 							<Children>
-								<ButtonWidget Id="TroopButton" WidthSizePolicy="Fixed" HeightSizePolicy ="Fixed" SuggestedWidth="394" SuggestedHeight="44" MarginLeft="24" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" IsSelected="@IsSelected" Brush="MPLobby.ClassFilter.ClassTuple.Background" Command.Click="SelectTroop">
+
+								<!--Perk Selection Extension-->
+				                <Widget Id="Extension" VisualDefinition="Extension" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" ClipContents="true" DoNotAcceptNavigation="true">
+				                  <Children>
+
+				                    <!--Perks-->
+				                    <MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PerkInputBlocker="..\PerkInputBlocker" PopupWidgetFirst="..\..\..\..\..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\Body" NavigationScopeTargeter="ScopeTargeter">
+				                      <Children>
+				                        <NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
+				                        <NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+				                          <ItemTemplate>
+				                            <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="160" HorizontalAlignment="Center" MarginLeft="5" Brush="MPClassLoadout.Perks.Button" ContainerPanel="..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
+				                              <Children>
+				                                <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="18" Brush="MPClassLoadout.Perks.Icon">
+				                                  <Children>
+				                                    <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
+				                                  </Children>
+				                                </BrushWidget>
+				                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="8" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
+				                              </Children>
+				                            </MultiplayerPerkItemToggleWidget>
+				                          </ItemTemplate>
+				                        </NavigatableListPanel>
+				                      </Children>
+				                    </MultiplayerPerkContainerPanelWidget>
+
+				                  </Children>
+				                </Widget>
+
+								<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Body" />
+
+								<!--Troop Tuple Body-->
+								<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="Body" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" Command.Click="SelectTroop" IconWidget="Icon" IsSelected="@IsSelected" TroopType="@IconType" UpdateChildrenStates="true" PerksNavigationScopeTargeter="..\Extension\PerksPanel\ScopeTargeter">
 									<Children>
-										<!-- Background color -->
-										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="15" SuggestedHeight="40" VerticalAlignment="Center" MarginLeft="5" PositionYOffset="-1" Sprite="MPLobby\Store\class_tuple_faction_color" AlphaFactor="0.7" />
+										<!-- Background -->
+										<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!TroopBanner.ItemBackground.Width" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Background" />
 
 										<!-- Troop icon -->
-										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" VerticalAlignment="Center" MarginLeft="16" PositionYOffset="-1" Sprite="@TroopSprite" />
+										<BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="45" SuggestedHeight="45" VerticalAlignment="Center" MarginLeft="10" Brush="MPClassLoadout.TroopBanner.ItemIcon" />
 
-										<!-- Scrolling troop name -->
-										<ScrollingTextWidget Text="@TroopName" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="200" MarginLeft="60" PositionYOffset="-1" Brush="MPLobby.ClassFilter.ClassTuple.Text" ScrollOnHoverWidget="..\TroopButton" InbetweenScrollDuration="0.5" IsAutoScrolling="false" />
+										<!-- Troop name -->
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" PositionYOffset="0" MarginLeft="65" Brush="MPLobby.ClassFilter.ClassTuple.Text" Text="@Name" />
 
-										<!-- Troop limit -->
+										<!-- Limit of troops -->
 										<TextWidget IsVisible="@UseTroopLimit" Text="@TroopLimit" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginRight="@TroopLimitMarginR" Brush="MPLobby.ClassFilter.ClassTuple.Text" />
 
 										<!-- Troop cost -->
 										<TextWidget IsVisible="@UseTroopCost" IntText="@TroopCost" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right" MarginRight="40" Brush="MPLobby.ClassFilter.ClassTuple.Text" />
 
 										<!-- Gold icon -->
-										<Widget IsVisible="@UseTroopCost" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="18" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="12" Sprite="General\Mission\PersonalKillfeed\bracelet_icon_shadow" />
+										<BrushWidget IsVisible="@UseTroopCost" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="18" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="12" Brush="MPClassLoadout.Currency.Icon" />
 									</Children>
-								</ButtonWidget>
+								</MultiplayerClassLoadoutTroopSubclassButtonWidget>
+
 							</Children>
 						</Widget>
+
 
 					</ItemTemplate>
 				</ListPanel>

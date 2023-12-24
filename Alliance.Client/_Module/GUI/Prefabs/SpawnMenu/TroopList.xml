@@ -9,7 +9,7 @@
 			<Children>
 
 				<!-- Culture selection -->
-				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-30"  >
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-4"  >
 					<Children>
 						<!-- Decoration bar -->
 						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" Sprite="StdAssets\tabbar_long" />
@@ -38,7 +38,7 @@
 
 
 				<!-- Troops of selected culture -->
-				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" MarginTop="60">
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" MarginTop="70">
 					<Children>
 
 						<!-- Scrollable list -->
@@ -50,7 +50,7 @@
 									<Children>
 
 										<!-- Inner panel -->
-										<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+										<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="1">
 											<ItemTemplate>
 
 												<!-- Troops grouped by type -->
