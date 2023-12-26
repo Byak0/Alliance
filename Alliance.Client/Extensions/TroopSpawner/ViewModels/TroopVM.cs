@@ -280,12 +280,20 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopType = troopType;
             switch (TroopType)
             {
-                case ClassType.Troop: Troop = heroClass.TroopCharacter; break;
-                case ClassType.Hero: Troop = heroClass.HeroCharacter; break;
-                case ClassType.BannerBearer: Troop = heroClass.BannerBearerCharacter; break;
+                case ClassType.Troop:
+                    Troop = heroClass.TroopCharacter;
+                    Name = Troop.Name.ToString();
+                    break;
+                case ClassType.Hero:
+                    Troop = heroClass.HeroCharacter;
+                    Name = Troop.Name.ToString() + " (Hero)";
+                    break;
+                case ClassType.BannerBearer:
+                    Troop = heroClass.BannerBearerCharacter;
+                    Name = Troop.Name.ToString() + " (Banner Bearer)";
+                    break;
             }
             ExtendedTroop = Troop.GetExtendedCharacterObject();
-            Name = Troop.Name.ToString();
             TroopLimit = ExtendedTroop.TroopLeft + "/" + ExtendedTroop.TroopLimit;
             TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnTroopsModel.Instance.Difficulty);
             UseTroopLimit = Config.Instance.UseTroopLimit;

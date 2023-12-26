@@ -11,10 +11,12 @@ using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
 using System;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MPPerkObject;
 
 namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 {
@@ -82,8 +84,9 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
             NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
             // Troop info
-            BasicCharacterObject troopToSpawn = GetTroopToSpawn(model.CharacterToSpawn);
+            BasicCharacterObject troopToSpawn = model.CharacterToSpawn;
             ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
+            MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(GetPerks(troopToSpawn, model.SelectedPerks));
 
             int goldRemaining = missionPeer.Representative.Gold - GetTotalTroopCost(troopToSpawn, model.TroopCount, model.Difficulty);
 
@@ -103,13 +106,11 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             // Spawn player if dead
             if (missionPeer.ControlledAgent == null)
             {
-                BasicCharacterObject playerCharacter = GetTroopToSpawn(model.CharacterToSpawn, networkPeer.IsOfficer());
-                MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(missionPeer);
-                if (!model.SpawnAtExactPosition) spawnPos = SpawnFrame.GetClosestSpawnFrame(missionPeer.Team, playerCharacter.HasMount(), false, spawnPos);
+                if (!model.SpawnAtExactPosition) spawnPos = SpawnFrame.GetClosestSpawnFrame(missionPeer.Team, troopToSpawn.HasMount(), false, spawnPos);
 
-                SpawnHelper.SpawnPlayer(networkPeer, onSpawnPerkHandler, playerCharacter, spawnPos, model.Formation);
+                SpawnHelper.SpawnPlayer(networkPeer, perkHandler, troopToSpawn, spawnPos, model.Formation);
 
-                reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + GetTotalTroopCost(playerCharacter, 1) + " golds.\n" : ".\n");
+                reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + GetTotalTroopCost(troopToSpawn, 1) + " golds.\n" : ".\n");
                 nbTroopToSpawn--;
                 playerSpawned = true;
             }
@@ -142,7 +143,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                     lackingReason = " There are no troops left to recruit.";
                     break;
                 }
-                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, model.Formation, model.Difficulty))
+                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, model.Difficulty))
                 {
                     Log($"Alliance : Can't spawn bot n.{SpawnHelper.TotalBots} (no slot available)", LogLevel.Error);
                     lackingReason = " (engine is lacking slots for additional spawn)";
@@ -256,20 +257,24 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
         }
 
         /// <summary>
-        /// Get appropriate BasicCharacterObject
+        /// Get corresponding perks from a character and a list of perks indices.
         /// </summary>
-        private static BasicCharacterObject GetTroopToSpawn(BasicCharacterObject troop, bool heroVersion = false)
+        private static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
         {
-            MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
-
-            if (heroVersion)
+            MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
+            List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+            List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
+            int i = 0;
+            foreach (List<IReadOnlyPerkObject> perkList in allPerks)
             {
-                return mPHeroClassForPeer.HeroCharacter;
+                IReadOnlyPerkObject selectedPerk = perkList.ElementAtOrValue(indices.ElementAtOrValue(i, 0), null);
+                if (selectedPerk != null)
+                {
+                    selectedPerks.Add(selectedPerk);
+                }
+                i++;
             }
-            else
-            {
-                return mPHeroClassForPeer.TroopCharacter;
-            }
+            return selectedPerks;
         }
     }
 }

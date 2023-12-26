@@ -70,23 +70,23 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
                 playerFormationMapping[missionPeer] = new List<FormationClass>();
             }
 
-            if (sync)
+            if (!playerFormationMapping[missionPeer].Contains(formationClass))
             {
-                // Check if another player already control this formation
-                foreach (KeyValuePair<MissionPeer, List<FormationClass>> kvp in playerFormationMapping)
+                if (sync)
                 {
-                    if (kvp.Value.Contains(formationClass))
+                    // Check if another player already control this formation
+                    foreach (KeyValuePair<MissionPeer, List<FormationClass>> kvp in playerFormationMapping)
                     {
-                        if (kvp.Key.Team == missionPeer.Team)
+                        if (kvp.Value.Contains(formationClass))
                         {
-                            RemoveControlFromPlayer(kvp.Key, formationClass, true);
+                            if (kvp.Key.Team == missionPeer.Team)
+                            {
+                                RemoveControlFromPlayer(kvp.Key, formationClass, true);
+                            }
                         }
                     }
                 }
-            }
 
-            if (!playerFormationMapping[missionPeer].Contains(formationClass))
-            {
                 playerFormationMapping[missionPeer].Add(formationClass);
                 if (GameNetwork.IsServer) missionPeer.ControlledAgent?.Team.AssignPlayerAsSergeantOfFormation(missionPeer, formationClass);
                 FormationControlChanged?.Invoke();

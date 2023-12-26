@@ -44,11 +44,6 @@
 		                <!-- Show big picture + stats of selected item -->
 		                <ListPanel DataSource="{ItemSelected}" WidthSizePolicy="StretchToParent" SuggestedHeight="500" HorizontalAlignment="Center" MarginLeft="5" MarginRight="5" MarginTop="0" StackLayout.LayoutMethod="VerticalBottomToTop">
 		                  <Children>
-		                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="160" SuggestedHeight="100" HorizontalAlignment="Center" Sprite="MPClassLoadout\item_portrait_frame" AlphaFactor="0.6">
-		                      <Children>
-		                        <ImageIdentifierWidget DataSource="{Icon}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="6" MarginRight="6" MarginTop="6" MarginBottom="6" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsBig="true" MaterialAlphaFactor="0.8" />
-		                      </Children>
-		                    </Widget>
 		                    <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="32" VerticalAlignment="Top" Brush="MPClassLoadout.ItemText" Text="@Name" />
 		                    <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@HasAnyAlternativeUsage" HorizontalAlignment="Center" >
 		                      <Children>
@@ -65,14 +60,14 @@
 		                    <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="18" HorizontalAlignment="Center" MarginTop="7.5" MarginBottom="7.5" Sprite="MPClassLoadout\stats_divider" />
 		                    <ListPanel DataSource="{PropertyList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
 		                      <ItemTemplate>
-		                        <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="34">
+		                        <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" Brush="MPLobby.ClassFilter.ClassTuple.Background" >
 		                          <Children>
-		                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="160" HorizontalAlignment="Left" Brush="MPClassLoadout.ItemStat.NameText" Text="@NameText" />
-		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="145" SuggestedHeight="3" VerticalAlignment="Center" MarginLeft="177" Sprite="MPClassLoadout\item_stats_progress_canvas" />
-		                            <FillBar WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="145" SuggestedHeight="7" VerticalAlignment="Center" MarginLeft="177" Brush="MPClassLoadout.ItemStat.FillBar" CurrentAmount="@Permille" InitialAmount="@Permille" MaxAmount="1000" />
-		                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="67" HorizontalAlignment="Right" Brush="MPClassLoadout.ItemStat.ValueText" MarginRight="70" IntText="@Value" />
-		                              </Children>
-		                            </Widget>
+		                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="160" HorizontalAlignment="Left" Brush.TextHorizontalAlignment="Left" MarginLeft="30" Brush="MPLobby.ClassFilter.ClassTuple.Text" Text="@NameText" />
+		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="165" SuggestedHeight="3" VerticalAlignment="Center" MarginLeft="167" Sprite="MPClassLoadout\item_stats_progress_canvas" />
+		                            <FillBar WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="165" SuggestedHeight="7" VerticalAlignment="Center" MarginLeft="167" Brush="MPClassLoadout.ItemStat.FillBar" CurrentAmount="@Permille" InitialAmount="@Permille" MaxAmount="1000" />
+		                            <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="60" HorizontalAlignment="Right" Brush.TextHorizontalAlignment="Right" Brush="MPLobby.ClassFilter.ClassTuple.Text" MarginRight="20" IntText="@Value" />
+                          		  </Children>
+	                            </BrushWidget>
 		                      </ItemTemplate>
 		                    </ListPanel>
 		                  </Children>
@@ -98,41 +93,41 @@
 		              <Children>
 
 		                <!-- Hero Stats -->
-		                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+		                <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="20" >
 		                  <Children>
-		                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalSpaced">
+		                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalSpaced">
 		                      <Children>
 
 		                        <ListPanel DataSource="{HitPointsHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop" VerticalAlignment="Center">
 		                          <Children>
-		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center">
 		                              <Children>
-		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="90" SuggestedHeight="95" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_health" Color="#F3DCB8FF" />
+		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="80" SuggestedHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_health" Color="#F3DCB8FF" />
 		                              </Children>
 		                            </Widget>
-		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPClassLoadout.ClassStatText" IntText="@HitPoints" />
+		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="5" Brush="MPClassLoadout.ClassStatText" IntText="@HitPoints" />
 		                          </Children>
 		                        </ListPanel>
 
 								<ListPanel DataSource="{ArmorHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop" VerticalAlignment="Center">
 		                          <Children>
-		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center">
 		                              <Children>
-		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="90" SuggestedHeight="90" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_armor" Color="#F3DCB8FF" />
+		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="80" SuggestedHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_armor" Color="#F3DCB8FF" />
 		                              </Children>
 		                            </Widget>
-		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPClassLoadout.ClassStatText" IntText="@Armor" />
+		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="8" Brush="MPClassLoadout.ClassStatText" IntText="@Armor" />
 		                          </Children>
 		                        </ListPanel>
 
 		                        <ListPanel DataSource="{MovementSpeedHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
 		                          <Children>
-		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+		                            <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="20" HorizontalAlignment="Center" VerticalAlignment="Center">
 		                              <Children>
-		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="90" SuggestedHeight="95" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_movement_speed" Color="#F3DCB8FF" />
+		                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="80" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="MPClassLoadout\icon_movement_speed" Color="#F3DCB8FF" />
 		                              </Children>
 		                            </Widget>
-		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPClassLoadout.ClassStatText" IntText="@MovementSpeed" />
+		                            <TextWidget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="5" Brush="MPClassLoadout.ClassStatText" IntText="@MovementSpeed" />
 		                          </Children>
 		                        </ListPanel>
 

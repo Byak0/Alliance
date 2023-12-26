@@ -5,7 +5,6 @@ using Alliance.Common.Core.ExtendedCharacter.Extension;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -398,39 +397,57 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
         private void SelectTroop(TroopVM troopVM)
         {
+            if (troopVM == null) return;
             // Unselect previous troop
-            if (_selectedTroopVM != null) _selectedTroopVM.IsSelected = false;
+            if (SelectedTroopVM != null) SelectedTroopVM.IsSelected = false;
             // Select new troop
-            _selectedTroopVM = troopVM;
-            _selectedTroopVM.IsSelected = true;
+            SelectedTroopVM = troopVM;
+            SelectedTroopVM.IsSelected = true;
             // Update model
-            SpawnTroopsModel.Instance.SelectedTroop = _selectedTroopVM.Troop;
+            SpawnTroopsModel.Instance.SelectedTroop = SelectedTroopVM.Troop;
+            SpawnTroopsModel.Instance.SelectedPerks = SelectedTroopVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
             // Update preview
-            TroopPreview?.FillFrom(_selectedTroopVM.Troop);
+            RefreshTroopPreview();
             RefreshTroopInformations();
+        }
+
+        public void RefreshTroopPreview()
+        {
+            if (TroopPreview == null) return;
+
+            List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
+
+            Equipment equipment = SelectedTroopVM.Troop.Equipment.Clone();
+            MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(perks);
+            IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipements = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
+            if (alternativeEquipements != null)
+            {
+                foreach ((EquipmentIndex, EquipmentElement) item in alternativeEquipements)
+                {
+                    equipment[item.Item1] = item.Item2;
+                }
+            }
+
+            TroopPreview.FillFrom(SelectedTroopVM.Troop);
+            TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
         }
 
         private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)
         {
-            if (GameNetwork.IsMyPeerReady && TroopInformation?.HeroClass != null && _selectedTroopVM != null)
+            if (GameNetwork.IsMyPeerReady && TroopInformation?.HeroClass != null && SelectedTroopVM != null)
             {
-                MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-                if (component.SelectPerk(heroPerk.PerkIndex, candidate.PerkIndex, -1))
-                {
-                    GameNetwork.BeginModuleEventAsClient();
-                    GameNetwork.WriteMessage(new RequestPerkChange(heroPerk.PerkIndex, candidate.PerkIndex));
-                    GameNetwork.EndModuleEventAsClient();
-                }
+                SpawnTroopsModel.Instance.SelectedPerks = SelectedTroopVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
+                RefreshTroopPreview();
                 RefreshTroopInformations();
             }
         }
 
         private void RefreshTroopInformations()
         {
-            List<IReadOnlyPerkObject> perks = _selectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
+            List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
             if (perks.Count > 0)
             {
-                TroopInformation?.RefreshWith(_selectedTroopVM.HeroClass, perks);
+                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, perks);
             }
         }
 

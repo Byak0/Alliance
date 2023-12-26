@@ -33,7 +33,7 @@
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
 			<Children>
 				<!-- Troops of that type -->
-				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalBottomToTop">
 					<ItemTemplate>
 
 						<!-- Troop button -->
@@ -41,32 +41,32 @@
 							<Children>
 
 								<!--Perk Selection Extension-->
-				                <Widget Id="Extension" VisualDefinition="Extension" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" ClipContents="true" DoNotAcceptNavigation="true">
-				                  <Children>
+                <Widget Id="Extension" VisualDefinition="Extension" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" ClipContents="true" DoNotAcceptNavigation="true">
+                  <Children>
 
-				                    <!--Perks-->
-				                    <MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PerkInputBlocker="..\PerkInputBlocker" PopupWidgetFirst="..\..\..\..\..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\Body" NavigationScopeTargeter="ScopeTargeter">
-				                      <Children>
-				                        <NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
-				                        <NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
-				                          <ItemTemplate>
-				                            <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="160" HorizontalAlignment="Center" MarginLeft="5" Brush="MPClassLoadout.Perks.Button" ContainerPanel="..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
-				                              <Children>
-				                                <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="18" Brush="MPClassLoadout.Perks.Icon">
-				                                  <Children>
-				                                    <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
-				                                  </Children>
-				                                </BrushWidget>
-				                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="8" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
-				                              </Children>
-				                            </MultiplayerPerkItemToggleWidget>
-				                          </ItemTemplate>
-				                        </NavigatableListPanel>
-				                      </Children>
-				                    </MultiplayerPerkContainerPanelWidget>
+                    <!--Perks-->
+                    <MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PerkInputBlocker="..\PerkInputBlocker" PopupWidgetFirst="..\..\..\..\..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\Body" NavigationScopeTargeter="ScopeTargeter">
+                      <Children>
+                        <NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
+                        <NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                          <ItemTemplate>
+                            <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="160" HorizontalAlignment="Center" MarginLeft="5" Brush="MPClassLoadout.Perks.Button" ContainerPanel="..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
+                              <Children>
+                                <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="18" Brush="MPClassLoadout.Perks.Icon">
+                                  <Children>
+                                    <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
+                                  </Children>
+                                </BrushWidget>
+                                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="8" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
+                              </Children>
+                            </MultiplayerPerkItemToggleWidget>
+                          </ItemTemplate>
+                        </NavigatableListPanel>
+                      </Children>
+                    </MultiplayerPerkContainerPanelWidget>
 
-				                  </Children>
-				                </Widget>
+                  </Children>
+                </Widget>
 
 								<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Body" />
 

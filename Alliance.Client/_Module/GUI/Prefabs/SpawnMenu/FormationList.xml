@@ -12,7 +12,10 @@
 		<!-- Formation list -->
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
 			<Children>
-				<ListPanel DataSource="{Formations}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" >
+				<!-- Visual divider -->
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="20" VerticalAlignment="Top" Brush="MPEscapeMenu.Divider" AlphaFactor="1" MarginTop="10" />
+
+				<ListPanel DataSource="{Formations}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight" MarginTop="20" >
 					<ItemTemplate>
 
 						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="150" >

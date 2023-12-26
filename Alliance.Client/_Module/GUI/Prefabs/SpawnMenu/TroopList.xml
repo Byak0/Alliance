@@ -9,7 +9,7 @@
 			<Children>
 
 				<!-- Culture selection -->
-				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-4"  >
+				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-34"  >
 					<Children>
 						<!-- Decoration bar -->
 						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" Sprite="StdAssets\tabbar_long" />
@@ -33,6 +33,30 @@
 
 						<!-- Right arrow -->
 						<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Top" HorizontalAlignment="Right" MarginTop="10" MarginRight="100" Brush="ButtonLeftArrowBrush1" Command.Click="SelectNextCulture" />
+
+						<!-- Filter buttons for troops / heroes / banner bearers -->
+						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="66" VerticalAlignment="Top" HorizontalAlignment="Right" MarginRight="-70">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Top" >
+									<Children>
+										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowTroops" Command.Click="ToggleShowTroops" />
+										<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Troops" />
+									</Children>
+								</Widget>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Center">
+									<Children>
+										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowHeroes" Command.Click="ToggleShowHeroes" />
+										<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Heroes" />
+									</Children>
+								</Widget>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Bottom">
+									<Children>
+										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowBannerBearers" Command.Click="ToggleShowBannerBearers" />
+										<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Banner Bearers" />
+									</Children>
+								</Widget>
+							</Children>
+						</Widget>
 					</Children>
 				</Widget>
 
@@ -42,7 +66,7 @@
 					<Children>
 
 						<!-- Scrollable list -->
-						<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="true" VerticalScrollbar="Scrollbar" InnerPanel="ClipRect\InnerPanel" ClipRect="ClipRect" >
+						<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="false" VerticalScrollbar="Scrollbar" InnerPanel="ClipRect\InnerPanel" ClipRect="ClipRect" >
 							<Children>
 
 								<!-- Clip rect -->
