@@ -127,7 +127,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
                     Agent lastFoundAgent = searchStruct.LastFoundAgent;
                     // Check if capturing agent is not in rambo
                     FormationComponent formationComponent = lastFoundAgent?.MissionPeer?.GetComponent<FormationComponent>();
-                    bool agentIsAuthorizedToCap = !(formationComponent != null && formationComponent.State == FormationComponent.States.Rambo);
+                    bool agentIsAuthorizedToCap = !(formationComponent != null && formationComponent.State == FormationState.Rambo);
                     if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap)
                     {
                         ____agentCountsOnSide[(int)lastFoundAgent.Team.Side]++;

@@ -10,29 +10,23 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Component
     /// </summary>
     public class FormationComponent : PeerComponent
     {
-        public enum States
-        {
-            None,
-            Formation,
-            Skirmish,
-            Rambo
-        }
-
         public static FormationComponent Main => GameNetwork.MyPeer?.GetComponent<FormationComponent>();
 
         public event EventHandler OnStateChange;
 
-        public States State
+        private FormationState _state = FormationState.None;
+
+        public FormationState State
         {
             get
             {
-                return state;
+                return _state;
             }
             set
             {
-                if (value != state)
+                if (value != _state)
                 {
-                    state = value;
+                    _state = value;
                     OnStateChange?.Invoke(this, EventArgs.Empty);
                     this.GetNetworkPeer().ControlledAgent?.UpdateAgentStats();
                 }
@@ -45,9 +39,9 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Component
             {
                 switch (State)
                 {
-                    case States.Skirmish:
+                    case FormationState.Skirmish:
                         return Config.Instance.MeleeDebuffSkirm;
-                    case States.Rambo:
+                    case FormationState.Rambo:
                         return Config.Instance.MeleeDebuffRambo;
                     default:
                         return Config.Instance.MeleeDebuffForm;
@@ -61,9 +55,9 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Component
             {
                 switch (State)
                 {
-                    case States.Skirmish:
+                    case FormationState.Skirmish:
                         return Config.Instance.DistDebuffSkirm;
-                    case States.Rambo:
+                    case FormationState.Rambo:
                         return Config.Instance.DistDebuffRambo;
                     default:
                         return Config.Instance.DistDebuffForm;
@@ -77,9 +71,9 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Component
             {
                 switch (State)
                 {
-                    case States.Skirmish:
+                    case FormationState.Skirmish:
                         return Config.Instance.AccDebuffSkirm;
-                    case States.Rambo:
+                    case FormationState.Rambo:
                         return Config.Instance.AccDebuffRambo;
                     default:
                         return Config.Instance.AccDebuffForm;
@@ -87,11 +81,17 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Component
             }
         }
 
-        private States state = States.None;
-
         public FormationComponent()
         {
         }
+    }
+
+    public enum FormationState
+    {
+        None,
+        Formation,
+        Skirmish,
+        Rambo
     }
 }
 

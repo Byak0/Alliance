@@ -42,6 +42,35 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             MissionPeer.OnTeamChanged -= OnTeamChanged;
         }
 
+        public override SpectatorCameraTypes GetMissionCameraLockMode(bool lockedToMainPlayer)
+        {
+            SpectatorCameraTypes result = SpectatorCameraTypes.Invalid;
+            MissionPeer missionPeer = (GameNetwork.IsMyPeerReady ? GameNetwork.MyPeer.GetComponent<MissionPeer>() : null);
+            if (!lockedToMainPlayer && missionPeer != null)
+            {
+                if (missionPeer.Team != Mission.SpectatorTeam)
+                {
+                    if (IsRoundInProgress)
+                    {
+                        Formation controlledFormation = missionPeer.ControlledFormation;
+                        if (controlledFormation != null && controlledFormation.HasUnitsWithCondition((Agent agent) => !agent.IsPlayerControlled && agent.IsActive()))
+                        {
+                            result = SpectatorCameraTypes.LockToPlayerFormation;
+                        }
+                        else
+                        {
+                            result = SpectatorCameraTypes.LockToTeamMembers;
+                        }
+                    }
+                }
+                else
+                {
+                    result = SpectatorCameraTypes.Free;
+                }
+            }
+
+            return result;
+        }
 
         private void OnTeamChanged(NetworkCommunicator peer, Team oldTeam, Team newTeam)
         {
