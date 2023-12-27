@@ -58,12 +58,14 @@
   <AllianceCharacter id="NPCCharacter.mp_light_infantry_vlandia_troop" troop_limit="2400" />
   <AllianceCharacter id="NPCCharacter.mp_shock_infantry_vlandia_troop" troop_limit="3400" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_vlandia_troop" troop_limit="2400" />
+	<AllianceCharacter id="NPCCharacter.mp_heavy_infantry_vlandia_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_vlandia_troop" troop_limit="1000" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_vlandia_troop" troop_limit="850" />
   <AllianceCharacter id="NPCCharacter.mp_light_cavalry_vlandia_troop" troop_limit="800" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_cavalry_vlandia_troop" troop_limit="150" />
   <!-- Empire Troops -->
   <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_empire_troop" troop_limit="1" />
+	<AllianceCharacter id="NPCCharacter.mp_heavy_infantry_empire_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_shock_infantry_empire_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_skirmisher_empire_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_empire_troop" troop_limit="1" />
@@ -73,6 +75,7 @@
   <!--Khuzait Troops-->
   <AllianceCharacter id="NPCCharacter.mp_light_infantry_khuzait_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_khuzait_troop" troop_limit="1" />
+	<AllianceCharacter id="NPCCharacter.mp_heavy_infantry_khuzait_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_khuzait_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_ranged_khuzait_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_cavalry_khuzait_troop" troop_limit="1" />
@@ -80,6 +83,7 @@
   <AllianceCharacter id="NPCCharacter.mp_horse_archer_khuzait_troop" troop_limit="1" />
   <!--Aserai Troops-->
   <AllianceCharacter id="NPCCharacter.mp_light_infantry_aserai_troop" troop_limit="1" />
+	<AllianceCharacter id="NPCCharacter.mp_light_infantry_aserai_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_shock_infantry_aserai_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_skirmisher_aserai_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_aserai_troop" troop_limit="1" />
@@ -89,6 +93,7 @@
   <!--Sturgia Troops-->
   <AllianceCharacter id="NPCCharacter.mp_light_infantry_sturgia_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_sturgia_troop" troop_limit="1" />
+	<AllianceCharacter id="NPCCharacter.mp_heavy_infantry_sturgia_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_shock_infantry_sturgia_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_skirmisher_sturgia_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_sturgia_troop" troop_limit="1" />
@@ -97,6 +102,7 @@
   <!--Battanian Troops-->
   <AllianceCharacter id="NPCCharacter.mp_light_infantry_battania_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_heavy_infantry_battania_troop" troop_limit="1" />
+	<AllianceCharacter id="NPCCharacter.mp_heavy_infantry_battania_banner_bearer" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_shock_infantry_battania_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_skirmisher_battania_troop" troop_limit="1" />
   <AllianceCharacter id="NPCCharacter.mp_light_ranged_battania_troop" troop_limit="1" />

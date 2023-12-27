@@ -437,6 +437,7 @@
 		id="mp_heavy_infantry_vlandia"
 		hero="mp_heavy_infantry_vlandia_hero"
 		troop="mp_heavy_infantry_vlandia_troop"
+		banner_bearer="mp_heavy_infantry_vlandia_banner_bearer"
 		hero_idle_anim="act_vlandia_mp_sergeant_idle"
 		troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
 		multiplier="0.61"
@@ -624,6 +625,27 @@
 							type="DrivenProperty"
 							driven_property="MaxSpeedMultiplier"
 							value="0.05" />
+					</Effects>
+				</ConditionalEffect>
+			</Perk>
+			<!-- Third perk (for Banner Bearer) -->
+			<Perk game_mode="all"
+					name="{=*}Banner Bearer"
+					description="{=*}Add a banner bearer to the formation."
+					icon="PerkGeneral"
+					perk_list="3">
+				<ConditionalEffect>
+					<Conditions>
+						<Condition type="BannerBearer" />
+					</Conditions>
+					<Effects>
+						<!-- Put the effects you want here -->
+						<Effect type="DamageDealt"
+								value="0.10"
+								hit_type="Melee" />
+						<Effect type="DrivenProperty"
+								driven_property="MaxSpeedMultiplier"
+								value="0.10" />
 					</Effects>
 				</ConditionalEffect>
 			</Perk>
@@ -1647,6 +1669,7 @@
 		id="mp_heavy_infantry_empire"
 		hero="mp_heavy_infantry_empire_hero"
 		troop="mp_heavy_infantry_empire_troop"
+		banner_bearer="mp_heavy_infantry_empire_banner_bearer"
 		hero_idle_anim="act_empire_mp_legionary_idle"
 		troop_idle_anim="act_idle_1h_with_shield_1"
 		multiplier="0.65"
@@ -1842,6 +1865,27 @@
 							type="DrivenProperty"
 							driven_property="MaxSpeedMultiplier"
 							value="0.05" />
+					</Effects>
+				</ConditionalEffect>
+			</Perk>
+			<!-- Third perk (for Banner Bearer) -->
+			<Perk game_mode="all"
+					name="{=*}Banner Bearer"
+					description="{=*}Add a banner bearer to the formation."
+					icon="PerkGeneral"
+					perk_list="3">
+				<ConditionalEffect>
+					<Conditions>
+						<Condition type="BannerBearer" />
+					</Conditions>
+					<Effects>
+						<!-- Put the effects you want here -->
+						<Effect type="DamageDealt"
+								value="0.10"
+								hit_type="Melee" />
+						<Effect type="DrivenProperty"
+								driven_property="MaxSpeedMultiplier"
+								value="0.10" />
 					</Effects>
 				</ConditionalEffect>
 			</Perk>
@@ -2735,6 +2779,7 @@
 		id="mp_heavy_infantry_khuzait"
 		hero="mp_heavy_infantry_khuzait_hero"
 		troop="mp_heavy_infantry_khuzait_troop"
+		banner_bearer="mp_heavy_infantry_khuzait_banner_bearer"
 		hero_idle_anim="act_khuzait_mp_spear_infantry_idle"
 		troop_idle_anim="act_idle_1h_with_shield_1"
 		multiplier="0.65"
@@ -2904,6 +2949,27 @@
 					type="AlternativeEquipmentOnSpawn"
 					slot="Item0"
 					item="mp_khuzait_throwing_spear" />
+			</Perk>
+			<!-- Third perk (for Banner Bearer) -->
+			<Perk game_mode="all"
+					name="{=*}Banner Bearer"
+					description="{=*}Add a banner bearer to the formation."
+					icon="PerkGeneral"
+					perk_list="3">
+				<ConditionalEffect>
+					<Conditions>
+						<Condition type="BannerBearer" />
+					</Conditions>
+					<Effects>
+						<!-- Put the effects you want here -->
+						<Effect type="DamageDealt"
+								value="0.10"
+								hit_type="Melee" />
+						<Effect type="DrivenProperty"
+								driven_property="MaxSpeedMultiplier"
+								value="0.10" />
+					</Effects>
+				</ConditionalEffect>
 			</Perk>
 		</Perks>
 	</MPClassDivision>
@@ -3651,6 +3717,7 @@
 		id="mp_light_infantry_aserai"
 		hero="mp_light_infantry_aserai_hero"
 		troop="mp_light_infantry_aserai_troop"
+		banner_bearer="mp_light_infantry_aserai_banner_bearer"
 		hero_idle_anim="act_aserai_mp_tribal_warrior_idle"
 		troop_idle_anim="act_idle_1h_with_shield_1"
 		multiplier="0.77"
@@ -5379,6 +5446,7 @@
 		id="mp_heavy_infantry_sturgia"
 		hero="mp_heavy_infantry_sturgia_hero"
 		troop="mp_heavy_infantry_sturgia_troop"
+		banner_bearer="mp_heavy_infantry_sturgia_banner_bearer"
 		hero_idle_anim="act_sturgia_mp_huskarl_idle"
 		troop_idle_anim="act_idle_unarmed_1"
 		multiplier="0.61"
@@ -5586,6 +5654,27 @@
 					type="AlternativeEquipmentOnSpawn"
 					slot="Item2"
 					item="mp_sturgia_long_infantry_spear" />
+			</Perk>
+			<!-- Third perk (for Banner Bearer) -->
+			<Perk game_mode="all"
+					name="{=*}Banner Bearer"
+					description="{=*}Add a banner bearer to the formation."
+					icon="PerkGeneral"
+					perk_list="3">
+				<ConditionalEffect>
+					<Conditions>
+						<Condition type="BannerBearer" />
+					</Conditions>
+					<Effects>
+						<!-- Put the effects you want here -->
+						<Effect type="DamageDealt"
+								value="0.10"
+								hit_type="Melee" />
+						<Effect type="DrivenProperty"
+								driven_property="MaxSpeedMultiplier"
+								value="0.10" />
+					</Effects>
+				</ConditionalEffect>
 			</Perk>
 		</Perks>
 	</MPClassDivision>
@@ -6755,6 +6844,7 @@
 		id="mp_heavy_infantry_battania"
 		hero="mp_heavy_infantry_battania_hero"
 		troop="mp_heavy_infantry_battania_troop"
+		banner_bearer="mp_heavy_infantry_battania_banner_bearer"
 		hero_idle_anim="act_battania_mp_oathbound_idle"
 		troop_idle_anim="act_idle_1h_with_shield_1"
 		multiplier="0.61"
@@ -6924,6 +7014,27 @@
 					value="0.05"
 					driven_property="MaxSpeedMultiplier"
 					is_ratio="true" />
+			</Perk>
+			<!-- Third perk (for Banner Bearer) -->
+			<Perk game_mode="all"
+					name="{=*}Banner Bearer"
+					description="{=*}Add a banner bearer to the formation."
+					icon="PerkGeneral"
+					perk_list="3">
+				<ConditionalEffect>
+					<Conditions>
+						<Condition type="BannerBearer" />
+					</Conditions>
+					<Effects>
+						<!-- Put the effects you want here -->
+						<Effect type="DamageDealt"
+								value="0.10"
+								hit_type="Melee" />
+						<Effect type="DrivenProperty"
+								driven_property="MaxSpeedMultiplier"
+								value="0.10" />
+					</Effects>
+				</ConditionalEffect>
 			</Perk>
 		</Perks>
 	</MPClassDivision>

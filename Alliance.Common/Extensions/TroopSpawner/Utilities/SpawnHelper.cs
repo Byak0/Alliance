@@ -118,6 +118,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 AgentsInfoModel.Instance.AddAgentInfo(agent, botDifficulty, synchronize: true);
                 if (hasMount) AgentsInfoModel.Instance.AddAgentInfo(agent.MountAgent, botDifficulty, synchronize: true);
                 agent.UpdateAgentProperties();
+                agent.WieldInitialWeapons();
 
                 Log("Alliance : Spawned bot n." + TotalBots++, LogLevel.Debug);
                 return true;
