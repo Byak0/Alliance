@@ -8,6 +8,7 @@ using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
@@ -52,6 +53,7 @@ namespace Alliance.Server
             mission.AddMissionBehavior(new SyncConfigBehavior());
             mission.AddMissionBehavior(new ServerAutoHandler());
             mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new FormationControlBehavior());
 
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();

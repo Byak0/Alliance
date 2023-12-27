@@ -206,5 +206,18 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
 
             return null;
         }
+
+        public bool IsPlayerControllingAgent(MissionPeer player, Agent followedAgent)
+        {
+            bool isPlayerControllingAgent = false;
+            if (player.Team == followedAgent.Team && playerFormationMapping.TryGetValue(player, out List<FormationClass> controlledForms))
+            {
+                if (controlledForms.Contains(followedAgent.Formation.FormationIndex))
+                {
+                    isPlayerControllingAgent = true;
+                }
+            }
+            return isPlayerControllingAgent;
+        }
     }
 }
