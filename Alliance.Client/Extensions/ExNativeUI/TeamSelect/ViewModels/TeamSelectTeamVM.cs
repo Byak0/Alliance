@@ -17,46 +17,29 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
         private const int MaxFriendAvatarCount = 6;
 
         public readonly Team Team;
-
         public readonly Action<Team> _onSelect;
 
         private readonly List<MPPlayerVM> _friends;
-
         private MissionScoreboardComponent _missionScoreboardComponent;
-
         private MissionScoreboardComponent.MissionScoreboardSide _missionScoreboardSide;
-
         private readonly BasicCultureObject _culture;
-
         private bool _isDisabled;
-
         private string _displayedPrimary;
-
         private string _displayedSecondary;
-
         private string _displayedSecondarySub;
-
         private string _lockText;
-
         private string _cultureId;
-
         private int _score;
-
         private ImageIdentifierVM _banner;
-
         private MBBindingList<MPPlayerVM> _friendAvatars;
-
         private bool _hasExtraFriends;
-
         private bool _useSecondary;
-
         private bool _isAttacker;
-
         private bool _isSiege;
-
         private string _friendsExtraText;
-
         private HintViewModel _friendsExtraHint;
+        private Color _cultureColor1;
+        private Color _cultureColor2;
 
         [DataSourceProperty]
         public string CultureId
@@ -301,6 +284,40 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
             }
         }
 
+        [DataSourceProperty]
+        public Color CultureColor1
+        {
+            get
+            {
+                return _cultureColor1;
+            }
+            set
+            {
+                if (value != _cultureColor1)
+                {
+                    _cultureColor1 = value;
+                    OnPropertyChangedWithValue(value, "CultureColor1");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public Color CultureColor2
+        {
+            get
+            {
+                return _cultureColor2;
+            }
+            set
+            {
+                if (value != _cultureColor2)
+                {
+                    _cultureColor2 = value;
+                    OnPropertyChangedWithValue(value, "CultureColor2");
+                }
+            }
+        }
+
         public TeamSelectTeamVM(MissionScoreboardComponent missionScoreboardComponent, Team team, BasicCultureObject culture, BannerCode bannercode, Action<Team> onSelect, bool useSecondary)
         {
             Team = team;
@@ -330,6 +347,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
             else
             {
                 Banner = new ImageIdentifierVM(bannercode, nineGrid: true);
+            }
+
+            if (culture != null)
+            {
+                CultureColor1 = Color.FromUint(useSecondary ? culture.Color2 : culture.Color);
+                CultureColor2 = Color.FromUint(useSecondary ? culture.Color : culture.Color2);
             }
 
             _friends = new List<MPPlayerVM>();

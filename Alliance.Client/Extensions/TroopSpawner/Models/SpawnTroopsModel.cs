@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -15,6 +16,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
         public event Action OnFactionSelected;
         public event Action OnFormationSelected;
         public event Action OnTroopSelected;
+        public event Action OnPerkSelected;
         public event Action OnTroopCountUpdated;
         public event Action OnCustomTroopCountUpdated;
         public event Action OnFormationUpdated;
@@ -28,6 +30,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
         private BasicCharacterObject _selectedTroop;
         private float _difficulty;
         private int _difficultyLevel;
+        private List<int> _selectedPerks = new List<int>();
 
         public int CustomTroopCount
         {
@@ -147,6 +150,22 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 {
                     _selectedTroop = value;
                     OnTroopSelected?.Invoke();
+                }
+            }
+        }
+
+        public List<int> SelectedPerks
+        {
+            get
+            {
+                return _selectedPerks;
+            }
+            set
+            {
+                if (_selectedPerks != value)
+                {
+                    _selectedPerks = value;
+                    OnPerkSelected?.Invoke();
                 }
             }
         }

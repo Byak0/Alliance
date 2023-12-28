@@ -1,5 +1,5 @@
-﻿using TaleWorlds.Library;
-using static Alliance.Common.Extensions.FormationEnforcer.Component.FormationComponent;
+﻿using Alliance.Common.Extensions.FormationEnforcer.Component;
+using TaleWorlds.Library;
 
 namespace Alliance.Client.Extensions.FormationEnforcer.ViewModels
 {
@@ -9,7 +9,7 @@ namespace Alliance.Client.Extensions.FormationEnforcer.ViewModels
         {
         }
 
-        public States FormationStatusState
+        public FormationState FormationStatusState
         {
             get
             {
@@ -22,14 +22,14 @@ namespace Alliance.Client.Extensions.FormationEnforcer.ViewModels
                     _formationStatusState = value;
                     switch (value)
                     {
-                        case States.None:
-                        case States.Formation:
+                        case FormationState.None:
+                        case FormationState.Formation:
                             NbSoldiers = 3;
                             break;
-                        case States.Skirmish:
+                        case FormationState.Skirmish:
                             NbSoldiers = 2;
                             break;
-                        case States.Rambo:
+                        case FormationState.Rambo:
                             NbSoldiers = 1;
                             break;
                     }
@@ -71,7 +71,7 @@ namespace Alliance.Client.Extensions.FormationEnforcer.ViewModels
             }
         }
 
-        private States _formationStatusState;
+        private FormationState _formationStatusState;
 
         private bool _showFormationStatus;
         private int _nbSoldiers;

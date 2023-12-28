@@ -24,22 +24,19 @@
   </SubModules>
 	<Xmls>
 		<XmlNode>
-			<XmlName id="GameText" path="multiplayer_strings"/>
+			<XmlName id="GameText" path="Languages/module_strings"/>
 		</XmlNode>
 		<XmlNode>
-			<XmlName id="AllianceCharacters" path="AllianceCharacters"/>
+			<XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters"/>
 		</XmlNode>
 		<XmlNode>
-			<XmlName id="MPCharacters" path="mpcharacters"/>
+			<XmlName id="MPCharacters" path="Characters/mpcharacters_native"/>
 		</XmlNode>
 		<XmlNode>
-			<XmlName id="MPClassDivisions" path="mpclassdivisions"/>
+			<XmlName id="MPClassDivisions" path="Characters/mpclassdivisions"/>
 		</XmlNode>
 		<XmlNode>
-		  <XmlName id="Items" path="banners"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="Items" path="items"/>
+		  <XmlName id="Items" path="items"/>
 		</XmlNode>
 	</Xmls>
 </Module>

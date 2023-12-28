@@ -62,7 +62,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Gold on lost ally", "Gold gained when an ally died.", ConfigValueType.Integer, 0, 200)]
         public int GoldPerAllyDead = 5;
 
-        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in AllianceCharacters.xml.", ConfigValueType.Bool)]
+        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in ExtendedCharacters.xml.", ConfigValueType.Bool)]
         public bool UseTroopLimit = false;
 
         [ConfigProperty("Commander side", "Commander side for Alliance. 0 = defender, 1 = attacker.", ConfigValueType.Integer, 0, 1)]

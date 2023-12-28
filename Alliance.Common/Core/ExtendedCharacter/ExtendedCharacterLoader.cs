@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using TaleWorlds.Core;
@@ -13,15 +14,15 @@ namespace Alliance.Common.Core.ExtendedCharacter
     public class ExtendedCharacterLoader
     {
         /// <summary>
-        /// Load the AllianceCharacters file into usable game objects : ExtendedCharacterObject.
+        /// Load the ExtendedCharacters file into usable game objects : ExtendedCharacterObject.
         /// </summary>
         public static void Init()
         {
-            //if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/AllianceCharacters.xml")) 
+            //if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/Characters/ExtendedCharacters.xml")) 
             InitializeXML();
             CopyXSDs();
-            MBObjectManager.Instance.RegisterType<ExtendedCharacterObject>("AllianceCharacter", "AllianceCharacters", 2001, true, false);
-            MBObjectManager.Instance.LoadXML("AllianceCharacters", false);
+            MBObjectManager.Instance.RegisterType<ExtendedCharacterObject>("ExtendedCharacter", "ExtendedCharacters", 2001, true, false);
+            MBObjectManager.Instance.LoadXML("ExtendedCharacters", false);
         }
 
         // Game requires the XSD to be in Mount & Blade II Bannerlord\XmlSchemas to load custom schemas
@@ -41,27 +42,28 @@ namespace Alliance.Common.Core.ExtendedCharacter
             string moduleFullPath = ModuleHelper.GetModuleFullPath("Alliance");
             XmlDocument xmlDoc = new();
             XmlElement mpCharacters = xmlDoc.CreateElement("MPCharacters");
+            List<BasicCharacterObject> gameCharacters = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
 
-            foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+            foreach (BasicCharacterObject character in gameCharacters)
             {
-                XmlElement allianceCharacterNode = xmlDoc.CreateElement("AllianceCharacter");
+                XmlElement extendedCharacterNode = xmlDoc.CreateElement("ExtendedCharacter");
 
                 XmlAttribute characterAttribute = xmlDoc.CreateAttribute("id");
                 characterAttribute.Value = "NPCCharacter." + character.StringId;
-                allianceCharacterNode.Attributes.Append(characterAttribute);
+                extendedCharacterNode.Attributes.Append(characterAttribute);
 
                 XmlAttribute troopLimitAttribute = xmlDoc.CreateAttribute("troop_limit");
                 troopLimitAttribute.Value = "1000";
-                allianceCharacterNode.Attributes.Append(troopLimitAttribute);
+                extendedCharacterNode.Attributes.Append(troopLimitAttribute);
 
-                mpCharacters.AppendChild(allianceCharacterNode);
+                mpCharacters.AppendChild(extendedCharacterNode);
             }
 
-            XmlElement allianceCharacters = xmlDoc.CreateElement("AllianceCharacters");
-            allianceCharacters.InnerXml = mpCharacters.InnerXml;
-            xmlDoc.AppendChild(allianceCharacters);
+            XmlElement extendedCharacters = xmlDoc.CreateElement("ExtendedCharacters");
+            extendedCharacters.InnerXml = mpCharacters.InnerXml;
+            xmlDoc.AppendChild(extendedCharacters);
 
-            xmlDoc.Save(moduleFullPath + "/ModuleData/AllianceCharacters.xml");
+            xmlDoc.Save(moduleFullPath + "/ModuleData/Characters/ExtendedCharacters.xml");
         }
     }
 }

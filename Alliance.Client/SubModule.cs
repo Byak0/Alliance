@@ -73,7 +73,7 @@ namespace Alliance.Client
 
         public override void OnGameInitializationFinished(Game game)
         {
-            // Load AllianceCharacter.xml into usable ExtendedCharacterObjects
+            // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
             ExtendedCharacterLoader.Init();
         }
 

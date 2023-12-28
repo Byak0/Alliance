@@ -1,10 +1,11 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
-using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Utilities;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 using Color = TaleWorlds.Library.Color;
 
 namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
@@ -15,11 +16,66 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
     public class TroopListVM : ViewModel
     {
         private Action<TroopVM> _selectTroop;
+        private Action<HeroPerkVM, MPPerkVM> _selectPerk;
         private Color _cultureBackgroundColor;
         private Color _cultureForegroundColor;
+        private bool _showTroops = true;
+        private bool _showHeroes;
+        private bool _showBannerBearers;
         private string _cultureSprite;
         private string _cultureName;
         private MBBindingList<TroopGroupVM> _troopGroups;
+
+        [DataSourceProperty]
+        public bool ShowTroops
+        {
+            get
+            {
+                return _showTroops;
+            }
+            set
+            {
+                if (_showTroops != value)
+                {
+                    _showTroops = value;
+                    OnPropertyChangedWithValue(value, "ShowTroops");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowHeroes
+        {
+            get
+            {
+                return _showHeroes;
+            }
+            set
+            {
+                if (_showHeroes != value)
+                {
+                    _showHeroes = value;
+                    OnPropertyChangedWithValue(value, "ShowHeroes");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowBannerBearers
+        {
+            get
+            {
+                return _showBannerBearers;
+            }
+            set
+            {
+                if (_showBannerBearers != value)
+                {
+                    _showBannerBearers = value;
+                    OnPropertyChangedWithValue(value, "ShowBannerBearers");
+                }
+            }
+        }
 
         [DataSourceProperty]
         public Color CultureBackgroundColor
@@ -106,9 +162,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             }
         }
 
-        public TroopListVM(Action<TroopVM> selectTroop)
+        public TroopListVM(Action<TroopVM> selectTroop, Action<HeroPerkVM, MPPerkVM> selectPerk)
         {
             _selectTroop = selectTroop;
+            _selectPerk = selectPerk;
             TroopGroups = new MBBindingList<TroopGroupVM>();
             SetCulture(SpawnTroopsModel.Instance.SelectedFaction);
         }
@@ -125,6 +182,24 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             SetCulture(nextCulture);
         }
 
+        public void ToggleShowTroops()
+        {
+            ShowTroops = !ShowTroops;
+            RefreshTroopGroups(SpawnTroopsModel.Instance.SelectedFaction);
+        }
+
+        public void ToggleShowHeroes()
+        {
+            ShowHeroes = !ShowHeroes;
+            RefreshTroopGroups(SpawnTroopsModel.Instance.SelectedFaction);
+        }
+
+        public void ToggleShowBannerBearers()
+        {
+            ShowBannerBearers = !ShowBannerBearers;
+            RefreshTroopGroups(SpawnTroopsModel.Instance.SelectedFaction);
+        }
+
         private void SetCulture(BasicCultureObject culture)
         {
             SpawnTroopsModel.Instance.SelectedFaction = culture;
@@ -133,34 +208,35 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             CultureForegroundColor = Color.FromUint(culture.ForegroundColor1);
             CultureSprite = "StdAssets\\FactionIcons\\LargeIcons\\" + culture.StringId;
 
-            RefreshTroops(culture);
+            RefreshTroopGroups(culture);
         }
 
-        private void RefreshTroops(BasicCultureObject culture)
+        private void RefreshTroopGroups(BasicCultureObject culture)
         {
             TroopGroups.Clear();
-            AddTroopOfType(culture, TroopTypeModel.Instance.InfantryType);
-            AddTroopOfType(culture, TroopTypeModel.Instance.RangedType);
-            AddTroopOfType(culture, TroopTypeModel.Instance.CavalryType);
-            AddTroopOfType(culture, TroopTypeModel.Instance.HorseArcherType);
+            foreach (MultiplayerClassDivisions.MPHeroClassGroup mpheroClassGroup in MultiplayerClassDivisions.MultiplayerHeroClassGroups)
+            {
+                MBBindingList<TroopVM> troopVMs = GetTroopsFromClass(culture, mpheroClassGroup);
+
+                if (troopVMs.Count > 0) TroopGroups.Add(new TroopGroupVM(mpheroClassGroup, troopVMs));
+            }
+            TroopVM troop = TroopGroups.FirstOrDefault()?.Troops.FirstOrDefault();
+            _selectTroop(troop);
         }
 
-        private void AddTroopOfType(BasicCultureObject culture, string type)
+        private MBBindingList<TroopVM> GetTroopsFromClass(BasicCultureObject culture, MultiplayerClassDivisions.MPHeroClassGroup mpheroClassGroup)
         {
-            if (TroopTypeModel.Instance.TroopsPerCultureAndType.TryGetValue(culture, out Dictionary<string, List<BasicCharacterObject>> troopsByType))
+            MBBindingList<TroopVM> troopVMs = new MBBindingList<TroopVM>();
+            foreach (MultiplayerClassDivisions.MPHeroClass heroClass in from h in MultiplayerClassDivisions.GetMPHeroClasses(culture)
+                                                                        where h.ClassGroup.Equals(mpheroClassGroup)
+                                                                        select h)
             {
-                if (troopsByType.TryGetValue(type, out List<BasicCharacterObject> troops))
-                {
-                    MBBindingList<TroopVM> troopVMs = new MBBindingList<TroopVM>();
-                    foreach (BasicCharacterObject troop in troops)
-                    {
-                        TroopVM troopVM = new TroopVM(troop, _selectTroop);
-                        if (troop == SpawnTroopsModel.Instance.SelectedTroop) _selectTroop(troopVM);
-                        troopVMs.Add(troopVM);
-                    }
-                    if (troopVMs.Count > 0) TroopGroups.Add(new TroopGroupVM(type, troopVMs));
-                }
+                if (ShowTroops) troopVMs.Add(new TroopVM(heroClass, ClassType.Troop, _selectTroop, _selectPerk));
+                if (ShowHeroes && heroClass.HeroCharacter != null) troopVMs.Add(new TroopVM(heroClass, ClassType.Hero, _selectTroop, _selectPerk));
+                if (ShowBannerBearers && heroClass.BannerBearerCharacter != null) troopVMs.Add(new TroopVM(heroClass, ClassType.BannerBearer, _selectTroop, _selectPerk));
             }
+
+            return troopVMs;
         }
     }
 }
