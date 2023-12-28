@@ -294,7 +294,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                     break;
             }
             ExtendedTroop = Troop.GetExtendedCharacterObject();
-            TroopLimit = ExtendedTroop.TroopLeft + "/" + ExtendedTroop.TroopLimit;
+            TroopLimit = ExtendedTroop?.TroopLeft + "/" + ExtendedTroop?.TroopLimit;
             TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnTroopsModel.Instance.Difficulty);
             UseTroopLimit = Config.Instance.UseTroopLimit;
             UseTroopCost = Config.Instance.UseTroopCost;
@@ -350,15 +350,20 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 SelectedPerks.Clear();
             }
 
+            List<List<IReadOnlyPerkObject>> perksToShow = new List<List<IReadOnlyPerkObject>>();
+
+            // Filter out BannerBearer perks if necessary
+            bool isTroopTypeBannerBearer = TroopType == ClassType.BannerBearer;
             for (int i = 0; i < allPerksForHeroClass.Count; i++)
             {
-                if (allPerksForHeroClass[i].Count > 0)
+                bool hasBannerBearerPerk = allPerksForHeroClass[i].Exists(perk => ((MPPerkObject)perk).HasBannerBearer);
+
+                // Show the perk if it's not a BannerBearer perk, or if it's a BannerBearer perk and the troop is a BannerBearer.
+                bool showPerk = !hasBannerBearerPerk || (isTroopTypeBannerBearer && hasBannerBearerPerk);
+                if (allPerksForHeroClass[i].Count > 0 && showPerk)
                 {
+                    perksToShow.Add(allPerksForHeroClass[i]);
                     SelectedPerks.Add(allPerksForHeroClass[i][0]);
-                }
-                else
-                {
-                    SelectedPerks.Add(null);
                 }
             }
 
@@ -366,29 +371,23 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             {
                 MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
                 int troopIndex = (component.NextSelectedTroopIndex = MultiplayerClassDivisions.GetMPHeroClasses(HeroClass.Culture).ToList().IndexOf(HeroClass));
-                for (int j = 0; j < allPerksForHeroClass.Count; j++)
+                for (int j = 0; j < perksToShow.Count; j++)
                 {
-                    if (allPerksForHeroClass[j].Count > 0)
+                    int num2 = component.GetSelectedPerkIndexWithPerkListIndex(troopIndex, j);
+                    if (num2 >= perksToShow[j].Count)
                     {
-                        int num2 = component.GetSelectedPerkIndexWithPerkListIndex(troopIndex, j);
-                        if (num2 >= allPerksForHeroClass[j].Count)
-                        {
-                            num2 = 0;
-                        }
-
-                        IReadOnlyPerkObject value = allPerksForHeroClass[j][num2];
-                        SelectedPerks[j] = value;
+                        num2 = 0;
                     }
+
+                    IReadOnlyPerkObject value = perksToShow[j][num2];
+                    SelectedPerks[j] = value;
                 }
             }
 
             MBBindingList<HeroPerkVM> mBBindingList = new MBBindingList<HeroPerkVM>();
-            for (int k = 0; k < allPerksForHeroClass.Count; k++)
+            for (int k = 0; k < perksToShow.Count; k++)
             {
-                if (allPerksForHeroClass[k].Count > 0)
-                {
-                    mBBindingList.Add(new HeroPerkVM(_onPerkSelect, SelectedPerks[k], allPerksForHeroClass[k], k));
-                }
+                mBBindingList.Add(new HeroPerkVM(_onPerkSelect, SelectedPerks[k], perksToShow[k], k));
             }
 
             Perks = mBBindingList;
