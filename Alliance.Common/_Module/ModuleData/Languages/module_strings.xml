@@ -26,6 +26,7 @@
 	<string id="str_multiplayer_scene_name.captain_battlefield_032" text="{=str_alliance_scene_battlefield_032}Plains" />
 	<string id="str_multiplayer_scene_name.captain_battlefield_O" text="{=str_alliance_scene_captain_battlefield_O}Valley" />
 	<string id="str_multiplayer_scene_name.captain_battlefield_v" text="{=str_alliance_scene_captain_battlefield_v}Forest" />
+	<string id="str_multiplayer_scene_name.captain_battlefield_008" text="{=str_alliance_scene_captain_battlefield_008}Desert path" />
 	<string id="str_multiplayer_scene_name.comb_pvc_scn_01_a" text="{=str_alliance_scene_comb_pvc_scn_01_a}Desert Ruins by LeProfyteur" />
 	<string id="str_multiplayer_scene_name.scn_lobby_v01" text="{=str_alliance_scene_scn_lobby_v01}Lobby island" />
 	<string id="str_multiplayer_scene_name.Alliance_test" text="{=str_alliance_scene_Alliance_test}Script test" />
