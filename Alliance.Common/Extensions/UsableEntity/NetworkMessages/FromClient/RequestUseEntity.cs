@@ -9,6 +9,7 @@ namespace Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromClient
     {
         public Vec3 Position { get; private set; }
 
+        // This empty constructor is required so the engine recognize this class as a valid NetworkMessage
         public RequestUseEntity() { }
 
         public RequestUseEntity(Vec3 position)

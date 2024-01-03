@@ -18,6 +18,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
     /// </summary>
     public class UsableEntityView : MissionView
     {
+        private const int LeftAltGameKey = 5;
         private UsableEntityBehavior _entityInteractionBehavior;
         private GauntletLayer _gauntletLayer;
         private EntityInteractionVM _dataSource;
@@ -48,7 +49,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
         public override void OnMissionScreenTick(float dt)
         {
             base.OnMissionScreenTick(dt);
-            if (Input.IsGameKeyDown(5))
+            if (Input.IsGameKeyDown(LeftAltGameKey))
             {
                 _dataSource.IsEnabled = true;
             }
@@ -61,14 +62,16 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
             {
                 GameEntity closestEntity = _entityInteractionBehavior.FindEntityUsableByAgent(Agent.Main);
 
-                if (_targetEntity != null && _targetEntity != closestEntity)
+                if (_targetEntity != closestEntity)
                 {
-                    DisableInteraction(_targetEntity);
-                    _targetEntity = null;
-                }
-                else if (closestEntity != null)
-                {
-                    EnableInteraction(closestEntity);
+                    if (_targetEntity != null)
+                    {
+                        DisableInteraction(_targetEntity);
+                    }
+                    if (closestEntity != null)
+                    {
+                        EnableInteraction(closestEntity);
+                    }
                     _targetEntity = closestEntity;
                 }
             }

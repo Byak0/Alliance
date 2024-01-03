@@ -9,9 +9,8 @@ namespace Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromServer
     {
         public Vec3 Position { get; private set; }
 
-        public RemoveEntity()
-        {
-        }
+        // This empty constructor is required so the engine recognize this class as a valid NetworkMessage
+        public RemoveEntity() { }
 
         public RemoveEntity(Vec3 position)
         {
