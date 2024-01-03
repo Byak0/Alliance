@@ -28,7 +28,10 @@
 	</Target>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<!-- Prepare the Module folder in \obj first -->
+    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
+    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
+
+    <!-- Prepare the Module folder in \obj first -->
 		<!-- Common assets -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module&quot; &quot;$(ProjectDir)\obj\$(ModuleName)&quot; /E /C /I /Y /F" />
 		<!-- Server assets -->
@@ -49,9 +52,6 @@
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*.bat&quot; &quot;$(GameFolder)\bin\Win64_Shipping_Server\&quot; /E /C /I /Y /F" />
 		<!-- Copy config (.txt file) to Server/Modules/Native folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*config*.txt&quot; &quot;$(GameFolder)\Modules\Native\&quot; /E /C /I /Y /F" />
-
-    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
-    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
 	</Target>
 
 </Project>
