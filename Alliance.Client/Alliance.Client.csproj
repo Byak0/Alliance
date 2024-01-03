@@ -1,5 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\Directory.Build.props" />
+  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
   <PropertyGroup>
 		<Version>$(AllianceVersion)</Version>
