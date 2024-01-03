@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\Directory.Build.props" />
 
 	<PropertyGroup>
-		<Version>0.0.4</Version>
+    <Version>$(AllianceVersion)</Version>
 		<TargetFramework>net6.0</TargetFramework>
 		<Platforms>x64</Platforms>
 		<LangVersion>10.0</LangVersion>
@@ -48,6 +49,9 @@
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*.bat&quot; &quot;$(GameFolder)\bin\Win64_Shipping_Server\&quot; /E /C /I /Y /F" />
 		<!-- Copy config (.txt file) to Server/Modules/Native folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*config*.txt&quot; &quot;$(GameFolder)\Modules\Native\&quot; /E /C /I /Y /F" />
+
+    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
+    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
 	</Target>
 
 </Project>

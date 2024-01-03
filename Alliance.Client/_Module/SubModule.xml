@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <Id value="Alliance" />
   <Name value="Alliance" />
-  <Version value="v0.0.4" />
+  <Version value="v0.0.5" />
   <ModuleCategory value="Multiplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
-		<DependedModule Id="Multiplayer" />
+    <DependedModule Id="Multiplayer" />
   </DependedModules>
   <SubModules>
-		<SubModule>
-			<Name value="Alliance" />
-			<DLLName value="Alliance.Common.dll" />
-			<SubModuleClassType value="Alliance.Common.SubModule" />
-			<Tags />
-		</SubModule>
+    <SubModule>
+      <Name value="Alliance" />
+      <DLLName value="Alliance.Common.dll" />
+      <SubModuleClassType value="Alliance.Common.SubModule" />
+      <Tags />
+    </SubModule>
     <SubModule>
       <Name value="Alliance" />
       <DLLName value="Alliance.Client.dll" />
@@ -22,21 +22,21 @@
       <Tags />
     </SubModule>
   </SubModules>
-	<Xmls>
-		<XmlNode>
-			<XmlName id="GameText" path="Languages/module_strings"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="MPCharacters" path="Characters/mpcharacters_native"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="MPClassDivisions" path="Characters/mpclassdivisions"/>
-		</XmlNode>
-		<XmlNode>
-		  <XmlName id="Items" path="items"/>
-		</XmlNode>
-	</Xmls>
+  <Xmls>
+    <XmlNode>
+      <XmlName id="GameText" path="Languages/module_strings" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/mpcharacters_native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPClassDivisions" path="Characters/mpclassdivisions" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="items" />
+    </XmlNode>
+  </Xmls>
 </Module>
