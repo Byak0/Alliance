@@ -253,6 +253,35 @@
 		</Styles>
 	</Brush>
 
+	<Brush Name="Alliance.Button.Checkbox" BaseBrush="Item.Type.Icon.BaseBrush">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="StdAssets\checkbox_empty" />
+			<BrushLayer Name="Selected" Sprite="StdAssets\checkbox_full" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" IsHidden="true" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="0.4" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="1" />
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="0.8" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" AlphaFactor="0.5" />
+				<BrushLayer Name="Selected" IsHidden="true" />
+			</Style>
+		</Styles>
+	</Brush>
+
 	<Brush Name="Alliance.ListFrame">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="switcher_9" ExtendTop="2" ExtendLeft="2" ExtendRight="2" ExtendBottom="2" />

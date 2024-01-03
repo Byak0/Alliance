@@ -1,3 +1,4 @@
+using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Lobby.Behaviors;
 using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.GameModes.Lobby.Behaviors;
@@ -24,7 +25,7 @@ namespace Alliance.Server.GameModes.Lobby
                     new LobbyBehavior(),
                     new LobbyClientBehavior(),
                     new PollBehavior(),
-                    //new ConsoleMatchStartEndHandler(), ??
+                    new VoipHandler(),
                     new MultiplayerTimerComponent(),
                     new SpawnComponent(new LobbySpawnFrameBehavior(), new LobbySpawningBehavior()),
                     new MultiplayerAdminComponent(),

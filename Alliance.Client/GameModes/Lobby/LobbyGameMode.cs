@@ -1,3 +1,4 @@
+using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Lobby.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -19,6 +20,7 @@ namespace Alliance.Client.GameModes.Lobby
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new LobbyClientBehavior(),
+                    new VoipHandler(),
 
                     new MultiplayerAdminComponent(),
                     new MultiplayerTimerComponent(),

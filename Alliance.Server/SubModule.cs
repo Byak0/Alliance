@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.VOIP.Behaviors;
+using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Server.Core;
@@ -8,6 +8,7 @@ using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
@@ -48,17 +49,11 @@ namespace Alliance.Server
             // Apply additional native fixes through MissionBehaviors
             DirtyServerPatcher.AddFixBehaviors(mission);
 
-            // Synchronize player roles and access level
             mission.AddMissionBehavior(new SyncRolesBehavior());
-
-            // Synchronize mod configuration
             mission.AddMissionBehavior(new SyncConfigBehavior());
-
-            // Add main server handler
             mission.AddMissionBehavior(new ServerAutoHandler());
-
-            // VOIP
-            mission.AddMissionBehavior(new VoipHandler());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new FormationControlBehavior());
 
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();
@@ -70,7 +65,7 @@ namespace Alliance.Server
         {
             // TODO : Check which limits still need to be increased after 1.2
             // Increase native network compression limits to prevent crashes
-            //DirtyCommonPatcher.IncreaseNativeLimits();
+            DirtyCommonPatcher.IncreaseNativeLimits();
 
             // Add player connection watcher for auto-kick
             game.AddGameHandler<PlayerConnectionWatcher>();
@@ -78,7 +73,7 @@ namespace Alliance.Server
 
         public override void OnGameInitializationFinished(Game game)
         {
-            // Load AllianceCharacter.xml into usable ExtendedCharacterObjects
+            // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
             ExtendedCharacterLoader.Init();
         }
 
@@ -86,7 +81,7 @@ namespace Alliance.Server
         {
             // Add our custom GameModels 
             gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+            //gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
         }
 
         public override void OnGameEnd(Game game)

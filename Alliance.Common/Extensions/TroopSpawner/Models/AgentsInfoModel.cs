@@ -50,20 +50,27 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         }
 
         /// <summary>
-        /// Retrieve the first available slot for agents.
+        /// Return any number of available slots, whether they are consecutive or not.
         /// Use this to define agentBuildData.Index and ensure the agent you are spawning won't crash the engine.
         /// </summary>
-        /// <returns>The first slot index available, -1 if no slot available</returns>
-        public int GetAvailableSlotIndex()
+        /// <returns>The first slots available, or empty list if no slot available</returns>
+        public List<int> GetAvailableSlotIndex(int requiredSlots = 1)
         {
+            List<int> availableSlots = new List<int>();
+
             for (int i = 500; i < Agents.Count; i++)
             {
                 if (!Agents.ContainsKey(i) || Agents[i].Agent == null)
                 {
-                    return i;
+                    availableSlots.Add(i);
+                    if (availableSlots.Count == requiredSlots)
+                    {
+                        return availableSlots;
+                    }
                 }
             }
-            return -1;
+
+            return new List<int>(); // Return an empty list if enough slots are not available
         }
 
         /// <summary>
@@ -140,7 +147,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         static AgentsInfoModel()
         {
             instance.Agents = new Dictionary<int, AgentInfo>();
-            for (int i = 0; i < 2045; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 instance.Agents[i] = new AgentInfo(null, 1f, 0, 0);
             }

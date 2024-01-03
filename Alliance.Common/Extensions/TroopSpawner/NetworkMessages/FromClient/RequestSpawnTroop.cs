@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Core;
+﻿using System.Collections.Generic;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
@@ -15,10 +16,13 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
         public int Formation { get; private set; }
         public int TroopCount { get; private set; }
         public float Difficulty { get; private set; }
+        public List<int> SelectedPerks { get; private set; }
+        public int NbPerks { get; private set; }
+
 
         public RequestSpawnTroop() { }
 
-        public RequestSpawnTroop(MatrixFrame spawnPosition, bool spawnAtExactPosition, BasicCharacterObject characterToSpawn, int formation, int troopCount, float difficulty)
+        public RequestSpawnTroop(MatrixFrame spawnPosition, bool spawnAtExactPosition, BasicCharacterObject characterToSpawn, int formation, int troopCount, float difficulty, List<int> selectedPerks)
         {
             SpawnPosition = spawnPosition;
             SpawnAtExactPosition = spawnAtExactPosition;
@@ -26,6 +30,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             Formation = formation;
             TroopCount = troopCount;
             Difficulty = difficulty;
+            SelectedPerks = selectedPerks;
+            NbPerks = SelectedPerks.Count;
         }
 
         protected override void OnWrite()
@@ -36,6 +42,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             WriteIntToPacket(Formation, CompressionMission.FormationClassCompressionInfo);
             WriteIntToPacket(TroopCount, new CompressionInfo.Integer(0, 9999, true));
             WriteFloatToPacket(Difficulty, new CompressionInfo.Float(0f, 5, 0.1f));
+            WriteIntToPacket(NbPerks, CompressionMission.PerkIndexCompressionInfo);
+            foreach (int selectedPerk in SelectedPerks)
+            {
+                WriteIntToPacket(selectedPerk, CompressionMission.PerkIndexCompressionInfo);
+            }
         }
 
         protected override bool OnRead()
@@ -47,7 +58,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             Formation = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             TroopCount = ReadIntFromPacket(new CompressionInfo.Integer(0, 9999, true), ref bufferReadValid);
             Difficulty = ReadFloatFromPacket(new CompressionInfo.Float(0f, 5, 0.1f), ref bufferReadValid);
-
+            NbPerks = ReadIntFromPacket(CompressionMission.PerkIndexCompressionInfo, ref bufferReadValid);
+            SelectedPerks = new List<int>();
+            for (int i = 0; i < NbPerks; i++)
+            {
+                SelectedPerks.Add(ReadIntFromPacket(CompressionMission.PerkIndexCompressionInfo, ref bufferReadValid));
+            }
             return bufferReadValid;
         }
 

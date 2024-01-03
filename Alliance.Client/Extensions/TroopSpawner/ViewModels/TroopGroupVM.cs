@@ -1,4 +1,5 @@
 ﻿using TaleWorlds.Library;
+using static TaleWorlds.MountAndBlade.MultiplayerClassDivisions;
 
 namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 {
@@ -7,22 +8,61 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
     /// </summary>
     public class TroopGroupVM : ViewModel
     {
-        private string _groupName;
+        private string _name;
+        private string _iconType;
+        private string _iconPath;
         private MBBindingList<TroopVM> _troops;
 
+        public bool IsValid => _troops.Count > 0;
+
         [DataSourceProperty]
-        public string GroupName
+        public string Name
         {
             get
             {
-                return _groupName;
+                return _name;
             }
             set
             {
-                if (_groupName != value)
+                if (value != _name)
                 {
-                    _groupName = value;
-                    OnPropertyChangedWithValue(value, "GroupName");
+                    _name = value;
+                    OnPropertyChangedWithValue(value, "Name");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string IconType
+        {
+            get
+            {
+                return _iconType;
+            }
+            set
+            {
+                if (value != _iconType)
+                {
+                    _iconType = value;
+                    OnPropertyChangedWithValue(value, "IconType");
+                    IconPath = "TroopBanners\\ClassType_" + value;
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string IconPath
+        {
+            get
+            {
+                return _iconPath;
+            }
+            set
+            {
+                if (value != _iconPath)
+                {
+                    _iconPath = value;
+                    OnPropertyChangedWithValue(value, "IconPath");
                 }
             }
         }
@@ -45,9 +85,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         }
 
 
-        public TroopGroupVM(string groupName, MBBindingList<TroopVM> troops)
+        public TroopGroupVM(MPHeroClassGroup heroClassGroup, MBBindingList<TroopVM> troops)
         {
-            GroupName = groupName;
+            Name = heroClassGroup.Name.ToString();
+            IconType = heroClassGroup.StringId;
             Troops = troops;
         }
     }

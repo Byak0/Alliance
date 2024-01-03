@@ -5,8 +5,8 @@ using Alliance.Client.Extensions.AnimationPlayer.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Client.Extensions.SAE.Behaviors;
 using Alliance.Client.Extensions.TroopSpawner.Views;
+using Alliance.Client.Extensions.UsableEntity.Views;
 using Alliance.Client.Extensions.Vehicles.Views;
-using Alliance.Client.Extensions.VOIP.Views;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -17,7 +17,7 @@ using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.VOIP.Behaviors;
+using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
@@ -56,10 +56,10 @@ namespace Alliance.Client
             mission.AddMissionBehavior(new AnimationView());
             mission.AddMissionBehavior(new SpawnTroopsView());
             mission.AddMissionBehavior(new VehicleView());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new UsableEntityView());
             mission.AddMissionBehavior(new SaeBehavior());
             mission.AddMissionBehavior(new GameModeMenuView());
-            mission.AddMissionBehavior(new VoipHandler());
-            mission.AddMissionBehavior(new VoipView());
 
             Log("Alliance initialized.", LogLevel.Debug);
         }
@@ -68,12 +68,12 @@ namespace Alliance.Client
         {
             // TODO : Check which limits still need to be increased after 1.2
             // Increase native network compression limits to prevent crashes
-            //DirtyCommonPatcher.IncreaseNativeLimits();
+            DirtyCommonPatcher.IncreaseNativeLimits();
         }
 
         public override void OnGameInitializationFinished(Game game)
         {
-            // Load AllianceCharacter.xml into usable ExtendedCharacterObjects
+            // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
             ExtendedCharacterLoader.Init();
         }
 
@@ -81,7 +81,7 @@ namespace Alliance.Client
         {
             // Add our custom GameModels 
             gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+            //gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
         }
 
         private void AddGameModes()

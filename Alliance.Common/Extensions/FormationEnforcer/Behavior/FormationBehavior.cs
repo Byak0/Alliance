@@ -55,7 +55,7 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Behavior
 
             if (player.ControlledAgent.Team.ActiveAgents.Count <= Config.Instance.MinPlayerForm)
             {
-                playerRep.State = FormationComponent.States.Formation;
+                playerRep.State = FormationState.Formation;
                 return;
             }
 
@@ -63,15 +63,15 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Behavior
 
             if (FormationCalculateModel.IsInFormation(player.ControlledAgent, ownFormationOnly))
             {
-                playerRep.State = FormationComponent.States.Formation;
+                playerRep.State = FormationState.Formation;
             }
             else if (FormationCalculateModel.IsInSkirmish(player.ControlledAgent, ownFormationOnly))
             {
-                playerRep.State = FormationComponent.States.Skirmish;
+                playerRep.State = FormationState.Skirmish;
             }
             else
             {
-                playerRep.State = FormationComponent.States.Rambo;
+                playerRep.State = FormationState.Rambo;
             }
         }
 
@@ -86,7 +86,7 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Behavior
 
                 if (playerRep != null)
                 {
-                    playerRep.State = FormationComponent.States.Formation;
+                    playerRep.State = FormationState.Formation;
                 }
             }
         }

@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Module>
   <Id value="Alliance.Editor" />
   <Name value="Alliance.Editor" />
-  <Version value="v0.0.3" />
+  <Version value="v0.0.5" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
   </DependedModules>
   <SubModules>
-		<SubModule>
-			<Name value="Alliance" />
-			<DLLName value="Alliance.Common.dll" />
-			<SubModuleClassType value="Alliance.Common.SubModule" />
-			<Tags />
-		</SubModule>
+    <SubModule>
+      <Name value="Alliance" />
+      <DLLName value="Alliance.Common.dll" />
+      <SubModuleClassType value="Alliance.Common.SubModule" />
+      <Tags />
+    </SubModule>
     <SubModule>
       <Name value="Alliance" />
       <DLLName value="Alliance.Editor.dll" />
@@ -21,21 +21,27 @@
       <Tags />
     </SubModule>
   </SubModules>
-	<Xmls>
-		<XmlNode>
-			<XmlName id="GameText" path="multiplayer_strings"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="PvCCharacters" path="PvCCharacters"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="MPCharacters" path="mpcharacters"/>
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="MPClassDivisions" path="mpclassdivisions"/>
-		</XmlNode>
-		<XmlNode>
-		  <XmlName id="Items" path="banners"/>
-		</XmlNode>
-	</Xmls>
+  <Xmls>
+    <XmlNode>
+      <XmlName id="GameText" path="Languages/module_strings" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/mpcharacters_native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/mpcharacters_lotr" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/mpcharacters_sop" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPClassDivisions" path="Characters/mpclassdivisions" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="Items" />
+    </XmlNode>
+  </Xmls>
 </Module>

@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
-	<PropertyGroup>
-		<Version>0.0.3</Version>
+  <PropertyGroup>
+		<Version>$(AllianceVersion)</Version>
 		<TargetFramework>net472</TargetFramework>
 		<Platforms>x64</Platforms>
 		<LangVersion>10.0</LangVersion>
@@ -39,6 +40,9 @@
 	</Target>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
+    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
+    
 		<!-- Prepare the Module folder in \obj first -->
 		<!-- Common assets -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module&quot; &quot;$(ProjectDir)\obj\$(ModuleName)&quot; /E /C /I /Y /F" />
@@ -57,6 +61,6 @@
 
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
-	</Target>
+  </Target>
 
 </Project>

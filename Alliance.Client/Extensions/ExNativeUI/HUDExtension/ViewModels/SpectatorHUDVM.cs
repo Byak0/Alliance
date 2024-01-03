@@ -461,7 +461,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
             SpectatedPlayerNeutrality = spectatedPlayerNeutrality;
             SpectatedPlayerName = followedAgent.MissionPeer?.DisplayedName ?? followedAgent.Name.ToString();
-            CanTakeControlOfSpectatedAgent = followedAgent.Team != null && followedAgent.Team.Side == component.Team.Side && followedAgent.Formation != null && FormationControlModel.Instance.GetControlledFormations(component).Contains(followedAgent.Formation.FormationIndex);
+            CanTakeControlOfSpectatedAgent = followedAgent.Team != null && followedAgent.Formation != null && FormationControlModel.Instance.IsPlayerControllingAgent(component, followedAgent);
             CompassElement = null;
             AgentHasCompassElement = false;
             MissionPeer missionPeer = followedAgent.MissionPeer ?? followedAgent.Formation?.PlayerOwner?.MissionPeer;

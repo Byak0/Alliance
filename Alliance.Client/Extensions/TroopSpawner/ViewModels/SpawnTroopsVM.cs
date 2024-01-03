@@ -7,10 +7,12 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
@@ -31,6 +33,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private int _customTroopCount;
         private int _difficulty;
         private TroopVM _selectedTroopVM;
+        private HeroInformationVM _troopInformation;
         private TroopListVM _troopList;
         private CharacterViewModel _troopPreview;
         private FormationVM _selectedFormation;
@@ -264,6 +267,40 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             }
         }
 
+        [DataSourceProperty]
+        public HeroInformationVM TroopInformation
+        {
+            get
+            {
+                return _troopInformation;
+            }
+            set
+            {
+                if (value != _troopInformation)
+                {
+                    _troopInformation = value;
+                    OnPropertyChangedWithValue(value, "TroopInformation");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public TroopVM SelectedTroopVM
+        {
+            get
+            {
+                return _selectedTroopVM;
+            }
+            set
+            {
+                if (value != _selectedTroopVM)
+                {
+                    _selectedTroopVM = value;
+                    OnPropertyChangedWithValue(value, "SelectedTroopVM");
+                }
+            }
+        }
+
         public event EventHandler OnCloseMenu;
 
         public SpawnTroopsVM()
@@ -271,7 +308,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             _myRepresentative = GameNetwork.MyPeer?.VirtualPlayer.GetComponent<MissionRepresentativeBase>();
             TroopPreview = new CharacterViewModel();
             TroopPreview.FillFrom(SpawnTroopsModel.Instance.SelectedTroop);
-            TroopList = new TroopListVM(SelectTroop);
+            TroopList = new TroopListVM(SelectTroop, SelectPerk);
+            TroopInformation = new HeroInformationVM();
             TroopCount = SpawnTroopsModel.Instance.TroopCount;
             CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
             Difficulty = SpawnTroopsModel.Instance.DifficultyLevel;
@@ -292,7 +330,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopSelected += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopCountUpdated += RefreshGold;
-            RefreshGold();
+            _myRepresentative.OnGoldUpdated += RefreshGold;
+
+            TroopGroupVM troopGroupVM = TroopList.TroopGroups.FirstOrDefault();
+            TroopVM defaultTroopVM = (troopGroupVM != null) ? troopGroupVM.Troops.FirstOrDefault() : null;
+            SelectTroop(defaultTroopVM);
         }
 
         public override void OnFinalize()
@@ -353,17 +395,60 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             }
         }
 
-        public void SelectTroop(TroopVM troopVM)
+        private void SelectTroop(TroopVM troopVM)
         {
+            if (troopVM == null) return;
             // Unselect previous troop
-            if (_selectedTroopVM != null) _selectedTroopVM.IsSelected = false;
+            if (SelectedTroopVM != null) SelectedTroopVM.IsSelected = false;
             // Select new troop
-            _selectedTroopVM = troopVM;
-            _selectedTroopVM.IsSelected = true;
+            SelectedTroopVM = troopVM;
+            SelectedTroopVM.IsSelected = true;
             // Update model
-            SpawnTroopsModel.Instance.SelectedTroop = troopVM.Troop;
+            SpawnTroopsModel.Instance.SelectedTroop = SelectedTroopVM.Troop;
+            SpawnTroopsModel.Instance.SelectedPerks = SelectedTroopVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
             // Update preview
-            TroopPreview?.FillFrom(troopVM.Troop);
+            RefreshTroopPreview();
+            RefreshTroopInformations();
+        }
+
+        public void RefreshTroopPreview()
+        {
+            if (TroopPreview == null) return;
+
+            List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
+
+            Equipment equipment = SelectedTroopVM.Troop.Equipment.Clone();
+            MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(perks);
+            IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipements = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
+            if (alternativeEquipements != null)
+            {
+                foreach ((EquipmentIndex, EquipmentElement) item in alternativeEquipements)
+                {
+                    equipment[item.Item1] = item.Item2;
+                }
+            }
+
+            TroopPreview.FillFrom(SelectedTroopVM.Troop);
+            TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
+        }
+
+        private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)
+        {
+            if (GameNetwork.IsMyPeerReady && TroopInformation?.HeroClass != null && SelectedTroopVM != null)
+            {
+                SpawnTroopsModel.Instance.SelectedPerks = SelectedTroopVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
+                RefreshTroopPreview();
+                RefreshTroopInformations();
+            }
+        }
+
+        private void RefreshTroopInformations()
+        {
+            List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
+            if (perks.Count > 0)
+            {
+                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, perks);
+            }
         }
 
         // Called by ScrollableButtonWidget

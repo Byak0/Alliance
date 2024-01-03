@@ -268,7 +268,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
                     // TODO : send info to clients
 
                 }
-                Log($"DEBUG : Spawned {nbBotsToSpawn} bots for {team.Side} side. {TeamRemainingLives[team]} lives remaining for team.");
+                Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {TeamRemainingLives[team]} lives remaining for team.", LogLevel.Debug);
             }
 
             _haveBotsBeenSpawned[(int)team.Side] = true;

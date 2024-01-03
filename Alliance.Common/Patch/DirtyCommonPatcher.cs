@@ -22,7 +22,7 @@ namespace Alliance.Common.Patch
             CompressionMission.RoundTimeCompressionInfo = new CompressionInfo.Integer(0, 3600, true);
 
             // Increase formation max
-            CompressionBasic.NumberOfBotsPerFormationCompressionInfo = new CompressionInfo.Integer(0, 4096, true);
+            CompressionBasic.NumberOfBotsPerFormationCompressionInfo = new CompressionInfo.Integer(0, 2048, true);
 
             // Increase gold max
             CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);
@@ -45,7 +45,7 @@ namespace Alliance.Common.Patch
             //patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
             patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
             patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
-            //patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
+            patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;

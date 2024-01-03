@@ -10,12 +10,16 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
 using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MPPerkObject;
 
 namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 {
     public static class SpawnHelper
     {
         public static int TotalBots = 0;
+
+        static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
+        static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
 
         public static void RemoveBot(Agent bot, int waitTime = 10000)
         {
@@ -30,72 +34,79 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             AgentsInfoModel.Instance.RemoveAgentInfo(index);
         }
 
-        public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+        public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
         {
             try
             {
-                // Find a free slot to spawn the bot
-                int forcedIndex = AgentsInfoModel.Instance.GetAvailableSlotIndex();
-                if (forcedIndex == -1)
-                {
-                    Log("Alliance : Cannot spawn - no slot available.", LogLevel.Error);
-                    return false;
-                }
-
-                Log($"Alliance : Trying to spawn bot n.{TotalBots} on slot {forcedIndex} \n Team : {team.Side} | character : {character.Name} | origin : {origin} | formation : {selectedFormation}", LogLevel.Debug);
-
-                SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
-                MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
-
+                // Define formation
                 Formation form;
                 if (selectedFormation > -1)
                 {
                     form = team.GetFormation((FormationClass)selectedFormation);
-                    if (form == null) form = new Formation(team, selectedFormation);
+                    form ??= new Formation(team, selectedFormation);
                 }
                 else
                 {
                     form = team.GetFormation(character.GetFormationClass());
-                    if (form == null) form = new Formation(team, character.DefaultFormationGroup);
+                    form ??= new Formation(team, character.DefaultFormationGroup);
                 }
 
-                //string orders = " | OrderLocalAveragePosition=" + form.OrderLocalAveragePosition.ToString();
-                //orders += " | OrderPosition=" + form.OrderPosition.ToString();
-                //orders += " | OrderPositionIsValid=" + form.OrderPositionIsValid;
-                //orders += " | ArrangementOrder=" + form.ArrangementOrder.OrderEnum;
-                //orders += " | AttackEntityOrderDetachment=" + form.AttackEntityOrderDetachment?.ToString();
-                //orders += " | FacingOrder=" + form.FacingOrder.OrderEnum;
-                //orders += " | FiringOrder=" + form.FiringOrder.OrderEnum;
-                //orders += " | FormOrder=" + form.FormOrder.OrderEnum;
-                //orders += " | RidingOrder=" + form.RidingOrder.OrderEnum;
-                //orders += " | WeaponUsageOrder=" + form.WeaponUsageOrder.OrderEnum;
-
-                //Log("Formation " + form.Index + " current orders : \n" + orders, 0, Debug.DebugColor.Yellow);
-
-                MatrixFrame spawnFrame = (MatrixFrame)(origin != null ? origin : spawnComponent.GetSpawnFrame(team, character.HasMount(), false));
+                // Define spawn position
+                MatrixFrame spawnFrame = (MatrixFrame)(position != null ? position : SpawnComponent.GetSpawnFrame(team, character.HasMount(), false));
                 AgentBuildData agentBuildData = new AgentBuildData(character).Team(team).InitialPosition(spawnFrame.origin);
-                Vec2 vec = spawnFrame.rotation.f.AsVec2;
-                vec = vec.Normalized();
+                Vec2 initialDirection = spawnFrame.rotation.f.AsVec2;
+                initialDirection = initialDirection.Normalized();
+
+                // Define perks                
+                Equipment equipment = Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt());
+                IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
+                if (perkAlternativeEquipment != null)
+                {
+                    foreach ((EquipmentIndex, EquipmentElement) item in perkAlternativeEquipment)
+                    {
+                        equipment[item.Item1] = item.Item2;
+                    }
+                }
+
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
-                AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(vec).TroopOrigin(new BasicBattleAgentOrigin(character))
+                AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(initialDirection).TroopOrigin(new BasicBattleAgentOrigin(character))
                     .VisualsIndex(randomSeed)
-                    .EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex))
+                    .EquipmentSeed(MissionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex))
                     .ClothingColor1(team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
                     .ClothingColor2(team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
                     .Banner(team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner)
                     .Formation(form)
-                    //.Formation(team.FormationsIncludingSpecialAndEmpty.FirstOrDefault())
                     .IsFemale(character.IsFemale);
-                agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(character, true, false, agentBuildData2.AgentEquipmentSeed));
+                agentBuildData2.Equipment(equipment);
                 agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
                 agentBuildData2.Age((int)agentBuildData2.AgentBodyProperties.Age);
 
-                //agentBuildData.EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(basicCharacterObject, agentBuildData.AgentVisualsIndex));
-                //agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, basicCharacterObject.GetBodyPropertiesMin(false), basicCharacterObject.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, basicCharacterObject.HairTags, basicCharacterObject.BeardTags, basicCharacterObject.TattooTags));
+                // Whether the agent has a mount or not
+                ItemObject horseSlot = agentBuildData2.AgentData.AgentOverridenEquipment[EquipmentIndex.ArmorItemEndSlot].Item;
+                bool hasMount = horseSlot != null && horseSlot.HasHorseComponent && horseSlot.HorseComponent.IsRideable;
 
-                // Force agent index to prevent duplicate
-                agentBuildData2.Index(forcedIndex);
+                // Find free slots to spawn the bot
+                List<int> forcedIndex = new List<int>();
+                forcedIndex = AgentsInfoModel.Instance.GetAvailableSlotIndex(hasMount ? 2 : 1);
+                if (forcedIndex.IsEmpty())
+                {
+                    Log("Alliance : Cannot spawn - no slots available.", LogLevel.Error);
+                    return false;
+                }
+
+                string slotsUsed = forcedIndex.Count > 1 ? $"slots {forcedIndex[0]}-{forcedIndex[1]}" : $"slot {forcedIndex[0]}";
+                string mountInfo = hasMount ? " (mounted)" : "";
+                string originInfo = position?.origin.ToString() ?? "Unknown";
+                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation}", LogLevel.Debug);
+
+                agentBuildData2.Index(forcedIndex[0]);
+                if (hasMount) agentBuildData2.MountIndex(forcedIndex[1]);
                 Agent agent = Mission.Current.SpawnAgent(agentBuildData2, false);
+                agent.AddComponent(new MPPerksAgentComponent(agent));
+                agent.MountAgent?.UpdateAgentProperties();
+                float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
+                agent.HealthLimit += bonusHealth;
+                agent.Health = agent.HealthLimit;
 
                 if (mortalityState != Agent.MortalityState.Mortal)
                 {
@@ -105,12 +116,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 agent.AIStateFlags |= Agent.AIStateFlag.Alarmed;
                 AgentsInfoModel.Instance.AddAgentInfo(agent, botDifficulty, synchronize: true);
+                if (hasMount) AgentsInfoModel.Instance.AddAgentInfo(agent.MountAgent, botDifficulty, synchronize: true);
                 agent.UpdateAgentProperties();
-
-                // Adjust bot difficulty
-                //GameNetwork.BeginBroadcastModuleEvent();
-                //GameNetwork.WriteMessage(new BotDifficultyMultiplierMessage(forcedIndex, botDifficulty));
-                //GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+                agent.WieldInitialWeapons();
 
                 Log("Alliance : Spawned bot n." + TotalBots++, LogLevel.Debug);
                 return true;
@@ -127,7 +135,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
         {
             try
             {
-                //SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
                 MissionPeer component = networkPeer.GetComponent<MissionPeer>();
                 SpawnComponent spawnComponent = Mission.Current.GetMissionBehavior<SpawnComponent>();
                 MissionLobbyComponent missionLobbyComponent = Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
@@ -159,7 +166,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     .Team(component.Team)
                     .TroopOrigin(new BasicBattleAgentOrigin(character))
                     .Formation(form)
-                    //.Formation(component.ControlledFormation)
                     .ClothingColor1(color)
                     .ClothingColor2(color2)
                     .Banner(banner);
@@ -169,7 +175,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: true);
                 if (perkAlternativeEquipment != null)
                 {
-                    foreach (var item in perkAlternativeEquipment)
+                    foreach ((EquipmentIndex, EquipmentElement) item in perkAlternativeEquipment)
                     {
                         equipment[item.Item1] = item.Item2;
                     }
@@ -177,7 +183,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
                 if (alternativeEquipment != null)
                 {
-                    foreach (var item in alternativeEquipment)
+                    foreach ((EquipmentIndex, EquipmentElement) item in alternativeEquipment)
                     {
                         if (item.Item1 == EquipmentIndex.Horse &&
                             !agentBuildData.AgentMonster.Flags.HasFlag(AgentFlag.CanRide)) continue;
@@ -216,13 +222,13 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 Agent agent = Mission.Current.SpawnAgent(agentBuildData, spawnFromAgentVisuals: true);
                 agent.AddComponent(new MPPerksAgentComponent(agent));
                 agent.MountAgent?.UpdateAgentProperties();
-                float num4 = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
+                float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
                 // Additional health for officers
                 if (networkPeer.IsOfficer())
                 {
                     agent.HealthLimit *= Config.Instance.OfficerHPMultip;
                 }
-                agent.HealthLimit += num4;
+                agent.HealthLimit += bonusHealth;
                 agent.Health = agent.HealthLimit;
 
                 agent.WieldInitialWeapons();
