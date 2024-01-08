@@ -169,13 +169,12 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
 
             if (sendVoiceRecord.BufferLength > 0)
             {
-                foreach (Agent target in Mission.Current.Agents)
+                foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
                 {
-                    MissionPeer player = target.MissionPeer;
-
-                    if (speakerAgent != target && VoipHelper.CanTargetHearVoice(speakerAgent.Position, target.Position))
+                    Agent listenerAgent = player.ControlledAgent;
+                    if (listenerAgent != null && listenerAgent != speakerAgent && VoipHelper.CanTargetHearVoice(speakerAgent.Position, listenerAgent.Position))
                     {
-                        if (player != null && playersSpeakers.TryGetValue(player.Peer, out VoiceDataManager speakerList))
+                        if (playersSpeakers.TryGetValue(player.VirtualPlayer, out VoiceDataManager speakerList))
                         {
                             speakerList.CleanupExpiredVoices();
                             if (speakerList.TryHearing(speaker))
@@ -183,7 +182,16 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                                 speakerList.UpdateVoiceData(speaker, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength);
                             }
                         }
-                        else if (Config.Instance.NoFriend)
+                    }
+                }
+
+                if (Config.Instance.NoFriend)
+                {
+                    foreach (Agent target in Mission.Current.Agents)
+                    {
+                        if (target.MissionPeer != null) continue;
+
+                        if (speakerAgent != target && VoipHelper.CanTargetHearVoice(speakerAgent.Position, target.Position))
                         {
                             // For test purpose, make bot repeat what player said
                             MakeBotTalk(target, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength, 1, 1);
@@ -210,14 +218,12 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         // For test purpose.
         private void BotTalk(Agent speaker, byte[] buffer, int bufferLength, int nbRepeat, float delay)
         {
-            foreach (Agent target in Mission.Current.Agents.ToMBList())
+            foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
             {
-                MissionPeer player = target.MissionPeer;
-
-                if (speaker != target && VoipHelper.CanTargetHearVoice(speaker.Position, target.Position))
+                Agent listenerAgent = player.ControlledAgent;
+                if (listenerAgent != null && listenerAgent != speaker && VoipHelper.CanTargetHearVoice(speaker.Position, listenerAgent.Position))
                 {
-                    // If target is player, send him the record
-                    if (player != null && playersSpeakers.TryGetValue(player.Peer, out VoiceDataManager speakerList))
+                    if (playersSpeakers.TryGetValue(player.VirtualPlayer, out VoiceDataManager speakerList))
                     {
                         speakerList.CleanupExpiredVoices();
                         if (speakerList.TryHearing(speaker))
@@ -225,11 +231,17 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                             speakerList.UpdateVoiceData(speaker, buffer, bufferLength);
                         }
                     }
-                    // Else if target is bot, have him repeat the record
-                    else
-                    {
-                        MakeBotTalk(target, buffer, bufferLength, nbRepeat - 1, delay);
-                    }
+                }
+            }
+
+            foreach (Agent target in Mission.Current.Agents)
+            {
+                if (target.MissionPeer != null) continue;
+
+                if (speaker != target && VoipHelper.CanTargetHearVoice(speaker.Position, target.Position))
+                {
+                    // For test purpose, make bot repeat what player said
+                    MakeBotTalk(target, buffer, bufferLength, nbRepeat - 1, delay);
                 }
             }
         }
