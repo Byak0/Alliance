@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.ObjectSystem;
+using static TaleWorlds.MountAndBlade.MPPerkObject;
 
 namespace Alliance.Server.Extensions.SimpleRespawn.Behaviors
 {
@@ -17,6 +19,8 @@ namespace Alliance.Server.Extensions.SimpleRespawn.Behaviors
         private Dictionary<MissionPeer, BasicCharacterObject> _playersPreviousCharacter;
         private MultiplayerRoundController _roundController;
         private float _lastSpawnCheck;
+        private BasicCharacterObject _defaultCharacter;
+        private List<int> _defaultPerks;
 
         public RespawnBehavior() : base()
         {
@@ -27,6 +31,8 @@ namespace Alliance.Server.Extensions.SimpleRespawn.Behaviors
         {
             base.OnBehaviorInitialize();
             _roundController = Mission.GetMissionBehavior<MultiplayerRoundController>();
+            _defaultCharacter = MBObjectManager.Instance.GetObject<BasicCharacterObject>("mp_heavy_infantry_vlandia_troop");
+            _defaultPerks = new List<int>() { 0, 0 };
         }
 
         public override void OnRemoveBehavior()
@@ -117,8 +123,8 @@ namespace Alliance.Server.Extensions.SimpleRespawn.Behaviors
 
         public void SpawnPlayer(NetworkCommunicator peer, MissionPeer missionPeer, BasicCharacterObject basicCharacterObject = null)
         {
-            MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForPeer(missionPeer);
-            MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(missionPeer);
+            MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForCharacter(_defaultCharacter);
+            MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(_defaultCharacter, _defaultPerks));
 
             if (basicCharacterObject == null)
             {
@@ -133,7 +139,7 @@ namespace Alliance.Server.Extensions.SimpleRespawn.Behaviors
                 }
             }
 
-            SpawnHelper.SpawnPlayer(peer, onSpawnPerkHandler, basicCharacterObject);
+            SpawnHelper.SpawnPlayer(peer, perkHandler, basicCharacterObject);
         }
 
         public override void OnAgentBuild(Agent agent, Banner banner)

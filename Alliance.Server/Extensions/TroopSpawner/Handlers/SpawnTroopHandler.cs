@@ -11,7 +11,6 @@ using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
 using System;
-using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -86,9 +85,9 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             // Troop info
             BasicCharacterObject troopToSpawn = model.CharacterToSpawn;
             ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
-            MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(GetPerks(troopToSpawn, model.SelectedPerks));
+            MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(troopToSpawn, model.SelectedPerks));
 
-            int goldRemaining = missionPeer.Representative.Gold - GetTotalTroopCost(troopToSpawn, model.TroopCount, model.Difficulty);
+            int goldRemaining = missionPeer.Representative.Gold - SpawnHelper.GetTotalTroopCost(troopToSpawn, model.TroopCount, model.Difficulty);
 
             string refuseReason = "";
             if (!CanPlayerSpawn(peer, extendedTroopToSpawn, goldRemaining, model, ref refuseReason))
@@ -110,7 +109,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 
                 SpawnHelper.SpawnPlayer(networkPeer, perkHandler, troopToSpawn, spawnPos, model.Formation);
 
-                reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + GetTotalTroopCost(troopToSpawn, 1) + " golds.\n" : ".\n");
+                reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + SpawnHelper.GetTotalTroopCost(troopToSpawn, 1) + " golds.\n" : ".\n");
                 nbTroopToSpawn--;
                 playerSpawned = true;
             }
@@ -153,7 +152,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 if (Config.Instance.UseTroopLimit) extendedTroopToSpawn.TroopLeft--;
             }
 
-            int finalTroopCost = GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), model.Difficulty);
+            int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), model.Difficulty);
 
             if (Config.Instance.UseTroopCost && goldRemaining >= 0) GameMode?.ChangeCurrentGoldForPeer(missionPeer, missionPeer.Representative.Gold - finalTroopCost);
 
@@ -246,35 +245,6 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 return false;
             }
             return true;
-        }
-
-        /// <summary>
-        /// Get total troop cost from a character, troop count and difficulty
-        /// </summary>
-        private static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficulty = 1f)
-        {
-            return SpawnHelper.GetTroopCost(troopToSpawn, difficulty) * troopCount;
-        }
-
-        /// <summary>
-        /// Get corresponding perks from a character and a list of perks indices.
-        /// </summary>
-        private static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
-        {
-            MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
-            List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
-            List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
-            int i = 0;
-            foreach (List<IReadOnlyPerkObject> perkList in allPerks)
-            {
-                IReadOnlyPerkObject selectedPerk = perkList.ElementAtOrValue(indices.ElementAtOrValue(i, 0), null);
-                if (selectedPerk != null)
-                {
-                    selectedPerks.Add(selectedPerk);
-                }
-                i++;
-            }
-            return selectedPerks;
         }
     }
 }

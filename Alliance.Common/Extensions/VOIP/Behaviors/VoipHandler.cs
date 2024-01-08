@@ -83,7 +83,18 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         {
             base.OnBehaviorInitialize();
 
-            if (!GameNetwork.IsDedicatedServer)
+            if (GameNetwork.IsDedicatedServer)
+            {
+                foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+                {
+                    if (!playersSpeakers.TryGetValue(networkPeer.VirtualPlayer, out VoiceDataManager speakerList))
+                    {
+                        speakerList = new VoiceDataManager(networkPeer);
+                        playersSpeakers.Add(networkPeer.VirtualPlayer, speakerList);
+                    }
+                }
+            }
+            else
             {
                 SoundManager.InitializeVoicePlayEvent();
                 _voiceToSend = new Queue<byte>();
