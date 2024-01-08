@@ -182,22 +182,22 @@
 		<skills>
 			<skill
 				id="Riding"
-				value="40" />
+				value="100" />
 			<skill
 				id="OneHanded"
-				value="50" />
+				value="100" />
 			<skill
 				id="TwoHanded"
-				value="50" />
+				value="100" />
 			<skill
 				id="Polearm"
-				value="50" />
+				value="100" />
 			<skill
 				id="Crossbow"
-				value="20" />
+				value="100" />
 			<skill
 				id="Bow"
-				value="20" />
+				value="100" />
 			<skill
 				id="Throwing"
 				value="100" />
@@ -205,17 +205,17 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment
-					slot="Item0"
-					id="Item.mp_vlandian_sickle" />
-				<equipment
 					slot="Body"
-					id="Item.mp_bandit_leather_water_flask" />
+					id="Item.mp_sackcloth_tunic" />
 				<equipment
 					slot="Head"
-					id="Item.mp_leather_cap" />
+					id="Item.mp_nordic_fur_cap" />
 				<equipment
 					slot="Leg"
-					id="Item.mp_empire_horseman_boots" />
+					id="Item.mp_battania_woodland_boots" />
+				<equipment
+					slot="Cape"
+					id="Item.mp_wolf_shoulder" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances

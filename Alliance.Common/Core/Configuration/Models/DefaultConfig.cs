@@ -9,6 +9,9 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Synchronize configuration", "Synchronize server configuration with the clients.", ConfigValueType.Bool)]
         public bool SyncConfig = true;
 
+        [ConfigProperty("Toggle bot talks", "Bots will repeat what players say. For when you got no friend.", ConfigValueType.Bool)]
+        public bool NoFriend = false;
+
         [ConfigProperty("Toggle SAE", "Activate or not Scatter Around Expanded mod.", ConfigValueType.Bool)]
         public bool ActivateSAE = false;
         [ConfigProperty("SAE range", "Indicate the max distance where a troop need to be in order to go to one marker.", ConfigValueType.Integer, 0, 1000)]

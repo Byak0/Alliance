@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
+using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Alliance.Server.GameModes.PvC
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
                     new VoipHandler(),
+                    new RespawnBehavior(),
                     new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new MultiplayerRoundController(),
                     new PvCGameModeClientBehavior(),

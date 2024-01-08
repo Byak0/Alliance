@@ -131,7 +131,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             }
         }
 
-        public static void SpawnPlayer(NetworkCommunicator networkPeer, MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, BasicCultureObject customCulture = null)
+        public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, BasicCultureObject customCulture = null)
         {
             try
             {
@@ -364,6 +364,35 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             }
 
             return (int)(multiplier * (Config.Instance.MinTroopCost + (Config.Instance.MaxTroopCost - Config.Instance.MinTroopCost) * (1 - MultiplayerClassDivisions.GetMPHeroClassForCharacter(character).TroopMultiplier)));
+        }
+
+        /// <summary>
+        /// Get total troop cost from a character, troop count and difficulty
+        /// </summary>
+        public static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficulty = 1f)
+        {
+            return SpawnHelper.GetTroopCost(troopToSpawn, difficulty) * troopCount;
+        }
+
+        /// <summary>
+        /// Get corresponding perks from a character and a list of perks indices.
+        /// </summary>
+        public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
+        {
+            MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
+            List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+            List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
+            int i = 0;
+            foreach (List<IReadOnlyPerkObject> perkList in allPerks)
+            {
+                IReadOnlyPerkObject selectedPerk = perkList.ElementAtOrValue(indices.ElementAtOrValue(i, 0), null);
+                if (selectedPerk != null)
+                {
+                    selectedPerks.Add(selectedPerk);
+                }
+                i++;
+            }
+            return selectedPerks;
         }
     }
 }

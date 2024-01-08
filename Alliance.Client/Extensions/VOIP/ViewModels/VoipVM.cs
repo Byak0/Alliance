@@ -16,6 +16,7 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
         private readonly VoipHandler _voiceChatHandler;
 
         private MBBindingList<MPVoicePlayerVM> _activeVoicePlayers;
+        private MBBindingList<SpeakerVM> _activeVoiceBots;
 
         [DataSourceProperty]
         public MBBindingList<MPVoicePlayerVM> ActiveVoicePlayers
@@ -34,6 +35,23 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             }
         }
 
+        [DataSourceProperty]
+        public MBBindingList<SpeakerVM> ActiveVoiceBots
+        {
+            get
+            {
+                return _activeVoiceBots;
+            }
+            set
+            {
+                if (value != _activeVoiceBots)
+                {
+                    _activeVoiceBots = value;
+                    OnPropertyChangedWithValue(value, "ActiveVoiceBots");
+                }
+            }
+        }
+
         public VoipVM(Mission mission)
         {
             _mission = mission;
@@ -41,11 +59,13 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             if (_voiceChatHandler != null)
             {
                 _voiceChatHandler.OnPeerVoiceStatusUpdated += OnPeerVoiceStatusUpdated;
+                _voiceChatHandler.OnBotVoiceStatusUpdated += OnBotVoiceStatusUpdated;
                 _voiceChatHandler.OnVoiceRecordStarted += OnVoiceRecordStarted;
                 _voiceChatHandler.OnVoiceRecordStopped += OnVoiceRecordStopped;
             }
 
             ActiveVoicePlayers = new MBBindingList<MPVoicePlayerVM>();
+            ActiveVoiceBots = new MBBindingList<SpeakerVM>();
         }
 
         public override void OnFinalize()
@@ -53,6 +73,7 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             if (_voiceChatHandler != null)
             {
                 _voiceChatHandler.OnPeerVoiceStatusUpdated -= OnPeerVoiceStatusUpdated;
+                _voiceChatHandler.OnBotVoiceStatusUpdated -= OnBotVoiceStatusUpdated;
                 _voiceChatHandler.OnVoiceRecordStarted -= OnVoiceRecordStarted;
                 _voiceChatHandler.OnVoiceRecordStopped -= OnVoiceRecordStopped;
             }
@@ -64,10 +85,26 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
         {
             for (int i = 0; i < ActiveVoicePlayers.Count; i++)
             {
-                if (!ActiveVoicePlayers[i].IsMyPeer && ActiveVoicePlayers[i].UpdatesSinceSilence >= 30)
+                if (ActiveVoicePlayers[i] != null && !ActiveVoicePlayers[i].IsMyPeer)
                 {
-                    ActiveVoicePlayers.RemoveAt(i);
-                    i--;
+                    ActiveVoicePlayers[i].UpdatesSinceSilence++;
+                    if (ActiveVoicePlayers[i].UpdatesSinceSilence >= 30)
+                    {
+                        ActiveVoicePlayers.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+            for (int i = 0; i < ActiveVoiceBots.Count; i++)
+            {
+                if (ActiveVoiceBots[i] != null)
+                {
+                    ActiveVoiceBots[i].UpdatesSinceSilence++;
+                    if (ActiveVoiceBots[i].UpdatesSinceSilence >= 30)
+                    {
+                        ActiveVoiceBots.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
         }
@@ -89,6 +126,26 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             else if (!isTalking && mPVoicePlayerVM != null)
             {
                 mPVoicePlayerVM.UpdatesSinceSilence++;
+            }
+        }
+
+        private void OnBotVoiceStatusUpdated(Agent bot, bool isTalking)
+        {
+            SpeakerVM mpVoiceBotVM = ActiveVoiceBots.FirstOrDefault((SpeakerVM vp) => vp?.Agent?.Index == bot.Index);
+            if (isTalking)
+            {
+                if (mpVoiceBotVM == null)
+                {
+                    ActiveVoiceBots.Add(new SpeakerVM(bot));
+                }
+                else
+                {
+                    mpVoiceBotVM.UpdatesSinceSilence = 0;
+                }
+            }
+            else if (!isTalking && mpVoiceBotVM != null)
+            {
+                mpVoiceBotVM.UpdatesSinceSilence++;
             }
         }
 
