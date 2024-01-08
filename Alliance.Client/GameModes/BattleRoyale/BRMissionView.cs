@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.AgentsCount.Views;
 using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
 using Alliance.Client.Extensions.VOIP.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -19,7 +18,6 @@ namespace Alliance.Client.GameModes.BattleRoyale
             List<MissionView> list = new List<MissionView>
             {
                 new GameModeMenuView(),
-                new SpawnTroopsView(),
                 new AgentsCountView(),
                 new VoipView(),
 
