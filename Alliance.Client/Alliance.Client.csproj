@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
-  <PropertyGroup>
+	<PropertyGroup>
 		<Version>$(AllianceVersion)</Version>
 		<TargetFramework>net472</TargetFramework>
 		<Platforms>x64</Platforms>

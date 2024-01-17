@@ -54,7 +54,7 @@ namespace Alliance.Server.Extensions.AnimationPlayer.Handlers
                 if (!IsAnimationAuthorized(message.ActionIndex) && !peer.IsAdmin()) return false;
 
                 Log($"Alliance - {peer.UserName} is requesting to play animation {message.ActionIndex} for formation {formation.Index}", LogLevel.Information);
-                AnimationSystem.Instance.PlayAnimationForFormation(formation, new Animation(message.ActionIndex, speed: message.Speed), true);
+                AnimationSystem.Instance.PlayAnimationForFormationAsync(formation, new Animation(message.ActionIndex, speed: message.Speed), true);
 
                 return true;
             }

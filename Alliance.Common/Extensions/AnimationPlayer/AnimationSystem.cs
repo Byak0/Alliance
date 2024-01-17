@@ -3,6 +3,8 @@ using Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -173,6 +175,34 @@ namespace Alliance.Common.Extensions.AnimationPlayer
                 GameNetwork.WriteMessage(new SyncAnimationFormation(formation, animation.Index, animation.Speed));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
+        }
+
+        /// <summary>
+        /// Play animation on specified formation with a random wait time for each agent.
+        /// </summary>
+        /// <param name="synchronize">Set to true to synchronize with all clients</param>
+        public void PlayAnimationForFormationAsync(Formation formation, Animation animation, bool synchronize = false)
+        {
+            foreach(Agent agent in formation.GetUnitsWithoutDetachedOnes())
+            {
+                PlayAnimationAsync(agent, animation, false);
+            }
+            if (synchronize)
+            {
+                GameNetwork.BeginBroadcastModuleEvent();
+                GameNetwork.WriteMessage(new SyncAnimationFormation(formation, animation.Index, animation.Speed));
+                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
+            }
+        }
+
+        /// <summary>
+        /// Play animation on specified agent with a random wait time.
+        /// </summary>
+        /// <param name="synchronize">Set to true to synchronize with all clients</param>
+        private async void PlayAnimationAsync(Agent agent, Animation animation, bool synchronize = false)
+        {
+            await Task.Delay(MBRandom.RandomInt(0, 500));
+            PlayAnimation(agent, animation, synchronize);
         }
     }
 }
