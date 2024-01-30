@@ -32,7 +32,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                 {
                     return false;
                 }
-                peerVoiceData = new PeerVoiceData(peer, VoipConstants.SampleRate, VoipConstants.Channels);
+                peerVoiceData = new PeerVoiceData(peer, VoipConstants.SAMPLE_RATE, VoipConstants.CHANNELS);
                 voiceDataList.Add(peerVoiceData);
             }
             return true;
@@ -48,7 +48,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                 {
                     return false;
                 }
-                botVoiceData = new BotVoiceData(agent, VoipConstants.SampleRate, VoipConstants.Channels);
+                botVoiceData = new BotVoiceData(agent, VoipConstants.SAMPLE_RATE, VoipConstants.CHANNELS);
                 voiceDataList.Add(botVoiceData);
             }
             return true;
@@ -98,7 +98,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
 
         public bool IsFull()
         {
-            return voiceDataList.Count > VoipConstants.MaxConcurrentVoices;
+            return voiceDataList.Count > VoipConstants.MAX_CONCURRENT_VOICES;
         }
 
         public void CleanupExpiredVoices()

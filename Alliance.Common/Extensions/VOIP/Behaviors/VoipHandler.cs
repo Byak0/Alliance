@@ -25,6 +25,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
     /// </summary>
     public class VoipHandler : MissionNetwork
     {
+        private const int VOIP_GAME_KEY = 33;
         private VoiceDataManager _speakerList;
         private bool _isVoiceChatDisabled = true;
         private bool _isVoiceRecordActive;
@@ -99,7 +100,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                 SoundManager.InitializeVoicePlayEvent();
                 _voiceToSend = new Queue<byte>();
                 _speakerList = new VoiceDataManager(GameNetwork.MyPeer);
-                _encoder = new OpusEncoder(VoipConstants.SampleRate, VoipConstants.Channels, OpusApplication.OPUS_APPLICATION_AUDIO);
+                _encoder = new OpusEncoder(VoipConstants.SAMPLE_RATE, VoipConstants.CHANNELS, OpusApplication.OPUS_APPLICATION_AUDIO);
                 _encoder.Bitrate = 12000;
             }
             SoundManager.AddSoundClientWithId(0);
@@ -307,10 +308,10 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             if (IsVoiceRecordActive)
             {
                 // Buffer to store recorded voice data
-                byte[] voiceDataBuffer = new byte[VoipConstants.VoiceRecordMaxChunkSizeInBytes];
+                byte[] voiceDataBuffer = new byte[VoipConstants.VOICE_RECORD_MAX_CHUNK_SIZE_IN_BYTES];
 
                 // Get the recorded voice data
-                SoundManager.GetVoiceData(voiceDataBuffer, VoipConstants.VoiceRecordMaxChunkSizeInBytes, out var readBytesLength);
+                SoundManager.GetVoiceData(voiceDataBuffer, VoipConstants.VOICE_RECORD_MAX_CHUNK_SIZE_IN_BYTES, out var readBytesLength);
 
                 // Enqueue the recorded data for sending
                 for (int i = 0; i < readBytesLength; i++)
@@ -327,11 +328,11 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             }
 
             // Process the voice data queue
-            while (_voiceToSend.Count > 0 && (_voiceToSend.Count >= VoipConstants.VoiceFrameRawSizeInBytes || !IsVoiceRecordActive))
+            while (_voiceToSend.Count > 0 && (_voiceToSend.Count >= VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES || !IsVoiceRecordActive))
             {
                 // Determine the size of the data chunk to process
-                int chunkSize = MathF.Min(_voiceToSend.Count, VoipConstants.VoiceFrameRawSizeInBytes);
-                byte[] voiceChunk = new byte[VoipConstants.VoiceFrameRawSizeInBytes]; // Always use a full frame size
+                int chunkSize = MathF.Min(_voiceToSend.Count, VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES);
+                byte[] voiceChunk = new byte[VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES]; // Always use a full frame size
 
                 // Dequeue the voice data chunk
                 int i;
@@ -341,7 +342,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
                 }
 
                 // Compression
-                byte[] compressedBuffer = new byte[VoipConstants.CompressionMaxChunkSizeInBytes];
+                byte[] compressedBuffer = new byte[VoipConstants.COMPRESSION_MAX_CHUNK_SIZE_IN_BYTES];
                 CompressVoiceChunk(voiceChunk, ref compressedBuffer, out var compressedBufferLength);
 
                 GameNetwork.BeginModuleEventAsClientUnreliable();
@@ -350,11 +351,11 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             }
 
             // Toggle voice recording based on input
-            if (!IsVoiceRecordActive && Mission.InputManager.IsGameKeyPressed(33))
+            if (!IsVoiceRecordActive && Mission.InputManager.IsGameKeyPressed(VOIP_GAME_KEY))
             {
                 IsVoiceRecordActive = true;
             }
-            else if (IsVoiceRecordActive && Mission.InputManager.IsGameKeyReleased(33))
+            else if (IsVoiceRecordActive && Mission.InputManager.IsGameKeyReleased(VOIP_GAME_KEY))
             {
                 _stopRecordingOnNextTick = true;
             }
@@ -363,7 +364,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         private void CompressVoiceChunk(byte[] voiceBuffer, ref byte[] compressedBuffer, out int compressedBufferLength)
         {
             WaveBuffer waveBuffer = new WaveBuffer(voiceBuffer);
-            compressedBufferLength = _encoder.Encode(waveBuffer.ShortBuffer, 0, VoipConstants.FrameSize, compressedBuffer, 0, voiceBuffer.Length); // this throws OpusException on a failure, rather than returning a negative number
+            compressedBufferLength = _encoder.Encode(waveBuffer.ShortBuffer, 0, VoipConstants.FRAME_SIZE, compressedBuffer, 0, voiceBuffer.Length); // this throws OpusException on a failure, rather than returning a negative number
         }
 
         private void UpdateVoiceChatEnabled()

@@ -83,7 +83,7 @@ namespace Alliance.Common.Extensions.VOIP.Models
             float pan = VoipHelper.CalculatePan(speakerPosition, listenerPosition, listenerRotation);
 
             // Apply panning to the left and right channels
-            float clampedVolume = VoipHelper.CalculateVolume(speakerPosition, listenerPosition, VoipConstants.MaxHearingRange) * 2;
+            float clampedVolume = VoipHelper.CalculateVolume(speakerPosition, listenerPosition, VoipConstants.MAX_HEARING_RANGE) * 2;
 
             panProvider.Pan = -pan;
             volumeProvider.Volume = clampedVolume;
@@ -102,8 +102,8 @@ namespace Alliance.Common.Extensions.VOIP.Models
                         throw new ArgumentException("Invalid compressed data or length.");
                     }
 
-                    short[] outputBuffer = new short[VoipConstants.FrameSize];
-                    int frameSizeDecoded = decoder.Decode(compressedData, 0, compressedLength, outputBuffer, 0, VoipConstants.FrameSize, false);
+                    short[] outputBuffer = new short[VoipConstants.FRAME_SIZE];
+                    int frameSizeDecoded = decoder.Decode(compressedData, 0, compressedLength, outputBuffer, 0, VoipConstants.FRAME_SIZE, false);
 
                     foreach (short sample in outputBuffer)
                     {
@@ -122,10 +122,10 @@ namespace Alliance.Common.Extensions.VOIP.Models
             try
             {
                 // Process the queue in chunks to avoid converting the entire queue to an array
-                while (voiceDataQueue.Count >= VoipConstants.FrameSize)
+                while (voiceDataQueue.Count >= VoipConstants.FRAME_SIZE)
                 {
-                    byte[] buffer = new byte[VoipConstants.FrameSize * 2]; // 2 bytes per short
-                    for (int i = 0; i < VoipConstants.FrameSize; i++)
+                    byte[] buffer = new byte[VoipConstants.FRAME_SIZE * 2]; // 2 bytes per short
+                    for (int i = 0; i < VoipConstants.FRAME_SIZE; i++)
                     {
                         short sample = voiceDataQueue.Dequeue();
                         Buffer.BlockCopy(BitConverter.GetBytes(sample), 0, buffer, i * 2, 2);
@@ -134,7 +134,7 @@ namespace Alliance.Common.Extensions.VOIP.Models
                 }
 
                 // Play the audio if not already playing and there is enough buffered data
-                if (waveOut != null && waveOut.PlaybackState != PlaybackState.Playing && waveProvider.BufferedBytes > VoipConstants.MinimumBufferedBytesToPlay)
+                if (waveOut != null && waveOut.PlaybackState != PlaybackState.Playing && waveProvider.BufferedBytes > VoipConstants.MINIMUM_BUFFERED_BYTES_TO_PLAY)
                 {
                     waveOut.Play();
                 }
