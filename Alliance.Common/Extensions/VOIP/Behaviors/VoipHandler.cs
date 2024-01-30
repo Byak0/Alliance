@@ -1,19 +1,21 @@
-﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.VOIP.Models;
+using Alliance.Common.Extensions.VOIP.NetworkMessages;
+using Alliance.Common.Extensions.VOIP.Utilities;
+using Concentus.Enums;
+using Concentus.Structs;
+using NAudio.Wave;
 using NetworkMessages.FromClient;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.Options;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Diamond;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using TaleWorlds.PlatformService;
-using TaleWorlds.PlayerServices;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.VOIP.Behaviors
 {
@@ -23,153 +25,16 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
     /// </summary>
     public class VoipHandler : MissionNetwork
     {
-        private class PeerVoiceData
-        {
-            private const int PlayDelaySizeInMilliseconds = 150;
-
-            private const int PlayDelaySizeInBytes = 3600;
-
-            private const float PlayDelayResetTimeInMilliseconds = 300f;
-
-            public readonly MissionPeer Peer;
-
-            private readonly Queue<short> _voiceData;
-
-            private readonly Queue<short> _voiceToPlayInTick;
-
-            private int _playDelayRemainingSizeInBytes;
-
-            private MissionTime _nextPlayDelayResetTime;
-
-
-            /* 
-             * NAudio cooking
-             */
-            public WaveOutEvent waveOut { get; private set; }
-            public BufferedWaveProvider waveProvider { get; private set; }
-            public PanningSampleProvider panProvider { get; private set; }
-            public VolumeSampleProvider volumeProvider { get; private set; }
-
-
-            public bool IsReadyOnPlatform { get; private set; }
-
-            public PeerVoiceData(MissionPeer peer)
-            {
-                Peer = peer;
-                _voiceData = new Queue<short>();
-                _voiceToPlayInTick = new Queue<short>();
-                _nextPlayDelayResetTime = MissionTime.Now;
-
-                waveOut = new WaveOutEvent();
-
-                // Initialize NAudio components
-                waveProvider = new BufferedWaveProvider(new WaveFormat(12000, 16, 1));
-                waveProvider.BufferLength = VoiceRecordMaxChunkSizeInBytes;
-                waveOut.Init(waveProvider);
-
-                volumeProvider = new VolumeSampleProvider(waveProvider.ToSampleProvider());
-                panProvider = new PanningSampleProvider(volumeProvider);
-                volumeProvider.Volume = 1;
-
-                waveOut.Init(panProvider);
-            }
-
-            public void WriteVoiceData(byte[] dataBuffer, int bufferSize)
-            {
-                if (_voiceData.Count == 0 && _nextPlayDelayResetTime.IsPast)
-                {
-                    _playDelayRemainingSizeInBytes = PlayDelaySizeInBytes;
-                }
-
-                for (int i = 0; i < bufferSize; i += 2)
-                {
-                    short item = (short)(dataBuffer[i] | dataBuffer[i + 1] << 8);
-                    _voiceData.Enqueue(item);
-                }
-            }
-
-            public void SetReadyOnPlatform()
-            {
-                IsReadyOnPlatform = true;
-            }
-
-            public bool ProcessVoiceData()
-            {
-                if (IsReadyOnPlatform && _voiceData.Count > 0)
-                {
-                    bool isMutedFromGameOrPlatform = Peer.IsMutedFromGameOrPlatform;
-                    if (_playDelayRemainingSizeInBytes > 0)
-                    {
-                        _playDelayRemainingSizeInBytes -= 2;
-                    }
-                    else
-                    {
-                        short item = _voiceData.Dequeue();
-                        _nextPlayDelayResetTime = MissionTime.Now + MissionTime.Milliseconds(300f);
-                        if (!isMutedFromGameOrPlatform)
-                        {
-                            _voiceToPlayInTick.Enqueue(item);
-                        }
-                    }
-
-                    return !isMutedFromGameOrPlatform;
-                }
-
-                return false;
-            }
-
-            public Queue<short> GetVoiceToPlayForTick()
-            {
-                return _voiceToPlayInTick;
-            }
-
-            public bool HasAnyVoiceData()
-            {
-                if (IsReadyOnPlatform)
-                {
-                    return _voiceData.Count > 0;
-                }
-
-                return false;
-            }
-        }
-
-        private const int MillisecondsToShorts = 12;
-
-        private const int MillisecondsToBytes = 24;
-
-        private const int OpusFrameSizeCoefficient = 6;
-
-        private const int VoiceFrameRawSizeInMilliseconds = 60;
-
-        public const int VoiceFrameRawSizeInBytes = 1440;
-
-        private const int CompressionMaxChunkSizeInBytes = 10640;
-
-        private const int VoiceRecordMaxChunkSizeInBytes = 72000;
-
-        private List<PeerVoiceData> _playerVoiceDataList;
-
+        private const int VOIP_GAME_KEY = 33;
+        private VoiceDataManager _speakerList;
         private bool _isVoiceChatDisabled = true;
-
         private bool _isVoiceRecordActive;
-
         private bool _stopRecordingOnNextTick;
-
         private Queue<byte> _voiceToSend;
+        private OpusEncoder _encoder;
 
-        private bool _playedAnyVoicePreviousTick;
-
-        private bool _localUserInitialized;
-
-
-        /*
-         * NAudio Cooking
-         */
-        private WaveInEvent waveIn;
-        private WaveOutEvent waveOut;
-        private List<WaveOutEvent> waveOutList;
-        private List<BufferedWaveProvider> waveProviderList;
+        // Keep track of the list of speakers every player can hear, so we can limit it.
+        private Dictionary<VirtualPlayer, VoiceDataManager> playersSpeakers = new Dictionary<VirtualPlayer, VoiceDataManager>();
 
         private bool IsVoiceRecordActive
         {
@@ -197,11 +62,9 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         }
 
         public event Action OnVoiceRecordStarted;
-
         public event Action OnVoiceRecordStopped;
-
         public event Action<MissionPeer, bool> OnPeerVoiceStatusUpdated;
-
+        public event Action<Agent, bool> OnBotVoiceStatusUpdated;
         public event Action<MissionPeer> OnPeerMuteStatusUpdated;
 
         protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
@@ -209,6 +72,7 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             if (GameNetwork.IsClient)
             {
                 registerer.RegisterBaseHandler<SendVoiceToPlay>(HandleServerEventSendVoiceToPlay);
+                registerer.RegisterBaseHandler<SendBotVoiceToPlay>(HandleServerEventSendBotVoiceToPlay);
             }
             else if (GameNetwork.IsServer)
             {
@@ -219,22 +83,32 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         public override void OnBehaviorInitialize()
         {
             base.OnBehaviorInitialize();
-            if (!GameNetwork.IsDedicatedServer)
+
+            if (GameNetwork.IsDedicatedServer)
             {
-                _playerVoiceDataList = new List<PeerVoiceData>();
+                foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+                {
+                    if (!playersSpeakers.TryGetValue(networkPeer.VirtualPlayer, out VoiceDataManager speakerList))
+                    {
+                        speakerList = new VoiceDataManager(networkPeer);
+                        playersSpeakers.Add(networkPeer.VirtualPlayer, speakerList);
+                    }
+                }
+            }
+            else
+            {
                 SoundManager.InitializeVoicePlayEvent();
                 _voiceToSend = new Queue<byte>();
+                _speakerList = new VoiceDataManager(GameNetwork.MyPeer);
+                _encoder = new OpusEncoder(VoipConstants.SAMPLE_RATE, VoipConstants.CHANNELS, OpusApplication.OPUS_APPLICATION_AUDIO);
+                _encoder.Bitrate = 12000;
             }
+            SoundManager.AddSoundClientWithId(0);
         }
 
         public override void AfterStart()
         {
             UpdateVoiceChatEnabled();
-            if (!_isVoiceChatDisabled)
-            {
-                MissionPeer.OnTeamChanged += MissionPeerOnTeamChanged;
-                Mission.Current.GetMissionBehavior<MissionNetworkComponent>().OnClientSynchronizedEvent += OnPlayerSynchronized;
-            }
 
             NativeOptions.OnNativeOptionChanged = (NativeOptions.OnNativeOptionChangedDelegate)Delegate.Combine(NativeOptions.OnNativeOptionChanged, new NativeOptions.OnNativeOptionChangedDelegate(OnNativeOptionChanged));
             ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnManagedOptionChanged));
@@ -242,11 +116,6 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
 
         public override void OnRemoveBehavior()
         {
-            if (!_isVoiceChatDisabled)
-            {
-                MissionPeer.OnTeamChanged -= MissionPeerOnTeamChanged;
-            }
-
             if (!GameNetwork.IsDedicatedServer)
             {
                 if (IsVoiceRecordActive)
@@ -266,61 +135,68 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
         {
             if (!GameNetwork.IsDedicatedServer && !_isVoiceChatDisabled)
             {
-                VoiceTick(dt);
+                CheckPlayerVoice();
+                _speakerList.PlayAll();
             }
         }
 
-        public override void OnMissionTick(float dt)
+        public override void OnPlayerConnectedToServer(NetworkCommunicator networkPeer)
         {
-            base.OnMissionTick(dt);
-
-            if (_playerVoiceDataList == null)
+            if (!playersSpeakers.TryGetValue(networkPeer.VirtualPlayer, out VoiceDataManager speakerList))
             {
-                return;
+                speakerList = new VoiceDataManager(networkPeer);
+                playersSpeakers.Add(networkPeer.VirtualPlayer, speakerList);
             }
-
-            CheckNearbyPlayersForVoiceChat();
         }
 
-
-        private bool HandleClientEventSendVoiceRecord(NetworkCommunicator peer, GameNetworkMessage baseMessage)
+        public override void OnPlayerDisconnectedFromServer(NetworkCommunicator networkPeer)
         {
-            SendVoiceRecord sendVoiceRecord = (SendVoiceRecord)baseMessage;
-            MissionPeer component = peer.GetComponent<MissionPeer>();
+            playersSpeakers.Remove(networkPeer.VirtualPlayer);
+        }
 
-            if (component == null)
+        /// <summary>
+        /// Server side - Handle voice records sent by clients.
+        /// </summary>
+        private bool HandleClientEventSendVoiceRecord(NetworkCommunicator speaker, GameNetworkMessage message)
+        {
+            SendVoiceRecord sendVoiceRecord = (SendVoiceRecord)message;
+            MissionPeer emitterPeer = speaker.GetComponent<MissionPeer>();
+            Agent speakerAgent = emitterPeer?.ControlledAgent;
+
+            if (speakerAgent == null)
             {
                 return false;
             }
 
-            if (peer.ControlledAgent == null)
+            if (sendVoiceRecord.BufferLength > 0)
             {
-                return false;
-            }
-
-            if (sendVoiceRecord.BufferLength > 0 && component.Team != null)
-            {
-                foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+                foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
                 {
-                    MissionPeer component2 = networkPeer.GetComponent<MissionPeer>();
-
-                    if (component2 == null)
+                    Agent listenerAgent = player.ControlledAgent;
+                    if (listenerAgent != null && listenerAgent != speakerAgent && VoipHelper.CanTargetHearVoice(speakerAgent.Position, listenerAgent.Position))
                     {
-                        continue;
+                        if (playersSpeakers.TryGetValue(player.VirtualPlayer, out VoiceDataManager speakerList))
+                        {
+                            speakerList.CleanupExpiredVoices();
+                            if (speakerList.TryHearing(speaker))
+                            {
+                                speakerList.UpdateVoiceData(speaker, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength);
+                            }
+                        }
                     }
+                }
 
-                    if (component2.ControlledAgent == null)
+                if (Config.Instance.NoFriend)
+                {
+                    foreach (Agent target in Mission.Current.Agents)
                     {
-                        continue;
-                    }
+                        if (target.MissionPeer != null) continue;
 
-                    float distance = component2.ControlledAgent.Position.Distance(peer.ControlledAgent.Position);
-
-                    if (networkPeer.IsSynchronized && component2 != null && distance < 30 && (sendVoiceRecord.ReceiverList == null || sendVoiceRecord.ReceiverList.Contains(networkPeer.VirtualPlayer)) && component2 != component)
-                    {
-                        GameNetwork.BeginModuleEventAsServerUnreliable(component2.Peer);
-                        GameNetwork.WriteMessage(new SendVoiceToPlay(peer, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength));
-                        GameNetwork.EndModuleEventAsServerUnreliable();
+                        if (speakerAgent != target && VoipHelper.CanTargetHearVoice(speakerAgent.Position, target.Position))
+                        {
+                            // For test purpose, make bot repeat what player said
+                            MakeBotTalk(target, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength, 1, 1);
+                        }
                     }
                 }
             }
@@ -328,384 +204,167 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             return true;
         }
 
-        private void HandleServerEventSendVoiceToPlay(GameNetworkMessage baseMessage)
+        /// <summary>
+        /// Test method for when you have no friends.
+        /// </summary>
+        private void MakeBotTalk(Agent speaker, byte[] buffer, int bufferLength, int nbRepeat = 1, float delay = 1f)
         {
-            SendVoiceToPlay sendVoiceToPlay = (SendVoiceToPlay)baseMessage;
+            if (speaker != null && nbRepeat > 0)
+            {
+                Log($"Bot {speaker.Name} is talking (repeat={nbRepeat})", LogLevel.Debug);
+                BotTalk(speaker, buffer, bufferLength, nbRepeat, delay);
+            }
+        }
+
+        // For test purpose.
+        private void BotTalk(Agent speaker, byte[] buffer, int bufferLength, int nbRepeat, float delay)
+        {
+            foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
+            {
+                Agent listenerAgent = player.ControlledAgent;
+                if (listenerAgent != null && listenerAgent != speaker && VoipHelper.CanTargetHearVoice(speaker.Position, listenerAgent.Position))
+                {
+                    if (playersSpeakers.TryGetValue(player.VirtualPlayer, out VoiceDataManager speakerList))
+                    {
+                        speakerList.CleanupExpiredVoices();
+                        if (speakerList.TryHearing(speaker))
+                        {
+                            speakerList.UpdateVoiceData(speaker, buffer, bufferLength);
+                        }
+                    }
+                }
+            }
+
+            foreach (Agent target in Mission.Current.Agents)
+            {
+                if (target.MissionPeer != null) continue;
+
+                if (speaker != target && VoipHelper.CanTargetHearVoice(speaker.Position, target.Position))
+                {
+                    // For test purpose, make bot repeat what player said
+                    MakeBotTalk(target, buffer, bufferLength, nbRepeat - 1, delay);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Client side - Handle voice records sent by server.
+        /// </summary>
+        private void HandleServerEventSendVoiceToPlay(GameNetworkMessage message)
+        {
+            SendVoiceToPlay sendVoiceToPlay = (SendVoiceToPlay)message;
             if (_isVoiceChatDisabled)
             {
                 return;
             }
 
-            MissionPeer component = sendVoiceToPlay.Peer.GetComponent<MissionPeer>();
-            if (component == null || sendVoiceToPlay.BufferLength <= 0 || component.IsMutedFromGameOrPlatform)
+            MissionPeer emitterPeer = sendVoiceToPlay.Peer.GetComponent<MissionPeer>();
+            if (emitterPeer == null || sendVoiceToPlay.BufferLength <= 0 || emitterPeer.IsMutedFromGameOrPlatform)
             {
                 return;
             }
 
-            for (int i = 0; i < _playerVoiceDataList.Count; i++)
+            _speakerList.CleanupExpiredVoices();
+            UpdatePeerVoiceData(emitterPeer, sendVoiceToPlay.Buffer, sendVoiceToPlay.BufferLength);
+            OnPeerVoiceStatusUpdated?.Invoke(emitterPeer, !sendVoiceToPlay.Buffer.IsEmpty());
+        }
+
+        /// <summary>
+        /// Client side - Handle bot voice records sent by server.
+        /// </summary>
+        private void HandleServerEventSendBotVoiceToPlay(GameNetworkMessage message)
+        {
+            SendBotVoiceToPlay sendBotVoiceToPlay = (SendBotVoiceToPlay)message;
+            if (_isVoiceChatDisabled)
             {
-                if (_playerVoiceDataList[i].Peer == component)
-                {
-                    byte[] voiceBuffer = new byte[CompressionMaxChunkSizeInBytes];
-                    DecompressVoiceChunk(sendVoiceToPlay.Peer.Index, sendVoiceToPlay.Buffer, sendVoiceToPlay.BufferLength, ref voiceBuffer, out var bufferLength);
-                    _playerVoiceDataList[i].WriteVoiceData(voiceBuffer, bufferLength);
-                    break;
-                }
+                return;
+            }
+
+            _speakerList.CleanupExpiredVoices();
+            UpdateBotVoiceData(sendBotVoiceToPlay.Agent, sendBotVoiceToPlay.Buffer, sendBotVoiceToPlay.BufferLength);
+            OnBotVoiceStatusUpdated?.Invoke(sendBotVoiceToPlay.Agent, !sendBotVoiceToPlay.Buffer.IsEmpty());
+        }
+
+        private void UpdatePeerVoiceData(MissionPeer peer, byte[] compressedBuffer, int compressedBufferLength)
+        {
+            if (_speakerList.TryHearing(peer.GetNetworkPeer()))
+            {
+                _speakerList.UpdateVoiceData(peer.GetNetworkPeer(), compressedBuffer, compressedBufferLength);
             }
         }
 
-        private void CheckStopVoiceRecord()
+        // For test purpose.
+        private void UpdateBotVoiceData(Agent agent, byte[] compressedBuffer, int compressedBufferLength)
         {
-            if (_stopRecordingOnNextTick)
+            if (_speakerList.TryHearing(agent))
             {
-                IsVoiceRecordActive = false;
-                _stopRecordingOnNextTick = false;
+                _speakerList.UpdateVoiceData(agent, compressedBuffer, compressedBufferLength);
             }
         }
 
-        private void VoiceTick(float dt)
+        private void CheckPlayerVoice()
         {
-            int num = 120;
-            if (_playedAnyVoicePreviousTick)
-            {
-                int b = MathF.Ceiling(dt * 1000f);
-                num = MathF.Min(num, b);
-                _playedAnyVoicePreviousTick = false;
-            }
-
-            foreach (PeerVoiceData playerVoiceData in _playerVoiceDataList)
-            {
-                OnPeerVoiceStatusUpdated?.Invoke(playerVoiceData.Peer, playerVoiceData.HasAnyVoiceData());
-            }
-
-            int num2 = num * 12;
-            for (int i = 0; i < num2; i++)
-            {
-                for (int j = 0; j < _playerVoiceDataList.Count; j++)
-                {
-                    _playerVoiceDataList[j].ProcessVoiceData();
-                }
-            }
-
-            for (int k = 0; k < _playerVoiceDataList.Count; k++)
-            {
-                Queue<short> voiceToPlayForTick = _playerVoiceDataList[k].GetVoiceToPlayForTick();
-
-                Agent speakerAgent = _playerVoiceDataList[k].Peer.ControlledAgent;
-                if (voiceToPlayForTick.Count > 0)
-                {
-                    int count = voiceToPlayForTick.Count;
-                    byte[] array = new byte[count * 2];
-                    for (int l = 0; l < count; l++)
-                    {
-                        byte[] bytes = BitConverter.GetBytes(voiceToPlayForTick.Dequeue());
-                        array[l * 2] = bytes[0];
-                        array[l * 2 + 1] = bytes[1];
-                    }
-
-
-                    if (speakerAgent == null)
-                    {
-                        _playerVoiceDataList[k].waveProvider.ClearBuffer();
-
-                        return;
-                    }
-
-                    Vec3 speakerPosition = speakerAgent.Position;
-
-                    if (GameNetwork.MyPeer.ControlledAgent == null)
-                    {
-                        _playerVoiceDataList[k].waveProvider.ClearBuffer();
-
-                        return;
-                    }
-
-
-                    Vec3 listenerPosition = GameNetwork.MyPeer.ControlledAgent.Position;
-
-                    Mat3 listenerRotation = GameNetwork.MyPeer.ControlledAgent.LookRotation;
-                    SoundEventParameter soundEventParam = new SoundEventParameter();
-
-                    // Calculate the position difference between the speaker and the listener
-                    float pan = CalculatePan(speakerPosition, listenerPosition, listenerRotation);
-
-                    if (_playerVoiceDataList[k].waveProvider.BufferedBytes + VoiceFrameRawSizeInBytes > _playerVoiceDataList[k].waveProvider.BufferLength)
-                    {
-                        _playerVoiceDataList[k].waveProvider.ClearBuffer();
-                    }
-
-                    // Apply panning to the left and right channels
-                    float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f) * 2;
-
-                    _playerVoiceDataList[k].waveProvider.AddSamples(array, 0, array.Length);
-                    _playerVoiceDataList[k].panProvider.Pan = -pan;
-                    _playerVoiceDataList[k].volumeProvider.Volume = clampedVolume;
-
-                    _playerVoiceDataList[k].waveOut.Play();
-                    /*waveOut.3D
-                    waveOut.Volume = 1;*/
-
-
-                    //SoundManager.UpdateVoiceToPlay(array, array.Length, k);
-
-                    _playedAnyVoicePreviousTick = true;
-                }
-            }
-
+            // Check if voice recording is active
             if (IsVoiceRecordActive)
             {
-                byte[] array2 = new byte[VoiceRecordMaxChunkSizeInBytes];
-                SoundManager.GetVoiceData(array2, VoiceRecordMaxChunkSizeInBytes, out var readBytesLength);
-                for (int m = 0; m < readBytesLength; m++)
+                // Buffer to store recorded voice data
+                byte[] voiceDataBuffer = new byte[VoipConstants.VOICE_RECORD_MAX_CHUNK_SIZE_IN_BYTES];
+
+                // Get the recorded voice data
+                SoundManager.GetVoiceData(voiceDataBuffer, VoipConstants.VOICE_RECORD_MAX_CHUNK_SIZE_IN_BYTES, out var readBytesLength);
+
+                // Enqueue the recorded data for sending
+                for (int i = 0; i < readBytesLength; i++)
                 {
-                    _voiceToSend.Enqueue(array2[m]);
+                    _voiceToSend.Enqueue(voiceDataBuffer[i]);
                 }
 
-                CheckStopVoiceRecord();
+                // Check if recording should be stopped on the next tick
+                if (_stopRecordingOnNextTick)
+                {
+                    IsVoiceRecordActive = false;
+                    _stopRecordingOnNextTick = false;
+                }
             }
 
-            while (_voiceToSend.Count > 0 && (_voiceToSend.Count >= VoiceFrameRawSizeInBytes || !IsVoiceRecordActive))
+            // Process the voice data queue
+            while (_voiceToSend.Count > 0 && (_voiceToSend.Count >= VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES || !IsVoiceRecordActive))
             {
-                int num3 = MathF.Min(_voiceToSend.Count, VoiceFrameRawSizeInBytes);
-                byte[] array3 = new byte[VoiceFrameRawSizeInBytes];
-                for (int n = 0; n < num3; n++)
+                // Determine the size of the data chunk to process
+                int chunkSize = MathF.Min(_voiceToSend.Count, VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES);
+                byte[] voiceChunk = new byte[VoipConstants.VOICE_FRAME_RAW_SIZE_IN_BYTES]; // Always use a full frame size
+
+                // Dequeue the voice data chunk
+                int i;
+                for (i = 0; i < chunkSize; i++)
                 {
-                    array3[n] = _voiceToSend.Dequeue();
+                    voiceChunk[i] = _voiceToSend.Dequeue();
                 }
 
-                if (GameNetwork.IsClient)
-                {
-                    byte[] compressedBuffer = new byte[CompressionMaxChunkSizeInBytes];
-                    CompressVoiceChunk(0, array3, ref compressedBuffer, out var compressedBufferLength);
-                    GameNetwork.BeginModuleEventAsClientUnreliable();
-                    GameNetwork.WriteMessage(new SendVoiceRecord(compressedBuffer, compressedBufferLength));
-                    GameNetwork.EndModuleEventAsClientUnreliable();
-                }
-                else
-                {
-                    if (!GameNetwork.IsServer)
-                    {
-                        continue;
-                    }
+                // Compression
+                byte[] compressedBuffer = new byte[VoipConstants.COMPRESSION_MAX_CHUNK_SIZE_IN_BYTES];
+                CompressVoiceChunk(voiceChunk, ref compressedBuffer, out var compressedBufferLength);
 
-                    MissionPeer myMissionPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-                    if (myMissionPeer != null)
-                    {
-                        _playerVoiceDataList.Single((x) => x.Peer == myMissionPeer).WriteVoiceData(array3, num3);
-                    }
-                }
+                GameNetwork.BeginModuleEventAsClientUnreliable();
+                GameNetwork.WriteMessage(new SendVoiceRecord(compressedBuffer, compressedBufferLength));
+                GameNetwork.EndModuleEventAsClientUnreliable();
             }
 
-            if (!IsVoiceRecordActive && Mission.InputManager.IsGameKeyPressed(33))
+            // Toggle voice recording based on input
+            if (!IsVoiceRecordActive && Mission.InputManager.IsGameKeyPressed(VOIP_GAME_KEY))
             {
                 IsVoiceRecordActive = true;
             }
-
-            if (IsVoiceRecordActive && Mission.InputManager.IsGameKeyReleased(33))
+            else if (IsVoiceRecordActive && Mission.InputManager.IsGameKeyReleased(VOIP_GAME_KEY))
             {
                 _stopRecordingOnNextTick = true;
             }
         }
 
-        private float CalculateVolume(Vec3 speakerPosition, Vec3 listenerPosition, float distanceCutoff)
+        private void CompressVoiceChunk(byte[] voiceBuffer, ref byte[] compressedBuffer, out int compressedBufferLength)
         {
-            // Calculate the distance between the speaker and the listener
-            float distance = speakerPosition.Distance(listenerPosition);
-
-            // Adjust volume based on distance
-            float volume = 1.0f - MathF.Clamp(distance / distanceCutoff, 0.0f, 1.0f);
-
-            return volume;
-        }
-
-        private float CalculatePan(Vec3 speakerPosition, Vec3 listenerPosition, Mat3 listenerRotation)
-        {
-            // Calculate the vector from speaker to listener
-            Vec3 speakerToListener = listenerPosition - speakerPosition;
-
-            // Invert the listener's rotation matrix to get the listener's forward vector in world space
-            Mat3 invertedRotation = listenerRotation.Transpose(); // Note: Inversion for rotation matrices is equivalent to transpose
-            Vec3 listenerForward = invertedRotation.TransformToParent(Vec3.Forward);
-
-            // Project the speaker-to-listener vector onto the plane defined by the listener's forward vector
-            Vec3 projectedVector = speakerToListener - Vec3.DotProduct(speakerToListener, listenerForward) * listenerForward;
-
-            // Calculate the signed angle between the projected vector and the listener's right vector
-            float angle = MathF.Atan2(Vec3.DotProduct(projectedVector, listenerRotation.s), Vec3.DotProduct(projectedVector, listenerRotation.u));
-
-            // Normalize the angle to the range [-π, π]
-            angle = (angle + MathF.PI) % (2 * MathF.PI) - MathF.PI;
-
-            // Normalize the angle to the range [-1.0, 1.0]
-            float pan = angle / MathF.PI;
-
-            // Clamp pan value to the valid range [-1.0, 1.0]
-            return MathF.Clamp(pan, -1.0f, 1.0f);
-        }
-
-
-        // We will use this method to override the team behavior. Every MS we will check for nearby players to subscribe to
-        private void CheckNearbyPlayersForVoiceChat()
-        {
-
-            MissionPeer missionPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-
-            if (missionPeer == null && GameNetwork.IsClient)
-            {
-                return;
-            }
-
-            if ((!_localUserInitialized || missionPeer.ControlledAgent == null) && GameNetwork.IsClient)
-            {
-                return;
-            }
-
-            var peers = GameNetwork.NetworkPeers.ToList();
-
-            foreach (NetworkCommunicator iteratedNetworkPeer in peers)
-            {
-                if (iteratedNetworkPeer.ControlledAgent == null)
-                {
-                    continue;
-                }
-
-                MissionPeer iteratedMissionPeer = iteratedNetworkPeer.ControlledAgent.MissionPeer;
-
-                if (iteratedNetworkPeer.ControlledAgent.MissionPeer == null)
-                {
-                    continue;
-                }
-
-                Vec3 agentPosition = iteratedNetworkPeer.ControlledAgent.Position;
-
-                NetworkCommunicator foundNearbyPlayer = peers.FirstOrDefault(peer => peer.ControlledAgent != null && peer.ControlledAgent.Position.Distance(agentPosition) < 30);
-
-                Vec3 distanceComparator = GameNetwork.IsClient ? GameNetwork.MyPeer.ControlledAgent.Position : foundNearbyPlayer.ControlledAgent.Position;
-
-                if (agentPosition.Distance(distanceComparator) < 30)
-                {
-
-                    int peerVoiceDataIndex = GetPlayerVoiceDataIndex(iteratedMissionPeer);
-
-                    if (peerVoiceDataIndex == -1)
-                    {
-                        AddPlayerToVoiceChat(iteratedMissionPeer);
-                    }
-                }
-                else
-                {
-                    int peerVoiceDataIndex = GetPlayerVoiceDataIndex(iteratedMissionPeer);
-
-                    if (peerVoiceDataIndex == -1) { continue; }
-
-                    RemovePlayerFromVoiceChat(peerVoiceDataIndex);
-                }
-            }
-        }
-
-        /*
-         * NAudio Cooking Stop
-         */
-
-        private void DecompressVoiceChunk(int clientID, byte[] compressedVoiceBuffer, int compressedBufferLength, ref byte[] voiceBuffer, out int bufferLength)
-        {
-            SoundManager.DecompressData(clientID, compressedVoiceBuffer, compressedBufferLength, voiceBuffer, out bufferLength);
-        }
-
-        private void CompressVoiceChunk(int clientIndex, byte[] voiceBuffer, ref byte[] compressedBuffer, out int compressedBufferLength)
-        {
-            SoundManager.CompressData(clientIndex, voiceBuffer, VoiceFrameRawSizeInBytes, compressedBuffer, out compressedBufferLength);
-        }
-
-        private PeerVoiceData GetPlayerVoiceData(MissionPeer missionPeer)
-        {
-            for (int i = 0; i < _playerVoiceDataList.Count; i++)
-            {
-                if (_playerVoiceDataList[i].Peer == missionPeer)
-                {
-                    return _playerVoiceDataList[i];
-                }
-            }
-
-            return null;
-        }
-
-        private int GetPlayerVoiceDataIndex(MissionPeer missionPeer)
-        {
-            for (int i = 0; i < _playerVoiceDataList.Count; i++)
-            {
-                if (_playerVoiceDataList[i].Peer == missionPeer)
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        private void AddPlayerToVoiceChat(MissionPeer missionPeer)
-        {
-            VirtualPlayer peer = missionPeer.Peer;
-            _playerVoiceDataList.Add(new PeerVoiceData(missionPeer));
-            SoundManager.CreateVoiceEvent();
-            PlatformServices.Instance.CheckPermissionWithUser(Permission.CommunicateUsingVoice, missionPeer.Peer.Id, delegate (bool hasPermission)
-            {
-                if (Mission.Current != null && Mission.Current.CurrentState == Mission.State.Continuing)
-                {
-                    PeerVoiceData playerVoiceData = GetPlayerVoiceData(missionPeer);
-                    if (playerVoiceData != null)
-                    {
-                        if (!hasPermission && missionPeer.Peer.Id.ProvidedType == NetworkMain.GameClient?.PlayerID.ProvidedType)
-                        {
-                            missionPeer.SetMutedFromPlatform(isMuted: true);
-                        }
-
-                        playerVoiceData.SetReadyOnPlatform();
-                    }
-                }
-            });
-            missionPeer.SetMuted(PermaMuteList.IsPlayerMuted(missionPeer.Peer.Id));
-            SoundManager.AddSoundClientWithId((ulong)peer.Index);
-            OnPeerMuteStatusUpdated?.Invoke(missionPeer);
-        }
-
-        private void RemovePlayerFromVoiceChat(int indexInVoiceDataList)
-        {
-            _ = _playerVoiceDataList[indexInVoiceDataList].Peer.Peer;
-            SoundManager.DeleteSoundClientWithId((ulong)_playerVoiceDataList[indexInVoiceDataList].Peer.Peer.Index);
-            SoundManager.DestroyVoiceEvent(indexInVoiceDataList);
-            _playerVoiceDataList.RemoveAt(indexInVoiceDataList);
-
-            // NAudio Cooking
-
-        }
-
-        private void MissionPeerOnTeamChanged(NetworkCommunicator peer, Team previousTeam, Team newTeam)
-        {
-            if (_localUserInitialized && peer.VirtualPlayer.Id != PlayerId.Empty)
-            {
-                //CheckPlayerForVoiceChatOnTeamChange(peer, previousTeam, newTeam);
-            }
-        }
-
-        private void OnPlayerSynchronized(NetworkCommunicator networkPeer)
-        {
-            if (_localUserInitialized)
-            {
-                MissionPeer component = networkPeer.GetComponent<MissionPeer>();
-                if (!component.IsMine && component.Team != null)
-                {
-                    //CheckPlayerForVoiceChatOnTeamChange(networkPeer, null, component.Team);
-                }
-            }
-            else if (networkPeer.IsMine)
-            {
-                MissionPeer missionPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-                //CheckPlayerForVoiceChatOnTeamChange(GameNetwork.MyPeer, null, missionPeer.Team);
-
-                // Init local player to true
-                _localUserInitialized = true;
-            }
+            WaveBuffer waveBuffer = new WaveBuffer(voiceBuffer);
+            compressedBufferLength = _encoder.Encode(waveBuffer.ShortBuffer, 0, VoipConstants.FRAME_SIZE, compressedBuffer, 0, voiceBuffer.Length); // this throws OpusException on a failure, rather than returning a negative number
         }
 
         private void UpdateVoiceChatEnabled()
@@ -727,26 +386,6 @@ namespace Alliance.Common.Extensions.VOIP.Behaviors
             if (changedManagedOptionType == ManagedOptions.ManagedOptionsType.EnableVoiceChat)
             {
                 UpdateVoiceChatEnabled();
-            }
-        }
-
-        public override void OnPlayerDisconnectedFromServer(NetworkCommunicator networkPeer)
-        {
-            base.OnPlayerDisconnectedFromServer(networkPeer);
-            MissionPeer missionPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-            MissionPeer component = networkPeer.GetComponent<MissionPeer>();
-            if (component?.Team == null || missionPeer?.Team == null)
-            {
-                return;
-            }
-
-            for (int i = 0; i < _playerVoiceDataList.Count; i++)
-            {
-                if (_playerVoiceDataList[i].Peer == component)
-                {
-                    RemovePlayerFromVoiceChat(i);
-                    break;
-                }
             }
         }
     }

@@ -41,6 +41,7 @@
 		<string id="str_alliance_scene_scn_bilbo2" text="???" />
 		<string id="str_alliance_scene_captain_french_castle" text="Château Français par Path" />
 		<string id="str_alliance_scene_FrenchCastlePathEdC" text="L'Aigle captif" />
+		<string id="str_alliance_scene_commencement" text="Commencement..." />
 
 		<!-- Scenario text for BFHD -->
 		<string id="str_alliance_scenario_name_BFHD" text="La Bataille pour le Gouffre de Helm" />

@@ -40,7 +40,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Handlers
             try
             {
                 Formation formation = message.Team.GetFormation((FormationClass)message.FormationIndex);
-                AnimationSystem.Instance.PlayAnimationForFormation(formation, new Animation(message.ActionIndex, speed: message.Speed));
+                AnimationSystem.Instance.PlayAnimationForFormationAsync(formation, new Animation(message.ActionIndex, speed: message.Speed));
             }
             catch (Exception ex)
             {

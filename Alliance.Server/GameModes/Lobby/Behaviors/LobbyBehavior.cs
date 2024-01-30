@@ -31,10 +31,15 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 
         public override void AfterStart()
         {
-            BasicCultureObject @object = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-            Banner banner = new Banner(@object.BannerKey, @object.BackgroundColor1, @object.ForegroundColor1);
-            Team team = Mission.Teams.Add(BattleSideEnum.Attacker, @object.BackgroundColor1, @object.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true, true);
-            team.SetIsEnemyOf(team, true);
+            BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
+            Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);
+            teamAttack.SetIsEnemyOf(teamAttack, true);
+
+            BasicCultureObject cultureDef = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            Banner bannerDef = new Banner(cultureDef.BannerKey, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1);
+            Team teamDef = Mission.Teams.Add(BattleSideEnum.Defender, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1, bannerDef, isPlayerGeneral: false, isPlayerSergeant: true, true);
+            teamDef.SetIsEnemyOf(teamDef, true);
         }
 
         protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)

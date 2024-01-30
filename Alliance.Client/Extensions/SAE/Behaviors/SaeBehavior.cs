@@ -607,7 +607,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 //Try to init cursorMarker
                 if (missionScreen != null && Mission.Current != null && Mission.Current.MainAgent != null)
                 {
-                    sphereEntity = CreateSphere("editor_sphere_centered");
+                    sphereEntity = CreateSphere(SaeConstants.VISUAL_SPHERE_PREFAB_NAME);
                 }
                 else
                 {

@@ -43,6 +43,7 @@
 	<string id="str_multiplayer_scene_name.MontStCombattant" text="{=str_alliance_scene_MontStCombattant}Mont-Saint-Combattant" />
 	<string id="str_multiplayer_scene_name.PvC_Sanctuarium" text="{=str_alliance_scene_PvC_Sanctuarium}Sanctuarium" />
 	<string id="str_multiplayer_scene_name.VlandiaBR" text="{=str_alliance_scene_VlandiaBR}VlandiaBR" />
+	<string id="str_multiplayer_scene_name.commencement" text="{=str_alliance_scene_commencement}Commencement..." />
 
 	<!-- Scenario text for BFHD -->
 	<string id="str_alliance_scenario_name.BFHD" text="{=str_alliance_scenario_name_BFHD}Battle for Helm's Deep" />

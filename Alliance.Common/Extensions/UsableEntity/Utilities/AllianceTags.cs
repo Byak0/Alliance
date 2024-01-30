@@ -13,11 +13,11 @@ namespace Alliance.Common.Extensions.UsableEntity.Utilities
             { BattleSideEnum.Defender.ToString().ToLower(), BattleSideEnum.Defender }
         };
 
-        public const string InteractiveTag = "Al.interactive";
-        public const string InteractiveNameTag = "Al.name.";
-        public const string InteractiveTeamTag = "Al.team.";
-        public const string InteractiveItemTag = "Al.item.";
-        public const string InteractiveAmountTag = "Al.amount.";
+        public const string InteractiveTag = "al_interactive";
+        public const string InteractiveNameTag = "al_name_";
+        public const string InteractiveTeamTag = "al_team_";
+        public const string InteractiveItemTag = "al_item_";
+        public const string InteractiveAmountTag = "al_amount_";
 
         /// <summary>
         /// Return the tag value that maches the prefix. Returns empty if no match found.

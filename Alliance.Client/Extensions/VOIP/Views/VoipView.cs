@@ -19,7 +19,7 @@ namespace Alliance.Client.Extensions.VOIP.Views
             base.OnMissionScreenInitialize();
             _dataSource = new VoipVM(Mission);
             _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
-            _gauntletLayer.LoadMovie("MultiplayerVoiceChat", _dataSource);
+            _gauntletLayer.LoadMovie("VoiceChat", _dataSource);
             MissionScreen.AddLayer(_gauntletLayer);
         }
 

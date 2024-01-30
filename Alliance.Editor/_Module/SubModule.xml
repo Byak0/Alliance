@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance.Editor" />
   <Name value="Alliance.Editor" />
-  <Version value="v0.0.5" />
+  <Version value="v0.0.8.4" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
@@ -39,6 +39,9 @@
     </XmlNode>
     <XmlNode>
       <XmlName id="MPClassDivisions" path="Characters/mpclassdivisions" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingPieces" path="crafting_pieces_native" />
     </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items" />
