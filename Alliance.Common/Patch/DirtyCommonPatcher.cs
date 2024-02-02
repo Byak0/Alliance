@@ -10,6 +10,8 @@ namespace Alliance.Common.Patch
     /// </summary>
     public static class DirtyCommonPatcher
     {
+        public const int MAX_MISSION_OBJECTS = 10000;
+
         public static void IncreaseNativeLimits()
         {
             // Increase the limit for number of bots in captain (255 to 16384)
@@ -26,6 +28,9 @@ namespace Alliance.Common.Patch
 
             // Increase gold max
             CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);
+
+            // Increase max number of mission object
+            CompressionBasic.MissionObjectIDCompressionInfo = new CompressionInfo.Integer(-1, MAX_MISSION_OBJECTS, maximumValueGiven: true);
 
             // TODO : Check if still necessary with 1.2 optimisation
             // Fix native lag when lot of arrows

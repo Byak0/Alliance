@@ -16,6 +16,7 @@ namespace Alliance.Server.Patch
             bool patchSuccess = true;
 
             //TODO : Following 1.2 -> Check if any patch can be removed
+            patchSuccess &= Patch_Mission.Patch();
             patchSuccess &= Patch_MissionPeer.Patch();
             //patchSuccess &= Patch_MissionLobbyComponent.Patch();
             patchSuccess &= Patch_MissionMultiplayerFlagDomination.Patch();
