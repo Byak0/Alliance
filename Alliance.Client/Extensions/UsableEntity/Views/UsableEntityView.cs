@@ -28,8 +28,6 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public override void OnMissionScreenInitialize()
         {
-            base.OnMissionScreenInitialize();
-
             _entityInteractionBehavior = Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
             _dataSource = new EntityInteractionVM();
             _gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
@@ -39,7 +37,6 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public override void OnMissionScreenFinalize()
         {
-            base.OnMissionScreenFinalize();
             MissionScreen.RemoveLayer(_gauntletLayer);
             _gauntletLayer = null;
             _dataSource.OnFinalize();
@@ -48,7 +45,6 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);
             if (Input.IsGameKeyDown(LeftAltGameKey))
             {
                 _dataSource.IsEnabled = true;

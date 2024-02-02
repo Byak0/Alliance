@@ -1,5 +1,4 @@
 ﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -14,9 +13,9 @@ namespace Alliance.Client.GameModes.CaptainX
         [ViewMethod("CaptainX")]
         public static MissionView[] OpenCaptainMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = SubModule.GetCommonViews();
+            missionViews.AddRange(new List<MissionView>
             {
-                new GameModeMenuView(),
                 new FormationStatusView(),
 
                 MultiplayerViewCreator.CreateLobbyEquipmentUIHandler(),
@@ -46,9 +45,9 @@ namespace Alliance.Client.GameModes.CaptainX
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView(),
                 new SpectatorCameraView()
-            };
+            });
 
-            return list.ToArray();
+            return missionViews.ToArray();
         }
     }
 }

@@ -7,6 +7,8 @@ using Alliance.Client.Extensions.SAE.Behaviors;
 using Alliance.Client.Extensions.TroopSpawner.Views;
 using Alliance.Client.Extensions.UsableEntity.Views;
 using Alliance.Client.Extensions.Vehicles.Views;
+using Alliance.Client.Extensions.VOIP.Views;
+using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -21,8 +23,10 @@ using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client
@@ -43,32 +47,24 @@ namespace Alliance.Client
             AddGameModes();
         }
 
+        protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
+        {
+            // TODO : Check which limits still need to be increased after 1.2
+            // Increase native network compression limits to prevent crashes
+            DirtyCommonPatcher.IncreaseNativeLimits();
+        }
+
         public override void OnBeforeMissionBehaviorInitialize(Mission mission)
         {
-            // TODO : Check if can be init there or need to be init later in the MissionView?
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();
 
             SceneList.Initialize();
 
             mission.AddMissionBehavior(new ClientAutoHandler());
-            mission.AddMissionBehavior(new AdminSystem());
-            mission.AddMissionBehavior(new AnimationView());
-            mission.AddMissionBehavior(new SpawnTroopsView());
-            mission.AddMissionBehavior(new VehicleView());
             mission.AddMissionBehavior(new UsableEntityBehavior());
-            mission.AddMissionBehavior(new UsableEntityView());
-            mission.AddMissionBehavior(new SaeBehavior());
-            mission.AddMissionBehavior(new GameModeMenuView());
 
             Log("Alliance initialized.", LogLevel.Debug);
-        }
-
-        protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
-        {
-            // TODO : Check which limits still need to be increased after 1.2
-            // Increase native network compression limits to prevent crashes
-            DirtyCommonPatcher.IncreaseNativeLimits();
         }
 
         public override void OnGameInitializationFinished(Game game)
@@ -93,6 +89,25 @@ namespace Alliance.Client
             Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
             Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
             Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
+        }
+
+        /// <summary>
+        /// Centralized list of common views from Alliance used by GameModes.
+        /// </summary>
+        public static List<MissionView> GetCommonViews()
+        {
+            return new List<MissionView>()
+            {
+                new VoipView(),
+                new AdminSystem(),
+                new AnimationView(),
+                new SpawnTroopsView(),
+                new VehicleView(),
+                new UsableEntityView(),
+                new SaeBehavior(),
+                new GameModeMenuView(),
+                new HideWeaponTrail()
+            };
         }
     }
 }

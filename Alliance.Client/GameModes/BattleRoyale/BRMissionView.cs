@@ -1,6 +1,4 @@
 ﻿using Alliance.Client.Extensions.AgentsCount.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.VOIP.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -15,11 +13,10 @@ namespace Alliance.Client.GameModes.BattleRoyale
         [ViewMethod("BattleRoyale")]
         public static MissionView[] OpenBRMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = SubModule.GetCommonViews();
+            missionViews.AddRange(new List<MissionView>
             {
-                new GameModeMenuView(),
                 new AgentsCountView(),
-                new VoipView(),
 
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
                 MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
@@ -36,8 +33,8 @@ namespace Alliance.Client.GameModes.BattleRoyale
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
-            };
-            return list.ToArray();
+            });
+            return missionViews.ToArray();
         }
     }
 }

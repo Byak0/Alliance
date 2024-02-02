@@ -1,6 +1,4 @@
 ﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -15,10 +13,9 @@ namespace Alliance.Client.GameModes.BattleX
         [ViewMethod("BattleX")]
         public static MissionView[] OpenBattleMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = SubModule.GetCommonViews();
+            missionViews.AddRange(new List<MissionView>
             {
-                new SpawnTroopsView(),
-                new GameModeMenuView(),
                 new FormationStatusView(),
 
                 MultiplayerViewCreator.CreateLobbyEquipmentUIHandler(),
@@ -48,8 +45,8 @@ namespace Alliance.Client.GameModes.BattleX
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView(),
                 new SpectatorCameraView()
-            };
-            return list.ToArray();
+            });
+            return missionViews.ToArray();
         }
     }
 }

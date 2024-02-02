@@ -88,8 +88,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);
-
             if (_isMenuOpen)
             {
                 if (_layerLoaded.Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton) || _layerLoaded.Input.IsKeyPressed(InputKey.Escape) || Input.IsKeyPressed(InputKey.LeftMouseButton))
@@ -116,11 +114,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
                     }
                 }
             }
-        }
-
-        public override void OnMissionScreenInitialize()
-        {
-            base.OnMissionScreenFinalize();
         }
 
         private void TeleportToMouse()
