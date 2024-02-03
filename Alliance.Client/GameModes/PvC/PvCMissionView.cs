@@ -17,8 +17,7 @@ namespace Alliance.Client.GameModes.PvC
         [ViewMethod("PvC")]
         public static MissionView[] OpenPvCMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 new LobbyEquipmentView(),
                 new AgentStatusView(),
@@ -50,7 +49,7 @@ namespace Alliance.Client.GameModes.PvC
                 MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
-            });
+            };
 
             return missionViews.ToArray();
         }

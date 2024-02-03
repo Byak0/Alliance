@@ -13,8 +13,7 @@ namespace Alliance.Client.GameModes.BattleX
         [ViewMethod("BattleX")]
         public static MissionView[] OpenBattleMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 new FormationStatusView(),
 
@@ -45,7 +44,7 @@ namespace Alliance.Client.GameModes.BattleX
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView(),
                 new SpectatorCameraView()
-            });
+            };
             return missionViews.ToArray();
         }
     }

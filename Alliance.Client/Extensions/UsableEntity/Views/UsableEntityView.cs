@@ -8,6 +8,7 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
@@ -16,6 +17,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
     /// <summary>
     /// Interact with items in the scene.    
     /// </summary>
+    [DefaultView]
     public class UsableEntityView : MissionView
     {
         private const int LeftAltGameKey = 5;
@@ -26,7 +28,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public UsableEntityView() { }
 
-        public override void OnMissionScreenInitialize()
+        public override void OnBehaviorInitialize()
         {
             _entityInteractionBehavior = Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
             _dataSource = new EntityInteractionVM();

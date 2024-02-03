@@ -23,10 +23,8 @@ using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
-using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client
@@ -61,10 +59,16 @@ namespace Alliance.Client
 
             SceneList.Initialize();
 
-            mission.AddMissionBehavior(new ClientAutoHandler());
-            mission.AddMissionBehavior(new UsableEntityBehavior());
+            AddCommonBehaviors(mission);
 
-            Log("Alliance initialized.", LogLevel.Debug);
+            Log("Alliance behaviors initialized.", LogLevel.Debug);
+        }
+
+        public override void OnMissionBehaviorInitialize(Mission mission)
+        {
+            AddCommonViews(mission);
+
+            Log("Alliance views initialized.", LogLevel.Debug);
         }
 
         public override void OnGameInitializationFinished(Game game)
@@ -92,22 +96,29 @@ namespace Alliance.Client
         }
 
         /// <summary>
-        /// Centralized list of common views from Alliance used by GameModes.
+        /// Add common behaviors from Alliance used by all GameModes.
         /// </summary>
-        public static List<MissionView> GetCommonViews()
+        public void AddCommonBehaviors(Mission mission)
         {
-            return new List<MissionView>()
-            {
-                new VoipView(),
-                new AdminSystem(),
-                new AnimationView(),
-                new SpawnTroopsView(),
-                new VehicleView(),
-                new UsableEntityView(),
-                new SaeBehavior(),
-                new GameModeMenuView(),
-                new HideWeaponTrail()
-            };
+            mission.AddMissionBehavior(new ClientAutoHandler());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
+        }
+
+        /// <summary>
+        /// Add common views from Alliance used by all GameModes. 
+        /// Since 1.2.9, these views must have the [DefaultView] attribute.
+        /// </summary>
+        public void AddCommonViews(Mission mission)
+        {
+            mission.AddMissionBehavior(new VoipView());
+            mission.AddMissionBehavior(new AdminSystem());
+            mission.AddMissionBehavior(new AnimationView());
+            mission.AddMissionBehavior(new SpawnTroopsView());
+            mission.AddMissionBehavior(new VehicleView());
+            mission.AddMissionBehavior(new UsableEntityView());
+            mission.AddMissionBehavior(new SaeBehavior());
+            mission.AddMissionBehavior(new GameModeMenuView());
+            mission.AddMissionBehavior(new HideWeaponTrail());
         }
     }
 }

@@ -13,8 +13,7 @@ namespace Alliance.Client.GameModes.BattleRoyale
         [ViewMethod("BattleRoyale")]
         public static MissionView[] OpenBRMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 new AgentsCountView(),
 
@@ -33,7 +32,7 @@ namespace Alliance.Client.GameModes.BattleRoyale
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
-            });
+            };
             return missionViews.ToArray();
         }
     }

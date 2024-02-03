@@ -1,11 +1,13 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using TaleWorlds.Engine.Options;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
 using TaleWorlds.ScreenSystem;
 
 namespace Alliance.Client.Extensions.WeaponTrailHider.Views
 {
+    [DefaultView]
     class HideWeaponTrail : MissionView
     {
         private bool _isTemporarilyOpenUI;
@@ -14,6 +16,8 @@ namespace Alliance.Client.Extensions.WeaponTrailHider.Views
         public override void OnMissionTick(float dt)
         {
             base.OnMissionTick(dt);
+
+            if (MissionScreen == null) return;
 
             if (!_isTemporarilyOpenUI)
             {

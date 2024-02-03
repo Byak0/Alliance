@@ -10,12 +10,14 @@ using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.SAE.Behaviors
 {
+    [DefaultView]
     public class SaeBehavior : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "sae_spawn_cat";

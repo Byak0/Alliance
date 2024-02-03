@@ -8,6 +8,7 @@ using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -15,6 +16,7 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.AdminMenu.Views
 {
+    [DefaultView]
     public class AdminSystem : MissionView, IUseKeyBinder
     {
         private static string adminKeyCategoryId = "admin_sys";

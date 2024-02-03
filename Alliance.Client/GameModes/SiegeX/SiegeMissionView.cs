@@ -13,8 +13,7 @@ namespace Alliance.Client.GameModes.SiegeX
         [ViewMethod("SiegeX")]
         public static MissionView[] OpenSiegeMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 new FormationStatusView(),
 
@@ -41,7 +40,7 @@ namespace Alliance.Client.GameModes.SiegeX
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
-            });
+            };
 
             return missionViews.ToArray();
         }

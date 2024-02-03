@@ -12,8 +12,7 @@ namespace Alliance.Client.GameModes.Lobby
         [ViewMethod("Lobby")]
         public static MissionView[] OpenLobbyMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
@@ -31,7 +30,7 @@ namespace Alliance.Client.GameModes.Lobby
                 ViewCreator.CreateMissionMainAgentEquipDropView(mission),
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
-            });
+            };
             return missionViews.ToArray();
         }
     }

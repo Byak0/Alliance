@@ -21,8 +21,7 @@ namespace Alliance.Client.GameModes.Story
         [ViewMethod("Scenario")]
         public static MissionView[] OpenPvCMission(Mission mission)
         {
-            List<MissionView> missionViews = SubModule.GetCommonViews();
-            missionViews.AddRange(new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 // Custom views
                 new KillNotificationView(),
@@ -54,7 +53,7 @@ namespace Alliance.Client.GameModes.Story
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView(),
                 new SpectatorCameraView()
-            });
+            };
 
             return missionViews.ToArray();
         }
