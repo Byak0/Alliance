@@ -1,14 +1,5 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
-using Alliance.Client.Extensions.AdminMenu.Views;
-using Alliance.Client.Extensions.AnimationPlayer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.SAE.Behaviors;
-using Alliance.Client.Extensions.TroopSpawner.Views;
-using Alliance.Client.Extensions.UsableEntity.Views;
-using Alliance.Client.Extensions.Vehicles.Views;
-using Alliance.Client.Extensions.VOIP.Views;
-using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -64,13 +55,6 @@ namespace Alliance.Client
             Log("Alliance behaviors initialized.", LogLevel.Debug);
         }
 
-        public override void OnMissionBehaviorInitialize(Mission mission)
-        {
-            AddCommonViews(mission);
-
-            Log("Alliance views initialized.", LogLevel.Debug);
-        }
-
         public override void OnGameInitializationFinished(Game game)
         {
             // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
@@ -102,23 +86,6 @@ namespace Alliance.Client
         {
             mission.AddMissionBehavior(new ClientAutoHandler());
             mission.AddMissionBehavior(new UsableEntityBehavior());
-        }
-
-        /// <summary>
-        /// Add common views from Alliance used by all GameModes. 
-        /// Since 1.2.9, these views must have the [DefaultView] attribute.
-        /// </summary>
-        public void AddCommonViews(Mission mission)
-        {
-            mission.AddMissionBehavior(new VoipView());
-            mission.AddMissionBehavior(new AdminSystem());
-            mission.AddMissionBehavior(new AnimationView());
-            mission.AddMissionBehavior(new SpawnTroopsView());
-            mission.AddMissionBehavior(new VehicleView());
-            mission.AddMissionBehavior(new UsableEntityView());
-            mission.AddMissionBehavior(new SaeBehavior());
-            mission.AddMissionBehavior(new GameModeMenuView());
-            mission.AddMissionBehavior(new HideWeaponTrail());
         }
     }
 }
