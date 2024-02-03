@@ -1,0 +1,37 @@
+<Items>
+	<!-- Elven Arm Armors -->
+	<Item multiplayer_item="true" id="elf_arm_1" name="Galadhrim Bracers" mesh="elf_arm_1" culture="Culture.rohan" weight="0.5" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="18" covers_hands="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<!-- Elven Armors -->
+	<Item multiplayer_item="true" id="elf_armor_1" name="Galadhrim Plate Armor" mesh="elf_armor_1" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="45" leg_armor="18" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<!-- Elven Greaves -->
+	<Item multiplayer_item="true" id="elf_greaves_1" name="Galadhrim Greaves" mesh="elf_greaves_1" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="1" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="17" covers_legs="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<!-- Elven Helmets -->
+	<Item multiplayer_item="true" id="elf_helm_1" name="Galadhrim Helmet" mesh="elf_helm_1" culture="Culture.rohan" subtype="head_armor" weight="3.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="35" has_gender_variations="false" hair_cover_type="none" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<!-- Elven Shoulder Armors -->
+	<Item multiplayer_item="true" id="elf_shoulder_1" name="Galadhrim Hooded Cape" mesh="elf_shoulder_1" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="27" arm_armor="5" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+</Items>

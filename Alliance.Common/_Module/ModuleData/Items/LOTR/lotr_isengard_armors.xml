@@ -1,0 +1,131 @@
+<Items>
+	<!-- Uruk Arm Armors -->
+	<Item multiplayer_item="true" id="uruk_arm_1" name="Uruk-Hai Plate Bracers" mesh="uruk_arm_1" culture="Culture.isengard" weight="1.7" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="12" covers_hands="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_arm_2" name="Uruk-Hai Shield Bracers" mesh="uruk_arm_2" culture="Culture.isengard" weight="1.7" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="18" covers_hands="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Uruk Armors -->
+	<Item multiplayer_item="true" id="uruk_armor_1" name="Uruk-Hai Plate Armor (NAKED)" mesh="uruk_armor_1" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_1_v1" name="Uruk-Hai Plate Armor (NAKED NO HAND)" mesh="uruk_armor_1_v1" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_1_v2" name="Uruk-Hai Plate Armor (NAKED LONG)" mesh="uruk_armor_1_v2" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_1_1" name="Uruk-Hai Plate Armor" mesh="uruk_armor_1_1" culture="Culture.isengard" weight="11.9" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_2" name="Uruk-Hai Scout Armor" mesh="uruk_armor_2" culture="Culture.isengard" weight="4.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="20" leg_armor="5" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_1_v3" name="Uruk-Hai Plate Armor With Mail" mesh="uruk_armor_1_v3" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="27" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_3" name="Uruk-Hai Berserker Armor" mesh="uruk_armor_3" culture="Culture.isengard" weight="2.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="12" leg_armor="1" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags DoesNotHideChest="true" />
+	</Item>
+
+	<!-- Uruk Greaves -->
+	<Item multiplayer_item="true" id="uruk_greaves_1" name="Uruk-Hai Plate Greaves" mesh="uruk_greaves_1" culture="Culture.isengard" weight="1.7" difficulty="0" appearance="1" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="15" covers_legs="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Uruk Helmets -->
+	<Item multiplayer_item="true" id="uruk_helm_1" name="Uruk-Hai Helm" mesh="uruk_helm_1" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="27" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_1_v1" name="Uruk-Hai Helm" mesh="uruk_helm_1_v1" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="27" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_1_v2" name="Uruk-Hai Helm" mesh="uruk_helm_1_v2" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="27" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_2" name="Uruk-Hai Scout Helm" mesh="uruk_helm_2" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="20" has_gender_variations="false" hair_cover_type="all" beard_cover_type="all" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_3" name="Uruk-Hai Engineer Helm" mesh="uruk_helm_3" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="25" has_gender_variations="false" hair_cover_type="type2" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_4" name="Uruk-Hai Berserker Helm (White Hand)" mesh="uruk_helm_4" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="30" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_4_v1" name="Uruk-Hai Berserker Helm" mesh="uruk_helm_4_v1" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="30" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_helm_5" name="Uruk-Hai Officer Helm" mesh="uruk_helm_5" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="38" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Uruk Shoulder Armors -->
+	<Item multiplayer_item="true" id="uruk_shoulder_1" name="Uruk-Hai Shoulder Plate (NAKED)" mesh="uruk_shoulder_1" culture="Culture.isengard" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="13" arm_armor="5" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_shoulder_1_1" name="Uruk-Hai Shoulder Plate" mesh="uruk_shoulder_1_1" culture="Culture.isengard" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="13" arm_armor="5" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+</Items>

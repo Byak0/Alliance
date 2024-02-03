@@ -25,6 +25,13 @@
 			combat_movement_speed="0.9"
 			acceleration="1.8">
 		<Perks>
+			<Perk   
+				game_mode="all"
+				name="{=*}Unarmed"
+				description="{=*}You only have your fists."
+				icon="PerkToughness"
+				perk_list="1">
+			</Perk>
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
@@ -1055,7 +1062,7 @@
 		icon="Cavalry_Light"
 		melee_ai="50"
 		ranged_ai="50"
-		armor="19"
+		armor="10"
 		movement_speed="0.77"
 		combat_movement_speed="0.6"
 		acceleration="2.8">

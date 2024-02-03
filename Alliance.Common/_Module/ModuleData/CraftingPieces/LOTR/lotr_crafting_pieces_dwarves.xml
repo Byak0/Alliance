@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******   DWARVES   ****** -->
+	<!-- ************************* -->
+	<!-- GIMLI AXE -->
+	<CraftingPiece id="gimli_d_axe_blade"
+                 name="Gimli double axe blade"
+                 tier="2"
+                 piece_type="Blade"
+                 mesh="sm_axe_gimli_blade"
+                 distance_to_next_piece="0"
+                 distance_to_previous_piece="-5"
+                 weight="0.8816">
+		<BuildData piece_offset="0" />
+		<BladeData stack_amount="3"
+               blade_length="33.83"
+               blade_width="34.00"
+               physics_material="metal_weapon"
+               body_name="bo_axe_longer_b">
+			<Swing damage_type="Cut"
+             damage_factor="2.5" />
+		</BladeData>
+		<Flags>
+			<Flag name="CanBePickedUpFromCorpse"
+            type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="gimli_d_axe_handle"
+                 name="Gimli double axe handle"
+                 tier="2"
+                 piece_type="Handle"
+                 mesh="sm_axe_gimli_handle"
+                 length="98.3"
+                 weight="0.516">
+		<BuildData piece_offset="25"
+               next_piece_offset="0" />
+	</CraftingPiece>
+</CraftingPieces>

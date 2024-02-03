@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CraftingTemplates>
+	<CraftingTemplate id="foa_TwoHandedPolearm"
+                    item_type="Polearm"
+                    modifier_group="polearm"
+                    item_holsters="polearm_back:polearm_back_2:polearm_back_3:polearm_back_4"
+                    default_item_holster_position_offset="0,0,-0.30"
+                    use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData piece_type="Handle"
+                 build_order="0" />
+			<PieceData piece_type="Guard"
+                 build_order="1" />
+			<PieceData piece_type="Blade"
+                 build_order="2" />
+			<PieceData piece_type="Pommel"
+                 build_order="-1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="foa_OneHandedPolearm" />
+			<WeaponDescription id="foa_TwoHandedPolearm" />
+			<WeaponDescription id="foa_TwoHandedPolearm_Couchable" />
+			<WeaponDescription id="foa_TwoHandedPolearm_Bracing" />
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight"
+                max_value="7.0" />
+			<StatData stat_type="WeaponReach"
+                max_value="300" />
+			<StatData stat_type="ThrustSpeed"
+                max_value="200" />
+			<StatData stat_type="SwingSpeed"
+                max_value="200" />
+			<StatData stat_type="ThrustDamage"
+                max_value="500" />
+			<StatData stat_type="SwingDamage"
+                max_value="500" />
+			<StatData stat_type="Handling"
+                max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="rohan_banner_1_head" />
+			<UsablePiece piece_id="rohan_banner_1_guard" />
+			<UsablePiece piece_id="rohan_banner_1_handle" />
+			<UsablePiece piece_id="rohan_banner_1_bottom" />
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="RohanTwoHandedPolearm"
+                    item_type="Polearm"
+                    modifier_group="polearm"
+                    item_holsters="polearm_back:polearm_back_2:polearm_back_3:polearm_back_4"
+                    default_item_holster_position_offset="0,0,-0.30"
+                    use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData piece_type="Handle"
+                 build_order="0" />
+			<PieceData piece_type="Guard"
+                 build_order="1" />
+			<PieceData piece_type="Blade"
+                 build_order="2" />
+			<PieceData piece_type="Pommel"
+                 build_order="-1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="RohanOneHandedPolearm" />
+			<WeaponDescription id="RohanTwoHandedPolearm" />
+			<WeaponDescription id="RohanTwoHandedPolearm_Thrown" />
+			<WeaponDescription id="RohanTwoHandedPolearm_Couchable" />
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight"
+                max_value="7.0" />
+			<StatData stat_type="WeaponReach"
+                max_value="300" />
+			<StatData stat_type="ThrustSpeed"
+                max_value="200" />
+			<StatData stat_type="SwingSpeed"
+                max_value="200" />
+			<StatData stat_type="ThrustDamage"
+                max_value="500" />
+			<StatData stat_type="SwingDamage"
+                max_value="500" />
+			<StatData stat_type="Handling"
+                max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="rohan_spear_1_head" />
+			<UsablePiece piece_id="rohan_spear_2_head" />
+			<UsablePiece piece_id="rohan_spear_1_handle" />
+			<UsablePiece piece_id="spear_banner_r" />
+			<UsablePiece piece_id="rohan_spear_1_bottom" />
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="uruk_one_handed"
+                    item_type="OneHandedWeapon"
+                    modifier_group="sword"
+                    item_holsters="sword_left_hip_3:sword_left_hip:sword_left_hip_2:sword_back"
+                    piece_type_to_scale_holster_with="Blade"
+                    hidden_piece_types_on_holster="Blade"
+                    default_item_holster_position_offset="0,0,-0.1">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="uruk_one_handed"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="uruk_blade_1"/>
+			<UsablePiece piece_id="uruk_blade_4"/>
+			<UsablePiece piece_id="uruk_handle_1"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="uruk_two_handed" item_type="TwoHandedWeapon" modifier_group="sword" item_holsters="sword_back:sword_back_2:sword_back_3:sword_back_4" piece_type_to_scale_holster_with="Blade" hidden_piece_types_on_holster="Blade" default_item_holster_position_offset="0,0,-0.1">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="uruk_one_handed"/>
+			<WeaponDescription id="uruk_two_handed"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="uruk_blade_2"/>
+			<UsablePiece piece_id="uruk_handle_2"/>
+			<UsablePiece piece_id="uruk_guard_1"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="uruk_Pike" item_type="Polearm" modifier_group="polearm" item_holsters="polearm_back:polearm_back_2:polearm_back_3:polearm_back_4" default_item_holster_position_offset="0,0,-0.30" use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="uruk_twoHandedPolearm_Pike"/>
+			<WeaponDescription id="uruk_twoHandedPolearm_Bracing"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="uruk_blade_3"/>
+			<UsablePiece piece_id="uruk_handle_3"/>
+			<UsablePiece piece_id="uruk_pommel_1"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="rohan_one_handed_2" item_type="OneHandedWeapon" modifier_group="sword" item_holsters="sword_left_hip_3:sword_left_hip:sword_left_hip_2:sword_back" piece_type_to_scale_holster_with="Blade" default_item_holster_position_offset="0,0,-0.1">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="OneHandedSword"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="mp_empire_paramerion_blade"/>
+			<UsablePiece piece_id="mp_sturgia_northern_sword_guard"/>
+			<UsablePiece piece_id="mp_empire_pugio_grip"/>
+			<UsablePiece piece_id="mp_sturgia_northern_sword_pommel"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="rohan_TwoHandedAxe"
+									 item_type="TwoHandedWeapon"
+									 modifier_group="axe"
+									 item_holsters="axe_back:axe_back_2:axe_back_3:axe_back_4"
+									 default_item_holster_position_offset="0,0,-0.65"
+									 use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData piece_type="Handle"
+                 build_order="0" />
+			<PieceData piece_type="Blade"
+                 build_order="1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="rohan_OneHandedBastardAxe" />
+			<WeaponDescription id="rohan_TwoHandedAxe" />
+			<WeaponDescription id="rohan_OneHandedBastardAxeAlternative" />
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight"
+                max_value="7.0" />
+			<StatData stat_type="WeaponReach"
+                max_value="300" />
+			<StatData stat_type="ThrustSpeed"
+                max_value="200" />
+			<StatData stat_type="SwingSpeed"
+                max_value="200" />
+			<StatData stat_type="ThrustDamage"
+                max_value="500" />
+			<StatData stat_type="SwingDamage"
+                max_value="500" />
+			<StatData stat_type="Handling"
+                max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="gimli_d_axe_blade" />
+			<UsablePiece piece_id="gimli_d_axe_handle" />
+			<UsablePiece piece_id="gimli_d_axe_pommel" />
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="rohan_one_handed"
+                    item_type="OneHandedWeapon"
+                    modifier_group="sword"
+                    item_holsters="sword_left_hip_3:sword_left_hip:sword_left_hip_2:sword_back"
+                    piece_type_to_scale_holster_with="Blade"
+                    hidden_piece_types_on_holster="Blade"
+                    default_item_holster_position_offset="0,0,-0.1">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="rohan_one_handed"/>
+			<WeaponDescription id="elf_two_handed"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="rohan_blade_1"/>
+			<UsablePiece piece_id="rohan_handle_1"/>
+			<UsablePiece piece_id="rohan_guard_1"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="elf_two_handed"
+                    item_type="TwoHandedWeapon"
+                    modifier_group="sword"
+                    item_holsters="sword_back:sword_back_2:sword_back_3:sword_back_4"
+                    piece_type_to_scale_holster_with="Blade"
+                    hidden_piece_types_on_holster="Blade"
+                    default_item_holster_position_offset="0,0,-0.1">
+		<PieceDatas>
+			<PieceData piece_type="Handle" build_order="0"/>
+			<PieceData piece_type="Guard" build_order="1"/>
+			<PieceData piece_type="Blade" build_order="2"/>
+			<PieceData piece_type="Pommel" build_order="-1"/>
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="elf_two_handed"/>
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData stat_type="Weight" max_value="7.0"/>
+			<StatData stat_type="WeaponReach" max_value="300"/>
+			<StatData stat_type="ThrustSpeed" max_value="200"/>
+			<StatData stat_type="SwingSpeed" max_value="200"/>
+			<StatData stat_type="ThrustDamage" max_value="500"/>
+			<StatData stat_type="SwingDamage" max_value="500"/>
+			<StatData stat_type="Handling" max_value="200"/>
+			<!--<StatData stat_type="FollowUp" max_value="200"/>-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="elf_blade_1"/>
+			<UsablePiece piece_id="elf_blade_2"/>
+			<UsablePiece piece_id="elf_handle_1"/>
+			<UsablePiece piece_id="elf_handle_2"/>
+		</UsablePieces>
+	</CraftingTemplate>
+	<CraftingTemplate id="legolas_dagger_template"
+                    item_type="OneHandedWeapon"
+                    modifier_group="sword"
+                    item_holsters="sword_left_hip_3:sword_left_hip_2:sword_left_hip:sword_back"
+                    default_item_holster_position_offset="0,0,-0.1"
+                    use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData piece_type="Handle"
+                 build_order="0" />
+			<PieceData piece_type="Blade"
+                 build_order="1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription id="legolas_dagger" />
+			<WeaponDescription id="legolas_throwing_knife" />
+		</WeaponDescriptions>
+		<StatsData weapon_description="legolas_dagger">
+			<StatData stat_type="Weight"
+                max_value="7.0" />
+			<StatData stat_type="WeaponReach"
+                max_value="300" />
+			<StatData stat_type="ThrustSpeed"
+                max_value="200" />
+			<StatData stat_type="SwingSpeed"
+                max_value="200" />
+			<StatData stat_type="ThrustDamage"
+                max_value="500" />
+			<StatData stat_type="SwingDamage"
+                max_value="500" />
+			<StatData stat_type="Handling"
+                max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<StatsData weapon_description="legolas_throwing_knife">
+			<StatData stat_type="Weight"
+                max_value="2.0" />
+			<StatData stat_type="WeaponReach"
+                max_value="100" />
+			<StatData stat_type="MissileSpeed"
+                max_value="150" />
+			<StatData stat_type="MissileDamage"
+                max_value="200" />
+			<StatData stat_type="Accuracy"
+                max_value="100" />
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece piece_id="mp_legolas_dagger_grip" />
+			<UsablePiece piece_id="legolas_dagger_blade" />
+		</UsablePieces>
+	</CraftingTemplate>
+</CraftingTemplates>
+<!--
+<StatsData>
+  <StatData stat_type="Weight" max_value="7.0"/>
+  <StatData stat_type="WeaponReach" max_value="300"/>
+  <StatData stat_type="ThrustSpeed" max_value="200"/>
+  <StatData stat_type="SwingSpeed" max_value="200"/>
+  <StatData stat_type="ThrustDamage" max_value="500"/>
+  <StatData stat_type="SwingDamage" max_value="500"/>
+  <StatData stat_type="Handling" max_value="200"/>
+  <StatData stat_type="FollowUp" max_value="200"/>
+  <StatData stat_type="MissileDamage" max_value="500"/>
+  <StatData stat_type="MissileSpeed" max_value="200"/>
+  <StatData stat_type="Accuracy" max_value="100"/>
+</StatsData>
+-->

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******   ELVES   ******** -->
+	<!-- ************************* -->
+	<!-- GALADHRIM SWORD -->
+	<CraftingPiece id="elf_blade_1" name="Galadhrim Blade" tier="4" piece_type="Blade" mesh="elf_sword_1_blade" culture="Culture.rohan" length="65" weight="0.8" excluded_item_usage_features="thrust">
+
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="elf_sword_1_holster" >
+			<Thrust damage_type="Pierce" damage_factor="2.9" />
+			<Swing damage_type="Cut" damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece id="elf_blade_2" name="Galadhrim Sword Blade" tier="4" piece_type="Blade" mesh="elf_sword_2_blade" culture="Culture.rohan" length="75" weight="0.8" excluded_item_usage_features="thrust">
+
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="elf_sword_2_holster" >
+			<Thrust damage_type="Pierce" damage_factor="2.9" />
+			<Swing damage_type="Cut" damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece id="elf_handle_1" name="Galadhrim Bound Handle" tier="4" piece_type="Handle" mesh="elf_sword_1_handle" culture="Culture.rohan" length="61" weight="0.1">
+
+		<BuildData piece_offset="0" previous_piece_offset="0.1" next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece id="elf_handle_2" name="Galadhrim Handle" tier="4" piece_type="Handle" mesh="elf_sword_2_handle" culture="Culture.rohan" length="33" weight="0.1">
+
+		<BuildData piece_offset="0" previous_piece_offset="0.1" next_piece_offset="0.1" />
+	</CraftingPiece>
+
+	<!-- LEGOLAS DAGGER -->
+	<CraftingPiece id="legolas_dagger_blade"
+                 name="Legolas Blade"
+                 tier="1"
+                 piece_type="Blade"
+                 mesh="m_dagger_legolas_blade"
+                 length="37.4"
+                 weight="0.205"
+                 is_default="true">
+		<BladeData stack_amount="3"
+               physics_material="metal_weapon"
+               body_name="bo_knife_a"
+               holster_mesh="">
+			<Thrust damage_type="Pierce"
+              damage_factor="5" />
+			<Swing damage_type="Cut"
+             damage_factor="6" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian"
+            type="ItemFlags" />
+		</Flags>
+		<Materials>
+			<Material id="Iron3"
+                count="1" />
+		</Materials>
+	</CraftingPiece>
+
+	<CraftingPiece id="mp_legolas_dagger_grip"
+                 name="Legolas dagger grip "
+                 tier="2"
+                 piece_type="Handle"
+                 mesh="m_dagger_legolas_handle"
+                 length="18.3"
+                 weight="0.1">
+		<BuildData piece_offset="0"
+               previous_piece_offset="0.1"
+               next_piece_offset="6" />
+	</CraftingPiece>
+
+</CraftingPieces>

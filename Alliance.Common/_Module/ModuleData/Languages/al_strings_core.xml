@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<!-- Game modes -->
+	<string id="str_multiplayer_official_game_type_name.PvC" text="{=str_alliance_game_type_name_pvc}Players VS Commanders" />
+	<string id="str_multiplayer_official_game_type_explainer.PvC" text="{=str_alliance_game_type_explainer_pvc}Players : Choose your class and fight alongside your comrades !              Commanders : Recruit troops and lead them against the players !" />
+	<string id="str_multiplayer_game_type.PvC" text="{=str_alliance_game_type_pvc}PvC" />
+	<string id="str_multiplayer_official_game_type_name.Lobby" text="{=str_alliance_game_type_lobby}Lobby" />
+	<string id="str_multiplayer_official_game_type_explainer.Lobby" text="{=str_alliance_game_type_explainer_lobby}" />
+	<string id="str_multiplayer_game_type.Lobby" text="{=str_alliance_game_type_lobby}Lobby" />
+	<string id="str_multiplayer_official_game_type_name.BattleRoyale" text="{=str_alliance_game_type_name_battleroyale}Battle Royale" />
+	<string id="str_multiplayer_official_game_type_explainer.BattleRoyale" text="{=str_alliance_game_type_explainer_battleroyale}Be the last to survive." />
+	<string id="str_multiplayer_game_type.BattleRoyale" text="{=str_alliance_game_type_battleroyale}Battle Royale" />
+	<string id="str_multiplayer_official_game_type_name.Scenario" text="{=str_alliance_game_type_name_scenario}Scenario" />
+	<string id="str_multiplayer_official_game_type_explainer.Scenario" text="{=str_alliance_game_type_explainer_scenario}" />
+	<string id="str_multiplayer_game_type.Scenario" text="{=str_alliance_game_type_scenario}Scenario" />
+	<string id="str_multiplayer_official_game_type_name.CaptainX" text="{=str_alliance_game_type_name_captainx}Captain" />
+	<string id="str_multiplayer_official_game_type_explainer.CaptainX" text="{=str_alliance_game_type_explainer_captainx}Lead your own detachment of troops into battle in this team-based PvP game mode. Control the battlefield to demoralize the enemy team or annihilate their forces to emerge victorious." />
+	<string id="str_multiplayer_game_type.CaptainX" text="{=str_alliance_game_type_captainx}Captain Battle" />
+	<string id="str_multiplayer_official_game_type_name.BattleX" text="{=str_alliance_game_type_name_battlex}Battle" />
+	<string id="str_multiplayer_official_game_type_explainer.BattleX" text="{=str_alliance_game_type_explainer_battlex}·   Buy one spawn using gold{newline}·   Hold control points on the map to deplete enemy morale{newline}·   Kill the entire enemy team or exhaust their morale to win" />
+	<string id="str_multiplayer_game_type.BattleX" text="{=str_alliance_game_type_battlex}Battle" />
+</strings>

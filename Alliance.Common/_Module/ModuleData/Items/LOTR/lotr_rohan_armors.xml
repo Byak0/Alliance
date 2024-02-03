@@ -1,0 +1,144 @@
+<Items>
+	<!-- Rohan Arm Armors -->
+	<Item multiplayer_item="true" id="rohan_arm_2" name="Rider's Bracers" mesh="rohan_arm_2" culture="Culture.rohan" weight="0.5" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="16" covers_hands="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_arm_3" name="Rider's Knightly Bracers" mesh="rohan_arm_3" culture="Culture.rohan" weight="0.5" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="20" covers_hands="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_arm_4" name="Rohan Theoden's Bracers" mesh="rohan_arm_4" culture="Culture.rohan" weight="0.5" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="23" covers_hands="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+
+	<!-- Rohan Armors -->
+	<Item multiplayer_item="true" id="armor_rohan_3" name="Rohan Guard Scale Armor" mesh="armor_rohan_3" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="30" leg_armor="11" arm_armor="1" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_4" name="Rohan Knightly Armor" mesh="armor_rohan_4" culture="Culture.rohan" weight="8.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="47" leg_armor="15" arm_armor="1" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_5" name="Rohan Militia Armor" mesh="armor_rohan_5" culture="Culture.rohan" weight="5.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="29" leg_armor="9" arm_armor="6" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_6" name="Rohan Common Armor" mesh="armor_rohan_6" culture="Culture.rohan" weight="4.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="35" leg_armor="5" arm_armor="6" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_7" name="Rohan Theoden's Armor" mesh="armor_rohan_7" culture="Culture.rohan" weight="8.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="55" leg_armor="21" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Rohan Greaves -->
+	<Item multiplayer_item="true" id="rohan_greaves_1" name="Rider's Greaves" mesh="rohan_greaves_1" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="1" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="10" covers_legs="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_greaves_2" name="Rider's Knightly Greaves" mesh="rohan_greaves_2" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="3" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="15" covers_legs="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_greaves_3" name="Rohan Theoden's Greaves" mesh="rohan_greaves_3" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="3" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="20" covers_legs="true" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+
+	<!-- Rohan Helmets -->
+	<Item multiplayer_item="true" id="rohan_helm_3" name="Rider's Helmet" mesh="rohan_helm_3" culture="Culture.rohan" subtype="head_armor" weight="3.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="45" has_gender_variations="false" hair_cover_type="all" beard_cover_type="type1" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_helm_5" name="Rohan Common Steel Helm" mesh="rohan_helm_5" culture="Culture.rohan" subtype="head_armor" weight="3.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="25" has_gender_variations="false" hair_cover_type="all" beard_cover_type="type1" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_helm_6" name="Rider's Knightly Helm" mesh="rohan_helm_6" culture="Culture.rohan" subtype="head_armor" weight="2.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="47" has_gender_variations="false" hair_cover_type="all" beard_cover_type="type1" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_helm_7" name="Rohan Common Helm" mesh="rohan_helm_7" culture="Culture.rohan" subtype="head_armor" weight="3.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="23" has_gender_variations="false" hair_cover_type="all" beard_cover_type="type1" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_helm_8" name="Rohan Theoden's Helm" mesh="rohan_helm_8" culture="Culture.rohan" subtype="head_armor" weight="2.9" difficulty="0" appearance="3.2" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="53" has_gender_variations="false" hair_cover_type="all" beard_cover_type="type1" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Rohan Shoulder Armors -->
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_2" name="Rohan Rider's Cape" mesh="armor_rohan_shoulder_2" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="27" arm_armor="5" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_3" name="Rohan Knightly Shoulder" mesh="armor_rohan_shoulder_3" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="27" arm_armor="8" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_4" name="Rohan Leather Shoulder" mesh="armor_rohan_shoulder_4" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="13" arm_armor="9" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_5" name="Rohan Leather Shoulder With Cape" mesh="armor_rohan_shoulder_5" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="15" arm_armor="9" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_6" name="Rohan Cape" mesh="armor_rohan_shoulder_6" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="9" modifier_group="cloth_unarmoured" material_type="Cloth" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_shoulder_7" name="Rohan Theoden's Shoulder" mesh="armor_rohan_shoulder_7" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="31" arm_armor="15" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+</Items>

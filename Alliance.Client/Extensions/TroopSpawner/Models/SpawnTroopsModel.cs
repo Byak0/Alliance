@@ -132,7 +132,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_selectedFaction != value)
                 {
                     _selectedFaction = value;
-                    SelectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
+                    BasicCharacterObject factionDefaultCharacter = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).FirstOrDefault()?.TroopCharacter;
+                    factionDefaultCharacter ??= MultiplayerClassDivisions.GetMPHeroClasses().First().TroopCharacter;
+                    SelectedTroop = factionDefaultCharacter;
                     OnFactionSelected?.Invoke();
                 }
             }

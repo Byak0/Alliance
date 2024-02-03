@@ -18,7 +18,7 @@ namespace Alliance.Common.Core.ExtendedCharacter
         /// </summary>
         public static void Init()
         {
-            //if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/Characters/ExtendedCharacters.xml")) 
+            //if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/ExtendedCharacters.xml")) 
             InitializeXML();
             CopyXSDs();
             MBObjectManager.Instance.RegisterType<ExtendedCharacterObject>("ExtendedCharacter", "ExtendedCharacters", 2001, true, false);
@@ -63,7 +63,7 @@ namespace Alliance.Common.Core.ExtendedCharacter
             extendedCharacters.InnerXml = mpCharacters.InnerXml;
             xmlDoc.AppendChild(extendedCharacters);
 
-            xmlDoc.Save(moduleFullPath + "/ModuleData/Characters/ExtendedCharacters.xml");
+            xmlDoc.Save(moduleFullPath + "/ModuleData/ExtendedCharacters.xml");
         }
     }
 }

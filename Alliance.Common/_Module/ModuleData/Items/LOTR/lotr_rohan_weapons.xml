@@ -1,0 +1,379 @@
+<Items>
+	<!-- Rohan Shields -->
+	<Item multiplayer_item="true" id="rohan_shield"
+	 name="Rohirrim shield"
+	 body_name="bo_cap_shield_rohan"
+	 shield_body_name="bo_shield_rohan"
+	 recalculate_body="false"
+	 mesh="shield_rohan"
+	 culture="Culture.rohan"
+	 using_tableau="true"
+	 weight="4.7"
+	 difficulty="0"
+	 appearance="0.9"
+	 Type="Shield"
+	 item_holsters="shield_round:shield_4"
+	 has_lower_holster_priority="true"
+	 holster_position_shift="0,0,0">
+		<ItemComponent>
+			<Weapon weapon_class="LargeShield"
+							body_armor="9"
+							thrust_speed="86"
+							thrust_damage="5"
+							thrust_damage_type="Blunt"
+							speed_rating="86"
+							physics_material="wood_shield"
+							item_usage="hand_shield"
+							position="-0.08, 0.04, 0.0"
+							rotation="175.0,-90.0,-10.0"
+							weapon_length="70"
+							center_of_mass="0, 0, 0"
+							hit_points="500"
+							modifier_group="shield_wood">
+				<WeaponFlags CanBlockRanged="true"
+										 HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags WoodenParry="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_shield_2v1"
+				name="Rohan shield I"
+				body_name="bo_cap_rohan_shield_2"
+				shield_body_name="bo_rohan_shield_2"
+				recalculate_body="false"
+				mesh="rohan_shield_2"
+				culture="Culture.rohan"
+				using_tableau="true"
+				weight="4.7"
+				difficulty="0"
+				appearance="0.9"
+				Type="Shield"
+				item_holsters="shield_round:shield_4"
+				has_lower_holster_priority="true"
+				holster_position_shift="0,0,0">
+		<ItemComponent>
+			<Weapon weapon_class="LargeShield"
+							body_armor="9"
+							thrust_speed="86"
+							thrust_damage="5"
+							thrust_damage_type="Blunt"
+							speed_rating="86"
+							physics_material="wood_shield"
+							item_usage="hand_shield"
+							position="-0.08, 0.04, 0.0"
+							rotation="85.0,-90.0,-10.0"
+							weapon_length="70"
+							center_of_mass="0, 0, 0"
+							hit_points="500"
+							modifier_group="shield_wood">
+				<WeaponFlags CanBlockRanged="true"
+										 HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags WoodenParry="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_shield_3"
+				name="Theoden's shield"
+				body_name="bo_cap_rohan_shield_3"
+				shield_body_name="bo_rohan_shield_3"
+				recalculate_body="false"
+				mesh="rohan_shield_3"
+				culture="Culture.rohan"
+				using_tableau="true"
+				weight="2"
+				difficulty="0"
+				appearance="0.9"
+				Type="Shield"
+				item_holsters="shield_round:shield_4"
+				has_lower_holster_priority="true"
+				holster_position_shift="0,0,0">
+		<ItemComponent>
+			<Weapon weapon_class="LargeShield"
+							body_armor="9"
+							thrust_speed="86"
+							thrust_damage="5"
+							thrust_damage_type="Blunt"
+							speed_rating="86"
+							physics_material="wood_shield"
+							item_usage="hand_shield"
+							position="-0.04, 0.03, 0.0"
+							rotation="-5.0,-90.0,-10.0"
+							weapon_length="70"
+							center_of_mass="0, 0, 0"
+							hit_points="500"
+							modifier_group="shield_wood">
+				<WeaponFlags CanBlockRanged="true"
+										 HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags WoodenParry="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true" />
+	</Item>
+
+	<!-- Rohan Spears -->
+	<CraftedItem multiplayer_item="true"
+									 id="rohan_spear_1"
+									 name="{=WQksMqMR}Rohan banner spear"
+									 crafting_template="RohanTwoHandedPolearm"
+									 culture="Culture.rohan">
+		<Pieces>
+			<Piece id="rohan_spear_1_head"
+						 Type="Blade"
+						 scale_factor="90" />
+			<Piece id="spear_banner_r"
+						 Type="Guard"
+						 scale_factor="90" />
+			<Piece id="rohan_spear_1_handle"
+						 Type="Handle"
+						 scale_factor="90" />
+			<Piece id="rohan_spear_1_bottom"
+						 Type="Pommel"
+						 scale_factor="90" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true"
+						 id="rohan_spear_2"
+						 name="{=WQksMqMR}Rohan spear"
+						 crafting_template="RohanTwoHandedPolearm"
+						 culture="Culture.rohan">
+		<Pieces>
+			<Piece id="rohan_spear_2_head"
+						 Type="Blade"
+						 scale_factor="90" />
+			<Piece id="rohan_spear_1_handle"
+						 Type="Handle"
+						 scale_factor="90" />
+			<Piece id="rohan_spear_1_bottom"
+						 Type="Pommel"
+						 scale_factor="90" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Rohan Swords -->
+	<CraftedItem multiplayer_item="true" id="rohan_sword_1" name="Herugrim" crafting_template="rohan_one_handed" culture="Culture.neutral_culture">
+		<Pieces>
+			<Piece id="rohan_blade_1" Type="Blade" scale_factor="140" />
+			<Piece id="rohan_guard_1" Type="Guard" scale_factor="110" />
+			<Piece id="rohan_handle_1" Type="Handle" scale_factor="180" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="rohan_sword_2" name="Rohirrim sword" crafting_template="rohan_one_handed_2" culture="Culture.neutral_culture">
+		<Pieces>
+			<Piece id="mp_empire_paramerion_blade" Type="Blade" scale_factor="91" />
+			<Piece id="mp_sturgia_northern_sword_guard" Type="Guard" scale_factor="80" />
+			<Piece id="mp_empire_pugio_grip" Type="Handle" scale_factor="90" />
+			<Piece id="mp_sturgia_northern_sword_pommel" Type="Pommel" scale_factor="80"  />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Rohan Javelin -->
+	<CraftedItem multiplayer_item="true" id="rohan_javlin"
+						 name="Rohirrim javlin"
+						 crafting_template="Javelin"
+						 culture="Culture.rohan"
+						 modifier_group="spear_dart_throwing">
+		<Pieces>
+			<Piece id="spear_blade_16"
+						 Type="Blade"
+						 scale_factor="100" />
+			<Piece id="default_polearm_guard"
+						 Type="Guard"
+						 scale_factor="100" />
+			<Piece id="spear_handle_11"
+						 Type="Handle"
+						 scale_factor="100" />
+			<Piece id="spear_pommel_5"
+						 Type="Pommel"
+						 scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="rohan_javlin"
+								 name="Rohirrim javlin"
+								 crafting_template="Javelin"
+								 culture="Culture.rohan"
+								 modifier_group="spear_dart_throwing">
+		<Pieces>
+			<Piece id="mp_javelin_blade"
+						 Type="Blade"
+						 scale_factor="100" />
+			<Piece id="mp_default_polearm_guard"
+						 Type="Guard"
+						 scale_factor="100" />
+			<Piece id="mp_battania_javelin_handle"
+						 Type="Handle"
+						 scale_factor="100" />
+			<Piece id="mp_spear_pommel_12"
+						 Type="Pommel"
+						 scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Rohan Bows -->
+	<Item multiplayer_item="true" id="rohan_bow"
+				name="Rohan bow"
+				body_name="bo_composite_shotbow_h"
+				mesh="shortbow_h"
+				culture="Culture.rohan"
+				weight="0.3"
+				difficulty="0"
+				appearance="1"
+				Type="Bow"
+				item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		<ItemComponent>
+			<Weapon weapon_class="Bow"
+							ammo_class="Arrow"
+							ammo_limit="1"
+							thrust_speed="75"
+							speed_rating="87"
+							missile_speed="64"
+							weapon_length="110"
+							accuracy="95"
+							thrust_damage="45"
+							thrust_damage_type="Pierce"
+							item_usage="bow"
+							physics_material="wood_weapon"
+							center_of_mass="0.1,0,-0.15"
+							modifier_group="bow">
+				<WeaponFlags RangedWeapon="true"
+										 HasString="true"
+										 StringHeldByHand="true"
+										 NotUsableWithOneHand="true"
+										 TwoHandIdleOnMount="true"
+										 AutoReload="true"
+										 UnloadWhenSheathed="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_bow"
+					name="Rohan bow"
+					body_name="bo_composite_shotbow_h"
+					mesh="shortbow_h"
+					culture="Culture.neutral_culture"
+					weight="0.3"
+					difficulty="0"
+					appearance="1"
+					Type="Bow"
+					item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		<ItemComponent>
+			<Weapon weapon_class="Bow"
+              ammo_class="Arrow"
+              ammo_limit="1"
+              thrust_speed="75"
+              speed_rating="87"
+              missile_speed="64"
+              weapon_length="110"
+              accuracy="95"
+              thrust_damage="45"
+              thrust_damage_type="Pierce"
+              item_usage="bow"
+              physics_material="wood_weapon"
+              center_of_mass="0.1,0,-0.15"
+              modifier_group="bow">
+				<WeaponFlags RangedWeapon="true"
+                     HasString="true"
+                     StringHeldByHand="true"
+                     NotUsableWithOneHand="true"
+                     TwoHandIdleOnMount="true"
+                     AutoReload="true"
+                     UnloadWhenSheathed="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+
+	<!-- Rohan Banners -->
+	<Item multiplayer_item="true" id="rohan_eomer_banner"
+				name="{=M3ZTF7rj}Eomer banner"
+				is_merchandise="false"
+				body_name="bo_mace_a"
+				recalculate_body="true"
+				mesh="rohan_eomer_banner"
+				prefab="rohan_eomer_banner"
+				culture="Culture.rohan"
+				weight="0.2"
+				Type="Banner"
+				using_tableau="true"
+				item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner banner_level="3"
+							weapon_class="Banner"
+							effect="IncreasedTroopMovementSpeed"
+							weapon_balance="100"
+							thrust_speed="78"
+							speed_rating="97"
+							missile_speed="0"
+							weapon_length="150"
+							swing_damage="6"
+							swing_damage_type="Blunt"
+							item_usage="banner"
+							physics_material="metal_weapon"
+							position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
+	</Item>
+	<Item multiplayer_item="true" id="rohan_kingdom_banner"
+				name="{=M3ZTF7rj}Rohan banner"
+				is_merchandise="false"
+				body_name="bo_mace_a"
+				recalculate_body="true"
+				mesh="rohan_kingdom_banner"
+				prefab="rohan_kingdom_banner"
+				culture="Culture.rohan"
+				weight="0.2"
+				Type="Banner"
+				using_tableau="true"
+				item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner banner_level="3"
+							weapon_class="Banner"
+							effect="IncreasedTroopMovementSpeed"
+							weapon_balance="100"
+							thrust_speed="78"
+							speed_rating="97"
+							missile_speed="0"
+							weapon_length="150"
+							swing_damage="6"
+							swing_damage_type="Blunt"
+							item_usage="banner"
+							physics_material="metal_weapon"
+							position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
+	</Item>
+	<CraftedItem multiplayer_item="true"
+				 id="rohan_banner"
+				 name="{=ArSpSu5}Rohan banner"
+				 crafting_template="foa_TwoHandedPolearm"
+				 culture="Culture.rohan"
+				 modifier_group="polearm">
+		<Pieces>
+			<Piece id="rohan_banner_1_head"
+					 Type="Blade"
+					 scale_factor="100" />
+			<Piece id="rohan_banner_1_guard"
+					 Type="Guard"
+					 scale_factor="100" />
+			<Piece id="rohan_banner_1_handle"
+					 Type="Handle"
+					 scale_factor="150" />
+			<Piece id="rohan_banner_1_bottom"
+					 Type="Pommel"
+					 scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	
+</Items>

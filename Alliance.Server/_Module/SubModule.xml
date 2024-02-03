@@ -24,22 +24,67 @@
   </SubModules>
   <Xmls>
     <XmlNode>
-      <XmlName id="GameText" path="Languages/module_strings" />
+      <XmlName id="GameText" path="Languages" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters" />
+      <XmlName id="ExtendedCharacters" path="ExtendedCharacters" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPCharacters" path="Characters/mpcharacters_native" />
+      <XmlName id="BasicCultures" path="Cultures/LOTR" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPClassDivisions" path="Characters/mpclassdivisions" />
+      <XmlName id="MPCharacters" path="MPCharacters/LOTR" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="CraftingPieces" path="crafting_pieces_native" />
+      <XmlName id="MPCharacters" path="MPCharacters/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="Items" path="Items" />
+      <XmlName id="MPCharacters" path="MPCharacters/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPClassDivisions" path="MPClassDivisions/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPClassDivisions" path="MPClassDivisions/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPClassDivisions" path="MPClassDivisions/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingPieces" path="CraftingPieces/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingPieces" path="CraftingPieces/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingPieces" path="CraftingPieces/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="WeaponDescriptions" path="WeaponDescriptions/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="WeaponDescriptions" path="WeaponDescriptions/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="WeaponDescriptions" path="WeaponDescriptions/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingTemplates" path="CraftingTemplates/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingTemplates" path="CraftingTemplates/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="CraftingTemplates" path="CraftingTemplates/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="Items/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="Items/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="Items/SOP" />
     </XmlNode>
   </Xmls>
 </Module>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<!-- Scene names -->
+	<string id="str_multiplayer_scene_name.Oasis" text="{=str_alliance_scene_oasis}Oasis by LeDruide" />
+	<string id="str_multiplayer_scene_name.BRE_Mornebreuil" text="{=str_alliance_scene_bre_mornebreuil}[BRE] Mornebreuil" />
+	<string id="str_multiplayer_scene_name.captain_battlefield_032" text="{=str_alliance_scene_battlefield_032}Plains" />
+	<string id="str_multiplayer_scene_name.captain_battlefield_O" text="{=str_alliance_scene_captain_battlefield_O}Valley" />
+	<string id="str_multiplayer_scene_name.captain_battlefield_v" text="{=str_alliance_scene_captain_battlefield_v}Forest" />
+	<string id="str_multiplayer_scene_name.captain_battlefield_008" text="{=str_alliance_scene_captain_battlefield_008}Desert path" />
+	<string id="str_multiplayer_scene_name.comb_pvc_scn_01_a" text="{=str_alliance_scene_comb_pvc_scn_01_a}Desert Ruins by LeProfyteur" />
+	<string id="str_multiplayer_scene_name.scn_lobby_v01" text="{=str_alliance_scene_scn_lobby_v01}Lobby island" />
+	<string id="str_multiplayer_scene_name.Alliance_test" text="{=str_alliance_scene_Alliance_test}Script test" />
+	<string id="str_multiplayer_scene_name.rangefire_distance_test" text="{=str_alliance_scene_rangefire_distance_test}Range fire test" />
+	<string id="str_multiplayer_scene_name.mp_meteoraterra_yurek" text="{=str_alliance_scene_mp_meteoraterra_yurek}Meteoraterra by Yurek" />
+	<string id="str_multiplayer_scene_name.mp_longisland_bullero" text="{=str_alliance_scene_mp_longisland_bullero}Long Island by Bullero" />
+	<string id="str_multiplayer_scene_name.bfhd_helms_deep_act_I" text="{=str_alliance_scene_bfhd_helms_deep_act_I}Helm's Deep - Act 1" />
+	<string id="str_multiplayer_scene_name.bfhd_helms_deep_act_II" text="{=str_alliance_scene_bfhd_helms_deep_act_II}Helm's Deep - Act 2" />
+	<string id="str_multiplayer_scene_name.bfhd_helms_deep_lobby" text="{=str_alliance_scene_bfhd_helms_deep_lobby}Helm's Deep" />
+	<string id="str_multiplayer_scene_name.scn_bilbo2" text="{=str_alliance_scene_scn_bilbo2}???" />
+	<string id="str_multiplayer_scene_name.captain_french_castle" text="{=str_alliance_scene_captain_french_castle}French Castle by Path" />
+	<string id="str_multiplayer_scene_name.FrenchCastlePathEdC" text="{=str_alliance_scene_FrenchCastlePathEdC}The captive Eagle: Napoleon's Rescue" />
+	<string id="str_multiplayer_scene_name.Lobby" text="{=str_alliance_scene_Lobby}Lobby" />
+	<string id="str_multiplayer_scene_name.MontStCombattant" text="{=str_alliance_scene_MontStCombattant}Mont-Saint-Combattant" />
+	<string id="str_multiplayer_scene_name.PvC_Sanctuarium" text="{=str_alliance_scene_PvC_Sanctuarium}Sanctuarium" />
+	<string id="str_multiplayer_scene_name.VlandiaBR" text="{=str_alliance_scene_VlandiaBR}VlandiaBR" />
+	<string id="str_multiplayer_scene_name.commencement" text="{=str_alliance_scene_commencement}Commencement..." />
+</strings>
