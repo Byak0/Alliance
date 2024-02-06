@@ -33,7 +33,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private int _customTroopCount;
         private int _difficulty;
         private TroopVM _selectedTroopVM;
-        private HeroInformationVM _troopInformation;
+        private TroopInformationVM _troopInformation;
         private TroopListVM _troopList;
         private CharacterViewModel _troopPreview;
         private FormationVM _selectedFormation;
@@ -268,7 +268,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         }
 
         [DataSourceProperty]
-        public HeroInformationVM TroopInformation
+        public TroopInformationVM TroopInformation
         {
             get
             {
@@ -309,7 +309,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopPreview = new CharacterViewModel();
             TroopPreview.FillFrom(SpawnTroopsModel.Instance.SelectedTroop);
             TroopList = new TroopListVM(SelectTroop, SelectPerk);
-            TroopInformation = new HeroInformationVM();
+            TroopInformation = new TroopInformationVM();
             TroopCount = SpawnTroopsModel.Instance.TroopCount;
             CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
             Difficulty = SpawnTroopsModel.Instance.DifficultyLevel;
@@ -447,7 +447,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
             if (perks.Count > 0)
             {
-                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, perks);
+                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, SelectedTroopVM.Troop, perks);
             }
         }
 

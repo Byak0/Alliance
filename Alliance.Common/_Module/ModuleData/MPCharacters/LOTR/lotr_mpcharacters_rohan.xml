@@ -850,6 +850,8 @@
 									 id="Item.elf_quiver_1" />
 				<equipment slot="Item2"
 									 id="Item.legolas_dagger" />
+				<equipment slot="Item3"
+									 id="Item.legolas_parry_dagger" />
 				<equipment slot="Body"
 									 id="Item.elf_armor_1" />
 				<equipment slot="Gloves"

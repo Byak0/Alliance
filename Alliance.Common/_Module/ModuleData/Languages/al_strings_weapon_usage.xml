@@ -14,8 +14,8 @@
 	<string id="str_weapon_usage.RohanTwoHandedPolearm" text="{=desc_RohanTwoHandedPolearm}Two Handed"/>
 	<string id="str_weapon_usage.RohanTwoHandedPolearm_Thrown" text="{=desc_RohanTwoHandedPolearm_Thrown}Thrown"/>
 	<string id="str_weapon_usage.RohanTwoHandedPolearm_Couchable" text="{=desc_RohanTwoHandedPolearm_Couchable}Couch Lance"/>
-	<string id="str_weapon_usage.legolas_Dagger" text="{=desc_legolas_Dagger}One Handed"/>
-	<string id="str_weapon_usage.legolas_ThrowingKnife" text="{=desc_legolas_ThrowingKnife}Thrown"/>
+	<string id="str_weapon_usage.legolas_dagger" text="{=desc_legolas_dagger}One Handed"/>
+	<string id="str_weapon_usage.legolas_throwing_knife" text="{=desc_legolas_throwing_knife}Thrown"/>
 	<string id="str_weapon_usage.foa_OneHandedPolearm" text="{=desc_foa_OneHandedPolearm}One Handed"/>
 	<string id="str_weapon_usage.foa_TwoHandedPolearm" text="{=desc_foa_TwoHandedPolearm}Two Handed"/>
 	<string id="str_weapon_usage.foa_TwoHandedPolearm_Couchable" text="{=desc_foa_TwoHandedPolearm_Couchable}Couch Lance"/>
