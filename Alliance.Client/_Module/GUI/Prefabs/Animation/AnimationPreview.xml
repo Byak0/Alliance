@@ -7,7 +7,7 @@
 		<!-- Animation preview -->
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsVisible" >
 			<Children>
-				<CharacterTableauWidget DataSource="{AnimationPreview}" WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" />
+				<CharacterTableauWidget DataSource="{AnimationPreview}" WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" IsPlayingCustomAnimations="@IsPlayingCustomAnimations" ShouldLoopCustomAnimation="@ShouldLoopCustomAnimation" CustomAnimationWaitDuration="@CustomAnimationWaitDuration" CustomAnimation="@CustomAnimation" LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex" RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex" DoNotUseCustomScale="true" />
 			</Children>
 		</Widget>
 	</Window>

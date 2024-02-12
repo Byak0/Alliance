@@ -71,7 +71,7 @@
 	<!-- LIGHT INFANTRY - HERO (ARAGORN) -->
 	<NPCCharacter id="mp_light_infantry_rohan_hero"
                 default_group="Infantry"
-                level="10"
+                level="20"
                 voice="earnest"
                 is_female="false"
                 name="{=al_lotr_rohan_light_h}Aragorn"
@@ -186,7 +186,7 @@
 	<!-- SHOCK INFANTRY - TROOP -->
 	<NPCCharacter id="mp_shock_infantry_rohan_troop"
                 default_group="Infantry"
-                level="25"
+                level="15"
                 name="{=al_lotr_rohan_shock_t}Lancier"
                 occupation="Soldier"
                 culture="Culture.rohan">
@@ -271,7 +271,7 @@
 	<!-- SHOCK INFANTRY - HERO (GIMLI) /!\ TODO ADD DWARF RACE AND ADD MISSING ARMOR MESHES -->
 	<NPCCharacter id="mp_shock_infantry_rohan_hero"
                 default_group="Infantry"
-                level="25"
+                level="20"
                 voice="earnest"
                 is_female="false"
                 name="{=al_lotr_rohan_shock_h}Gimli"
@@ -320,7 +320,7 @@
 	<!-- SHOCK INFANTRY - BANNER BEARER -->
 	<NPCCharacter id="mp_shock_infantry_rohan_banner_bearer"
                 default_group="Infantry"
-                level="25"
+                level="15"
                 name="{=al_lotr_rohan_shock_b}Lancier"
                 occupation="Soldier"
                 culture="Culture.rohan">
@@ -483,7 +483,7 @@
 	<!-- SKIRMISHER - HERO (EOMER) -->
 	<NPCCharacter id="mp_skirmisher_rohan_hero"
 									default_group="Cavalry"
-									level="25"
+									level="20"
 									voice="earnest"
 									is_female="false"
 									name="{=al_lotr_rohan_skirm_h}Eomer"
@@ -745,7 +745,7 @@
 	<!-- HEAVY RANGED - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_troop"
 									default_group="Ranged"
-									level="20"
+									level="15"
 									name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
 									occupation="Soldier"
 									culture="Culture.rohan">
@@ -1004,12 +1004,10 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-                   id="Item.rohan_sword_1" />
 				<equipment slot="Item1"
-                   id="Item.rohan_shield_3" />
+                   id="Item.rohan_sword_1" />
 				<equipment slot="Item2"
-                   id="Item.rohan_banner" />
+                   id="Item.rohan_shield_3" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Head"

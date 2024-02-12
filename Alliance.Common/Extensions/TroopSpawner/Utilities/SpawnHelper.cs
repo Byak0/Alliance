@@ -97,7 +97,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 string slotsUsed = forcedIndex.Count > 1 ? $"slots {forcedIndex[0]}-{forcedIndex[1]}" : $"slot {forcedIndex[0]}";
                 string mountInfo = hasMount ? " (mounted)" : "";
                 string originInfo = position?.origin.ToString() ?? "Unknown";
-                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation}", LogLevel.Debug);
+                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation} | Culture={culture}", LogLevel.Debug);
 
                 agentBuildData2.Index(forcedIndex[0]);
                 if (hasMount) agentBuildData2.MountIndex(forcedIndex[1]);
@@ -158,7 +158,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
                 uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-                Banner banner = new Banner(component.Peer.BannerCode, color3, color4);
+                Banner banner = component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner;
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
                 Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
                 AgentBuildData agentBuildData = new AgentBuildData(character)
@@ -166,9 +166,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     .Team(component.Team)
                     .TroopOrigin(new BasicBattleAgentOrigin(character))
                     .Formation(form)
-                    .ClothingColor1(color)
-                    .ClothingColor2(color2)
-                    .Banner(banner);
+                    .ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
+                    .ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
+                    .Banner(component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner);
                 agentBuildData.MissionPeer(component);
                 bool randomEquipement = true;
                 Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
@@ -196,7 +196,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 if (Config.Instance.AllowCustomBody)
                 {
                     gameMode.AddCosmeticItemsToEquipment(equipment, gameMode.GetUsedCosmeticsFromPeer(component, character));
-                    agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture));
+                    agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture).ClampForMultiplayer());
                     agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
                     agentBuildData.IsFemale(component.Peer.IsFemale);
                 }

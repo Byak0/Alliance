@@ -1092,9 +1092,9 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
 				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v3" />
@@ -1108,9 +1108,9 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
 				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1_v1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_1" />
@@ -1163,9 +1163,9 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_3" />
 				<equipment slot="Item1"
+									 id="Item.uruk_sword_3" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_1" />
@@ -1218,7 +1218,7 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
@@ -1234,7 +1234,7 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />

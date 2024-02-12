@@ -67,22 +67,5 @@ namespace Alliance.Server.Patch.HarmonyPatch
             // Return false to skip original method
             return false;
         }
-
-
-
-        // Original method
-        //private bool HandleClientEventApplyOrderWithFormationAndNumber(NetworkCommunicator networkPeer, GameNetworkMessage baseMessage)
-        //{
-        //    ApplyOrderWithFormationAndNumber message = (ApplyOrderWithFormationAndNumber)baseMessage;
-        //    Team teamOfPeer = this.GetTeamOfPeer(networkPeer);
-        //    OrderController orderController = ((teamOfPeer != null) ? teamOfPeer.GetOrderControllerOf(networkPeer.ControlledAgent) : null);
-        //    Formation formation = ((teamOfPeer != null) ? teamOfPeer.FormationsIncludingEmpty.SingleOrDefault((Formation f) => f.CountOfUnits > 0 && f.Index == message.FormationIndex) : null);
-        //    int number = message.Number;
-        //    if (teamOfPeer != null && orderController != null && formation != null)
-        //    {
-        //        orderController.SetOrderWithFormationAndNumber(message.OrderType, formation, number);
-        //    }
-        //    return true;
-        //}
     }
 }

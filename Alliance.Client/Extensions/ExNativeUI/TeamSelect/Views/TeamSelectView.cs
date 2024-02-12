@@ -16,6 +16,11 @@ using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 {
+    /// <summary>
+    /// Override native team selection screen.
+    /// Generate banner using the culture bannerkey instead of a sprite.
+    /// Customized the visuals.
+    /// </summary>
     [OverrideView(typeof(MultiplayerTeamSelectUIHandler))]
     public class TeamSelectView : MissionView
     {
@@ -117,7 +122,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
             _dataSource = new TeamSelectVM(Mission, new Action<Team>(OnChangeTeamTo), new Action(OnAutoassign), new Action(OnClose), Mission.Teams, strValue);
             _dataSource.RefreshDisabledTeams(_disabledTeams);
             _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
-            _gauntletLayer.LoadMovie("MultiplayerTeamSelection", _dataSource);
+            _gauntletLayer.LoadMovie("AL_MultiplayerTeamSelection", _dataSource);
             _gauntletLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
             MissionScreen.AddLayer(_gauntletLayer);
             MissionScreen.SetCameraLockState(true);

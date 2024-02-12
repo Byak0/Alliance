@@ -180,7 +180,11 @@ namespace Alliance.Client.Extensions.AnimationPlayer.ViewModels
         /// </summary>
         public void PlayAnimationPreview()
         {
-            AnimationPreview.IdleAction = AnimationSequenceSelector.GetCurrentItem()?.AnimationSequence?.Animations[0].Name;
+            // TODO : Check if it causes issues
+            // Using ExecuteStartCustomAnimation instead of IdleAction as it allow to loop more animations.
+            // However it may be less stable
+            //AnimationPreview.IdleAction = AnimationSequenceSelector.GetCurrentItem()?.AnimationSequence?.Animations[0].Name;
+            AnimationPreview.ExecuteStartCustomAnimation(AnimationSequenceSelector.GetCurrentItem()?.AnimationSequence?.Animations[0].Name, true, 0);
         }
 
         /// <summary>

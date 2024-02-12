@@ -51,6 +51,8 @@ namespace Alliance.Common.Patch
             patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
             patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
             patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
+            patchSuccess &= Patch_AddTeam.Patch();
+            patchSuccess &= Patch_GameNetworkMessage.Patch();
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;
