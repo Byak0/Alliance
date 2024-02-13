@@ -117,6 +117,11 @@ namespace Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient
                 {
                     WriteFloatToPacket((float)fieldValue, CompressionHelper.DefaultFloatValueCompressionInfo);
                 }
+                else if (fieldInfo.FieldType == typeof(string))
+                {
+                    int index = DefaultConfig.GetAvailableValuesForOption(fieldInfo).FindIndex(item => item == (string)fieldValue);
+                    WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
+                }
             }
         }
 
@@ -181,6 +186,14 @@ namespace Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient
                 else if (fieldInfo.FieldType == typeof(float))
                 {
                     fieldInfo.SetValue(ModOptions, ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid));
+                }
+                else if (fieldInfo.FieldType == typeof(string))
+                {
+                    int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+                    if (index > -1)
+                    {
+                        fieldInfo.SetValue(ModOptions, DefaultConfig.GetAvailableValuesForOption(fieldInfo).ElementAtOrDefault(index));
+                    }
                 }
             }
         }

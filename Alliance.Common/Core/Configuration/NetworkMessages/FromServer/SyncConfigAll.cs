@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Configuration.Utilities;
+using System.Linq;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
@@ -40,6 +41,11 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
                 {
                     WriteFloatToPacket((float)fieldValue, CompressionHelper.DefaultFloatValueCompressionInfo);
                 }
+                else if (fieldInfo.FieldType == typeof(string))
+                {
+                    int index = DefaultConfig.GetAvailableValuesForOption(fieldInfo).FindIndex(item => item == (string)fieldValue);
+                    WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
+                }
             }
         }
 
@@ -63,6 +69,14 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
                 else if (fieldInfo.FieldType == typeof(float))
                 {
                     fieldInfo.SetValue(Config, ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid));
+                }
+                else if (fieldInfo.FieldType == typeof(string))
+                {
+                    int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+                    if (index > -1)
+                    {
+                        fieldInfo.SetValue(Config, DefaultConfig.GetAvailableValuesForOption(fieldInfo).ElementAtOrDefault(index));
+                    }
                 }
             }
 

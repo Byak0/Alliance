@@ -342,10 +342,32 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
                             false, true)
                         );
                         break;
-                    case ConfigValueType.String:
+                    case ConfigValueType.Enum:
+                        List<SelectionItem> selectionItems = GetSelectionItemsFromValues(DefaultConfig.GetAvailableValuesForOption(fieldInfo));
+                        ModOptions.Add(
+                        new SelectionOptionVM(
+                            new TextObject(configPropertyAttribute.Name),
+                            new TextObject(configPropertyAttribute.Description),
+                            new SelectionOptionData(
+                                () => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(modOptions)),
+                                newValue => fieldInfo.SetValue(modOptions, selectionItems.ElementAtOrDefault(newValue).Data),
+                                2,
+                                selectionItems),
+                            false)
+                        );
                         break;
                 }
             }
+        }
+
+        private List<SelectionItem> GetSelectionItemsFromValues(List<string> values)
+        {
+            List<SelectionItem> optionValues = new List<SelectionItem>();
+            foreach (string value in values)
+            {
+                optionValues.Add(new SelectionItem(false, value));
+            }
+            return optionValues;
         }
 
         private List<SelectionItem> GetFactionChoices()

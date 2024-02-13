@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Alliance.Common.Core.Configuration.Models
 {
@@ -9,6 +10,7 @@ namespace Alliance.Common.Core.Configuration.Models
         public string Description { get; set; }
         public float MinValue { get; set; }
         public float MaxValue { get; set; }
+        public Func<List<string>> GetAvailableValues { get; set; }
         public readonly ConfigValueType ValueType;
 
         public ConfigPropertyAttribute(string name, string description, ConfigValueType valueType, float minValue = 0, float maxValue = 10)
@@ -19,6 +21,14 @@ namespace Alliance.Common.Core.Configuration.Models
             MaxValue = maxValue;
             ValueType = valueType;
         }
+
+        public ConfigPropertyAttribute(string name, string description, Func<List<string>> getAvailableValues)
+        {
+            Name = name;
+            Description = description;
+            ValueType = ConfigValueType.Enum;
+            GetAvailableValues = getAvailableValues;
+        }
     }
 
     public enum ConfigValueType
@@ -26,6 +36,6 @@ namespace Alliance.Common.Core.Configuration.Models
         Bool,
         Integer,
         Float,
-        String
+        Enum
     }
 }
