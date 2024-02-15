@@ -133,6 +133,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
         private void OnChangeTeamTo(Team targetTeam)
         {
             _multiplayerTeamSelectComponent.ChangeTeam(targetTeam);
+            SpawnTroopsModel.Instance.SelectedTeam = targetTeam;
+            // Update culture selected in SpawnTroopModel
+            BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            SpawnTroopsModel.Instance.SelectedFaction = targetTeam?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
         }
 
         private void OnMyTeamChanged()
@@ -140,6 +145,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
             if (GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side != null)
             {
                 MissionPeer player = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+                SpawnTroopsModel.Instance.SelectedTeam = player.Team;
                 // Update culture selected in SpawnTroopModel
                 BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
                 BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));

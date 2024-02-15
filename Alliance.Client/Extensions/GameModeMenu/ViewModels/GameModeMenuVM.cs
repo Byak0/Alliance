@@ -8,6 +8,7 @@ using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
+using Alliance.Common.GameModes.CvC;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
@@ -44,8 +45,9 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             GameModes = new MBBindingList<GameModeCardVM>()
             {
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new LobbyGameModeSettings()),
-                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BRGameModeSettings()),
+                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new CvCGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new PvCGameModeSettings()),
+                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BRGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new CaptainGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BattleGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new SiegeGameModeSettings()),
@@ -270,6 +272,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             // Refresh native options
             NativeOptions = new MBBindingList<OptionVM>();
 
+            _selectedGameMode.GameModeSettings.SetDefaultNativeOptions();
             List<OptionType> optionTypes = _selectedGameMode.GameModeSettings.GetAvailableNativeOptions();
             foreach (OptionType optionType in optionTypes)
             {
@@ -298,6 +301,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
         {
             ModOptions = new MBBindingList<OptionVM>();
 
+            _selectedGameMode.GameModeSettings.SetDefaultModOptions();
             Config modOptions = _selectedGameMode.GameModeSettings.ModOptions;
             List<string> availableOptions = _selectedGameMode.GameModeSettings.GetAvailableModOptions();
 

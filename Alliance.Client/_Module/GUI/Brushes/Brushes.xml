@@ -195,6 +195,36 @@
 		</Styles>
 	</Brush>
 
+	<Brush Name="Alliance.Button">
+	    <Layers>
+	      <BrushLayer Name="Default" Sprite="switcher_9" />
+	      <BrushLayer Name="Selected" AlphaFactor="0" Sprite="StdAssets\arrow_pointing_left" HorizontalFlip="true" ExtendLeft="30" ExtendRight="-220" ExtendTop="-20" ExtendBottom="-20" />
+	    </Layers>
+	    <Styles>
+	      <Style Name="Default">
+	        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+	      </Style>
+	      <Style Name="Hovered">
+	        <BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
+	      </Style>
+	      <Style Name="Pressed">
+	        <BrushLayer Name="Default" ColorFactor="1" />
+	      </Style>
+	      <Style Name="Selected">
+	        <BrushLayer Name="Default" ColorFactor="1.6" AlphaFactor="1" />
+	      	<BrushLayer Name="Selected" AlphaFactor="1" />
+	      </Style>
+	      <Style Name="Disabled">
+	        <BrushLayer Name="Default" ColorFactor="0.7" AlphaFactor="0.5" />
+	      </Style>
+	    </Styles>
+	    <SoundProperties>
+	      <EventSounds>
+	        <EventSound EventName="Click" Audio="choice" />
+	      </EventSounds>
+	    </SoundProperties>
+	  </Brush>
+
 	<Brush Name="WideButton.Flat">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="StdAssets\button_wide_flat" />

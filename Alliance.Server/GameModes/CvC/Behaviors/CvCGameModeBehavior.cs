@@ -1,12 +1,9 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModels;
 using Alliance.Server.Core;
 using NetworkMessages.FromServer;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -15,11 +12,11 @@ using TaleWorlds.MountAndBlade.Objects;
 using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Server.GameModes.PvC.Behaviors
+namespace Alliance.Server.GameModes.CvC.Behaviors
 {
-    public class PvCGameModeBehavior : MissionMultiplayerFlagDomination, IAnalyticsFlagInfo, IMissionBehavior
+    public class CvCGameModeBehavior : MissionMultiplayerFlagDomination, IAnalyticsFlagInfo, IMissionBehavior
     {
-        public PvCGameModeBehavior(MultiplayerGameType gameType) : base(gameType)
+        public CvCGameModeBehavior(MultiplayerGameType gameType) : base(gameType)
         {
         }
 
@@ -87,23 +84,14 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         public override void OnMissionTick(float dt)
         {
             base.OnMissionTick(dt);
-
-            //if (RoundController.CurrentRoundState == MultiplayerRoundState.InProgress)
-            //{
-            //    if (!_goldGivenThisRound && TimerComponent.GetRemainingTime(false) < MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue() - 5f)
-            //    {
-            //        SetStartingGold();
-            //        _goldGivenThisRound = true;
-            //    }
-            //}
         }
 
         public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
         {
-            if (oldTeam != null && oldTeam != newTeam && UseGold() && (WarmupComponent == null || !WarmupComponent.IsInWarmup))
-            {
-                ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
-            }
+            //if (oldTeam != null && oldTeam != newTeam && UseGold() && (WarmupComponent == null || !WarmupComponent.IsInWarmup))
+            //{
+            //    ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+            //}
         }
 
         public override void OnAgentBuild(Agent agent, Banner banner)
@@ -113,117 +101,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
         public override void OnAgentRemoved(Agent victim, Agent killer, AgentState agentState, KillingBlow blow)
         {
-            float goldMultiplier = 1f;
-
-            // Disable gold on kill for now, we don't have a use for it.
-            return;
-
-            if (UseGold() && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
-            {
-                if (!victim.IsHuman || !RoundController.IsRoundInProgress || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
-                {
-                    return;
-                }
-
-                // Adjust gold multiplier based on victim formation state
-                goldMultiplier = GetGoldMultiplier(victim, goldMultiplier);
-
-                bool teamKill = killer.Team != null && victim.Team != null && killer.Team.Side == victim.Team.Side;
-
-                if (victim.MissionPeer?.Team != null && !teamKill)
-                {
-                    // Gold gain for ally death
-                    IEnumerable<(MissionPeer, int)> enumerable = MPPerkObject.GetPerkHandler(victim.MissionPeer)?.GetTeamGoldRewardsOnDeath();
-                    if (enumerable != null)
-                    {
-                        foreach (var (missionPeer, num) in enumerable)
-                        {
-                            MissionRepresentativeBase MissionRepresentativeBase3;
-                            if (num > 0 && (MissionRepresentativeBase3 = missionPeer?.Representative) != null)
-                            {
-                                int goldGainsFromAllyDeathReward = Config.Instance.GoldPerAllyDead;
-                                if (goldGainsFromAllyDeathReward > 0)
-                                {
-                                    AddGoldForPeer(missionPeer, goldGainsFromAllyDeathReward);
-                                }
-                            }
-                        }
-                    }
-                }
-                MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter2 = MultiplayerClassDivisions.GetMPHeroClassForCharacter(victim.Character);
-                if (killer?.MissionPeer != null && killer.Team != victim.Team)
-                {
-                    // Gold gain for a kill
-                    MissionRepresentativeBase player = killer.MissionPeer.Representative;
-                    int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-                    AddGoldForPeer(killer.MissionPeer, goldGainFromKillDataAndUpdateFlags);
-
-                    // Send report to commander if bonus gold obtained
-                    if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.Peer.IsCommander())
-                    {
-                        ReportBonusGoldFromKill(victim, player, goldGainFromKillDataAndUpdateFlags);
-                    }
-                }
-                else if (killer.Team != victim.Team)
-                {
-                    // Gold gain for the commander when a bot kill an enemy
-                    MissionRepresentativeBase commander = killer.Formation?.PlayerOwner?.MissionPeer?.Representative;
-                    if (commander != null)
-                    {
-                        int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-                        AddGoldForPeer(commander.MissionPeer, goldGainFromKillDataAndUpdateFlags);
-
-                        // Send report to commander if bonus gold obtained
-                        if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1)
-                        {
-                            ReportBonusGoldFromKill(victim, commander, goldGainFromKillDataAndUpdateFlags);
-                        }
-                    }
-                }
-
-                List<Agent.Hitter> list = victim.HitterList.Where((hitter) => hitter.HitterPeer != killer.MissionPeer).ToList();
-                if (list.Count > 0)
-                {
-                    Agent.Hitter hitter2 = TaleWorlds.Core.Extensions.MaxBy(list, (hitter) => hitter.Damage);
-                    if (hitter2.Damage >= 35f)
-                    {
-                        // Gold gain for an assist if damage >= 35                        
-                        int goldGainFromKillDataAndUpdateFlags2 = (int)(goldMultiplier * Config.Instance.GoldPerAssist);
-                        AddGoldForPeer(hitter2.HitterPeer, goldGainFromKillDataAndUpdateFlags2);
-                    }
-                }
-            }
-        }
-
-        private static float GetGoldMultiplier(Agent victim, float goldMultiplier)
-        {
-            if (victim?.Team != null)
-            {
-                if (FormationCalculateModel.IsInFormation(victim))
-                {
-                    goldMultiplier = 1f;
-                }
-                else if (FormationCalculateModel.IsInSkirmish(victim))
-                {
-                    goldMultiplier = 4f;
-                }
-                else
-                {
-                    goldMultiplier = 10f;
-                }
-            }
-
-            return goldMultiplier;
-        }
-
-        private void ReportBonusGoldFromKill(Agent victim, MissionRepresentativeBase commander, int goldGainFromKillDataAndUpdateFlags)
-        {
-            string victimName = victim.MissionPeer?.DisplayedName != null ? victim.MissionPeer.DisplayedName : victim.Name;
-            string report = "You killed " + victimName + " for " + goldGainFromKillDataAndUpdateFlags + " golds ("
-                + (goldGainFromKillDataAndUpdateFlags - Config.Instance.GoldPerKill) + " bonus) !";
-            GameNetwork.BeginModuleEventAsServer(commander.MissionPeer.GetNetworkPeer());
-            GameNetwork.WriteMessage(new ServerMessage(report, false));
-            GameNetwork.EndModuleEventAsServer();
         }
 
         private void OnPreparationStart()
@@ -243,24 +120,23 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
         private void SetStartingGold()
         {
-            int goldToGive = GetTeamArmyValue((BattleSideEnum)Config.Instance.CommanderSide == BattleSideEnum.Attacker ? BattleSideEnum.Defender : BattleSideEnum.Attacker);
-            List<MissionPeer> commanders = new List<MissionPeer>();
+            int goldToGive = Config.Instance.StartingGold;
+            List<MissionPeer> commandersAttack = new List<MissionPeer>();
+            List<MissionPeer> commandersDefend = new List<MissionPeer>();
             foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
             {
                 MissionPeer peer = networkCommunicator?.GetComponent<MissionPeer>();
-                if (peer != null)
+                if (peer?.Team == Mission.Current.AttackerTeam)
                 {
-                    if (peer.Team != null && peer.Team.Side == (BattleSideEnum)Config.Instance.CommanderSide)
-                    {
-                        commanders.Add(peer);
-                    }
-                    else
-                    {
-                        ChangeCurrentGoldForPeer(peer, Config.Instance.StartingGold);
-                    }
+                    commandersAttack.Add(peer);
+                }
+                else if (peer?.Team == Mission.Current.DefenderTeam)
+                {
+                    commandersDefend.Add(peer);
                 }
             }
-            SplitGoldBetweenPlayers(Config.Instance.StartingGold + goldToGive, commanders);
+            SplitGoldBetweenPlayers(goldToGive, commandersAttack);
+            SplitGoldBetweenPlayers(goldToGive, commandersDefend);
         }
 
         private void SplitGoldBetweenPlayers(int goldToGive, List<MissionPeer> players)

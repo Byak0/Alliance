@@ -1,19 +1,21 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.GameModeMenu.Models;
 using Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
+using Alliance.Common.GameModes.CvC;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Utilities;
 using Alliance.Server.Core;
 using Alliance.Server.GameModes.Story;
 using Alliance.Server.GameModes.Story.Scenarios;
-using NetworkMessages.FromServer;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -34,11 +36,21 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 		public bool HandleGameModePollRequest(NetworkCommunicator peer, GameModePollRequestMessage message)
         {
             // TODO : make use of PollRequest content to start a poll
+            bool isInLobby = MultiplayerOptions.OptionType.GameType.GetStrValue() == "Lobby";
+            message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
 
-            if (message.SkipPoll && peer.IsAdmin())
+            // Check whether the request comes from an admin, or is an authorized game mode launch from Lobby
+            if (message.SkipPoll && peer.IsAdmin() || isInLobby && GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameType))
             {
-                message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
                 message.GetOption(MultiplayerOptions.OptionType.Map).GetValue(out string map);
+
+                // Check if the scene exist on server side
+                if (!SceneList.Scenes.Contains(map))
+                {
+                    SendMessageToPeer($"The scene \"{map}\" isn't available on this server", peer);
+                    return false;
+                }
+
                 message.GetOption(MultiplayerOptions.OptionType.CultureTeam1).GetValue(out string cultureTeam1);
                 message.GetOption(MultiplayerOptions.OptionType.CultureTeam2).GetValue(out string cultureTeam2);
 
@@ -48,10 +60,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
                 string log = $"Starting {gameType} on {map} ({cultureTeam1} VS {cultureTeam2})...";
 
                 Log(log, LogLevel.Information);
-
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new ServerMessage(log));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+                SendMessageToAll(log);
 
                 return true;
             }
@@ -71,9 +80,12 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
                 case "SiegeX": gameModeSettings = new SiegeGameModeSettings(); break;
                 case "Scenario": gameModeSettings = new ScenarioGameModeSettings(); break;
                 case "PvC": gameModeSettings = new PvCGameModeSettings(); break;
+                case "CvC": gameModeSettings = new CvCGameModeSettings(); break;
                 case "BattleRoyale": gameModeSettings = new BRGameModeSettings(); break;
                 case "Lobby": gameModeSettings = new LobbyGameModeSettings(); break;
-                default: return null;
+                default:
+                    Log("Error in PollHandler.CreateSettingsFromMessage : the requested game mode is not handled by the method!", LogLevel.Error);
+                    return null;
             }
 
             gameModeSettings.NativeOptions = message.NativeOptions;

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<!-- Game modes -->
+	<string id="str_multiplayer_official_game_type_name.CvC" text="{=str_alliance_game_type_name_cvc}Commanders VS Commanders" />
+	<string id="str_multiplayer_official_game_type_explainer.CvC" text="{=str_alliance_game_type_explainer_cvc}Recruit troops and lead them against the opposing commanders !" />
+	<string id="str_multiplayer_game_type.CvC" text="{=str_alliance_game_type_cvc}CvC" />
 	<string id="str_multiplayer_official_game_type_name.PvC" text="{=str_alliance_game_type_name_pvc}Players VS Commanders" />
 	<string id="str_multiplayer_official_game_type_explainer.PvC" text="{=str_alliance_game_type_explainer_pvc}Players : Choose your class and fight alongside your comrades !              Commanders : Recruit troops and lead them against the players !" />
 	<string id="str_multiplayer_game_type.PvC" text="{=str_alliance_game_type_pvc}PvC" />

@@ -127,7 +127,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
                     SendNotificationToAll(loseMessage);
                     Log(loseMessage);
                 }
-                GameModeStarter.Instance.StartLobby("Lobby", "empire", "vlandia");
+                GameModeStarter.Instance.StartLobby("Lobby", MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
                 _gameEnded = true;
             }
         }

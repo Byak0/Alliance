@@ -310,14 +310,15 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopPreview.FillFrom(SpawnTroopsModel.Instance.SelectedTroop);
             TroopList = new TroopListVM(SelectTroop, SelectPerk);
             TroopInformation = new TroopInformationVM();
-            TroopCount = SpawnTroopsModel.Instance.TroopCount;
+            TroopCount = 1;
             CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
             Difficulty = SpawnTroopsModel.Instance.DifficultyLevel;
+            UseTroopCost = Config.Instance.UseTroopCost;
 
             Formations = new MBBindingList<FormationVM>();
             for (int i = 0; i < 8; i++)
             {
-                Formation formation = Mission.Current.PlayerTeam.GetFormation((FormationClass)i);
+                Formation formation = SpawnTroopsModel.Instance.SelectedTeam?.GetFormation((FormationClass)i);
                 FormationVM formationVM = new FormationVM(formation, SelectFormation);
                 if (i == SpawnTroopsModel.Instance.FormationSelected)
                 {
@@ -330,6 +331,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopSelected += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopCountUpdated += RefreshGold;
+            SpawnTroopsModel.Instance.OnFactionSelected += RefreshFormations;
             _myRepresentative.OnGoldUpdated += RefreshGold;
 
             TroopGroupVM troopGroupVM = TroopList.TroopGroups.FirstOrDefault();
@@ -351,13 +353,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private void RefreshGold()
         {
             // Check if we exceeded troop limit
-            UseTroopLimit = Config.Instance.UseTroopLimit;
-            bool troopOverLimit = UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
+            bool troopOverLimit = Config.Instance.UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
 
             // Check if we can afford the troops 
-            UseTroopCost = Config.Instance.UseTroopCost;
             bool troopTooCostly = false;
-            if (UseTroopCost)
+            if (Config.Instance.UseTroopCost)
             {
                 int totalGold = _myRepresentative?.Gold ?? 0;
                 int troopCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty);
@@ -392,6 +392,27 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                         Log("Updating commander visual for formation " + (int)formationClass, LogLevel.Debug);
                     }
                 }
+            }
+        }
+
+        private void RefreshFormations()
+        {
+            foreach (FormationVM formationVM in Formations)
+            {
+                formationVM.Formation.OnUnitAdded -= RefreshCommanderVisual;
+            }
+            Formations = new MBBindingList<FormationVM>();
+            for (int i = 0; i < 8; i++)
+            {
+                Formation formation = SpawnTroopsModel.Instance.SelectedTeam.GetFormation((FormationClass)i);
+                FormationVM formationVM = new FormationVM(formation, SelectFormation);
+                if (i == SpawnTroopsModel.Instance.FormationSelected)
+                {
+                    _selectedFormation = formationVM;
+                    _selectedFormation.Selected = true;
+                }
+                Formations.Add(formationVM);
+                formationVM.Formation.OnUnitAdded += RefreshCommanderVisual;
             }
         }
 

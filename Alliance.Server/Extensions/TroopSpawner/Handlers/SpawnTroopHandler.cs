@@ -81,7 +81,6 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
         {
             // Player info
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
-            NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
             // Troop info
             BasicCharacterObject troopToSpawn = model.CharacterToSpawn;
             ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
@@ -92,9 +91,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             string refuseReason = "";
             if (!CanPlayerSpawn(peer, extendedTroopToSpawn, goldRemaining, model, ref refuseReason))
             {
-                GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage(refuseReason, false));
-                GameNetwork.EndModuleEventAsServer();
+                SendMessageToPeer(refuseReason, peer);
                 return false;
             }
 
@@ -107,7 +104,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             {
                 if (!model.SpawnAtExactPosition) spawnPos = SpawnFrame.GetClosestSpawnFrame(missionPeer.Team, troopToSpawn.HasMount(), false, spawnPos);
 
-                SpawnHelper.SpawnPlayer(networkPeer, perkHandler, troopToSpawn, spawnPos, model.Formation);
+                SpawnHelper.SpawnPlayer(peer, perkHandler, troopToSpawn, spawnPos, model.Formation);
 
                 reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + SpawnHelper.GetTotalTroopCost(troopToSpawn, 1) + " golds.\n" : ".\n");
                 nbTroopToSpawn--;
@@ -172,7 +169,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 else if (GameModeClient != null)
                 {
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new BotsControlledChange(networkPeer, botsUnderControlAlive, botsUnderControlTotal));
+                    GameNetwork.WriteMessage(new BotsControlledChange(peer, botsUnderControlAlive, botsUnderControlTotal));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
                     GameModeClient.OnBotsControlledChanged(missionPeer, botsUnderControlAlive, botsUnderControlTotal);
@@ -195,9 +192,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
                 // Send report to player who made the spawn request
-                GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage(reportToPlayer, false));
-                GameNetwork.EndModuleEventAsServer();
+                SendMessageToPeer(reportToPlayer, peer);
             }
 
             return true;

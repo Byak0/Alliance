@@ -2,30 +2,22 @@
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
-using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Core.Configuration.Models
 {
     [Serializable]
     public class DefaultConfig
     {
+        /// <summary>
+        /// List available values for the enum options
+        /// </summary>
         public static List<string> GetAvailableValuesForOption(FieldInfo option)
         {
             List<string> values = new List<string>();
             switch (option.Name)
             {
-                case nameof(PvCMod):
-                    values = new List<string>() { "PvC", "CvC" };
-                    break;
-                case nameof(TestPlayer):
-                    values = new List<string>() { };
-                    foreach (MissionPeer item in VirtualPlayer.Peers<MissionPeer>())
-                    {
-                        if (item.GetNetworkPeer().GetComponent<MissionPeer>() != null)
-                        {
-                            values.Add(item.Name);
-                        }
-                    }
+                case nameof(TestEnum):
+                    values = new List<string>() { "Test", "Test1" };
                     break;
                 default:
                     break;
@@ -40,16 +32,22 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Toggle bot talks", "Bots will repeat what players say. For when you got no friend.", ConfigValueType.Bool)]
         public bool NoFriend = false;
 
-        [ConfigProperty("PvC mode", "PvC : Players vs Commanders. CvC : Commanders vs Commanders.", ConfigValueType.Enum)]
-        public string PvCMod = "PvC";
-
-        [ConfigProperty("Test player", "Test", ConfigValueType.Enum)]
-        public string TestPlayer = "[COMB] Byako";
+        [ConfigProperty("Test enum", "Test enum", ConfigValueType.Enum)]
+        public string TestEnum = "Test";
 
         [ConfigProperty("Toggle SAE", "Activate or not Scatter Around Expanded mod.", ConfigValueType.Bool)]
         public bool ActivateSAE = false;
         [ConfigProperty("SAE range", "Indicate the max distance where a troop need to be in order to go to one marker.", ConfigValueType.Integer, 0, 1000)]
         public int SAERange = 30;
+        [ConfigProperty("Toggle formation", "Activate or not the formation system (debuff isolated players).", ConfigValueType.Bool)]
+        public bool EnableFormation = true;
+
+        [ConfigProperty("Use gold to recruit troops", "Use gold system to recruit troops.", ConfigValueType.Bool)]
+        public bool UseTroopCost = false;
+        [ConfigProperty("Gold multiplier", "Gold multiplier when giving gold to commander (ennemy army value X multiplier).", ConfigValueType.Float, 0f, 5f)]
+        public float GoldMultiplier = 1f;
+        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 20000)]
+        public int StartingGold = 20000;
 
         [ConfigProperty("Zone life time", "Number of seconds the zone takes to reach its minimum size.", ConfigValueType.Integer, 0, 3600)]
         public int BRZoneLifeTime = 300;
@@ -82,12 +80,6 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Morale multiplier for last flag", "More gain/loss is multiplied by this amount when last flag is controlled.", ConfigValueType.Float, 0, 10f)]
         public float MoraleMultiplierForLastFlag = 1f;
 
-        [ConfigProperty("Use gold to recruit troops", "Use gold system to recruit troops.", ConfigValueType.Bool)]
-        public bool UseTroopCost = false;
-        [ConfigProperty("Gold multiplier", "Gold multiplier when giving gold to commander (ennemy army value X multiplier).", ConfigValueType.Float, 0f, 5f)]
-        public float GoldMultiplier = 1f;
-        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 20000)]
-        public int StartingGold = 20000;
         [ConfigProperty("Minimum troop cost", "Minimum cost for troops. Unit cost will be automatically calculated between min and max cost.", ConfigValueType.Integer, 0, 200)]
         public int MinTroopCost = 10;
         [ConfigProperty("Maximum troop cost", "Maximum cost for troops. Unit cost will be automatically calculated between min and max cost.", ConfigValueType.Integer, 0, 200)]

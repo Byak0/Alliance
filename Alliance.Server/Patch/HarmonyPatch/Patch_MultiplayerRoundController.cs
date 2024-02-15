@@ -2,7 +2,9 @@
 using Alliance.Server.GameModes.Story.Behaviors;
 using HarmonyLib;
 using System;
+using System.Linq;
 using System.Reflection;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -21,10 +23,15 @@ namespace Alliance.Server.Patch.HarmonyPatch
                     return false;
                 _patched = true;
                 Harmony.Patch(
-                    typeof(MultiplayerRoundController).GetMethod("BeginNewRound",
+                    typeof(MultiplayerRoundController).GetMethod("CheckForNewRound",
                         BindingFlags.Instance | BindingFlags.NonPublic),
                     prefix: new HarmonyMethod(typeof(Patch_MultiplayerRoundController).GetMethod(
-                        nameof(Prefix_BeginNewRound), BindingFlags.Static | BindingFlags.Public)));
+                        nameof(Prefix_CheckForNewRound), BindingFlags.Static | BindingFlags.Public)));
+                //Harmony.Patch(
+                //    typeof(MultiplayerRoundController).GetMethod("BeginNewRound",
+                //        BindingFlags.Instance | BindingFlags.NonPublic),
+                //    prefix: new HarmonyMethod(typeof(Patch_MultiplayerRoundController).GetMethod(
+                //        nameof(Prefix_BeginNewRound), BindingFlags.Static | BindingFlags.Public)));
             }
             catch (Exception e)
             {
@@ -34,6 +41,52 @@ namespace Alliance.Server.Patch.HarmonyPatch
             }
 
             return true;
+        }
+
+        private static DateTime lastCheck = DateTime.MinValue;
+
+        // Wait for at least one player or bot in each team before starting the game
+        public static bool Prefix_CheckForNewRound(MultiplayerRoundController __instance, MissionMultiplayerGameModeBase ____gameModeServer)
+        {
+            // Only do the check once every second to not spam messages.
+            if (DateTime.Now <= lastCheck.AddSeconds(1))
+            {
+                return false;
+            }
+            lastCheck = DateTime.Now;
+
+
+            if (__instance.CurrentRoundState == MultiplayerRoundState.WaitingForPlayers || ____gameModeServer.TimerComponent.CheckIfTimerPassed())
+            {
+                int[] array = new int[2];
+                foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+                {
+                    MissionPeer component = networkPeer.GetComponent<MissionPeer>();
+                    if (networkPeer.IsSynchronized && component?.Team != null && (component.Team.Side == BattleSideEnum.Attacker || component.Team.Side == BattleSideEnum.Defender))
+                    {
+                        array[(int)component.Team.Side]++;
+                    }
+                }
+
+                if (array.Sum() < MultiplayerOptions.OptionType.MinNumberOfPlayersForMatchStart.GetIntValue() && __instance.RoundCount == 0)
+                {
+                    typeof(MultiplayerRoundController).GetProperty("IsMatchEnding")
+                        .SetValue(__instance, true);
+                    return false;
+                }
+
+                // Check for at least one player or bot in each team
+                array[(int)BattleSideEnum.Attacker] += MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue();
+                array[(int)BattleSideEnum.Defender] += MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+                if (array[(int)BattleSideEnum.Defender] >= 1 && array[(int)BattleSideEnum.Attacker] >= 1)
+                {
+                    return true;
+                }
+
+                SendMessageToAll($"Waiting for players to join... ({array[(int)BattleSideEnum.Defender]} defenders VS {array[(int)BattleSideEnum.Attacker]} attackers)");
+            }
+
+            return false;
         }
 
         // Prevent BeginNewRound from calling TeamSelectComponent and causing a NullPointerException (we removed it duh)

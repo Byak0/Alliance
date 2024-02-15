@@ -19,11 +19,29 @@
 								<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="3" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="34" Text="Game Mode" />
 							</Children>
 						</BrushWidget>
-						<ListPanel DataSource="{GameModes}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="300" SuggestedHeight="745" HorizontalAlignment="Left" VerticalAlignment="Center" MarginTop="55" StackLayout.LayoutMethod="VerticalBottomToTop" >
-							<ItemTemplate>
-								<GameModeCard/>
-							</ItemTemplate>
-						</ListPanel>
+						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="300" SuggestedHeight="820" HorizontalAlignment="Left" VerticalAlignment="Center" MarginTop="80">
+							<Children>
+								<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\GameModes" VerticalScrollbar="..\VerticalScrollbar" >
+									<Children>
+										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+											<Children>
+												<ListPanel Id="GameModes" DataSource="{GameModes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+													<ItemTemplate>
+														<GameModeCard/>
+													</ItemTemplate>
+												</ListPanel>
+											</Children>
+										</Widget>
+									</Children>
+								</ScrollablePanel>
+								<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+										<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+									</Children>
+								</ScrollbarWidget>
+							</Children>
+						</BrushWidget>
 
 						<!-- List of available maps (depending on GameMode) -->
 						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="900" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="300" >
@@ -147,12 +165,12 @@
 						<!-- Bottom buttons -->
 						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="800" SuggestedHeight="80" HorizontalAlignment="Right" VerticalAlignment="Bottom" Brush="Alliance.FlippedTopHeader">
 							<Children>
-								<ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="500" SuggestedHeight="80" HorizontalAlignment="Right" VerticalAlignment="Center" MarginBottom="-5" StackLayout.LayoutMethod="HorizontalCentered">
+								<ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="500" SuggestedHeight="80" HorizontalAlignment="Right" VerticalAlignment="Center" MarginBottom="-5" >
 									<Children>
 										<!-- Button to submit selection to vote -->
-										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="WideButton.Flat" Command.Click="RequestVoteForGameMode" IsDisabled="true" >
+										<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="WideButton.Flat" Command.Click="RequestGameModeAsAdmin" >
 											<Children>
-												<TextWidget WidthSizePolicy="StretchToParent" SuggestedWidth="120" HeightSizePolicy="StretchToParent" SuggestedHeight="50" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" Text="Propose" />
+												<TextWidget WidthSizePolicy="StretchToParent" SuggestedWidth="120" HeightSizePolicy="StretchToParent" SuggestedHeight="50" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" Text="Start" />
 											</Children>
 										</ButtonWidget>
 

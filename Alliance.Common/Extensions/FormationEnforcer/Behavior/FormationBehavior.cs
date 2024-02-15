@@ -53,7 +53,7 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Behavior
                 return;
             }
 
-            if (player.ControlledAgent.Team.ActiveAgents.Count <= Config.Instance.MinPlayerForm)
+            if (!Config.Instance.EnableFormation || player.ControlledAgent.Team.ActiveAgents.Count <= Config.Instance.MinPlayerForm)
             {
                 playerRep.State = FormationState.Formation;
                 return;

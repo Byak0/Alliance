@@ -478,7 +478,23 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 
             _friends = new List<MPPlayerVM>();
             FriendAvatars = new MBBindingList<MPPlayerVM>();
-            RefreshValues();
+
+            if (_culture == null)
+            {
+                DisplayedPrimary = new TextObject("{=pSheKLB4}Spectator").ToString();
+            }
+            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
+            {
+                DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
+            }
+            else if ((int)Team.Side == Config.Instance.CommanderSide)
+            {
+                DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
+            }
+            else
+            {
+                DisplayedPrimary = new TextObject("{=al_players}Players").ToString();
+            }
         }
 
         private void FillCharacterViewModel(CharacterViewModel characterViewModel, BasicCharacterObject leaderChar, string bannerCode, uint color1, uint color2, string animation, bool equipWeapon)
@@ -504,24 +520,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
             characterViewModel.BannerCodeText = bannerCode;
             characterViewModel.ExecuteStartCustomAnimation(animation, true, 10);
             characterViewModel.IdleAction = IsAttacker ? "act_walk_idle_1h" : "act_walk_idle_1h_left_stance";
-        }
-
-        public override void RefreshValues()
-        {
-            base.RefreshValues();
-
-            if (_culture == null)
-            {
-                DisplayedPrimary = new TextObject("{=pSheKLB4}Spectator").ToString();
-            }
-            else if ((int)Team.Side == Config.Instance.CommanderSide)
-            {
-                DisplayedPrimary = new TextObject("Commanders").ToString();
-            }
-            else
-            {
-                DisplayedPrimary = new TextObject("Players").ToString();
-            }
         }
 
         public override void OnFinalize()

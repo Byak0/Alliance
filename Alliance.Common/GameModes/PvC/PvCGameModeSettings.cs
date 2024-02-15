@@ -72,8 +72,6 @@ namespace Alliance.Common.GameModes.PvC
         {
             return new List<string>
             {
-                nameof(Config.PvCMod),
-                nameof(Config.TestPlayer),
                 nameof(Config.AllowSpawnInRound),
                 nameof(Config.FreeRespawnTimer),
                 nameof(Config.AllowCustomBody),

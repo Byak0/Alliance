@@ -13,7 +13,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll" >
+		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
 	</ItemGroup>

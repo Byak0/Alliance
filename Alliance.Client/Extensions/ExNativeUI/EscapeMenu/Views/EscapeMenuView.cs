@@ -72,7 +72,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
             }, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
 
             // Propositions de vote
-            if (GameNetwork.MyPeer.IsAdmin()) // TODO : remove this admin check once the poll feature is completed
+            if (GameNetwork.MyPeer.IsAdmin() || gameType == "Lobby")
             {
                 list.Add(new EscapeMenuItemVM(new TextObject("{=lobby_vote_esc_menu}Propositions de vote", null), delegate (object o)
                 {
