@@ -9,15 +9,12 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
-using TaleWorlds.ObjectSystem;
-using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 {
     public class HUDExtensionVM : ViewModel
     {
         private readonly Mission _mission;
-        private readonly SpriteData _spriteData;
         private readonly Dictionary<MissionPeer, MPPlayerVM> _teammateDictionary;
         private readonly Dictionary<MissionPeer, MPPlayerVM> _enemyDictionary;
 
@@ -26,63 +23,71 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
         private readonly MissionMultiplayerGameModeBaseClient _gameMode;
 
         private readonly bool _isTeamsEnabled;
-
         private bool _isAttackerTeamAlly;
-
         private bool _isTeammateAndEnemiesRelevant;
-
         private bool _isTeamScoresEnabled;
-
         private bool _isTeamMemberCountsEnabled;
-
         private bool _isOrderActive;
-
         private PvCInfoVM _commanderInfo;
-
         private SpectatorHUDVM _spectatorControls;
-
         private bool _warnRemainingTime;
-
         private bool _isRoundCountdownAvailable;
-
         private bool _isRoundCountdownSuspended;
-
         private bool _showTeamScores;
-
         private string _remainingRoundTime;
-
         private string _allyTeamColor;
-
         private string _allyTeamColor2;
-
         private string _enemyTeamColor;
-
         private string _enemyTeamColor2;
-
         private string _warmupInfoText;
-
         private int _allyTeamScore = -1;
-
         private int _enemyTeamScore = -1;
-
         private MBBindingList<MPPlayerVM> _teammatesList;
-
         private MBBindingList<MPPlayerVM> _enemiesList;
-
         private bool _showHUD;
-
         private bool _showCommanderInfo;
-
         private bool _showPowerLevels;
-
         private bool _isInWarmup;
-
         private int _generalWarningCountdown;
-
         private bool _isGeneralWarningCountdownActive;
-
         private BasicCultureObject _allyFaction;
         private BasicCultureObject _enemyFaction;
+        private ImageIdentifierVM _bannerAlly;
+        private ImageIdentifierVM _bannerEnemy;
+
+        [DataSourceProperty]
+        public ImageIdentifierVM BannerAlly
+        {
+            get
+            {
+                return _bannerAlly;
+            }
+            set
+            {
+                if (value != _bannerAlly && (value == null || _bannerAlly == null || _bannerAlly.Id != value.Id))
+                {
+                    _bannerAlly = value;
+                    OnPropertyChangedWithValue(value, "BannerAlly");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public ImageIdentifierVM BannerEnemy
+        {
+            get
+            {
+                return _bannerEnemy;
+            }
+            set
+            {
+                if (value != _bannerEnemy && (value == null || _bannerEnemy == null || _bannerEnemy.Id != value.Id))
+                {
+                    _bannerEnemy = value;
+                    OnPropertyChangedWithValue(value, "BannerEnemy");
+                }
+            }
+        }
 
         private Team _playerTeam
         {
@@ -541,10 +546,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             }
         }
 
-        public HUDExtensionVM(Mission mission, SpriteData spriteData)
+        public HUDExtensionVM(Mission mission)
         {
             _mission = mission;
-            _spriteData = spriteData;
             _missionScoreboardComponent = mission.GetMissionBehavior<MissionScoreboardComponent>();
             _gameMode = _mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
             SpectatorControls = new SpectatorHUDVM(_mission);
@@ -692,11 +696,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
         private void UpdateTeamBanners()
         {
-            BasicCultureObject attacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
-            BasicCultureObject defender = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+            BannerCode attackerCode = BannerCode.CreateFrom(Mission.Current.AttackerTeam.Banner);
+            BannerCode defenderCode = BannerCode.CreateFrom(Mission.Current.DefenderTeam.Banner);
 
-            AllyFaction = _isAttackerTeamAlly ? attacker : defender;
-            EnemyFaction = _isAttackerTeamAlly ? defender : attacker;
+            BannerAlly = new ImageIdentifierVM(_isAttackerTeamAlly ? attackerCode : defenderCode, true);
+            BannerEnemy = new ImageIdentifierVM(_isAttackerTeamAlly ? defenderCode : attackerCode, true);
         }
 
         private void OnTeamChanged(NetworkCommunicator peer, Team previousTeam, Team newTeam)

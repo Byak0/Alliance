@@ -337,6 +337,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopGroupVM troopGroupVM = TroopList.TroopGroups.FirstOrDefault();
             TroopVM defaultTroopVM = (troopGroupVM != null) ? troopGroupVM.Troops.FirstOrDefault() : null;
             SelectTroop(defaultTroopVM);
+            RefreshGold();
         }
 
         public override void OnFinalize()
@@ -374,7 +375,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 }
                 TotalGold = totalGold;
             }
-            CanRecruit = GameNetwork.MyPeer.IsCommander() && !(troopOverLimit || troopTooCostly);
+
+            CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !(troopOverLimit || troopTooCostly);
         }
 
         private void RefreshCommanderVisual(Formation formation, Agent agent)
