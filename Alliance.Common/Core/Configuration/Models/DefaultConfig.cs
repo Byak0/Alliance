@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
+using static Alliance.Common.Extensions.TroopSpawner.Utilities.SpawnHelper;
 
 namespace Alliance.Common.Core.Configuration.Models
 {
@@ -19,6 +20,16 @@ namespace Alliance.Common.Core.Configuration.Models
                 case nameof(TestEnum):
                     values = new List<string>() { "Test", "Test1" };
                     break;
+                case nameof(BotDifficulty):
+                    values = new List<string>() {
+                        nameof(Difficulty.PlayerChoice),
+                        nameof(Difficulty.Easy),
+                        nameof(Difficulty.Normal),
+                        nameof(Difficulty.Hard),
+                        nameof(Difficulty.VeryHard),
+                        nameof(Difficulty.Bannerlord)
+                    };
+                    break;
                 default:
                     break;
             }
@@ -34,6 +45,9 @@ namespace Alliance.Common.Core.Configuration.Models
 
         [ConfigProperty("Test enum", "Test enum", ConfigValueType.Enum)]
         public string TestEnum = "Test";
+
+        [ConfigProperty("Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", ConfigValueType.Enum)]
+        public string BotDifficulty = nameof(Difficulty.Normal);
 
         [ConfigProperty("Toggle SAE", "Activate or not Scatter Around Expanded mod.", ConfigValueType.Bool)]
         public bool ActivateSAE = false;

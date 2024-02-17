@@ -16,6 +16,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 {
     public static class SpawnHelper
     {
+        public enum Difficulty
+        {
+            PlayerChoice = -1,
+            Easy = 0,
+            Normal = 1,
+            Hard = 2,
+            VeryHard = 3,
+            Bannerlord = 4
+        }
+
         public static int TotalBots = 0;
 
         static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
@@ -353,9 +363,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
         }
 
         // Return a linear troop cost from minCost to MaxCost, depending on TroopMultiplier
-        public static int GetTroopCost(BasicCharacterObject character, float difficulty = 1f)
+        public static int GetTroopCost(BasicCharacterObject character, float difficultyMultiplier = 1f)
         {
-            float multiplier = 0.75f + (difficulty - 0.5f) * (1.5f - 0.75f) / (2.5f - 0.5f);
+            float multiplier = 0.75f + (difficultyMultiplier - 0.5f) * (1.5f - 0.75f) / (2.5f - 0.5f);
 
             if (MultiplayerClassDivisions.GetMPHeroClassForCharacter(character)?.TroopMultiplier is null)
             {
@@ -369,9 +379,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
         /// <summary>
         /// Get total troop cost from a character, troop count and difficulty
         /// </summary>
-        public static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficulty = 1f)
+        public static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficultyMultiplier = 1f)
         {
-            return SpawnHelper.GetTroopCost(troopToSpawn, difficulty) * troopCount;
+            return GetTroopCost(troopToSpawn, difficultyMultiplier) * troopCount;
         }
 
         /// <summary>
@@ -393,6 +403,55 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 i++;
             }
             return selectedPerks;
+        }
+
+        public static float DifficultyMultiplierFromLevel(int difficultyLevel)
+        {
+            switch (difficultyLevel)
+            {
+                case 0: return 0.5f;
+                case 1: return 1f;
+                case 2: return 1.5f;
+                case 3: return 2f;
+                case 4: return 2.5f;
+                default: return 1f;
+            }
+        }
+
+        public static float DifficultyMultiplierFromLevel(Difficulty difficultyLevel)
+        {
+            return DifficultyMultiplierFromLevel((int)difficultyLevel);
+        }
+
+        public static float DifficultyMultiplierFromLevel(string difficultyLevel)
+        {
+            if (Enum.TryParse(difficultyLevel, out Difficulty difficulty))
+            {
+                return DifficultyMultiplierFromLevel(difficulty);
+            }
+            return DifficultyMultiplierFromLevel(Difficulty.Normal);
+        }
+
+        public static int DifficultyLevelFromString(string difficultyString)
+        {
+            if (Enum.TryParse(difficultyString, out Difficulty difficulty))
+            {
+                return (int)difficulty;
+            }
+            return (int)Difficulty.Normal;
+        }
+
+        public static Difficulty DifficultyFromMultiplier(float multiplier)
+        {
+            switch (multiplier)
+            {
+                case 0.5f: return Difficulty.Easy;
+                case 1f: return Difficulty.Normal;
+                case 1.5f: return Difficulty.Hard;
+                case 2f: return Difficulty.VeryHard;
+                case 2.5f: return Difficulty.Bannerlord;
+                default: return Difficulty.Normal;
+            }
         }
     }
 }

@@ -86,7 +86,15 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
             MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(troopToSpawn, model.SelectedPerks));
 
-            int goldRemaining = missionPeer.Representative.Gold - SpawnHelper.GetTotalTroopCost(troopToSpawn, model.TroopCount, model.Difficulty);
+            float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(model.DifficultyLevel);
+
+            // If bot difficulty is forced and player is not admin, use difficulty from config
+            if (Config.Instance.BotDifficulty != nameof(SpawnHelper.Difficulty.PlayerChoice) && !peer.IsAdmin())
+            {
+                difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Config.Instance.BotDifficulty);
+            }
+
+            int goldRemaining = missionPeer.Representative.Gold - SpawnHelper.GetTotalTroopCost(troopToSpawn, model.TroopCount, difficulty);
 
             string refuseReason = "";
             if (!CanPlayerSpawn(peer, extendedTroopToSpawn, goldRemaining, model, ref refuseReason))
@@ -98,6 +106,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             string reportToPlayer = "";
             MatrixFrame spawnPos = model.SpawnPosition;
             int nbTroopToSpawn = model.TroopCount;
+
             bool playerSpawned = false;
             // Spawn player if dead
             if (missionPeer.ControlledAgent == null)
@@ -139,7 +148,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                     lackingReason = " There are no troops left to recruit.";
                     break;
                 }
-                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, model.Difficulty))
+                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, difficulty))
                 {
                     Log($"Alliance : Can't spawn bot n.{SpawnHelper.TotalBots} (no slot available)", LogLevel.Error);
                     lackingReason = " (engine is lacking slots for additional spawn)";
@@ -149,7 +158,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 if (Config.Instance.UseTroopLimit) extendedTroopToSpawn.TroopLeft--;
             }
 
-            int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), model.Difficulty);
+            int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), difficulty);
 
             if (Config.Instance.UseTroopCost && goldRemaining >= 0) GameMode?.ChangeCurrentGoldForPeer(missionPeer, missionPeer.Representative.Gold - finalTroopCost);
 
@@ -178,7 +187,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 }
             }
 
-            reportToPlayer += "You recruited " + troopSpawned + " " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + finalTroopCost + " golds." : ".");
+            reportToPlayer += $"You recruited {troopSpawned} {SpawnHelper.DifficultyFromMultiplier(difficulty)} {troopToSpawn.Name} {(Config.Instance.UseTroopCost ? " for " + finalTroopCost + " golds." : ".")}";
             if (troopSpawned < nbTroopToSpawn)
             {
                 reportToPlayer += lackingReason;

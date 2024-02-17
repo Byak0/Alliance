@@ -67,7 +67,6 @@ namespace Alliance.Common.GameModes.CvC
                 OptionType.RoundPreparationTimeLimit,
                 OptionType.RoundTimeLimit,
                 OptionType.RoundTotal,
-                OptionType.WarmupTimeLimit,
                 OptionType.FriendlyFireDamageMeleeFriendPercent,
                 OptionType.FriendlyFireDamageRangedFriendPercent
             };
@@ -80,6 +79,7 @@ namespace Alliance.Common.GameModes.CvC
                 nameof(Config.ActivateSAE),
                 nameof(Config.SAERange),
                 nameof(Config.EnableFormation),
+                nameof(Config.BotDifficulty),
                 nameof(Config.StartingGold),
                 nameof(Config.TimeBeforeFlagRemoval),
                 nameof(Config.MoraleMultiplierForFlag),

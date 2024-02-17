@@ -26,6 +26,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private bool _useTroopLimit;
         private bool _useTroopCost;
         private bool _canRecruit;
+        private bool _showDifficultySlider;
         private Color _totalCostColor;
         private int _totalCost;
         private int _totalGold;
@@ -104,6 +105,23 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 {
                     _canRecruit = value;
                     OnPropertyChangedWithValue(value, "CanRecruit");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowDifficultySlider
+        {
+            get
+            {
+                return _showDifficultySlider;
+            }
+            set
+            {
+                if (value != _showDifficultySlider)
+                {
+                    _showDifficultySlider = value;
+                    OnPropertyChangedWithValue(value, "ShowDifficultySlider");
                 }
             }
         }
@@ -212,6 +230,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 {
                     _difficulty = value;
                     SpawnTroopsModel.Instance.DifficultyLevel = value;
+                    OnPropertyChangedWithValue(value, "Difficulty");
                 }
             }
         }
@@ -312,7 +331,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopInformation = new TroopInformationVM();
             TroopCount = 1;
             CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
-            Difficulty = SpawnTroopsModel.Instance.DifficultyLevel;
+            ShowDifficultySlider = Config.Instance.BotDifficulty == nameof(SpawnHelper.Difficulty.PlayerChoice) || GameNetwork.MyPeer.IsAdmin();
+            Difficulty = SpawnHelper.DifficultyLevelFromString(Config.Instance.BotDifficulty);
             UseTroopCost = Config.Instance.UseTroopCost;
 
             Formations = new MBBindingList<FormationVM>();
@@ -361,7 +381,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             if (Config.Instance.UseTroopCost)
             {
                 int totalGold = _myRepresentative?.Gold ?? 0;
-                int troopCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty);
+                int troopCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
                 TotalCost = -troopCost;
                 if (troopCost > totalGold)
                 {
@@ -453,6 +473,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
             TroopPreview.FillFrom(SelectedTroopVM.Troop);
             TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
+            TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode?.Code ?? String.Empty;
         }
 
         private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)

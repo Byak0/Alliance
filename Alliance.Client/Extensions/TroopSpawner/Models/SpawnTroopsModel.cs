@@ -93,33 +93,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_difficultyLevel != value)
                 {
                     _difficultyLevel = value;
-                    switch (value)
-                    {
-                        case 0:
-                            Difficulty = 0.5f; break;
-                        case 1:
-                            Difficulty = 1f; break;
-                        case 2:
-                            Difficulty = 1.5f; break;
-                        case 3:
-                            Difficulty = 2f; break;
-                        case 4:
-                            Difficulty = 2.5f; break;
-                    }
                     OnDifficultyUpdated?.Invoke();
                 }
-            }
-        }
-
-        public float Difficulty
-        {
-            get
-            {
-                return _difficulty;
-            }
-            private set
-            {
-                _difficulty = value;
             }
         }
 
@@ -154,10 +129,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_selectedTeam != value)
                 {
                     _selectedTeam = value;
+                    BannerCode = BannerCode.CreateFrom(value.Banner);
                     OnFactionSelected?.Invoke();
                 }
             }
         }
+
+        public BannerCode BannerCode;
 
         public BasicCharacterObject SelectedTroop
         {

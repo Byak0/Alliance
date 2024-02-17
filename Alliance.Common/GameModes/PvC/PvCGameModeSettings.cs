@@ -72,6 +72,7 @@ namespace Alliance.Common.GameModes.PvC
         {
             return new List<string>
             {
+                nameof(Config.BotDifficulty),
                 nameof(Config.AllowSpawnInRound),
                 nameof(Config.FreeRespawnTimer),
                 nameof(Config.AllowCustomBody),

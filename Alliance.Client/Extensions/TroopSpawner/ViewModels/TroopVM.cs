@@ -295,7 +295,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             }
             ExtendedTroop = Troop.GetExtendedCharacterObject();
             TroopLimit = ExtendedTroop?.TroopLeft + "/" + ExtendedTroop?.TroopLimit;
-            TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnTroopsModel.Instance.Difficulty);
+            TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
             UseTroopLimit = Config.Instance.UseTroopLimit;
             UseTroopCost = Config.Instance.UseTroopCost;
             TroopLimitMarginR = Config.Instance.UseTroopCost ? 80 : 20;
@@ -335,7 +335,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
         private void RefreshCost()
         {
-            TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnTroopsModel.Instance.Difficulty);
+            TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
         }
 
         private void InitPerksList()

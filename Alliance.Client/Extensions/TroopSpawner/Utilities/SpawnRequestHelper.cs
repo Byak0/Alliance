@@ -20,14 +20,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
         /// </summary>
         public static void RequestSpawnTroop()
         {
-            RequestSpawnTroop(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.FormationSelected, SpawnTroopsModel.Instance.TroopCount, SpawnTroopsModel.Instance.Difficulty, SpawnTroopsModel.Instance.SelectedPerks);
+            RequestSpawnTroop(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.FormationSelected, SpawnTroopsModel.Instance.TroopCount, SpawnTroopsModel.Instance.DifficultyLevel, SpawnTroopsModel.Instance.SelectedPerks);
         }
 
         /// <summary>
         /// "Classic" recruit command. Will request a recruitment based on the given parameters.
         /// The troops will spawn at the closest spawnpoint available relative to the player.
         /// </summary>
-        public static void RequestSpawnTroop(BasicCharacterObject troop, int formation, int troopCount, float difficulty, List<int> selectedPerks)
+        public static void RequestSpawnTroop(BasicCharacterObject troop, int formation, int troopCount, int difficulty, List<int> selectedPerks)
         {
             // Get either camera or agent position 
             MatrixFrame _spawnFrame = Mission.Current.GetCameraFrame();
@@ -56,14 +56,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
         /// </summary>
         public static void AdminRequestSpawnTroop(Vec3 groundPos)
         {
-            AdminRequestSpawnTroop(groundPos, SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.FormationSelected, SpawnTroopsModel.Instance.TroopCount, SpawnTroopsModel.Instance.Difficulty, SpawnTroopsModel.Instance.SelectedPerks);
+            AdminRequestSpawnTroop(groundPos, SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.FormationSelected, SpawnTroopsModel.Instance.TroopCount, SpawnTroopsModel.Instance.DifficultyLevel, SpawnTroopsModel.Instance.SelectedPerks);
         }
 
         /// <summary>
         /// Special recruit command for admins.
         /// Will spawn troops from the given parameters.
         /// </summary>
-        public static void AdminRequestSpawnTroop(Vec3 groundPos, BasicCharacterObject troop, int formation, int troopCount, float difficulty, List<int> selectedPerks)
+        public static void AdminRequestSpawnTroop(Vec3 groundPos, BasicCharacterObject troop, int formation, int troopCount, int difficulty, List<int> selectedPerks)
         {
             if (!GameNetwork.MyPeer.IsAdmin()) return;
             MatrixFrame _spawnFrame = new MatrixFrame(Mat3.Identity, groundPos);
