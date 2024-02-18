@@ -155,11 +155,6 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             lastTimeMakerPosed = DateTime.Now;
         }
 
-        public override void OnBehaviorInitialize()
-        {
-            Log($"MissionScreen is {MissionScreen}");
-        }
-
         public override void EarlyStart()
         {
             createMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_create_marker");

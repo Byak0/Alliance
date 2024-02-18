@@ -224,7 +224,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
             string gameMode = MultiplayerOptions.OptionType.GameType.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 
             // Use native method for native game modes
-            if (gameMode != "Scenario" && gameMode != "PvC")
+            if (gameMode != "Scenario" && gameMode != "PvC" && gameMode != "CvC")
             {
                 return true;
             }

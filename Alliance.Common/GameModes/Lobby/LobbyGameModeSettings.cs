@@ -15,7 +15,7 @@ namespace Alliance.Common.GameModes.Lobby
         public override void SetDefaultNativeOptions()
         {
             base.SetDefaultNativeOptions();
-            SetNativeOption(OptionType.NumberOfBotsTeam1, 5);
+            SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
             SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
         }
 
