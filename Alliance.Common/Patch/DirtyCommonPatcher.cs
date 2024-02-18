@@ -15,7 +15,7 @@ namespace Alliance.Common.Patch
         public static void IncreaseNativeLimits()
         {
             // Increase the limit for number of bots in captain (255 to 16384)
-            CompressionMission.AgentOffsetCompressionInfo = new CompressionInfo.Integer(0, 16384, true);
+            CompressionMission.AgentOffsetCompressionInfo = new CompressionInfo.Integer(-1, 16384, true);
 
             // Increase map time limit (in minutes)
             CompressionBasic.MapTimeLimitCompressionInfo = new CompressionInfo.Integer(0, 360, true);

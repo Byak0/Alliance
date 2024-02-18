@@ -77,7 +77,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
         public static bool Prefix_SetFlagDominationSpawningBehavior()
         {
             string gameType = MultiplayerOptions.OptionType.GameType.GetStrValue();
-            if (gameType == "CaptainX" || gameType == "BattleX" || gameType == "PvC")
+            if (gameType == "CaptainX" || gameType == "BattleX" || gameType == "PvC" || gameType == "CvC")
             {
                 Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawnFrameBehavior(new PvCFlagDominationSpawnFrameBehavior());
                 Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawningBehavior(new PvCFlagDominationSpawningBehavior());

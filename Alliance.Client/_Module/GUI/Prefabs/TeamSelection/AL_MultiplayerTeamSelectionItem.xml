@@ -27,21 +27,7 @@
 	<Window>
 		<Widget DoNotAcceptEvents="true" WidthSizePolicy = "CoverChildren" HeightSizePolicy = "CoverChildren" >
 			<Children>
-				<ListPanel DataSource = "{FriendAvatars}" StackLayout.LayoutMethod = "VerticalBottomToTop" WidthSizePolicy = "CoverChildren" HeightSizePolicy = "CoverChildren" HorizontalAlignment = "!AvatarList.HorizontalAlignment" VerticalAlignment="Top" MarginTop="140">
-					<ItemTemplate>
-						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginBottom="5">
-							<Children>
-								<ImageIdentifierWidget DataSource="{Avatar}" DoNotAcceptEvents="true" ImageId="@Id" AdditionalArgs="@AdditionalArgs" ImageTypeCode="@ImageTypeCode" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" SuggestedWidth = "50" SuggestedHeight = "50" HorizontalAlignment="Center" VerticalAlignment="Center" />
-							</Children>
-						</Widget>
-					</ItemTemplate>
-				</ListPanel>
-				<TextWidget Text="@FriendsExtraText" IsVisible="@HasExtraFriends" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!AvatarFrame.Width" SuggestedHeight="!AvatarFrame.Height" HorizontalAlignment = "!AvatarList.HorizontalAlignment" MarginTop="550" Brush="MPTeamSelection.ExtraFriendsText">
-					<Children>
-						<HintWidget DataSource="{FriendsExtraHint}" DoNotAcceptEvents="true" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
-					</Children>
-				</TextWidget>
-
+				
 				<NavigationScopeTargeter ScopeID="TeamSelectionItemScope" ScopeParent="..\Button" />
 				<ButtonWidget Id="Button" Command.Click="ExecuteSelectTeam" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" IsDisabled="@IsDisabled" WidthSizePolicy = "Fixed" HeightSizePolicy = "Fixed" SuggestedWidth = "!Banner.Width" SuggestedHeight = "450" MarginTop="80" MarginBottom="60" VerticalAlignment = "Center" HorizontalAlignment = "!Banner.HorizontalAlignment" MarginLeft="!AvatarList.MarginLeft" MarginRight="!AvatarList.MarginRight" GamepadNavigationIndex="0">
 					<Children>
