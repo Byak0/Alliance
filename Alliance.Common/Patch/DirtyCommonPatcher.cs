@@ -32,6 +32,9 @@ namespace Alliance.Common.Patch
             // Increase max number of mission object
             CompressionBasic.MissionObjectIDCompressionInfo = new CompressionInfo.Integer(-1, MAX_MISSION_OBJECTS, maximumValueGiven: true);
 
+            // Increase max health of objects to 104856.5 instead of 26213.3
+            CompressionMission.UsableGameObjectHealthCompressionInfo = new CompressionInfo.Float(-1f, 20, 0.1f);
+
             // TODO : Check if still necessary with 1.2 optimisation
             // Fix native lag when lot of arrows
             //typeof(CompressionBasic).GetField(nameof(CompressionBasic.BigRangeLowResLocalPositionCompressionInfo), BindingFlags.Static).
