@@ -34,6 +34,8 @@ namespace Alliance.Client
             DirtyCommonPatcher.Patch();
             DirtyClientPatcher.Patch();
 
+            KeyBinder.RegisterContexts();
+
             AddGameModes();
         }
 
