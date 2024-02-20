@@ -1095,7 +1095,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.uruk_shield_1" />
+									 id="Item.uruk_large_shield_1a" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v3" />
 				<equipment slot="Gloves"
@@ -1103,7 +1103,7 @@
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Head"
-									 id="Item.uruk_helm_5" />
+									 id="Item.uruk_helm_1" />
 				<equipment slot="Cape"
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
@@ -1111,7 +1111,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.uruk_shield_1_v1" />
+									 id="Item.uruk_large_shield_1b" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_1" />
 				<equipment slot="Gloves"
@@ -1119,7 +1119,39 @@
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Head"
-									 id="Item.uruk_helm_5" />
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.uruk_large_shield_1c" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.uruk_large_shield_1d" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1" />
 				<equipment slot="Cape"
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
