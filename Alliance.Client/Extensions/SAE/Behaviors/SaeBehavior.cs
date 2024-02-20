@@ -76,6 +76,13 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     Name = "Decrease SAE sphere",
                     DefaultInputKey = InputKey.NumpadMinus
                 },
+                new BindedKey
+                {
+                    Id = "key_crouch",
+                    Description = "Make selected formation crouch.",
+                    Name = "Crouch troops",
+                    DefaultInputKey = InputKey.M
+                },
             }
         };
 
@@ -86,6 +93,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private GameKey fastDeleteMarkerIK;
         private GameKey increaseSphereRadius;
         private GameKey decreaseSphereRadius;
+        private GameKey crouchIk;
 
 
         /// <summary>
@@ -164,6 +172,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fastDeleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_fast_delete_marker");
             increaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_increase_sphere");
             decreaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_decrease_sphere");
+            crouchIk = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_crouch");
         }
 
         private void InitDynamicMarkers()
@@ -221,10 +230,11 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     OnSphereIncreasingOrDecreasingButtonPressed();
                     WhenCreateMarkerActionTriggered();
                     WhenDeleteMarkerActionTriggered();
-                    WhenCrouchActionTriggered();
                     WhenDebugActionTriggered();
                     WhenDynamicCreateMarkerActionTriggered();
                 }
+
+                WhenCrouchActionTriggered();
             }
         }
 
@@ -266,7 +276,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private void WhenCrouchActionTriggered()
         {
             //Crouch troops
-            if (Input.IsKeyPressed(InputKey.M))
+            if (Input.IsKeyPressed(crouchIk.KeyboardKey.InputKey))
             {
                 Log("Crouch !", LogLevel.Information);
 
