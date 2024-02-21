@@ -1,7 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.CvC
@@ -18,6 +16,8 @@ namespace Alliance.Common.GameModes.CvC
             SetNativeOption(OptionType.RoundPreparationTimeLimit, 30);
             SetNativeOption(OptionType.RoundTimeLimit, 1200);
             SetNativeOption(OptionType.RoundTotal, 3);
+            SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
+            SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
             SetNativeOption(OptionType.FriendlyFireDamageMeleeFriendPercent, 75);
             SetNativeOption(OptionType.FriendlyFireDamageMeleeSelfPercent, 0);
             SetNativeOption(OptionType.FriendlyFireDamageRangedFriendPercent, 75);
@@ -38,7 +38,7 @@ namespace Alliance.Common.GameModes.CvC
             ModOptions.UseTroopCost = true;
             ModOptions.UseTroopLimit = false;
             ModOptions.GoldMultiplier = 0f;
-            ModOptions.StartingGold = 12000;
+            ModOptions.StartingGold = 5000;
             ModOptions.GoldPerKill = 0;
             ModOptions.GoldPerAssist = 0;
             ModOptions.GoldPerAllyDead = 0;
@@ -50,10 +50,7 @@ namespace Alliance.Common.GameModes.CvC
 
         public override List<string> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "captain_", "sergeant_", "pvc", "cvc" }
-                    .Any(prefix => scene.Contains(prefix)))
-                    .ToList();
+            return base.GetAvailableMaps();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

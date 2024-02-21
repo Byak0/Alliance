@@ -60,8 +60,8 @@ namespace Alliance.Common.Core.Configuration.Models
         public bool UseTroopCost = false;
         [ConfigProperty("Gold multiplier", "Gold multiplier when giving gold to commander (ennemy army value X multiplier).", ConfigValueType.Float, 0f, 5f)]
         public float GoldMultiplier = 1f;
-        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 20000)]
-        public int StartingGold = 20000;
+        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 10000)]
+        public int StartingGold = 5000;
 
         [ConfigProperty("Zone life time", "Number of seconds the zone takes to reach its minimum size.", ConfigValueType.Integer, 0, 3600)]
         public int BRZoneLifeTime = 300;
