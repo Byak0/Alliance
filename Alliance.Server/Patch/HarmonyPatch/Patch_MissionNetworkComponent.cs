@@ -50,12 +50,9 @@ namespace Alliance.Server.Patch.HarmonyPatch
             // Remove check on CountOfUnits to allow transfer to empty formations
             Formation formation = teamOfPeer != null ? teamOfPeer.FormationsIncludingEmpty.SingleOrDefault((f) => /*f.CountOfUnits > 0 && */f.Index == message.FormationIndex) : null;
 
-            // Give control to player if formation was empty
-            if (formation.CountOfUnits == 0)
-            {
-                Log($"Formation {formation.Index} was empty, giving control to {networkPeer.UserName}", LogLevel.Information);
-                FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), formation.FormationIndex, true);
-            }
+            // Give control to player
+            Log($"Giving control of formation {formation.Index} to {networkPeer.UserName}", LogLevel.Information);
+            FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), formation.FormationIndex, true);
 
             int number = message.Number;
             if (teamOfPeer != null && orderController != null && formation != null)

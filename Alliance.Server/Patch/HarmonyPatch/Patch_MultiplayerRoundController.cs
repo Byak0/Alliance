@@ -1,6 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Server.GameModes.Story.Behaviors;
-using HarmonyLib;
+﻿using HarmonyLib;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -27,11 +25,11 @@ namespace Alliance.Server.Patch.HarmonyPatch
                         BindingFlags.Instance | BindingFlags.NonPublic),
                     prefix: new HarmonyMethod(typeof(Patch_MultiplayerRoundController).GetMethod(
                         nameof(Prefix_CheckForNewRound), BindingFlags.Static | BindingFlags.Public)));
-                //Harmony.Patch(
-                //    typeof(MultiplayerRoundController).GetMethod("BeginNewRound",
-                //        BindingFlags.Instance | BindingFlags.NonPublic),
-                //    prefix: new HarmonyMethod(typeof(Patch_MultiplayerRoundController).GetMethod(
-                //        nameof(Prefix_BeginNewRound), BindingFlags.Static | BindingFlags.Public)));
+                Harmony.Patch(
+                    typeof(MultiplayerRoundController).GetMethod("HasEnoughCharactersOnBothSides",
+                        BindingFlags.Instance | BindingFlags.NonPublic),
+                    prefix: new HarmonyMethod(typeof(Patch_MultiplayerRoundController).GetMethod(
+                        nameof(Prefix_HasEnoughCharactersOnBothSides), BindingFlags.Static | BindingFlags.Public)));
             }
             catch (Exception e)
             {
@@ -43,35 +41,69 @@ namespace Alliance.Server.Patch.HarmonyPatch
             return true;
         }
 
+        // Start the round even if not all teams have a player (Prevent ending match if alone)
+        public static bool Prefix_HasEnoughCharactersOnBothSides(ref bool __result)
+        {
+            int[] array = new int[2];
+            foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+            {
+                MissionPeer component = networkPeer.GetComponent<MissionPeer>();
+                if (networkPeer.IsSynchronized && component?.Team != null && (component.Team.Side == BattleSideEnum.Attacker || component.Team.Side == BattleSideEnum.Defender))
+                {
+                    array[(int)component.Team.Side]++;
+                }
+            }
+            __result = array.Any(count => count > 0);
+
+            return false; // Skip original method
+        }
+
         private static DateTime lastCheck = DateTime.MinValue;
+        private static DateTime? startWaitTime = null;
 
         // Wait for at least one player or bot in each team before starting the game
-        public static bool Prefix_CheckForNewRound(MultiplayerRoundController __instance, MissionMultiplayerGameModeBase ____gameModeServer)
+        public static bool Prefix_CheckForNewRound(MultiplayerRoundController __instance, MissionMultiplayerGameModeBase ____gameModeServer, ref bool __result)
         {
             // Only do the check once every second to not spam messages.
             if (DateTime.Now <= lastCheck.AddSeconds(1))
             {
+                __result = false;
                 return false;
             }
             lastCheck = DateTime.Now;
 
+            // Store number of players per team
+            int[] array = new int[2];
+            foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
+            {
+                MissionPeer component = networkPeer.GetComponent<MissionPeer>();
+                if (networkPeer.IsSynchronized && component?.Team != null && (component.Team.Side == BattleSideEnum.Attacker || component.Team.Side == BattleSideEnum.Defender))
+                {
+                    array[(int)component.Team.Side]++;
+                }
+            }
+
+            // Initialize or reset the start wait time at the beginning of each round if players are present.
+            if ((__instance.CurrentRoundState == MultiplayerRoundState.WaitingForPlayers || ____gameModeServer.TimerComponent.CheckIfTimerPassed()) && array.Any(count => count > 0) && !startWaitTime.HasValue)
+            {
+                startWaitTime = DateTime.Now;
+            }
+
+            if (startWaitTime.HasValue && array.All(count => count == 0))
+            {
+                SendMessageToAll($"Nobody is ready. Waiting for players...");
+                startWaitTime = null; // Reset the start time as no player are ready.
+                __result = false;
+                return false;
+            }
 
             if (__instance.CurrentRoundState == MultiplayerRoundState.WaitingForPlayers || ____gameModeServer.TimerComponent.CheckIfTimerPassed())
             {
-                int[] array = new int[2];
-                foreach (NetworkCommunicator networkPeer in GameNetwork.NetworkPeers)
-                {
-                    MissionPeer component = networkPeer.GetComponent<MissionPeer>();
-                    if (networkPeer.IsSynchronized && component?.Team != null && (component.Team.Side == BattleSideEnum.Attacker || component.Team.Side == BattleSideEnum.Defender))
-                    {
-                        array[(int)component.Team.Side]++;
-                    }
-                }
-
                 if (array.Sum() < MultiplayerOptions.OptionType.MinNumberOfPlayersForMatchStart.GetIntValue() && __instance.RoundCount == 0)
                 {
                     typeof(MultiplayerRoundController).GetProperty("IsMatchEnding")
                         .SetValue(__instance, true);
+                    __result = false;
                     return false;
                 }
 
@@ -80,82 +112,33 @@ namespace Alliance.Server.Patch.HarmonyPatch
                 array[(int)BattleSideEnum.Defender] += MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
                 if (array[(int)BattleSideEnum.Defender] >= 1 && array[(int)BattleSideEnum.Attacker] >= 1)
                 {
-                    return true;
+                    startWaitTime = null; // Reset the start time as the condition to start the game is met.
+                    __result = true; // Proceed with starting the game.
+                    return false;
                 }
-
-                SendMessageToAll($"Waiting for players to join... ({array[(int)BattleSideEnum.Defender]} defenders VS {array[(int)BattleSideEnum.Attacker]} attackers)");
             }
 
-            return false;
-        }
-
-        // Prevent BeginNewRound from calling TeamSelectComponent and causing a NullPointerException (we removed it duh)
-        // Also wait for players to load before starting the round
-        public static bool Prefix_BeginNewRound(MultiplayerRoundController __instance)
-        {
-            // If we are in scenario and waiting for players, do not begin round yet
-            ScenarioBehavior scenario = Mission.Current.GetMissionBehavior<ScenarioBehavior>();
-            if (scenario != null && scenario.State == ActState.AwaitingPlayerJoin)
+            // Check if the maximum wait time has been exceeded.
+            if (startWaitTime.HasValue)
             {
-                //Log("PvC - Skipped BeginNewRound (waiting for players)", 0, Debug.DebugColor.Purple);
-                // Return false to skip original method
-                return false;
-            }
+                TimeSpan remainingTime = startWaitTime.Value.AddSeconds(20) - DateTime.Now;
+                int remainingSeconds = (int)Math.Max(0, remainingTime.TotalSeconds);
 
-
-            MissionMultiplayerGameModeBase _gameModeServer = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBase>();
-
-            if (__instance.CurrentRoundState == MultiplayerRoundState.WaitingForPlayers)
-            {
-                _gameModeServer.ClearPeerCounts();
-            }
-
-            //ChangeRoundState(MultiplayerRoundState.Preparation);
-            typeof(MultiplayerRoundController).GetMethod("ChangeRoundState",
-                        BindingFlags.Instance | BindingFlags.NonPublic)?
-                        .Invoke(__instance, new object[] { MultiplayerRoundState.Preparation });
-
-            __instance.RoundCount++;
-            Mission.Current.ResetMission();
-            //_gameModeServer.MultiplayerTeamSelectComponent.BalanceTeams(); << Removed this            
-            _gameModeServer.TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
-
-            //__instance.OnRoundStarted?.Invoke();
-            // Reflection way of invoking an event (not sure of this black magic)
-            var eventField = typeof(MultiplayerRoundController).GetEvent(nameof(MultiplayerRoundController.OnRoundStarted), BindingFlags.Instance | BindingFlags.Public);
-            FieldInfo fi = __instance.GetType().GetField(eventField.Name, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public | BindingFlags.FlattenHierarchy);
-            Delegate del = (Delegate)fi.GetValue(__instance);
-            var list = del?.GetInvocationList();
-            if (list != null)
-            {
-                foreach (var invocationMethod in list)
+                // Send message with remaining time
+                if (remainingSeconds > 0)
                 {
-                    invocationMethod.DynamicInvoke(new object[] { });
+                    SendMessageToAll($"Waiting for players to join... ({array[(int)BattleSideEnum.Defender]} defenders VS {array[(int)BattleSideEnum.Attacker]} attackers). Starting in {remainingSeconds} seconds.");
+                }
+                else
+                {
+                    SendMessageToAll("Starting the game...");
+                    startWaitTime = null; // Reset the start time for the next round.
+                    __result = true; // Proceed with starting the game.
+                    return false;
                 }
             }
 
-            _gameModeServer.SpawnComponent.ToggleUpdatingSpawnEquipment(canUpdate: true);
-
-            // Return false to skip original method
             return false;
         }
-
-        /* Original method
-         * 
-        private void BeginNewRound()
-        {
-            if (CurrentRoundState == MultiplayerRoundState.WaitingForPlayers)
-            {
-                _gameModeServer.ClearPeerCounts();
-            }
-
-            ChangeRoundState(MultiplayerRoundState.Preparation);
-            RoundCount++;
-            Mission.Current.ResetMission();
-            _gameModeServer.MultiplayerTeamSelectComponent.BalanceTeams();
-            _gameModeServer.TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
-            this.OnRoundStarted?.Invoke();
-            _gameModeServer.SpawnComponent.ToggleUpdatingSpawnEquipment(canUpdate: true);
-        }*/
     }
 }
