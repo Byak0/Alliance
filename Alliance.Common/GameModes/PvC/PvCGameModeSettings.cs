@@ -70,52 +70,7 @@ namespace Alliance.Common.GameModes.PvC
 
         public override List<string> GetAvailableModOptions()
         {
-            return new List<string>
-            {
-                nameof(Config.BotDifficulty),
-                nameof(Config.AllowSpawnInRound),
-                nameof(Config.FreeRespawnTimer),
-                nameof(Config.AllowCustomBody),
-                nameof(Config.RandomizeAppearance),
-                nameof(Config.ShowFlagMarkers),
-                nameof(Config.ShowScore),
-                nameof(Config.ShowOfficers),
-                nameof(Config.ShowWeaponTrail),
-                nameof(Config.KillFeedEnabled),
-                nameof(Config.TimeBeforeFlagRemoval),
-                nameof(Config.MoraleMultiplierForFlag),
-                nameof(Config.MoraleMultiplierForLastFlag),
-                nameof(Config.UseTroopCost),
-                nameof(Config.GoldMultiplier),
-                nameof(Config.StartingGold),
-                nameof(Config.MinTroopCost),
-                nameof(Config.MaxTroopCost),
-                nameof(Config.GoldPerKill),
-                nameof(Config.GoldPerAssist),
-                nameof(Config.GoldPerAllyDead),
-                nameof(Config.UseTroopLimit),
-                nameof(Config.CommanderSide),
-                nameof(Config.MinPlayer),
-                nameof(Config.MaxPlayer),
-                nameof(Config.FormRadMin),
-                nameof(Config.FormRadMax),
-                nameof(Config.SkirmRadMin),
-                nameof(Config.SkirmRadMax),
-                nameof(Config.NbFormMin),
-                nameof(Config.NbFormMax),
-                nameof(Config.NbSkirmMin),
-                nameof(Config.NbSkirmMax),
-                nameof(Config.MinPlayerForm),
-                nameof(Config.MeleeDebuffRambo),
-                nameof(Config.DistDebuffRambo),
-                nameof(Config.AccDebuffRambo),
-                nameof(Config.MeleeDebuffSkirm),
-                nameof(Config.DistDebuffSkirm),
-                nameof(Config.AccDebuffSkirm),
-                nameof(Config.OfficerHPMultip),
-                nameof(Config.ActivateSAE),
-                nameof(Config.SAERange)
-            };
+            return base.GetAvailableModOptions();
         }
     }
 }
