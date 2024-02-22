@@ -12,18 +12,6 @@
 			<Piece id="elf_handle_2" Type="Handle" scale_factor="110" />
 		</Pieces>
 	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="elf_sword_1" name="Galadhrim Lhang" culture="Culture.neutral_culture" crafting_template="elf_two_handed" is_merchandise="false">
-		<Pieces>
-			<Piece id="elf_blade_1" Type="Blade" scale_factor="110" />
-			<Piece id="elf_handle_1" Type="Handle" scale_factor="110" />
-		</Pieces>
-	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="elf_sword_2" name="Galadhrim Warrior Sword" culture="Culture.neutral_culture" crafting_template="elf_two_handed" is_merchandise="false">
-		<Pieces>
-			<Piece id="elf_blade_2" Type="Blade" scale_factor="110" />
-			<Piece id="elf_handle_2" Type="Handle" scale_factor="110" />
-		</Pieces>
-	</CraftedItem>
 	<!-- Elven Ranged Weapons -->
 	<Item multiplayer_item="true" id="elf_bow_1" name="Galadhrim Longbow" body_name="bo_composite_longbow_g" mesh="elf_bow_1" culture="Culture.rohan" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
 		<ItemComponent>

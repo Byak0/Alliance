@@ -159,7 +159,6 @@
 	</CraftingPiece>
 	<!-- SWORD (HERUGRIM)-->
 	<CraftingPiece id="rohan_blade_1" name="Herugrim Blade" tier="4" piece_type="Blade" mesh="rohan_sword_1_blade" culture="Culture.rohan" length="64" weight="1.00" CraftingCost="75">
-
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="rohan_sword_1_holster" >
 			<Thrust damage_type="Pierce" damage_factor="2.3" />
@@ -169,12 +168,12 @@
 			<Flag name="Civilian" type="ItemFlags" />
 		</Flags>
 	</CraftingPiece>
-	<CraftingPiece id="rohan_handle_1" name="Herugrim Handle" tier="4" piece_type="Handle" mesh="rohan_sword_1_handle" culture="Culture.rohan" length="14" weight="0.1">
 
+	<CraftingPiece id="rohan_handle_1" name="Herugrim Handle" tier="4" piece_type="Handle" mesh="rohan_sword_1_handle" culture="Culture.rohan" length="14" weight="0.1">
 		<BuildData piece_offset="-3.5" previous_piece_offset="0.1" next_piece_offset="0.1" />
 	</CraftingPiece>
-	<CraftingPiece id="rohan_guard_1" name="Herugrim Guard" tier="1" piece_type="Guard" mesh="rohan_sword_1_guard" culture="Culture.rohan" length="0.8" weight="0.2" is_default="true">
 
+	<CraftingPiece id="rohan_guard_1" name="Herugrim Guard" tier="1" piece_type="Guard" mesh="rohan_sword_1_guard" culture="Culture.rohan" length="0.8" weight="0.2" is_default="true">
 		<BuildData next_piece_offset="0.2" />
 		<StatContributions armor_bonus="2" />
 	</CraftingPiece>

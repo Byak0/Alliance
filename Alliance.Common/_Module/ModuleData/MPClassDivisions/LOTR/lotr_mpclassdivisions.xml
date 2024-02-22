@@ -8,6 +8,7 @@
 <!-- hitpoints:             Goes from 1 to infinity. Default is 100. Human only. -->
 <MPClassDivisions>
 	<!-- ISENGARD -->
+	<!-- LIGHT INFANTRY (Scout) -->
 	<MPClassDivision
 			id="mp_light_infantry_isengard"
 			hero="mp_light_infantry_isengard_hero"
@@ -35,6 +36,7 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- SHOCK INFANTRY (Piquier) -->
 	<MPClassDivision
 			id="mp_shock_infantry_isengard"
 			hero="mp_shock_infantry_isengard_hero"
@@ -42,8 +44,8 @@
 			banner_bearer="mp_shock_infantry_isengard_banner_bearer"
 			hero_idle_anim="act_vlandia_mp_voulgier_idle"
 			troop_idle_anim="act_idle_spear_1_left_stance"
-			multiplier="0.64"
-			cost="130"
+			multiplier="0.68"
+			cost="120"
 			icon="Special_Axeman"
 			melee_ai="50"
 			ranged_ai="50"
@@ -62,6 +64,7 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- HEAVY INFANTRY (Uruk lourd) -->
 	<MPClassDivision
 			id="mp_heavy_infantry_isengard"
 			hero="mp_heavy_infantry_isengard_hero"
@@ -69,17 +72,16 @@
 			banner_bearer="mp_heavy_infantry_isengard_banner_bearer"
 			hero_idle_anim="act_vlandia_mp_sergeant_idle"
 			troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
-			multiplier="0.61"
-			cost="160"
-			casual_cost="150"
-			battle_cost="150"
+			multiplier="0.68"
+			cost="120"
 			icon="Infantry_Heavy"
 			melee_ai="50"
 			ranged_ai="50"
-			armor="35"
-			movement_speed="0.80"
-			combat_movement_speed="0.9"
-			acceleration="2.4">
+			armor="30"
+			movement_speed="0.81"
+			combat_movement_speed="0.8"
+			acceleration="2.3"
+			hitpoints="100">
 		<Perks>
 			<Perk   
 				game_mode="all"
@@ -90,23 +92,23 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- LIGHT RANGED	(Archer) -->
 	<MPClassDivision
 			id="mp_light_ranged_isengard"
 			hero="mp_light_ranged_isengard_hero"
 			troop="mp_light_ranged_isengard_troop"
-			hero_idle_anim="act_vlandia_mp_arbelist_idle"
-			troop_idle_anim="act_idle_crossbow_1"
-			multiplier="0.68"
-			cost="120"
-			casual_cost="140"
-			battle_cost="130"
-			icon="Crossbowman_Light"
+			hero_idle_anim="act_battania_mp_ranger_idle"
+			troop_idle_anim="act_idle_bow_1"
+			multiplier="0.77"
+			cost="110"
+			icon="Archer_Light"
 			armor="3"
 			melee_ai="40"
 			ranged_ai="80"
-			movement_speed="0.75"
+			movement_speed="0.82"
 			combat_movement_speed="0.7"
-			acceleration="3.0">
+			acceleration="3.0"
+			hitpoints="100">
 		<Perks>
 			<Perk   
 				game_mode="all"
@@ -117,6 +119,7 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- HEAVY RANGED	(Arbalétrier) -->
 	<MPClassDivision
 			id="mp_heavy_ranged_isengard"
 			hero="mp_heavy_ranged_isengard_hero"
@@ -125,15 +128,14 @@
 			troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
 			multiplier="0.46"
 			cost="160"
-			casual_cost="180"
-			battle_cost="180"
 			icon="Crossbowman_Heavy"
 			melee_ai="50"
 			ranged_ai="100"
 			armor="21"
 			movement_speed="0.73"
 			combat_movement_speed="0.7"
-			acceleration="3.2">
+			acceleration="3.2"
+			hitpoints="100">
 		<Perks>
 			<Perk   
 				game_mode="all"
@@ -144,24 +146,23 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- LIGHT CAVALRY (Berserk) -->
 	<MPClassDivision
 			id="mp_light_cavalry_isengard"
 			hero="mp_light_cavalry_isengard_hero"
 			troop="mp_light_cavalry_isengard_troop"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
 			troop_mount_idle_anim="act_horse_idle_1"
-			multiplier="0.46"
-			cost="140"
-			casual_cost="200"
-			battle_cost="150"
+			multiplier="0.3"
+			cost="300"
 			icon="Cavalry_Light"
-			melee_ai="50"
+			melee_ai="100"
 			ranged_ai="50"
-			armor="10"
-			hitpoints="200"
-			movement_speed="0.9"
-			combat_movement_speed="0.7"
-			acceleration="2.8">
+			armor="15"
+			movement_speed="0.8"
+			combat_movement_speed="0.8"
+			acceleration="3.2"
+			hitpoints="250">
 		<Perks>
 			<Perk   
 				game_mode="all"
@@ -172,6 +173,7 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- HEAVY CAVALRY (Elite) -->
 	<MPClassDivision
 			id="mp_heavy_cavalry_isengard"
 			hero="mp_heavy_cavalry_isengard_hero"
@@ -180,10 +182,9 @@
 			hero_mount_idle_anim="act_vlandia_mp_knight_mount_idle"
 			troop_mount_idle_anim="act_horse_idle_1"
 			multiplier="0.3"
-			cost="200"
-			casual_cost="300"
+			cost="250"
 			icon="Cavalry_Heavy"
-			melee_ai="70"
+			melee_ai="90"
 			ranged_ai="50"
 			armor="50"
 			movement_speed="0.72"

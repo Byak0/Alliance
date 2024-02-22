@@ -3,7 +3,7 @@
 	<!-- ************************************************************************* -->
 	<!-- ***************************  ISENGARD  ********************************** -->
 	<!-- ************************************************************************* -->
-	<!-- LIGHT INFANTRY - TROOP -->
+	<!-- LIGHT INFANTRY (Scout) - TROOP -->
 	<NPCCharacter id="mp_light_infantry_isengard_troop"
 									default_group="Infantry"
 									level="5"
@@ -23,7 +23,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="60" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
@@ -86,7 +86,7 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT INFANTRY - HERO (NAMELESS) -->
+	<!-- LIGHT INFANTRY (Scout) - HERO (NAMELESS) -->
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
                 default_group="Infantry"
                 level="5"
@@ -106,7 +106,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="60" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
@@ -169,7 +169,7 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT INFANTRY - BANNER BEARER -->
+	<!-- LIGHT INFANTRY (Scout) - BANNER BEARER -->
 	<NPCCharacter id="mp_light_infantry_isengard_banner_bearer"
 									default_group="Infantry"
 									level="5"
@@ -189,7 +189,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="60" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
@@ -225,10 +225,10 @@
 		</Equipments>		
 	</NPCCharacter>
 
-	<!-- SHOCK INFANTRY - TROOP -->
+	<!-- SHOCK INFANTRY (Piquier) - TROOP -->
 	<NPCCharacter id="mp_shock_infantry_isengard_troop"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_shock_t}Piquier"
@@ -245,21 +245,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="80" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="70" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="40" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
-             value="30" />
+             value="20" />
 			<skill id="Crossbow"
-             value="40" />
+             value="20" />
 			<skill id="Throwing"
-             value="30" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -278,10 +278,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- SHOCK INFANTRY - HERO -->
+	<!-- SHOCK INFANTRY (Piquier) - HERO -->
 	<NPCCharacter id="mp_shock_infantry_isengard_hero"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_shock_h}Piquier"
@@ -298,21 +298,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="80" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="70" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="40" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
-             value="30" />
+             value="20" />
 			<skill id="Crossbow"
-             value="40" />
+             value="20" />
 			<skill id="Throwing"
-             value="30" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -331,10 +331,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- SHOCK INFANTRY - BANNER BEARER -->
+	<!-- SHOCK INFANTRY (Piquier) - BANNER BEARER -->
 	<NPCCharacter id="mp_shock_infantry_isengard_banner_bearer"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_shock_b}Piquier"
@@ -351,21 +351,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="80" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="70" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="40" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
-             value="30" />
+             value="20" />
 			<skill id="Crossbow"
-             value="40" />
+             value="20" />
 			<skill id="Throwing"
-             value="30" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -387,10 +387,10 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- HEAVY INFANTRY - TROOP -->
+	<!-- HEAVY INFANTRY (Uruk lourd) - TROOP -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_troop"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_heavy_t}Uruk lourd"
@@ -407,21 +407,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="60" />
+             value="150" />
 			<skill id="Bow"
              value="30" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="10" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -490,10 +490,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY INFANTRY - HERO -->
+	<!-- HEAVY INFANTRY (Uruk lourd) - HERO -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_hero"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_heavy_h}Uruk lourd"
@@ -510,21 +510,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="60" />
+             value="150" />
 			<skill id="Bow"
              value="30" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="10" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -545,10 +545,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY INFANTRY - BANNER BEARER -->
+	<!-- HEAVY INFANTRY (Uruk lourd) - BANNER BEARER -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_banner_bearer"
 									default_group="Infantry"
-									level="25"
+									level="15"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_heavy_b}Uruk lourd"
@@ -565,21 +565,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="100" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="60" />
+             value="150" />
 			<skill id="Bow"
              value="30" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="10" />
+             value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -649,7 +649,7 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- LIGHT RANGED - TROOP -->
+	<!-- LIGHT RANGED (Archer) - TROOP -->
 	<NPCCharacter id="mp_light_ranged_isengard_troop"
 									default_group="Ranged"
 									level="5"
@@ -669,19 +669,19 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-						 value="140" />
+						 value="120" />
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="130" />
+						 value="100" />
 			<skill id="TwoHanded"
 						 value="60" />
 			<skill id="Polearm"
 						 value="80" />
 			<skill id="Bow"
-						 value="20" />
+						 value="120" />
 			<skill id="Crossbow"
-						 value="140" />
+						 value="120" />
 			<skill id="Throwing"
 						 value="60" />
 		</skills>
@@ -720,7 +720,7 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT RANGED - HERO -->
+	<!-- LIGHT RANGED (Archer) - HERO -->
 	<NPCCharacter id="mp_light_ranged_isengard_hero"
 									default_group="Ranged"
 									level="5"
@@ -740,21 +740,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="120" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="130" />
+						 value="100" />
 			<skill id="TwoHanded"
-             value="60" />
+						 value="60" />
 			<skill id="Polearm"
-             value="80" />
+						 value="80" />
 			<skill id="Bow"
-             value="20" />
+						 value="120" />
 			<skill id="Crossbow"
-             value="140" />
+						 value="120" />
 			<skill id="Throwing"
-             value="60" />
+						 value="60" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -774,7 +774,7 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- HEAVY RANGED - TROOP -->
+	<!-- HEAVY RANGED (Arbalétrier) - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_isengard_troop"
 									default_group="Ranged"
 									level="20"
@@ -793,18 +793,20 @@
                          key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
+			<skill id="Athletics"
+						 value="100" />
 			<skill id="Riding"
-             value="15" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="50" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="50" />
+             value="120" />
 			<skill id="Polearm"
-             value="50" />
+             value="120" />
 			<skill id="Crossbow"
-             value="140" />
+             value="200" />
 			<skill id="Bow"
-             value="100" />
+             value="200" />
 			<skill id="Throwing"
              value="100" />
 		</skills>
@@ -871,7 +873,7 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY RANGED - HERO -->
+	<!-- HEAVY RANGED (Arbalétrier) - HERO -->
 	<NPCCharacter id="mp_heavy_ranged_isengard_hero"
 									default_group="Ranged"
 									level="20"
@@ -890,18 +892,20 @@
                          key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
+			<skill id="Athletics"
+						 value="100" />
 			<skill id="Riding"
-             value="15" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="50" />
+             value="150" />
 			<skill id="TwoHanded"
-             value="50" />
+             value="120" />
 			<skill id="Polearm"
-             value="50" />
+             value="120" />
 			<skill id="Crossbow"
-             value="100" />
+             value="200" />
 			<skill id="Bow"
-             value="100" />
+             value="200" />
 			<skill id="Throwing"
              value="100" />
 		</skills>
@@ -929,22 +933,22 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- LIGHT CAVALRY (BERSERK) - TROOP -->
+	<!-- LIGHT CAVALRY (Berserk) - TROOP -->
 	<NPCCharacter id="mp_light_cavalry_isengard_troop"
                 default_group="Infantry"
-                level="15"
+                level="30"
                 voice="curt"
                 is_female="false"
 								name="{=al_lotr_isen_l_cav_t}Berserk"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
         key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
 			<BodyPropertiesMax version="4"
                          age="40.83"
-                         weight="0.65"
-                         build="0.65"
+                         weight="0.75"
+                         build="0.95"
                          key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
@@ -953,21 +957,21 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="100" />
-			<skill id="TwoHanded"
              value="200" />
+			<skill id="TwoHanded"
+             value="300" />
 			<skill id="Polearm"
-             value="40" />
+             value="200" />
 			<skill id="Bow"
              value="45" />
 			<skill id="Crossbow"
              value="50" />
 			<skill id="Throwing"
-             value="50" />
+             value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_2" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_3" />
@@ -979,7 +983,7 @@
 									 id="Item.uruk_helm_4_v1" />
 			</EquipmentRoster>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_2" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_3" />
@@ -991,7 +995,7 @@
 									 id="Item.uruk_helm_4" />
 			</EquipmentRoster>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_2" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_3" />
@@ -1002,22 +1006,22 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT CAVALRY (BERSERK) - HERO -->
+	<!-- LIGHT CAVALRY (Berserk) - HERO -->
 	<NPCCharacter id="mp_light_cavalry_isengard_hero"
                 default_group="Infantry"
-                level="15"
+                level="30"
                 voice="curt"
                 is_female="false"
 								name="{=al_lotr_isen_l_cav_h}Berserk"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
         key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
 			<BodyPropertiesMax version="4"
                          age="40.83"
-                         weight="0.65"
-                         build="0.65"
+                         weight="0.75"
+                         build="0.95"
                          key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
@@ -1026,21 +1030,21 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="100" />
-			<skill id="TwoHanded"
              value="200" />
+			<skill id="TwoHanded"
+             value="300" />
 			<skill id="Polearm"
-             value="40" />
+             value="200" />
 			<skill id="Bow"
              value="45" />
 			<skill id="Crossbow"
              value="50" />
 			<skill id="Throwing"
-             value="50" />
+             value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
 									 id="Item.uruk_sword_2" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_3" />
@@ -1054,10 +1058,10 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- HEAVY CAVALRY (ELITE) - TROOP -->
+	<!-- HEAVY CAVALRY (Elite) - TROOP -->
 	<NPCCharacter id="mp_heavy_cavalry_isengard_troop"
 									default_group="Infantry"
-									level="30"
+									level="25"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_h_cav_t}Elite Uruk"
@@ -1068,32 +1072,32 @@
         key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
 			<BodyPropertiesMax version="4"
                          age="40.83"
-                         weight="0.65"
-                         build="0.65"
+                         weight="0.75"
+                         build="0.85"
                          key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="150" />
+             value="140" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="250" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
              value="75" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="30" />
+             value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="Item2"
 									 id="Item.uruk_large_shield_1a" />
 				<equipment slot="Body"
@@ -1109,7 +1113,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="Item2"
 									 id="Item.uruk_large_shield_1b" />
 				<equipment slot="Body"
@@ -1125,7 +1129,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="Item2"
 									 id="Item.uruk_large_shield_1c" />
 				<equipment slot="Body"
@@ -1141,7 +1145,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="Item2"
 									 id="Item.uruk_large_shield_1d" />
 				<equipment slot="Body"
@@ -1157,7 +1161,7 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY CAVALRY (ELITE) - HERO -->
+	<!-- HEAVY CAVALRY (Elite) - HERO -->
 	<NPCCharacter id="mp_heavy_cavalry_isengard_hero"
 									default_group="Infantry"
 									level="30"
@@ -1177,28 +1181,28 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="150" />
+             value="140" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="250" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
              value="75" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="30" />
+             value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_3" />
 				<equipment slot="Item2"
-									 id="Item.uruk_shield_1" />
+									 id="Item.uruk_large_shield_1b" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_1" />
 				<equipment slot="Gloves"
@@ -1212,10 +1216,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY CAVALRY (ELITE) - BANNER BEARER -->
+	<!-- HEAVY CAVALRY (Elite) - BANNER BEARER -->
 	<NPCCharacter id="mp_heavy_cavalry_isengard_banner_bearer"
 									default_group="Infantry"
-									level="30"
+									level="25"
 									voice="curt"
 									is_female="false"
 									name="{=al_lotr_isen_h_cav_b}Elite Uruk"
@@ -1232,26 +1236,26 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="150" />
+             value="140" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="250" />
 			<skill id="TwoHanded"
-             value="60" />
+             value="150" />
 			<skill id="Polearm"
-             value="100" />
+             value="150" />
 			<skill id="Bow"
              value="75" />
 			<skill id="Crossbow"
              value="30" />
 			<skill id="Throwing"
-             value="30" />
+             value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
@@ -1267,7 +1271,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"

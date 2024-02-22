@@ -1,13 +1,14 @@
 <Items>
 	<!-- Isengard Banner -->
-	<Item multiplayer_item="true" id="isengard_banner"
+	<Item multiplayer_item="true" 
+				id="isengard_banner"
         name="{=M3ZTF7rj}Isengard banner"
         is_merchandise="false"
         body_name="bo_mace_a"
         recalculate_body="true"
         mesh="isengard_banner"
         prefab="isengard_banner"
-        culture="Culture.vlandia"
+        culture="Culture.isengard"
         weight="0.2"
         Type="Banner"
         using_tableau="true"
@@ -83,13 +84,6 @@
     <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
   </Item>
 	<!-- Uruk Swords -->
-	<CraftedItem multiplayer_item="true" id="uruk_sword_2" name="Uruk-Hai Berserker Cleaver" crafting_template="uruk_two_handed" has_modifier="false">
-		<Pieces>
-			<Piece id="uruk_blade_2" Type="Blade" scale_factor="100" />
-			<Piece id="uruk_handle_2" Type="Handle" scale_factor="100" />
-			<Piece id="uruk_guard_1" Type="Guard" scale_factor="100" />
-		</Pieces>
-	</CraftedItem>
 	<CraftedItem multiplayer_item="true" id="uruk_sword_1" name="Uruk-Hai Cleaver" crafting_template="uruk_one_handed" has_modifier="false">
 		<Pieces>
 			<Piece id="uruk_blade_1" Type="Blade" scale_factor="100" />
@@ -110,14 +104,7 @@
 		</Pieces>
 	</CraftedItem>
 	<!-- Uruk Polearms -->
-	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike">
-		<Pieces>
-			<Piece id="uruk_blade_3" Type="Blade" scale_factor="90" />
-			<Piece id="uruk_handle_3" Type="Handle" scale_factor="90" />
-			<Piece id="uruk_pommel_1" Type="Pommel" scale_factor="90" />
-		</Pieces>
-	</CraftedItem>
-	<CraftedItem culture="Culture.neutral_culture" multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike">
+	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike" culture="Culture.isengard">
 		<Pieces>
 			<Piece id="uruk_blade_3" Type="Blade" scale_factor="90" />
 			<Piece id="uruk_handle_3" Type="Handle" scale_factor="90" />
@@ -133,21 +120,6 @@
 		</ItemComponent>
 	</Item>
 	<Item multiplayer_item="true" id="uruk_bow_1" name="Uruk-Hai Short Bow" body_name="bo_composite_shotbow_c" mesh="uruk_bow_1" culture="Culture.isengard" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
-		<ItemComponent>
-			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" thrust_speed="82" speed_rating="89" missile_speed="71" weapon_length="109" accuracy="70" thrust_damage="52" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
-				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />
-			</Weapon>
-		</ItemComponent>
-		<Flags ForceAttachOffHandPrimaryItemBone="true" />
-	</Item>
-	<Item multiplayer_item="true" id="uruk_crossbow_1" name="Uruk-Hai Heavy Crossbow" body_name="bo_cross_bow_heavy" mesh="uruk_crossbow_1" culture="Culture.neutral_culture" weight="2.7" appearance="0.7" difficulty="20" Type="Crossbow" AmmoOffset="0.0, 0.02131, 0.24975" item_holsters="crossbow_back:bow_hip:mace_right_hip:bow_hip_2" holster_position_shift="0.02,0,-0.4">
-		<ItemComponent>
-			<Weapon weapon_class="Crossbow" ammo_class="Bolt" missile_speed="85" accuracy="90" thrust_damage="87" thrust_speed="80" speed_rating="61" weapon_length="100" ammo_limit="1" thrust_damage_type="Pierce" item_usage="crossbow" physics_material="wood_weapon" center_of_mass="0,0,0.4" modifier_group="crossbow">
-				<WeaponFlags RangedWeapon="true" HasString="true" CantReloadOnHorseback="true" CanPenetrateShield="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" />
-			</Weapon>
-		</ItemComponent>
-	</Item>
-	<Item multiplayer_item="true" id="uruk_bow_1" name="Uruk-Hai Short Bow" body_name="bo_composite_shotbow_c" mesh="uruk_bow_1" culture="Culture.neutral_culture" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
 		<ItemComponent>
 			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" missile_speed="70" accuracy="90" thrust_damage="48" thrust_speed="100" speed_rating="89" weapon_length="95" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
 				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />

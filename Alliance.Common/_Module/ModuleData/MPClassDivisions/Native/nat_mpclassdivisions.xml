@@ -7,33 +7,7 @@
 <!-- acceleration:          Goes from 0.0 to 1.0. This will be multiplied with 'bipedal_acceleration_multiplier'. Human only. -->
 <!-- hitpoints:             Goes from 1 to infinity. Default is 100. Human only. -->
 <MPClassDivisions>
-	<!-- VLANDIA -->
-	<MPClassDivision
-			id="mp_light_infantry_vlandia_b"
-			hero="mp_light_infantry_vlandia_hero_b"
-			troop="mp_light_infantry_vlandia_troop_b"
-			hero_idle_anim="act_vlandia_mp_peasant_levy_idle"
-			troop_idle_anim="act_idle_unarmed_1"
-			multiplier="0.92"
-			cost="80"
-			casual_cost="90"
-			icon="Infantry_Light"
-			melee_ai="30"
-			ranged_ai="30"
-			armor="7"
-			movement_speed="0.82"
-			combat_movement_speed="0.9"
-			acceleration="1.8">
-		<Perks>
-			<Perk   
-				game_mode="all"
-				name="{=*}Unarmed"
-				description="{=*}You only have your fists."
-				icon="PerkToughness"
-				perk_list="1">
-			</Perk>
-		</Perks>
-	</MPClassDivision>
+	<!-- VLANDIA -->	
 	<MPClassDivision
 		id="mp_light_infantry_vlandia"
 		hero="mp_light_infantry_vlandia_hero"

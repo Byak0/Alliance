@@ -8,7 +8,7 @@
 	</Item>
 	<Item multiplayer_item="true" id="uruk_arm_2" name="Uruk-Hai Shield Bracers" mesh="uruk_arm_2" culture="Culture.isengard" weight="1.7" appearance="1" Type="HandArmor">
 		<ItemComponent>
-			<Armor arm_armor="18" covers_hands="false" modifier_group="plate" material_type="Plate" />
+			<Armor arm_armor="20" covers_hands="false" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>
@@ -40,7 +40,7 @@
 	</Item>
 	<Item multiplayer_item="true" id="uruk_armor_2" name="Uruk-Hai Scout Armor" mesh="uruk_armor_2" culture="Culture.isengard" weight="4.2" appearance="1" Type="BodyArmor">
 		<ItemComponent>
-			<Armor body_armor="20" leg_armor="5" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="leather" material_type="Leather" />
+			<Armor body_armor="15" leg_armor="5" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="leather" material_type="Leather" />
 		</ItemComponent>
 		<Flags />
 	</Item>
