@@ -8,6 +8,9 @@ namespace Alliance.Common.GameModes.CvC
 {
     public class CvCGameModeSettings : GameModeSettings
     {
+        // Don't show these maps in CvC
+        public static List<string> InvalidMaps = new List<string>() { "helms_deep", "bilbo" };
+
         public CvCGameModeSettings() : base("CvC", "Commanders VS Commanders", "Two armies fight each other.")
         {
         }
@@ -52,7 +55,7 @@ namespace Alliance.Common.GameModes.CvC
 
         public override List<SceneInfo> GetAvailableMaps()
         {
-            return base.GetAvailableMaps().Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
+            return base.GetAvailableMaps().Where(scene => scene.Module != "Native" && InvalidMaps.All(str => !scene.Name.Contains(str)) && scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

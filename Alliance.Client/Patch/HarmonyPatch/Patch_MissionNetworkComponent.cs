@@ -112,6 +112,12 @@ namespace Alliance.Client.Patch.HarmonyPatch
             }
             Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
 
+            if (agentBuildData.AgentVisualsIndex == 0)
+            {
+                component.HasSpawnedAgentVisuals = true;
+                component.EquipmentUpdatingExpired = false;
+            }
+
             return false;
         }
 

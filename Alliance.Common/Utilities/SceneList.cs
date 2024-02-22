@@ -76,8 +76,8 @@ namespace Alliance.Common.Utilities
                     SceneInfo sceneInfo = new SceneInfo();
                     sceneInfo.Module = modName;
                     sceneInfo.Name = sceneNode.Attributes["name"].Value;
-                    sceneInfo.HasSpawnForAttacker = xmlDoc.SelectNodes("//game_entity[.//tag[@name='attacker'] and @name='mp_spawnpoint' or @prefab='mp_spawnpoint_attacker']").Count > 0;
-                    sceneInfo.HasSpawnForDefender = xmlDoc.SelectNodes("//game_entity[.//tag[@name='defender'] and @name='mp_spawnpoint' or @prefab='mp_spawnpoint_defender']").Count > 0;
+                    sceneInfo.HasSpawnForAttacker = xmlDoc.SelectNodes("//game_entity[.//tag[@name='attacker'] and @name='mp_spawnpoint' or .//tag[@name='attacker'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_attacker']").Count > 0;
+                    sceneInfo.HasSpawnForDefender = xmlDoc.SelectNodes("//game_entity[.//tag[@name='defender'] and @name='mp_spawnpoint' or .//tag[@name='defender'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_defender' or @prefab='skirmish_start_spawn']").Count > 0;
                     sceneInfo.HasGenericSpawn = sceneInfo.HasSpawnForAttacker || sceneInfo.HasSpawnForDefender || xmlDoc.SelectNodes("//game_entity[@name='mp_spawnpoint' or @prefab='mp_spawnpoint'] | //tag[@name='spawnpoint']").Count > 0;
                     sceneInfo.HasSpawnVisual = xmlDoc.SelectNodes("//game_entity[@name='spawn_visual'] | //game_entity[@prefab='spawn_visual']").Count > 0;
                     sceneInfo.HasNavmesh = File.Exists(Path.Combine(dir, "navmesh.bin"));
