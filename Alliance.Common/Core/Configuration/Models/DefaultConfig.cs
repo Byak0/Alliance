@@ -72,7 +72,7 @@ namespace Alliance.Common.Core.Configuration.Models
         public int FreeRespawnTimer = 60;
 
         [ConfigProperty("Allow custom appearance", "Spawn players with their custom appearance instead of the character default one.", ConfigValueType.Bool)]
-        public bool AllowCustomBody = true;
+        public bool AllowCustomBody = false;
         [ConfigProperty("Randomize bot appearance", "Randomize bots appearance. If false, all bots will have the same appearance.", ConfigValueType.Bool)]
         public bool RandomizeAppearance = true;
 

@@ -24,7 +24,7 @@ namespace Alliance.Common.GameModes.Battle
 
         public override List<SceneInfo> GetAvailableMaps()
         {
-            return Scenes.Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual).ToList();
+            return base.GetAvailableMaps().Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

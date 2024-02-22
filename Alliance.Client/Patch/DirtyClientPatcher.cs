@@ -16,8 +16,8 @@ namespace Alliance.Client.Patch
             //TODO : Following 1.2 -> Check if any patch can be removed
             //patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
             patchSuccess &= Patch_KeyBinder.Patch();
-            //patchSuccess &= Patch_MissionNetworkComponent.Patch();
-            //patchSuccess &= Patch_HeroClassVM.Patch();
+            patchSuccess &= Patch_MissionNetworkComponent.Patch();
+            patchSuccess &= Patch_HeroClassVM.Patch();
             patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
 
 

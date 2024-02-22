@@ -73,7 +73,7 @@ namespace Alliance.Common.GameModes
         /// </summary>
         public virtual List<SceneInfo> GetAvailableMaps()
         {
-            return Scenes.Where(scene => scene.HasGenericSpawn).ToList();
+            return Scenes.Where(scene => scene.HasGenericSpawn && !InvalidMaps.Contains(scene.Name)).ToList();
         }
 
         /// <summary>

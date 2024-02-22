@@ -23,7 +23,7 @@ namespace Alliance.Common.GameModes.Captain
 
         public override List<SceneInfo> GetAvailableMaps()
         {
-            return Scenes.Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
+            return base.GetAvailableMaps().Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

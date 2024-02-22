@@ -24,7 +24,7 @@ namespace Alliance.Common.GameModes.Siege
 
         public override List<SceneInfo> GetAvailableMaps()
         {
-            return Scenes.Where(scene => scene.Name.Contains("siege") && scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
+            return base.GetAvailableMaps().Where(scene => scene.Name.Contains("siege") && scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()
