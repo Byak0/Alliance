@@ -36,6 +36,57 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         public float TimeToAttainMaxTurn = 2f;
         public float DecelerationRate = 0.5f;
         public float TurnSlowdownRate = 10f;
+        protected bool ForceDecelerate = false;
+
+        public float GetMaxForwardSpeed
+        {
+            get
+            {
+                return MaxForwardSpeed;
+            }
+            set
+            {
+                if (value <= 0)
+                {
+                    if (0f == MaxForwardSpeed) return;
+                    MaxForwardSpeed = 0f;
+                    return;
+                }
+                if (value >= 10f)
+                {
+                    if (0f == MaxForwardSpeed) return;
+                    MaxForwardSpeed = 10f;
+                    return;
+                }
+                if (value == MaxForwardSpeed) return;
+                MaxForwardSpeed = value;
+            }
+        }
+
+        public float GetMaxBackwardSpeed
+        {
+            get
+            {
+                return MaxBackwardSpeed;
+            }
+            set
+            {
+                if (value <= 0)
+                {
+                    if (0f == MaxBackwardSpeed) return;
+                    MaxBackwardSpeed = 0f;
+                    return;
+                }
+                if (value >= 10f)
+                {
+                    if (0f == MaxBackwardSpeed) return;
+                    MaxBackwardSpeed = 10f;
+                    return;
+                }
+                if (value == MaxBackwardSpeed) return;
+                MaxBackwardSpeed = value;
+            }
+        }
 
         public bool CanFly = true;
         public bool FollowTerrain = true;
@@ -605,7 +656,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 decelerationRateToUse *= 4; // Change this factor as needed
             }
 
-            if (Math.Abs(CurrentForwardSpeed) < MaxForwardSpeed * 0.1 || PilotAgent == null)
+            if ((Math.Abs(CurrentForwardSpeed) < MaxForwardSpeed * 0.1 || PilotAgent == null) || ForceDecelerate)
             {
                 if (CurrentForwardSpeed > 0)
                 {

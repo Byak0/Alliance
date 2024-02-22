@@ -1,7 +1,7 @@
-ServerName Alliance - Test Server
+ServerName TEST RED
 GameType Lobby
 AdminPassword test123
-Map Anduin_shore
+Map battle_phenixCaslte
 add_map_to_usable_maps Lobby
 add_map_to_usable_maps MontStCombattant
 add_map_to_usable_maps Palmap_4
@@ -20,8 +20,8 @@ CultureTeam2 isengard
 MaxNumberOfPlayers 500
 MinNumberOfPlayersForMatchStart 0
 NumberOfBotsPerFormation 150
-NumberOfBotsTeam1 7
-NumberOfBotsTeam2 7
+NumberOfBotsTeam1 0
+NumberOfBotsTeam2 0
 FriendlyFireDamageMeleeFriendPercent 100
 FriendlyFireDamageMeleeSelfPercent 0
 FriendlyFireDamageRangedFriendPercent 25
