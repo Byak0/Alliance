@@ -1,5 +1,6 @@
-﻿using Alliance.Common.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Story
@@ -23,9 +24,9 @@ namespace Alliance.Common.GameModes.Story
             ModOptions.ShowOfficers = false;
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes;
+            return Scenes.Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

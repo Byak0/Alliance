@@ -45,7 +45,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
                 message.GetOption(MultiplayerOptions.OptionType.Map).GetValue(out string map);
 
                 // Check if the scene exist on server side
-                if (!SceneList.Scenes.Contains(map))
+                if (!SceneList.Scenes.Exists(sceneInfo => sceneInfo.Name == map))
                 {
                     SendMessageToPeer($"The scene \"{map}\" isn't available on this server", peer);
                     return false;

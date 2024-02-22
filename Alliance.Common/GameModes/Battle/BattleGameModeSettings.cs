@@ -1,6 +1,6 @@
-﻿using Alliance.Common.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Battle
@@ -22,12 +22,9 @@ namespace Alliance.Common.GameModes.Battle
             base.SetDefaultModOptions();
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "battle_", "tdm_", "skirmish_", "captain_", "sergeant_" }
-                    .Any(prefix => scene.Contains(prefix)))
-                    .ToList();
+            return Scenes.Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using System.Collections.Generic;
+using System.Linq;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.PvC
@@ -44,9 +46,9 @@ namespace Alliance.Common.GameModes.PvC
             ModOptions.ShowOfficers = true;
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return base.GetAvailableMaps();
+            return Scenes.Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual && scene.HasNavmesh).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

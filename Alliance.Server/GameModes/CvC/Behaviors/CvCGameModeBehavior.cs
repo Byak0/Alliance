@@ -22,7 +22,43 @@ namespace Alliance.Server.GameModes.CvC.Behaviors
 
         public override void OnBehaviorInitialize()
         {
-            base.OnBehaviorInitialize();
+            // MissionNetwork constructor
+            GameNetwork.AddNetworkHandler(this);
+
+            // MissionMultiplayerGameModeBase constructor
+            MultiplayerTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
+            MissionLobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
+            GameModeBaseClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+            NotificationsComponent = Mission.GetMissionBehavior<MultiplayerGameNotificationsComponent>();
+            RoundController = Mission.GetMissionBehavior<MultiplayerRoundController>();
+            WarmupComponent = Mission.GetMissionBehavior<MultiplayerWarmupComponent>();
+            TimerComponent = Mission.GetMissionBehavior<MultiplayerTimerComponent>();
+            PropertyInfo spawnComponent = typeof(MissionMultiplayerGameModeBase).GetProperty("SpawnComponent", BindingFlags.Instance | BindingFlags.Public);
+            spawnComponent.SetValue(this, Mission.Current.GetMissionBehavior<SpawnComponent>());
+            FieldInfo lastPerkTickTime = typeof(MissionMultiplayerGameModeBase).GetField("_lastPerkTickTime", BindingFlags.Instance | BindingFlags.NonPublic);
+            lastPerkTickTime.SetValue(this, Mission.Current.CurrentTime);
+
+            // MissionMultiplayerGameModeFlagDominationClient constructor
+
+            FieldInfo gameModeFlagDominationClient = typeof(MissionMultiplayerFlagDomination).GetField("_gameModeFlagDominationClient", BindingFlags.Instance | BindingFlags.NonPublic);
+            gameModeFlagDominationClient.SetValue(this, Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>());
+            FieldInfo morale = typeof(MissionMultiplayerFlagDomination).GetField("_morale", BindingFlags.Instance | BindingFlags.NonPublic);
+            morale.SetValue(this, 0f);
+
+            PropertyInfo allCapturePoints = typeof(MissionMultiplayerFlagDomination).GetProperty("AllCapturePoints", BindingFlags.Instance | BindingFlags.Public);
+            allCapturePoints.SetValue(this, Mission.Current.MissionObjects.FindAllWithType<FlagCapturePoint>().ToMBList());
+            // Init the _capturePointOwners with proper flag count
+            Team[] capturePointsOwnersTemp = new Team[AllCapturePoints.Count];
+            foreach (FlagCapturePoint allCapturePoint in AllCapturePoints)
+            {
+                allCapturePoint.SetTeamColorsWithAllSynched(4284111450u, uint.MaxValue);
+                capturePointsOwnersTemp[allCapturePoint.FlagIndex] = null;
+            }
+            FieldInfo capturePointOwners = typeof(MissionMultiplayerFlagDomination).GetField("_capturePointOwners", BindingFlags.Instance | BindingFlags.NonPublic);
+            capturePointOwners.SetValue(this, capturePointsOwnersTemp);
+            // Init the _defenderAttackerCountsInFlagArea with proper flag count
+            FieldInfo defenderAttackerCountsInFlagArea = typeof(MissionMultiplayerFlagDomination).GetField("_defenderAttackerCountsInFlagArea", BindingFlags.Instance | BindingFlags.NonPublic);
+            defenderAttackerCountsInFlagArea.SetValue(this, new (int, int)[AllCapturePoints.Count]);
 
             // Remove flag removal mechanic in case there is no flags to prevent crash
             FieldInfo pointRemovalTimeInSeconds = typeof(MissionMultiplayerFlagDomination).GetField("_pointRemovalTimeInSeconds", BindingFlags.Instance | BindingFlags.NonPublic);

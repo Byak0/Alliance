@@ -23,6 +23,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
@@ -212,7 +213,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             if (_selectedMap != null) _selectedMap.IsSelected = false;
             _selectedMap = mapCardVM;
             _selectedMap.IsSelected = true;
-            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, mapCardVM.MapID);
+            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, mapCardVM.MapInfo.Name);
             if (mapCardVM is ActCardVM)
             {
                 _selectedGameMode.GameModeSettings = (mapCardVM as ActCardVM).Act.ActSettings;
@@ -240,16 +241,16 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
                         Scenario scenario = result as Scenario;
                         foreach (Act act in scenario.Acts)
                         {
-                            Maps.Add(new ActCardVM(act.MapID, scenario, act, new Action<MapCardVM>(OnMapSelected)));
+                            Maps.Add(new ActCardVM(Scenes.Find(scene => scene.Name == act.MapID), scenario, act, new Action<MapCardVM>(OnMapSelected)));
                         }
                     }
                 }
             }
             else
             {
-                List<string> availableMaps = _selectedGameMode.GameModeSettings.GetAvailableMaps();
+                List<SceneInfo> availableMaps = _selectedGameMode.GameModeSettings.GetAvailableMaps();
 
-                foreach (string map in availableMaps)
+                foreach (SceneInfo map in availableMaps)
                 {
                     Maps.Add(new MapCardVM(map, new Action<MapCardVM>(OnMapSelected)));
                 }
@@ -259,7 +260,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             int mapIndex = -1;
             if (_selectedMap != null)
             {
-                mapIndex = Maps.FindIndex(map => map.MapID == _selectedMap.MapID);
+                mapIndex = Maps.FindIndex(map => map.MapInfo.Name == _selectedMap.MapInfo.Name);
             }
 
             // Select same map as before if possible, otherwise select default

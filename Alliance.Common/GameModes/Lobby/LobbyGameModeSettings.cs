@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
 using System.Collections.Generic;
-using System.Linq;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Lobby
@@ -24,12 +23,9 @@ namespace Alliance.Common.GameModes.Lobby
             base.SetDefaultModOptions();
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "character_", "editor_" } // Invalid maps
-                    .All(prefix => !scene.Contains(prefix)))
-                    .ToList();
+            return base.GetAvailableMaps();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()

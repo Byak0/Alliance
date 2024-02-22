@@ -1,10 +1,10 @@
 ﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes
@@ -71,12 +71,9 @@ namespace Alliance.Common.GameModes
         /// <summary>
         /// Return list of available Maps for this game mode.
         /// </summary>
-        public virtual List<string> GetAvailableMaps()
+        public virtual List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "character_", "editor_" } // Invalid maps
-                    .All(prefix => !scene.Contains(prefix)))
-                    .ToList();
+            return Scenes.Where(scene => scene.HasGenericSpawn).ToList();
         }
 
         /// <summary>
