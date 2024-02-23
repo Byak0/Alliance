@@ -343,8 +343,8 @@ namespace Alliance.Client.Extensions.AnimationPlayer.ViewModels
             // TODO : Check if it causes issues
             // Using ExecuteStartCustomAnimation instead of IdleAction as it allow to loop more animations.
             // However it may be less stable
-            //AnimationPreview.IdleAction = animationName;
-            AnimationPreview.ExecuteStartCustomAnimation(animationName, true, 0);
+            AnimationPreview.IdleAction = animationName;
+            //AnimationPreview.ExecuteStartCustomAnimation(animationName, true, 0);
         }
 
         private void OnAnimationSetSelected(AnimationSetCardVM animSetCardVM)
