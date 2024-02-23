@@ -37,11 +37,11 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         protected override void OnTick(float dt)
         {
             MatrixFrame frame = GameEntity.GetFrame();
-            if (frame.origin.Z > baseBoatLevel + 0.2f)
+            if (frame.origin.Z > baseBoatLevel + 0.09f)
             {
                 boatStatus = BoatPosition.FRONT_LANDED;
             }
-            else if (frame.origin.Z <= baseBoatLevel + 0.1f)
+            else if (frame.origin.Z <= baseBoatLevel + 0.07f)
             {
                 boatStatus = BoatPosition.IN_WATER;
             }
@@ -62,6 +62,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
                 case BoatPosition.IN_WATER:
                     GetMaxForwardSpeed = maxDefaultSpeed;
                     GetMaxBackwardSpeed = maxDefaultSpeed;
+                    DecelerationRate = 0.5f;
                     break;
                 default:
                     break;
@@ -71,6 +72,10 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
         private void UpdateSpeedIfNeeded(bool v)
         {
             CurrentTurnRate = 0f;
+            if (GetMaxForwardSpeed == 0)
+            {
+                DecelerationRate = 8f;
+            }
 
             if (v)
             {
