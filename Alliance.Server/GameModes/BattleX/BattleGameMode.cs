@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -20,6 +21,7 @@ namespace Alliance.Server.GameModes.BattleX
                 {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
+                    new VoipHandler(),
 
                     new MultiplayerRoundController(),
                     new MissionMultiplayerFlagDomination(MultiplayerGameType.Battle),

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+using Alliance.Common.Extensions.VOIP.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -18,6 +19,7 @@ namespace Alliance.Client.GameModes.BattleX
                 return new MissionBehavior[]
                 {
                     new FormationBehavior(),
+                    new VoipHandler(),
 
                     MissionLobbyComponent.CreateBehavior(),
                     new MultiplayerRoundComponent(),

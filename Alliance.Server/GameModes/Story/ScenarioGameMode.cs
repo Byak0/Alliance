@@ -1,5 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
@@ -45,6 +46,7 @@ namespace Alliance.Server.GameModes.Story
                     new ObjectivesBehavior(ScenarioManagerServer.Instance),
                     new FlagTrackerBehavior(),
                     new CapturableZoneBehavior(),
+                    new VoipHandler(),
 
                     // Native components
                     new MultiplayerTimerComponent(),
