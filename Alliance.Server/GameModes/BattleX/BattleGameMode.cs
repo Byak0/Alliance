@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
+using Alliance.Server.GameModes.CaptainX.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -24,7 +25,7 @@ namespace Alliance.Server.GameModes.BattleX
                     new VoipHandler(),
 
                     new MultiplayerRoundController(),
-                    new MissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
+                    new PvCMissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
                     new MultiplayerWarmupComponent(),
                     new MissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerTimerComponent(),
