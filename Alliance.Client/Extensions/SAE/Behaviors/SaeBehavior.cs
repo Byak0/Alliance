@@ -180,7 +180,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fakeDynamicMarkers = new List<GameEntity>() { };
             List<GameEntity> gameEntities = new();
             Mission.Current.Scene.GetEntities(ref gameEntities);
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME)).ToList()
+            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
                 .ForEach(entity =>
                 {
                     fakeDynamicMarkers.Add(entity);

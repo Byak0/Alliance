@@ -52,7 +52,7 @@ namespace Alliance.Server.Extensions.SAE.Behaviors
             List<GameEntity> gameEntities = new();
             Mission.Current.Scene.GetEntities(ref gameEntities);
             saeDynamicMapMarkersDico = new Dictionary<MatrixFrame, bool>();
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME)).ToList()
+            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
                 .ForEach(entity =>
                     saeDynamicMapMarkersDico.Add(
                         entity.GetGlobalFrame(),
