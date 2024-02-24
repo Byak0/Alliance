@@ -27,6 +27,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
         }
 
         public static int TotalBots = 0;
+        public const int MaxBotsPerSpawn = 200;
 
         static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
         static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();

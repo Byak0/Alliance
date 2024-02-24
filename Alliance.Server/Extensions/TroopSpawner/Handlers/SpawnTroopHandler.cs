@@ -248,6 +248,12 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 refuseReason = "There are no more troops available.";
                 return false;
             }
+            // If troop limit is reached
+            if (model.TroopCount > SpawnHelper.MaxBotsPerSpawn)
+            {
+                refuseReason = "You can't recruit this many troops at once.";
+                return false;
+            }
             return true;
         }
     }

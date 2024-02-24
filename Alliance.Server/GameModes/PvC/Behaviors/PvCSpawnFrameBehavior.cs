@@ -197,7 +197,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                 }
             }
             MatrixFrame globalFrame = spawnPointList[bestSpawnIndex].GetGlobalFrame();
-            if (nbAgentsAtBest > 50)
+            if (nbAgentsAtBest > 30)
             {
                 Debug.Print("Too much agents already spawned at this position, spawning slightly to the side.", 0, Debug.DebugColor.Yellow);
                 globalFrame.Advance(MBRandom.RandomFloatRanged(-10f, 10f));
