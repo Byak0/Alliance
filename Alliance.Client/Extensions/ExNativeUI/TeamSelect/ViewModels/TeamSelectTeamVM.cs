@@ -483,10 +483,20 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
             {
                 DisplayedPrimary = new TextObject("{=pSheKLB4}Spectator").ToString();
             }
-            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC" ||
-                (int)Team.Side == Config.Instance.CommanderSide && MultiplayerOptions.OptionType.GameType.GetStrValue() == "PvC")
+            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
             {
                 DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
+            }
+            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "PvC")
+            {
+                if ((int)Team.Side == Config.Instance.CommanderSide)
+                {
+                    DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
+                }
+                else
+                {
+                    DisplayedPrimary = new TextObject("{=al_players}Players").ToString();
+                }
             }
             else if (Team.Side == BattleSideEnum.Attacker)
             {
