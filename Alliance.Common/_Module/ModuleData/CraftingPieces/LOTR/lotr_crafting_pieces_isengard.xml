@@ -29,23 +29,23 @@
 	</CraftingPiece>
 
 	<!-- BERSERKER BLADE -->
-	<CraftingPiece id="uruk_blade_2" name="Uruk-Hai Berserker Blade" tier="3" piece_type="Blade" mesh="uruk_sword_2_blade" culture="Culture.isengard" length="102" weight="1.75" excluded_item_usage_features="thrust">
+	<CraftingPiece id="uruk_blade_2" name="Uruk-Hai Berserker Blade" tier="3" piece_type="Blade" mesh="uruk_sword_2_blade" culture="Culture.isengard" length="95.6" weight="1.0" excluded_item_usage_features="thrust">
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
-			<Swing damage_type="Cut" damage_factor="4" />
+			<Swing damage_type="Cut" damage_factor="6" />
 		</BladeData>
 		<Flags>
 			<Flag name="Civilian" type="ItemFlags" />
+			<Flag name="BonusAgainstShield" />
 		</Flags>
 	</CraftingPiece>
 
-	<CraftingPiece id="uruk_handle_2" name="Uruk-Hai Berserker Handle" tier="3" piece_type="Handle" mesh="uruk_sword_2_handle" culture="Culture.isengard" length="22" weight="0.1">
-		<BuildData piece_offset="0" previous_piece_offset="0.1" next_piece_offset="0.1" />
+	<CraftingPiece id="uruk_guard_1" name="Uruk-Hai Berserker Guard" tier="3" piece_type="Guard" mesh="uruk_sword_2_guard" culture="Culture.isengard" length="1.61" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="0.2" />
 	</CraftingPiece>
 
-	<CraftingPiece id="uruk_guard_1" name="Uruk-Hai Berserker Guard" tier="1" piece_type="Guard" mesh="uruk_sword_2_guard" culture="Culture.isengard" length="1.61" weight="0.2" is_default="true">
-		<BuildData next_piece_offset="0.2" />
-		<StatContributions armor_bonus="2" />
+	<CraftingPiece id="uruk_handle_2" name="Uruk-Hai Berserker Handle" tier="3" piece_type="Handle" mesh="uruk_sword_2_handle" culture="Culture.isengard" length="22" weight="0.25">
+		<BuildData piece_offset="-2.0" previous_piece_offset="0.2" next_piece_offset="0.3" />
 	</CraftingPiece>
 
 	<!-- STEEL PIKE -->

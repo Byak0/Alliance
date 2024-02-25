@@ -3,13 +3,13 @@
 	<!-- ************************************************************************* -->
 	<!-- ***************************  ISENGARD  ********************************** -->
 	<!-- ************************************************************************* -->
-	<!-- LIGHT INFANTRY (Scout) - TROOP -->
+	<!-- Uruk-hai Scout - TROOP -->
 	<NPCCharacter id="mp_light_infantry_isengard_troop"
 									default_group="Infantry"
 									level="5"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_light}Eclaireur"
+									name="{=al_lotr_isen_scout_t}Uruk-hai Scout"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -86,13 +86,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT INFANTRY (Scout) - HERO (NAMELESS) -->
+	<!-- Uruk-hai Scout - HERO -->
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
                 default_group="Infantry"
                 level="5"
                 voice="curt"
                 is_female="false"
-                name="{=al_lotr_isen_light_h}Eclaireur"
+								name="{=al_lotr_isen_scout_h}Uruk-hai Scout"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
@@ -169,13 +169,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- LIGHT INFANTRY (Scout) - BANNER BEARER -->
+	<!-- Uruk-hai Scout - BANNER BEARER -->
 	<NPCCharacter id="mp_light_infantry_isengard_banner_bearer"
 									default_group="Infantry"
 									level="5"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_light_b}Eclaireur"
+									name="{=al_lotr_isen_scout_b}Uruk-hai Scout"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -225,13 +225,13 @@
 		</Equipments>		
 	</NPCCharacter>
 
-	<!-- SHOCK INFANTRY (Piquier) - TROOP -->
-	<NPCCharacter id="mp_shock_infantry_isengard_troop"
+	<!-- Uruk-hai Pikeman - TROOP -->
+	<NPCCharacter id="mp_pike_infantry_isengard_troop"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_shock_t}Piquier"
+									name="{=al_lotr_isen_pikeman_t}Uruk-hai Pikeman"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -278,13 +278,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- SHOCK INFANTRY (Piquier) - HERO -->
-	<NPCCharacter id="mp_shock_infantry_isengard_hero"
+	<!-- Uruk-hai Pikeman - HERO -->
+	<NPCCharacter id="mp_pike_infantry_isengard_hero"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_shock_h}Piquier"
+									name="{=al_lotr_isen_pikeman_h}Uruk-hai Pikeman"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -331,13 +331,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- SHOCK INFANTRY (Piquier) - BANNER BEARER -->
-	<NPCCharacter id="mp_shock_infantry_isengard_banner_bearer"
+	<!-- Uruk-hai Pikeman - BANNER BEARER -->
+	<NPCCharacter id="mp_pike_infantry_isengard_banner_bearer"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_shock_b}Piquier"
+									name="{=al_lotr_isen_pikeman_b}Uruk-hai Pikeman"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -387,684 +387,275 @@
 		</Equipments>
 	</NPCCharacter>
 
-	<!-- HEAVY INFANTRY (Uruk lourd) - TROOP -->
+	<!-- Uruk-hai Warrior - TROOP -->
+	<NPCCharacter id="mp_sword_infantry_isengard_troop"
+									default_group="Infantry"
+									level="15"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_warrior_t}Uruk-hai Warrior"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="100" />
+			<skill id="Riding"
+             value="0" />
+			<skill id="OneHanded"
+             value="150" />
+			<skill id="TwoHanded"
+             value="150" />
+			<skill id="Polearm"
+             value="150" />
+			<skill id="Bow"
+             value="30" />
+			<skill id="Crossbow"
+             value="30" />
+			<skill id="Throwing"
+             value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_shield_1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v2" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_shield_1_v1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_shield_1_v1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_shield_1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- Uruk-hai Warrior - HERO -->
+	<NPCCharacter id="mp_sword_infantry_isengard_hero"
+									default_group="Infantry"
+									level="15"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_warrior_h}Uruk-hai Warrior"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="100" />
+			<skill id="Riding"
+             value="0" />
+			<skill id="OneHanded"
+             value="150" />
+			<skill id="TwoHanded"
+             value="150" />
+			<skill id="Polearm"
+             value="150" />
+			<skill id="Bow"
+             value="30" />
+			<skill id="Crossbow"
+             value="30" />
+			<skill id="Throwing"
+             value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_shield_1_v1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- Uruk-hai Warrior - BANNER BEARER -->
+	<NPCCharacter id="mp_sword_infantry_isengard_banner_bearer"
+									default_group="Infantry"
+									level="15"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_warrior_b}Uruk-hai Warrior"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="100" />
+			<skill id="Riding"
+             value="0" />
+			<skill id="OneHanded"
+             value="150" />
+			<skill id="TwoHanded"
+             value="150" />
+			<skill id="Polearm"
+             value="150" />
+			<skill id="Bow"
+             value="30" />
+			<skill id="Crossbow"
+             value="30" />
+			<skill id="Throwing"
+             value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v2" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+
+	<!-- Heavy Uruk-hai - TROOP -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_troop"
-									default_group="Infantry"
-									level="15"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_heavy_t}Uruk lourd"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-             value="100" />
-			<skill id="Riding"
-             value="0" />
-			<skill id="OneHanded"
-             value="150" />
-			<skill id="TwoHanded"
-             value="150" />
-			<skill id="Polearm"
-             value="150" />
-			<skill id="Bow"
-             value="30" />
-			<skill id="Crossbow"
-             value="30" />
-			<skill id="Throwing"
-             value="100" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v2" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1_v1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1_v1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v2" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-	<!-- HEAVY INFANTRY (Uruk lourd) - HERO -->
-	<NPCCharacter id="mp_heavy_infantry_isengard_hero"
-									default_group="Infantry"
-									level="15"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_heavy_h}Uruk lourd"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-             value="100" />
-			<skill id="Riding"
-             value="0" />
-			<skill id="OneHanded"
-             value="150" />
-			<skill id="TwoHanded"
-             value="150" />
-			<skill id="Polearm"
-             value="150" />
-			<skill id="Bow"
-             value="30" />
-			<skill id="Crossbow"
-             value="30" />
-			<skill id="Throwing"
-             value="100" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1_v1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v2" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-	<!-- HEAVY INFANTRY (Uruk lourd) - BANNER BEARER -->
-	<NPCCharacter id="mp_heavy_infantry_isengard_banner_bearer"
-									default_group="Infantry"
-									level="15"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_heavy_b}Uruk lourd"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-             value="100" />
-			<skill id="Riding"
-             value="0" />
-			<skill id="OneHanded"
-             value="150" />
-			<skill id="TwoHanded"
-             value="150" />
-			<skill id="Polearm"
-             value="150" />
-			<skill id="Bow"
-             value="30" />
-			<skill id="Crossbow"
-             value="30" />
-			<skill id="Throwing"
-             value="100" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="ExtraWeaponSlot"
-									 id="Item.isengard_banner" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v2" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="ExtraWeaponSlot"
-									 id="Item.isengard_banner" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="ExtraWeaponSlot"
-									 id="Item.isengard_banner" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v2" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="ExtraWeaponSlot"
-									 id="Item.isengard_banner" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-
-	<!-- LIGHT RANGED (Archer) - TROOP -->
-	<NPCCharacter id="mp_light_ranged_isengard_troop"
-									default_group="Ranged"
-									level="5"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_l_ranged_t}Archer Uruk"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-												 age="40.83"
-												 weight="0.65"
-												 build="0.65"
-												 key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-						 value="120" />
-			<skill id="Riding"
-						 value="0" />
-			<skill id="OneHanded"
-						 value="100" />
-			<skill id="TwoHanded"
-						 value="60" />
-			<skill id="Polearm"
-						 value="80" />
-			<skill id="Bow"
-						 value="120" />
-			<skill id="Crossbow"
-						 value="120" />
-			<skill id="Throwing"
-						 value="60" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_bow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
-				<equipment slot="Item3"
-									 id="Item.vlandic_arrows" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_bow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-	<!-- LIGHT RANGED (Archer) - HERO -->
-	<NPCCharacter id="mp_light_ranged_isengard_hero"
-									default_group="Ranged"
-									level="5"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_l_ranged_h}Archer Uruk"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-						 value="120" />
-			<skill id="Riding"
-						 value="0" />
-			<skill id="OneHanded"
-						 value="100" />
-			<skill id="TwoHanded"
-						 value="60" />
-			<skill id="Polearm"
-						 value="80" />
-			<skill id="Bow"
-						 value="120" />
-			<skill id="Crossbow"
-						 value="120" />
-			<skill id="Throwing"
-						 value="60" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_bow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-
-	<!-- HEAVY RANGED (Arbalétrier) - TROOP -->
-	<NPCCharacter id="mp_heavy_ranged_isengard_troop"
-									default_group="Ranged"
-									level="20"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_h_ranged_t}Arbalétrier lourd"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-						 value="100" />
-			<skill id="Riding"
-						 value="0" />
-			<skill id="OneHanded"
-             value="150" />
-			<skill id="TwoHanded"
-             value="120" />
-			<skill id="Polearm"
-             value="120" />
-			<skill id="Crossbow"
-             value="200" />
-			<skill id="Bow"
-             value="200" />
-			<skill id="Throwing"
-             value="100" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_crossbow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_3" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_crossbow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_3" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_crossbow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_3" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-	<!-- HEAVY RANGED (Arbalétrier) - HERO -->
-	<NPCCharacter id="mp_heavy_ranged_isengard_hero"
-									default_group="Ranged"
-									level="20"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_h_ranged_h}Arbalétrier lourd"
-									occupation="Soldier"
-									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-						 value="100" />
-			<skill id="Riding"
-						 value="0" />
-			<skill id="OneHanded"
-             value="150" />
-			<skill id="TwoHanded"
-             value="120" />
-			<skill id="Polearm"
-             value="120" />
-			<skill id="Crossbow"
-             value="200" />
-			<skill id="Bow"
-             value="200" />
-			<skill id="Throwing"
-             value="100" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_crossbow_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_3" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-
-	<!-- LIGHT CAVALRY (Berserk) - TROOP -->
-	<NPCCharacter id="mp_light_cavalry_isengard_troop"
-                default_group="Infantry"
-                level="30"
-                voice="curt"
-                is_female="false"
-								name="{=al_lotr_isen_l_cav_t}Berserk"
-                occupation="Soldier"
-                culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.95"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-             value="140" />
-			<skill id="Riding"
-             value="0" />
-			<skill id="OneHanded"
-             value="200" />
-			<skill id="TwoHanded"
-             value="300" />
-			<skill id="Polearm"
-             value="200" />
-			<skill id="Bow"
-             value="45" />
-			<skill id="Crossbow"
-             value="50" />
-			<skill id="Throwing"
-             value="150" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_2" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_4_v1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_2" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_4" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_2" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_3" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_4_v1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-	<!-- LIGHT CAVALRY (Berserk) - HERO -->
-	<NPCCharacter id="mp_light_cavalry_isengard_hero"
-                default_group="Infantry"
-                level="30"
-                voice="curt"
-                is_female="false"
-								name="{=al_lotr_isen_l_cav_h}Berserk"
-                occupation="Soldier"
-                culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.95"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
-		</face>
-		<skills>
-			<skill id="Athletics"
-             value="140" />
-			<skill id="Riding"
-             value="0" />
-			<skill id="OneHanded"
-             value="200" />
-			<skill id="TwoHanded"
-             value="300" />
-			<skill id="Polearm"
-             value="200" />
-			<skill id="Bow"
-             value="45" />
-			<skill id="Crossbow"
-             value="50" />
-			<skill id="Throwing"
-             value="150" />
-		</skills>
-		<Equipments>
-			<EquipmentRoster>
-				<equipment slot="Item1"
-									 id="Item.uruk_sword_2" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_3" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_4_v1" />
-			</EquipmentRoster>
-		</Equipments>
-	</NPCCharacter>
-
-	<!-- HEAVY CAVALRY (Elite) - TROOP -->
-	<NPCCharacter id="mp_heavy_cavalry_isengard_troop"
 									default_group="Infantry"
 									level="25"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_h_cav_t}Elite Uruk"
+									name="{=al_lotr_isen_heavy_t}Heavy Uruk-hai"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -1161,13 +752,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY CAVALRY (Elite) - HERO -->
-	<NPCCharacter id="mp_heavy_cavalry_isengard_hero"
+	<!-- Heavy Uruk-hai - HERO -->
+	<NPCCharacter id="mp_heavy_infantry_isengard_hero"
 									default_group="Infantry"
 									level="30"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_h_cav_h}Elite Uruk"
+									name="{=al_lotr_isen_heavy_h}Heavy Uruk-hai"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -1216,13 +807,13 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY CAVALRY (Elite) - BANNER BEARER -->
-	<NPCCharacter id="mp_heavy_cavalry_isengard_banner_bearer"
+	<!-- Heavy Uruk-hai - BANNER BEARER -->
+	<NPCCharacter id="mp_heavy_infantry_isengard_banner_bearer"
 									default_group="Infantry"
 									level="25"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_h_cav_b}Elite Uruk"
+									name="{=al_lotr_isen_heavy_b}Heavy Uruk-hai"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -1287,4 +878,413 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
+
+	<!-- Uruk-hai Berserker - TROOP -->
+	<NPCCharacter id="mp_berserk_isengard_troop"
+                default_group="Infantry"
+                level="30"
+                voice="curt"
+                is_female="false"
+								name="{=al_lotr_isen_berserk_t}Uruk-hai Berserker"
+                occupation="Soldier"
+                culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.75"
+                         build="0.95"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="140" />
+			<skill id="Riding"
+             value="0" />
+			<skill id="OneHanded"
+             value="200" />
+			<skill id="TwoHanded"
+             value="300" />
+			<skill id="Polearm"
+             value="200" />
+			<skill id="Bow"
+             value="45" />
+			<skill id="Crossbow"
+             value="50" />
+			<skill id="Throwing"
+             value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_berserker_cleaver" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_4_v1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_berserker_cleaver" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_berserker_cleaver" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_3" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_4_v1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- Uruk-hai Berserker - HERO -->
+	<NPCCharacter id="mp_berserk_isengard_hero"
+                default_group="Infantry"
+                level="30"
+                voice="curt"
+                is_female="false"
+								name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker"
+                occupation="Soldier"
+                culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.75"
+                         build="0.95"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="140" />
+			<skill id="Riding"
+             value="0" />
+			<skill id="OneHanded"
+             value="200" />
+			<skill id="TwoHanded"
+             value="300" />
+			<skill id="Polearm"
+             value="200" />
+			<skill id="Bow"
+             value="45" />
+			<skill id="Crossbow"
+             value="50" />
+			<skill id="Throwing"
+             value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.uruk_berserker_cleaver" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_4_v1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+
+	<!-- Uruk-hai Archer - TROOP -->
+	<NPCCharacter id="mp_light_ranged_isengard_troop"
+									default_group="Ranged"
+									level="5"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_archer_t}Uruk-hai Archer"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+												 age="40.83"
+												 weight="0.65"
+												 build="0.65"
+												 key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="120" />
+			<skill id="Riding"
+						 value="0" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="60" />
+			<skill id="Polearm"
+						 value="80" />
+			<skill id="Bow"
+						 value="120" />
+			<skill id="Crossbow"
+						 value="120" />
+			<skill id="Throwing"
+						 value="60" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_bow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_arrows_barbed" />
+				<equipment slot="Item3"
+									 id="Item.vlandic_arrows" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_2" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_2" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_bow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_arrows_barbed" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_2" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_2" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- Uruk-hai Archer - HERO -->
+	<NPCCharacter id="mp_light_ranged_isengard_hero"
+									default_group="Ranged"
+									level="5"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_archer_h}Uruk-hai Archer"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="120" />
+			<skill id="Riding"
+						 value="0" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="60" />
+			<skill id="Polearm"
+						 value="80" />
+			<skill id="Bow"
+						 value="120" />
+			<skill id="Crossbow"
+						 value="120" />
+			<skill id="Throwing"
+						 value="60" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_bow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_arrows_barbed" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_2" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_2" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+
+	<!-- Uruk-hai Crossbowman - TROOP -->
+	<NPCCharacter id="mp_heavy_ranged_isengard_troop"
+									default_group="Ranged"
+									level="20"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_arbalest_t}Uruk-hai Crossbowman"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="0" />
+			<skill id="OneHanded"
+             value="150" />
+			<skill id="TwoHanded"
+             value="120" />
+			<skill id="Polearm"
+             value="120" />
+			<skill id="Crossbow"
+             value="200" />
+			<skill id="Bow"
+             value="200" />
+			<skill id="Throwing"
+             value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_crossbow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Item3"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_3" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_crossbow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Item3"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_3" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_crossbow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Item3"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_3" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- Uruk-hai Crossbowman - HERO -->
+	<NPCCharacter id="mp_heavy_ranged_isengard_hero"
+									default_group="Ranged"
+									level="20"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_arbalest_h}Uruk-hai Crossbowman"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
+        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4"
+                         age="40.83"
+                         weight="0.65"
+                         build="0.65"
+                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="0" />
+			<skill id="OneHanded"
+             value="150" />
+			<skill id="TwoHanded"
+             value="120" />
+			<skill id="Polearm"
+             value="120" />
+			<skill id="Crossbow"
+             value="200" />
+			<skill id="Bow"
+             value="200" />
+			<skill id="Throwing"
+             value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_crossbow_1" />
+				<equipment slot="Item1"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Item3"
+									 id="Item.mp_bolts_western" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_3" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>	
 </MPCharacters>

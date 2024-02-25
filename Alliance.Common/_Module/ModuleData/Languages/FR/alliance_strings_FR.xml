@@ -45,6 +45,26 @@
 		<string id="str_alliance_scene_battle_phenixCaslte" text="Phenix" />
 		<string id="str_alliance_scene_anduin_shore" text="Les Rivages d'Anduin par Esperanza" />
 
+		<!-- Unit names -->
+		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_scout_h" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_scout_b" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_t" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_h" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_b" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_t" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_h" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_b" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_heavy_t" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_heavy_h" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_heavy_b" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_berserk_t" text="Berserker Uruk-hai" />
+		<string id="al_lotr_isen_berserk_h" text="Berserker Uruk-hai" />
+		<string id="al_lotr_isen_archer_t" text="Archer Uruk-hai" />
+		<string id="al_lotr_isen_archer_h" text="Archer Uruk-hai" />
+		<string id="al_lotr_isen_arbalest_t" text="Arbalétrier Uruk-hai" />
+		<string id="al_lotr_isen_arbalest_h" text="Arbalétrier Uruk-hai" />
+
 		<!-- Scenario text for BFHD -->
 		<string id="str_alliance_scenario_name_BFHD" text="La Bataille pour le Gouffre de Helm" />
 		<string id="str_alliance_scenario_description_BFHD" text="Défendez le Gouffre de Helm contre les armées d'Isengard" />

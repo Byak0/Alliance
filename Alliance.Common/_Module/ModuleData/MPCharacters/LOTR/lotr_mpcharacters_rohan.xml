@@ -642,7 +642,7 @@
 			<skill id="Polearm"
              value="60" />
 			<skill id="Bow"
-             value="100" />
+             value="120" />
 			<skill id="Crossbow"
              value="45" />
 			<skill id="Throwing"
