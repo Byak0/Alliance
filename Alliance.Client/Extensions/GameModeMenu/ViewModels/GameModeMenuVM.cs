@@ -274,6 +274,8 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             NativeOptions = new MBBindingList<OptionVM>();
 
             _selectedGameMode.GameModeSettings.SetDefaultNativeOptions();
+            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, _selectedMap.MapInfo.Name);
+
             List<OptionType> optionTypes = _selectedGameMode.GameModeSettings.GetAvailableNativeOptions();
             foreach (OptionType optionType in optionTypes)
             {
