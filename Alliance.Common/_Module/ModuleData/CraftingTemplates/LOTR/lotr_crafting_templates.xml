@@ -243,7 +243,6 @@
 		<UsablePieces>
 			<UsablePiece piece_id="gimli_d_axe_blade" />
 			<UsablePiece piece_id="gimli_d_axe_handle" />
-			<UsablePiece piece_id="gimli_d_axe_pommel" />
 		</UsablePieces>
 	</CraftingTemplate>
 	<CraftingTemplate id="rohan_one_handed"
@@ -315,7 +314,7 @@
 	<CraftingTemplate id="legolas_dagger_template"
                     item_type="OneHandedWeapon"
                     modifier_group="sword"
-                    item_holsters="sword_left_hip_3:sword_left_hip_2:sword_left_hip:sword_back"
+                    item_holsters="sword_back:sword_back_3:sword_back_1:sword_back_3"
                     default_item_holster_position_offset="0,0,-0.1"
                     use_weapon_as_holster_mesh="true">
 		<PieceDatas>
@@ -360,6 +359,133 @@
 		<UsablePieces>
 			<UsablePiece piece_id="mp_legolas_dagger_grip" />
 			<UsablePiece piece_id="legolas_dagger_blade" />
+		</UsablePieces>
+	</CraftingTemplate>
+
+	<CraftingTemplate
+		id="RohanOneHandedAxe"
+		item_type="OneHandedWeapon"
+		modifier_group="axe"
+		item_holsters="axe_right_hip:axe_right_hip_2:mace_right_hip:axe_back"
+		default_item_holster_position_offset="0,0,-0.45"
+		use_weapon_as_holster_mesh="true">
+		<PieceDatas>
+			<PieceData
+				piece_type="Handle"
+				build_order="0" />
+			<PieceData
+				piece_type="Blade"
+				build_order="1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription
+				id="RohanOneHandedAxe" />
+		</WeaponDescriptions>
+		<StatsData>
+			<StatData
+				stat_type="Weight"
+				max_value="7.0" />
+			<StatData
+				stat_type="WeaponReach"
+				max_value="300" />
+			<StatData
+				stat_type="ThrustSpeed"
+				max_value="200" />
+			<StatData
+				stat_type="SwingSpeed"
+				max_value="200" />
+			<StatData
+				stat_type="ThrustDamage"
+				max_value="500" />
+			<StatData
+				stat_type="SwingDamage"
+				max_value="500" />
+			<StatData
+				stat_type="Handling"
+				max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece
+				piece_id="rohan_axe_1_handle" />
+			<UsablePiece
+				piece_id="rohan_axe_1_head" />
+			<UsablePiece
+				piece_id="gimli_one_handed_axe_handle" />
+			<UsablePiece
+				piece_id="gimli_one_handed_axe_head" />
+		</UsablePieces>
+	</CraftingTemplate>
+
+	<CraftingTemplate
+		id="gimli_ThrowingAxe"
+		item_type="Thrown"
+		modifier_group="axe_throwing"
+		item_holsters="throwing_axe:throwing_axe_2:axe_right_hip_2:axe_back" 
+		default_item_holster_position_offset="0,0,0.05"
+		always_show_holster_with_weapon="true">
+		<PieceDatas>
+			<PieceData
+				piece_type="Handle"
+				build_order="0" />
+			<PieceData
+				piece_type="Blade"
+				build_order="1" />
+		</PieceDatas>
+		<WeaponDescriptions>
+			<WeaponDescription
+				id="gimli_ThrowingAxe" />
+			<WeaponDescription
+				id="gimli_OneHandedAxe" />
+		</WeaponDescriptions>
+		<StatsData
+			weapon_description="gimli_ThrowingAxe">
+			<StatData
+				stat_type="Weight"
+				max_value="7.0" />
+			<StatData
+				stat_type="WeaponReach"
+				max_value="300" />
+			<StatData
+				stat_type="MissileDamage"
+				max_value="500" />
+			<StatData
+				stat_type="MissileSpeed"
+				max_value="200" />
+			<StatData
+				stat_type="Accuracy"
+				max_value="100" />
+		</StatsData>
+		<StatsData
+			weapon_description="gimli_OneHandedAxe">
+			<StatData
+				stat_type="Weight"
+				max_value="7.0" />
+			<StatData
+				stat_type="WeaponReach"
+				max_value="300" />
+			<StatData
+				stat_type="ThrustSpeed"
+				max_value="200" />
+			<StatData
+				stat_type="SwingSpeed"
+				max_value="200" />
+			<StatData
+				stat_type="ThrustDamage"
+				max_value="500" />
+			<StatData
+				stat_type="SwingDamage"
+				max_value="500" />
+			<StatData
+				stat_type="Handling"
+				max_value="200" />
+			<!--<StatData stat_type="FollowUp" max_value="200" />-->
+		</StatsData>
+		<UsablePieces>
+			<UsablePiece
+				piece_id="gimli_throwing_axe_head" />
+			<UsablePiece
+				piece_id="gimli_throwing_axe_handle" />
 		</UsablePieces>
 	</CraftingTemplate>
 </CraftingTemplates>

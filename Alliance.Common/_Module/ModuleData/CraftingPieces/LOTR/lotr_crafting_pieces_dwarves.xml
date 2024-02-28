@@ -37,4 +37,111 @@
 		<BuildData piece_offset="25"
                next_piece_offset="0" />
 	</CraftingPiece>
+
+  <CraftingPiece
+		id="gimli_one_handed_axe_handle"
+		name="Gimli axe handle regular"
+		tier="2"
+		piece_type="Handle"
+		mesh="gimli_one_handed_axe_handle"
+		length="81.2"
+		weight="0.329">
+		<BuildData
+			piece_offset="50"
+			next_piece_offset="50.8" />
+		<Materials>
+			<Material
+				id="Wood"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
+
+
+	<CraftingPiece
+		id="gimli_one_handed_axe_head"
+		name="Gimli axe head regular"
+		tier="2"
+		piece_type="Blade"
+		mesh="gimli_one_handed_axe_head"
+		distance_to_next_piece="0"
+		distance_to_previous_piece="0"
+		weight="0.4">
+		<BuildData
+			piece_offset="0" />
+		<BladeData
+			stack_amount="3"
+			blade_length="6.0"
+			blade_width="14.9"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+		<Materials>
+			<Material
+				id="Iron2"
+				count="4" />
+		</Materials>
+	</CraftingPiece>
+
+  <CraftingPiece
+		id="gimli_throwing_axe_head"
+		name="Gimli Throwing Axe Head"
+		tier="4"
+		piece_type="Blade"
+		mesh="gimli_throwing_axe_head"
+		distance_to_next_piece="5.787"
+		distance_to_previous_piece="1.483"
+		weight="0.453"
+		is_default="true">
+		<BuildData
+			piece_offset="-2.966" />
+		<BladeData
+			stack_amount="3"
+			blade_length="8.15"
+			blade_width="11.3"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+		<Materials>
+			<Material
+				id="Iron4"
+				count="3" />
+		</Materials>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece
+		id="gimli_throwing_axe_handle"
+		name="{Gimli Throwing Axe Handle"
+		tier="4"
+		piece_type="Handle"
+		mesh="gimli_throwing_axe_handle"
+		length="46.18"
+		weight="0.234">
+		<BuildData
+			piece_offset="8.175"
+			next_piece_offset="-6.6" />
+		<Materials>
+			<Material
+				id="Wood"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
 </CraftingPieces>
