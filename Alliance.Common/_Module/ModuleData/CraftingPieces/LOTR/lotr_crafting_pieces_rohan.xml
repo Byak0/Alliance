@@ -177,4 +177,55 @@
 		<BuildData next_piece_offset="0.2" />
 		<StatContributions armor_bonus="2" />
 	</CraftingPiece>
+
+<!-- axe-->
+	<CraftingPiece
+		id="rohan_axe_1_handle"
+		name="rohan axe handle regular"
+		tier="2"
+		piece_type="Handle"
+		mesh="rohan_axe_1_handle"
+		length="75.0"
+		weight="0.329">
+		<BuildData
+			piece_offset="22"
+			next_piece_offset="3" />
+		<Materials>
+			<Material
+				id="Wood"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="rohan_axe_1_head"
+		name="rohan axe head regular"
+		tier="2"
+		piece_type="Blade"
+		mesh="rohan_axe_1_head"
+		distance_to_next_piece="2.6"
+		distance_to_previous_piece="2.3"
+		weight="0.688">
+		<BuildData
+			piece_offset="-0.5" />
+		<BladeData
+			stack_amount="3"
+			blade_length="20.0"
+			blade_width="21.13"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+		<Materials>
+			<Material
+				id="Iron2"
+				count="4" />
+		</Materials>
+	</CraftingPiece>
 </CraftingPieces>

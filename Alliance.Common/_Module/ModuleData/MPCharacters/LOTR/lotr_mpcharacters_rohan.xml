@@ -238,7 +238,7 @@
 				<equipment slot="Item0"
 									 id="Item.mp_sturgia_sword" />
 				<equipment slot="Item1"
-									 id="Item.rohan_shield_2v1" />
+									 id="Item.rohan_shield_5" />
 				<equipment slot="Item2"
 									 id="Item.rohan_spear_2" />
 				<equipment slot="Body"
@@ -252,7 +252,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0"
-									 id="Item.mp_sturgia_sword" />
+									 id="Item.rohan_axe_1" />
 				<equipment slot="Item1"
 									 id="Item.rohan_shield_2v1" />
 				<equipment slot="Item2"
@@ -305,7 +305,9 @@
 				<equipment slot="Item0"
 									 id="Item.gimli_d_axe" />
 				<equipment slot="Item1"
-									 id="Item.mp_battanian_throwing_axe" />
+									 id="Item.gimli_onehanded_axe" />
+				<equipment slot="Item2"
+									 id="Item.gimli_throwing_axe" />
 				<equipment slot="Head"
                    id="Item.gimli_helm" />
 				<equipment slot="Body"
@@ -657,7 +659,7 @@
 				<equipment slot="Item2"
 									 id="Item.mp_arrows_bodkin" />
 				<equipment slot="Item3"
-									 id="Item.rohan_shield_2v1" />
+									 id="Item.rohan_shield_4" />
 				<equipment slot="Body"
 									 id="Item.armor_rohan_6" />
 				<equipment slot="Head"
@@ -847,19 +849,17 @@
 				<equipment slot="Item0"
 									 id="Item.elf_bow_2" />
 				<equipment slot="Item1"
-									 id="Item.elf_quiver_1" />
+									 id="Item.legolas_arrows" />
 				<equipment slot="Item2"
 									 id="Item.legolas_dagger" />
 				<equipment slot="Item3"
-									 id="Item.legolas_parry_dagger" />
+									 id="Item.legolas_dagger" />
 				<equipment slot="Body"
-									 id="Item.elf_armor_1" />
-				<equipment slot="Gloves"
-									 id="Item.elf_arm_1" />
+									 id="Item.legolas_torso" />
 				<equipment slot="Leg"
-									 id="Item.elf_greaves_1" />
+									 id="Item.legolas_legs" />
 				<equipment slot="Cape"
-									 id="Item.gimli_cloak" />
+									 id="Item.legolas_rohan_shoulder" />
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
@@ -907,7 +907,7 @@
 				<equipment slot="Item0"
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
-                   id="Item.mp_vlandian_long_sword" />
+                   id="Item.rohan_axe_1" />
 				<equipment slot="Item2"
                    id="Item.rohan_shield" />
 				<equipment slot="Body"
@@ -951,9 +951,9 @@
 				<equipment slot="Item0"
                    id="Item.rohan_spear_1" />
 				<equipment slot="Item1"
-                   id="Item.mp_vlandian_long_sword" />
+                   id="Item.rohan_axe_1" />
 				<equipment slot="Item2"
-                   id="Item.rohan_shield" />
+                   id="Item.rohan_shield_5" />
 				<equipment slot="Body"
                    id="Item.armor_rohan_3" />
 				<equipment slot="Head"

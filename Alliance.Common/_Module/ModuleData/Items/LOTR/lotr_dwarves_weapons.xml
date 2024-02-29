@@ -14,4 +14,41 @@
              scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
+	
+	<CraftedItem
+	multiplayer_item="true"
+		id="gimli_throwing_axe"
+		name="Gimli Throwing Axe"
+		crafting_template="gimli_ThrowingAxe"
+		culture="Culture.battania">
+		<Pieces>
+			<Piece
+				id="gimli_throwing_axe_head"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="gimli_throwing_axe_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<CraftedItem
+		multiplayer_item="true"
+		id="gimli_onehanded_axe"
+		name="Gimli One handed axe"
+		crafting_template="RohanOneHandedAxe"
+		culture="Culture.vlandia"
+		modifier_group="axe">
+		<Pieces>
+			<Piece
+				id="gimli_one_handed_axe_head"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="gimli_one_handed_axe_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
 </Items>

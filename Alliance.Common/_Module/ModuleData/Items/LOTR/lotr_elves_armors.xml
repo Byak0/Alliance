@@ -34,4 +34,22 @@
 		</ItemComponent>
 		<Flags />
 	</Item>
+  <Item multiplayer_item="true" id="legolas_legs" name="Legolas leg" mesh="legolas_legs" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="3" Type="LegArmor">
+    <ItemComponent>
+      <Armor leg_armor="20" covers_legs="true" modifier_group="leather" material_type="Leather" />
+    </ItemComponent>
+    <Flags Civilian="true" />
+  </Item>
+  <Item multiplayer_item="true" id="legolas_rohan_shoulder" name="Legolas Shoulders" mesh="legolas_shoulder" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+    <ItemComponent>
+      <Armor body_armor="31" arm_armor="15" modifier_group="leather" material_type="Leather" />
+    </ItemComponent>
+    <Flags />
+  </Item>
+    <Item multiplayer_item="true" id="legolas_torso" name="Legolas Torso" mesh="legolas_torso" culture="Culture.rohan" weight="8.6" appearance="1" Type="BodyArmor">
+    <ItemComponent>
+      <Armor body_armor="55" leg_armor="21" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+    </ItemComponent>
+    <Flags />
+  </Item>
 </Items>

@@ -157,6 +157,31 @@
 			<AvailablePiece id="elf_handle_2"/>
 		</AvailablePieces>
 	</WeaponDescription>
+	<WeaponDescription
+		id="RohanOneHandedAxe"
+		weapon_class="OneHandedAxe"
+		item_usage_features="onehanded:shield:axe">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+			<WeaponFlag
+				value="BonusAgainstShield" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece
+				id="rohan_axe_1_handle" />
+			<AvailablePiece
+				id="rohan_axe_1_head" />
+			<AvailablePiece
+				id="gimli_one_handed_axe_handle" />
+			<AvailablePiece
+				id="gimli_one_handed_axe_head" />
+			<AvailablePiece
+				id="gimli_throwing_axe_head" />
+			<AvailablePiece
+				id="gimli_throwing_axe_handle" />
+		</AvailablePieces>
+	</WeaponDescription>
 	<WeaponDescription id="rohan_OneHandedBastardAxe"
                      weapon_class="OneHandedAxe"
                      item_usage_features="onehanded:rshield:axe">
@@ -299,6 +324,33 @@
 			<AvailablePiece id="spear_banner_r"/>
 			<AvailablePiece id="rohan_spear_1_bottom"/>
 			<!-- AvailablePieces,TwoHandedPolearm_Couchable -->
+		</AvailablePieces>
+	</WeaponDescription>
+
+
+	<WeaponDescription
+		id="gimli_ThrowingAxe"
+		weapon_class="ThrowingAxe"
+		item_usage_features="throwing:axe">
+		<WeaponFlags>
+			<WeaponFlag
+				value="RangedWeapon" />
+			<WeaponFlag
+				value="Consumable" />
+			<WeaponFlag
+				value="AmmoSticksWhenShot" />
+			<WeaponFlag
+				value="UseHandAsThrowBase" />
+			<WeaponFlag
+				value="AutoReload" />
+			<WeaponFlag
+				value="UnloadWhenSheathed" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece
+				id="gimli_throwing_axe_head" />
+			<AvailablePiece
+				id="gimli_throwing_axe_handle" />
 		</AvailablePieces>
 	</WeaponDescription>
 </WeaponDescriptions>
