@@ -1,6 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
@@ -76,6 +78,12 @@ namespace Alliance.Common.GameModes.CvC
 
         public override List<string> GetAvailableModOptions()
         {
+            // Return full list of options for admins
+            if (GameNetwork.MyPeer.IsAdmin())
+            {
+                return base.GetAvailableModOptions();
+            }
+            // Otherwise return only following options
             return new List<string>
             {
                 nameof(Config.ActivateSAE),

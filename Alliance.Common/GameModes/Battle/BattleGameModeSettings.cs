@@ -15,11 +15,20 @@ namespace Alliance.Common.GameModes.Battle
         {
             base.SetDefaultNativeOptions();
             SetNativeOption(OptionType.NumberOfBotsPerFormation, 0);
+            SetNativeOption(OptionType.UnlimitedGold, true);
         }
 
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
+            ModOptions.EnableFormation = false;
+            ModOptions.TimeBeforeFlagRemoval = 450;
+            ModOptions.MoraleMultiplierForFlag = 1f;
+            ModOptions.MoraleMultiplierForLastFlag = 1f;
+            ModOptions.AllowSpawnInRound = false;
+            ModOptions.ShowFlagMarkers = true;
+            ModOptions.ShowScore = true;
+            ModOptions.ShowOfficers = true;
         }
 
         public override List<SceneInfo> GetAvailableMaps()
