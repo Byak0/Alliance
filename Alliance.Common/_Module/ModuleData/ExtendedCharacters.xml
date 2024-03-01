@@ -88,39 +88,39 @@
 	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_battania_troop" troop_limit="100" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_battania_troop" troop_limit="100" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_cavalry_battania_troop" troop_limit="100" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_isengard_troop" troop_limit="100" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_isengard_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_isengard_banner_bearer" troop_limit="100" />
-	<ExtendedCharacter id="NPCCharacter.mp_pike_infantry_isengard_troop" troop_limit="100" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_isengard_banner_bearer" troop_limit="5" />
+	<ExtendedCharacter id="NPCCharacter.mp_pike_infantry_isengard_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_pike_infantry_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_pike_infantry_isengard_banner_bearer" troop_limit="100" />
-	<ExtendedCharacter id="NPCCharacter.mp_sword_infantry_isengard_troop" troop_limit="100" />
+	<ExtendedCharacter id="NPCCharacter.mp_pike_infantry_isengard_banner_bearer" troop_limit="5" />
+	<ExtendedCharacter id="NPCCharacter.mp_sword_infantry_isengard_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_sword_infantry_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_sword_infantry_isengard_banner_bearer" troop_limit="100" />
-	<ExtendedCharacter id="NPCCharacter.mp_heavy_infantry_isengard_troop" troop_limit="15" />
+	<ExtendedCharacter id="NPCCharacter.mp_sword_infantry_isengard_banner_bearer" troop_limit="5" />
+	<ExtendedCharacter id="NPCCharacter.mp_heavy_infantry_isengard_troop" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_infantry_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_heavy_infantry_isengard_banner_bearer" troop_limit="100" />
-	<ExtendedCharacter id="NPCCharacter.mp_berserk_isengard_troop" troop_limit="5" />
+	<ExtendedCharacter id="NPCCharacter.mp_heavy_infantry_isengard_banner_bearer" troop_limit="5" />
+	<ExtendedCharacter id="NPCCharacter.mp_berserk_isengard_troop" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_berserk_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_isengard_troop" troop_limit="20" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_isengard_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_isengard_troop" troop_limit="20" />
+	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_isengard_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_isengard_hero" troop_limit="1" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_rohan_troop" troop_limit="100" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_rohan_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_rohan_banner_bearer" troop_limit="5" />
-	<ExtendedCharacter id="NPCCharacter.mp_shock_infantry_rohan_troop" troop_limit="100" />
+	<ExtendedCharacter id="NPCCharacter.mp_shock_infantry_rohan_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_shock_infantry_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_shock_infantry_rohan_banner_bearer" troop_limit="5" />
-	<ExtendedCharacter id="NPCCharacter.mp_skirmisher_rohan_troop" troop_limit="15" />
+	<ExtendedCharacter id="NPCCharacter.mp_skirmisher_rohan_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_skirmisher_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_skirmisher_rohan_banner_bearer" troop_limit="5" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_rohan_troop" troop_limit="20" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_rohan_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_ranged_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_rohan_troop" troop_limit="0" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_heavy_ranged_rohan_banner_bearer" troop_limit="5" />
-	<ExtendedCharacter id="NPCCharacter.mp_light_cavalry_rohan_troop" troop_limit="10" />
+	<ExtendedCharacter id="NPCCharacter.mp_light_cavalry_rohan_troop" troop_limit="2" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_cavalry_rohan_hero" troop_limit="1" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_cavalry_rohan_banner_bearer" troop_limit="5" />
 	<ExtendedCharacter id="NPCCharacter.mp_light_infantry_vlandia_hero_b" troop_limit="100" />

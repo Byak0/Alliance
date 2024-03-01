@@ -3,7 +3,7 @@
     "BannerlordServer": {
       "commandName": "Executable",
       "executablePath": "$(GameFolder)\\bin\\Win64_Shipping_Server\\DedicatedCustomServer.Starter.exe",
-      "commandLineArgs": "/dedicatedcustomserverconfigfile ds_config_alliance.txt /LogOutputPath logs /no_watchdog _MODULES_*Native*Multiplayer*Alliance*_MODULES_",
+      "commandLineArgs": "/dedicatedcustomserverconfigfile ds_config_alliance_17000.txt /LogOutputPath logs /no_watchdog _MODULES_*Native*Multiplayer*Alliance*_MODULES_ /port 17000",
       "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Server",
       "nativeDebugging": true
     }
