@@ -1047,9 +1047,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
-				<equipment slot="Item3"
-									 id="Item.vlandic_arrows" />
+									 id="Item.mp_arrows_bodkin" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
 				<equipment slot="Gloves"
@@ -1065,7 +1063,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
+									 id="Item.mp_arrows_bodkin" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
 				<equipment slot="Head"

@@ -78,8 +78,8 @@
 			melee_ai="50"
 			ranged_ai="50"
 			armor="30"
-			movement_speed="0.9"
-			combat_movement_speed="0.96"
+			movement_speed="0.86"
+			combat_movement_speed="0.92"
 			acceleration="3.3"
 			hitpoints="100">
 		<Perks>
@@ -106,8 +106,8 @@
 			melee_ai="90"
 			ranged_ai="50"
 			armor="50"
-			movement_speed="0.9"
-			combat_movement_speed="0.96"
+			movement_speed="0.86"
+			combat_movement_speed="0.92"
 			acceleration="3.8"
 			hitpoints="150">
 		<Perks>
@@ -218,7 +218,7 @@
 			ranged_ai="30"
 			armor="13"
 			movement_speed="0.84"
-			combat_movement_speed="0.86"
+			combat_movement_speed="0.82"
 			acceleration="2.8">
 		<Perks>
 			<Perk

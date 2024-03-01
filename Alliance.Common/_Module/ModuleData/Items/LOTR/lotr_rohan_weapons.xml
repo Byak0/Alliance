@@ -133,7 +133,7 @@
 		</Pieces>
 	</CraftedItem>
     <Item multiplayer_item="true"
-	id="rohan_shield_4"
+				id="rohan_shield_4"
         name="Rohan wood shield"
         body_name="bo_cap_rohan_shield_4"
         shield_body_name="bo_rohan_shield_4"

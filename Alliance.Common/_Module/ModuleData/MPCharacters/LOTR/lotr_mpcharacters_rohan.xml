@@ -25,7 +25,7 @@
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
-             value="150" />
+             value="100" />
 			<skill id="TwoHanded"
              value="20" />
 			<skill id="Polearm"
@@ -133,7 +133,7 @@
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
-             value="150" />
+             value="100" />
 			<skill id="TwoHanded"
              value="20" />
 			<skill id="Polearm"
@@ -657,7 +657,7 @@
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.mp_arrows_barbed" />
 				<equipment slot="Item3"
 									 id="Item.rohan_shield_4" />
 				<equipment slot="Body"
@@ -677,9 +677,9 @@
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.mp_arrows_barbed" />
 				<equipment slot="Item3"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.rohan_shield_4" />
 				<equipment slot="Body"
 									 id="Item.armor_rohan_6" />
 				<equipment slot="Head"

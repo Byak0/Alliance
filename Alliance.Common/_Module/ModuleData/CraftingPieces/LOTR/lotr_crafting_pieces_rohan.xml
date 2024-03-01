@@ -204,7 +204,7 @@
 		mesh="rohan_axe_1_head"
 		distance_to_next_piece="2.6"
 		distance_to_previous_piece="2.3"
-		weight="0.688">
+		weight="0.788">
 		<BuildData
 			piece_offset="-0.5" />
 		<BladeData
@@ -215,7 +215,7 @@
 			body_name="bo_axe_longer_b">
 			<Swing
 				damage_type="Cut"
-				damage_factor="3.2" />
+				damage_factor="3.1" />
 		</BladeData>
 		<Flags>
 			<Flag

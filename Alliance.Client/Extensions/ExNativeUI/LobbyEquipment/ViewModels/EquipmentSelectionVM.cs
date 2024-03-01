@@ -26,6 +26,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         private float _updateTimeElapsed;
         private readonly Action<MultiplayerClassDivisions.MPHeroClass> _onRefreshSelection;
         private readonly MissionMultiplayerGameModeBaseClient _missionMultiplayerGameMode;
+        private readonly MultiplayerRoundComponent _multiplayerRoundComponent;
         private Dictionary<MissionPeer, MPPlayerVM> _enemyDictionary;
         private readonly Mission _mission;
         private bool _isTeammateAndEnemiesRelevant;
@@ -480,6 +481,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             HeroInformation = new ALHeroInformationVM();
             _enemyDictionary = new Dictionary<MissionPeer, MPPlayerVM>();
             _missionLobbyEquipmentNetworkComponent = Mission.Current.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
+            _multiplayerRoundComponent = Mission.Current.GetMissionBehavior<MultiplayerRoundComponent>();
+
+            if (_multiplayerRoundComponent != null)
+            {
+                _multiplayerRoundComponent.OnRoundStarted += RefreshSelection;
+            }
 
             // Gold usage is defined by the Game Mode client.
             IsGoldEnabled = _missionMultiplayerGameMode.IsGameModeUsingGold;
@@ -632,6 +639,18 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             MissionPeer.OnEquipmentIndexRefreshed -= RefreshPeerDivision;
             MissionPeer.OnPerkSelectionUpdated -= RefreshPeerPerkSelection;
             NetworkCommunicator.OnPeerComponentAdded -= OnPeerComponentAdded;
+            if (_multiplayerRoundComponent != null)
+            {
+                _multiplayerRoundComponent.OnRoundStarted -= RefreshSelection;
+            }
+        }
+
+        public void RefreshSelection()
+        {
+            if (CurrentSelectedClass != null)
+            {
+                RefreshCharacter(CurrentSelectedClass);
+            }
         }
 
         private void RefreshCharacter(ALHeroClassVM heroClass)
