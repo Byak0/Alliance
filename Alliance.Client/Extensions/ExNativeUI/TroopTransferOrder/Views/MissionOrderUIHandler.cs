@@ -41,9 +41,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
         public override void AfterStart()
         {
             base.AfterStart();
-            int num;
-            MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsPerFormation, MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out num);
-            _shouldTick = num > 0;
+            //int num;
+            //MultiplayerOptions.Instance.GetOptionFromOptionType(MultiplayerOptions.OptionType.NumberOfBotsPerFormation, MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out num);
+            //_shouldTick = num > 0;
+            // Always tick. We can spawn bots in any mode so we need this to prevent crash when trying to control them.
+            _shouldTick = true;
         }
 
         public override void OnMissionScreenTick(float dt)
