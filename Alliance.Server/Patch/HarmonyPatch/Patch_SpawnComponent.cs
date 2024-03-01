@@ -1,4 +1,5 @@
 ﻿using Alliance.Server.GameModes.CaptainX.Behaviors;
+using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
 using HarmonyLib;
 using System;
@@ -77,10 +78,17 @@ namespace Alliance.Server.Patch.HarmonyPatch
         public static bool Prefix_SetFlagDominationSpawningBehavior()
         {
             string gameType = MultiplayerOptions.OptionType.GameType.GetStrValue();
-            if (gameType == "CaptainX" || gameType == "BattleX" || gameType == "PvC" || gameType == "CvC")
+            if (gameType == "CaptainX")
             {
                 Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawnFrameBehavior(new PvCFlagDominationSpawnFrameBehavior());
                 Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawningBehavior(new PvCFlagDominationSpawningBehavior());
+                // Return false to skip original method
+                return false;
+            }
+            else if (gameType == "BattleX" || gameType == "PvC" || gameType == "CvC")
+            {
+                Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawnFrameBehavior(new PvCSpawnFrameBehavior());
+                Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawningBehavior(new PvCSpawningBehavior());
                 // Return false to skip original method
                 return false;
             }
