@@ -27,6 +27,7 @@ namespace Alliance.Server.Patch
             patchSuccess &= Patch_MultiplayerWarmupComponent.Patch();
             //patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
+            patchSuccess &= Patch_BattlePowerCalculationLogic.Patch();
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;

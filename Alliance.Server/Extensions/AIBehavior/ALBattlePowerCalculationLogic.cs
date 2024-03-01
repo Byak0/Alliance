@@ -2,6 +2,7 @@
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.AIBehavior
 {
@@ -37,12 +38,18 @@ namespace Alliance.Server.Extensions.AIBehavior
             {
                 CalculateTeamPowers();
             }
-            return _sidePowerData[(int)team.Side][team];
+            Dictionary<Team, float> sidePower = _sidePowerData.ElementAtOrDefault((int)team.Side);
+            if (sidePower != null && sidePower.TryGetValue(team, out float power))
+            {
+                return power;
+            }
+            Log($"ERROR : Couldn't find TeamPower of team {team.TeamIndex} from {team.Side}. Using default value of 1f.", LogLevel.Error);
+            return 1f;
         }
 
         private void CalculateTeamPowers()
         {
-            List<Team> list = Enumerable.ToList<Team>(Enumerable.Where<Team>(Mission.Teams, (Team t) => t.Side != BattleSideEnum.None));
+            List<Team> list = Enumerable.ToList<Team>(Enumerable.Where<Team>(Mission.Current.Teams, (Team t) => t.Side != BattleSideEnum.None));
             foreach (Team team in list)
             {
                 _sidePowerData[(int)team.Side].Add(team, 0f);
