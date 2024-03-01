@@ -19,7 +19,7 @@ namespace Alliance.Client.GameModes.PvC
         {
             List<MissionView> missionViews = new List<MissionView>
             {
-                new LobbyEquipmentView(),
+                new EquipmentSelectionView(),
                 new AgentStatusView(),
                 new FormationStatusView(),
                 new HUDExtensionUIHandlerView(),

@@ -11,6 +11,7 @@ using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -52,6 +53,7 @@ namespace Alliance.Client
             AnimationSystem.Instance.Init();
 
             SceneList.Initialize();
+            ClassLimiterModel.Instance.Init();
 
             AddCommonBehaviors(mission);
 

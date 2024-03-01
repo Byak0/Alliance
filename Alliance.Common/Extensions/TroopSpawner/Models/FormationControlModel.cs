@@ -185,7 +185,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             return new List<FormationClass>();
         }
 
-        public List<string> GetAllControllersFromTeam(Team team)
+        public List<string> GetAllControllersNameFromTeam(Team team)
         {
             List<string> controllers = new();
 
@@ -194,6 +194,21 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
                 if (kvp.Key.Team == team)
                 {
                     controllers.Add(kvp.Key.MissionPeer.Name);
+                }
+            }
+
+            return controllers;
+        }
+
+        public List<MissionPeer> GetAllControllersFromTeam(Team team)
+        {
+            List<MissionPeer> controllers = new();
+
+            foreach (KeyValuePair<PlayerTeamKey, List<FormationClass>> kvp in playerFormationMapping)
+            {
+                if (kvp.Key.Team == team)
+                {
+                    controllers.Add(kvp.Key.MissionPeer);
                 }
             }
 

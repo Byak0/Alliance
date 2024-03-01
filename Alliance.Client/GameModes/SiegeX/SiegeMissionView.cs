@@ -1,4 +1,5 @@
-﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -15,6 +16,7 @@ namespace Alliance.Client.GameModes.SiegeX
         {
             List<MissionView> missionViews = new List<MissionView>
             {
+                new EquipmentSelectionView(),
                 new FormationStatusView(),
 
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
@@ -29,7 +31,6 @@ namespace Alliance.Client.GameModes.SiegeX
                 MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
                 MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
                 MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                MultiplayerViewCreator.CreateLobbyEquipmentUIHandler(),
                 MultiplayerViewCreator.CreatePollProgressUIHandler(),
                 MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
                 MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),

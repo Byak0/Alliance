@@ -7,9 +7,9 @@ using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
 
-namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
+namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 {
-    public class PvCHeroInformationVM : ViewModel
+    public class ALHeroInformationVM : ViewModel
     {
         private TextObject _armySizeHintWithDefaultValue = new TextObject("{=aalbxe7z}Army Size");
 
@@ -359,7 +359,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             }
         }
 
-        public PvCHeroInformationVM()
+        public ALHeroInformationVM()
         {
             _latestSelectedItemGroup = ShallowItemVM.ItemGroup.None;
             Item1 = new ShallowItemVM(UpdateHighlightedItem);
@@ -388,6 +388,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             _itemSelected?.RefreshValues();
             if (HeroClass != null)
             {
+                // Show Hero to Officers only
                 if (GameNetwork.MyPeer.IsOfficer())
                 {
                     NameText = HeroClass.HeroName.ToString();
@@ -405,6 +406,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             Equipment equipment = heroClass.TroopCharacter.Equipment.Clone();
             Information = heroClass.TroopInformation?.ToString();
             NameText = heroClass.TroopName.ToString();
+            // Show Hero to Officers only
             if (GameNetwork.MyPeer.IsOfficer())
             {
                 equipment = heroClass.HeroCharacter.Equipment.Clone();

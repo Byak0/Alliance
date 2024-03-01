@@ -1,24 +1,33 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.GauntletUI.Mission;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.TwoDimension;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 {
-    //[OverrideView(typeof(MissionLobbyEquipmentUIHandler))]
-    public class LobbyEquipmentView : MissionView
+    /// <summary>
+    /// Custom view for the equipment selection menu.
+    /// Based on native class MissionGauntletClassLoadout.
+    /// </summary>
+    public class EquipmentSelectionView : MissionView
     {
+        public bool IsActive { get; private set; }
+
         public bool IsForceClosed { get; private set; }
 
         public override void OnMissionScreenInitialize()
         {
             base.OnMissionScreenInitialize();
             ViewOrderPriority = 20;
+            _missionLobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
             _missionLobbyEquipmentNetworkComponent = Mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
             _gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
             _teamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
@@ -45,10 +54,21 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
         private void OnMyClientSynchronized()
         {
             NetworkCommunicator myPeer = GameNetwork.MyPeer;
-            _myRepresentative = myPeer != null ? myPeer.VirtualPlayer.GetComponent<MissionRepresentativeBase>() : null;
+            _myRepresentative = (myPeer?.VirtualPlayer.GetComponent<MissionRepresentativeBase>());
             if (_myRepresentative != null)
             {
                 _myRepresentative.OnGoldUpdated += OnGoldUpdated;
+            }
+            _missionLobbyComponent.OnClassRestrictionChanged += OnGoldUpdated;
+            ClassLimiterModel.Instance.CharacterAvailabilityChanged += OnCharacterAvailabilityUpdated;
+        }
+
+        private void OnCharacterAvailabilityUpdated(BasicCharacterObject character, bool available)
+        {
+            Log($"Updating availability of {character} to {available}", LogLevel.Debug);
+            if (_dataSource != null && _dataSource.CharacterToVM.TryGetValue(character, out ALHeroClassVM classVM))
+            {
+                classVM.UpdateEnabled();
             }
         }
 
@@ -56,7 +76,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
         {
             if (peer.IsMine && newTeam != null && (newTeam.IsAttacker || newTeam.IsDefender))
             {
-                if (_isActive)
+                if (IsActive)
                 {
                     OnTryToggle(false);
                 }
@@ -96,8 +116,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
                 if (_myRepresentative != null)
                 {
                     _myRepresentative.OnGoldUpdated -= OnGoldUpdated;
+                    _missionLobbyComponent.OnClassRestrictionChanged -= OnGoldUpdated;
                 }
             }
+            ClassLimiterModel.Instance.CharacterAvailabilityChanged -= OnCharacterAvailabilityUpdated;
             _missionLobbyEquipmentNetworkComponent.OnToggleLoadout -= OnTryToggle;
             _missionLobbyEquipmentNetworkComponent.OnEquipmentRefreshed -= OnPeerEquipmentRefreshed;
             MissionPeer.OnTeamChanged -= OnTeamChanged;
@@ -110,7 +132,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             SpriteData spriteData = UIResourceManager.SpriteData;
             TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
             ResourceDepot uiresourceDepot = UIResourceManager.UIResourceDepot;
-            _dataSource = new LobbyEquipmentVM(missionBehavior, new Action<MultiplayerClassDivisions.MPHeroClass>(OnRefreshSelection), _lastSelectedHeroClass);
+            _dataSource = new EquipmentSelectionVM(missionBehavior, new Action<MultiplayerClassDivisions.MPHeroClass>(OnRefreshSelection), _lastSelectedHeroClass);
             _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
             _gauntletLayer.LoadMovie("MultiplayerClassLoadout", _dataSource);
         }
@@ -128,7 +150,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private bool OnToggled(bool isActive)
         {
-            if (_isActive == isActive)
+            if (IsActive == isActive)
             {
                 return true;
             }
@@ -151,19 +173,18 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
                 _gauntletLayer.InputRestrictions.ResetInputRestrictions();
                 _gauntletLayer = null;
             }
-            _isActive = isActive;
+            IsActive = isActive;
             return true;
         }
 
         public override void OnMissionTick(float dt)
         {
             base.OnMissionTick(dt);
-            MissionPeer peer = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-            if (_tryToInitialize && GameNetwork.IsMyPeerReady && peer != null && peer.HasSpawnedAgentVisuals && OnToggled(true))
+            if (_tryToInitialize && GameNetwork.IsMyPeerReady && GameNetwork.MyPeer.GetComponent<MissionPeer>().HasSpawnedAgentVisuals && OnToggled(true))
             {
                 _tryToInitialize = false;
             }
-            if (_isActive)
+            if (IsActive)
             {
                 _dataSource.Tick(dt);
                 MissionMultiplayerGameModeFlagDominationClient missionMultiplayerGameModeFlagDominationClient;
@@ -208,7 +229,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
         {
             if (_gameModeClient.GameType == MultiplayerGameType.Skirmish || _gameModeClient.GameType == MultiplayerGameType.Captain)
             {
-                LobbyEquipmentVM dataSource = _dataSource;
+                EquipmentSelectionVM dataSource = _dataSource;
                 if (dataSource == null)
                 {
                     return;
@@ -219,7 +240,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 
         private void OnGoldUpdated()
         {
-            LobbyEquipmentVM dataSource = _dataSource;
+            EquipmentSelectionVM dataSource = _dataSource;
             if (dataSource == null)
             {
                 return;
@@ -227,17 +248,15 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
             dataSource.OnGoldUpdated();
         }
 
-        public LobbyEquipmentView()
-        {
-        }
-
-        private LobbyEquipmentVM _dataSource;
+        private EquipmentSelectionVM _dataSource;
 
         private GauntletLayer _gauntletLayer;
 
         private MissionRepresentativeBase _myRepresentative;
 
         private MissionNetworkComponent _missionNetworkComponent;
+
+        private MissionLobbyComponent _missionLobbyComponent;
 
         private MissionLobbyEquipmentNetworkComponent _missionLobbyEquipmentNetworkComponent;
 
@@ -250,7 +269,5 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
         private MultiplayerClassDivisions.MPHeroClass _lastSelectedHeroClass;
 
         private bool _tryToInitialize;
-
-        private bool _isActive;
     }
 }

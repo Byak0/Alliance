@@ -25,7 +25,7 @@ namespace Alliance.Client.GameModes.Story
             {
                 // Custom views
                 new KillNotificationView(),
-                new LobbyEquipmentView(),
+                new EquipmentSelectionView(),
                 new AgentStatusView(),
                 new TeamSelectView(),
                 new FormationStatusView(),

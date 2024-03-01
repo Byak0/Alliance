@@ -1,7 +1,4 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels;
-using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.TroopSpawner.Utilities;
+﻿using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -13,75 +10,53 @@ using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
-using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 {
-    public class LobbyEquipmentVM : ViewModel
+    /// <summary>
+    /// Custom VM for the Equipment selection menu.
+    /// Based on native class MultiplayerClassLoadoutVM.
+    /// </summary>
+    public class EquipmentSelectionVM : ViewModel
     {
         public const float UPDATE_INTERVAL = 1f;
 
+        public Dictionary<BasicCharacterObject, ALHeroClassVM> CharacterToVM = new();
+
         private float _updateTimeElapsed;
-
         private readonly Action<MultiplayerClassDivisions.MPHeroClass> _onRefreshSelection;
-
         private readonly MissionMultiplayerGameModeBaseClient _missionMultiplayerGameMode;
-
         private Dictionary<MissionPeer, MPPlayerVM> _enemyDictionary;
-
         private readonly Mission _mission;
-
         private bool _isTeammateAndEnemiesRelevant;
-
         private const float REMAINING_TIME_WARNING_THRESHOLD = 5f;
-
         private MissionLobbyEquipmentNetworkComponent _missionLobbyEquipmentNetworkComponent;
-
         private bool _isInitializing;
-
         private Dictionary<MissionPeer, MPPlayerVM> _teammateDictionary;
-
         private int _gold;
-
         private string _culture;
-
         private string _cultureId;
-
         private string _spawnLabelText;
-
         private string _spawnForfeitLabelText;
-
         private string _remainingTimeText;
-
         private bool _warnRemainingTime;
-
         private bool _isSpawnTimerVisible;
-
         private bool _isSpawnLabelVisible;
-
         private bool _isSpawnForfeitLabelVisible;
-
         private bool _isGoldEnabled;
-
         private bool _isInWarmup;
-
         private bool _useSecondary;
-
         private bool _showAttackerOrDefenderIcons;
-
         private bool _isAttacker;
-
         private string _warmupInfoText;
-
-        private MBBindingList<HeroClassGroupVM> _classes;
-
-        private PvCHeroInformationVM _heroInformation;
-
-        private HeroClassVM _currentSelectedClass;
-
+        private Color _cultureColor1;
+        private Color _cultureColor2;
+        private MBBindingList<ALHeroClassGroupVM> _classes;
+        private ALHeroInformationVM _heroInformation;
+        private ALHeroClassVM _currentSelectedClass;
         private MBBindingList<MPPlayerVM> _teammates;
-
         private MBBindingList<MPPlayerVM> _enemies;
+        private MissionRepresentativeBase missionRep => GameNetwork.MyPeer?.VirtualPlayer?.GetComponent<MissionRepresentativeBase>();
 
         private Team _playerTeam
         {
@@ -115,6 +90,40 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 {
                     _culture = value;
                     OnPropertyChangedWithValue(value, "Culture");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public Color CultureColor1
+        {
+            get
+            {
+                return _cultureColor1;
+            }
+            set
+            {
+                if (value != _cultureColor1)
+                {
+                    _cultureColor1 = value;
+                    OnPropertyChangedWithValue(value, "CultureColor1");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public Color CultureColor2
+        {
+            get
+            {
+                return _cultureColor2;
+            }
+            set
+            {
+                if (value != _cultureColor2)
+                {
+                    _cultureColor2 = value;
+                    OnPropertyChangedWithValue(value, "CultureColor2");
                 }
             }
         }
@@ -324,7 +333,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         }
 
         [DataSourceProperty]
-        public PvCHeroInformationVM HeroInformation
+        public ALHeroInformationVM HeroInformation
         {
             get
             {
@@ -341,7 +350,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         }
 
         [DataSourceProperty]
-        public HeroClassVM CurrentSelectedClass
+        public ALHeroClassVM CurrentSelectedClass
         {
             get
             {
@@ -392,7 +401,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         }
 
         [DataSourceProperty]
-        public MBBindingList<HeroClassGroupVM> Classes
+        public MBBindingList<ALHeroClassGroupVM> Classes
         {
             get
             {
@@ -459,7 +468,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             }
         }
 
-        public LobbyEquipmentVM(MissionMultiplayerGameModeBaseClient gameMode, Action<MultiplayerClassDivisions.MPHeroClass> onRefreshSelection, MultiplayerClassDivisions.MPHeroClass initialHeroSelection)
+        public EquipmentSelectionVM(MissionMultiplayerGameModeBaseClient gameMode, Action<MultiplayerClassDivisions.MPHeroClass> onRefreshSelection, MultiplayerClassDivisions.MPHeroClass initialHeroSelection)
         {
             MBTextManager.SetTextVariable("newline", "\n");
             _isInitializing = true;
@@ -467,81 +476,94 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             _missionMultiplayerGameMode = gameMode;
             _mission = gameMode.Mission;
             Team team = GameNetwork.MyPeer.GetComponent<MissionPeer>().Team;
-            Classes = new MBBindingList<HeroClassGroupVM>();
-            HeroInformation = new PvCHeroInformationVM();
+            Classes = new MBBindingList<ALHeroClassGroupVM>();
+            HeroInformation = new ALHeroInformationVM();
             _enemyDictionary = new Dictionary<MissionPeer, MPPlayerVM>();
             _missionLobbyEquipmentNetworkComponent = Mission.Current.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
 
-            // Enable Gold for Commanders only
-            IsGoldEnabled = GameNetwork.MyPeer.IsCommander() && Config.Instance.UseTroopCost;
-            if (IsGoldEnabled) Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
+            // Gold usage is defined by the Game Mode client.
+            IsGoldEnabled = _missionMultiplayerGameMode.IsGameModeUsingGold;
+            if (IsGoldEnabled)
+            {
+                Gold = _missionMultiplayerGameMode.GetGoldAmount();
+            }
 
-            HeroClassVM heroClassVM = null;
+            ALHeroClassVM ALHeroClassVM = null;
             UseSecondary = team.Side == BattleSideEnum.Defender;
             foreach (MultiplayerClassDivisions.MPHeroClassGroup multiplayerHeroClassGroup in MultiplayerClassDivisions.MultiplayerHeroClassGroups)
             {
-                HeroClassGroupVM heroClassGroupVM = new HeroClassGroupVM(RefreshCharacter, OnSelectPerk, multiplayerHeroClassGroup, UseSecondary);
-                if (heroClassGroupVM.IsValid)
+                ALHeroClassGroupVM ALHeroClassGroupVM = new ALHeroClassGroupVM(RefreshCharacter, OnSelectPerk, multiplayerHeroClassGroup, UseSecondary);
+                if (ALHeroClassGroupVM.IsValid)
                 {
-                    // Disable Gold cost in troop list                    
-                    foreach (HeroClassVM heroClass in heroClassGroupVM.SubClasses)
-                    {
-                        heroClass.IsGoldEnabled = false;
-                        heroClass.NumOfTroops = 1;
-                        heroClass.IsNumOfTroopsEnabled = false;
-                        heroClass.IsEnabled = true;
-                    }
-                    Classes.Add(heroClassGroupVM);
+                    Classes.Add(ALHeroClassGroupVM);
                 }
             }
 
-            if (initialHeroSelection == null)
+            int num = ((initialHeroSelection != null) ? (gameMode.IsGameModeUsingCasualGold ? initialHeroSelection.TroopCasualCost : ((gameMode.GameType == MultiplayerGameType.Battle) ? initialHeroSelection.TroopBattleCost : initialHeroSelection.TroopCost)) : 0);
+            if (initialHeroSelection == null || (IsGoldEnabled && num > Gold))
             {
-                heroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
             }
             else
             {
-                foreach (HeroClassGroupVM @class in Classes)
+                foreach (ALHeroClassGroupVM @class in Classes)
                 {
-                    foreach (HeroClassVM subClass in @class.SubClasses)
+                    foreach (ALHeroClassVM subClass in @class.SubClasses)
                     {
                         if (subClass.HeroClass == initialHeroSelection)
                         {
-                            heroClassVM = subClass;
+                            ALHeroClassVM = subClass;
                             break;
                         }
                     }
 
-                    if (heroClassVM != null)
+                    if (ALHeroClassVM != null)
                     {
                         break;
                     }
                 }
 
-                if (heroClassVM == null)
+                if (ALHeroClassVM == null)
                 {
-                    heroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+                    ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
                 }
             }
 
             _isInitializing = false;
-            RefreshCharacter(heroClassVM);
+            RefreshCharacter(ALHeroClassVM);
             _teammateDictionary = new Dictionary<MissionPeer, MPPlayerVM>();
             Teammates = new MBBindingList<MPPlayerVM>();
             Enemies = new MBBindingList<MPPlayerVM>();
             MissionPeer.OnEquipmentIndexRefreshed += RefreshPeerDivision;
             MissionPeer.OnPerkSelectionUpdated += RefreshPeerPerkSelection;
             NetworkCommunicator.OnPeerComponentAdded += OnPeerComponentAdded;
-            CultureId = GameNetwork.MyPeer.GetComponent<MissionPeer>().Culture.StringId;
+            BasicCultureObject culture = GameNetwork.MyPeer.GetComponent<MissionPeer>().Culture;
+            CultureId = culture.StringId;
+            CultureColor1 = Color.FromUint(UseSecondary ? culture.Color2 : culture.Color);
+            CultureColor2 = Color.FromUint(UseSecondary ? culture.Color : culture.Color2);
             if (Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>())
             {
                 ShowAttackerOrDefenderIcons = true;
                 IsAttacker = team.Side == BattleSideEnum.Attacker;
             }
 
+            // Setup CharacterToVM dictionary
+            foreach (ALHeroClassGroupVM groupVM in Classes)
+            {
+                foreach (ALHeroClassVM classVM in groupVM.SubClasses)
+                {
+                    CharacterToVM[classVM.Character] = classVM;
+                }
+            }
+
+
             RefreshValues();
-            //_isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>() && Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().GameType != MissionLobbyComponent.MultiplayerGameType.Battle;
-            _isTeammateAndEnemiesRelevant = false;
+
+            // Refresh enemies and teammates values only in certain gamemodes
+            _isTeammateAndEnemiesRelevant =
+                Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical
+                && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>()
+                && Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().GameType != MultiplayerGameType.Battle;
             if (_isTeammateAndEnemiesRelevant)
             {
                 OnRefreshTeamMembers();
@@ -559,7 +581,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             WarmupInfoText = textObject.ToString();
             BasicCultureObject culture = GameNetwork.MyPeer.GetComponent<MissionPeer>().Culture;
             Culture = culture.Name.ToString();
-            Classes.ApplyActionOnAllItems(delegate (HeroClassGroupVM x)
+            Classes.ApplyActionOnAllItems(delegate (ALHeroClassGroupVM x)
             {
                 x.RefreshValues();
             });
@@ -591,9 +613,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                     IsSpawnTimerVisible = true;
                 }
             }
+            // Handle scenario case (no round component)
             else if (_missionMultiplayerGameMode is ScenarioClientBehavior)
             {
-                // Handle scenario case (no round component)
                 IsSpawnTimerVisible = !_missionMultiplayerGameMode.IsRoundInProgress;
                 IsSpawnLabelVisible = false;
             }
@@ -612,37 +634,41 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             NetworkCommunicator.OnPeerComponentAdded -= OnPeerComponentAdded;
         }
 
-        private void RefreshCharacter(HeroClassVM heroClass)
+        private void RefreshCharacter(ALHeroClassVM heroClass)
         {
             if (_isInitializing)
             {
                 return;
             }
 
-            foreach (HeroClassGroupVM @class in Classes)
+            foreach (ALHeroClassGroupVM @class in Classes)
             {
-                foreach (HeroClassVM subClass in @class.SubClasses)
+                foreach (ALHeroClassVM subClass in @class.SubClasses)
                 {
-                    subClass.RefreshValues();
                     subClass.IsSelected = false;
                 }
             }
 
             heroClass.IsSelected = true;
             CurrentSelectedClass = heroClass;
+
+            ClassLimiterModel.Instance.RequestUsage(heroClass.Character);
+
             if (GameNetwork.IsMyPeerReady)
             {
-                int num2 = GameNetwork.MyPeer.GetComponent<MissionPeer>().NextSelectedTroopIndex = MultiplayerClassDivisions.GetMPHeroClasses(heroClass.HeroClass.Culture).ToList().IndexOf(heroClass.HeroClass);
+                MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+                int nextSelectedTroopIndex = MultiplayerClassDivisions.GetMPHeroClasses(heroClass.HeroClass.Culture).ToList().IndexOf(heroClass.HeroClass);
+                component.NextSelectedTroopIndex = nextSelectedTroopIndex;
             }
 
             HeroInformation.RefreshWith(heroClass.HeroClass, heroClass.SelectedPerks);
             _missionLobbyEquipmentNetworkComponent.EquipmentUpdated();
-            if (IsGoldEnabled)
+            if (_missionMultiplayerGameMode.IsGameModeUsingGold)
             {
-                Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
+                Gold = _missionMultiplayerGameMode.GetGoldAmount();
             }
 
-            List<IReadOnlyPerkObject> perks = heroClass.Perks.Select((x) => x.SelectedPerk).ToList();
+            List<IReadOnlyPerkObject> perks = heroClass.Perks.Select((HeroPerkVM x) => x.SelectedPerk).ToList();
             HeroInformation.RefreshWith(HeroInformation.HeroClass, perks);
             List<Tuple<HeroPerkVM, MPPerkVM>> list = new List<Tuple<HeroPerkVM, MPPerkVM>>();
             foreach (HeroPerkVM perk in heroClass.Perks)
@@ -667,7 +693,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                     _missionLobbyEquipmentNetworkComponent.PerkUpdated(heroPerk.PerkIndex, candidate.PerkIndex);
                 }
 
-                List<IReadOnlyPerkObject> list = CurrentSelectedClass.Perks.Select((x) => x.SelectedPerk).ToList();
+                List<IReadOnlyPerkObject> list = CurrentSelectedClass.Perks.Select((HeroPerkVM x) => x.SelectedPerk).ToList();
                 if (list.Count > 0)
                 {
                     HeroInformation.RefreshWith(HeroInformation.HeroClass, list);
@@ -677,12 +703,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 
         public void RefreshPeerDivision(MissionPeer peer, int divisionType)
         {
-            Teammates.FirstOrDefault((t) => t.Peer == peer)?.RefreshDivision();
+            Teammates.FirstOrDefault((MPPlayerVM t) => t.Peer == peer)?.RefreshDivision();
         }
 
         private void RefreshPeerPerkSelection(MissionPeer peer)
         {
-            Teammates.FirstOrDefault((t) => t.Peer == peer)?.RefreshActivePerks();
+            Teammates.FirstOrDefault((MPPlayerVM t) => t.Peer == peer)?.RefreshActivePerks();
         }
 
         public void Tick(float dt)
@@ -690,18 +716,17 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             if (_missionMultiplayerGameMode != null)
             {
                 IsInWarmup = _missionMultiplayerGameMode.IsInWarmup;
-
+                IsGoldEnabled = !IsInWarmup && _missionMultiplayerGameMode.IsGameModeUsingGold;
                 if (IsGoldEnabled)
                 {
-                    Gold = GameNetwork.MyPeer.GetComponent<MissionRepresentativeBase>()?.Gold ?? 0;
+                    Gold = _missionMultiplayerGameMode.GetGoldAmount();
                 }
 
-                foreach (HeroClassGroupVM @class in Classes)
+                foreach (ALHeroClassGroupVM @class in Classes)
                 {
-                    foreach (HeroClassVM subClass in @class.SubClasses)
+                    foreach (ALHeroClassVM subClass in @class.SubClasses)
                     {
                         subClass.IsGoldEnabled = IsGoldEnabled;
-                        subClass.Gold = SpawnHelper.GetTroopCost(subClass.HeroClass.TroopCharacter);
                     }
                 }
             }
@@ -723,8 +748,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         {
             if (component.IsMine && component is MissionRepresentativeBase)
             {
+                // Refresh enemies and teammates values only in certain gamemodes
+                // No need to recalculate _isTeammateAndEnemiesRelevant value here ?
                 //_isTeammateAndEnemiesRelevant = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>().IsGameModeTactical && !Mission.Current.HasMissionBehavior<MissionMultiplayerSiegeClient>();
-                _isTeammateAndEnemiesRelevant = false;
                 if (_isTeammateAndEnemiesRelevant)
                 {
                     OnRefreshTeamMembers();
@@ -815,9 +841,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 
         public void OnGoldUpdated()
         {
-            foreach (HeroClassGroupVM @class in Classes)
+            foreach (ALHeroClassGroupVM @class in Classes)
             {
-                @class.SubClasses.ApplyActionOnAllItems(delegate (HeroClassVM sc)
+                @class.SubClasses.ApplyActionOnAllItems(delegate (ALHeroClassVM sc)
                 {
                     sc.UpdateEnabled();
                 });
@@ -828,7 +854,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         {
             int num = MathF.Ceiling(_missionMultiplayerGameMode.RemainingTime);
             RemainingTimeText = TimeSpan.FromSeconds(num).ToString("mm':'ss");
-            WarnRemainingTime = num < 5f;
+            WarnRemainingTime = (float)num < 5f;
         }
     }
 }

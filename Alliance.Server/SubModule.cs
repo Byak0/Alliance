@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -9,6 +10,7 @@ using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
@@ -52,6 +54,7 @@ namespace Alliance.Server
             AnimationSystem.Instance.Init();
 
             SceneList.Initialize();
+            ClassLimiterModel.Instance.Init();
 
             AddCommonBehaviors(mission);
 
@@ -108,6 +111,7 @@ namespace Alliance.Server
             mission.AddMissionBehavior(new ServerAutoHandler());
             mission.AddMissionBehavior(new UsableEntityBehavior());
             mission.AddMissionBehavior(new TroopSpawnerBehavior());
+            mission.AddMissionBehavior(new ClassLimiterBehavior());
         }
     }
 }
