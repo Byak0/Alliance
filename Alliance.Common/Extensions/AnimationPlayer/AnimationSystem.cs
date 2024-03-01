@@ -71,7 +71,11 @@ namespace Alliance.Common.Extensions.AnimationPlayer
             AnimationDefaultStore.Instance.Init();
             // Compare default store to number of actions to determine whether we can use it or it needs a refresh
             bool refreshDefaultDurations = AnimationDefaultStore.Instance.DefaultDurations.Count != IndexToActionSetDictionary.Count;
-            if (refreshDefaultDurations) AnimationDefaultStore.Instance.DefaultDurations = new List<float>();
+            if (refreshDefaultDurations)
+            {
+                Log($"WARNING - The animations needs to be refreshed, this can lead to crash due to native instability", LogLevel.Warning);
+                AnimationDefaultStore.Instance.DefaultDurations = new List<float>();
+            }
 
             for (int i = 0; i < uniqueAnimationIndex; i++)
             {
@@ -85,7 +89,11 @@ namespace Alliance.Common.Extensions.AnimationPlayer
                 DefaultAnimations.Add(new Animation(i, IndexToActionDictionary[i], IndexToActionSetDictionary[i], "", 1f, AnimationDefaultStore.Instance.DefaultDurations[i]));
             }
 
-            if (refreshDefaultDurations) AnimationDefaultStore.Instance.Serialize();
+            if (refreshDefaultDurations)
+            {
+                AnimationDefaultStore.Instance.Serialize();
+                Log($"WARNING - The animations were refreshed successfully, please save Animations/DefaultAnimations.xml", LogLevel.Warning);
+            }
 
             Log("Alliance - Loaded " + Instance.DefaultAnimations.Count + " animations.", LogLevel.Debug);
 
@@ -183,7 +191,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
         /// <param name="synchronize">Set to true to synchronize with all clients</param>
         public void PlayAnimationForFormationAsync(Formation formation, Animation animation, bool synchronize = false)
         {
-            foreach(Agent agent in formation.GetUnitsWithoutDetachedOnes())
+            foreach (Agent agent in formation.GetUnitsWithoutDetachedOnes())
             {
                 PlayAnimationAsync(agent, animation, false);
             }
