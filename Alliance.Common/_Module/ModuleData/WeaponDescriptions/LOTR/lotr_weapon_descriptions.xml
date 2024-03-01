@@ -125,6 +125,7 @@
 			<AvailablePiece id="uruk_handle_1"/>
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription id="elf_two_handed"
                      weapon_class="TwoHandedSword"
                      item_usage_features="twohanded:block:swing:thrust">
@@ -141,6 +142,21 @@
 			<AvailablePiece id="rohan_guard_1"/>
 		</AvailablePieces>
 	</WeaponDescription>
+
+	<WeaponDescription id="elf_one_handed"
+                     weapon_class="OneHandedSword"
+                     item_usage_features="onehanded:block:shield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="elf_blade_1"/>
+			<AvailablePiece id="elf_blade_2"/>
+			<AvailablePiece id="elf_handle_1" />
+			<AvailablePiece id="elf_handle_2" />
+		</AvailablePieces>
+	</WeaponDescription>
+
 	<WeaponDescription id="rohan_one_handed"
                      weapon_class="OneHandedSword"
                      item_usage_features="onehanded:block:shield:swing:thrust">
@@ -157,6 +173,7 @@
 			<AvailablePiece id="elf_handle_2"/>
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription
 		id="RohanOneHandedAxe"
 		weapon_class="OneHandedAxe"
@@ -172,16 +189,9 @@
 				id="rohan_axe_1_handle" />
 			<AvailablePiece
 				id="rohan_axe_1_head" />
-			<AvailablePiece
-				id="gimli_one_handed_axe_handle" />
-			<AvailablePiece
-				id="gimli_one_handed_axe_head" />
-			<AvailablePiece
-				id="gimli_throwing_axe_head" />
-			<AvailablePiece
-				id="gimli_throwing_axe_handle" />
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription id="rohan_OneHandedBastardAxe"
                      weapon_class="OneHandedAxe"
                      item_usage_features="onehanded:rshield:axe">
@@ -195,6 +205,7 @@
 			<!-- AvailablePieces,OneHandedBastardAxe -->
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription id="rohan_OneHandedBastardAxeAlternative"
                      weapon_class="OneHandedAxe"
                      item_usage_features="onehanded:axe">
@@ -208,6 +219,7 @@
 			<!-- AvailablePieces,OneHandedBastardAxeAlternative -->
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription id="rohan_TwoHandedAxe"
                      weapon_class="TwoHandedAxe"
                      item_usage_features="twohanded:widegrip:axe">
@@ -293,6 +305,7 @@
 			<!-- AvailablePieces,Dagger -->
 		</AvailablePieces>
 	</WeaponDescription>
+
 	<WeaponDescription id="legolas_throwing_knife"
                      weapon_class="ThrowingKnife"
                      item_usage_features="throwing:knife">
@@ -327,6 +340,27 @@
 		</AvailablePieces>
 	</WeaponDescription>
 
+	<WeaponDescription
+		id="gimli_OneHandedAxe"
+		weapon_class="OneHandedAxe"
+		item_usage_features="onehanded:shield:axe">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+			<WeaponFlag
+				value="BonusAgainstShield" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece
+				id="gimli_one_handed_axe_handle" />
+			<AvailablePiece
+				id="gimli_one_handed_axe_head" />
+			<AvailablePiece
+				id="gimli_throwing_axe_head" />
+			<AvailablePiece
+				id="gimli_throwing_axe_handle" />
+		</AvailablePieces>
+	</WeaponDescription>
 
 	<WeaponDescription
 		id="gimli_ThrowingAxe"

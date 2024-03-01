@@ -313,6 +313,7 @@
 			id="mp_heavy_ranged_rohan"
 			hero="mp_heavy_ranged_rohan_hero"
 			troop="mp_heavy_ranged_rohan_troop"
+			banner_bearer="mp_heavy_ranged_rohan_banner_bearer"
 			hero_idle_anim="act_battania_mp_fian_idle"
 			troop_idle_anim="act_idle_bow_1"
 			multiplier="0.42"

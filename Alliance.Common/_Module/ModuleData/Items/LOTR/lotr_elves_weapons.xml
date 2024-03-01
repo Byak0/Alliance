@@ -12,6 +12,12 @@
 			<Piece id="elf_handle_2" Type="Handle" scale_factor="110" />
 		</Pieces>
 	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="elf_1h_sword" name="Galadhrim Sword" crafting_template="elf_one_handed" is_merchandise="false">
+		<Pieces>
+			<Piece id="elf_blade_2" Type="Blade" scale_factor="100" />
+			<Piece id="elf_handle_2" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
 	<!-- Elven Ranged Weapons -->
 	<Item multiplayer_item="true" id="elf_bow_1" name="Galadhrim Longbow" body_name="bo_composite_longbow_g" mesh="elf_bow_1" culture="Culture.rohan" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
 		<ItemComponent>
@@ -109,5 +115,40 @@
 			</Weapon>
 		</ItemComponent>
 		<Flags />
+	</Item>
+	<!-- Banners -->
+	<!-- Loth Lorien -->
+	<Item id="al_galadhrim_kingdom_banner_t3"
+        name="{=bfhdGaKiBa3}Galadhrim Kingdom Banner"
+        is_merchandise="false"
+        body_name="bo_mace_a"
+        recalculate_body="true"
+        mesh="Galadhrim_banner"
+        prefab="vlandia_tier_2_banner"
+        culture="Culture.neutral_culture"
+        weight="0.2"
+        Type="Banner"
+        using_tableau="true"
+        item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner banner_level="3"
+              weapon_class="Banner"
+              effect="IncreasedRangedDamage"
+              weapon_balance="100"
+              thrust_speed="78"
+              speed_rating="97"
+              missile_speed="0"
+              weapon_length="150"
+              swing_damage="6"
+              swing_damage_type="Blunt"
+              item_usage="banner"
+              physics_material="metal_weapon"
+              position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+           ForceAttachOffHandPrimaryItemBone="true"
+           HeldInOffHand="true"
+           HasToBeHeldUp="true"
+           CanBePickedUpFromCorpse="false" />
 	</Item>
 </Items>

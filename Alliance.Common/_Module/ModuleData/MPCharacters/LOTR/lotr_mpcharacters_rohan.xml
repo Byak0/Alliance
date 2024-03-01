@@ -21,7 +21,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="100" />
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
@@ -71,7 +71,7 @@
 	<!-- LIGHT INFANTRY - HERO (ARAGORN) -->
 	<NPCCharacter id="mp_light_infantry_rohan_hero"
                 default_group="Infantry"
-                level="20"
+                level="28"
                 voice="earnest"
                 is_female="false"
                 name="{=al_lotr_rohan_light_h}Aragorn"
@@ -100,7 +100,7 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
+				<equipment slot="Item1"
                    id="Item.mp_vlandian_two_handed_sword" />
 				<equipment slot="Body"
 									 id="Item.armor_rohan_4" />
@@ -129,7 +129,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="100" />
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
@@ -268,10 +268,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- SHOCK INFANTRY - HERO (GIMLI) /!\ TODO ADD DWARF RACE AND ADD MISSING ARMOR MESHES -->
+	<!-- SHOCK INFANTRY - HERO (GIMLI) -->
 	<NPCCharacter id="mp_shock_infantry_rohan_hero"
                 default_group="Infantry"
-                level="20"
+                level="26"
                 voice="earnest"
                 is_female="false"
                 name="{=al_lotr_rohan_shock_h}Gimli"
@@ -284,7 +284,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+             value="150" />
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
@@ -708,17 +708,17 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+             value="120" />
 			<skill id="Riding"
              value="80" />
 			<skill id="OneHanded"
              value="100" />
 			<skill id="TwoHanded"
-             value="120" />
+             value="160" />
 			<skill id="Polearm"
              value="120" />
 			<skill id="Bow"
-             value="180" />
+             value="220" />
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
@@ -813,10 +813,10 @@
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
-	<!-- HEAVY RANGED - HERO (LEGOLAS) /!\ TODO ADD MISSING GIMLI CAPE MESH -->
+	<!-- HEAVY RANGED - HERO (LEGOLAS) -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_hero"
 									default_group="Ranged"
-									level="20"
+									level="27"
 									voice="earnest"
 									is_female="false"
 									name="{=al_lotr_rohan_h_ranged_h}Legolas"
@@ -828,11 +828,11 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="150" />
+             value="180" />
 			<skill id="Riding"
              value="80" />
 			<skill id="OneHanded"
-             value="100" />
+             value="200" />
 			<skill id="TwoHanded"
              value="120" />
 			<skill id="Polearm"
@@ -842,7 +842,7 @@
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
-             value="80" />
+             value="250" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -860,6 +860,55 @@
 									 id="Item.legolas_legs" />
 				<equipment slot="Cape"
 									 id="Item.legolas_rohan_shoulder" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
+	<!-- HEAVY RANGED - TROOP -->
+	<NPCCharacter id="mp_heavy_ranged_rohan_banner_bearer"
+									default_group="Ranged"
+									level="15"
+									name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="25" weight="0.5" build="0.5"  key="00080C0C40000003CC7F976CDCB0958270718D62C4CE9749C472A7D98E9116120177761307A4410000000000000000000000000000000000000000003AFC3005"  />
+			<BodyPropertiesMax version="4" age="50" weight="0.5" build="0.5"  key="00050C00000000037C7F976EEEB0A5A47577866254C69643C4B647398C95A6140677766707A7497300000000000000000000000000000000000000003AF47004"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="100" />
+			<skill id="Riding"
+             value="80" />
+			<skill id="OneHanded"
+             value="100" />
+			<skill id="TwoHanded"
+             value="120" />
+			<skill id="Polearm"
+             value="120" />
+			<skill id="Bow"
+             value="180" />
+			<skill id="Crossbow"
+             value="80" />
+			<skill id="Throwing"
+             value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.elf_1h_sword" />
+				<equipment slot="ExtraWeaponSlot"
+                   id="Item.al_galadhrim_kingdom_banner_t3" />
+				<equipment slot="Body"
+									 id="Item.elf_armor_1" />
+				<equipment slot="Head"
+									 id="Item.elf_helm_1" />
+				<equipment slot="Gloves"
+									 id="Item.elf_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.elf_shoulder_1" />
 			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
