@@ -7,7 +7,7 @@
 	<CraftingPiece id="uruk_blade_1" name="Uruk-Hai Cleaver Blade" tier="3" piece_type="Blade" mesh="uruk_sword_1_blade" culture="Culture.isengard" length="74" weight="1.6" excluded_item_usage_features="thrust">
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
-			<Swing damage_type="Cut" damage_factor="3" />
+			<Swing damage_type="Cut" damage_factor="3.8" />
 		</BladeData>
 		<Flags>
 			<Flag name="Civilian" type="ItemFlags" />
@@ -17,7 +17,7 @@
 	<CraftingPiece id="uruk_blade_4" name="Uruk-Hai Cleaver Blade" tier="3" piece_type="Blade" mesh="uruk_sword_1_blade" culture="Culture.isengard" length="74" weight="1.5" excluded_item_usage_features="thrust">
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
-			<Swing damage_type="Cut" damage_factor="3.8" />
+			<Swing damage_type="Cut" damage_factor="4.2" />
 		</BladeData>
 		<Flags>
 			<Flag name="Civilian" type="ItemFlags" />

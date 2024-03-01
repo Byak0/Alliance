@@ -1,4 +1,5 @@
 ﻿using Alliance.Server.GameModes.CaptainX.Behaviors;
+using Alliance.Server.GameModes.Lobby.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
 using HarmonyLib;
@@ -50,8 +51,8 @@ namespace Alliance.Server.Patch.HarmonyPatch
         // Call correct spawning behavior when warmup starts
         public static bool Prefix_SetWarmupSpawningBehavior()
         {
-            Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawnFrameBehavior(new PvCFFASpawnFrameBehavior());
-            Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawningBehavior(new PvCWarmupSpawningBehavior());
+            Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawnFrameBehavior(new LobbySpawnFrameBehavior());
+            Mission.Current.GetMissionBehavior<SpawnComponent>().SetNewSpawningBehavior(new LobbySpawningBehavior());
 
             // Return false to skip original method
             return false;

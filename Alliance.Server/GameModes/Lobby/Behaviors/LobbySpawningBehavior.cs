@@ -26,10 +26,10 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             EquipmentElement horse = new EquipmentElement(MBObjectManager.Instance.GetObject<ItemObject>("mp_vlandia_horse"), null, null, false);
             EquipmentElement harness = new EquipmentElement(MBObjectManager.Instance.GetObject<ItemObject>("mp_stripped_leather_harness"), null, null, false);
             _altEquipment = new List<(EquipmentIndex, EquipmentElement)>
-                        {
-                            (EquipmentIndex.Horse, horse),
-                            (EquipmentIndex.HorseHarness, harness)
-                        };
+            {
+                //(EquipmentIndex.Horse, horse),
+                //(EquipmentIndex.HorseHarness, harness)
+            };
         }
 
         public override void OnTick(float dt)

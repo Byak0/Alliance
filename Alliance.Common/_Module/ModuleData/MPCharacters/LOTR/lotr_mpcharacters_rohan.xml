@@ -271,7 +271,7 @@
 	<!-- SHOCK INFANTRY - HERO (GIMLI) -->
 	<NPCCharacter id="mp_shock_infantry_rohan_hero"
                 default_group="Infantry"
-                level="26"
+                level="27"
                 voice="earnest"
                 is_female="false"
                 name="{=al_lotr_rohan_shock_h}Gimli"
@@ -816,7 +816,7 @@
 	<!-- HEAVY RANGED - HERO (LEGOLAS) -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_hero"
 									default_group="Ranged"
-									level="27"
+									level="26"
 									voice="earnest"
 									is_female="false"
 									name="{=al_lotr_rohan_h_ranged_h}Legolas"
