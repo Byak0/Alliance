@@ -24,7 +24,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         public event Action<BasicCharacterObject, bool> CharacterAvailabilityChanged;
         private Dictionary<BasicCharacterObject, bool> _characterAvailability = new();
         private Dictionary<BasicCharacterObject, int> _charactersLeft = new();
-        private readonly Dictionary<MissionPeer, BasicCharacterObject> _characterSelected = new();
+        private Dictionary<MissionPeer, BasicCharacterObject> _characterSelected = new();
 
         public ClassLimiterModel()
         {
@@ -40,6 +40,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
                 _charactersLeft.Add(character, exCharacter.TroopLimit);
                 ChangeCharacterAvailability(character, exCharacter.TroopLimit > 0);
             }
+            _characterSelected = new();
         }
 
         /// <summary>
