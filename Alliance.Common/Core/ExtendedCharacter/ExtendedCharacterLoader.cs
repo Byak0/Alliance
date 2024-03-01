@@ -18,8 +18,10 @@ namespace Alliance.Common.Core.ExtendedCharacter
         /// </summary>
         public static void Init()
         {
-            //if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/ExtendedCharacters.xml")) 
-            InitializeXML();
+            if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/ExtendedCharacters.xml"))
+            {
+                InitializeXML();
+            }
             CopyXSDs();
             MBObjectManager.Instance.RegisterType<ExtendedCharacterObject>("ExtendedCharacter", "ExtendedCharacters", 2001, true, false);
             MBObjectManager.Instance.LoadXML("ExtendedCharacters", false);
