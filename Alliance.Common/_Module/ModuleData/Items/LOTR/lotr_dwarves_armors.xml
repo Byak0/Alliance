@@ -4,13 +4,14 @@
 				 name="Gimli Torso"
 				 subtype="body_armor"
 				 mesh="gimli_torso"
-				 culture="Culture.aserai"
+				 culture="Culture.rohan"
 				 weight="16.5"
 				 difficulty="0"
 				 appearance="1.5"
 				 Type="BodyArmor">
 		<ItemComponent>
-			<Armor body_armor="48"
+			<Armor body_armor="50"
+             leg_armor="22"
              arm_armor="14"
              has_gender_variations="true"
              covers_body="true"
@@ -22,13 +23,13 @@
 	<Item multiplayer_item="true" id="gimli_gloves"
         name="Gimli gloves"
         mesh="gimli_gloves"
-        culture="Culture.battania"
+        culture="Culture.rohan"
         weight="0.8"
         difficulty="0"
         appearance="1"
         Type="HandArmor">
 		<ItemComponent>
-			<Armor arm_armor="8"
+			<Armor arm_armor="20"
              covers_hands="true"
              modifier_group="leather"
              material_type="Leather" />
@@ -39,13 +40,13 @@
         name="Gimli Helms"
         subtype="head_armor"
         mesh="gimli_helm"
-        culture="Culture.aserai"
+        culture="Culture.rohan"
         weight="1.3"
         difficulty="0"
         appearance="2"
         Type="HeadArmor">
 		<ItemComponent>
-			<Armor head_armor="22"
+			<Armor head_armor="40"
              has_gender_variations="false"
              hair_cover_type="all"
              modifier_group="plate"
@@ -57,7 +58,7 @@
 	<Item multiplayer_item="true" id="gimli_boots"
         name="Gimli Boots"
         mesh="gimlifoot"
-        culture="Culture.battania"
+        culture="Culture.rohan"
         weight="2.6"
         difficulty="0"
         appearance="3"
@@ -73,7 +74,7 @@
 	<Item multiplayer_item="true" id="gimli_cloak"
         name="Gimli cloak"
         mesh="gimli_cloak"
-        culture="Culture.aserai"
+        culture="Culture.rohan"
         weight="8.2"
         appearance="6"
         Type="Cape">

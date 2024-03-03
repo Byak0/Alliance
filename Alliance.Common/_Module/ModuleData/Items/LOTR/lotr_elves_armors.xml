@@ -9,7 +9,13 @@
 	<!-- Elven Armors -->
 	<Item multiplayer_item="true" id="elf_armor_1" name="Galadhrim Plate Armor" mesh="elf_armor_1" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
 		<ItemComponent>
-			<Armor body_armor="45" leg_armor="18" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+			<Armor body_armor="35" leg_armor="14" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="elf_armor_2" name="Galadhrim Plate Armor (Haldir)" mesh="elf_armor_1" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="55" leg_armor="21" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>
@@ -30,10 +36,11 @@
 	<!-- Elven Shoulder Armors -->
 	<Item multiplayer_item="true" id="elf_shoulder_1" name="Galadhrim Hooded Cape" mesh="elf_shoulder_1" culture="Culture.rohan" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
 		<ItemComponent>
-			<Armor body_armor="27" arm_armor="5" modifier_group="plate" material_type="Plate" />
+			<Armor body_armor="18" arm_armor="5" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>
+	<!-- Legolas Armor -->
   <Item multiplayer_item="true" id="legolas_legs" name="Legolas leg" mesh="legolas_legs" culture="Culture.rohan" weight="1.0" difficulty="0" appearance="3" Type="LegArmor">
     <ItemComponent>
       <Armor leg_armor="20" covers_legs="true" modifier_group="leather" material_type="Leather" />
