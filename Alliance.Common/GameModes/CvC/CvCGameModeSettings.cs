@@ -25,6 +25,7 @@ namespace Alliance.Common.GameModes.CvC
             SetNativeOption(OptionType.RoundTotal, 3);
             SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
             SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
+            SetNativeOption(OptionType.NumberOfBotsPerFormation, 0);
             SetNativeOption(OptionType.FriendlyFireDamageMeleeFriendPercent, 75);
             SetNativeOption(OptionType.FriendlyFireDamageMeleeSelfPercent, 0);
             SetNativeOption(OptionType.FriendlyFireDamageRangedFriendPercent, 75);
