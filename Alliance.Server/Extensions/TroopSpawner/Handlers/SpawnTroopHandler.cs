@@ -120,11 +120,12 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 playerSpawned = true;
             }
 
+
             // Assign player as sergeant BEFORE spawning to prevent crash OnBotsControlledChange ?
             if (missionPeer.ControlledAgent != null)
             {
-                Formation formation = missionPeer.ControlledAgent.Team.GetFormation((FormationClass)model.Formation);
-                MissionPeer previousSergeant = formation.PlayerOwner?.MissionPeer;
+                MissionPeer previousSergeant = FormationControlModel.Instance.GetControllerOfFormation((FormationClass)model.Formation, missionPeer.Team);
+
                 if (previousSergeant != missionPeer)
                 {
                     // Unassign previous sergeant from this formation to prevent crash 
