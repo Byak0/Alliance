@@ -85,6 +85,8 @@
 									 id="Item.uruk_arm_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- Uruk-hai Scout - HERO -->
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
@@ -168,6 +170,8 @@
 									 id="Item.uruk_arm_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- Uruk-hai Scout - BANNER BEARER -->
 	<NPCCharacter id="mp_light_infantry_isengard_banner_bearer"
@@ -222,7 +226,9 @@
 				<equipment slot="Gloves"
 									 id="Item.uruk_arm_1" />
 			</EquipmentRoster>
-		</Equipments>		
+		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 
 	<!-- Uruk-hai Pikeman - TROOP -->
@@ -266,9 +272,51 @@
 				<equipment slot="Item0"
 									 id="Item.uruk_pike_1" />
 				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v2" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_pike_1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_pike_1" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_pike_1" />
+				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v1" />
 				<equipment slot="Gloves"
-									 id="Item.uruk_arm_2" />
+									 id="Item.uruk_arm_1" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Head"
@@ -277,6 +325,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 	<!-- Uruk-hai Pikeman - HERO -->
 	<NPCCharacter id="mp_pike_infantry_isengard_hero"
@@ -319,7 +369,7 @@
 				<equipment slot="Item0"
 									 id="Item.uruk_pike_1" />
 				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v1" />
+									 id="Item.uruk_armor_1_v3" />
 				<equipment slot="Gloves"
 									 id="Item.uruk_arm_2" />
 				<equipment slot="Leg"
@@ -330,6 +380,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 	<!-- Uruk-hai Pikeman - BANNER BEARER -->
 	<NPCCharacter id="mp_pike_infantry_isengard_banner_bearer"
@@ -374,9 +426,57 @@
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v2" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_1" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v1" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
+									 id="Item.uruk_armor_1_v3" />
+				<equipment slot="Gloves"
+									 id="Item.uruk_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.uruk_greaves_1" />
+				<equipment slot="Head"
+									 id="Item.uruk_helm_1_v2" />
+				<equipment slot="Cape"
+									 id="Item.uruk_shoulder_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.uruk_sword_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
+				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v1" />
 				<equipment slot="Gloves"
-									 id="Item.uruk_arm_2" />
+									 id="Item.uruk_arm_1" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Head"
@@ -385,6 +485,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 
 	<!-- Uruk-hai Warrior - TROOP -->
@@ -489,6 +591,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 	<!-- Uruk-hai Warrior - HERO -->
 	<NPCCharacter id="mp_sword_infantry_isengard_hero"
@@ -544,6 +648,8 @@
 									 id="Item.uruk_shoulder_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 	<!-- Uruk-hai Warrior - BANNER BEARER -->
 	<NPCCharacter id="mp_sword_infantry_isengard_banner_bearer"
@@ -647,6 +753,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 
 	<!-- Heavy Uruk-hai - TROOP -->
@@ -751,6 +859,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 	<!-- Heavy Uruk-hai - HERO -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_hero"
@@ -806,6 +916,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 	<!-- Heavy Uruk-hai - BANNER BEARER -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_banner_bearer"
@@ -877,6 +989,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 
 	<!-- Uruk-hai Berserker - TROOP -->
@@ -951,6 +1065,8 @@
 									 id="Item.uruk_helm_4_v1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 	<!-- Uruk-hai Berserker - HERO -->
 	<NPCCharacter id="mp_berserk_isengard_hero"
@@ -1002,6 +1118,8 @@
 									 id="Item.uruk_helm_4_v1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 
 	<!-- Uruk-hai Archer - TROOP -->
@@ -1072,6 +1190,8 @@
 									 id="Item.uruk_greaves_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- Uruk-hai Archer - HERO -->
 	<NPCCharacter id="mp_light_ranged_isengard_hero"
@@ -1125,6 +1245,8 @@
 									 id="Item.uruk_greaves_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 
 	<!-- Uruk-hai Crossbowman - TROOP -->
@@ -1225,6 +1347,8 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="35" />
 	</NPCCharacter>
 	<!-- Uruk-hai Crossbowman - HERO -->
 	<NPCCharacter id="mp_heavy_ranged_isengard_hero"
@@ -1284,5 +1408,7 @@
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="35" />
 	</NPCCharacter>	
 </MPCharacters>

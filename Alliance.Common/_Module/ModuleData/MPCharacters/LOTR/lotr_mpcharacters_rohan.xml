@@ -67,6 +67,8 @@
 									 id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- LIGHT INFANTRY - HERO (ARAGORN) -->
 	<NPCCharacter id="mp_light_infantry_rohan_hero"
@@ -110,6 +112,8 @@
 									 id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 	<!-- LIGHT INFANTRY - BANNER BEARER -->
 	<NPCCharacter id="mp_light_infantry_rohan_banner_bearer"
@@ -181,6 +185,8 @@
 									 id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 
 	<!-- SHOCK INFANTRY - TROOP -->
@@ -267,6 +273,8 @@
 									 id="Item.armor_rohan_shoulder_4" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="35" />
 	</NPCCharacter>
 	<!-- SHOCK INFANTRY - HERO (GIMLI) -->
 	<NPCCharacter id="mp_shock_infantry_rohan_hero"
@@ -316,8 +324,12 @@
                    id="Item.gimli_boots" />
 				<equipment slot="Gloves"
                    id="Item.gimli_gloves" />
+				<equipment slot="Cape"
+                   id="Item.gimli_cloak" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 	<!-- SHOCK INFANTRY - BANNER BEARER -->
 	<NPCCharacter id="mp_shock_infantry_rohan_banner_bearer"
@@ -403,6 +415,8 @@
 									 id="Item.armor_rohan_shoulder_4" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="35" />
 	</NPCCharacter>
 
 	<!-- SKIRMISHER - TROOP -->
@@ -481,6 +495,8 @@
 									 id="Item.armor_rohan_shoulder_4" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- SKIRMISHER - HERO (EOMER) -->
 	<NPCCharacter id="mp_skirmisher_rohan_hero"
@@ -537,6 +553,8 @@
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 	<!-- SKIRMISHER - BANNER BEARER -->
 	<NPCCharacter id="mp_skirmisher_rohan_banner_bearer"
@@ -614,6 +632,8 @@
 									 id="Item.armor_rohan_shoulder_4" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 
 	<!-- LIGHT RANGED - TROOP -->
@@ -653,7 +673,7 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0"
-									 id="Item.mp_nordic_short_bow" />
+									 id="Item.rohan_bow" />
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
@@ -673,7 +693,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0"
-									 id="Item.mp_nordic_short_bow" />
+									 id="Item.rohan_bow" />
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
@@ -692,6 +712,8 @@
 									 id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="25" />
 	</NPCCharacter>
 	<!-- LIGHT RANGED - HERO (HALDIR) -->
 	<NPCCharacter id="mp_light_ranged_rohan_hero"
@@ -742,6 +764,8 @@
 									 id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="65" />
 	</NPCCharacter>
 
 	<!-- HEAVY RANGED - TROOP -->
@@ -812,6 +836,8 @@
 									 id="Item.elf_shoulder_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 	<!-- HEAVY RANGED - HERO (LEGOLAS) -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_hero"
@@ -862,6 +888,8 @@
 									 id="Item.legolas_rohan_shoulder" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 	<!-- HEAVY RANGED - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_banner_bearer"
@@ -911,6 +939,8 @@
 									 id="Item.elf_shoulder_1" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="40" />
 	</NPCCharacter>
 
 	<!-- LIGHT CAVALRY - TROOP -->
@@ -1019,6 +1049,8 @@
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 	<!-- LIGHT CAVALRY - HERO (THEODEN) -->
 	<NPCCharacter id="mp_light_cavalry_rohan_hero"
@@ -1075,6 +1107,8 @@
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="85" />
 	</NPCCharacter>
 	<!-- LIGHT CAVALRY - BANNER BEARER -->
 	<NPCCharacter id="mp_light_cavalry_rohan_banner_bearer"
@@ -1182,5 +1216,7 @@
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
+		<Resistances
+			dismount="75" />
 	</NPCCharacter>
 </MPCharacters>
