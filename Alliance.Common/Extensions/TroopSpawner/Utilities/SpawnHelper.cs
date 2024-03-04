@@ -363,6 +363,31 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             return agentBuildData2.AgentBodyProperties;
         }
 
+        /// <summary>
+        /// Spawn a random army for the specified team based on given gold and difficulty (max 1000 agents).
+        /// </summary>
+        /// <returns>Number of agents spawned.</returns>
+        public static int SpawnArmy(int goldToUse, float difficulty, Team team, BasicCultureObject culture1)
+        {
+            List<BasicCharacterObject> agentsToSpawn = new List<BasicCharacterObject>();
+            int nbAgents = 0;
+
+            while (goldToUse > 0 && nbAgents < 1000)
+            {
+                BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
+                goldToUse -= GetTroopCost(troopCharacter, difficulty);
+                agentsToSpawn.Add(troopCharacter);
+                nbAgents++;
+            }
+
+            foreach (BasicCharacterObject character in agentsToSpawn)
+            {
+                SpawnBot(team, culture1, character, botDifficulty: difficulty);
+            }
+
+            return nbAgents;
+        }
+
         // Return a linear troop cost from minCost to MaxCost, depending on TroopMultiplier
         public static int GetTroopCost(BasicCharacterObject character, float difficultyMultiplier = 1f)
         {
