@@ -19,11 +19,12 @@
                physics_material="metal_weapon"
                body_name="bo_axe_longer_b">
 			<Swing damage_type="Cut"
-             damage_factor="2.5" />
+             damage_factor="3.5" />
 		</BladeData>
 		<Flags>
 			<Flag name="CanBePickedUpFromCorpse"
             type="ItemFlags" />
+			<Flag name="BonusAgainstShield" />
 		</Flags>
 	</CraftingPiece>
 

@@ -10,7 +10,7 @@
 				 appearance="1.5"
 				 Type="BodyArmor">
 		<ItemComponent>
-			<Armor body_armor="50"
+			<Armor body_armor="55"
              leg_armor="22"
              arm_armor="14"
              has_gender_variations="true"
@@ -46,7 +46,7 @@
         appearance="2"
         Type="HeadArmor">
 		<ItemComponent>
-			<Armor head_armor="40"
+			<Armor head_armor="45"
              has_gender_variations="false"
              hair_cover_type="all"
              modifier_group="plate"
@@ -64,7 +64,7 @@
         appearance="3"
         Type="LegArmor">
 		<ItemComponent>
-			<Armor leg_armor="26"
+			<Armor leg_armor="30"
              covers_legs="true"
              modifier_group="plate"
              material_type="Plate" />
@@ -79,7 +79,7 @@
         appearance="6"
         Type="Cape">
 		<ItemComponent>
-			<Armor body_armor="14"
+			<Armor body_armor="18"
              arm_armor="10"
              modifier_group="plate"
              material_type="Plate" />
