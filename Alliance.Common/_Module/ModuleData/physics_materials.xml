@@ -13,26 +13,4 @@
 			angular_damping="0.050"
 			display_color="255, 9, 57, 222" />
 	</physics_materials>
-	<sound_and_collision_info_class_definitions>
-		<sound_and_collision_info_class_definition
-			name="human" />
-		<sound_and_collision_info_class_definition
-			name="horse" />
-		<sound_and_collision_info_class_definition
-			name="camel" />
-		<sound_and_collision_info_class_definition
-			name="ovine" />
-		<sound_and_collision_info_class_definition
-			name="boar" />
-		<sound_and_collision_info_class_definition
-			name="bovine" />
-		<sound_and_collision_info_class_definition
-			name="donkey" />
-		<sound_and_collision_info_class_definition
-			name="goose" />
-		<sound_and_collision_info_class_definition
-			name="chicken" />
-		<sound_and_collision_info_class_definition
-			name="dog" />
-	</sound_and_collision_info_class_definitions>
 </base>
