@@ -1,6 +1,6 @@
 ﻿using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Common.Core
+namespace Alliance.Common.Extensions.TroopSpawner.Interfaces
 {
     public interface IBotControllerBehavior
     {

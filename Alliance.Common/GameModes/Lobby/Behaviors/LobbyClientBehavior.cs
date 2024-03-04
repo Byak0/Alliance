@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core;
+﻿using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 

@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.ExtendedCharacter.Models;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using System;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.MissionRepresentatives;

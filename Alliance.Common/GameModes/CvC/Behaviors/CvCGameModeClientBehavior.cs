@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using System.Linq;
 using System.Reflection;
@@ -18,7 +18,7 @@ namespace Alliance.Common.GameModes.CvC.Behaviors
         {
         }
 
-        public override bool IsGameModeUsingGold => true;
+        public override bool IsGameModeUsingGold => false;
 
         public override void OnBehaviorInitialize()
         {
