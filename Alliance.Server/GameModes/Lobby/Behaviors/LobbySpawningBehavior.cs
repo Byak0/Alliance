@@ -109,7 +109,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 
                 // Random difficulty between 0.5 and 2.5f
                 float difficulty = _values[_random.Next(_values.Count)];
-                SpawnHelper.SpawnBot(Mission.AttackerTeam, cultureDef, troopCharacter, botDifficulty: difficulty);
+                SpawnHelper.SpawnBot(Mission.DefenderTeam, cultureDef, troopCharacter, botDifficulty: difficulty);
             }
         }
 

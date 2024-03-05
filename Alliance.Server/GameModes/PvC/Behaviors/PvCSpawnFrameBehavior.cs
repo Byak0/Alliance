@@ -7,6 +7,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Objects;
+using static Alliance.Common.Utilities.Logger;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Server.GameModes.PvC.Behaviors
@@ -199,7 +200,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             MatrixFrame globalFrame = spawnPointList[bestSpawnIndex].GetGlobalFrame();
             if (nbAgentsAtBest > 30)
             {
-                Debug.Print("Too much agents already spawned at this position, spawning slightly to the side.", 0, Debug.DebugColor.Yellow);
+                Log($"Too much agents already spawned at this position, spawning slightly to the side.", LogLevel.Warning);
                 globalFrame.Advance(MBRandom.RandomFloatRanged(-10f, 10f));
                 globalFrame.Strafe(MBRandom.RandomFloatRanged(-10f, 10f));
             }

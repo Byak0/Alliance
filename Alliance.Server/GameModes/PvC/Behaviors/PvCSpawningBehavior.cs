@@ -1,8 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Server.Extensions.AIBehavior;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
 using System;
@@ -190,27 +188,17 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             // If no player were spawn in attacker team, spawn bots instead
             if (Mission.Current.AttackerTeam.ActiveAgents.Count == 0 && Mission.Current.AttackerTeam.HasAnyEnemyTeamsWithAgents(false))
             {
-                BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-                int nbBotsToSpawn = Config.Instance.StartingGold / 25;
-                for (int i = 0; i < nbBotsToSpawn; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.AttackerTeam, culture1, troopCharacter, botDifficulty: difficulty);
-                }
-                SendMessageToAll("No player found in Attacker Team. Spawned " + nbBotsToSpawn + " bots instead.");
+                BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+                int nbAgentsSpawn = SpawnHelper.SpawnArmy(Config.Instance.StartingGold, difficulty, Mission.Current.AttackerTeam, culture);
+                SendMessageToAll("No player found in Attacker Team. Spawned " + nbAgentsSpawn + " bots instead.");
                 _haveBotsBeenSpawned = true;
             }
             // If no player were spawn in defender team, spawn bots instead
             else if (Mission.Current.DefenderTeam.ActiveAgents.Count == 0 && Mission.Current.DefenderTeam.HasAnyEnemyTeamsWithAgents(false))
             {
-                BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-                int nbBotsToSpawn = Config.Instance.StartingGold / 25;
-                for (int i = 0; i < nbBotsToSpawn; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture2).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.DefenderTeam, culture2, troopCharacter, botDifficulty: difficulty); ;
-                }
-                SendMessageToAll("No player found in Defender Team. Spawned " + nbBotsToSpawn + " bots instead.");
+                BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+                int nbAgentsSpawn = SpawnHelper.SpawnArmy(Config.Instance.StartingGold, difficulty, Mission.Current.DefenderTeam, culture);
+                SendMessageToAll("No player found in Defender Team. Spawned " + nbAgentsSpawn + " bots instead.");
                 _haveBotsBeenSpawned = true;
             }
         }
@@ -234,8 +222,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
         {
             await Task.Delay(waitTime);
             EnableMortality();
-            AddTeamAI(Mission.Current.AttackerTeam);
-            AddTeamAI(Mission.Current.DefenderTeam);
         }
 
         private void EnableMortality()
@@ -250,22 +236,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     agent.SetMortalityState(MortalityState.Mortal);
                 }
             }
-        }
-
-        private void AddTeamAI(Team team)
-        {
-            ALTeamAIGeneral teamAI = new ALTeamAIGeneral(Mission.Current, team);
-            teamAI.AddTacticOption(new TacticDefensiveEngagement(team));
-            teamAI.AddTacticOption(new TacticCharge(team));
-            TeamQuerySystemUtils.SetPowerFix(Mission.Current);
-            foreach (Formation formation in team.FormationsIncludingSpecialAndEmpty)
-            {
-                teamAI.OnUnitAddedToFormationForTheFirstTime(formation);
-            }
-            team.AddTeamAI(teamAI);
-            bool playerIsControlling = !FormationControlModel.Instance.GetAllControllersFromTeam(team).IsEmpty();
-            team.SetPlayerRole(playerIsControlling, playerIsControlling);
-            Log($"Team AI added for {team.Side}", LogLevel.Debug);
         }
 
         // Spawn agents preview
