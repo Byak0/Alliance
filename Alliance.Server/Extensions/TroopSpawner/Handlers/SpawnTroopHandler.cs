@@ -1,14 +1,15 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.ExtendedCharacter.Extension;
 using Alliance.Common.Core.ExtendedCharacter.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
+using Alliance.Server.GameModes.CaptainX.Behaviors;
 using NetworkMessages.FromServer;
 using System;
 using TaleWorlds.Core;
@@ -21,7 +22,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 {
     public class SpawnTroopHandler : IHandlerRegister
     {
-        static MissionMultiplayerFlagDomination GameMode => Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>();
+        static ALMissionMultiplayerFlagDomination GameMode => Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>() as ALMissionMultiplayerFlagDomination;
         static IBotControllerBehavior GameModeClient => Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>() as IBotControllerBehavior;
         static ISpawnBehavior SpawnBehavior => Mission.Current.GetMissionBehavior<SpawnComponent>().SpawningBehavior as ISpawnBehavior;
         static ISpawnFrameBehavior SpawnFrame => Mission.Current.GetMissionBehavior<SpawnComponent>().SpawnFrameBehavior as ISpawnFrameBehavior;
@@ -102,6 +103,9 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 SendMessageToPeer(refuseReason, peer);
                 return false;
             }
+
+            string debugAvailableSlots = $"Remaining slots = {AgentsInfoModel.Instance.GetAvailableSlotCount()}";
+            Log(debugAvailableSlots, LogLevel.Debug);
 
             string reportToPlayer = "";
             MatrixFrame spawnPos = model.SpawnPosition;

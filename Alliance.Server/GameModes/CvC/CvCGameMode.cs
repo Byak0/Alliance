@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.CvC.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
-using Alliance.Server.GameModes.CvC.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
@@ -33,7 +32,7 @@ namespace Alliance.Server.GameModes.CvC
                     new FormationBehavior(),
                     new VoipHandler(),
                     new RespawnBehavior(),
-                    new CvCGameModeBehavior(MultiplayerGameType.Captain),
+                    new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new MultiplayerRoundController(),
                     new CvCGameModeClientBehavior(),
                     new MultiplayerTimerComponent(),

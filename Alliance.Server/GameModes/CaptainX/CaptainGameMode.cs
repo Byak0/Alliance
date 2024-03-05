@@ -34,7 +34,7 @@ namespace Alliance.Server.GameModes.CaptainX
                     new FormationBehavior(),
                     new VoipHandler(),
 
-                    new PvCMissionMultiplayerFlagDomination(MultiplayerGameType.Captain),
+                    new ALMissionMultiplayerFlagDomination(MultiplayerGameType.Captain),
                     new PvCMissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerRoundController(),
                     new MultiplayerWarmupComponent(),

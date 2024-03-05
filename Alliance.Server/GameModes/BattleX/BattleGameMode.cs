@@ -24,10 +24,9 @@ namespace Alliance.Server.GameModes.BattleX
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
                     new VoipHandler(),
-                    new BattlePowerCalculationLogic(),
 
                     new MultiplayerRoundController(),
-                    new PvCMissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
+                    new ALMissionMultiplayerFlagDomination(MultiplayerGameType.Battle),
                     new MultiplayerWarmupComponent(),
                     new MissionMultiplayerGameModeFlagDominationClient(),
                     new MultiplayerTimerComponent(),
