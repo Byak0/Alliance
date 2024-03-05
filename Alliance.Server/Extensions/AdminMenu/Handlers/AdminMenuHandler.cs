@@ -167,8 +167,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
             healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
-            Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
-            SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+            Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
+            SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
             return true;
         }
 

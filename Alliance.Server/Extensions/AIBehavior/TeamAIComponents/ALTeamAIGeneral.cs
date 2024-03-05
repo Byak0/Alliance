@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Alliance.Server.Extensions.AIBehavior.BehaviorComponents;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Objects;
 
-namespace Alliance.Server.Extensions.AIBehavior
+namespace Alliance.Server.Extensions.AIBehavior.TeamAIComponents
 {
     /// <summary>
     /// Define AI Behaviors for formations (charge, pullback, etc.).
@@ -137,138 +137,15 @@ namespace Alliance.Server.Extensions.AIBehavior
                 formation.AI.AddAiBehavior(new BehaviorSkirmishLine(formation));
                 formation.AI.AddAiBehavior(new BehaviorVanguard(formation));
 
-                switch (formation.PhysicalClass)
+                if (Mission.Current.ActiveMissionObjects.Exists(missionObject => missionObject is FlagCapturePoint))
                 {
-                    case FormationClass.Infantry:
-                        formation.AI.SetBehaviorWeight<BehaviorCharge>(1f);
-                        break;
-                    case FormationClass.Ranged:
-                        formation.AI.SetBehaviorWeight<BehaviorHoldHighGround>(1f);
-                        break;
-                    case FormationClass.Cavalry:
-                        formation.AI.SetBehaviorWeight<BehaviorTacticalCharge>(1f);
-                        formation.AI.SetBehaviorWeight<BehaviorFlank>(1f);
-                        break;
-                    case FormationClass.HorseArcher:
-                        formation.AI.SetBehaviorWeight<BehaviorMountedSkirmish>(1f);
-                        break;
-                    case FormationClass.Skirmisher: break;
-                    case FormationClass.HeavyInfantry: break;
-                    case FormationClass.LightCavalry: break;
-                    case FormationClass.HeavyCavalry: break;
+                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPInfantry(formation));
+                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPLastFlagLastStand(formation));
+                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMounted(formation));
+                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMountedRanged(formation));
+                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPRanged(formation));
                 }
             }
-        }
-
-        protected override void Tick(float dt)
-        {
-            if (Team.BodyGuardFormation != null && Team.BodyGuardFormation.CountOfUnits > 0 && (Team.GeneralsFormation == null || Team.GeneralsFormation.CountOfUnits == 0))
-            {
-                Team.BodyGuardFormation.AI.ResetBehaviorWeights();
-                Team.BodyGuardFormation.AI.SetBehaviorWeight<BehaviorCharge>(1f);
-            }
-            if (_nextTacticChooseTime.IsPast)
-            {
-                MakeDecision();
-                _nextTacticChooseTime = MissionTime.SecondsFromNow(5f);
-            }
-            if (_nextOccasionalTickTime.IsPast)
-            {
-                TickOccasionally();
-                _nextOccasionalTickTime = MissionTime.SecondsFromNow(_occasionalTickTime);
-            }
-        }
-
-        private void MakeDecision()
-        {
-            List<TacticComponent> availableTactics = (List<TacticComponent>)AvailableTacticsFI.GetValue(this);
-            if ((Mission.CurrentState != Mission.State.Continuing && availableTactics.Count == 0) || !Team.HasAnyFormationsIncludingSpecialThatIsNotEmpty())
-            {
-                return;
-            }
-            bool flag = true;
-            foreach (Team team in Mission.Teams)
-            {
-                if (team.IsEnemyOf(Team) && team.HasAnyFormationsIncludingSpecialThatIsNotEmpty())
-                {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag)
-            {
-                if (Mission.MissionEnded)
-                {
-                    return;
-                }
-                if (!(CurrentTactic is TacticCharge))
-                {
-                    foreach (TacticComponent tacticComponent in availableTactics)
-                    {
-                        if (tacticComponent is TacticCharge)
-                        {
-                            if (CurrentTactic == null)
-                            {
-                                GetIsFirstTacticChosenPI.SetValue(this, true);
-                            }
-                            CurrentTacticPI.SetValue(this, tacticComponent);
-                            break;
-                        }
-                    }
-                    if (!(CurrentTactic is TacticCharge))
-                    {
-                        if (CurrentTactic == null)
-                        {
-                            GetIsFirstTacticChosenPI.SetValue(this, true);
-                        }
-                        CurrentTacticPI.SetValue(this, availableTactics.FirstOrDefault());
-                    }
-                }
-            }
-            CheckIsDefenseApplicable();
-            MethodInfo GetTacticWeightMI = typeof(TacticComponent).GetMethod("GetTacticWeight", BindingFlags.NonPublic | BindingFlags.Instance);
-            TacticComponent tacticComponent2 = TaleWorlds.Core.Extensions.MaxBy(availableTactics, (TacticComponent to) => (float)GetTacticWeightMI.Invoke(to, null) * ((to == CurrentTactic) ? 1.5f : 1f));
-            bool flag2 = false;
-            if (CurrentTactic == null)
-            {
-                flag2 = true;
-            }
-            else if (CurrentTactic != tacticComponent2)
-            {
-                if (!(bool)ResetTacticalPositionsMI.Invoke(CurrentTactic, null))
-                {
-                    flag2 = true;
-                }
-                else
-                {
-                    float tacticWeight = (float)GetTacticWeightMI.Invoke(tacticComponent2, null);
-                    float num = (float)GetTacticWeightMI.Invoke(CurrentTactic, null) * 1.5f;
-                    if (tacticWeight > num)
-                    {
-                        flag2 = true;
-                    }
-                }
-            }
-            if (flag2)
-            {
-                if (CurrentTactic == null)
-                {
-                    GetIsFirstTacticChosenPI.SetValue(this, true);
-                }
-                CurrentTacticPI.SetValue(this, tacticComponent2);
-                if (Mission.Current.MainAgent != null && Team.GeneralAgent != null && Team.IsPlayerTeam && Team.IsPlayerSergeant)
-                {
-                    string name = tacticComponent2.GetType().Name;
-                    MBInformationManager.AddQuickInformation(GameTexts.FindText("str_team_ai_tactic_text", name), 4000, Team.GeneralAgent.Character, "");
-                }
-            }
-        }
-
-        public new void CheckIsDefenseApplicable()
-        {
-            // Always set to false to force AI to be aggresive
-            IsDefenseApplicablePI.SetValue(this, false);
-            return;
         }
     }
 }

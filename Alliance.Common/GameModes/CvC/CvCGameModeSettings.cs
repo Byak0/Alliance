@@ -40,7 +40,7 @@ namespace Alliance.Common.GameModes.CvC
             ModOptions.ActivateSAE = true;
             ModOptions.SAERange = 50;
             ModOptions.EnableFormation = false;
-            ModOptions.TimeBeforeFlagRemoval = 450;
+            ModOptions.TimeBeforeFlagRemoval = 300;
             ModOptions.MoraleMultiplierForFlag = 1f;
             ModOptions.MoraleMultiplierForLastFlag = 1f;
             ModOptions.UseTroopCost = true;

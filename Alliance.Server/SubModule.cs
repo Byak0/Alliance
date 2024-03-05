@@ -10,6 +10,7 @@ using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
@@ -112,6 +113,8 @@ namespace Alliance.Server
             mission.AddMissionBehavior(new UsableEntityBehavior());
             mission.AddMissionBehavior(new TroopSpawnerBehavior());
             mission.AddMissionBehavior(new ClassLimiterBehavior());
+            mission.AddMissionBehavior(new BattlePowerCalculationLogic());
+            mission.AddMissionBehavior(new ALGlobalAIBehavior());
         }
     }
 }
