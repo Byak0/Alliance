@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModes.Lobby.Behaviors;
+﻿using Alliance.Common.GameModes.Lobby.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
@@ -52,12 +51,6 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             MissionPeer component = networkPeer.GetComponent<MissionPeer>();
             component.Team = Mission.AttackerTeam;
             component.Culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-        }
-
-        public override void OnAgentDeleted(Agent affectedAgent)
-        {
-            // Free spawn slot of victim
-            SpawnHelper.RemoveBot(affectedAgent);
         }
 
         public LobbyBehavior()

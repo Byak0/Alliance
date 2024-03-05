@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -31,19 +30,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
         static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
         static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
-
-        public static void RemoveBot(Agent bot, int waitTime = 10000)
-        {
-            Log($"Freeing slot n.{bot.Index} in {waitTime / 1000}s", LogLevel.Debug);
-            Task.Run(() => DelayedRemoveBot(bot.Index, waitTime));
-        }
-
-        // Free bot slot after a delay
-        private static async void DelayedRemoveBot(int index, int waitTime)
-        {
-            await Task.Delay(waitTime);
-            AgentsInfoModel.Instance.RemoveAgentInfo(index);
-        }
 
         public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
         {
