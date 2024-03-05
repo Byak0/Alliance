@@ -548,7 +548,7 @@
 				<equipment slot="Cape"
 									 id="Item.armor_rohan_shoulder_3" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1000,7 +1000,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1022,7 +1022,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1044,7 +1044,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1102,7 +1102,7 @@
 				<equipment slot="Gloves"
                    id="item.rohan_arm_4" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1167,7 +1167,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1189,7 +1189,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
@@ -1211,7 +1211,7 @@
 				<equipment slot="Cape"
                    id="Item.armor_rohan_shoulder_2" />
 				<equipment slot="Horse"
-                   id="Item.mp_vlandia_horse" />
+                   id="Item.rohan_horse" />
 				<equipment slot="HorseHarness"
                    id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
