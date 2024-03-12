@@ -26,4 +26,5 @@
 	<string id="str_multiplayer_scene_name.commencement" text="{=str_alliance_scene_commencement}Commencement..." />
 	<string id="str_multiplayer_scene_name.battle_phenixCaslte" text="{=str_alliance_scene_battle_phenixCaslte}Phenix Castle" />
 	<string id="str_multiplayer_scene_name.Anduin_shore" text="{=str_alliance_scene_anduin_shore}Anduin's Shores by Esperanza" />
+	<string id="str_multiplayer_scene_name.Les_plaines_Eastemnet" text="{=str_alliance_scene_les_plaines_eastemnet}The Eastemnet Plains by Adwennor" />
 </strings>

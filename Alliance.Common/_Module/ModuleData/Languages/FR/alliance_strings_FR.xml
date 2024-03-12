@@ -44,6 +44,7 @@
 		<string id="str_alliance_scene_commencement" text="Commencement..." />
 		<string id="str_alliance_scene_battle_phenixCaslte" text="Phenix" />
 		<string id="str_alliance_scene_anduin_shore" text="Les Rivages de l'Anduin par Esperanza" />
+		<string id="str_alliance_scene_les_plaines_eastemnet" text="Les Plaines de l'Eastemnet par Adwennor" />
 
 		<!-- Unit names -->
 		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />
