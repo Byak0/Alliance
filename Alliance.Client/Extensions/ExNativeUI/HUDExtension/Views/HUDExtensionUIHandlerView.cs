@@ -26,7 +26,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views
             ResourceDepot uiresourceDepot = UIResourceManager.UIResourceDepot;
             _mpMissionCategory = spriteData.SpriteCategories["ui_mpmission"];
             _mpMissionCategory.Load(resourceContext, uiresourceDepot);
-            _dataSource = new HUDExtensionVM(Mission, spriteData);
+            _dataSource = new HUDExtensionVM(Mission);
             _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
             _gauntletLayer.LoadMovie("HUDExtension", _dataSource);
             MissionScreen.AddLayer(_gauntletLayer);

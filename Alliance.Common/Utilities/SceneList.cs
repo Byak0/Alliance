@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Extensions.SAE.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using TaleWorlds.ModuleManager;
@@ -12,6 +13,26 @@ namespace Alliance.Common.Utilities
     /// </summary>
     public static class SceneList
     {
+        // These maps are causing unidentified crash and should not be used
+        public static List<string> InvalidMaps = new List<string>() { "mp_skirmish_map_004", "mp_compact", "benchmark_battle_11", "mp_duel_mode_map_004_night" };
+
+        public static List<SceneInfo> Scenes => _scenes;
+
+        private static Dictionary<string, MultiplayerGameTypeInfo> _multiplayerGameTypeInfos;
+        private static List<SceneInfo> _scenes;
+
+        public struct SceneInfo
+        {
+            public string Module;
+            public string Name;
+            public bool HasGenericSpawn;
+            public bool HasSpawnForDefender;
+            public bool HasSpawnForAttacker;
+            public bool HasSpawnVisual;
+            public bool HasNavmesh;
+            public bool HasSAEPos;
+        }
+
         public static void Initialize()
         {
             CreateGameTypeInformations();
@@ -36,7 +57,7 @@ namespace Alliance.Common.Utilities
 
         private static void LoadAllScenes()
         {
-            _scenes = new List<string>();
+            _scenes = new List<SceneInfo>();
             foreach (string modName in TaleWorlds.Engine.Utilities.GetModulesNames())
             {
                 string scenesPath = ModuleHelper.GetModuleFullPath(modName) + "SceneObj/";
@@ -52,7 +73,16 @@ namespace Alliance.Common.Utilities
                     XmlDocument xmlDoc = new();
                     xmlDoc.Load(scenePath);
                     XmlNode sceneNode = xmlDoc.SelectSingleNode("/scene");
-                    _scenes.Add(sceneNode.Attributes["name"].Value);
+                    SceneInfo sceneInfo = new SceneInfo();
+                    sceneInfo.Module = modName;
+                    sceneInfo.Name = sceneNode.Attributes["name"].Value;
+                    sceneInfo.HasSpawnForAttacker = xmlDoc.SelectNodes("//game_entity[.//tag[@name='attacker'] and @name='mp_spawnpoint' or .//tag[@name='attacker'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_attacker']").Count > 0;
+                    sceneInfo.HasSpawnForDefender = xmlDoc.SelectNodes("//game_entity[.//tag[@name='defender'] and @name='mp_spawnpoint' or .//tag[@name='defender'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_defender' or @prefab='skirmish_start_spawn']").Count > 0;
+                    sceneInfo.HasGenericSpawn = sceneInfo.HasSpawnForAttacker || sceneInfo.HasSpawnForDefender || xmlDoc.SelectNodes("//game_entity[@name='mp_spawnpoint' or @prefab='mp_spawnpoint'] | //tag[@name='spawnpoint']").Count > 0;
+                    sceneInfo.HasSpawnVisual = xmlDoc.SelectNodes("//game_entity[@name='spawn_visual'] | //game_entity[@prefab='spawn_visual']").Count > 0;
+                    sceneInfo.HasNavmesh = File.Exists(Path.Combine(dir, "navmesh.bin"));
+                    sceneInfo.HasSAEPos = xmlDoc.SelectNodes($"//game_entity[@prefab='{SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME}']").Count > 0;
+                    _scenes.Add(sceneInfo);
                 }
             }
         }
@@ -91,10 +121,5 @@ namespace Alliance.Common.Utilities
                 _multiplayerGameTypeInfos.Add(multiplayerGameTypeInfo.GameType, multiplayerGameTypeInfo);
             }
         }
-
-        private static Dictionary<string, MultiplayerGameTypeInfo> _multiplayerGameTypeInfos;
-        private static List<string> _scenes;
-
-        public static List<string> Scenes => _scenes;
     }
 }

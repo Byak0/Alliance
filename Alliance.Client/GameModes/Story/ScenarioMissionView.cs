@@ -6,8 +6,6 @@ using Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views;
 using Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views;
 using Alliance.Client.Extensions.FlagsTracker.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using Alliance.Client.GameModes.Story.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -23,18 +21,16 @@ namespace Alliance.Client.GameModes.Story
         [ViewMethod("Scenario")]
         public static MissionView[] OpenPvCMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
                 // Custom views
                 new KillNotificationView(),
-                new LobbyEquipmentView(),
+                new EquipmentSelectionView(),
                 new AgentStatusView(),
                 new TeamSelectView(),
                 new FormationStatusView(),
                 new MarkerUIHandlerView(),
                 new HUDExtensionUIHandlerView(),
-                new HideWeaponTrail(),
-                new GameModeMenuView(),
                 new ScenarioView(),
                 new CaptureMarkerUIView(),
 
@@ -59,7 +55,7 @@ namespace Alliance.Client.GameModes.Story
                 new SpectatorCameraView()
             };
 
-            return list.ToArray();
+            return missionViews.ToArray();
         }
     }
 }

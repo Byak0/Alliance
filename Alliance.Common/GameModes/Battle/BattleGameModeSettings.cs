@@ -1,7 +1,6 @@
-﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Battle
@@ -16,19 +15,25 @@ namespace Alliance.Common.GameModes.Battle
         {
             base.SetDefaultNativeOptions();
             SetNativeOption(OptionType.NumberOfBotsPerFormation, 0);
+            SetNativeOption(OptionType.UnlimitedGold, true);
         }
 
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
+            ModOptions.EnableFormation = false;
+            ModOptions.TimeBeforeFlagRemoval = 450;
+            ModOptions.MoraleMultiplierForFlag = 1f;
+            ModOptions.MoraleMultiplierForLastFlag = 1f;
+            ModOptions.AllowSpawnInRound = false;
+            ModOptions.ShowFlagMarkers = true;
+            ModOptions.ShowScore = true;
+            ModOptions.ShowOfficers = true;
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "battle_", "tdm_", "skirmish_", "captain_", "sergeant_" }
-                    .Any(prefix => scene.Contains(prefix)))
-                    .ToList();
+            return base.GetAvailableMaps().Where(scene => scene.HasSpawnForAttacker && scene.HasSpawnForDefender && scene.HasSpawnVisual).ToList();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()
@@ -53,34 +58,7 @@ namespace Alliance.Common.GameModes.Battle
 
         public override List<string> GetAvailableModOptions()
         {
-            return new List<string>
-            {
-                nameof(Config.AllowCustomBody),
-                nameof(Config.RandomizeAppearance),
-                nameof(Config.ShowFlagMarkers),
-                nameof(Config.ShowScore),
-                nameof(Config.ShowOfficers),
-                nameof(Config.ShowWeaponTrail),
-                nameof(Config.KillFeedEnabled),
-                nameof(Config.MinPlayer),
-                nameof(Config.MaxPlayer),
-                nameof(Config.FormRadMin),
-                nameof(Config.FormRadMax),
-                nameof(Config.SkirmRadMin),
-                nameof(Config.SkirmRadMax),
-                nameof(Config.NbFormMin),
-                nameof(Config.NbFormMax),
-                nameof(Config.NbSkirmMin),
-                nameof(Config.NbSkirmMax),
-                nameof(Config.MinPlayerForm),
-                nameof(Config.MeleeDebuffRambo),
-                nameof(Config.DistDebuffRambo),
-                nameof(Config.AccDebuffRambo),
-                nameof(Config.MeleeDebuffSkirm),
-                nameof(Config.DistDebuffSkirm),
-                nameof(Config.AccDebuffSkirm),
-                nameof(Config.OfficerHPMultip)
-            };
+            return base.GetAvailableModOptions();
         }
     }
 }

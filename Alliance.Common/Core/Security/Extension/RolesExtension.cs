@@ -44,6 +44,13 @@ namespace Alliance.Common.Core.Security.Extension
 
         public static bool IsCommander(this VirtualPlayer player)
         {
+            Team team = player.GetComponent<MissionPeer>()?.Team;
+            bool validTeam = team == Mission.Current.AttackerTeam || team == Mission.Current.DefenderTeam;
+
+            if (validTeam && MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
+            {
+                return true;
+            }
             foreach (Player commander in Roles.Instance.Commanders)
             {
                 if (commander.Id.Equals(player.Id))

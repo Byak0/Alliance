@@ -1,17 +1,22 @@
 ﻿using Alliance.Common.Core.ExtendedCharacter;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
+using Alliance.Common.Utilities;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.AIBehavior.Behaviors;
+using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
+using Alliance.Server.GameModes.CvC;
 using Alliance.Server.GameModes.Lobby;
 using Alliance.Server.GameModes.PvC;
 using Alliance.Server.GameModes.SiegeX;
@@ -46,19 +51,18 @@ namespace Alliance.Server
 
         public override void OnBeforeMissionBehaviorInitialize(Mission mission)
         {
-            // Apply additional native fixes through MissionBehaviors
-            DirtyServerPatcher.AddFixBehaviors(mission);
-
-            mission.AddMissionBehavior(new SyncRolesBehavior());
-            mission.AddMissionBehavior(new SyncConfigBehavior());
-            mission.AddMissionBehavior(new ServerAutoHandler());
-            mission.AddMissionBehavior(new UsableEntityBehavior());
-            mission.AddMissionBehavior(new FormationControlBehavior());
-
             // Initialize animation system and all the game animations
             AnimationSystem.Instance.Init();
 
-            Log("Alliance initialized.", LogLevel.Debug);
+            SceneList.Initialize();
+            ClassLimiterModel.Instance.Init();
+
+            AddCommonBehaviors(mission);
+
+            // Apply additional native fixes through MissionBehaviors
+            DirtyServerPatcher.AddFixBehaviors(mission);
+
+            Log("Alliance behaviors initialized.", LogLevel.Debug);
         }
 
         protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
@@ -94,10 +98,23 @@ namespace Alliance.Server
             Module.CurrentModule.AddMultiplayerGameMode(new LobbyGameMode("Lobby"));
             Module.CurrentModule.AddMultiplayerGameMode(new BRGameMode("BattleRoyale"));
             Module.CurrentModule.AddMultiplayerGameMode(new PvCGameMode("PvC"));
+            Module.CurrentModule.AddMultiplayerGameMode(new CvCGameMode("CvC"));
             Module.CurrentModule.AddMultiplayerGameMode(new ScenarioGameMode("Scenario"));
             Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
             Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
             Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
+        }
+
+        private void AddCommonBehaviors(Mission mission)
+        {
+            mission.AddMissionBehavior(new SyncRolesBehavior());
+            mission.AddMissionBehavior(new SyncConfigBehavior());
+            mission.AddMissionBehavior(new ServerAutoHandler());
+            mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new TroopSpawnerBehavior());
+            mission.AddMissionBehavior(new ClassLimiterBehavior());
+            mission.AddMissionBehavior(new BattlePowerCalculationLogic());
+            mission.AddMissionBehavior(new ALGlobalAIBehavior());
         }
     }
 }

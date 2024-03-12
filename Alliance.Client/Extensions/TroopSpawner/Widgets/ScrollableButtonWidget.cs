@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
+using System;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.InputSystem;
@@ -325,7 +326,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
         public PvCIntegerInputWidget(UIContext context) : base(context)
         {
             MinInt = 0;
-            MaxInt = 9999;
+            MaxInt = SpawnHelper.MaxBotsPerSpawn;
         }
 
         protected override void OnLoseFocus()

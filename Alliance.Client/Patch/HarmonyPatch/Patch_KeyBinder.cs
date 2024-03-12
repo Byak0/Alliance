@@ -52,7 +52,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
             List<GameKeyContext> newContexts = contexts.ToList();
             foreach (GameKeyContext context in KeyBinder.KeyContexts.Values)
             {
-                newContexts.Add(context);
+                if (!newContexts.Contains(context)) newContexts.Add(context);
             }
             contexts = newContexts;
             return true;

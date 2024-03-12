@@ -33,7 +33,7 @@ namespace Alliance.Client.Core.KeyBinder
             foreach (BindedKey key in keys)
             {
                 key.KeyId = i++;
-                GameKey gameKey = new GameKey(key.KeyId, key.Id, GameKeyCategoryId, key.DefaultInputKey, GameKeyCategoryId);
+                GameKey gameKey = new GameKey(key.KeyId, key.Id, GameKeyCategoryId, key.DefaultInputKey, key.DefaultControllerKey, GameKeyCategoryId);
                 RegisterGameKey(gameKey);
             }
 

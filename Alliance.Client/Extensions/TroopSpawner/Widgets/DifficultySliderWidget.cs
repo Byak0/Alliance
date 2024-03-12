@@ -12,7 +12,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
     /// </summary>
     public class DifficultySliderWidget : ListPanel
     {
-        private int _difficultyValue = 1;
+        private int _difficultyValue;
 
         private NavigationTargetSwitcher _nts;
         private NavigationAutoScrollWidget _nasw;
@@ -36,6 +36,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
                 if (_difficultyValue != value)
                 {
                     _difficultyValue = value;
+                    _slider.ValueInt = value;
                     OnPropertyChanged(value, "DifficultyValue");
                 }
             }
@@ -76,7 +77,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
             _slider.Handle = _handle;
             _slider.MinValueInt = 0;
             _slider.MaxValueInt = 4;
-            _slider.ValueInt = _difficultyValue;
+            _slider.ValueInt = DifficultyValue;
             _slider.IsDiscrete = true;
             _slider.DiscreteIncrementInterval = 1;
             _slider.UpdateChildrenStates = true;

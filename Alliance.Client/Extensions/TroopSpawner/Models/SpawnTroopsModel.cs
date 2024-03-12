@@ -4,6 +4,7 @@ using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Models
 {
@@ -31,6 +32,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
         private float _difficulty;
         private int _difficultyLevel;
         private List<int> _selectedPerks = new List<int>();
+        private Team _selectedTeam;
 
         public int CustomTroopCount
         {
@@ -91,33 +93,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_difficultyLevel != value)
                 {
                     _difficultyLevel = value;
-                    switch (value)
-                    {
-                        case 0:
-                            Difficulty = 0.5f; break;
-                        case 1:
-                            Difficulty = 1f; break;
-                        case 2:
-                            Difficulty = 1.5f; break;
-                        case 3:
-                            Difficulty = 2f; break;
-                        case 4:
-                            Difficulty = 2.5f; break;
-                    }
                     OnDifficultyUpdated?.Invoke();
                 }
-            }
-        }
-
-        public float Difficulty
-        {
-            get
-            {
-                return _difficulty;
-            }
-            private set
-            {
-                _difficulty = value;
             }
         }
 
@@ -132,11 +109,33 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
                 if (_selectedFaction != value)
                 {
                     _selectedFaction = value;
-                    SelectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
+                    BasicCharacterObject factionDefaultCharacter = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).FirstOrDefault()?.TroopCharacter;
+                    factionDefaultCharacter ??= MultiplayerClassDivisions.GetMPHeroClasses().First().TroopCharacter;
+                    SelectedTroop = factionDefaultCharacter;
+                    OnFactionSelected?.Invoke();
+                    Log($"Selected faction = {value.Name}");
+                }
+            }
+        }
+
+        public Team SelectedTeam
+        {
+            get
+            {
+                return _selectedTeam;
+            }
+            set
+            {
+                if (_selectedTeam != value)
+                {
+                    _selectedTeam = value;
+                    BannerCode = BannerCode.CreateFrom(value.Banner);
                     OnFactionSelected?.Invoke();
                 }
             }
         }
+
+        public BannerCode BannerCode;
 
         public BasicCharacterObject SelectedTroop
         {
@@ -173,12 +172,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
         private static readonly SpawnTroopsModel instance = new();
         public static SpawnTroopsModel Instance { get { return instance; } }
 
+
         private SpawnTroopsModel()
         {
             BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
             BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
             _selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
             _selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
+            _selectedTeam = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team;
             DifficultyLevel = 1;
         }
 

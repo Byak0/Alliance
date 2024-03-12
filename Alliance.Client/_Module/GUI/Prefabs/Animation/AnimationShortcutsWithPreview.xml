@@ -19,7 +19,7 @@
 								<!-- Animation preview -->
 								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" UpdateChildrenStates="true" Command.Click="PlayAnimation">
 									<Children>
-										<CharacterTableauWidget DataSource="{AnimationPreview}" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" />
+										<CharacterTableauWidget DataSource="{AnimationPreview}" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy ="Fixed" SuggestedHeight="300" HorizontalAlignment="Center" VerticalAlignment="Top" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IdleAction="@IdleAction" IsPlayingCustomAnimations="@IsPlayingCustomAnimations" ShouldLoopCustomAnimation="@ShouldLoopCustomAnimation" CustomAnimationWaitDuration="@CustomAnimationWaitDuration" CustomAnimation="@CustomAnimation" LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex" RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex" DoNotUseCustomScale="true" />
 									</Children>
 								</ButtonWidget>
 

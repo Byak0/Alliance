@@ -1,7 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
+using Alliance.Common.Core.Security.Extension;
 using System.Collections.Generic;
-using System.Linq;
+using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Lobby
@@ -15,7 +16,7 @@ namespace Alliance.Common.GameModes.Lobby
         public override void SetDefaultNativeOptions()
         {
             base.SetDefaultNativeOptions();
-            SetNativeOption(OptionType.NumberOfBotsTeam1, 5);
+            SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
             SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
         }
 
@@ -24,12 +25,9 @@ namespace Alliance.Common.GameModes.Lobby
             base.SetDefaultModOptions();
         }
 
-        public override List<string> GetAvailableMaps()
+        public override List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "character_", "editor_" } // Invalid maps
-                    .All(prefix => !scene.Contains(prefix)))
-                    .ToList();
+            return base.GetAvailableMaps();
         }
 
         public override List<OptionType> GetAvailableNativeOptions()
@@ -43,6 +41,12 @@ namespace Alliance.Common.GameModes.Lobby
 
         public override List<string> GetAvailableModOptions()
         {
+            // Return full list of options for admins
+            if (GameNetwork.MyPeer.IsAdmin())
+            {
+                return base.GetAvailableModOptions();
+            }
+            // Otherwise return only following options
             return new List<string>
             {
                 nameof(Config.AllowCustomBody),

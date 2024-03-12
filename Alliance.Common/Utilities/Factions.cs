@@ -10,6 +10,7 @@ namespace Alliance.Common.Utilities
     /// </summary>
     public class Factions
     {
+        public List<string> NativeCultures;
         public Dictionary<string, BasicCultureObject> AvailableCultures;
         public List<string> OrderedCultureKeys;
 
@@ -22,6 +23,7 @@ namespace Alliance.Common.Utilities
                                           where x.IsMainCulture
                                           select x).ToDictionary(x => x.StringId);
             instance.OrderedCultureKeys = instance.AvailableCultures.Keys.ToList();
+            instance.NativeCultures = new List<string>() { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait" };
         }
 
         public BasicCultureObject GetNextCulture(BasicCultureObject currentCulture)

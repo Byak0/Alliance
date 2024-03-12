@@ -1,6 +1,4 @@
-﻿using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.VOIP.Views;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
@@ -14,11 +12,8 @@ namespace Alliance.Client.GameModes.Lobby
         [ViewMethod("Lobby")]
         public static MissionView[] OpenLobbyMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
-                new GameModeMenuView(),
-                new VoipView(),
-
                 MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
                 MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
@@ -36,7 +31,7 @@ namespace Alliance.Client.GameModes.Lobby
                 ViewCreator.CreateMissionBoundaryCrossingView(),
                 new MissionBoundaryWallView()
             };
-            return list.ToArray();
+            return missionViews.ToArray();
         }
     }
 }

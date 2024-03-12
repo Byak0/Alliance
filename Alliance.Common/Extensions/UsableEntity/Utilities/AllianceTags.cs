@@ -14,10 +14,10 @@ namespace Alliance.Common.Extensions.UsableEntity.Utilities
         };
 
         public const string InteractiveTag = "al_interactive";
-        public const string InteractiveNameTag = "al_name_";
-        public const string InteractiveTeamTag = "al_team_";
         public const string InteractiveItemTag = "al_item_";
-        public const string InteractiveAmountTag = "al_amount_";
+        public const string InteractiveNameTag = "al_name_"; // Not implemented yet
+        public const string InteractiveTeamTag = "al_team_"; // Not implemented yet
+        public const string InteractiveAmountTag = "al_amount_"; // Not implemented yet
 
         /// <summary>
         /// Return the tag value that maches the prefix. Returns empty if no match found.

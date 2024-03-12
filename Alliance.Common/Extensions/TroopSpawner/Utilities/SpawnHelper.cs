@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -16,23 +15,21 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 {
     public static class SpawnHelper
     {
+        public enum Difficulty
+        {
+            PlayerChoice = -1,
+            Easy = 0,
+            Normal = 1,
+            Hard = 2,
+            VeryHard = 3,
+            Bannerlord = 4
+        }
+
         public static int TotalBots = 0;
+        public const int MaxBotsPerSpawn = 200;
 
         static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
         static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
-
-        public static void RemoveBot(Agent bot, int waitTime = 10000)
-        {
-            Log($"Freeing slot n.{bot.Index} in {waitTime / 1000}s", LogLevel.Debug);
-            Task.Run(() => DelayedRemoveBot(bot.Index, waitTime));
-        }
-
-        // Free bot slot after a delay
-        private static async void DelayedRemoveBot(int index, int waitTime)
-        {
-            await Task.Delay(waitTime);
-            AgentsInfoModel.Instance.RemoveAgentInfo(index);
-        }
 
         public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
         {
@@ -97,7 +94,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 string slotsUsed = forcedIndex.Count > 1 ? $"slots {forcedIndex[0]}-{forcedIndex[1]}" : $"slot {forcedIndex[0]}";
                 string mountInfo = hasMount ? " (mounted)" : "";
                 string originInfo = position?.origin.ToString() ?? "Unknown";
-                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation}", LogLevel.Debug);
+                Log($"Alliance : Trying to spawn bot n.{TotalBots} on {slotsUsed} \n {team.Side} | Char={character.Name}{mountInfo} | Origin={originInfo} | Formation={selectedFormation} | Culture={culture}", LogLevel.Debug);
 
                 agentBuildData2.Index(forcedIndex[0]);
                 if (hasMount) agentBuildData2.MountIndex(forcedIndex[1]);
@@ -158,7 +155,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
                 uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-                Banner banner = new Banner(component.Peer.BannerCode, color3, color4);
+                Banner banner = component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner;
                 int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
                 Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
                 AgentBuildData agentBuildData = new AgentBuildData(character)
@@ -166,9 +163,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                     .Team(component.Team)
                     .TroopOrigin(new BasicBattleAgentOrigin(character))
                     .Formation(form)
-                    .ClothingColor1(color)
-                    .ClothingColor2(color2)
-                    .Banner(banner);
+                    .ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
+                    .ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
+                    .Banner(component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner);
                 agentBuildData.MissionPeer(component);
                 bool randomEquipement = true;
                 Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
@@ -196,7 +193,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 if (Config.Instance.AllowCustomBody)
                 {
                     gameMode.AddCosmeticItemsToEquipment(equipment, gameMode.GetUsedCosmeticsFromPeer(component, character));
-                    agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture));
+                    agentBuildData.BodyProperties(GetBodyProperties(component, component.Culture).ClampForMultiplayer());
                     agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
                     agentBuildData.IsFemale(component.Peer.IsFemale);
                 }
@@ -352,10 +349,35 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
             return agentBuildData2.AgentBodyProperties;
         }
 
-        // Return a linear troop cost from minCost to MaxCost, depending on TroopMultiplier
-        public static int GetTroopCost(BasicCharacterObject character, float difficulty = 1f)
+        /// <summary>
+        /// Spawn a random army for the specified team based on given gold and difficulty (max 1000 agents).
+        /// </summary>
+        /// <returns>Number of agents spawned.</returns>
+        public static int SpawnArmy(int goldToUse, float difficulty, Team team, BasicCultureObject culture1)
         {
-            float multiplier = 0.75f + (difficulty - 0.5f) * (1.5f - 0.75f) / (2.5f - 0.5f);
+            List<BasicCharacterObject> agentsToSpawn = new List<BasicCharacterObject>();
+            int nbAgents = 0;
+
+            while (goldToUse > 0 && nbAgents < 1000)
+            {
+                BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
+                goldToUse -= GetTroopCost(troopCharacter, difficulty);
+                agentsToSpawn.Add(troopCharacter);
+                nbAgents++;
+            }
+
+            foreach (BasicCharacterObject character in agentsToSpawn)
+            {
+                SpawnBot(team, culture1, character, botDifficulty: difficulty);
+            }
+
+            return nbAgents;
+        }
+
+        // Return a linear troop cost from minCost to MaxCost, depending on TroopMultiplier
+        public static int GetTroopCost(BasicCharacterObject character, float difficultyMultiplier = 1f)
+        {
+            float multiplier = 0.75f + (difficultyMultiplier - 0.5f) * (1.5f - 0.75f) / (2.5f - 0.5f);
 
             if (MultiplayerClassDivisions.GetMPHeroClassForCharacter(character)?.TroopMultiplier is null)
             {
@@ -369,9 +391,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
         /// <summary>
         /// Get total troop cost from a character, troop count and difficulty
         /// </summary>
-        public static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficulty = 1f)
+        public static int GetTotalTroopCost(BasicCharacterObject troopToSpawn, int troopCount = 1, float difficultyMultiplier = 1f)
         {
-            return SpawnHelper.GetTroopCost(troopToSpawn, difficulty) * troopCount;
+            return GetTroopCost(troopToSpawn, difficultyMultiplier) * troopCount;
         }
 
         /// <summary>
@@ -393,6 +415,55 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                 i++;
             }
             return selectedPerks;
+        }
+
+        public static float DifficultyMultiplierFromLevel(int difficultyLevel)
+        {
+            switch (difficultyLevel)
+            {
+                case 0: return 0.5f;
+                case 1: return 1f;
+                case 2: return 1.5f;
+                case 3: return 2f;
+                case 4: return 2.5f;
+                default: return 1f;
+            }
+        }
+
+        public static float DifficultyMultiplierFromLevel(Difficulty difficultyLevel)
+        {
+            return DifficultyMultiplierFromLevel((int)difficultyLevel);
+        }
+
+        public static float DifficultyMultiplierFromLevel(string difficultyLevel)
+        {
+            if (Enum.TryParse(difficultyLevel, out Difficulty difficulty))
+            {
+                return DifficultyMultiplierFromLevel(difficulty);
+            }
+            return DifficultyMultiplierFromLevel(Difficulty.Normal);
+        }
+
+        public static int DifficultyLevelFromString(string difficultyString)
+        {
+            if (Enum.TryParse(difficultyString, out Difficulty difficulty))
+            {
+                return (int)difficulty;
+            }
+            return (int)Difficulty.Normal;
+        }
+
+        public static Difficulty DifficultyFromMultiplier(float multiplier)
+        {
+            switch (multiplier)
+            {
+                case 0.5f: return Difficulty.Easy;
+                case 1f: return Difficulty.Normal;
+                case 1.5f: return Difficulty.Hard;
+                case 2f: return Difficulty.VeryHard;
+                case 2.5f: return Difficulty.Bannerlord;
+                default: return Difficulty.Normal;
+            }
         }
     }
 }

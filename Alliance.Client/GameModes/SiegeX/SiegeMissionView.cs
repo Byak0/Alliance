@@ -1,5 +1,5 @@
-﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -14,9 +14,9 @@ namespace Alliance.Client.GameModes.SiegeX
         [ViewMethod("SiegeX")]
         public static MissionView[] OpenSiegeMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
-                new GameModeMenuView(),
+                new EquipmentSelectionView(),
                 new FormationStatusView(),
 
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
@@ -31,7 +31,6 @@ namespace Alliance.Client.GameModes.SiegeX
                 MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
                 MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
                 MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                MultiplayerViewCreator.CreateLobbyEquipmentUIHandler(),
                 MultiplayerViewCreator.CreatePollProgressUIHandler(),
                 MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
                 MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
@@ -44,7 +43,7 @@ namespace Alliance.Client.GameModes.SiegeX
                 new MissionBoundaryWallView()
             };
 
-            return list.ToArray();
+            return missionViews.ToArray();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
-using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.Core;
 using NetworkMessages.FromServer;
@@ -81,12 +80,6 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
             component.Culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
         }
 
-        public override void OnAgentDeleted(Agent affectedAgent)
-        {
-            // Free spawn slot of victim
-            SpawnHelper.RemoveBot(affectedAgent);
-        }
-
         public override void OnMissionTick(float dt)
         {
             base.OnMissionTick(dt);
@@ -127,7 +120,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
                     SendNotificationToAll(loseMessage);
                     Log(loseMessage);
                 }
-                GameModeStarter.Instance.StartLobby("Lobby", "empire", "vlandia");
+                GameModeStarter.Instance.StartLobby("Lobby", MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
                 _gameEnded = true;
             }
         }

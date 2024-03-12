@@ -224,7 +224,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
             string gameMode = MultiplayerOptions.OptionType.GameType.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 
             // Use native method for native game modes
-            if (gameMode != "Scenario" && gameMode != "PvC")
+            if (gameMode != "Scenario" && gameMode != "PvC" && gameMode != "CvC")
             {
                 return true;
             }
@@ -251,7 +251,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
                             {
                                 // Update player controlled formation to target
                                 component.ControlledFormation = followedAgent.Formation;
-                                Mission.Current.ReplaceBotWithPlayer(followedAgent, component);
+                                ReplaceBotWithPlayer(followedAgent, component);
                                 component.WantsToSpawnAsBot = false;
                                 component.HasSpawnTimerExpired = false;
                             }
@@ -261,6 +261,51 @@ namespace Alliance.Server.Patch.HarmonyPatch
             }
 
             return false;
+        }
+
+        public static Agent ReplaceBotWithPlayer(Agent botAgent, MissionPeer missionPeer)
+        {
+            if (!GameNetwork.IsClientOrReplay && botAgent != null)
+            {
+                if (GameNetwork.IsServer)
+                {
+                    NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
+                    if (!networkPeer.IsServerPeer)
+                    {
+                        GameNetwork.BeginModuleEventAsServer(networkPeer);
+                        GameNetwork.WriteMessage(new ReplaceBotWithPlayer(networkPeer, botAgent.Index, botAgent.Health, botAgent.MountAgent?.Health ?? (-1f)));
+                        GameNetwork.EndModuleEventAsServer();
+                    }
+                }
+
+                if (botAgent.Formation != null)
+                {
+                    botAgent.Formation.PlayerOwner = botAgent;
+                }
+
+                botAgent.OwningAgentMissionPeer = null;
+                botAgent.MissionPeer = missionPeer;
+                botAgent.Formation = missionPeer.ControlledFormation;
+                AgentFlag agentFlags = botAgent.GetAgentFlags();
+                if (!agentFlags.HasAnyFlag(AgentFlag.CanRide))
+                {
+                    botAgent.SetAgentFlags(agentFlags | AgentFlag.CanRide);
+                }
+
+                // Prevent BotsUnderControlAlive from going under 0 and causing crash
+                missionPeer.BotsUnderControlAlive = Math.Max(0, missionPeer.BotsUnderControlAlive - 1);
+                GameNetwork.BeginBroadcastModuleEvent();
+                GameNetwork.WriteMessage(new BotsControlledChange(missionPeer.GetNetworkPeer(), missionPeer.BotsUnderControlAlive, missionPeer.BotsUnderControlTotal));
+                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+                if (botAgent.Formation != null)
+                {
+                    missionPeer.Team.AssignPlayerAsSergeantOfFormation(missionPeer, missionPeer.ControlledFormation.FormationIndex);
+                }
+
+                return botAgent;
+            }
+
+            return null;
         }
     }
 

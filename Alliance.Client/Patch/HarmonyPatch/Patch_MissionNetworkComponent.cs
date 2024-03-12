@@ -6,6 +6,7 @@ using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Patch.HarmonyPatch
@@ -44,8 +45,9 @@ namespace Alliance.Client.Patch.HarmonyPatch
         }
 
         // Use player custom bodyproperties only if allowed
-        public static bool Prefix_HandleServerEventCreateAgent(Mission __instance, CreateAgent message)
+        public static bool Prefix_HandleServerEventCreateAgent(GameNetworkMessage baseMessage)
         {
+            CreateAgent message = (CreateAgent)baseMessage;
             BasicCharacterObject character = message.Character;
             NetworkCommunicator peer = message.Peer;
             MissionPeer missionPeer = peer != null ? peer.GetComponent<MissionPeer>() : null;
@@ -89,8 +91,9 @@ namespace Alliance.Client.Patch.HarmonyPatch
         }
 
         // Use player custom bodyproperties only if allowed
-        public static bool Prefix_HandleServerEventCreateAgentVisuals(Mission __instance, CreateAgentVisuals message)
+        public static bool Prefix_HandleServerEventCreateAgentVisuals(GameNetworkMessage baseMessage)
         {
+            CreateAgentVisuals message = (CreateAgentVisuals)baseMessage;
             MissionPeer component = message.Peer.GetComponent<MissionPeer>();
             BattleSideEnum side = component.Team.Side;
             BasicCharacterObject character = message.Character;
@@ -108,6 +111,12 @@ namespace Alliance.Client.Patch.HarmonyPatch
                 agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, message.BodyPropertiesSeed, character.HairTags, character.BeardTags, character.TattooTags));
             }
             Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
+
+            if (agentBuildData.AgentVisualsIndex == 0)
+            {
+                component.HasSpawnedAgentVisuals = true;
+                component.EquipmentUpdatingExpired = false;
+            }
 
             return false;
         }

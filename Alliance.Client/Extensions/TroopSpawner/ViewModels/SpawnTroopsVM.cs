@@ -26,6 +26,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private bool _useTroopLimit;
         private bool _useTroopCost;
         private bool _canRecruit;
+        private bool _showDifficultySlider;
         private Color _totalCostColor;
         private int _totalCost;
         private int _totalGold;
@@ -33,7 +34,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private int _customTroopCount;
         private int _difficulty;
         private TroopVM _selectedTroopVM;
-        private HeroInformationVM _troopInformation;
+        private TroopInformationVM _troopInformation;
         private TroopListVM _troopList;
         private CharacterViewModel _troopPreview;
         private FormationVM _selectedFormation;
@@ -104,6 +105,23 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 {
                     _canRecruit = value;
                     OnPropertyChangedWithValue(value, "CanRecruit");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public bool ShowDifficultySlider
+        {
+            get
+            {
+                return _showDifficultySlider;
+            }
+            set
+            {
+                if (value != _showDifficultySlider)
+                {
+                    _showDifficultySlider = value;
+                    OnPropertyChangedWithValue(value, "ShowDifficultySlider");
                 }
             }
         }
@@ -212,6 +230,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 {
                     _difficulty = value;
                     SpawnTroopsModel.Instance.DifficultyLevel = value;
+                    OnPropertyChangedWithValue(value, "Difficulty");
                 }
             }
         }
@@ -268,7 +287,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         }
 
         [DataSourceProperty]
-        public HeroInformationVM TroopInformation
+        public TroopInformationVM TroopInformation
         {
             get
             {
@@ -309,15 +328,17 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             TroopPreview = new CharacterViewModel();
             TroopPreview.FillFrom(SpawnTroopsModel.Instance.SelectedTroop);
             TroopList = new TroopListVM(SelectTroop, SelectPerk);
-            TroopInformation = new HeroInformationVM();
-            TroopCount = SpawnTroopsModel.Instance.TroopCount;
+            TroopInformation = new TroopInformationVM();
+            TroopCount = 1;
             CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
-            Difficulty = SpawnTroopsModel.Instance.DifficultyLevel;
+            ShowDifficultySlider = Config.Instance.BotDifficulty == nameof(SpawnHelper.Difficulty.PlayerChoice) || GameNetwork.MyPeer.IsAdmin();
+            Difficulty = SpawnHelper.DifficultyLevelFromString(Config.Instance.BotDifficulty);
+            UseTroopCost = Config.Instance.UseTroopCost;
 
             Formations = new MBBindingList<FormationVM>();
             for (int i = 0; i < 8; i++)
             {
-                Formation formation = Mission.Current.PlayerTeam.GetFormation((FormationClass)i);
+                Formation formation = SpawnTroopsModel.Instance.SelectedTeam?.GetFormation((FormationClass)i);
                 FormationVM formationVM = new FormationVM(formation, SelectFormation);
                 if (i == SpawnTroopsModel.Instance.FormationSelected)
                 {
@@ -330,11 +351,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopSelected += RefreshGold;
             SpawnTroopsModel.Instance.OnTroopCountUpdated += RefreshGold;
+            SpawnTroopsModel.Instance.OnFactionSelected += RefreshFormations;
             _myRepresentative.OnGoldUpdated += RefreshGold;
 
             TroopGroupVM troopGroupVM = TroopList.TroopGroups.FirstOrDefault();
             TroopVM defaultTroopVM = (troopGroupVM != null) ? troopGroupVM.Troops.FirstOrDefault() : null;
             SelectTroop(defaultTroopVM);
+            RefreshGold();
         }
 
         public override void OnFinalize()
@@ -351,16 +374,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private void RefreshGold()
         {
             // Check if we exceeded troop limit
-            UseTroopLimit = Config.Instance.UseTroopLimit;
-            bool troopOverLimit = UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
+            bool troopOverLimit = Config.Instance.UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
 
             // Check if we can afford the troops 
-            UseTroopCost = Config.Instance.UseTroopCost;
             bool troopTooCostly = false;
-            if (UseTroopCost)
+            if (Config.Instance.UseTroopCost)
             {
                 int totalGold = _myRepresentative?.Gold ?? 0;
-                int troopCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnTroopsModel.Instance.Difficulty);
+                int troopCost = SpawnTroopsModel.Instance.TroopCount * SpawnHelper.GetTroopCost(SpawnTroopsModel.Instance.SelectedTroop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
                 TotalCost = -troopCost;
                 if (troopCost > totalGold)
                 {
@@ -374,7 +395,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                 }
                 TotalGold = totalGold;
             }
-            CanRecruit = GameNetwork.MyPeer.IsCommander() && !(troopOverLimit || troopTooCostly);
+
+            CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !(troopOverLimit || troopTooCostly);
         }
 
         private void RefreshCommanderVisual(Formation formation, Agent agent)
@@ -392,6 +414,27 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
                         Log("Updating commander visual for formation " + (int)formationClass, LogLevel.Debug);
                     }
                 }
+            }
+        }
+
+        private void RefreshFormations()
+        {
+            foreach (FormationVM formationVM in Formations)
+            {
+                formationVM.Formation.OnUnitAdded -= RefreshCommanderVisual;
+            }
+            Formations = new MBBindingList<FormationVM>();
+            for (int i = 0; i < 8; i++)
+            {
+                Formation formation = SpawnTroopsModel.Instance.SelectedTeam.GetFormation((FormationClass)i);
+                FormationVM formationVM = new FormationVM(formation, SelectFormation);
+                if (i == SpawnTroopsModel.Instance.FormationSelected)
+                {
+                    _selectedFormation = formationVM;
+                    _selectedFormation.Selected = true;
+                }
+                Formations.Add(formationVM);
+                formationVM.Formation.OnUnitAdded += RefreshCommanderVisual;
             }
         }
 
@@ -430,6 +473,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
             TroopPreview.FillFrom(SelectedTroopVM.Troop);
             TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
+            TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode?.Code ?? String.Empty;
         }
 
         private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)
@@ -447,7 +491,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             List<IReadOnlyPerkObject> perks = SelectedTroopVM.Perks.Select(p => p.SelectedPerk).ToList();
             if (perks.Count > 0)
             {
-                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, perks);
+                TroopInformation?.RefreshWith(SelectedTroopVM.HeroClass, SelectedTroopVM.Troop, perks);
             }
         }
 

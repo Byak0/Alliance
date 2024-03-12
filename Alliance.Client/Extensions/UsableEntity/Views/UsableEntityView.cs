@@ -8,6 +8,7 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
 
@@ -16,6 +17,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
     /// <summary>
     /// Interact with items in the scene.    
     /// </summary>
+    [DefaultView]
     public class UsableEntityView : MissionView
     {
         private const int LeftAltGameKey = 5;
@@ -26,10 +28,8 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public UsableEntityView() { }
 
-        public override void OnMissionScreenInitialize()
+        public override void OnBehaviorInitialize()
         {
-            base.OnMissionScreenInitialize();
-
             _entityInteractionBehavior = Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
             _dataSource = new EntityInteractionVM();
             _gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
@@ -39,7 +39,6 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public override void OnMissionScreenFinalize()
         {
-            base.OnMissionScreenFinalize();
             MissionScreen.RemoveLayer(_gauntletLayer);
             _gauntletLayer = null;
             _dataSource.OnFinalize();
@@ -48,7 +47,6 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);
             if (Input.IsGameKeyDown(LeftAltGameKey))
             {
                 _dataSource.IsEnabled = true;

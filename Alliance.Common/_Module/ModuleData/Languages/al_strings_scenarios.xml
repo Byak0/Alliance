@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<!-- Scenario text for BFHD -->
+	<string id="str_alliance_scenario_name.BFHD" text="{=str_alliance_scenario_name_BFHD}Battle for Helm's Deep" />
+	<string id="str_alliance_scenario_description.BFHD" text="{=str_alliance_scenario_description_BFHD}Defend Helm's Deep against Isengard." />
+	<!-- Act 1 -->
+	<string id="str_alliance_act_name.BFHD_1" text="{=str_alliance_act_name_BFHD_1}Act 1 - So it begins..." />
+	<string id="str_alliance_act_description.BFHD_1" text="{=str_alliance_act_description_BFHD_1}The ten-thousand strong Uruk-hai army is approaching. Show them no mercy! For you shall receive none!" />
+	<string id="str_alliance_act_lose_defender.BFHD_1" text="{=str_alliance_act_lose_defender_BFHD_1}The battle of Helm's Deep is over. The fortress has fallen to the wicked Saruman." />
+	<string id="str_alliance_act_lose_attacker.BFHD_1" text="{=str_alliance_act_lose_attacker_BFHD_1}A red sun rises, blood has been spilled this night." />
+	<string id="str_alliance_act_victory_attacker.BFHD_1" text="{=str_alliance_act_victory_attacker_BFHD_1}The battle of Helm's Deep is over. The fortress has fallen to the wicked Saruman." />
+	<string id="str_alliance_act_victory_defender.BFHD_1" text="{=str_alliance_act_victory_defender_BFHD_1}A red sun rises, blood has been spilled this night." />
+	<!-- Act 1 - Objectives -->
+	<string id="str_alliance_obj_name.BFHD_1_1" text="{=str_alliance_obj_name_BFHD_1_1}Survive" />
+	<string id="str_alliance_obj_description.BFHD_1_1" text="{=str_alliance_obj_description_BFHD_1_1}At least one player must stay alive." />
+	<string id="str_alliance_obj_name.BFHD_1_2" text="{=str_alliance_obj_name_BFHD_1_2}Defeat Saruman forces" />
+	<string id="str_alliance_obj_description.BFHD_1_2" text="{=str_alliance_obj_description_BFHD_1_2}Kill every enemy." />
+	<string id="str_alliance_obj_name.BFHD_1_3" text="{=str_alliance_obj_name_BFHD_1_3}Defeat the remaining enemies" />
+	<string id="str_alliance_obj_description.BFHD_1_3" text="{=str_alliance_obj_description_BFHD_1_3}Kill every enemy." />
+	<!-- Act 2 -->
+	<string id="str_alliance_act_name.BFHD_2" text="{=str_alliance_act_name_BFHD_2}Act 2 - There is always hope" />
+	<string id="str_alliance_act_description.BFHD_2" text="{=str_alliance_act_description_BFHD_2}Let this be the hour when we draw swords together. Fell deeds awake. Now for wrath, now for ruin, and the red dawn. Forth, Éorlingas!" />
+	<string id="str_alliance_act_lose_defender.BFHD_2" text="{=str_alliance_act_lose_defender_BFHD_2}The battle of Helm's Deep is over. The Rohan army has fallen to the wicked Saruman." />
+	<string id="str_alliance_act_lose_attacker.BFHD_2" text="{=str_alliance_act_lose_attacker_BFHD_2}The battle of Helm's Deep is over. The battle for Middle-earth is about to begin..." />
+	<string id="str_alliance_act_victory_attacker.BFHD_2" text="{=str_alliance_act_victory_attacker_BFHD_2}The battle of Helm's Deep is over. The Rohan army has fallen to the wicked Saruman." />
+	<string id="str_alliance_act_victory_defender.BFHD_2" text="{=str_alliance_act_victory_defender_BFHD_2}The battle of Helm's Deep is over. The battle for Middle-earth is about to begin..." />
+	<!-- Act 2 - Objectives -->
+	<string id="str_alliance_obj_name.BFHD_2_1" text="{=str_alliance_obj_name_BFHD_2_1}Defeat the remaining enemies" />
+	<string id="str_alliance_obj_description.BFHD_2_1" text="{=str_alliance_obj_description_BFHD_2_1}Kill every enemy." />
+	<string id="str_alliance_obj_name.BFHD_2_2" text="{=str_alliance_obj_name_BFHD_2_2}Defeat the remaining enemies" />
+	<string id="str_alliance_obj_description.BFHD_2_2" text="{=str_alliance_obj_description_BFHD_2_2}Kill every enemy." />
+
+	<!-- Scenario text for GP -->
+	<string id="str_alliance_scenario_name.GP" text="{=str_alliance_scenario_name_GP}The captive Eagle: Napoleon's Rescue" />
+	<string id="str_alliance_scenario_description.GP" text="{=str_alliance_scenario_description_GP}Venture into the heart of enemy territory to rescue the Emperor." />
+	<!-- Act 1 -->
+	<string id="str_alliance_act_name.GP_1" text="{=str_alliance_act_name_GP_1}Act I: Into the Unknown" />
+	<string id="str_alliance_act_description.GP_1" text="{=str_alliance_act_description_GP_1}A battalion of French Imperial Guards steps into enemy territory..." />
+	<string id="str_alliance_act_lose_defender.GP_1" text="{=str_alliance_act_lose_defender_GP_1}The enemy has seized this position. Fall back and regroup." />
+	<string id="str_alliance_act_lose_attacker.GP_1" text="{=str_alliance_act_lose_attacker_GP_1}You have fallen on the battlefield." />
+	<string id="str_alliance_act_victory_attacker.GP_1" text="{=str_alliance_act_victory_attacker_GP_1}Victory! The village is now under your control!" />
+	<string id="str_alliance_act_victory_defender.GP_1" text="{=str_alliance_act_victory_defender_GP_1}Triumph! The invaders have been vanquished!" />
+	<!-- Act 1 - Objectives -->
+	<string id="str_alliance_obj_name.GP_1_1" text="{=str_alliance_obj_name_GP_1_1}Defeat the invaders" />
+	<string id="str_alliance_obj_description.GP_1_1" text="{=str_alliance_obj_description_GP_1_1}Leave no enemy standing." />
+	<string id="str_alliance_obj_name.GP_1_2" text="{=str_alliance_obj_name_GP_1_2}Explore the region" />
+	<string id="str_alliance_obj_description.GP_1_2" text="{=str_alliance_obj_description_GP_1_2}Find the village." />
+	<!-- Act 2 -->
+	<string id="str_alliance_act_name.GP_2" text="{=str_alliance_act_name_GP_2}Act II: The Battle Rages On" />
+	<string id="str_alliance_act_description.GP_2" text="{=str_alliance_act_description_GP_2}With the village under control, the French troops set their sights on the enemy camp." />
+	<string id="str_alliance_act_lose_defender.GP_2" text="{=str_alliance_act_lose_defender_GP_2}Your camp has been captured... Consolidate your forces at the manor!" />
+	<string id="str_alliance_act_lose_attacker.GP_2" text="{=str_alliance_act_lose_attacker_GP_2}You have fallen on the battlefield." />
+	<string id="str_alliance_act_victory_attacker.GP_2" text="{=str_alliance_act_victory_attacker_GP_2}Victory! The enemy camp has been subdued!" />
+	<string id="str_alliance_act_victory_defender.GP_2" text="{=str_alliance_act_victory_defender_GP_2}Triumph! The invaders have been repelled!" />
+	<!-- Act 2 - Objectives -->
+	<string id="str_alliance_obj_name.GP_2_1" text="{=str_alliance_obj_name_GP_2_1}Defeat the invaders" />
+	<string id="str_alliance_obj_description.GP_2_1" text="{=str_alliance_obj_description_GP_2_1}Leave no enemy standing." />
+	<string id="str_alliance_obj_name.GP_2_2" text="{=str_alliance_obj_name_GP_2_2}Explore the region" />
+	<string id="str_alliance_obj_description.GP_2_2" text="{=str_alliance_obj_description_GP_2_2}Find the English camp." />
+	<!-- Act 3 -->
+	<string id="str_alliance_act_name.GP_3" text="{=str_alliance_act_name_GP_3}Act III: The Emperor's Rescue" />
+	<string id="str_alliance_act_description.GP_3" text="{=str_alliance_act_description_GP_3}The mighty French force marches towards the Manor. The decisive battle is upon us." />
+	<string id="str_alliance_act_lose_defender.GP_3" text="{=str_alliance_act_lose_defender_GP_3}The Manor has fallen to the French might... They will soon learn their mistake..." />
+	<string id="str_alliance_act_lose_attacker.GP_3" text="{=str_alliance_act_lose_attacker_GP_3}Falling in the decisive clash, the hope of saving Napoleon fades away." />
+	<string id="str_alliance_act_victory_attacker.GP_3" text="{=str_alliance_act_victory_attacker_GP_3}The English forces are defeated! Napoleon is safe, for now..." />
+	<string id="str_alliance_act_victory_defender.GP_3" text="{=str_alliance_act_victory_defender_GP_3}The French onslaught has been halted! The Emperor remains captive!" />
+	<!-- Act 3 - Objectives -->
+	<string id="str_alliance_obj_name.GP_3_1" text="{=str_alliance_obj_name_GP_3_1}Vanquish the French Battalion" />
+	<string id="str_alliance_obj_description.GP_3_1" text="{=str_alliance_obj_description_GP_3_1}Do not let a single enemy survive." />
+	<string id="str_alliance_obj_name.GP_3_2" text="{=str_alliance_obj_name_GP_3_2}Explore the region" />
+	<string id="str_alliance_obj_description.GP_3_2" text="{=str_alliance_obj_description_GP_3_2}Find the Manor." />
+	<!-- Act 4 -->
+	<string id="str_alliance_act_name.GP_4" text="{=str_alliance_act_name_GP_4}Act IV: Last Stand" />
+	<string id="str_alliance_act_description.GP_4" text="{=str_alliance_act_description_GP_4}As the mighty English army closes in, the final stand of the French battalion awaits." />
+	<string id="str_alliance_act_lose_defender.GP_4" text="{=str_alliance_act_lose_defender_GP_4}You have fallen on the battlefield." />
+	<string id="str_alliance_act_lose_attacker.GP_4" text="{=str_alliance_act_lose_attacker_GP_4}Falling in the decisive clash, the hope of saving Napoleon fades away." />
+	<string id="str_alliance_act_victory_attacker.GP_4" text="{=str_alliance_act_victory_attacker_GP_4}The English forces are defeated! You have successfuly rescued the Emperor!" />
+	<string id="str_alliance_act_victory_defender.GP_4" text="{=str_alliance_act_victory_defender_GP_4}The French Battalion has been decimated! The Emperor is ours!" />
+	<!-- Act 4 - Objectives -->
+	<string id="str_alliance_obj_name.GP_4_1" text="{=str_alliance_obj_name_GP_4_1}Reclaim the Manor" />
+	<string id="str_alliance_obj_description.GP_4_1" text="{=str_alliance_obj_description_GP_4_1}Leave no enemy alive within the Manor walls." />
+	<string id="str_alliance_obj_name.GP_4_2" text="{=str_alliance_obj_name_GP_4_2}Protect the Emperor" />
+	<string id="str_alliance_obj_description.GP_4_2" text="{=str_alliance_obj_description_GP_4_2}Fight off every last foe threatening the Emperor's safety." />
+</strings>

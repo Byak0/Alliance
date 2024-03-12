@@ -8,6 +8,7 @@ using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
+using Alliance.Common.GameModes.CvC;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
@@ -22,6 +23,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
@@ -44,8 +46,9 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             GameModes = new MBBindingList<GameModeCardVM>()
             {
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new LobbyGameModeSettings()),
-                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BRGameModeSettings()),
+                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new CvCGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new PvCGameModeSettings()),
+                new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BRGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new CaptainGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BattleGameModeSettings()),
                 new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new SiegeGameModeSettings()),
@@ -210,7 +213,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             if (_selectedMap != null) _selectedMap.IsSelected = false;
             _selectedMap = mapCardVM;
             _selectedMap.IsSelected = true;
-            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, mapCardVM.MapID);
+            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, mapCardVM.MapInfo.Name);
             if (mapCardVM is ActCardVM)
             {
                 _selectedGameMode.GameModeSettings = (mapCardVM as ActCardVM).Act.ActSettings;
@@ -238,16 +241,16 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
                         Scenario scenario = result as Scenario;
                         foreach (Act act in scenario.Acts)
                         {
-                            Maps.Add(new ActCardVM(act.MapID, scenario, act, new Action<MapCardVM>(OnMapSelected)));
+                            Maps.Add(new ActCardVM(Scenes.Find(scene => scene.Name == act.MapID), scenario, act, new Action<MapCardVM>(OnMapSelected)));
                         }
                     }
                 }
             }
             else
             {
-                List<string> availableMaps = _selectedGameMode.GameModeSettings.GetAvailableMaps();
+                List<SceneInfo> availableMaps = _selectedGameMode.GameModeSettings.GetAvailableMaps();
 
-                foreach (string map in availableMaps)
+                foreach (SceneInfo map in availableMaps)
                 {
                     Maps.Add(new MapCardVM(map, new Action<MapCardVM>(OnMapSelected)));
                 }
@@ -257,7 +260,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             int mapIndex = -1;
             if (_selectedMap != null)
             {
-                mapIndex = Maps.FindIndex(map => map.MapID == _selectedMap.MapID);
+                mapIndex = Maps.FindIndex(map => map.MapInfo.Name == _selectedMap.MapInfo.Name);
             }
 
             // Select same map as before if possible, otherwise select default
@@ -269,6 +272,9 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
         {
             // Refresh native options
             NativeOptions = new MBBindingList<OptionVM>();
+
+            _selectedGameMode.GameModeSettings.SetDefaultNativeOptions();
+            _selectedGameMode.GameModeSettings.SetNativeOption(OptionType.Map, _selectedMap.MapInfo.Name);
 
             List<OptionType> optionTypes = _selectedGameMode.GameModeSettings.GetAvailableNativeOptions();
             foreach (OptionType optionType in optionTypes)
@@ -298,6 +304,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
         {
             ModOptions = new MBBindingList<OptionVM>();
 
+            _selectedGameMode.GameModeSettings.SetDefaultModOptions();
             Config modOptions = _selectedGameMode.GameModeSettings.ModOptions;
             List<string> availableOptions = _selectedGameMode.GameModeSettings.GetAvailableModOptions();
 
@@ -342,10 +349,32 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
                             false, true)
                         );
                         break;
-                    case ConfigValueType.String:
+                    case ConfigValueType.Enum:
+                        List<SelectionItem> selectionItems = GetSelectionItemsFromValues(DefaultConfig.GetAvailableValuesForOption(fieldInfo));
+                        ModOptions.Add(
+                        new SelectionOptionVM(
+                            new TextObject(configPropertyAttribute.Name),
+                            new TextObject(configPropertyAttribute.Description),
+                            new SelectionOptionData(
+                                () => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(modOptions)),
+                                newValue => fieldInfo.SetValue(modOptions, selectionItems.ElementAtOrDefault(newValue).Data),
+                                2,
+                                selectionItems),
+                            false)
+                        );
                         break;
                 }
             }
+        }
+
+        private List<SelectionItem> GetSelectionItemsFromValues(List<string> values)
+        {
+            List<SelectionItem> optionValues = new List<SelectionItem>();
+            foreach (string value in values)
+            {
+                optionValues.Add(new SelectionItem(false, value));
+            }
+            return optionValues;
         }
 
         private List<SelectionItem> GetFactionChoices()

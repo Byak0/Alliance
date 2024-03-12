@@ -1,9 +1,10 @@
 ﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes
@@ -70,12 +71,9 @@ namespace Alliance.Common.GameModes
         /// <summary>
         /// Return list of available Maps for this game mode.
         /// </summary>
-        public virtual List<string> GetAvailableMaps()
+        public virtual List<SceneInfo> GetAvailableMaps()
         {
-            return SceneList.Scenes
-                    .Where(scene => new[] { "character_", "editor_" } // Invalid maps
-                    .All(prefix => !scene.Contains(prefix)))
-                    .ToList();
+            return Scenes.Where(scene => scene.HasGenericSpawn && !InvalidMaps.Contains(scene.Name)).ToList();
         }
 
         /// <summary>
@@ -97,47 +95,10 @@ namespace Alliance.Common.GameModes
         /// </summary>
         public virtual List<string> GetAvailableModOptions()
         {
-            return new List<string>
-            {
-                nameof(Config.ActivateSAE),
-                nameof(Config.SAERange),
-                nameof(Config.AllowSpawnInRound),
-                nameof(Config.FreeRespawnTimer),
-                nameof(Config.AllowCustomBody),
-                nameof(Config.RandomizeAppearance),
-                nameof(Config.ShowFlagMarkers),
-                nameof(Config.ShowScore),
-                nameof(Config.ShowOfficers),
-                nameof(Config.ShowWeaponTrail),
-                nameof(Config.KillFeedEnabled),
-                nameof(Config.UseTroopCost),
-                nameof(Config.StartingGold),
-                nameof(Config.MinTroopCost),
-                nameof(Config.MaxTroopCost),
-                nameof(Config.GoldPerKill),
-                nameof(Config.GoldPerAssist),
-                nameof(Config.GoldPerAllyDead),
-                nameof(Config.UseTroopLimit),
-                nameof(Config.CommanderSide),
-                nameof(Config.MinPlayer),
-                nameof(Config.MaxPlayer),
-                nameof(Config.FormRadMin),
-                nameof(Config.FormRadMax),
-                nameof(Config.SkirmRadMin),
-                nameof(Config.SkirmRadMax),
-                nameof(Config.NbFormMin),
-                nameof(Config.NbFormMax),
-                nameof(Config.NbSkirmMin),
-                nameof(Config.NbSkirmMax),
-                nameof(Config.MinPlayerForm),
-                nameof(Config.MeleeDebuffRambo),
-                nameof(Config.DistDebuffRambo),
-                nameof(Config.AccDebuffRambo),
-                nameof(Config.MeleeDebuffSkirm),
-                nameof(Config.DistDebuffSkirm),
-                nameof(Config.AccDebuffSkirm),
-                nameof(Config.OfficerHPMultip)
-            };
+            return typeof(Config)
+            .GetFields(BindingFlags.Public | BindingFlags.Instance)
+            .Select(field => field.Name)
+            .ToList();
         }
     }
 }

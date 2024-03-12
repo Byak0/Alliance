@@ -85,6 +85,13 @@ namespace Alliance.Common.Utilities
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 
+        public static void SendMessageToPeer(string message, NetworkCommunicator peer)
+        {
+            GameNetwork.BeginModuleEventAsServer(peer);
+            GameNetwork.WriteMessage(new ServerMessage(message));
+            GameNetwork.EndModuleEventAsServer();
+        }
+
         public static void SendNotificationToAll(string message)
         {
             GameNetwork.BeginBroadcastModuleEvent();

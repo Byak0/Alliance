@@ -10,12 +10,14 @@ using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.SAE.Behaviors
 {
+    [DefaultView]
     public class SaeBehavior : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "sae_spawn_cat";
@@ -74,6 +76,13 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     Name = "Decrease SAE sphere",
                     DefaultInputKey = InputKey.NumpadMinus
                 },
+                new BindedKey
+                {
+                    Id = "key_crouch",
+                    Description = "Make selected formation crouch.",
+                    Name = "Crouch troops",
+                    DefaultInputKey = InputKey.M
+                },
             }
         };
 
@@ -84,6 +93,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private GameKey fastDeleteMarkerIK;
         private GameKey increaseSphereRadius;
         private GameKey decreaseSphereRadius;
+        private GameKey crouchIk;
 
 
         /// <summary>
@@ -162,6 +172,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fastDeleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_fast_delete_marker");
             increaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_increase_sphere");
             decreaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_decrease_sphere");
+            crouchIk = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_crouch");
         }
 
         private void InitDynamicMarkers()
@@ -169,7 +180,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fakeDynamicMarkers = new List<GameEntity>() { };
             List<GameEntity> gameEntities = new();
             Mission.Current.Scene.GetEntities(ref gameEntities);
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME)).ToList()
+            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
                 .ForEach(entity =>
                 {
                     fakeDynamicMarkers.Add(entity);
@@ -219,10 +230,11 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     OnSphereIncreasingOrDecreasingButtonPressed();
                     WhenCreateMarkerActionTriggered();
                     WhenDeleteMarkerActionTriggered();
-                    WhenCrouchActionTriggered();
                     WhenDebugActionTriggered();
                     WhenDynamicCreateMarkerActionTriggered();
                 }
+
+                WhenCrouchActionTriggered();
             }
         }
 
@@ -264,7 +276,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private void WhenCrouchActionTriggered()
         {
             //Crouch troops
-            if (Input.IsKeyPressed(InputKey.M))
+            if (Input.IsKeyPressed(crouchIk.KeyboardKey.InputKey))
             {
                 Log("Crouch !", LogLevel.Information);
 

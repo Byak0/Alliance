@@ -1,4 +1,5 @@
-﻿using Alliance.Server.Extensions.TroopSpawner.Interfaces;
+﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -7,14 +8,15 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.GameModes.CaptainX.Behaviors
 {
-    internal class PvCFlagDominationSpawningBehavior : SpawningBehaviorBase, ISpawnBehavior
+    public class PvCFlagDominationSpawningBehavior : SpawningBehaviorBase, ISpawnBehavior
     {
         public PvCFlagDominationSpawningBehavior()
         {
-            Debug.Print("PvC - New PvCFlagDominationSpawningBehavior...", 0, Debug.DebugColor.Green);
+            Log("PvC - New PvCFlagDominationSpawningBehavior...", LogLevel.Debug);
             _enforcedSpawnTimers = new List<KeyValuePair<MissionPeer, Timer>>();
             _roundController = new MultiplayerRoundController();
             _flagDominationMissionController = new MissionMultiplayerFlagDomination(MultiplayerGameType.Captain);
@@ -158,8 +160,10 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
                                     formation.BannerCode = component.Peer.BannerCode;
                                 }
                             }
-                            BasicCharacterObject heroCharacter = mpheroClassForPeer.HeroCharacter;
-                            AgentBuildData agentBuildData = new AgentBuildData(heroCharacter).MissionPeer(component).Team(component.Team).VisualsIndex(0)
+                            // Spawn hero for officers, troops for others
+                            BasicCharacterObject character = networkCommunicator.IsOfficer() ? mpheroClassForPeer.HeroCharacter : mpheroClassForPeer.TroopCharacter;
+
+                            AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(component).Team(component.Team).VisualsIndex(0)
                                 .Formation(formation)
                                 .MakeUnitStandOutOfFormationDistance(7f)
                                 .IsFemale(component.Peer.IsFemale)
@@ -167,7 +171,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
                                 .ClothingColor1((team == Mission.AttackerTeam) ? basicCultureObject.Color : basicCultureObject.ClothAlternativeColor)
                                 .ClothingColor2((team == Mission.AttackerTeam) ? basicCultureObject.Color2 : basicCultureObject.ClothAlternativeColor2);
                             MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(component);
-                            Equipment equipment = heroCharacter.Equipment.Clone(false);
+                            Equipment equipment = character.Equipment.Clone(false);
                             IEnumerable<ValueTuple<EquipmentIndex, EquipmentElement>> enumerable = ((onSpawnPerkHandler != null) ? onSpawnPerkHandler.GetAlternativeEquipments(true) : null);
                             if (enumerable != null)
                             {

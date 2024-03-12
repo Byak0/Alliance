@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Extensions;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using NetworkMessages.FromServer;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -28,21 +27,32 @@ namespace Alliance.Client.GameModes.PvC.Handlers
         // Works only for PvC GameMode
         public void HandleMoraleChangedMessage(FlagDominationMoraleChangeMessage message)
         {
-            PvCGameModeClientBehavior gameModeClient = Mission.Current.GetMissionBehavior<PvCGameModeClientBehavior>();
+            string gameMode = MultiplayerOptions.OptionType.GameType.GetStrValue();
+            if (gameMode != "PvC" && gameMode != "CvC") return;
+
+            MissionMultiplayerGameModeFlagDominationClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
+
             gameModeClient?.OnMoraleChanged(message.Morale);
         }
 
         // Works only for PvC GameMode
         public void HandleFlagsRemovedMessage(FlagDominationFlagsRemovedMessage message)
         {
-            PvCGameModeClientBehavior gameModeClient = Mission.Current.GetMissionBehavior<PvCGameModeClientBehavior>();
+            string gameMode = MultiplayerOptions.OptionType.GameType.GetStrValue();
+            if (gameMode != "PvC" && gameMode != "CvC") return;
+
+            MissionMultiplayerGameModeFlagDominationClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
+
             gameModeClient?.OnNumberOfFlagsChanged();
         }
 
         // Works only for PvC GameMode
         public void HandleServerEventPointCapturedMessage(FlagDominationCapturePointMessage message)
         {
-            PvCGameModeClientBehavior gameModeClient = Mission.Current.GetMissionBehavior<PvCGameModeClientBehavior>();
+            string gameMode = MultiplayerOptions.OptionType.GameType.GetStrValue();
+            if (gameMode != "PvC" && gameMode != "CvC") return;
+
+            MissionMultiplayerGameModeFlagDominationClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
             if (gameModeClient == null) return;
 
             Team ownerTeam = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.OwnerTeamIndex);

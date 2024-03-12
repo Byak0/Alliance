@@ -10,10 +10,12 @@ namespace Alliance.Common.Patch
     /// </summary>
     public static class DirtyCommonPatcher
     {
+        public const int MAX_MISSION_OBJECTS = 10000;
+
         public static void IncreaseNativeLimits()
         {
             // Increase the limit for number of bots in captain (255 to 16384)
-            CompressionMission.AgentOffsetCompressionInfo = new CompressionInfo.Integer(0, 16384, true);
+            CompressionMission.AgentOffsetCompressionInfo = new CompressionInfo.Integer(-1, 16384, true);
 
             // Increase map time limit (in minutes)
             CompressionBasic.MapTimeLimitCompressionInfo = new CompressionInfo.Integer(0, 360, true);
@@ -26,6 +28,12 @@ namespace Alliance.Common.Patch
 
             // Increase gold max
             CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);
+
+            // Increase max number of mission object
+            CompressionBasic.MissionObjectIDCompressionInfo = new CompressionInfo.Integer(-1, MAX_MISSION_OBJECTS, maximumValueGiven: true);
+
+            // Increase max health of objects to 104856.5 instead of 26213.3
+            CompressionMission.UsableGameObjectHealthCompressionInfo = new CompressionInfo.Float(-1f, 20, 0.1f);
 
             // TODO : Check if still necessary with 1.2 optimisation
             // Fix native lag when lot of arrows
@@ -46,6 +54,8 @@ namespace Alliance.Common.Patch
             patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
             patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
             patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
+            patchSuccess &= Patch_AddTeam.Patch();
+            patchSuccess &= Patch_GameNetworkMessage.Patch();
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;

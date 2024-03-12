@@ -3,8 +3,6 @@ using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
 using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
 using Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.VOIP.Views;
-using Alliance.Client.Extensions.WeaponTrailHider.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -19,14 +17,12 @@ namespace Alliance.Client.GameModes.PvC
         [ViewMethod("PvC")]
         public static MissionView[] OpenPvCMission(Mission mission)
         {
-            List<MissionView> list = new List<MissionView>
+            List<MissionView> missionViews = new List<MissionView>
             {
-                new LobbyEquipmentView(),
+                new EquipmentSelectionView(),
                 new AgentStatusView(),
                 new FormationStatusView(),
                 new HUDExtensionUIHandlerView(),
-                new HideWeaponTrail(),
-                new VoipView(),
                 new SpectatorView(),
 
                 MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
@@ -55,7 +51,7 @@ namespace Alliance.Client.GameModes.PvC
                 new MissionBoundaryWallView()
             };
 
-            return list.ToArray();
+            return missionViews.ToArray();
         }
     }
 }

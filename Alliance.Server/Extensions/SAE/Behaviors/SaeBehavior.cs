@@ -52,7 +52,7 @@ namespace Alliance.Server.Extensions.SAE.Behaviors
             List<GameEntity> gameEntities = new();
             Mission.Current.Scene.GetEntities(ref gameEntities);
             saeDynamicMapMarkersDico = new Dictionary<MatrixFrame, bool>();
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME)).ToList()
+            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
                 .ForEach(entity =>
                     saeDynamicMapMarkersDico.Add(
                         entity.GetGlobalFrame(),
@@ -142,43 +142,6 @@ namespace Alliance.Server.Extensions.SAE.Behaviors
         private void ResetSAE()
         {
             ClearTeams();
-            InitTeamIA();
-        }
-
-        private void InitTeamIA()
-        {
-            //Create TeamAI Attacker
-            TeamAIGeneral2 teamAi = new(Mission.Current, Mission.Current.AttackerTeam);
-            TacticSergeantMPBotTactic2 tacticDefensive = new(Mission.Current.AttackerTeam);
-
-            teamAi.OnTacticAppliedForFirstTime();
-            teamAi.AddTacticOption(tacticDefensive);
-
-            foreach (Formation formation in Mission.Current.AttackerTeam.FormationsIncludingEmpty)
-            {
-                if (formation.CountOfUnits > 0)
-                {
-                    teamAi.OnUnitAddedToFormationForTheFirstTime(formation);
-                }
-            }
-            Mission.Current.AttackerTeam.AddTeamAI(teamAi);
-
-
-            //Create TeamAI Defender
-            TeamAIGeneral2 teamAi2 = new(Mission.Current, Mission.Current.DefenderTeam);
-            TacticSergeantMPBotTactic2 tacticDefensive2 = new(Mission.Current.DefenderTeam);
-
-            teamAi2.OnTacticAppliedForFirstTime();
-            teamAi2.AddTacticOption(tacticDefensive2);
-
-            foreach (Formation formation in Mission.Current.DefenderTeam.FormationsIncludingEmpty)
-            {
-                if (formation.CountOfUnits > 0)
-                {
-                    teamAi2.OnUnitAddedToFormationForTheFirstTime(formation);
-                }
-            }
-            Mission.Current.DefenderTeam.AddTeamAI(teamAi2);
         }
 
         public void SendMarkersListToPeer(NetworkCommunicator networkPeer, List<SaeMarkerWithIdAndPos> markersId)

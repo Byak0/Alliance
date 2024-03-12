@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
+using TaleWorlds.InputSystem;
 using TaleWorlds.Localization;
 using static Alliance.Common.Utilities.Logger;
 using Module = TaleWorlds.MountAndBlade.Module;
@@ -97,6 +98,27 @@ namespace Alliance.Client.Core.KeyBinder
                 Log($"Alliance - Error while registering KeyBinder categories", LogLevel.Error);
                 Log(ex.ToString(), LogLevel.Error);
             }
+        }
+
+        /// <summary>
+        /// Register GameKeyContexts in the HotKeyManager.
+        /// </summary>
+        public static void RegisterContexts()
+        {
+            // Retrieve native contexts
+            var list = HotKeyManager.GetAllCategories();
+            List<GameKeyContext> keyList = new List<GameKeyContext>();
+            foreach (var item in list)
+            {
+                keyList.Add(item);
+            }
+            // Add our own contexts
+            foreach (GameKeyContext context in KeyContexts.Values)
+            {
+                if (!keyList.Contains(context)) keyList.Add(context);
+            }
+            // Register all contexts
+            HotKeyManager.RegisterInitialContexts(keyList, true);
         }
     }
 }

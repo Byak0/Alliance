@@ -4,16 +4,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
+using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 {
     public class TeamSelectTeamVM : ViewModel
     {
+        private List<string> randomLeaderAnimationsLeft = new List<string>()
+        {
+            "act_taunt_31",
+            "act_taunt_10",
+            "act_taunt_13",
+            "act_taunt_20"
+        };
+
+        private List<string> randomLeaderAnimationsRight = new List<string>()
+        {
+            "act_taunt_31_leftstance",
+            "act_cheering_high_01",
+            "act_arena_winner_1"
+        };
+
+        private List<string> randomTroopAnimationsLeft = new List<string>()
+        {
+            "act_taunt_cheer_3",
+            "act_taunt_20",
+            "act_cheering_high_01",
+            "act_arena_winner_1",
+            "act_arena_spectator"
+        };
+
+        private List<string> randomTroopAnimationsRight = new List<string>()
+        {
+            "act_taunt_24_leftstance",
+            "act_cheering_low_01",
+            "act_arena_spectator"
+        };
+
         private const int MaxFriendAvatarCount = 6;
 
         public readonly Team Team;
@@ -40,6 +73,60 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
         private HintViewModel _friendsExtraHint;
         private Color _cultureColor1;
         private Color _cultureColor2;
+        private CharacterViewModel _leaderPreview;
+        private CharacterViewModel _troop1Preview;
+        private CharacterViewModel _troop2Preview;
+
+        [DataSourceProperty]
+        public CharacterViewModel LeaderPreview
+        {
+            get
+            {
+                return _leaderPreview;
+            }
+            set
+            {
+                if (value != _leaderPreview)
+                {
+                    _leaderPreview = value;
+                    OnPropertyChangedWithValue(value, "LeaderPreview");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public CharacterViewModel Troop1Preview
+        {
+            get
+            {
+                return _troop1Preview;
+            }
+            set
+            {
+                if (value != _troop1Preview)
+                {
+                    _troop1Preview = value;
+                    OnPropertyChangedWithValue(value, "Troop1Preview");
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public CharacterViewModel Troop2Preview
+        {
+            get
+            {
+                return _troop2Preview;
+            }
+            set
+            {
+                if (value != _troop2Preview)
+                {
+                    _troop2Preview = value;
+                    OnPropertyChangedWithValue(value, "Troop2Preview");
+                }
+            }
+        }
 
         [DataSourceProperty]
         public string CultureId
@@ -325,6 +412,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
             _onSelect = onSelect;
             _culture = culture;
             IsSiege = Mission.Current?.HasMissionBehavior<MissionMultiplayerSiegeClient>() ?? false;
+
             if (Team != null && Team.Side != BattleSideEnum.None)
             {
                 _missionScoreboardComponent = missionScoreboardComponent;
@@ -334,7 +422,46 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
                 UpdateTeamScores();
             }
 
-            CultureId = culture == null ? "" : culture.StringId;
+            if (culture != null)
+            {
+                uint color1 = useSecondary ? culture.Color2 : culture.Color;
+                uint color2 = useSecondary ? culture.Color : culture.Color2;
+                CultureColor1 = Color.FromUint(color1);
+                CultureColor2 = Color.FromUint(color2);
+                string bannerCodeStr = bannercode?.Code ?? "";
+
+                BasicCharacterObject defaultChar = Mission.Current.MainAgent != null ? Mission.Current.MainAgent.Character : MBObjectManager.Instance.GetFirstObject<BasicCharacterObject>();
+                List<BasicCharacterObject> cultureChars = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>()
+                    .Where(bco => bco.Culture == culture)
+                    .GroupBy(bco => bco.Level) // Group by level to ensure unique levels
+                    .OrderByDescending(group => group.Key) // Order by level descending
+                    .SelectMany(group => group.Take(1)) // Take one character per level group
+                    .Take(3) // Take the top 3 characters based on level
+                    .ToList();
+                BasicCharacterObject leaderChar = cultureChars.ElementAtOrDefault(0) ?? defaultChar;
+                BasicCharacterObject troop1Char = cultureChars.ElementAtOrDefault(2) ?? defaultChar;
+                BasicCharacterObject troop2Char = cultureChars.ElementAtOrDefault(1) ?? defaultChar;
+                LeaderPreview = new CharacterViewModel();
+                Troop1Preview = new CharacterViewModel();
+                Troop2Preview = new CharacterViewModel();
+                string leaderAnimation = IsAttacker ? randomLeaderAnimationsLeft.GetRandomElement() : randomLeaderAnimationsRight.GetRandomElement();
+                string troopAnimation1 = "";
+                string troopAnimation2 = "";
+                List<string> troopAnimations = IsAttacker ? randomTroopAnimationsLeft : randomTroopAnimationsRight;
+                if (troopAnimations.Count > 1)
+                {
+                    int index = MBRandom.RandomInt(troopAnimations.Count);
+                    troopAnimation1 = troopAnimations[index];
+                    troopAnimation2 = troopAnimations[(index + 1) % troopAnimations.Count];
+                }
+                FillCharacterViewModel(LeaderPreview, leaderChar, bannerCodeStr, color1, color2, leaderAnimation, true);
+                FillCharacterViewModel(Troop1Preview, troop1Char, bannerCodeStr, color1, color2, troopAnimation1, false);
+                FillCharacterViewModel(Troop2Preview, troop2Char, bannerCodeStr, color1, color2, troopAnimation2, false);
+            }
+
+            // Use the culture name instead of Id (we don't need culture id and name is capitalized properly)
+            CultureId = culture == null ? "" : culture.Name.ToString();
+
             if (team == null)
             {
                 IsDisabled = true;
@@ -349,33 +476,61 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
                 Banner = new ImageIdentifierVM(bannercode, nineGrid: true);
             }
 
-            if (culture != null)
-            {
-                CultureColor1 = Color.FromUint(useSecondary ? culture.Color2 : culture.Color);
-                CultureColor2 = Color.FromUint(useSecondary ? culture.Color : culture.Color2);
-            }
-
             _friends = new List<MPPlayerVM>();
             FriendAvatars = new MBBindingList<MPPlayerVM>();
-            RefreshValues();
-        }
-
-        public override void RefreshValues()
-        {
-            base.RefreshValues();
 
             if (_culture == null)
             {
                 DisplayedPrimary = new TextObject("{=pSheKLB4}Spectator").ToString();
             }
-            else if ((int)Team.Side == Config.Instance.CommanderSide)
+            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
             {
-                DisplayedPrimary = new TextObject("Commanders").ToString();
+                DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
             }
-            else
+            else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "PvC")
             {
-                DisplayedPrimary = new TextObject("Players").ToString();
+                if ((int)Team.Side == Config.Instance.CommanderSide)
+                {
+                    DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
+                }
+                else
+                {
+                    DisplayedPrimary = new TextObject("{=al_players}Players").ToString();
+                }
             }
+            else if (Team.Side == BattleSideEnum.Attacker)
+            {
+                DisplayedPrimary = new TextObject("{=al_attackers}Attackers").ToString();
+            }
+            else if (Team.Side == BattleSideEnum.Defender)
+            {
+                DisplayedPrimary = new TextObject("{=al_defenders}Defenders").ToString();
+            }
+        }
+
+        private void FillCharacterViewModel(CharacterViewModel characterViewModel, BasicCharacterObject leaderChar, string bannerCode, uint color1, uint color2, string animation, bool equipWeapon)
+        {
+            Equipment equipment = leaderChar.Equipment.Clone();
+            equipment[EquipmentIndex.Horse] = EquipmentElement.Invalid;
+            if (equipWeapon)
+            {
+                int slot = 0;
+                for (EquipmentIndex i = EquipmentIndex.WeaponItemBeginSlot; i < EquipmentIndex.NumPrimaryWeaponSlots; i++)
+                {
+                    if (equipment?[i].Item?.WeaponComponent != null && (equipment[i].Item.IsCraftedWeapon || equipment[i].Item.IsBannerItem))
+                    {
+                        slot = (int)i;
+                    }
+                }
+                characterViewModel.RightHandWieldedEquipmentIndex = slot;
+            }
+            characterViewModel.FillFrom(leaderChar);
+            characterViewModel.SetEquipment(equipment);
+            characterViewModel.ArmorColor1 = color1;
+            characterViewModel.ArmorColor2 = color2;
+            characterViewModel.BannerCodeText = bannerCode;
+            characterViewModel.ExecuteStartCustomAnimation(animation, true, 10);
+            characterViewModel.IdleAction = IsAttacker ? "act_walk_idle_1h" : "act_walk_idle_1h_left_stance";
         }
 
         public override void OnFinalize()

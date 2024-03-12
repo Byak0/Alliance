@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Utilities;
 using System;
 using System.Linq;
@@ -168,16 +169,24 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             _selectPerk = selectPerk;
             TroopGroups = new MBBindingList<TroopGroupVM>();
             SetCulture(SpawnTroopsModel.Instance.SelectedFaction);
+            SpawnTroopsModel.Instance.OnFactionSelected += RefreshCulture;
+        }
+
+        public override void OnFinalize()
+        {
+            SpawnTroopsModel.Instance.OnFactionSelected -= RefreshCulture;
         }
 
         public void SelectPreviousCulture()
         {
+            if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC" && !GameNetwork.MyPeer.IsAdmin()) return;
             BasicCultureObject previousCulture = Factions.Instance.GetPreviousCulture(SpawnTroopsModel.Instance.SelectedFaction);
             SetCulture(previousCulture);
         }
 
         public void SelectNextCulture()
         {
+            if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC" && !GameNetwork.MyPeer.IsAdmin()) return;
             BasicCultureObject nextCulture = Factions.Instance.GetNextCulture(SpawnTroopsModel.Instance.SelectedFaction);
             SetCulture(nextCulture);
         }
@@ -198,6 +207,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         {
             ShowBannerBearers = !ShowBannerBearers;
             RefreshTroopGroups(SpawnTroopsModel.Instance.SelectedFaction);
+        }
+
+        private void RefreshCulture()
+        {
+            SetCulture(SpawnTroopsModel.Instance.SelectedFaction);
         }
 
         private void SetCulture(BasicCultureObject culture)

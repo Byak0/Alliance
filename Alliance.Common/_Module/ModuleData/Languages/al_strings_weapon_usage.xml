@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<strings>
+	<!-- Weapon usages -->
+	<string id="str_weapon_usage.uruk_two_handed" text="{=desc_uruk_two_handed}Two Handed"/>
+	<string id="str_weapon_usage.uruk_twoHandedPolearm_Pike" text="{=desc_uruk_twoHandedPolearm_Pike}Two Handed"/>
+	<string id="str_weapon_usage.uruk_twoHandedPolearm_Bracing" text="{=desc_uruk_twoHandedPolearm_Bracing}Spear Brace"/>
+	<string id="str_weapon_usage.uruk_one_handed" text="{=desc_uruk_one_handed}One Handed"/>
+	<string id="str_weapon_usage.elf_two_handed" text="{=desc_elf_two_handed}Two Handed"/>
+	<string id="str_weapon_usage.rohan_one_handed" text="{=desc_rohan_one_handed}One Handed"/>
+	<string id="str_weapon_usage.rohan_OneHandedBastardAxe" text="{=desc_rohan_OneHandedBastardAxe}One Handed"/>
+	<string id="str_weapon_usage.rohan_OneHandedBastardAxeAlternative" text="{=desc_rohan_OneHandedBastardAxeAlternative}One Handed"/>
+	<string id="str_weapon_usage.rohan_TwoHandedAxe" text="{=desc_rohan_TwoHandedAxe}Two Handed"/>
+	<string id="str_weapon_usage.RohanOneHandedPolearm" text="{=desc_RohanOneHandedPolearm}One Handed"/>
+	<string id="str_weapon_usage.RohanTwoHandedPolearm" text="{=desc_RohanTwoHandedPolearm}Two Handed"/>
+	<string id="str_weapon_usage.RohanTwoHandedPolearm_Thrown" text="{=desc_RohanTwoHandedPolearm_Thrown}Thrown"/>
+	<string id="str_weapon_usage.RohanTwoHandedPolearm_Couchable" text="{=desc_RohanTwoHandedPolearm_Couchable}Couch Lance"/>
+	<string id="str_weapon_usage.legolas_dagger" text="{=desc_legolas_dagger}One Handed"/>
+	<string id="str_weapon_usage.legolas_throwing_knife" text="{=desc_legolas_throwing_knife}Thrown"/>
+	<string id="str_weapon_usage.foa_OneHandedPolearm" text="{=desc_foa_OneHandedPolearm}One Handed"/>
+	<string id="str_weapon_usage.foa_TwoHandedPolearm" text="{=desc_foa_TwoHandedPolearm}Two Handed"/>
+	<string id="str_weapon_usage.foa_TwoHandedPolearm_Couchable" text="{=desc_foa_TwoHandedPolearm_Couchable}Couch Lance"/>
+	<string id="str_weapon_usage.foa_TwoHandedPolearm_Bracing" text="{=desc_foa_TwoHandedPolearm_Bracing}Spear Brace"/>
+</strings>

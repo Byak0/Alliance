@@ -168,10 +168,28 @@ namespace Alliance.Common.GameModels
             return 0.37f;
         }
 
-        // TODO : implement this correctly
         public override float CalculateStaggerThresholdDamage(Agent defenderAgent, in Blow blow)
         {
-            return 1f; // default random value
+            MPPerkObject.MPPerkHandler perkHandler = MPPerkObject.GetPerkHandler(defenderAgent);
+            float? num = ((perkHandler != null) ? new float?(perkHandler.GetDamageInterruptionThreshold()) : null);
+            if (num != null && num.Value > 0f)
+            {
+                return num.Value;
+            }
+            ManagedParametersEnum managedParametersEnum;
+            if (blow.DamageType == DamageTypes.Cut)
+            {
+                managedParametersEnum = ManagedParametersEnum.DamageInterruptAttackThresholdCut;
+            }
+            else if (blow.DamageType == DamageTypes.Pierce)
+            {
+                managedParametersEnum = ManagedParametersEnum.DamageInterruptAttackThresholdPierce;
+            }
+            else
+            {
+                managedParametersEnum = ManagedParametersEnum.DamageInterruptAttackThresholdBlunt;
+            }
+            return ManagedParameters.Instance.GetManagedParameter(managedParametersEnum);
         }
 
         public override float CalculatePassiveAttackDamage(BasicCharacterObject attackerCharacter, in AttackCollisionData collisionData, float baseDamage)

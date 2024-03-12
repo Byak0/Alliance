@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using System;
+using static Alliance.Common.Utilities.SceneList;
 
 namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 {
@@ -8,16 +9,12 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
         public readonly Scenario Scenario;
         public readonly Act Act;
 
-        public ActCardVM(string mapID, Scenario scenario, Act act, Action<MapCardVM> onSelect) : base(mapID, onSelect)
+        public ActCardVM(SceneInfo mapInfo, Scenario scenario, Act act, Action<MapCardVM> onSelect) : base(mapInfo, onSelect)
         {
-            MapID = mapID;
+            MapInfo = mapInfo;
             Scenario = scenario;
             Act = act;
             Name = Scenario.Name + " - " + Act.Name;
-        }
-
-        public override void RefreshValues()
-        {
         }
     }
 }

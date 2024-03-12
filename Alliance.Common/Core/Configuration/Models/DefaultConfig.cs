@@ -1,21 +1,67 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using TaleWorlds.Core;
+using static Alliance.Common.Extensions.TroopSpawner.Utilities.SpawnHelper;
 
 namespace Alliance.Common.Core.Configuration.Models
 {
     [Serializable]
     public class DefaultConfig
     {
+        /// <summary>
+        /// List available values for the enum options
+        /// </summary>
+        public static List<string> GetAvailableValuesForOption(FieldInfo option)
+        {
+            List<string> values = new List<string>();
+            switch (option.Name)
+            {
+                case nameof(TestEnum):
+                    values = new List<string>() { "Test", "Test1" };
+                    break;
+                case nameof(BotDifficulty):
+                    values = new List<string>() {
+                        nameof(Difficulty.PlayerChoice),
+                        nameof(Difficulty.Easy),
+                        nameof(Difficulty.Normal),
+                        nameof(Difficulty.Hard),
+                        nameof(Difficulty.VeryHard),
+                        nameof(Difficulty.Bannerlord)
+                    };
+                    break;
+                default:
+                    break;
+            }
+
+            return values;
+        }
+
         [ConfigProperty("Synchronize configuration", "Synchronize server configuration with the clients.", ConfigValueType.Bool)]
         public bool SyncConfig = true;
 
         [ConfigProperty("Toggle bot talks", "Bots will repeat what players say. For when you got no friend.", ConfigValueType.Bool)]
         public bool NoFriend = false;
 
+        [ConfigProperty("Test enum", "Test enum", ConfigValueType.Enum)]
+        public string TestEnum = "Test";
+
+        [ConfigProperty("Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", ConfigValueType.Enum)]
+        public string BotDifficulty = nameof(Difficulty.Normal);
+
         [ConfigProperty("Toggle SAE", "Activate or not Scatter Around Expanded mod.", ConfigValueType.Bool)]
         public bool ActivateSAE = false;
         [ConfigProperty("SAE range", "Indicate the max distance where a troop need to be in order to go to one marker.", ConfigValueType.Integer, 0, 1000)]
         public int SAERange = 30;
+        [ConfigProperty("Toggle formation", "Activate or not the formation system (debuff isolated players).", ConfigValueType.Bool)]
+        public bool EnableFormation = true;
+
+        [ConfigProperty("Use gold to recruit troops", "Use gold system to recruit troops.", ConfigValueType.Bool)]
+        public bool UseTroopCost = false;
+        [ConfigProperty("Gold multiplier", "Gold multiplier when giving gold to commander (ennemy army value X multiplier).", ConfigValueType.Float, 0f, 5f)]
+        public float GoldMultiplier = 1f;
+        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 10000)]
+        public int StartingGold = 5000;
 
         [ConfigProperty("Zone life time", "Number of seconds the zone takes to reach its minimum size.", ConfigValueType.Integer, 0, 3600)]
         public int BRZoneLifeTime = 300;
@@ -26,7 +72,7 @@ namespace Alliance.Common.Core.Configuration.Models
         public int FreeRespawnTimer = 60;
 
         [ConfigProperty("Allow custom appearance", "Spawn players with their custom appearance instead of the character default one.", ConfigValueType.Bool)]
-        public bool AllowCustomBody = true;
+        public bool AllowCustomBody = false;
         [ConfigProperty("Randomize bot appearance", "Randomize bots appearance. If false, all bots will have the same appearance.", ConfigValueType.Bool)]
         public bool RandomizeAppearance = true;
 
@@ -48,12 +94,6 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Morale multiplier for last flag", "More gain/loss is multiplied by this amount when last flag is controlled.", ConfigValueType.Float, 0, 10f)]
         public float MoraleMultiplierForLastFlag = 1f;
 
-        [ConfigProperty("Use gold to recruit troops", "Use gold system to recruit troops.", ConfigValueType.Bool)]
-        public bool UseTroopCost = false;
-        [ConfigProperty("Gold multiplier", "Gold multiplier when giving gold to commander (ennemy army value X multiplier).", ConfigValueType.Float, 0f, 5f)]
-        public float GoldMultiplier = 1f;
-        [ConfigProperty("Commander starting gold", "Starting gold for commander.", ConfigValueType.Integer, 0, 20000)]
-        public int StartingGold = 20000;
         [ConfigProperty("Minimum troop cost", "Minimum cost for troops. Unit cost will be automatically calculated between min and max cost.", ConfigValueType.Integer, 0, 200)]
         public int MinTroopCost = 10;
         [ConfigProperty("Maximum troop cost", "Maximum cost for troops. Unit cost will be automatically calculated between min and max cost.", ConfigValueType.Integer, 0, 200)]

@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******  ISENGARD  ******* -->
+	<!-- ************************* -->
+	<!-- CLEAVER BLADE -->
+	<CraftingPiece id="uruk_blade_1" name="Uruk-Hai Cleaver Blade" tier="3" piece_type="Blade" mesh="uruk_sword_1_blade" culture="Culture.isengard" length="74" weight="1.6" excluded_item_usage_features="thrust">
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Swing damage_type="Cut" damage_factor="3.8" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_blade_4" name="Uruk-Hai Cleaver Blade" tier="3" piece_type="Blade" mesh="uruk_sword_1_blade" culture="Culture.isengard" length="74" weight="1.5" excluded_item_usage_features="thrust">
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Swing damage_type="Cut" damage_factor="4.2" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_handle_1" name="Uruk-Hai Leather Bound Handle" tier="3" piece_type="Handle" mesh="uruk_sword_1_handle" culture="Culture.isengard" length="17" weight="0.1">
+		<BuildData piece_offset="0" previous_piece_offset="0.1" next_piece_offset="0.1" />
+	</CraftingPiece>
+
+	<!-- BERSERKER BLADE -->
+	<CraftingPiece id="uruk_blade_2" name="Uruk-Hai Berserker Blade" tier="3" piece_type="Blade" mesh="uruk_sword_2_blade" culture="Culture.isengard" length="95.6" weight="1.0" excluded_item_usage_features="thrust">
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Swing damage_type="Cut" damage_factor="6" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+			<Flag name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_guard_1" name="Uruk-Hai Berserker Guard" tier="3" piece_type="Guard" mesh="uruk_sword_2_guard" culture="Culture.isengard" length="1.61" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="0.2" />
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_handle_2" name="Uruk-Hai Berserker Handle" tier="3" piece_type="Handle" mesh="uruk_sword_2_handle" culture="Culture.isengard" length="22" weight="0.25">
+		<BuildData piece_offset="-2.0" previous_piece_offset="0.2" next_piece_offset="0.3" />
+	</CraftingPiece>
+
+	<!-- STEEL PIKE -->
+	<CraftingPiece id="uruk_blade_3" name="Uruk Steel Pike Head" tier="3" piece_type="Blade" mesh="uruk_pike_1_blade" culture="Culture.isengard" length="72.8" weight="1" excluded_item_usage_features="swing">
+		<BladeData stack_amount="3" physics_material="wood_weapon" body_name="bo_spear_b">
+			<Thrust damage_type="Pierce" damage_factor="3.5" />
+		</BladeData>
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_handle_3" name="Dark Uruk-Hai Pike Shaft" tier="2" piece_type="Handle" mesh="uruk_pike_1_handle" culture="Culture.isengard" length="340" weight="2.7" CraftingCost="110">
+		<BuildData piece_offset="22.9" />
+	</CraftingPiece>
+
+	<CraftingPiece id="uruk_pommel_1" name="Uruk-Hai Pike Pommel" tier="4" piece_type="Pommel" mesh="uruk_pike_1_pommel" culture="Culture.isengard" length="18.7" weight="0">
+	</CraftingPiece>
+</CraftingPieces>

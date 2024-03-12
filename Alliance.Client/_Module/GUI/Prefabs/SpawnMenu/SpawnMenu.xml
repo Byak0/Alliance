@@ -20,7 +20,7 @@
 						<TroopPreview WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="25" />
 
 						<!-- Difficulty slider -->
-						<DifficultySliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="300" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" DifficultyValue="@Difficulty" MarginLeft="30" />
+						<DifficultySliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="300" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" DifficultyValue="@Difficulty" MarginLeft="30" IsVisible="@ShowDifficultySlider" />
 
 						<!-- Number of troops to recruit -->
 						<RecruitmentOptions WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="125" MarginLeft="51" />

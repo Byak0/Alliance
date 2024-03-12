@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
@@ -75,7 +76,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     IsSpawningEnabled = false;
                     _spawningTimer = 0f;
                     _spawningTimerTicking = false;
-                    EnableMortalityAfterTimer(30000);
+                    StartFightAfterTimer(30000);
                 }
             }
         }
@@ -126,12 +127,80 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                 MPPerkObject.GetPerkHandler(component)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
             }
 
+            // Spawn bots
+            if (!_haveBotsBeenSpawned)
+            {
+                if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
+                {
+                    SpawnBotsForCvC();
+                }
+                else
+                {
+                    SpawnBots();
+                }
+
+            }
+
             if (IsSpawningEnabled || !IsRoundInProgress())
             {
                 return;
             }
 
             SpawningDelayTimer += dt;
+        }
+
+        private void SpawnBots()
+        {
+            float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Config.Instance.BotDifficulty);
+            int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue();
+            int nbBotsToSpawnDef = MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+
+            // Spawn bots for attacker
+            if (nbBotsToSpawnAtt > 0)
+            {
+                BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+
+                for (int i = 0; i < nbBotsToSpawnAtt; i++)
+                {
+                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
+                    SpawnHelper.SpawnBot(Mission.AttackerTeam, culture1, troopCharacter, botDifficulty: difficulty);
+                }
+                SendMessageToAll("Spawned " + nbBotsToSpawnAtt + " bots in Attacker team.");
+            }
+            // Spawn bots for defender
+            if (nbBotsToSpawnDef > 0)
+            {
+                BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+                for (int i = 0; i < nbBotsToSpawnDef; i++)
+                {
+                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture2).ToList().GetRandomElement().TroopCharacter;
+                    SpawnHelper.SpawnBot(Mission.DefenderTeam, culture2, troopCharacter, botDifficulty: difficulty); ;
+                }
+                SendMessageToAll("Spawned " + nbBotsToSpawnDef + " bots in Defender team.");
+            }
+            _haveBotsBeenSpawned = true;
+        }
+
+        private void SpawnBotsForCvC()
+        {
+            float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Config.Instance.BotDifficulty);
+
+            // If no player were spawn in attacker team, spawn bots instead
+            if (Mission.Current.AttackerTeam.ActiveAgents.Count == 0 && Mission.Current.AttackerTeam.HasAnyEnemyTeamsWithAgents(false))
+            {
+                BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+                int nbAgentsSpawn = SpawnHelper.SpawnArmy(Config.Instance.StartingGold, difficulty, Mission.Current.AttackerTeam, culture);
+                SendMessageToAll("No player found in Attacker Team. Spawned " + nbAgentsSpawn + " bots instead.");
+                _haveBotsBeenSpawned = true;
+            }
+            // If no player were spawn in defender team, spawn bots instead
+            else if (Mission.Current.DefenderTeam.ActiveAgents.Count == 0 && Mission.Current.DefenderTeam.HasAnyEnemyTeamsWithAgents(false))
+            {
+                BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+                int nbAgentsSpawn = SpawnHelper.SpawnArmy(Config.Instance.StartingGold, difficulty, Mission.Current.DefenderTeam, culture);
+                SendMessageToAll("No player found in Defender Team. Spawned " + nbAgentsSpawn + " bots instead.");
+                _haveBotsBeenSpawned = true;
+            }
         }
 
         public override void RequestStartSpawnSession()
@@ -149,7 +218,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
-        private async void EnableMortalityAfterTimer(int waitTime)
+        private async void StartFightAfterTimer(int waitTime)
         {
             await Task.Delay(waitTime);
             EnableMortality();
@@ -169,6 +238,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
+        // Spawn agents preview
         protected override void SpawnAgents()
         {
             BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
@@ -199,28 +269,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                         }
                     }
                 }
-            }
-
-            // Spawn bots for testing purpose when alone to prevent round ending instantly
-            if (!_haveBotsBeenSpawned)
-            {
-                int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-                for (int i = 0; i < nbBotsToSpawnAtt; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.AttackerTeam, culture1, troopCharacter);
-                }
-                Log("Spawned " + nbBotsToSpawnAtt + " bots for attacker side.", LogLevel.Debug);
-
-                int nbBotsToSpawnDef = MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-                for (int i = 0; i < nbBotsToSpawnDef; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture2).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.DefenderTeam, culture2, troopCharacter);
-                }
-                Log("Spawned " + nbBotsToSpawnDef + " bots for defender side.", LogLevel.Debug);
-
-                _haveBotsBeenSpawned = true;
             }
         }
 

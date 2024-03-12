@@ -8,6 +8,7 @@ using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -15,6 +16,7 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.AdminMenu.Views
 {
+    [DefaultView]
     public class AdminSystem : MissionView, IUseKeyBinder
     {
         private static string adminKeyCategoryId = "admin_sys";
@@ -88,8 +90,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);
-
             if (_isMenuOpen)
             {
                 if (_layerLoaded.Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton) || _layerLoaded.Input.IsKeyPressed(InputKey.Escape) || Input.IsKeyPressed(InputKey.LeftMouseButton))
@@ -116,11 +116,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
                     }
                 }
             }
-        }
-
-        public override void OnMissionScreenInitialize()
-        {
-            base.OnMissionScreenFinalize();
         }
 
         private void TeleportToMouse()

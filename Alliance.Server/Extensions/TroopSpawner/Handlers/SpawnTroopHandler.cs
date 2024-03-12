@@ -1,14 +1,15 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.ExtendedCharacter.Extension;
 using Alliance.Common.Core.ExtendedCharacter.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
+using Alliance.Server.GameModes.CaptainX.Behaviors;
 using NetworkMessages.FromServer;
 using System;
 using TaleWorlds.Core;
@@ -21,7 +22,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 {
     public class SpawnTroopHandler : IHandlerRegister
     {
-        static MissionMultiplayerFlagDomination GameMode => Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>();
+        static ALMissionMultiplayerFlagDomination GameMode => Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>() as ALMissionMultiplayerFlagDomination;
         static IBotControllerBehavior GameModeClient => Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>() as IBotControllerBehavior;
         static ISpawnBehavior SpawnBehavior => Mission.Current.GetMissionBehavior<SpawnComponent>().SpawningBehavior as ISpawnBehavior;
         static ISpawnFrameBehavior SpawnFrame => Mission.Current.GetMissionBehavior<SpawnComponent>().SpawnFrameBehavior as ISpawnFrameBehavior;
@@ -81,44 +82,54 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
         {
             // Player info
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
-            NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
             // Troop info
             BasicCharacterObject troopToSpawn = model.CharacterToSpawn;
             ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
             MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(troopToSpawn, model.SelectedPerks));
 
-            int goldRemaining = missionPeer.Representative.Gold - SpawnHelper.GetTotalTroopCost(troopToSpawn, model.TroopCount, model.Difficulty);
+            float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(model.DifficultyLevel);
+
+            // If bot difficulty is forced and player is not admin, use difficulty from config
+            if (Config.Instance.BotDifficulty != nameof(SpawnHelper.Difficulty.PlayerChoice) && !peer.IsAdmin())
+            {
+                difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Config.Instance.BotDifficulty);
+            }
+
+            int goldRemaining = missionPeer.Representative.Gold - SpawnHelper.GetTotalTroopCost(troopToSpawn, model.TroopCount, difficulty);
 
             string refuseReason = "";
             if (!CanPlayerSpawn(peer, extendedTroopToSpawn, goldRemaining, model, ref refuseReason))
             {
-                GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage(refuseReason, false));
-                GameNetwork.EndModuleEventAsServer();
+                SendMessageToPeer(refuseReason, peer);
                 return false;
             }
+
+            string debugAvailableSlots = $"Remaining slots = {AgentsInfoModel.Instance.GetAvailableSlotCount()}";
+            Log(debugAvailableSlots, LogLevel.Debug);
 
             string reportToPlayer = "";
             MatrixFrame spawnPos = model.SpawnPosition;
             int nbTroopToSpawn = model.TroopCount;
+
             bool playerSpawned = false;
             // Spawn player if dead
             if (missionPeer.ControlledAgent == null)
             {
                 if (!model.SpawnAtExactPosition) spawnPos = SpawnFrame.GetClosestSpawnFrame(missionPeer.Team, troopToSpawn.HasMount(), false, spawnPos);
 
-                SpawnHelper.SpawnPlayer(networkPeer, perkHandler, troopToSpawn, spawnPos, model.Formation);
+                SpawnHelper.SpawnPlayer(peer, perkHandler, troopToSpawn, spawnPos, model.Formation);
 
                 reportToPlayer += "You respawned as " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + SpawnHelper.GetTotalTroopCost(troopToSpawn, 1) + " golds.\n" : ".\n");
                 nbTroopToSpawn--;
                 playerSpawned = true;
             }
 
+
             // Assign player as sergeant BEFORE spawning to prevent crash OnBotsControlledChange ?
             if (missionPeer.ControlledAgent != null)
             {
-                Formation formation = missionPeer.ControlledAgent.Team.GetFormation((FormationClass)model.Formation);
-                MissionPeer previousSergeant = formation.PlayerOwner?.MissionPeer;
+                MissionPeer previousSergeant = FormationControlModel.Instance.GetControllerOfFormation((FormationClass)model.Formation, missionPeer.Team);
+
                 if (previousSergeant != missionPeer)
                 {
                     // Unassign previous sergeant from this formation to prevent crash 
@@ -142,7 +153,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                     lackingReason = " There are no troops left to recruit.";
                     break;
                 }
-                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, model.Difficulty))
+                if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, difficulty))
                 {
                     Log($"Alliance : Can't spawn bot n.{SpawnHelper.TotalBots} (no slot available)", LogLevel.Error);
                     lackingReason = " (engine is lacking slots for additional spawn)";
@@ -152,7 +163,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 if (Config.Instance.UseTroopLimit) extendedTroopToSpawn.TroopLeft--;
             }
 
-            int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), model.Difficulty);
+            int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), difficulty);
 
             if (Config.Instance.UseTroopCost && goldRemaining >= 0) GameMode?.ChangeCurrentGoldForPeer(missionPeer, missionPeer.Representative.Gold - finalTroopCost);
 
@@ -172,7 +183,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 else if (GameModeClient != null)
                 {
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new BotsControlledChange(networkPeer, botsUnderControlAlive, botsUnderControlTotal));
+                    GameNetwork.WriteMessage(new BotsControlledChange(peer, botsUnderControlAlive, botsUnderControlTotal));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
                     GameModeClient.OnBotsControlledChanged(missionPeer, botsUnderControlAlive, botsUnderControlTotal);
@@ -181,7 +192,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 }
             }
 
-            reportToPlayer += "You recruited " + troopSpawned + " " + troopToSpawn.Name + (Config.Instance.UseTroopCost ? " for " + finalTroopCost + " golds." : ".");
+            reportToPlayer += $"You recruited {troopSpawned} {SpawnHelper.DifficultyFromMultiplier(difficulty)} {troopToSpawn.Name} {(Config.Instance.UseTroopCost ? " for " + finalTroopCost + " golds." : ".")}";
             if (troopSpawned < nbTroopToSpawn)
             {
                 reportToPlayer += lackingReason;
@@ -195,9 +206,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
                 // Send report to player who made the spawn request
-                GameNetwork.BeginModuleEventAsServer(networkPeer);
-                GameNetwork.WriteMessage(new ServerMessage(reportToPlayer, false));
-                GameNetwork.EndModuleEventAsServer();
+                SendMessageToPeer(reportToPlayer, peer);
             }
 
             return true;
@@ -242,6 +251,12 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             if (!model.SpawnAtExactPosition && isCommander && Config.Instance.UseTroopLimit && troopToSpawn.TroopLeft <= 0)
             {
                 refuseReason = "There are no more troops available.";
+                return false;
+            }
+            // If troop limit is reached
+            if (model.TroopCount > SpawnHelper.MaxBotsPerSpawn)
+            {
+                refuseReason = "You can't recruit this many troops at once.";
                 return false;
             }
             return true;

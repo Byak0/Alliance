@@ -1,6 +1,4 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.TroopSpawner.Models;
-using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -241,11 +239,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors
         public override void OnRemoveBehavior()
         {
             ScenarioManagerServer.Instance.CurrentAct.UnregisterObjectives();
-            // Reset all spawn slots
-            for (int i = 0; i < AgentsInfoModel.Instance.Agents.Count; i++)
-            {
-                AgentsInfoModel.Instance.RemoveAgentInfo(i);
-            }
             GameNetwork.RemoveNetworkHandler(this);
         }
 
@@ -286,12 +279,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors
                     }
                 }
             }
-        }
-
-        public override void OnAgentDeleted(Agent affectedAgent)
-        {
-            // Free spawn slot of victim
-            SpawnHelper.RemoveBot(affectedAgent);
         }
 
         public override void OnAgentRemoved(Agent victim, Agent killer, AgentState agentState, KillingBlow blow)

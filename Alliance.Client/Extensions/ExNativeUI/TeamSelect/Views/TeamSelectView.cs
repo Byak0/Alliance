@@ -16,6 +16,11 @@ using TaleWorlds.TwoDimension;
 
 namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 {
+    /// <summary>
+    /// Override native team selection screen.
+    /// Generate banner using the culture bannerkey instead of a sprite.
+    /// Customized the visuals.
+    /// </summary>
     [OverrideView(typeof(MultiplayerTeamSelectUIHandler))]
     public class TeamSelectView : MissionView
     {
@@ -117,7 +122,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
             _dataSource = new TeamSelectVM(Mission, new Action<Team>(OnChangeTeamTo), new Action(OnAutoassign), new Action(OnClose), Mission.Teams, strValue);
             _dataSource.RefreshDisabledTeams(_disabledTeams);
             _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
-            _gauntletLayer.LoadMovie("MultiplayerTeamSelection", _dataSource);
+            _gauntletLayer.LoadMovie("AL_MultiplayerTeamSelection", _dataSource);
             _gauntletLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
             MissionScreen.AddLayer(_gauntletLayer);
             MissionScreen.SetCameraLockState(true);
@@ -128,6 +133,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
         private void OnChangeTeamTo(Team targetTeam)
         {
             _multiplayerTeamSelectComponent.ChangeTeam(targetTeam);
+            SpawnTroopsModel.Instance.SelectedTeam = targetTeam;
+            // Update culture selected in SpawnTroopModel
+            BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            SpawnTroopsModel.Instance.SelectedFaction = targetTeam?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
         }
 
         private void OnMyTeamChanged()
@@ -135,6 +145,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
             if (GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side != null)
             {
                 MissionPeer player = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+                SpawnTroopsModel.Instance.SelectedTeam = player.Team;
                 // Update culture selected in SpawnTroopModel
                 BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
                 BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));

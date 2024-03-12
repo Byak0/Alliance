@@ -5,6 +5,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
 
@@ -13,6 +14,7 @@ namespace Alliance.Client.Extensions.Vehicles.Views
     /// <summary>
     /// View responsible for the vehicle camera.
     /// </summary>
+    [DefaultView]
     public class VehicleView : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "vehicle";
