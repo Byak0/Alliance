@@ -49,16 +49,18 @@
 	</CraftingPiece>
 
 	<!-- STEEL PIKE -->
-	<CraftingPiece id="uruk_blade_3" name="Uruk Steel Pike Head" tier="3" piece_type="Blade" mesh="uruk_pike_1_blade" culture="Culture.isengard" length="72.8" weight="1" excluded_item_usage_features="swing">
+	<CraftingPiece id="uruk_blade_3" name="Uruk Steel Pike Head" tier="3" piece_type="Blade" mesh="uruk_pike_1_blade" culture="Culture.isengard" length="72.8" weight="0.5" excluded_item_usage_features="swing">
 		<BladeData stack_amount="3" physics_material="wood_weapon" body_name="bo_spear_b">
-			<Thrust damage_type="Pierce" damage_factor="3.5" />
+			<Thrust damage_type="Pierce" damage_factor="4" />
 		</BladeData>
+		<BuildData piece_offset="20" />
 	</CraftingPiece>
 
-	<CraftingPiece id="uruk_handle_3" name="Dark Uruk-Hai Pike Shaft" tier="2" piece_type="Handle" mesh="uruk_pike_1_handle" culture="Culture.isengard" length="340" weight="2.7" CraftingCost="110">
-		<BuildData piece_offset="22.9" />
+	<CraftingPiece id="uruk_handle_3" name="Dark Uruk-Hai Pike Shaft" tier="2" piece_type="Handle" mesh="uruk_pike_1_handle" culture="Culture.isengard" length="340" weight="1.5" CraftingCost="110">
+		<BuildData piece_offset="-35" />
 	</CraftingPiece>
 
 	<CraftingPiece id="uruk_pommel_1" name="Uruk-Hai Pike Pommel" tier="4" piece_type="Pommel" mesh="uruk_pike_1_pommel" culture="Culture.isengard" length="18.7" weight="0">
+		<BuildData piece_offset="20" />
 	</CraftingPiece>
 </CraftingPieces>

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
 using NetworkMessages.FromClient;
@@ -1016,7 +1017,10 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
                 while (searchStruct.LastFoundAgent != null)
                 {
                     Agent lastFoundAgent = searchStruct.LastFoundAgent;
-                    if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive())
+                    // Prevent capturing when in rambo
+                    FormationComponent formationComponent = lastFoundAgent?.MissionPeer?.GetComponent<FormationComponent>();
+                    bool agentIsAuthorizedToCap = !(formationComponent != null && formationComponent.State == FormationState.Rambo);
+                    if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap)
                     {
                         _agentCountsOnSide[(int)lastFoundAgent.Team.Side]++;
                         float num2 = lastFoundAgent.Position.DistanceSquared(allCapturePoint.Position);

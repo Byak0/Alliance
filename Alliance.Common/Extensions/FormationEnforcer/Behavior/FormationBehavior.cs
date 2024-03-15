@@ -59,7 +59,9 @@ namespace Alliance.Common.Extensions.FormationEnforcer.Behavior
                 return;
             }
 
-            bool ownFormationOnly = !player.IsCommander();
+            // If player is not a commander/officer, we use only its own group to determine its formation state
+            // For commander/officer, we include all allied groups
+            bool ownFormationOnly = !(player.IsCommander() || player.IsOfficer());
 
             if (FormationCalculateModel.IsInFormation(player.ControlledAgent, ownFormationOnly))
             {

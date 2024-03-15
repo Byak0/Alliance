@@ -368,6 +368,8 @@
 			<EquipmentRoster>
 				<equipment slot="Item0"
 									 id="Item.uruk_pike_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v3" />
 				<equipment slot="Gloves"
@@ -1112,6 +1114,8 @@
 			<EquipmentRoster>
 				<equipment slot="Item1"
 									 id="Item.uruk_berserker_cleaver" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_3" />
 				<equipment slot="Gloves"
@@ -1241,6 +1245,8 @@
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
 									 id="Item.mp_arrows_barbed" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
 				<equipment slot="Head"
@@ -1400,6 +1406,8 @@
 									 id="Item.mp_bolts_western" />
 				<equipment slot="Item3"
 									 id="Item.mp_bolts_western" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.isengard_banner" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v3" />
 				<equipment slot="Gloves"
@@ -1414,5 +1422,5 @@
 		</Equipments>
 		<Resistances
 			dismount="35" />
-	</NPCCharacter>	
+	</NPCCharacter>
 </MPCharacters>

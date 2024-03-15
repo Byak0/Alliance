@@ -690,6 +690,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                     {
                         mainAgent.TryToSheathWeaponInHand(Agent.HandIndex.MainHand, Agent.WeaponWieldActionType.WithAnimation);
                     }
+                    // Handle alternative weapon usage
                     if (base.Input.IsGameKeyPressed(17) || this._weaponUsageToggleRequested)
                     {
                         if (this._weaponUsageToggleRequested)
@@ -697,6 +698,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.ToggleAlternativeWeapon;
                             this._weaponUsageToggleRequested = false;
                         }
+                        // If mounted, check if player is in formation before allowing alternative weapon usage (couch)
                         if (FormationComponent.Main == null || FormationComponent.Main.State != FormationState.Rambo || !mainAgent.HasMount)
                         {
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.ToggleAlternativeWeapon;
