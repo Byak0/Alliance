@@ -91,8 +91,8 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             }
 
             // Spawn bots
-            int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions) + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-            while (Mission.AttackerTeam.ActiveAgents.Count() < nbBotsToSpawnAtt)
+            int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue();
+            for (int i = Mission.AttackerTeam.ActiveAgents.Count; i < nbBotsToSpawnAtt; i++)
             {
                 BasicCharacterObject troopCharacter;
                 troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(cultureAtt).ToList().GetRandomElement().TroopCharacter;
@@ -101,8 +101,8 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
                 float difficulty = _values[_random.Next(_values.Count)];
                 SpawnHelper.SpawnBot(Mission.AttackerTeam, cultureAtt, troopCharacter, botDifficulty: difficulty);
             }
-            int nbBotsToSpawnDef = MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions) + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-            while (Mission.DefenderTeam.ActiveAgents.Count() < nbBotsToSpawnDef)
+            int nbBotsToSpawnDef = MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+            for (int i = Mission.DefenderTeam.ActiveAgents.Count; i < nbBotsToSpawnDef; i++)
             {
                 BasicCharacterObject troopCharacter;
                 troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(cultureDef).ToList().GetRandomElement().TroopCharacter;
