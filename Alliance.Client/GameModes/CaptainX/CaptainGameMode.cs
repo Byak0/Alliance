@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
+using Alliance.Common.GameModes.Captain.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
@@ -30,7 +31,7 @@ namespace Alliance.Client.GameModes.CaptainX
 
                     new MultiplayerAchievementComponent(),
                     new MultiplayerWarmupComponent(),
-                    new MissionMultiplayerGameModeFlagDominationClient(),
+                    new ALMissionMultiplayerFlagDominationClient(),
                     new MultiplayerRoundComponent(),
                     new MultiplayerTimerComponent(),
                     new MultiplayerMissionAgentVisualSpawnComponent(),

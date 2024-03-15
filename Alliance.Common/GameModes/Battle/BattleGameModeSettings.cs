@@ -21,8 +21,8 @@ namespace Alliance.Common.GameModes.Battle
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
-            ModOptions.EnableFormation = false;
-            ModOptions.TimeBeforeFlagRemoval = 450;
+            ModOptions.EnableFormation = true;
+            ModOptions.TimeBeforeFlagRemoval = 300;
             ModOptions.MoraleMultiplierForFlag = 1f;
             ModOptions.MoraleMultiplierForLastFlag = 1f;
             ModOptions.AllowSpawnInRound = false;
