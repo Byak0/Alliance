@@ -50,7 +50,7 @@ namespace Alliance.Common.Core.Configuration.Models
         public string BotDifficulty = nameof(Difficulty.Normal);
 
         [ConfigProperty("Toggle SAE", "Activate or not Scatter Around Expanded mod.", ConfigValueType.Bool)]
-        public bool ActivateSAE = false;
+        public bool ActivateSAE = true;
         [ConfigProperty("SAE range", "Indicate the max distance where a troop need to be in order to go to one marker.", ConfigValueType.Integer, 0, 1000)]
         public int SAERange = 30;
         [ConfigProperty("Toggle formation", "Activate or not the formation system (debuff isolated players).", ConfigValueType.Bool)]
@@ -88,7 +88,7 @@ namespace Alliance.Common.Core.Configuration.Models
         public bool KillFeedEnabled = true;
 
         [ConfigProperty("Time before flags removal", "Number of seconds before the removal of flags.", ConfigValueType.Integer, 0, 3600)]
-        public int TimeBeforeFlagRemoval = 600;
+        public int TimeBeforeFlagRemoval = 300;
         [ConfigProperty("Morale multiplier for flag", "More gain/loss is multiplied by this amount for each flag controlled.", ConfigValueType.Float, 0, 10f)]
         public float MoraleMultiplierForFlag = 1f;
         [ConfigProperty("Morale multiplier for last flag", "More gain/loss is multiplied by this amount when last flag is controlled.", ConfigValueType.Float, 0, 10f)]
@@ -116,13 +116,13 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Formation scaling - max players", "Formation values (radius, required number for a formation) will scale depending on troops number (limited to min and max).", ConfigValueType.Integer, 0, 200)]
         public int MaxPlayer = 120;
         [ConfigProperty("Formation - min radius", "Minimum radius for formation check. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
-        public int FormRadMin = 7;
+        public int FormRadMin = 2;
         [ConfigProperty("Formation - max radius", "Maximum radius for formation check. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
-        public int FormRadMax = 12;
+        public int FormRadMax = 4;
         [ConfigProperty("Skirmish - min radius", "Minimum radius for skirmish check. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
-        public int SkirmRadMin = 20;
+        public int SkirmRadMin = 10;
         [ConfigProperty("Skirmish - max radius", "Maximum radius for skirmish check. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
-        public int SkirmRadMax = 30;
+        public int SkirmRadMax = 20;
         [ConfigProperty("Formation - min troops", "Minimum number of troops to be in formation state. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
         public int NbFormMin = 2;
         [ConfigProperty("Formation - max troops", "Maximum number of troops to be in formation state. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
@@ -132,7 +132,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Skirmish - max troops", "Maximum number of troops to be in skirmish state. Scale with troops number.", ConfigValueType.Integer, 0, 50)]
         public int NbSkirmMax = 4;
         [ConfigProperty("Minimum alive troops for formation", "Minimum number of troops alive for the formation system to be enabled.", ConfigValueType.Integer, 0, 200)]
-        public int MinPlayerForm = 20;
+        public int MinPlayerForm = 15;
 
         [ConfigProperty("Melee debuff for rambo", "Melee debuff for people in rambo state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
         public float MeleeDebuffRambo = 0.6f;
@@ -145,7 +145,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Distance debuff for skirmish", "Distance debuff for people in skirmish state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
         public float DistDebuffSkirm = 0.98f;
         [ConfigProperty("Accuracy debuff for skirmish", "Accuracy debuff for people in skirmish state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
-        public float AccDebuffSkirm = 0.98f;
+        public float AccDebuffSkirm = 0.96f;
         [ConfigProperty("Melee debuff for formation", "Melee debuff for people in formation state. Range from 0 (hardest) to 1 (no effect) to 2 (giving buff).", ConfigValueType.Float, 0f, 2f)]
         public float MeleeDebuffForm = 1f;
         [ConfigProperty("Distance debuff for formation", "Distance debuff for people in formation state. Range from 0 (hardest) to 1 (no effect) to 2 (giving buff).", ConfigValueType.Float, 0f, 2f)]

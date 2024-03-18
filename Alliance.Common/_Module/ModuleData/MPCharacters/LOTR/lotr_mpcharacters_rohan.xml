@@ -285,7 +285,7 @@
                 name="{=al_lotr_rohan_shock_h}Gimli"
                 occupation="Soldier"
                 culture="Culture.rohan">
-								<!-- race="dwarf"> -->
+		<!-- race="dwarf"> -->
 		<face>
 			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
 			<BodyProperties version="4" age="35.53" weight="0.6366" build="0.838"  key="0013D808C0001442117552700409732F47627668C732BE14DCB777276CC8994502BDA6240B78B8980000000000000000000000000000000000000000277C9002"  />
@@ -986,53 +986,9 @@
 				<equipment slot="Item0"
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
-                   id="Item.rohan_axe_1" />
-				<equipment slot="Item2"
-                   id="Item.rohan_shield" />
-				<equipment slot="Body"
-                   id="Item.armor_rohan_3" />
-				<equipment slot="Head"
-                   id="Item.rohan_helm_3" />
-				<equipment slot="Gloves"
-                   id="Item.rohan_arm_2" />
-				<equipment slot="Leg"
-                   id="Item.rohan_greaves_1" />
-				<equipment slot="Cape"
-                   id="Item.armor_rohan_shoulder_2" />
-				<equipment slot="Horse"
-                   id="Item.rohan_horse" />
-				<equipment slot="HorseHarness"
-                   id="Item.mp_stripped_leather_harness" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-                   id="Item.rohan_spear_2" />
-				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
 				<equipment slot="Item2"
                    id="Item.rohan_shield" />
-				<equipment slot="Body"
-                   id="Item.armor_rohan_3" />
-				<equipment slot="Head"
-                   id="Item.rohan_helm_3" />
-				<equipment slot="Gloves"
-                   id="Item.rohan_arm_2" />
-				<equipment slot="Leg"
-                   id="Item.rohan_greaves_1" />
-				<equipment slot="Cape"
-                   id="Item.armor_rohan_shoulder_2" />
-				<equipment slot="Horse"
-                   id="Item.rohan_horse" />
-				<equipment slot="HorseHarness"
-                   id="Item.mp_stripped_leather_harness" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-                   id="Item.rohan_spear_1" />
-				<equipment slot="Item1"
-                   id="Item.rohan_axe_1" />
-				<equipment slot="Item2"
-                   id="Item.rohan_shield_5" />
 				<equipment slot="Body"
                    id="Item.armor_rohan_3" />
 				<equipment slot="Head"
