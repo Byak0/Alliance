@@ -15,6 +15,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
         {
             reg.Register<AdminServerLog>(HandleLogMessage);
             reg.Register<SendNotification>(HandleNotification);
+            reg.Register<TeamKillTrackerLog>(HandleTeamKillTrackerLog);
         }
 
         public void HandleNotification(SendNotification notification)
@@ -36,6 +37,11 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
         public void HandleLogMessage(AdminServerLog logger)
         {
             AdminInstance.UpdateServerMessage(new ServerMessageVM(logger.LogMessage, logger.Color));
+        }
+
+        public void HandleTeamKillTrackerLog(TeamKillTrackerLog data)
+        {
+            AdminInstance.UpdateTeamKillTracker(data.TeamDamageByPlayer);
         }
     }
 }
