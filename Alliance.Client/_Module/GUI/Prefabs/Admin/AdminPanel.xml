@@ -55,7 +55,10 @@
 									<Children>
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Kick : 0" />
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Ban : 0" />
-										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Warning : 0" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Warning : 0" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Team Damage : " />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@TeamDamage" />
+
 									</Children>
 								</ListPanel>
 

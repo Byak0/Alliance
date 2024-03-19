@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
@@ -18,6 +19,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
         private string _Score;
         private string _KickCounter;
         private string _BanCounter;
+        private string _teamDamage;
         private string _WarningCounter;
         private string _filterText;
         private CharacterViewModel _unitCharacter;
@@ -26,6 +28,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
         private RolesVM _roles;
         private NetworkPeerVM _selectedPeer;
         private bool _isSudo;
+        private Dictionary<string, int> _teamDamageByPlayer;
 
         public AdminVM()
         {
@@ -258,6 +261,39 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             }
         }
 
+        public Dictionary<string, int> TeamDamageByPlayer
+        {
+            get
+            {
+                return _teamDamageByPlayer;
+            }
+            set
+            {
+                if (value != _teamDamageByPlayer)
+                {
+                    _teamDamageByPlayer = value;
+                }
+            }
+        }
+
+        [DataSourceProperty]
+        public string TeamDamage
+        {
+            get
+            {
+                return _teamDamage;
+            }
+            set
+            {
+                if (value != _teamDamage)
+                {
+                    _teamDamage = value;
+                    FilterPlayers(_teamDamage);
+                    OnPropertyChangedWithValue(value, "TeamDamage");
+                }
+            }
+        }
+
         /// <summary>
         /// Filter list of players with given text filter
         /// </summary>
@@ -443,6 +479,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             {
                 Health = selectedAgent.Health.ToString();
                 Position = selectedAgent.Position.ToString();
+                TeamDamage = (TeamDamageByPlayer  != null && TeamDamageByPlayer.ContainsKey(selectedAgent.Name)) ? TeamDamageByPlayer[selectedAgent.Name].ToString() : "0"; // If the team damage dictionary exist and has an entry for our player, we display the corresponding team damage value, otherwise  0
                 if (selectedAgent.Character != null) UnitCharacter.FillFrom(selectedAgent.Character);
             }
         }

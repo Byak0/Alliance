@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Library;
+﻿using System.Collections.Generic;
+using TaleWorlds.Library;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 {
@@ -34,6 +35,14 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             if (_instance != null)
             {
                 _instance.ServerMessage = _serverMessage;
+            }
+        }
+
+        public static void UpdateTeamKillTracker(Dictionary<string, int> TeamDamageByPlayer)
+        {
+            if(_instance != null)
+            {
+                _instance.TeamDamageByPlayer = TeamDamageByPlayer;
             }
         }
     }
