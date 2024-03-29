@@ -27,19 +27,25 @@
       <XmlName id="GameText" path="Languages" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="ExtendedCharacters" path="ExtendedCharacters" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="BasicCultures" path="Cultures/LOTR" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPCharacters" path="MPCharacters/LOTR" />
+      <XmlName id="CharactersExtended" path="CharactersExtended/LOTR" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPCharacters" path="MPCharacters/Native" />
+      <XmlName id="CharactersExtended" path="CharactersExtended/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPCharacters" path="MPCharacters/SOP" />
+      <XmlName id="CharactersExtended" path="CharactersExtended/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="MPCharacters" path="Characters/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="MPClassDivisions" path="MPClassDivisions/LOTR" />
@@ -85,6 +91,15 @@
     </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items/SOP" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="ItemsExtended" path="ItemsExtended/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="ItemsExtended" path="ItemsExtended/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="ItemsExtended" path="ItemsExtended/SOP" />
     </XmlNode>
   </Xmls>
 </Module>

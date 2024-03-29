@@ -3,15 +3,12 @@ using System.Xml;
 using TaleWorlds.Core;
 using TaleWorlds.ObjectSystem;
 
-namespace Alliance.Common.Core.ExtendedCharacter.Models
+namespace Alliance.Common.Core.ExtendedXML.Models
 {
     /// <summary>
-    /// WIP
-    /// This class mostly serves as a proof of concept for storing our own XML files and loading them in-game like native ModuleData files.
-    /// Currently only used to store a TroopLimit count for each BasicCharacterObject.
-    /// It could be further developped to store additional infos.
+    /// Extends the native Character XML with additional infos.
     /// </summary>
-    public class ExtendedCharacterObject : MBObjectBase
+    public class ExtendedCharacter : MBObjectBase
     {
         private int _troopLeft = 0;
         private int _troopLimit = 0;
@@ -53,7 +50,7 @@ namespace Alliance.Common.Core.ExtendedCharacter.Models
             }
         }
 
-        public ExtendedCharacterObject()
+        public ExtendedCharacter()
         {
         }
 

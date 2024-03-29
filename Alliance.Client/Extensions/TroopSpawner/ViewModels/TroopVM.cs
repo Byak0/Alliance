@@ -1,7 +1,7 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedCharacter.Extension;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using JetBrains.Annotations;
 using System;
@@ -23,7 +23,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         public readonly MultiplayerClassDivisions.MPHeroClass HeroClass;
         public readonly ClassType TroopType;
         public readonly BasicCharacterObject Troop;
-        public readonly ExtendedCharacterObject ExtendedTroop;
+        public readonly ExtendedCharacter ExtendedTroop;
 
         private Action<TroopVM> _onTroopSelected;
         private Action<HeroPerkVM, MPPerkVM> _onPerkSelect;

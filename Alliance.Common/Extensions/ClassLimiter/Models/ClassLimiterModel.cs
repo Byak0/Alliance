@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core.ExtendedCharacter.Extension;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromServer;
 using System;
@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
             _characterAvailability = new Dictionary<BasicCharacterObject, bool>();
             foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
             {
-                ExtendedCharacterObject exCharacter = character.GetExtendedCharacterObject();
+                ExtendedCharacter exCharacter = character.GetExtendedCharacterObject();
                 _charactersLeft.Add(character, exCharacter.TroopLimit);
                 ChangeCharacterAvailability(character, exCharacter.TroopLimit > 0);
             }

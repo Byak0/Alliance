@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.ExtendedXML.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -6,25 +6,25 @@ using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.ObjectSystem;
 
-namespace Alliance.Common.Core.ExtendedCharacter
+namespace Alliance.Common.Core.ExtendedXML
 {
     /// <summary>
-    /// Initializer for ExtendedCharacter.
+    /// Initializer for our custom XML files.
     /// </summary>
-    public class ExtendedCharacterLoader
+    public class ExtendedXMLLoader
     {
         /// <summary>
-        /// Load the ExtendedCharacters file into usable game objects : ExtendedCharacterObject.
+        /// Load our custom XML.
         /// </summary>
         public static void Init()
         {
-            if (!File.Exists(ModuleHelper.GetModuleFullPath("Alliance") + "/ModuleData/ExtendedCharacters.xml"))
-            {
-                InitializeXML();
-            }
             CopyXSDs();
-            MBObjectManager.Instance.RegisterType<ExtendedCharacterObject>("ExtendedCharacter", "ExtendedCharacters", 2001, true, false);
-            MBObjectManager.Instance.LoadXML("ExtendedCharacters", false);
+
+            MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
+            MBObjectManager.Instance.LoadXML("CharactersExtended", false);
+
+            MBObjectManager.Instance.RegisterType<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, true, false);
+            MBObjectManager.Instance.LoadXML("ItemsExtended", false);
         }
 
         // Game requires the XSD to be in Mount & Blade II Bannerlord\XmlSchemas to load custom schemas
@@ -48,7 +48,7 @@ namespace Alliance.Common.Core.ExtendedCharacter
 
             foreach (BasicCharacterObject character in gameCharacters)
             {
-                XmlElement extendedCharacterNode = xmlDoc.CreateElement("ExtendedCharacter");
+                XmlElement extendedCharacterNode = xmlDoc.CreateElement("CharacterExtended");
 
                 XmlAttribute characterAttribute = xmlDoc.CreateAttribute("id");
                 characterAttribute.Value = "NPCCharacter." + character.StringId;
@@ -61,11 +61,11 @@ namespace Alliance.Common.Core.ExtendedCharacter
                 mpCharacters.AppendChild(extendedCharacterNode);
             }
 
-            XmlElement extendedCharacters = xmlDoc.CreateElement("ExtendedCharacters");
-            extendedCharacters.InnerXml = mpCharacters.InnerXml;
-            xmlDoc.AppendChild(extendedCharacters);
+            XmlElement CharactersExtended = xmlDoc.CreateElement("CharactersExtended");
+            CharactersExtended.InnerXml = mpCharacters.InnerXml;
+            xmlDoc.AppendChild(CharactersExtended);
 
-            xmlDoc.Save(moduleFullPath + "/ModuleData/ExtendedCharacters.xml");
+            xmlDoc.Save(moduleFullPath + "/ModuleData/CharactersExtended.xml");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using System;
 using TaleWorlds.MountAndBlade;
@@ -35,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
             MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
 
             // Reset troop spawn limit
-            foreach (ExtendedCharacterObject pvcChar in MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacterObject>())
+            foreach (ExtendedCharacter pvcChar in MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>())
             {
                 pvcChar.TroopLeft = pvcChar.TroopLimit;
             }

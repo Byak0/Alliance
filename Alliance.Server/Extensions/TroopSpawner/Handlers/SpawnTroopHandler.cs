@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedCharacter.Extension;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.TroopSpawner.Interfaces;
@@ -84,7 +84,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
             // Troop info
             BasicCharacterObject troopToSpawn = model.CharacterToSpawn;
-            ExtendedCharacterObject extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
+            ExtendedCharacter extendedTroopToSpawn = troopToSpawn.GetExtendedCharacterObject();
             MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(troopToSpawn, model.SelectedPerks));
 
             float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(model.DifficultyLevel);
@@ -217,7 +217,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
         /// </summary>
         /// <param name="refuseReason">Explanation in case the player is not allowed to spawn.</param>
         /// <returns>True if allowed, false otherwise</returns>
-        private bool CanPlayerSpawn(NetworkCommunicator peer, ExtendedCharacterObject troopToSpawn, int goldRemaining, RequestSpawnTroop model, ref string refuseReason)
+        private bool CanPlayerSpawn(NetworkCommunicator peer, ExtendedCharacter troopToSpawn, int goldRemaining, RequestSpawnTroop model, ref string refuseReason)
         {
             // If game stage is inappropriate
             if (SpawnBehavior != null && !SpawnBehavior.AllowExternalSpawn())

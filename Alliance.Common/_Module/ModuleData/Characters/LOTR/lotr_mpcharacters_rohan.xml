@@ -104,6 +104,8 @@
 			<EquipmentRoster>
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_two_handed_sword" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="Body"
 									 id="Item.armor_rohan_4" />
 				<equipment slot="Leg"
@@ -316,6 +318,8 @@
 									 id="Item.gimli_onehanded_axe" />
 				<equipment slot="Item2"
 									 id="Item.gimli_throwing_axe" />
+				<equipment slot="Item3"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="Head"
                    id="Item.gimli_helm" />
 				<equipment slot="Body"
@@ -535,6 +539,8 @@
 									 id="Item.rohan_sword_1" />
 				<equipment slot="Item1"
 									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.rohan_eomer_banner" />
 				<equipment slot="Body"
@@ -754,6 +760,8 @@
 									 id="Item.elf_quiver_1" />
 				<equipment slot="Item2"
 									 id="Item.elf_sword_2" />
+				<equipment slot="Item3"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="Body"
 									 id="Item.elf_armor_2" />
 				<equipment slot="Gloves"
@@ -989,6 +997,8 @@
                    id="Item.mp_vlandian_long_sword" />
 				<equipment slot="Item2"
                    id="Item.rohan_shield" />
+				<equipment slot="Item3"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="Body"
                    id="Item.armor_rohan_3" />
 				<equipment slot="Head"
@@ -1045,6 +1055,8 @@
                    id="Item.rohan_sword_1" />
 				<equipment slot="Item2"
                    id="Item.rohan_shield_3" />
+				<equipment slot="Item3"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Head"
@@ -1110,6 +1122,8 @@
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
@@ -1132,6 +1146,8 @@
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
@@ -1154,12 +1170,81 @@
                    id="Item.rohan_spear_1" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
                    id="Item.armor_rohan_3" />
 				<equipment slot="Head"
                    id="Item.rohan_helm_3" />
+				<equipment slot="Gloves"
+                   id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+                   id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+                   id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+                   id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+                   id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+
+
+	<!-- OFFICERS - Royal Guard -->
+	<NPCCharacter id="mp_light_cavalry_rohan_royal_guard"
+									default_group="Cavalry"
+									level="20"
+									name="{=al_lotr_rohan_l_cav_b}Royal Guard"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+        age="22.98"
+        weight="0.5"
+        build="0.2568"
+        key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4"
+        age="60"
+        weight="0.2993"
+        build="0.2568"
+        key="00110002C07C100D3910F672709460FAB59106711F370000EF10EBB1690F0A8000044A2C0700B03C000000000000000000000000000000000000000000A00001" />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="100" />
+			<skill id="Riding"
+             value="110" />
+			<skill id="OneHanded"
+             value="110" />
+			<skill id="TwoHanded"
+             value="80" />
+			<skill id="Polearm"
+             value="200" />
+			<skill id="Bow"
+             value="70" />
+			<skill id="Crossbow"
+             value="30" />
+			<skill id="Throwing"
+             value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+                   id="Item.rohan_spear_2" />
+				<equipment slot="Item1"
+                   id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item2"
+                   id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+                   id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+                   id="Item.armor_rohan_3" />
 				<equipment slot="Gloves"
                    id="Item.rohan_arm_2" />
 				<equipment slot="Leg"

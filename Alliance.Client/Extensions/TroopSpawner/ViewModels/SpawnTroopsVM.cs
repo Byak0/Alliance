@@ -1,7 +1,7 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
 using Alliance.Client.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedCharacter.Extension;
+using Alliance.Common.Core.ExtendedXML.Extension;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
