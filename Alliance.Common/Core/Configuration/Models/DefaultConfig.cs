@@ -83,7 +83,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Show officers names", "Show officers names on top of the screen.", ConfigValueType.Bool)]
         public bool ShowOfficers = true;
         [ConfigProperty("Show projectile trail", "Show trail behind projectile.", ConfigValueType.Bool)]
-        public bool ShowWeaponTrail = true;
+        public bool ShowWeaponTrail = false;
         [ConfigProperty("Enable Kill Feed", "Enable the kill feed on top right of the screen.", ConfigValueType.Bool)]
         public bool KillFeedEnabled = true;
 
@@ -105,7 +105,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Gold on lost ally", "Gold gained when an ally died.", ConfigValueType.Integer, 0, 200)]
         public int GoldPerAllyDead = 5;
 
-        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in ExtendedCharacters.xml.", ConfigValueType.Bool)]
+        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in CharactersExtended.xml.", ConfigValueType.Bool)]
         public bool UseTroopLimit = false;
 
         [ConfigProperty("Commander side", "Commander side for Alliance. 0 = defender, 1 = attacker.", ConfigValueType.Integer, 0, 1)]
