@@ -2,4 +2,5 @@
 <action_types>
 	<action name="act_car_pilot" />
 	<action name="act_coche_chariot" />
+	<action name="act_blow_horn" />
 </action_types>

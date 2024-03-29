@@ -168,24 +168,6 @@ namespace Alliance.Common.Extensions.AnimationPlayer
         }
 
         /// <summary>
-        /// Play animation on specified formation.
-        /// </summary>
-        /// <param name="synchronize">Set to true to synchronize with all clients</param>
-        public void PlayAnimationForFormation(Formation formation, Animation animation, bool synchronize = false)
-        {
-            foreach (Agent agent in formation.GetUnitsWithoutDetachedOnes())
-            {
-                PlayAnimation(agent, animation, false);
-            }
-            if (synchronize)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncAnimationFormation(formation, animation.Index, animation.Speed));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
-            }
-        }
-
-        /// <summary>
         /// Play animation on specified formation with a random wait time for each agent.
         /// </summary>
         /// <param name="synchronize">Set to true to synchronize with all clients</param>
