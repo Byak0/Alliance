@@ -16,5 +16,6 @@
 	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_troop" troop_limit="10" />
 	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_hero" troop_limit="1" />
 	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_banner_bearer" troop_limit="5" />
-	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_royal_guard" troop_limit="2" />
+	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_royal_guard_1" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_royal_guard_2" troop_limit="1" />
 </CharactersExtended>
