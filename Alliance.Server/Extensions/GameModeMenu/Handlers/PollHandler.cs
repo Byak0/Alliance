@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.GameModeMenu.Models;
 using Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient;
@@ -40,7 +41,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
             message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
 
             // Check whether the request comes from an admin, or is an authorized game mode launch from Lobby
-            if (message.SkipPoll && peer.IsAdmin() || isInLobby && GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameType))
+            if (message.SkipPoll && peer.IsAdmin() || isInLobby && Config.Instance.AuthorizePoll && GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameType))
             {
                 message.GetOption(MultiplayerOptions.OptionType.Map).GetValue(out string map);
 

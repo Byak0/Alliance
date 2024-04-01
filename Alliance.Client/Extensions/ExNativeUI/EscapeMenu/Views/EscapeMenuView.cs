@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.GameModeMenu.Views;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
             }, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
 
             // Propositions de vote
-            if (GameNetwork.MyPeer.IsAdmin() || gameType == "Lobby")
+            if (GameNetwork.MyPeer.IsAdmin() || (gameType == "Lobby" && Config.Instance.AuthorizePoll))
             {
                 list.Add(new EscapeMenuItemVM(new TextObject("{=lobby_vote_esc_menu}Propositions de vote", null), delegate (object o)
                 {
