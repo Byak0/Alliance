@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromClient;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -170,6 +171,30 @@ namespace Alliance.Client.Core.Console
             GameNetwork.EndModuleEventAsClient();
 
             return "Requested server to spawn hrose";
+        }
+
+        [CommandLineFunctionality.CommandLineArgumentFunction("toggle_entities", "alliance")]
+        public static string ToggleEntities(List<string> args)
+        {
+            if (GameNetwork.NetworkPeerCount == 0 || Mission.Current?.Scene == null)
+            {
+                return "Log into a server to use this command.";
+            }
+            else if (!GameNetwork.MyPeer.IsAdmin())
+            {
+                return "You need to be admin to use this command.";
+            }
+            if(args.Count < 2 || !bool.TryParse(args[1], out bool show))
+            {
+                return "Usage: alliance.toggle_entities entities_tag true/false";
+            }
+            string entities_tag = args[0];
+
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new RequestToggleEntities(entities_tag, show));
+            GameNetwork.EndModuleEventAsClient();
+
+            return $"Requested server to {(show? "show" : "hide")} entities with tag {entities_tag}";
         }
 
         public static string ConcatenateString(List<string> strings)

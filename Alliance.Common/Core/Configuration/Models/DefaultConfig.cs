@@ -17,9 +17,6 @@ namespace Alliance.Common.Core.Configuration.Models
             List<string> values = new List<string>();
             switch (option.Name)
             {
-                case nameof(TestEnum):
-                    values = new List<string>() { "Test", "Test1" };
-                    break;
                 case nameof(BotDifficulty):
                     values = new List<string>() {
                         nameof(Difficulty.PlayerChoice),
@@ -39,12 +36,12 @@ namespace Alliance.Common.Core.Configuration.Models
 
         [ConfigProperty("Synchronize configuration", "Synchronize server configuration with the clients.", ConfigValueType.Bool)]
         public bool SyncConfig = true;
-
+        
         [ConfigProperty("Toggle bot talks", "Bots will repeat what players say. For when you got no friend.", ConfigValueType.Bool)]
         public bool NoFriend = false;
 
-        [ConfigProperty("Test enum", "Test enum", ConfigValueType.Enum)]
-        public string TestEnum = "Test";
+        [ConfigProperty("Authorize Poll", "Authorize everyone to use the GameMode menu when in Lobby.", ConfigValueType.Bool)]
+        public bool AuthorizePoll = true;
 
         [ConfigProperty("Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", ConfigValueType.Enum)]
         public string BotDifficulty = nameof(Difficulty.Normal);
@@ -65,6 +62,9 @@ namespace Alliance.Common.Core.Configuration.Models
 
         [ConfigProperty("Zone life time", "Number of seconds the zone takes to reach its minimum size.", ConfigValueType.Integer, 0, 3600)]
         public int BRZoneLifeTime = 300;
+
+        [ConfigProperty("Time before start", "Duration in seconds during which players are stuck in starting zone.", ConfigValueType.Integer, 0, 600)]
+        public int TimeBeforeStart = 60;
 
         [ConfigProperty("Allow spawn during round", "Allow players to spawn while round is in progress.", ConfigValueType.Bool)]
         public bool AllowSpawnInRound = true;
