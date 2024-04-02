@@ -102,7 +102,7 @@ namespace Alliance.Common.Utilities
         public static void SendInformationToAll(string message)
         {
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new SendNotification(message, 2));
+            GameNetwork.WriteMessage(new SendNotification(message, 1));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
     }
