@@ -59,7 +59,7 @@ namespace Alliance.Client.Extensions.UsableItem.Views
             _usableItems = new Dictionary<EquipmentIndex, ExtendedItem>();
             if (equipment != null)
             {
-                for (int slot = (int)EquipmentIndex.WeaponItemBeginSlot; slot < (int)EquipmentIndex.NumEquipmentSetSlots; slot++)
+                for (int slot = (int)EquipmentIndex.WeaponItemBeginSlot; slot < (int)EquipmentIndex.NumAllWeaponSlots; slot++)
                 {
                     ExtendedItem itemEx = equipment[slot].Item?.GetExtendedItem();
                     if (itemEx != null && itemEx.Usable)

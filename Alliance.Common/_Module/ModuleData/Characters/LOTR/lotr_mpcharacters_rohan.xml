@@ -997,8 +997,6 @@
                    id="Item.mp_vlandian_long_sword" />
 				<equipment slot="Item2"
                    id="Item.rohan_shield" />
-				<equipment slot="Item3"
-                   id="Item.rohan_horn_1" />
 				<equipment slot="Body"
                    id="Item.armor_rohan_3" />
 				<equipment slot="Head"
@@ -1122,8 +1120,6 @@
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
-				<equipment slot="Item2"
-                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
@@ -1146,8 +1142,6 @@
                    id="Item.rohan_spear_2" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
-				<equipment slot="Item2"
-                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
@@ -1170,8 +1164,6 @@
                    id="Item.rohan_spear_1" />
 				<equipment slot="Item1"
                    id="Item.mp_vlandian_long_sword" />
-				<equipment slot="Item2"
-                   id="Item.rohan_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
