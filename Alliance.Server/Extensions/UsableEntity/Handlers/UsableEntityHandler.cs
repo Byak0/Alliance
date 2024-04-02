@@ -30,7 +30,7 @@ namespace Alliance.Server.Extensions.UsableEntity.Handlers
         /// </summary>
         public bool HandleRequestUseEntity(NetworkCommunicator peer, RequestUseEntity model)
         {
-            GameEntity entity = GameMode.FindClosestUsableEntity(model.Position, 0.01f);
+            GameEntity entity = GameMode.FindClosestUsableEntity(model.Position, 0.05f);
             if (entity == null || peer.ControlledAgent == null)
             {
                 string reason = entity == null ? "Entity not found" : "No agent controlled";

@@ -19,6 +19,8 @@ namespace Alliance.Common.Extensions.UsableEntity.Utilities
         public const string InteractiveTeamTag = "al_team_"; // Not implemented yet
         public const string InteractiveAmountTag = "al_amount_"; // Not implemented yet
 
+        public const string ENTITY_TO_RESPAWN_ON_EACH_ROUND_TAG = "al_respawn_on_each_round";
+
         /// <summary>
         /// Return the tag value that maches the prefix. Returns empty if no match found.
         /// </summary>

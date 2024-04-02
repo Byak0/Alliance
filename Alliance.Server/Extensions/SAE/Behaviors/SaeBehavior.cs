@@ -50,9 +50,9 @@ namespace Alliance.Server.Extensions.SAE.Behaviors
 
             //Init dynamicMarkersDico
             List<GameEntity> gameEntities = new();
-            Mission.Current.Scene.GetEntities(ref gameEntities);
             saeDynamicMapMarkersDico = new Dictionary<MatrixFrame, bool>();
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
+
+            Mission.Current.Scene.FindEntitiesWithTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME).ToList()
                 .ForEach(entity =>
                     saeDynamicMapMarkersDico.Add(
                         entity.GetGlobalFrame(),
