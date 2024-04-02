@@ -12,6 +12,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Extensions.UsableEntity.Utilities.AllianceTags;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
@@ -19,8 +20,6 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 {
     public class PvCSpawningBehavior : SpawningBehaviorBase, ISpawnBehavior
     {
-        private const string TEMPORARY_BARRIER_TAG = "al_temp_barrier";
-
         public PvCSpawningBehavior()
         {
             _enforcedSpawnTimers = new List<KeyValuePair<MissionPeer, Timer>>();
