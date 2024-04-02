@@ -1,0 +1,20 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_isengard_troop" troop_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_isengard_banner_bearer" troop_limit="5" />
+	<CharacterExtended id="NPCCharacter.mp_pike_infantry_isengard_troop" troop_limit="50" />
+	<CharacterExtended id="NPCCharacter.mp_pike_infantry_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_pike_infantry_isengard_banner_bearer" troop_limit="5" />
+	<CharacterExtended id="NPCCharacter.mp_sword_infantry_isengard_troop" troop_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_sword_infantry_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_sword_infantry_isengard_banner_bearer" troop_limit="5" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_infantry_isengard_troop" troop_limit="15" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_infantry_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_infantry_isengard_banner_bearer" troop_limit="5" />
+	<CharacterExtended id="NPCCharacter.mp_berserk_isengard_troop" troop_limit="5" />
+	<CharacterExtended id="NPCCharacter.mp_berserk_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_isengard_troop" troop_limit="20" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_isengard_hero" troop_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_isengard_troop" troop_limit="20" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_isengard_hero" troop_limit="1" />	
+</CharactersExtended>

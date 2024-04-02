@@ -5,5 +5,11 @@
 		<module_sound name="event:/mission/ambient/fireworks1" is_2d="true" sound_category="mission_ambient_bed" path="Fireworks 1.mp3" />
 		<module_sound name="event:/mission/ambient/fireworks2" is_2d="true" sound_category="mission_ambient_bed" path="Fireworks 2.mp3" />
 		<module_sound name="event:/mission/car/car_horn" sound_category="mission_ambient_3d_medium" path="car horn.mp3" />
+		<module_sound name="event:/mission/horn/rohan_horn_1" sound_category="alert" path="rohan_horn_1.wav"/>
+		<module_sound name="event:/mission/horn/rohan_horn_2" sound_category="alert" path="french_horn_reverb_1.wav"/>
+		<module_sound name="event:/mission/horn/rohan_horn_3" sound_category="alert" path="french_horn_reverb_2.wav"/>
+		<module_sound name="event:/mission/horn/isengard_horn_1" sound_category="alert" path="trombone_reverb_1.wav"/>
+		<module_sound name="event:/mission/horn/isengard_horn_2" sound_category="alert" path="trombone_reverb_1.wav"/>
+		<module_sound name="event:/mission/horn/isengard_horn_3" sound_category="alert" path="trombone_reverb_2.wav"/>
   </module_sounds>
 </base>

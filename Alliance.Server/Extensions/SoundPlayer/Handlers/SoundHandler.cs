@@ -3,6 +3,7 @@ using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.SoundPlayer;
 using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromClient;
 using System;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -23,9 +24,13 @@ namespace Alliance.Server.Extensions.SoundPlayer.Handlers
         {
             try
             {
-                if (!peer.IsAdmin()) return false;
+                if (!peer.IsAdmin())
+                {
+                    Log($"ATTENTION : {peer.UserName} sent a SoundRequest despite not being admin !", LogLevel.Error);
+                    return false;
+                }
                 Log($"Alliance - {peer.UserName} is requesting to play sound {message.SoundIndex} for {message.SoundDuration} seconds.", LogLevel.Information);
-                SoundSystem.Instance.PlaySound(message.SoundIndex, message.SoundDuration, true);
+                SoundSystem.Instance.PlaySound(message.SoundIndex, Vec3.Invalid, message.SoundDuration, true);
                 return true;
             }
             catch (Exception ex)

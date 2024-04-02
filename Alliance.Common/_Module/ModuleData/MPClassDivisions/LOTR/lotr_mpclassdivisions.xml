@@ -256,9 +256,10 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!--hero="mp_skirmisher_rohan_hero"-->
 	<MPClassDivision
 			id="mp_skirmisher_rohan"
-			hero="mp_skirmisher_rohan_hero"
+			hero="mp_light_cavalry_rohan_royal_guard_1"
 			troop="mp_skirmisher_rohan_troop"
 			banner_bearer="mp_skirmisher_rohan_banner_bearer"
 			hero_idle_anim="act_battania_mp_wildling_idle"
@@ -335,9 +336,10 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!--hero="mp_light_cavalry_rohan_hero"-->
 	<MPClassDivision
 			id="mp_light_cavalry_rohan"
-			hero="mp_light_cavalry_rohan_hero"
+			hero="mp_light_cavalry_rohan_royal_guard_2"
 			troop="mp_light_cavalry_rohan_troop"
 			banner_bearer="mp_light_cavalry_rohan_banner_bearer"
 			hero_mount_idle_anim="act_battania_mp_mounted_warrior_mount_idle"
