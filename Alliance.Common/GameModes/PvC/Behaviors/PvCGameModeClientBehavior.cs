@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.GameModes.Captain.Behaviors;
@@ -82,8 +82,8 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             FormationControlModel.Instance.Clear();
 
             // Reset TroopLeft count after round
-            MBReadOnlyList<ExtendedCharacterObject> extCharacterObjects = MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacterObject>();
-            foreach (ExtendedCharacterObject extCharacterObject in extCharacterObjects)
+            MBReadOnlyList<ExtendedCharacter> extCharacterObjects = MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>();
+            foreach (ExtendedCharacter extCharacterObject in extCharacterObjects)
             {
                 extCharacterObject.TroopLeft = extCharacterObject.TroopLimit;
             }
