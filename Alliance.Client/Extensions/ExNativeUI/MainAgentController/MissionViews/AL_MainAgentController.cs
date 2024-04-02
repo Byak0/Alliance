@@ -700,7 +700,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                             _weaponUsageToggleRequested = false;
                         }
                         // If mounted or equipped with polearm, check if player is in formation before allowing alternative weapon usage (couch)
-                        if (FormationComponent.Main == null || FormationComponent.Main.State != FormationState.Rambo || !mainAgent.HasMount && !(currentUsageItem != null && currentUsageItem.IsPolearm))
+                        if (FormationComponent.Main == null || FormationComponent.Main.State != FormationState.Rambo || !mainAgent.HasMount && !(currentUsageItem != null && currentUsageItem.IsPolearm && !mainAgent.WieldedWeapon.IsAnyConsumable()))
                         {
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.ToggleAlternativeWeapon;
                         }
