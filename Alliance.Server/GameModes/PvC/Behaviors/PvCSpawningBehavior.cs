@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
@@ -8,8 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Extensions.UsableEntity.Utilities.AllianceTags;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
@@ -76,7 +79,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     IsSpawningEnabled = false;
                     _spawningTimer = 0f;
                     _spawningTimerTicking = false;
-                    StartFightAfterTimer(30000);
+                    StartFightAfterTimer(Config.Instance.TimeBeforeStart * 1000);
                 }
             }
         }
@@ -218,10 +221,37 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
+
         private async void StartFightAfterTimer(int waitTime)
         {
-            await Task.Delay(waitTime);
-            EnableMortality();
+            if(waitTime <= 0)
+            {
+                EnableMortality();
+            }
+            else
+            {
+                ToggleBarriers(TEMPORARY_BARRIER_TAG, true);
+                await Task.Delay(waitTime-3000);
+                SendInformationToAll($"Starting in 3...");
+                await Task.Delay(1000);
+                SendInformationToAll($"Starting in 2...");
+                await Task.Delay(1000);
+                SendInformationToAll($"Starting in 1...");
+                await Task.Delay(1000);
+                EnableMortality();
+                ToggleBarriers(TEMPORARY_BARRIER_TAG, false);
+            }
+        }
+
+        private void ToggleBarriers(string tag, bool show)
+        {
+            foreach (GameEntity entity in Mission.Current.Scene.FindEntitiesWithTag(tag))
+            {
+                entity.SetVisibilityExcludeParents(show);
+            }
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage(new SyncToggleEntities(tag, show));
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 
         private void EnableMortality()

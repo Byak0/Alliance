@@ -22,6 +22,11 @@ namespace Alliance.Common.Extensions.UsableEntity.Utilities
         public const string ENTITY_TO_RESPAWN_ON_EACH_ROUND_TAG = "al_respawn_on_each_round";
 
         /// <summary>
+        /// Entities with this tag will have their visibility enabled on round start, and disabled after TimeBeforeStart has passed.
+        /// </summary>
+        public const string TEMPORARY_BARRIER_TAG = "al_temp_barrier";
+
+        /// <summary>
         /// Return the tag value that maches the prefix. Returns empty if no match found.
         /// </summary>
         public static string GetTagValue(this GameEntity entity, string prefix)
