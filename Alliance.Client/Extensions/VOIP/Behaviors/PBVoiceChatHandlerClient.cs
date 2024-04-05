@@ -429,11 +429,13 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
                 _audioMixer.ReadFully = true;
                 //_waveOut.Play();
 
-                StartAudioProcessing();
+                //StartAudioProcessing();
 
                 // Compress audio data using Concentus
                 _encoder = OpusEncoder.Create(_sampleRate, 1, OpusApplication.OPUS_APPLICATION_AUDIO);
                 _encoder.Bitrate = 16000;
+
+                HandleOptionsUpdated();
             }
         }
 
@@ -544,14 +546,13 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
         {
             if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceChatVolume)
             {
-                //UpdateVoiceChatEnabled();
+                UpdateVoiceChatEnabled();
                 _voipInVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceChatVolume);
             }
             else if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceOverVolume)
             {
                 _voipOutVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceOverVolume);
             }
-            HandleOptionsUpdated();
         }
 
         private void HandleOptionsUpdated()
@@ -574,11 +575,10 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 
         private void OnManagedOptionChanged(ManagedOptions.ManagedOptionsType changedManagedOptionType)
         {
-            //if (changedManagedOptionType == ManagedOptions.ManagedOptionsType.EnableVoiceChat)
-            //{
-            //    UpdateVoiceChatEnabled();
-            //}
-            HandleOptionsUpdated();
+            if (changedManagedOptionType == ManagedOptions.ManagedOptionsType.EnableVoiceChat)
+            {
+                UpdateVoiceChatEnabled();
+            }
         }
 
         private void UpdateVoiceChatEnabled()
@@ -611,10 +611,10 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
             }
 
             // Apply the muffler to the agent if he has a full face mask (wonky atm, mostly works)
-            if (Mission.MainAgent != null && Mission.MainAgent.SpawnEquipment.EarsAreHidden)
-            {
-                _muffleFilter.ApplyMuffle(combinedBuffer, 1.0f, 2.0f);
-            }
+            //if (Mission.MainAgent != null && Mission.MainAgent.SpawnEquipment.EarsAreHidden)
+            //{
+            //    _muffleFilter.ApplyMuffle(combinedBuffer, 1.0f, 2.0f);
+            //}
 
             // Convert short array to byte array
             byte[] byteArray = new byte[combinedBuffer.Length * 2];
@@ -634,7 +634,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
             {
                 _waveOut.Stop();
             }
-
 
             short[] combinedBuffer = new short[samples.Length];
             samples.CopyTo(combinedBuffer, 0);
@@ -656,10 +655,10 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
             }
 
             // Apply the muffler to the agent if he has a full face mask (wonky atm, mostly works)
-            if (Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.All || Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.Type4)
-            {
-                _muffleFilter.ApplyMuffle(combinedBuffer, 1.0f, 2.0f);
-            }
+            //if (Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.All || Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.Type4)
+            //{
+            //    _muffleFilter.ApplyMuffle(combinedBuffer, 1.0f, 2.0f);
+            //}
 
             //PBChatHelper.PrintToClientChat($"Max amplitude: {maxAmplitude}");
 

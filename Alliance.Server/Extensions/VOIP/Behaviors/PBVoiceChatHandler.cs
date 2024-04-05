@@ -43,20 +43,18 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
             }
 
             Vec3 speakerPosition;
-            if(speaker.ControlledAgent != null)
+            if (sendVoiceRecord.IsAnnouncement && speaker.IsAdmin())
+            {
+                speakerPosition = speaker.GetCameraPosition();
+                Log($"Speaker {speaker.UserName} camera position = {speakerPosition}", LogLevel.Debug);
+            }
+            else if(speaker.ControlledAgent != null)
             {
                 speakerPosition = speaker.ControlledAgent.Position;
             } 
             else 
             {
-                if(sendVoiceRecord.IsAnnouncement && speaker.IsAdmin())
-                {
-                    speakerPosition = speaker.GetCameraPosition();
-                    Log($"Speaker {speaker.UserName} camera position = {speakerPosition}", LogLevel.Debug);
-                } else
-                {
-                    return false;
-                }                
+                return false;
             }
 
             List<NetworkCommunicator> agentList = GameNetwork.NetworkPeers.ToList();

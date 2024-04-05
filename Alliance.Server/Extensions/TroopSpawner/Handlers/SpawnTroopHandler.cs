@@ -50,7 +50,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
             MatrixFrame spawnPos = model.SpawnPosition;
 
             // Spawn the thing
-            Mission.Current.CreateMissionObjectFromPrefab("frazer_supersport", spawnPos);
+            //Mission.Current.CreateMissionObjectFromPrefab("frazer_supersport", spawnPos);
 
             //GameEntity entity = GameEntity.Instantiate(Mission.Current.Scene, "frazer_supersport", spawnPos);            
             //CS_Car script = entity.GetFirstScriptOfType<CS_Car>();
