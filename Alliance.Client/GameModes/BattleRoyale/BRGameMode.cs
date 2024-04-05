@@ -24,7 +24,6 @@ namespace Alliance.Client.GameModes.BattleRoyale
                     // Custom behaviors
                     new BRCommonBehavior(),
                     new ShrinkingZoneBehavior(),
-                    new VoipHandler(),
 
                     // Native behaviors
                     new MultiplayerTimerComponent(),

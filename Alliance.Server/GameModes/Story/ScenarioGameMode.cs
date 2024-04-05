@@ -46,7 +46,6 @@ namespace Alliance.Server.GameModes.Story
                     new ObjectivesBehavior(ScenarioManagerServer.Instance),
                     new FlagTrackerBehavior(),
                     new CapturableZoneBehavior(),
-                    new VoipHandler(),
 
                     // Native components
                     new MultiplayerTimerComponent(),

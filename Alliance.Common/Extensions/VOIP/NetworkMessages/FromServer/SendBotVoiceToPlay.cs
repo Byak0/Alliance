@@ -1,7 +1,7 @@
 ﻿using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
-namespace Alliance.Common.Extensions.VOIP.NetworkMessages
+namespace Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer
 {
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SendBotVoiceToPlay : GameNetworkMessage

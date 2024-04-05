@@ -24,7 +24,6 @@ namespace Alliance.Server.GameModes.BattleX
                 {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerRoundController(),
                     new ALMissionMultiplayerFlagDomination(MultiplayerGameType.Battle),

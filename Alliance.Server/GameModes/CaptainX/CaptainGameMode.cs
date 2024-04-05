@@ -32,7 +32,6 @@ namespace Alliance.Server.GameModes.CaptainX
             {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new ALMissionMultiplayerFlagDomination(MultiplayerGameType.Captain),
                     new ALMissionMultiplayerFlagDominationClient(),

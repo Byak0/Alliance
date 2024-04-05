@@ -1,5 +1,6 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
+using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -92,6 +93,7 @@ namespace Alliance.Client
         {
             mission.AddMissionBehavior(new ClientAutoHandler());
             mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new PBVoiceChatHandlerClient());
         }
     }
 }

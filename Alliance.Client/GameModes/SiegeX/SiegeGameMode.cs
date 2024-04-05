@@ -25,7 +25,6 @@ namespace Alliance.Client.GameModes.SiegeX
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerWarmupComponent(),
                     new PvCMissionMultiplayerSiegeClient(),

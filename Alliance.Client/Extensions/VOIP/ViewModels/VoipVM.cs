@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions.VOIP.Behaviors;
+﻿using Alliance.Client.Extensions.VOIP.Behaviors;
 using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -13,7 +13,7 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
     {
         private readonly Mission _mission;
 
-        private readonly VoipHandler _voiceChatHandler;
+        private readonly PBVoiceChatHandlerClient _voiceChatHandler;
 
         private MBBindingList<MPVoicePlayerVM> _activeVoicePlayers;
         private MBBindingList<SpeakerVM> _activeVoiceBots;
@@ -55,7 +55,7 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
         public VoipVM(Mission mission)
         {
             _mission = mission;
-            _voiceChatHandler = _mission.GetMissionBehavior<VoipHandler>();
+            _voiceChatHandler = _mission.GetMissionBehavior<PBVoiceChatHandlerClient>();
             if (_voiceChatHandler != null)
             {
                 _voiceChatHandler.OnPeerVoiceStatusUpdated += OnPeerVoiceStatusUpdated;
@@ -109,9 +109,14 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             }
         }
 
-        private void OnPeerVoiceStatusUpdated(MissionPeer peer, bool isTalking)
+        private void OnPeerVoiceStatusUpdated(MissionPeer peer, bool isTalking, bool forceRemove)
         {
             MPVoicePlayerVM mPVoicePlayerVM = ActiveVoicePlayers.FirstOrDefault((MPVoicePlayerVM vp) => vp.Peer == peer);
+            if(forceRemove)
+            {
+                if (mPVoicePlayerVM != null) mPVoicePlayerVM.UpdatesSinceSilence = MPVoicePlayerVM.UpdatesRequiredToRemoveForSilence;
+                return;
+            }
             if (isTalking)
             {
                 if (mPVoicePlayerVM == null)
@@ -129,9 +134,14 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
             }
         }
 
-        private void OnBotVoiceStatusUpdated(Agent bot, bool isTalking)
+        private void OnBotVoiceStatusUpdated(Agent bot, bool isTalking, bool forceRemove)
         {
             SpeakerVM mpVoiceBotVM = ActiveVoiceBots.FirstOrDefault((SpeakerVM vp) => vp?.Agent?.Index == bot.Index);
+            if (forceRemove)
+            {
+                if(mpVoiceBotVM != null) mpVoiceBotVM.UpdatesSinceSilence = MPVoicePlayerVM.UpdatesRequiredToRemoveForSilence;
+                return;
+            }
             if (isTalking)
             {
                 if (mpVoiceBotVM == null)

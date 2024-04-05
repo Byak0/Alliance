@@ -24,7 +24,6 @@ namespace Alliance.Client.GameModes.PvC
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerAchievementComponent(),
                     new MultiplayerWarmupComponent(),

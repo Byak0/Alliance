@@ -20,7 +20,6 @@ namespace Alliance.Client.GameModes.BattleX
                 return new MissionBehavior[]
                 {
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     MissionLobbyComponent.CreateBehavior(),
                     new MultiplayerRoundComponent(),

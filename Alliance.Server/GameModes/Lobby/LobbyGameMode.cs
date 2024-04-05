@@ -25,7 +25,6 @@ namespace Alliance.Server.GameModes.Lobby
                     new LobbyBehavior(),
                     new LobbyClientBehavior(),
                     new PollBehavior(),
-                    new VoipHandler(),
                     new MultiplayerTimerComponent(),
                     new SpawnComponent(new LobbySpawnFrameBehavior(), new LobbySpawningBehavior()),
                     new MultiplayerAdminComponent(),

@@ -30,7 +30,6 @@ namespace Alliance.Server.GameModes.PvC
             {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new VoipHandler(),
                     new RespawnBehavior(),
                     new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new MultiplayerRoundController(),
