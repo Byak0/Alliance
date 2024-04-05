@@ -251,6 +251,8 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
                         GameNetwork.EndModuleEventAsServer();
                     }
 
+                    //TODO extract me and add me into a static Utils method
+
                     Blow blow = new Blow(agent.Index);
                     blow.DamageType = DamageTypes.Pierce;
                     blow.BoneIndex = agent.Monster.HeadLookDirectionBoneIndex;
