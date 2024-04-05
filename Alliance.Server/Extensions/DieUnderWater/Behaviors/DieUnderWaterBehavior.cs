@@ -21,7 +21,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
         {
             base.AfterStart();
             waterLevel = Mission.Current.GetWaterLevelAtPosition(Vec2.Zero);
-            Log("Water level is " + waterLevel);
+            Log("Water level is " + waterLevel, LogLevel.Information);
         }
 
         public override void OnBehaviorInitialize()
@@ -99,7 +99,6 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
             if (Mission.Current == null || Mission.Current.AllAgents == null || agentManager == null) return;
 
             allAgentList = Mission.Current.AllAgents;
-            Log($"Update of all agents list. {allAgentList.Count} agent(s) found");
             agentManager.UpdateAgentDieDico(allAgentList);
 
             UpdateAllAgentList();
@@ -200,7 +199,6 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
                     get => lastTimeSinceEnteredInWater;
                     private set
                     {
-                        Log($"LastTimeSinceEnteredInWater is set to --> {value}");
                         lastTimeSinceEnteredInWater = value;
                     }
                 }
@@ -236,11 +234,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 
                 public void TakeDamage()
                 {
-                    Log("Agent is taking DAMAGE !");
                     CooldownToApplyDmg = DateTime.Now;
-
-
-
 
                     if (agent == null || agent.Health <= 0) return;
 
