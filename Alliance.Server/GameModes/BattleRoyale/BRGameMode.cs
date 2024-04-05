@@ -1,6 +1,7 @@
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
+using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using TaleWorlds.Core;
@@ -37,7 +38,8 @@ namespace Alliance.Server.GameModes.BattleRoyale
                     new MultiplayerPollComponent(),
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
-                    new MissionScoreboardComponent(new TDMScoreboardData())
+                    new MissionScoreboardComponent(new TDMScoreboardData()),
+                    new DieUnderWaterBehavior()
                 };
             }, true, true);
         }

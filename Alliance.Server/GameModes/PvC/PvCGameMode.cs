@@ -2,6 +2,7 @@ using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.PvC.Behaviors;
+using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
@@ -51,7 +52,8 @@ namespace Alliance.Server.GameModes.PvC
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new CaptainScoreboardData()),
                     new EquipmentControllerLeaveLogic(),
-                    new MultiplayerPreloadHelper()
+                    new MultiplayerPreloadHelper(),
+                    new DieUnderWaterBehavior()
             };
 
             if (Config.Instance.ActivateSAE)

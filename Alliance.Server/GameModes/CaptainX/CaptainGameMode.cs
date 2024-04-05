@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Captain.Behaviors;
+using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
 using Alliance.Server.Patch.Behaviors;
@@ -54,7 +55,8 @@ namespace Alliance.Server.GameModes.CaptainX
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new CaptainScoreboardData()),
                     new EquipmentControllerLeaveLogic(),
-                    new MultiplayerPreloadHelper()
+                    new MultiplayerPreloadHelper(),
+                    new DieUnderWaterBehavior()
             };
 
             if (Config.Instance.ActivateSAE)

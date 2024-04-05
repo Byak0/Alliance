@@ -1,5 +1,6 @@
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Lobby.Behaviors;
+using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.GameModes.Lobby.Behaviors;
 using Alliance.Server.Patch.Behaviors;
@@ -37,7 +38,8 @@ namespace Alliance.Server.GameModes.Lobby
                     new MultiplayerPollComponent(),
                     new MultiplayerGameNotificationsComponent(),
                     new MissionOptionsComponent(),
-                    new MissionScoreboardComponent(new TDMScoreboardData())
+                    new MissionScoreboardComponent(new TDMScoreboardData()),
+                    new DieUnderWaterBehavior()
                 };
             }, true, true);
         }
