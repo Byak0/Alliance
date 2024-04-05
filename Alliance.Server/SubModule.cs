@@ -12,6 +12,7 @@ using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
+using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
@@ -115,6 +116,7 @@ namespace Alliance.Server
             mission.AddMissionBehavior(new ClassLimiterBehavior());
             mission.AddMissionBehavior(new BattlePowerCalculationLogic());
             mission.AddMissionBehavior(new ALGlobalAIBehavior());
+            mission.AddMissionBehavior(new DieUnderWaterBehavior());
         }
     }
 }
