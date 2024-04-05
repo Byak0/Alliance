@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Captain.Behaviors;
-using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.Patch.Behaviors;
@@ -46,8 +45,7 @@ namespace Alliance.Server.GameModes.BattleX
                     new MissionOptionsComponent(),
                     new MissionScoreboardComponent(new BattleScoreboardData()),
                     new EquipmentControllerLeaveLogic(),
-                    new MultiplayerPreloadHelper(),
-                    new DieUnderWaterBehavior()
+                    new MultiplayerPreloadHelper()
                 };
             }, true, true);
         }
