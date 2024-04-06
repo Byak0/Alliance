@@ -698,6 +698,9 @@
 					slot="Item2"
 					id="Item.mp_vlandia_cavalry_sword" />
 				<equipment
+					slot="Item3"
+					id="Item.isengard_horn_1" />
+				<equipment
 					slot="Head"
 					id="Item.mp_pointed_skullcap_over_mail" />
 				<equipment
@@ -1200,6 +1203,9 @@
 				<equipment
 					slot="Item2"
 					id="Item.mp_studded_round_shield" />
+				<equipment
+					slot="Item3"
+					id="Item.rohan_horn_1" />
 				<equipment
 					slot="Head"
 					id="Item.mp_imperial_goggled_helmet" />

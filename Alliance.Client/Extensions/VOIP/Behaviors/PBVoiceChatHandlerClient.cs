@@ -405,6 +405,8 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
                 _voiceToSend = new Queue<byte>();
 
                 int deviceNumber = 0;
+                _voipInVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceOverVolume);
+                _voipOutVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceChatVolume);
 
                 _waveIn = new WaveInEvent();
                 _waveIn.DeviceNumber = 0;
@@ -544,14 +546,14 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 
         private void OnNativeOptionChanged(NativeOptions.NativeOptionsType changedNativeOptionsType)
         {
-            if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceChatVolume)
+            if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceOverVolume)
             {
                 UpdateVoiceChatEnabled();
-                _voipInVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceChatVolume);
+                _voipInVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceOverVolume); 
             }
-            else if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceOverVolume)
+            else if (changedNativeOptionsType == NativeOptions.NativeOptionsType.VoiceChatVolume)
             {
-                _voipOutVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceOverVolume);
+                _voipOutVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceChatVolume);
             }
         }
 

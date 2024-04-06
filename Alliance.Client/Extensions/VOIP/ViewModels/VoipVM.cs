@@ -136,6 +136,7 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
 
         private void OnBotVoiceStatusUpdated(Agent bot, bool isTalking, bool forceRemove)
         {
+            if (bot == null) return;
             SpeakerVM mpVoiceBotVM = ActiveVoiceBots.FirstOrDefault((SpeakerVM vp) => vp?.Agent?.Index == bot.Index);
             if (forceRemove)
             {
