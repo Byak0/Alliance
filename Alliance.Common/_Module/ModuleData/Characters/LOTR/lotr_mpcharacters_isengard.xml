@@ -5,21 +5,17 @@
 	<!-- ************************************************************************* -->
 	<!-- Uruk-hai Scout - TROOP -->
 	<NPCCharacter id="mp_light_infantry_isengard_troop"
-									default_group="Infantry"
-									level="5"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_scout_t}Uruk-hai Scout"
-									occupation="Soldier"
-									culture="Culture.isengard">
+				race="uruk"
+				default_group="Infantry"
+				level="5"
+				voice="curt"
+				is_female="false"
+				name="{=al_lotr_isen_scout_t}Uruk-hai Scout"
+				occupation="Soldier"
+				culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.4514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -90,6 +86,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Scout - HERO -->
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
+                race="uruk"
                 default_group="Infantry"
                 level="5"
                 voice="curt"
@@ -98,13 +95,8 @@
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.4514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -181,6 +173,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Scout - BANNER BEARER -->
 	<NPCCharacter id="mp_light_infantry_isengard_banner_bearer"
+									race="uruk"
 									default_group="Infantry"
 									level="5"
 									voice="curt"
@@ -188,14 +181,9 @@
 									name="{=al_lotr_isen_scout_b}Uruk-hai Scout"
 									occupation="Soldier"
 									culture="Culture.isengard">
-		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+		<face>			
+			<BodyProperties version="4" age="22.04" weight="0.4514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -239,6 +227,7 @@
 
 	<!-- Uruk-hai Pikeman - TROOP -->
 	<NPCCharacter id="mp_pike_infantry_isengard_troop"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -247,13 +236,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -336,6 +320,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Pikeman - HERO -->
 	<NPCCharacter id="mp_pike_infantry_isengard_hero"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -344,13 +329,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -395,6 +375,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Pikeman - BANNER BEARER -->
 	<NPCCharacter id="mp_pike_infantry_isengard_banner_bearer"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -403,13 +384,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -501,6 +477,7 @@
 
 	<!-- Uruk-hai Warrior - TROOP -->
 	<NPCCharacter id="mp_sword_infantry_isengard_troop"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -509,13 +486,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -606,6 +578,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Warrior - HERO -->
 	<NPCCharacter id="mp_sword_infantry_isengard_hero"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -614,13 +587,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -667,6 +635,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Warrior - BANNER BEARER -->
 	<NPCCharacter id="mp_sword_infantry_isengard_banner_bearer"
+									race="uruk"
 									default_group="Infantry"
 									level="15"
 									voice="curt"
@@ -675,13 +644,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -773,6 +737,7 @@
 
 	<!-- Heavy Uruk-hai - TROOP -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_troop"
+									race="uruk"
 									default_group="Infantry"
 									level="25"
 									voice="curt"
@@ -781,13 +746,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.85"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -878,6 +838,7 @@
 	</NPCCharacter>
 	<!-- Heavy Uruk-hai - HERO -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_hero"
+									race="uruk"
 									default_group="Infantry"
 									level="30"
 									voice="curt"
@@ -886,13 +847,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -939,6 +895,7 @@
 	</NPCCharacter>
 	<!-- Heavy Uruk-hai - BANNER BEARER -->
 	<NPCCharacter id="mp_heavy_infantry_isengard_banner_bearer"
+									race="uruk"
 									default_group="Infantry"
 									level="25"
 									voice="curt"
@@ -947,13 +904,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400888603084554540000000000000000000000000000000000000000111C0002"  />
+			<BodyPropertiesMax version="4" age="22.04" weight="0.7315" build="0.8426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700BDB6030B7BF9B7000000000000000000000000000000000000000041740142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1013,6 +965,7 @@
 
 	<!-- Uruk-hai Berserker - TROOP -->
 	<NPCCharacter id="mp_berserk_isengard_troop"
+                race="uruk"
                 default_group="Infantry"
                 level="30"
                 voice="curt"
@@ -1021,13 +974,8 @@
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.95"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400D886030D455454000000000000000000000000000000000000000011B40002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.6019" build="0.8826"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700DD96030D7BF9B7000000000000000000000000000000000000000041B40142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1088,6 +1036,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Berserker - HERO -->
 	<NPCCharacter id="mp_berserk_isengard_hero"
+                race="uruk"
                 default_group="Infantry"
                 level="30"
                 voice="curt"
@@ -1096,13 +1045,8 @@
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.95"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5394" build="0.5324"  key="00001C0000B4000043224567708076974222346532540545442234223445633400D886030D455454000000000000000000000000000000000000000011B40002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.6019" build="0.8826"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A77700DD96030D7BF9B7000000000000000000000000000000000000000041B40142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1146,6 +1090,7 @@
 
 	<!-- Uruk-hai Archer - TROOP -->
 	<NPCCharacter id="mp_light_ranged_isengard_troop"
+									race="uruk"
 									default_group="Ranged"
 									level="5"
 									voice="curt"
@@ -1154,13 +1099,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-												 age="40.83"
-												 weight="0.65"
-												 build="0.65"
-												 key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.4514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.6315" build="0.6426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1217,6 +1157,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Archer - HERO -->
 	<NPCCharacter id="mp_light_ranged_isengard_hero"
+									race="uruk"
 									default_group="Ranged"
 									level="5"
 									voice="curt"
@@ -1225,13 +1166,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.4514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.6315" build="0.6426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1277,6 +1213,7 @@
 
 	<!-- Uruk-hai Crossbowman - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_isengard_troop"
+									race="uruk"
 									default_group="Ranged"
 									level="20"
 									voice="curt"
@@ -1285,13 +1222,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.7315" build="0.7426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1378,6 +1310,7 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Crossbowman - HERO -->
 	<NPCCharacter id="mp_heavy_ranged_isengard_hero"
+									race="uruk"
 									default_group="Ranged"
 									level="20"
 									voice="curt"
@@ -1386,13 +1319,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyProperties version="4" age="22.04" weight="0.5514" build="0.5324"  key="00001C0000B400004322456770807697422234653254054544223422344563340078760307455454000000000000000000000000000000000000000010EC0002"  />
+			<BodyPropertiesMax version="4" age="42.04" weight="0.7315" build="0.7426"  key="0000680000B400007692788AA0B0B8CD944378AA929F0978897A4C6798E9A777009DB603097BF9B7000000000000000000000000000000000000000041340142"  />
 		</face>
 		<skills>
 			<skill id="Athletics"

@@ -39,6 +39,9 @@
       <XmlName id="CharactersExtended" path="CharactersExtended/SOP" />
     </XmlNode>
     <XmlNode>
+      <XmlName id="Monsters" path="Monsters/LOTR" />
+    </XmlNode>
+    <XmlNode>
       <XmlName id="MPCharacters" path="Characters/LOTR" />
     </XmlNode>
     <XmlNode>

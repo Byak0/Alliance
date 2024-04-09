@@ -29,6 +29,9 @@
       <XmlName id="CharactersExtended" path="Characters/CharactersExtended" />
     </XmlNode>
     <XmlNode>
+      <XmlName id="Monsters" path="Monsters/LOTR" />
+    </XmlNode>
+    <XmlNode>
       <XmlName id="MPCharacters" path="Characters/mpcharacters_native" />
     </XmlNode>
     <XmlNode>
