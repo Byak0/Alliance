@@ -20,7 +20,6 @@ namespace Alliance.Client.GameModes.Lobby
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new LobbyClientBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerAdminComponent(),
                     new MultiplayerTimerComponent(),

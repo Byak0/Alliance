@@ -25,7 +25,6 @@ namespace Alliance.Server.GameModes.BattleRoyale
                     new BRBehavior(),
                     new BRCommonBehavior(),
                     new ShrinkingZoneBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerTimerComponent(),
                     new SpawnComponent(new BRSpawnFrameBehavior(), new BRSpawningBehavior()),

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="CharactersExtended" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="ItemsExtended">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" name="ItemExtended">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Effects" minOccurs="0" maxOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element minOccurs="0" maxOccurs="unbounded" name="Effect">
+											<xs:complexType>
+												<xs:attribute name="type" type="xs:string" use="required" />
+												<xs:attribute name="value" type="xs:string" use="optional" />
+												<xs:attribute name="position" type="xs:string" use="optional" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="id" type="xs:string" use="required" />
+						<xs:attribute name="usable" type="xs:boolean" use="required" />
+						<xs:attribute name="prefab" type="xs:string" use="optional" />
+						<xs:attribute name="particle_name" type="xs:string" use="optional" />
+						<xs:attribute name="sound_on_use" type="xs:string" use="optional" />
+						<xs:attribute name="sound_distance" type="xs:int" use="optional" />
+						<xs:attribute name="animation_on_use" type="xs:string" use="optional"/>
+						<xs:attribute name="use_limit" type="xs:int" use="optional" />
+						<xs:attribute name="cooldown" type="xs:float" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

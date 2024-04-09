@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.ExtendedCharacter;
+﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
@@ -79,7 +79,7 @@ namespace Alliance.Server
         public override void OnGameInitializationFinished(Game game)
         {
             // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
-            ExtendedCharacterLoader.Init();
+            ExtendedXMLLoader.Init();
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarter)

@@ -6,6 +6,9 @@ namespace Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncSound : GameNetworkMessage
     {
+        static readonly CompressionInfo.Integer SoundIndexCompressionInfo = new CompressionInfo.Integer(0, 10000, true);
+        static readonly CompressionInfo.Integer SoundDurationCompressionInfo = new CompressionInfo.Integer(-1, 3600, true);
+
         public int SoundIndex { get; private set; }
         public int SoundDuration { get; private set; }
 
@@ -22,15 +25,15 @@ namespace Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            SoundIndex = ReadIntFromPacket(new CompressionInfo.Integer(0, 10000, true), ref bufferReadValid);
-            SoundDuration = ReadIntFromPacket(new CompressionInfo.Integer(-1, 3600, true), ref bufferReadValid);
+            SoundIndex = ReadIntFromPacket(SoundIndexCompressionInfo, ref bufferReadValid);
+            SoundDuration = ReadIntFromPacket(SoundDurationCompressionInfo, ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteIntToPacket(SoundIndex, new CompressionInfo.Integer(0, 10000, true));
-            WriteIntToPacket(SoundDuration, new CompressionInfo.Integer(-1, 3600, true));
+            WriteIntToPacket(SoundIndex, SoundIndexCompressionInfo);
+            WriteIntToPacket(SoundDuration, SoundDurationCompressionInfo);
         }
 
         protected override MultiplayerMessageFilter OnGetLogFilter()

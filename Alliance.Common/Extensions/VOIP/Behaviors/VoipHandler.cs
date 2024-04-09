@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.VOIP.Models;
-using Alliance.Common.Extensions.VOIP.NetworkMessages;
+using Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.VOIP.Utilities;
 using Concentus.Enums;
 using Concentus.Structs;

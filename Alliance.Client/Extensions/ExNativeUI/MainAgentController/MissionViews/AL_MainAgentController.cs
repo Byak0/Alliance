@@ -30,28 +30,28 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
         {
             get
             {
-                if (this._isPlayerAiming)
+                if (_isPlayerAiming)
                 {
                     return true;
                 }
-                if (base.Mission.MainAgent == null)
+                if (Mission.MainAgent == null)
                 {
                     return false;
                 }
                 bool flag = false;
                 bool flag2 = false;
                 bool flag3 = false;
-                if (base.Input != null)
+                if (Input != null)
                 {
-                    flag2 = base.Input.IsGameKeyDown(9);
+                    flag2 = Input.IsGameKeyDown(9);
                 }
-                if (base.Mission.MainAgent != null)
+                if (Mission.MainAgent != null)
                 {
-                    if (base.Mission.MainAgent.WieldedWeapon.CurrentUsageItem != null)
+                    if (Mission.MainAgent.WieldedWeapon.CurrentUsageItem != null)
                     {
-                        flag = base.Mission.MainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon || base.Mission.MainAgent.WieldedWeapon.CurrentUsageItem.IsAmmo;
+                        flag = Mission.MainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon || Mission.MainAgent.WieldedWeapon.CurrentUsageItem.IsAmmo;
                     }
-                    flag3 = base.Mission.MainAgent.MovementFlags.HasAnyFlag(Agent.MovementControlFlag.AttackMask);
+                    flag3 = Mission.MainAgent.MovementFlags.HasAnyFlag(Agent.MovementControlFlag.AttackMask);
                 }
                 return flag && flag2 && flag3;
             }
@@ -61,14 +61,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
         {
             get
             {
-                return this._lockedAgent;
+                return _lockedAgent;
             }
             private set
             {
-                if (this._lockedAgent != value)
+                if (_lockedAgent != value)
                 {
-                    this._lockedAgent = value;
-                    MissionMainAgentController.OnLockedAgentChangedDelegate onLockedAgentChanged = this.OnLockedAgentChanged;
+                    _lockedAgent = value;
+                    MissionMainAgentController.OnLockedAgentChangedDelegate onLockedAgentChanged = OnLockedAgentChanged;
                     if (onLockedAgentChanged == null)
                     {
                         return;
@@ -82,14 +82,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
         {
             get
             {
-                return this._potentialLockTargetAgent;
+                return _potentialLockTargetAgent;
             }
             private set
             {
-                if (this._potentialLockTargetAgent != value)
+                if (_potentialLockTargetAgent != value)
                 {
-                    this._potentialLockTargetAgent = value;
-                    MissionMainAgentController.OnPotentialLockedAgentChangedDelegate onPotentialLockedAgentChanged = this.OnPotentialLockedAgentChanged;
+                    _potentialLockTargetAgent = value;
+                    MissionMainAgentController.OnPotentialLockedAgentChangedDelegate onPotentialLockedAgentChanged = OnPotentialLockedAgentChanged;
                     if (onPotentialLockedAgentChanged == null)
                     {
                         return;
@@ -101,155 +101,155 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         public AL_MainAgentController()
         {
-            this.InteractionComponent = new MissionMainAgentInteractionComponent(this);
-            this.CustomLookDir = Vec3.Zero;
-            this.IsChatOpen = false;
+            InteractionComponent = new MissionMainAgentInteractionComponent(this);
+            CustomLookDir = Vec3.Zero;
+            IsChatOpen = false;
         }
 
         public override void EarlyStart()
         {
             base.EarlyStart();
-            Game.Current.EventManager.RegisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(this.OnPlayerToggleOrder));
-            base.Mission.OnMainAgentChanged += new PropertyChangedEventHandler(this.Mission_OnMainAgentChanged);
-            MissionMultiplayerGameModeBaseClient missionBehavior = base.Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+            Game.Current.EventManager.RegisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(OnPlayerToggleOrder));
+            Mission.OnMainAgentChanged += new PropertyChangedEventHandler(Mission_OnMainAgentChanged);
+            MissionMultiplayerGameModeBaseClient missionBehavior = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
             if (((missionBehavior != null) ? missionBehavior.RoundComponent : null) != null)
             {
-                missionBehavior.RoundComponent.OnRoundStarted += this.Disable;
-                missionBehavior.RoundComponent.OnPreparationEnded += this.Enable;
+                missionBehavior.RoundComponent.OnRoundStarted += Disable;
+                missionBehavior.RoundComponent.OnPreparationEnded += Enable;
             }
-            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(this.OnManagedOptionChanged));
-            this.UpdateLockTargetOption();
+            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnManagedOptionChanged));
+            UpdateLockTargetOption();
         }
 
         public override void OnMissionScreenFinalize()
         {
             base.OnMissionScreenFinalize();
-            base.Mission.OnMainAgentChanged -= new PropertyChangedEventHandler(this.Mission_OnMainAgentChanged);
-            Game.Current.EventManager.UnregisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(this.OnPlayerToggleOrder));
-            MissionMultiplayerGameModeBaseClient missionBehavior = base.Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+            Mission.OnMainAgentChanged -= new PropertyChangedEventHandler(Mission_OnMainAgentChanged);
+            Game.Current.EventManager.UnregisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(OnPlayerToggleOrder));
+            MissionMultiplayerGameModeBaseClient missionBehavior = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
             if (((missionBehavior != null) ? missionBehavior.RoundComponent : null) != null)
             {
-                missionBehavior.RoundComponent.OnRoundStarted -= this.Disable;
-                missionBehavior.RoundComponent.OnPreparationEnded -= this.Enable;
+                missionBehavior.RoundComponent.OnRoundStarted -= Disable;
+                missionBehavior.RoundComponent.OnPreparationEnded -= Enable;
             }
-            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(this.OnManagedOptionChanged));
+            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnManagedOptionChanged));
         }
 
         public override bool IsReady()
         {
             bool flag = true;
-            if (base.Mission.MainAgent != null)
+            if (Mission.MainAgent != null)
             {
-                flag = base.Mission.MainAgent.AgentVisuals.CheckResources(true);
+                flag = Mission.MainAgent.AgentVisuals.CheckResources(true);
             }
             return flag;
         }
 
         private void Mission_OnMainAgentChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (base.Mission.MainAgent != null)
+            if (Mission.MainAgent != null)
             {
-                this._isPlayerAgentAdded = true;
-                this._strafeModeActive = false;
-                this._autoDismountModeActive = false;
+                _isPlayerAgentAdded = true;
+                _strafeModeActive = false;
+                _autoDismountModeActive = false;
             }
         }
 
         public override void OnPreMissionTick(float dt)
         {
             base.OnPreMissionTick(dt);
-            if (base.MissionScreen == null)
+            if (MissionScreen == null)
             {
                 return;
             }
-            if (base.Mission.MainAgent == null && GameNetwork.MyPeer != null)
+            if (Mission.MainAgent == null && GameNetwork.MyPeer != null)
             {
                 MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
                 if (component != null)
                 {
                     if (component.HasSpawnedAgentVisuals)
                     {
-                        this.AgentVisualsMovementCheck();
+                        AgentVisualsMovementCheck();
                     }
                     else if (component.FollowedAgent != null)
                     {
-                        this.RequestToSpawnAsBotCheck();
+                        RequestToSpawnAsBotCheck();
                     }
                 }
             }
-            Agent mainAgent = base.Mission.MainAgent;
-            if (mainAgent != null && mainAgent.State == AgentState.Active && !base.MissionScreen.IsCheatGhostMode && !base.Mission.MainAgent.IsAIControlled && !this.IsDisabled && this._activated)
+            Agent mainAgent = Mission.MainAgent;
+            if (mainAgent != null && mainAgent.State == AgentState.Active && !MissionScreen.IsCheatGhostMode && !Mission.MainAgent.IsAIControlled && !IsDisabled && _activated)
             {
-                this.InteractionComponent.FocusTick();
-                this.InteractionComponent.FocusedItemHealthTick();
-                this.ControlTick();
-                this.InteractionComponent.FocusStateCheckTick();
-                this.LookTick(dt);
+                InteractionComponent.FocusTick();
+                InteractionComponent.FocusedItemHealthTick();
+                ControlTick();
+                InteractionComponent.FocusStateCheckTick();
+                LookTick(dt);
                 return;
             }
-            this.LockedAgent = null;
+            LockedAgent = null;
         }
 
         public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow blow)
         {
-            if (this.InteractionComponent.CurrentFocusedObject == affectedAgent || affectedAgent == base.Mission.MainAgent)
+            if (InteractionComponent.CurrentFocusedObject == affectedAgent || affectedAgent == Mission.MainAgent)
             {
-                this.InteractionComponent.ClearFocus();
+                InteractionComponent.ClearFocus();
             }
         }
 
         public override void OnAgentDeleted(Agent affectedAgent)
         {
-            if (this.InteractionComponent.CurrentFocusedObject == affectedAgent)
+            if (InteractionComponent.CurrentFocusedObject == affectedAgent)
             {
-                this.InteractionComponent.ClearFocus();
+                InteractionComponent.ClearFocus();
             }
         }
 
         public override void OnClearScene()
         {
-            this.InteractionComponent.OnClearScene();
+            InteractionComponent.OnClearScene();
         }
 
         private void LookTick(float dt)
         {
-            if (!this.IsDisabled)
+            if (!IsDisabled)
             {
-                Agent mainAgent = base.Mission.MainAgent;
+                Agent mainAgent = Mission.MainAgent;
                 if (mainAgent != null)
                 {
-                    if (this._isPlayerAgentAdded)
+                    if (_isPlayerAgentAdded)
                     {
-                        this._isPlayerAgentAdded = false;
+                        _isPlayerAgentAdded = false;
                         mainAgent.LookDirectionAsAngle = mainAgent.MovementDirectionAsAngle;
                     }
-                    if (base.Mission.ClearSceneTimerElapsedTime >= 0f)
+                    if (Mission.ClearSceneTimerElapsedTime >= 0f)
                     {
                         Vec3 vec;
-                        if (this.LockedAgent != null)
+                        if (LockedAgent != null)
                         {
                             float num = 0f;
-                            float agentScale = this.LockedAgent.AgentScale;
+                            float agentScale = LockedAgent.AgentScale;
                             float agentScale2 = mainAgent.AgentScale;
-                            if (!this.LockedAgent.GetAgentFlags().HasAnyFlag(AgentFlag.IsHumanoid))
+                            if (!LockedAgent.GetAgentFlags().HasAnyFlag(AgentFlag.IsHumanoid))
                             {
-                                num += this.LockedAgent.Monster.BodyCapsulePoint1.z * agentScale;
+                                num += LockedAgent.Monster.BodyCapsulePoint1.z * agentScale;
                             }
-                            else if (this.LockedAgent.HasMount)
+                            else if (LockedAgent.HasMount)
                             {
-                                num += (this.LockedAgent.MountAgent.Monster.RiderCameraHeightAdder + this.LockedAgent.MountAgent.Monster.BodyCapsulePoint1.z + this.LockedAgent.MountAgent.Monster.BodyCapsuleRadius) * this.LockedAgent.MountAgent.AgentScale + this.LockedAgent.Monster.CrouchEyeHeight * agentScale;
+                                num += (LockedAgent.MountAgent.Monster.RiderCameraHeightAdder + LockedAgent.MountAgent.Monster.BodyCapsulePoint1.z + LockedAgent.MountAgent.Monster.BodyCapsuleRadius) * LockedAgent.MountAgent.AgentScale + LockedAgent.Monster.CrouchEyeHeight * agentScale;
                             }
-                            else if (this.LockedAgent.CrouchMode || this.LockedAgent.IsSitting())
+                            else if (LockedAgent.CrouchMode || LockedAgent.IsSitting())
                             {
-                                num += (this.LockedAgent.Monster.CrouchEyeHeight + 0.2f) * agentScale;
+                                num += (LockedAgent.Monster.CrouchEyeHeight + 0.2f) * agentScale;
                             }
                             else
                             {
-                                num += (this.LockedAgent.Monster.StandingEyeHeight + 0.2f) * agentScale;
+                                num += (LockedAgent.Monster.StandingEyeHeight + 0.2f) * agentScale;
                             }
                             if (!mainAgent.GetAgentFlags().HasAnyFlag(AgentFlag.IsHumanoid))
                             {
-                                num -= this.LockedAgent.Monster.BodyCapsulePoint1.z * agentScale2;
+                                num -= LockedAgent.Monster.BodyCapsulePoint1.z * agentScale2;
                             }
                             else if (mainAgent.HasMount)
                             {
@@ -263,30 +263,30 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                             {
                                 num -= (mainAgent.Monster.StandingEyeHeight + 0.2f) * agentScale2;
                             }
-                            if (this.LockedAgent.GetAgentFlags().HasAnyFlag(AgentFlag.IsHumanoid))
+                            if (LockedAgent.GetAgentFlags().HasAnyFlag(AgentFlag.IsHumanoid))
                             {
                                 num -= 0.3f * agentScale;
                             }
-                            num = MBMath.Lerp(this._lastLockedAgentHeightDifference, num, MathF.Min(8f * dt, 1f), 1E-05f);
-                            this._lastLockedAgentHeightDifference = num;
-                            vec = (this.LockedAgent.VisualPosition + ((this.LockedAgent.MountAgent != null) ? (this.LockedAgent.MountAgent.GetMovementDirection().ToVec3(0f) * this.LockedAgent.MountAgent.Monster.RiderBodyCapsuleForwardAdder) : Vec3.Zero) + new Vec3(0f, 0f, num, -1f) - (mainAgent.VisualPosition + ((mainAgent.MountAgent != null) ? (mainAgent.MountAgent.GetMovementDirection().ToVec3(0f) * mainAgent.MountAgent.Monster.RiderBodyCapsuleForwardAdder) : Vec3.Zero))).NormalizedCopy();
+                            num = MBMath.Lerp(_lastLockedAgentHeightDifference, num, MathF.Min(8f * dt, 1f), 1E-05f);
+                            _lastLockedAgentHeightDifference = num;
+                            vec = (LockedAgent.VisualPosition + ((LockedAgent.MountAgent != null) ? (LockedAgent.MountAgent.GetMovementDirection().ToVec3(0f) * LockedAgent.MountAgent.Monster.RiderBodyCapsuleForwardAdder) : Vec3.Zero) + new Vec3(0f, 0f, num, -1f) - (mainAgent.VisualPosition + ((mainAgent.MountAgent != null) ? (mainAgent.MountAgent.GetMovementDirection().ToVec3(0f) * mainAgent.MountAgent.Monster.RiderBodyCapsuleForwardAdder) : Vec3.Zero))).NormalizedCopy();
                         }
-                        else if (this.CustomLookDir.IsNonZero)
+                        else if (CustomLookDir.IsNonZero)
                         {
-                            vec = this.CustomLookDir;
+                            vec = CustomLookDir;
                         }
                         else
                         {
                             Mat3 identity = Mat3.Identity;
-                            identity.RotateAboutUp(base.MissionScreen.CameraBearing);
-                            identity.RotateAboutSide(base.MissionScreen.CameraElevation);
+                            identity.RotateAboutUp(MissionScreen.CameraBearing);
+                            identity.RotateAboutSide(MissionScreen.CameraElevation);
                             vec = identity.f;
                         }
-                        if (!base.MissionScreen.IsViewingCharacter() && !mainAgent.IsLookDirectionLocked && mainAgent.MovementLockedState != AgentMovementLockedState.FrameLocked)
+                        if (!MissionScreen.IsViewingCharacter() && !mainAgent.IsLookDirectionLocked && mainAgent.MovementLockedState != AgentMovementLockedState.FrameLocked)
                         {
                             mainAgent.LookDirection = vec;
                         }
-                        mainAgent.HeadCameraMode = base.Mission.CameraIsFirstPerson;
+                        mainAgent.HeadCameraMode = Mission.CameraIsFirstPerson;
                     }
                 }
             }
@@ -294,9 +294,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         private void AgentVisualsMovementCheck()
         {
-            if (base.Input.IsGameKeyReleased(13))
+            if (Input.IsGameKeyReleased(13))
             {
-                this.BreakAgentVisualsInvulnerability();
+                BreakAgentVisualsInvulnerability();
             }
         }
 
@@ -314,7 +314,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         private void RequestToSpawnAsBotCheck()
         {
-            if (base.Input.IsGameKeyPressed(13))
+            if (Input.IsGameKeyPressed(13))
             {
                 if (GameNetwork.IsClient)
                 {
@@ -332,15 +332,15 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         private Agent FindTargetedLockableAgent(Agent player)
         {
-            Vec3 direction = base.MissionScreen.CombatCamera.Direction;
+            Vec3 direction = MissionScreen.CombatCamera.Direction;
             Vec3 vec = direction;
-            Vec3 position = base.MissionScreen.CombatCamera.Position;
+            Vec3 position = MissionScreen.CombatCamera.Position;
             Vec3 visualPosition = player.VisualPosition;
             float num = new Vec3(position.x, position.y, 0f, -1f).Distance(new Vec3(visualPosition.x, visualPosition.y, 0f, -1f));
             Vec3 vec2 = position * (1f - num) + (position + direction) * num;
             float num2 = 0f;
             Agent agent = null;
-            foreach (Agent agent2 in base.Mission.Agents)
+            foreach (Agent agent2 in Mission.Agents)
             {
                 if ((agent2.IsMount && agent2.RiderAgent != null && agent2.RiderAgent.IsEnemyOf(player)) || (!agent2.IsMount && agent2.IsEnemyOf(player)))
                 {
@@ -371,37 +371,37 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         private void ControlTick()
         {
-            if (base.MissionScreen != null && base.MissionScreen.IsPhotoModeEnabled)
+            if (MissionScreen != null && MissionScreen.IsPhotoModeEnabled)
             {
                 return;
             }
-            if (this.IsChatOpen)
+            if (IsChatOpen)
             {
                 return;
             }
-            Agent mainAgent = base.Mission.MainAgent;
+            Agent mainAgent = Mission.MainAgent;
             bool flag = false;
-            if (this.LockedAgent != null && (!base.Mission.Agents.ContainsQ(this.LockedAgent) || !this.LockedAgent.IsActive() || this.LockedAgent.Position.DistanceSquared(mainAgent.Position) > 625f || base.Input.IsGameKeyReleased(26) || base.Input.IsGameKeyDown(25) || (base.Mission.Mode != MissionMode.Battle && base.Mission.Mode != MissionMode.Stealth) || (!mainAgent.WieldedWeapon.IsEmpty && mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) || base.MissionScreen == null || base.MissionScreen.GetSpectatingData(base.MissionScreen.CombatCamera.Frame.origin).CameraType != SpectatorCameraTypes.LockToMainPlayer))
+            if (LockedAgent != null && (!Mission.Agents.ContainsQ(LockedAgent) || !LockedAgent.IsActive() || LockedAgent.Position.DistanceSquared(mainAgent.Position) > 625f || Input.IsGameKeyReleased(26) || Input.IsGameKeyDown(25) || (Mission.Mode != MissionMode.Battle && Mission.Mode != MissionMode.Stealth) || (!mainAgent.WieldedWeapon.IsEmpty && mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) || MissionScreen == null || MissionScreen.GetSpectatingData(MissionScreen.CombatCamera.Frame.origin).CameraType != SpectatorCameraTypes.LockToMainPlayer))
             {
-                this.LockedAgent = null;
+                LockedAgent = null;
                 flag = true;
             }
-            if (base.Mission.Mode == MissionMode.Conversation)
+            if (Mission.Mode == MissionMode.Conversation)
             {
                 mainAgent.MovementFlags = (Agent.MovementControlFlag)0U;
                 mainAgent.MovementInputVector = Vec2.Zero;
                 return;
             }
-            if (base.Mission.ClearSceneTimerElapsedTime >= 0f && mainAgent.State == AgentState.Active)
+            if (Mission.ClearSceneTimerElapsedTime >= 0f && mainAgent.State == AgentState.Active)
             {
                 bool flag2 = false;
                 bool flag3 = false;
                 bool flag4 = false;
                 bool flag5 = false;
-                Vec2 vec = new Vec2(base.Input.GetGameKeyAxis("MovementAxisX"), base.Input.GetGameKeyAxis("MovementAxisY"));
-                if (this._autoDismountModeActive)
+                Vec2 vec = new Vec2(Input.GetGameKeyAxis("MovementAxisX"), Input.GetGameKeyAxis("MovementAxisY"));
+                if (_autoDismountModeActive)
                 {
-                    if (!base.Input.IsGameKeyDown(0) && mainAgent.MountAgent != null)
+                    if (!Input.IsGameKeyDown(0) && mainAgent.MountAgent != null)
                     {
                         if (mainAgent.GetCurrentVelocity().y > 0f)
                         {
@@ -410,7 +410,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                     }
                     else
                     {
-                        this._autoDismountModeActive = false;
+                        _autoDismountModeActive = false;
                     }
                 }
                 if (MathF.Abs(vec.x) < 0.2f)
@@ -444,9 +444,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                 mainAgent.EventControlFlags = (Agent.EventControlFlag)0U;
                 mainAgent.MovementFlags = (Agent.MovementControlFlag)0U;
                 mainAgent.MovementInputVector = Vec2.Zero;
-                if (!base.MissionScreen.IsRadialMenuActive && !base.Mission.IsOrderMenuOpen)
+                if (!MissionScreen.IsRadialMenuActive && !Mission.IsOrderMenuOpen)
                 {
-                    if (base.Input.IsGameKeyPressed(14))
+                    if (Input.IsGameKeyPressed(14))
                     {
                         if (mainAgent.MountAgent == null || mainAgent.MovementVelocity.LengthSquared > 0.09f)
                         {
@@ -457,49 +457,49 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.Rear;
                         }
                     }
-                    if (base.Input.IsGameKeyPressed(13))
+                    if (Input.IsGameKeyPressed(13))
                     {
                         mainAgent.MovementFlags |= Agent.MovementControlFlag.Action;
                     }
                 }
-                if (mainAgent.MountAgent != null && mainAgent.GetCurrentVelocity().y < 0.5f && (base.Input.IsGameKeyDown(3) || base.Input.IsGameKeyDown(2)))
+                if (mainAgent.MountAgent != null && mainAgent.GetCurrentVelocity().y < 0.5f && (Input.IsGameKeyDown(3) || Input.IsGameKeyDown(2)))
                 {
-                    if (base.Input.IsGameKeyPressed(16))
+                    if (Input.IsGameKeyPressed(16))
                     {
-                        this._strafeModeActive = true;
+                        _strafeModeActive = true;
                     }
                 }
                 else
                 {
-                    this._strafeModeActive = false;
+                    _strafeModeActive = false;
                 }
-                Agent.MovementControlFlag movementControlFlag = this._lastMovementKeyPressed;
-                if (base.Input.IsGameKeyPressed(0))
+                Agent.MovementControlFlag movementControlFlag = _lastMovementKeyPressed;
+                if (Input.IsGameKeyPressed(0))
                 {
                     movementControlFlag = Agent.MovementControlFlag.Forward;
                 }
-                else if (base.Input.IsGameKeyPressed(1))
+                else if (Input.IsGameKeyPressed(1))
                 {
                     movementControlFlag = Agent.MovementControlFlag.Backward;
                 }
-                else if (base.Input.IsGameKeyPressed(2))
+                else if (Input.IsGameKeyPressed(2))
                 {
                     movementControlFlag = Agent.MovementControlFlag.StrafeLeft;
                 }
-                else if (base.Input.IsGameKeyPressed(3))
+                else if (Input.IsGameKeyPressed(3))
                 {
                     movementControlFlag = Agent.MovementControlFlag.StrafeRight;
                 }
-                if (movementControlFlag != this._lastMovementKeyPressed)
+                if (movementControlFlag != _lastMovementKeyPressed)
                 {
-                    this._lastMovementKeyPressed = movementControlFlag;
+                    _lastMovementKeyPressed = movementControlFlag;
                     Game game = Game.Current;
                     if (game != null)
                     {
-                        game.EventManager.TriggerEvent<MissionPlayerMovementFlagsChangeEvent>(new MissionPlayerMovementFlagsChangeEvent(this._lastMovementKeyPressed));
+                        game.EventManager.TriggerEvent<MissionPlayerMovementFlagsChangeEvent>(new MissionPlayerMovementFlagsChangeEvent(_lastMovementKeyPressed));
                     }
                 }
-                if (!base.Input.GetIsMouseActive())
+                if (!Input.GetIsMouseActive())
                 {
                     bool flag6 = true;
                     if (flag3)
@@ -524,77 +524,77 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                     }
                     if (flag6)
                     {
-                        base.Mission.SetLastMovementKeyPressed(movementControlFlag);
+                        Mission.SetLastMovementKeyPressed(movementControlFlag);
                     }
                 }
                 else
                 {
-                    base.Mission.SetLastMovementKeyPressed(this._lastMovementKeyPressed);
+                    Mission.SetLastMovementKeyPressed(_lastMovementKeyPressed);
                 }
-                if (base.Input.IsGameKeyPressed(0))
+                if (Input.IsGameKeyPressed(0))
                 {
-                    if (this._lastForwardKeyPressTime + 0.3f > Time.ApplicationTime)
+                    if (_lastForwardKeyPressTime + 0.3f > Time.ApplicationTime)
                     {
                         mainAgent.EventControlFlags &= ~(Agent.EventControlFlag.DoubleTapToDirectionUp | Agent.EventControlFlag.DoubleTapToDirectionDown | Agent.EventControlFlag.DoubleTapToDirectionRight);
                         mainAgent.EventControlFlags |= Agent.EventControlFlag.DoubleTapToDirectionUp;
                     }
-                    this._lastForwardKeyPressTime = Time.ApplicationTime;
+                    _lastForwardKeyPressTime = Time.ApplicationTime;
                 }
-                if (base.Input.IsGameKeyPressed(1))
+                if (Input.IsGameKeyPressed(1))
                 {
-                    if (this._lastBackwardKeyPressTime + 0.3f > Time.ApplicationTime)
+                    if (_lastBackwardKeyPressTime + 0.3f > Time.ApplicationTime)
                     {
                         mainAgent.EventControlFlags &= ~(Agent.EventControlFlag.DoubleTapToDirectionUp | Agent.EventControlFlag.DoubleTapToDirectionDown | Agent.EventControlFlag.DoubleTapToDirectionRight);
                         mainAgent.EventControlFlags |= Agent.EventControlFlag.DoubleTapToDirectionDown;
                     }
-                    this._lastBackwardKeyPressTime = Time.ApplicationTime;
+                    _lastBackwardKeyPressTime = Time.ApplicationTime;
                 }
-                if (base.Input.IsGameKeyPressed(2))
+                if (Input.IsGameKeyPressed(2))
                 {
-                    if (this._lastLeftKeyPressTime + 0.3f > Time.ApplicationTime)
+                    if (_lastLeftKeyPressTime + 0.3f > Time.ApplicationTime)
                     {
                         mainAgent.EventControlFlags &= ~(Agent.EventControlFlag.DoubleTapToDirectionUp | Agent.EventControlFlag.DoubleTapToDirectionDown | Agent.EventControlFlag.DoubleTapToDirectionRight);
                         mainAgent.EventControlFlags |= Agent.EventControlFlag.DoubleTapToDirectionLeft;
                     }
-                    this._lastLeftKeyPressTime = Time.ApplicationTime;
+                    _lastLeftKeyPressTime = Time.ApplicationTime;
                 }
-                if (base.Input.IsGameKeyPressed(3))
+                if (Input.IsGameKeyPressed(3))
                 {
-                    if (this._lastRightKeyPressTime + 0.3f > Time.ApplicationTime)
+                    if (_lastRightKeyPressTime + 0.3f > Time.ApplicationTime)
                     {
                         mainAgent.EventControlFlags &= ~(Agent.EventControlFlag.DoubleTapToDirectionUp | Agent.EventControlFlag.DoubleTapToDirectionDown | Agent.EventControlFlag.DoubleTapToDirectionRight);
                         mainAgent.EventControlFlags |= Agent.EventControlFlag.DoubleTapToDirectionRight;
                     }
-                    this._lastRightKeyPressTime = Time.ApplicationTime;
+                    _lastRightKeyPressTime = Time.ApplicationTime;
                 }
-                if (this._isTargetLockEnabled)
+                if (_isTargetLockEnabled)
                 {
-                    if (base.Input.IsGameKeyDown(26) && this.LockedAgent == null && !base.Input.IsGameKeyDown(25) && (base.Mission.Mode == MissionMode.Battle || base.Mission.Mode == MissionMode.Stealth) && (mainAgent.WieldedWeapon.IsEmpty || !mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) && !GameNetwork.IsMultiplayer)
+                    if (Input.IsGameKeyDown(26) && LockedAgent == null && !Input.IsGameKeyDown(25) && (Mission.Mode == MissionMode.Battle || Mission.Mode == MissionMode.Stealth) && (mainAgent.WieldedWeapon.IsEmpty || !mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) && !GameNetwork.IsMultiplayer)
                     {
                         float applicationTime = Time.ApplicationTime;
-                        if (this._lastLockKeyPressTime <= 0f)
+                        if (_lastLockKeyPressTime <= 0f)
                         {
-                            this._lastLockKeyPressTime = applicationTime;
+                            _lastLockKeyPressTime = applicationTime;
                         }
-                        if (applicationTime > this._lastLockKeyPressTime + 0.3f)
+                        if (applicationTime > _lastLockKeyPressTime + 0.3f)
                         {
-                            this.PotentialLockTargetAgent = this.FindTargetedLockableAgent(mainAgent);
+                            PotentialLockTargetAgent = FindTargetedLockableAgent(mainAgent);
                         }
                     }
                     else
                     {
-                        this.PotentialLockTargetAgent = null;
+                        PotentialLockTargetAgent = null;
                     }
-                    if (this.LockedAgent == null && !flag && base.Input.IsGameKeyReleased(26) && !GameNetwork.IsMultiplayer)
+                    if (LockedAgent == null && !flag && Input.IsGameKeyReleased(26) && !GameNetwork.IsMultiplayer)
                     {
-                        this._lastLockKeyPressTime = 0f;
-                        if (!base.Input.IsGameKeyDown(25) && (base.Mission.Mode == MissionMode.Battle || base.Mission.Mode == MissionMode.Stealth) && (mainAgent.WieldedWeapon.IsEmpty || !mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) && base.MissionScreen != null && base.MissionScreen.GetSpectatingData(base.MissionScreen.CombatCamera.Frame.origin).CameraType == SpectatorCameraTypes.LockToMainPlayer)
+                        _lastLockKeyPressTime = 0f;
+                        if (!Input.IsGameKeyDown(25) && (Mission.Mode == MissionMode.Battle || Mission.Mode == MissionMode.Stealth) && (mainAgent.WieldedWeapon.IsEmpty || !mainAgent.WieldedWeapon.CurrentUsageItem.IsRangedWeapon) && MissionScreen != null && MissionScreen.GetSpectatingData(MissionScreen.CombatCamera.Frame.origin).CameraType == SpectatorCameraTypes.LockToMainPlayer)
                         {
-                            this.LockedAgent = this.FindTargetedLockableAgent(mainAgent);
+                            LockedAgent = FindTargetedLockableAgent(mainAgent);
                         }
                     }
                 }
-                if (mainAgent.MountAgent != null && !this._strafeModeActive)
+                if (mainAgent.MountAgent != null && !_strafeModeActive)
                 {
                     if (flag2 || vec.x > 0f)
                     {
@@ -606,7 +606,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                     }
                 }
                 mainAgent.MovementInputVector = vec;
-                if (!base.MissionScreen.MouseVisible && !base.MissionScreen.IsRadialMenuActive && !this._isPlayerOrderOpen && mainAgent.CombatActionsEnabled)
+                if (!MissionScreen.MouseVisible && !MissionScreen.IsRadialMenuActive && !_isPlayerOrderOpen && mainAgent.CombatActionsEnabled)
                 {
                     WeaponComponentData currentUsageItem = mainAgent.WieldedWeapon.CurrentUsageItem;
                     bool flag7 = currentUsageItem != null && currentUsageItem.WeaponFlags.HasAllFlags(WeaponFlags.StringHeldByHand);
@@ -617,20 +617,20 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                     }
                     WeaponComponentData currentUsageItem3 = mainAgent.WieldedWeapon.CurrentUsageItem;
                     bool flag8 = currentUsageItem3 != null && currentUsageItem3.IsRangedWeapon && !mainAgent.WieldedWeapon.CurrentUsageItem.IsConsumable && !mainAgent.WieldedWeapon.CurrentUsageItem.WeaponFlags.HasAllFlags(WeaponFlags.StringHeldByHand);
-                    bool flag9 = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.EnableAlternateAiming) != 0f && (flag7 || flag8);
+                    bool flag9 = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.EnableAlternateAiming) != 0f && (flag7 || flag8);                   
                     if (flag9)
                     {
-                        this.HandleRangedWeaponAttackAlternativeAiming(mainAgent);
+                        HandleRangedWeaponAttackAlternativeAiming(mainAgent);
                     }
-                    else if (base.Input.IsGameKeyDown(9))
+                    else if (Input.IsGameKeyDown(9))
                     {
                         mainAgent.MovementFlags |= mainAgent.AttackDirectionToMovementFlag(mainAgent.GetAttackDirection());
                     }
-                    if (!flag9 && base.Input.IsGameKeyDown(10))
+                    if (!flag9 && Input.IsGameKeyDown(10))
                     {
                         if (ManagedOptions.GetConfig(ManagedOptions.ManagedOptionsType.ControlBlockDirection) == 2f && MissionGameModels.Current.AutoBlockModel != null)
                         {
-                            Agent.UsageDirection blockDirection = MissionGameModels.Current.AutoBlockModel.GetBlockDirection(base.Mission);
+                            Agent.UsageDirection blockDirection = MissionGameModels.Current.AutoBlockModel.GetBlockDirection(Mission);
                             if (blockDirection == Agent.UsageDirection.AttackLeft)
                             {
                                 mainAgent.MovementFlags |= Agent.MovementControlFlag.DefendRight;
@@ -654,52 +654,53 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                         }
                     }
                 }
-                if (!base.MissionScreen.IsRadialMenuActive && !base.Mission.IsOrderMenuOpen)
+                if (!MissionScreen.IsRadialMenuActive && !Mission.IsOrderMenuOpen)
                 {
-                    if (base.Input.IsGameKeyPressed(16) && (mainAgent.KickClear() || mainAgent.MountAgent != null))
+                    if (Input.IsGameKeyPressed(16) && (mainAgent.KickClear() || mainAgent.MountAgent != null))
                     {
                         mainAgent.EventControlFlags |= Agent.EventControlFlag.Kick;
                     }
-                    if (base.Input.IsGameKeyPressed(18))
+                    if (Input.IsGameKeyPressed(18))
                     {
                         mainAgent.TryToWieldWeaponInSlot(EquipmentIndex.WeaponItemBeginSlot, Agent.WeaponWieldActionType.WithAnimation, false);
                     }
-                    else if (base.Input.IsGameKeyPressed(19))
+                    else if (Input.IsGameKeyPressed(19))
                     {
                         mainAgent.TryToWieldWeaponInSlot(EquipmentIndex.Weapon1, Agent.WeaponWieldActionType.WithAnimation, false);
                     }
-                    else if (base.Input.IsGameKeyPressed(20))
+                    else if (Input.IsGameKeyPressed(20))
                     {
                         mainAgent.TryToWieldWeaponInSlot(EquipmentIndex.Weapon2, Agent.WeaponWieldActionType.WithAnimation, false);
                     }
-                    else if (base.Input.IsGameKeyPressed(21))
+                    else if (Input.IsGameKeyPressed(21))
                     {
                         mainAgent.TryToWieldWeaponInSlot(EquipmentIndex.Weapon3, Agent.WeaponWieldActionType.WithAnimation, false);
                     }
-                    else if (base.Input.IsGameKeyPressed(11) && this._lastWieldNextPrimaryWeaponTriggerTime + 0.2f < Time.ApplicationTime)
+                    else if (Input.IsGameKeyPressed(11) && _lastWieldNextPrimaryWeaponTriggerTime + 0.2f < Time.ApplicationTime)
                     {
-                        this._lastWieldNextPrimaryWeaponTriggerTime = Time.ApplicationTime;
+                        _lastWieldNextPrimaryWeaponTriggerTime = Time.ApplicationTime;
                         mainAgent.WieldNextWeapon(Agent.HandIndex.MainHand, Agent.WeaponWieldActionType.WithAnimation);
                     }
-                    else if (base.Input.IsGameKeyPressed(12) && this._lastWieldNextOffhandWeaponTriggerTime + 0.2f < Time.ApplicationTime)
+                    else if (Input.IsGameKeyPressed(12) && _lastWieldNextOffhandWeaponTriggerTime + 0.2f < Time.ApplicationTime)
                     {
-                        this._lastWieldNextOffhandWeaponTriggerTime = Time.ApplicationTime;
+                        _lastWieldNextOffhandWeaponTriggerTime = Time.ApplicationTime;
                         mainAgent.WieldNextWeapon(Agent.HandIndex.OffHand, Agent.WeaponWieldActionType.WithAnimation);
                     }
-                    else if (base.Input.IsGameKeyPressed(23))
+                    else if (Input.IsGameKeyPressed(23))
                     {
                         mainAgent.TryToSheathWeaponInHand(Agent.HandIndex.MainHand, Agent.WeaponWieldActionType.WithAnimation);
                     }
                     // Handle alternative weapon usage
-                    if (base.Input.IsGameKeyPressed(17) || this._weaponUsageToggleRequested)
+                    if (Input.IsGameKeyPressed(17) || _weaponUsageToggleRequested)
                     {
-                        if (this._weaponUsageToggleRequested)
+                        WeaponComponentData currentUsageItem = mainAgent.WieldedWeapon.CurrentUsageItem;
+                        if (_weaponUsageToggleRequested)
                         {
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.ToggleAlternativeWeapon;
-                            this._weaponUsageToggleRequested = false;
+                            _weaponUsageToggleRequested = false;
                         }
-                        // If mounted, check if player is in formation before allowing alternative weapon usage (couch)
-                        if (FormationComponent.Main == null || FormationComponent.Main.State != FormationState.Rambo || !mainAgent.HasMount)
+                        // If mounted or equipped with polearm, check if player is in formation before allowing alternative weapon usage (couch)
+                        if (FormationComponent.Main == null || FormationComponent.Main.State != FormationState.Rambo || !mainAgent.HasMount && !(currentUsageItem != null && currentUsageItem.IsPolearm && !mainAgent.WieldedWeapon.IsAnyConsumable()))
                         {
                             mainAgent.EventControlFlags |= Agent.EventControlFlag.ToggleAlternativeWeapon;
                         }
@@ -707,31 +708,30 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
                         {
                             Log("Impossible de couch hors formation !", LogLevel.Warning);
                         }
-
                     }
-                    if (base.Input.IsGameKeyPressed(30))
+                    if (Input.IsGameKeyPressed(30))
                     {
                         mainAgent.EventControlFlags |= (mainAgent.WalkMode ? Agent.EventControlFlag.Run : Agent.EventControlFlag.Walk);
                     }
                     if (mainAgent.MountAgent != null)
                     {
-                        if (base.Input.IsGameKeyPressed(15) || this._autoDismountModeActive)
+                        if (Input.IsGameKeyPressed(15) || _autoDismountModeActive)
                         {
                             if (mainAgent.GetCurrentVelocity().y < 0.5f && mainAgent.MountAgent.GetCurrentActionType(0) != Agent.ActionCodeType.Rear)
                             {
                                 mainAgent.EventControlFlags |= Agent.EventControlFlag.Dismount;
                                 return;
                             }
-                            if (base.Input.IsGameKeyPressed(15))
+                            if (Input.IsGameKeyPressed(15))
                             {
-                                this._autoDismountModeActive = true;
+                                _autoDismountModeActive = true;
                                 mainAgent.EventControlFlags &= ~(Agent.EventControlFlag.DoubleTapToDirectionUp | Agent.EventControlFlag.DoubleTapToDirectionDown | Agent.EventControlFlag.DoubleTapToDirectionRight);
                                 mainAgent.EventControlFlags |= Agent.EventControlFlag.DoubleTapToDirectionDown;
                                 return;
                             }
                         }
                     }
-                    else if (base.Input.IsGameKeyPressed(15))
+                    else if (Input.IsGameKeyPressed(15))
                     {
                         mainAgent.EventControlFlags |= (mainAgent.CrouchMode ? Agent.EventControlFlag.Stand : Agent.EventControlFlag.Crouch);
                     }
@@ -741,47 +741,47 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         private void HandleRangedWeaponAttackAlternativeAiming(Agent player)
         {
-            if (base.Input.GetKeyState(InputKey.ControllerLTrigger).x > 0.2f)
+            if (Input.GetKeyState(InputKey.ControllerLTrigger).x > 0.2f)
             {
-                if (base.Input.GetKeyState(InputKey.ControllerRTrigger).x < 0.6f)
+                if (Input.GetKeyState(InputKey.ControllerRTrigger).x < 0.6f)
                 {
                     player.MovementFlags |= player.AttackDirectionToMovementFlag(player.GetAttackDirection());
                 }
-                this._isPlayerAiming = true;
+                _isPlayerAiming = true;
                 return;
             }
-            if (this._isPlayerAiming)
+            if (_isPlayerAiming)
             {
                 player.MovementFlags |= Agent.MovementControlFlag.DefendUp;
-                this._isPlayerAiming = false;
+                _isPlayerAiming = false;
             }
         }
 
         private void HandleTriggeredWeaponAttack(Agent player)
         {
-            if (base.Input.GetKeyState(InputKey.ControllerRTrigger).x <= 0.2f)
+            if (Input.GetKeyState(InputKey.ControllerRTrigger).x <= 0.2f)
             {
-                if (this._isPlayerAiming)
+                if (_isPlayerAiming)
                 {
-                    this._playerShotMissile = false;
-                    this._isPlayerAiming = false;
+                    _playerShotMissile = false;
+                    _isPlayerAiming = false;
                     player.MovementFlags |= Agent.MovementControlFlag.DefendUp;
                 }
                 return;
             }
-            if (!this._isPlayerAiming && player.WieldedWeapon.MaxAmmo > 0 && player.WieldedWeapon.Ammo == 0)
+            if (!_isPlayerAiming && player.WieldedWeapon.MaxAmmo > 0 && player.WieldedWeapon.Ammo == 0)
             {
                 player.MovementFlags |= player.AttackDirectionToMovementFlag(player.GetAttackDirection());
                 return;
             }
-            if (!this._playerShotMissile && base.Input.GetKeyState(InputKey.ControllerRTrigger).x < 0.99f)
+            if (!_playerShotMissile && Input.GetKeyState(InputKey.ControllerRTrigger).x < 0.99f)
             {
                 player.MovementFlags |= player.AttackDirectionToMovementFlag(player.GetAttackDirection());
-                this._isPlayerAiming = true;
+                _isPlayerAiming = true;
                 return;
             }
-            this._isPlayerAiming = true;
-            this._playerShotMissile = true;
+            _isPlayerAiming = true;
+            _playerShotMissile = true;
         }
 
         public override bool IsThereAgentAction(Agent userAgent, Agent otherAgent)
@@ -791,39 +791,39 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 
         public void Disable()
         {
-            this._activated = false;
+            _activated = false;
         }
 
         public void Enable()
         {
-            this._activated = true;
+            _activated = true;
         }
 
         private void OnPlayerToggleOrder(MissionPlayerToggledOrderViewEvent obj)
         {
-            this._isPlayerOrderOpen = obj.IsOrderEnabled;
+            _isPlayerOrderOpen = obj.IsOrderEnabled;
         }
 
         public void OnWeaponUsageToggleRequested()
         {
-            this._weaponUsageToggleRequested = true;
+            _weaponUsageToggleRequested = true;
         }
 
         private void OnManagedOptionChanged(ManagedOptions.ManagedOptionsType optionType)
         {
             if (optionType == ManagedOptions.ManagedOptionsType.LockTarget)
             {
-                this.UpdateLockTargetOption();
+                UpdateLockTargetOption();
             }
         }
 
         private void UpdateLockTargetOption()
         {
-            this._isTargetLockEnabled = ManagedOptions.GetConfig(ManagedOptions.ManagedOptionsType.LockTarget) == 1f;
-            this.LockedAgent = null;
-            this.PotentialLockTargetAgent = null;
-            this._lastLockKeyPressTime = 0f;
-            this._lastLockedAgentHeightDifference = 0f;
+            _isTargetLockEnabled = ManagedOptions.GetConfig(ManagedOptions.ManagedOptionsType.LockTarget) == 1f;
+            LockedAgent = null;
+            PotentialLockTargetAgent = null;
+            _lastLockKeyPressTime = 0f;
+            _lastLockedAgentHeightDifference = 0f;
         }
 
         private const float _minValueForAimStart = 0.2f;

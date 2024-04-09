@@ -5,7 +5,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.ClassLimiter.Behaviors
 {
-    public class ClassLimiterBehavior : MissionNetwork, IHandlerRegister
+    public class ClassLimiterBehavior : MissionNetwork
     {
         private MultiplayerRoundController _roundController;
 
@@ -50,21 +50,6 @@ namespace Alliance.Server.Extensions.ClassLimiter.Behaviors
         {
             // Refresh class limits on every round
             ClassLimiterModel.Instance.Init();
-        }
-
-        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
-        {
-            reg.Register<RequestCharacterUsage>(HandleRequestUsage);
-        }
-
-        public bool HandleRequestUsage(NetworkCommunicator peer, RequestCharacterUsage message)
-        {
-            // DEBUG test
-            //foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
-            //{
-            //    ClassLimiterModel.Instance.TryReserveCharacterSlot(character);
-            //}
-            return ClassLimiterModel.Instance.HandleRequestUsage(peer, message);
         }
     }
 }

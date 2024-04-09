@@ -27,7 +27,6 @@ namespace Alliance.Client.GameModes.Story
                     new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with scenario infos
                     new FormationBehavior(),
                     new ObjectivesBehavior(ScenarioPlayer.Instance),
-                    new VoipHandler(),
 
                     // Native components from Captain mode
                     new MultiplayerAchievementComponent(),

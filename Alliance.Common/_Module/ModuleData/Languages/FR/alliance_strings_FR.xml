@@ -45,6 +45,10 @@
 		<string id="str_alliance_scene_battle_phenixCaslte" text="Phenix" />
 		<string id="str_alliance_scene_anduin_shore" text="Les Rivages de l'Anduin par Esperanza" />
 		<string id="str_alliance_scene_les_plaines_eastemnet" text="Les Plaines de l'Eastemnet par Adwennor" />
+		<string id="str_alliance_scene_les_plaines_eastemnet_uruk" text="Les Plaines de l'Eastemnet par Adwennor (Nuit)" />
+		<string id="str_alliance_scene_lotr_westfold_village" text="Village de l'Ouestfolde par Esperanza" />
+		<string id="str_alliance_scene_lotr_westfold_village_lobby" text="Village de l'Ouestfolde par Esperanza (Lobby)" />
+		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
 
 		<!-- Unit names -->
 		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />

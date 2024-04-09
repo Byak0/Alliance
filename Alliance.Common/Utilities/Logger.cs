@@ -98,5 +98,12 @@ namespace Alliance.Common.Utilities
             GameNetwork.WriteMessage(new SendNotification(message, 0));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
+
+        public static void SendInformationToAll(string message)
+        {
+            GameNetwork.BeginBroadcastModuleEvent();
+            GameNetwork.WriteMessage(new SendNotification(message, 1));
+            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+        }
     }
 }

@@ -27,7 +27,6 @@ namespace Alliance.Server.GameModes.SiegeX
                 {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new MissionMultiplayerSiege(),
                     new MultiplayerWarmupComponent(),

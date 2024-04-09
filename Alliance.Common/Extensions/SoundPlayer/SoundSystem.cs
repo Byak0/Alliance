@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromServer;
 using System.Threading.Tasks;
 using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -30,28 +31,35 @@ namespace Alliance.Common.Extensions.SoundPlayer
         }
 
         /// <summary>
-        /// Play sound with specified duration.
+        /// Play sound at position with specified duration.
         /// </summary>
         /// <param name="synchronize">Set to true to synchronize with all clients</param>
-        public void PlaySound(int soundIndex, int soundDuration = -1, bool synchronize = false)
+        public void PlaySound(int soundIndex, Vec3 position, int soundDuration = -1, bool synchronize = false)
         {
             SoundEvent eventRef = SoundEvent.CreateEvent(soundIndex, Mission.Current?.Scene);
-            Log("Alliance - Playing sound " + soundIndex, LogLevel.Debug);
-            if (Agent.Main?.Position != null) eventRef.SetPosition(Agent.Main.Position);
+            if (position != Vec3.Invalid) eventRef.SetPosition(position);
             eventRef.Play();
             if (soundDuration != -1) DelayedStop(eventRef, soundDuration * 1000);
 
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncSound(soundIndex, soundDuration));
+                GameNetwork.WriteMessage(new SyncSoundLocalized(soundIndex, soundDuration, position));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }
 
         public void PlaySound(string soundName, int soundDuration = -1, bool synchronize = false)
         {
-            PlaySound(SoundEvent.GetEventIdFromString(soundName), soundDuration, synchronize);
+            Vec3 position = Agent.Main?.Position ?? Vec3.Invalid;
+            Log($"Alliance - Playing sound {soundName} at {position} for {soundDuration}s", LogLevel.Debug);
+            PlaySound(SoundEvent.GetEventIdFromString(soundName), position, soundDuration, synchronize);
+        }
+
+        public void PlaySoundLocalized(string soundName, Vec3 position, int soundDuration = -1, bool synchronize = false)
+        {
+            Log($"Alliance - Playing localized sound {soundName} at {position} for {soundDuration}s", LogLevel.Debug);
+            PlaySound(SoundEvent.GetEventIdFromString(soundName), position, soundDuration, synchronize);
         }
 
         // Delayed stop to prevent ambient sounds from looping

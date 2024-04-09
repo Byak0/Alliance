@@ -1,5 +1,6 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
+using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -9,7 +10,7 @@ using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
 using Alliance.Client.Patch;
-using Alliance.Common.Core.ExtendedCharacter;
+using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
@@ -63,7 +64,7 @@ namespace Alliance.Client
         public override void OnGameInitializationFinished(Game game)
         {
             // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
-            ExtendedCharacterLoader.Init();
+            ExtendedXMLLoader.Init();
         }
 
         protected override void OnGameStart(Game game, IGameStarter gameStarter)
@@ -92,6 +93,7 @@ namespace Alliance.Client
         {
             mission.AddMissionBehavior(new ClientAutoHandler());
             mission.AddMissionBehavior(new UsableEntityBehavior());
+            mission.AddMissionBehavior(new PBVoiceChatHandlerClient());
         }
     }
 }

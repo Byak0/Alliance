@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance.Editor" />
   <Name value="Alliance.Editor" />
-  <Version value="v0.0.9.9" />
+  <Version value="v0.1.0.1" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
@@ -26,7 +26,7 @@
       <XmlName id="GameText" path="Languages/module_strings" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="ExtendedCharacters" path="Characters/ExtendedCharacters" />
+      <XmlName id="CharactersExtended" path="Characters/CharactersExtended" />
     </XmlNode>
     <XmlNode>
       <XmlName id="MPCharacters" path="Characters/mpcharacters_native" />

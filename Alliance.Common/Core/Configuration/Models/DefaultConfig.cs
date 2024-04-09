@@ -17,9 +17,6 @@ namespace Alliance.Common.Core.Configuration.Models
             List<string> values = new List<string>();
             switch (option.Name)
             {
-                case nameof(TestEnum):
-                    values = new List<string>() { "Test", "Test1" };
-                    break;
                 case nameof(BotDifficulty):
                     values = new List<string>() {
                         nameof(Difficulty.PlayerChoice),
@@ -39,12 +36,12 @@ namespace Alliance.Common.Core.Configuration.Models
 
         [ConfigProperty("Synchronize configuration", "Synchronize server configuration with the clients.", ConfigValueType.Bool)]
         public bool SyncConfig = true;
-
+        
         [ConfigProperty("Toggle bot talks", "Bots will repeat what players say. For when you got no friend.", ConfigValueType.Bool)]
         public bool NoFriend = false;
 
-        [ConfigProperty("Test enum", "Test enum", ConfigValueType.Enum)]
-        public string TestEnum = "Test";
+        [ConfigProperty("Authorize Poll", "Authorize everyone to use the GameMode menu when in Lobby.", ConfigValueType.Bool)]
+        public bool AuthorizePoll = true;
 
         [ConfigProperty("Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", ConfigValueType.Enum)]
         public string BotDifficulty = nameof(Difficulty.Normal);
@@ -66,6 +63,9 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Zone life time", "Number of seconds the zone takes to reach its minimum size.", ConfigValueType.Integer, 0, 3600)]
         public int BRZoneLifeTime = 300;
 
+        [ConfigProperty("Time before start", "Duration in seconds during which players are stuck in starting zone.", ConfigValueType.Integer, 0, 600)]
+        public int TimeBeforeStart = 60;
+
         [ConfigProperty("Allow spawn during round", "Allow players to spawn while round is in progress.", ConfigValueType.Bool)]
         public bool AllowSpawnInRound = true;
         [ConfigProperty("Free respawn timer", "Duration in seconds during which players can freely respawn after round start.", ConfigValueType.Integer, 0, 3600)]
@@ -83,7 +83,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Show officers names", "Show officers names on top of the screen.", ConfigValueType.Bool)]
         public bool ShowOfficers = true;
         [ConfigProperty("Show projectile trail", "Show trail behind projectile.", ConfigValueType.Bool)]
-        public bool ShowWeaponTrail = true;
+        public bool ShowWeaponTrail = false;
         [ConfigProperty("Enable Kill Feed", "Enable the kill feed on top right of the screen.", ConfigValueType.Bool)]
         public bool KillFeedEnabled = true;
 
@@ -105,7 +105,7 @@ namespace Alliance.Common.Core.Configuration.Models
         [ConfigProperty("Gold on lost ally", "Gold gained when an ally died.", ConfigValueType.Integer, 0, 200)]
         public int GoldPerAllyDead = 5;
 
-        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in ExtendedCharacters.xml.", ConfigValueType.Bool)]
+        [ConfigProperty("Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in CharactersExtended.xml.", ConfigValueType.Bool)]
         public bool UseTroopLimit = false;
 
         [ConfigProperty("Commander side", "Commander side for Alliance. 0 = defender, 1 = attacker.", ConfigValueType.Integer, 0, 1)]

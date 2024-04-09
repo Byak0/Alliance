@@ -27,7 +27,6 @@ namespace Alliance.Client.GameModes.CaptainX
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
-                    new VoipHandler(),
 
                     new MultiplayerAchievementComponent(),
                     new MultiplayerWarmupComponent(),

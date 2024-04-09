@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Extensions.VOIP.Models;
-using Alliance.Common.Extensions.VOIP.NetworkMessages;
+using Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
