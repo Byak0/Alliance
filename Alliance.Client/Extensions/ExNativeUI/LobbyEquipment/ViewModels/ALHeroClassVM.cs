@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using JetBrains.Annotations;
 using System;
@@ -378,7 +379,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         public void UpdateEnabled()
         {
             // Check if character is available
-            IsEnabled = ClassLimiterModel.Instance.CharacterAvailability[_character] && _gameMode.IsClassAvailable(HeroClass) && (_gameMode.IsInWarmup || !_gameMode.IsGameModeUsingGold || _gameMode.GetGoldAmount() >= Gold);
+            IsEnabled = (!Config.Instance.UsePlayerLimit || ClassLimiterModel.Instance.CharacterAvailability[_character]) && _gameMode.IsClassAvailable(HeroClass) && (_gameMode.IsInWarmup || !_gameMode.IsGameModeUsingGold || _gameMode.GetGoldAmount() >= Gold);
         }
 
         [UsedImplicitly]

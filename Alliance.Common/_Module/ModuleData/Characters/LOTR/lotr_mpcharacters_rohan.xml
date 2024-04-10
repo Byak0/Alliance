@@ -660,7 +660,7 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+             value="120" />
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
@@ -736,9 +736,9 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="120" />
+             value="140" />
 			<skill id="Riding"
-             value="80" />
+             value="100" />
 			<skill id="OneHanded"
              value="100" />
 			<skill id="TwoHanded"

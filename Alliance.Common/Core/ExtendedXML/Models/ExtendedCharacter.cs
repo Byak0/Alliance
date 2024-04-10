@@ -11,7 +11,9 @@ namespace Alliance.Common.Core.ExtendedXML.Models
     public class ExtendedCharacter : MBObjectBase
     {
         private int _troopLeft = 0;
-        private int _troopLimit = 0;
+        private int _troopLimit = 1000;
+        private int _player_select_limit = 100;
+        private bool _hard_limit = false;
         BasicCharacterObject _basicCharacterObject;
 
         public int TroopLeft
@@ -38,6 +40,30 @@ namespace Alliance.Common.Core.ExtendedXML.Models
             }
         }
 
+        public int PlayerSelectLimit
+        {
+            get
+            {
+                return _player_select_limit;
+            }
+            set
+            {
+                _player_select_limit = value;
+            }
+        }
+
+        public bool HardLimit
+        {
+            get
+            {
+                return _hard_limit;
+            }
+            set
+            {
+                _hard_limit = value;
+            }
+        }
+
         public BasicCharacterObject BasicCharacterObject
         {
             get
@@ -58,6 +84,8 @@ namespace Alliance.Common.Core.ExtendedXML.Models
         {
             base.Deserialize(objectManager, node);
             XmlHelper.ReadInt(ref _troopLimit, node, "troop_limit");
+            XmlHelper.ReadInt(ref _player_select_limit, node, "player_select_limit");
+            _hard_limit = XmlHelper.ReadBool(node, "hard_limit");
             _basicCharacterObject = objectManager.ReadObjectReferenceFromXml<BasicCharacterObject>("id", node);
             TroopLeft = TroopLimit;
         }
