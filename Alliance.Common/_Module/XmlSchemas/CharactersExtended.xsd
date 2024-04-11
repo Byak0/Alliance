@@ -6,9 +6,9 @@
 				<xs:element maxOccurs="unbounded" name="CharacterExtended">
 					<xs:complexType>
 						<xs:attribute name="id" type="xs:string" use="required" />
-						<xs:attribute name="troop_limit" type="xs:int" use="required" />
-						<xs:attribute name="player_select_limit" type="xs:int" use="required" />
-						<xs:attribute name="hard_limit" type="xs:boolean" use="required" />
+						<xs:attribute name="troop_limit" type="xs:int" use="optional" />
+						<xs:attribute name="player_select_limit" type="xs:int" use="optional" />
+						<xs:attribute name="hard_limit" type="xs:boolean" use="optional" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

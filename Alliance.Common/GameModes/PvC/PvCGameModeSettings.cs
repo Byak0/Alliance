@@ -27,7 +27,6 @@ namespace Alliance.Common.GameModes.PvC
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
-            ModOptions = Config.Instance;
             ModOptions.ActivateSAE = true;
             ModOptions.SAERange = 50;
             ModOptions.TimeBeforeFlagRemoval = 450;

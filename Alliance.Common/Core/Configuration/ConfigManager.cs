@@ -170,6 +170,19 @@ namespace Alliance.Common.Core.Configuration
         }
 
         /// <summary>
+        /// Retrieve a copy of current config.
+        /// </summary>
+        public Config GetModOptionsCopy()
+        {
+            Config configCopy = new();
+            foreach (KeyValuePair<int, FieldInfo> field in ConfigFields)
+            {
+                field.Value.SetValue(configCopy, field.Value.GetValue(Config.Instance));
+            }
+            return configCopy;
+        }
+
+        /// <summary>
         /// Apply given list of mod options.
         /// </summary>
         public void ApplyModOptions(Config modOptions)
