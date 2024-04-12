@@ -6,12 +6,12 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.MountAndBlade;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.VOIP.Utilities;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromClient;
 using static Alliance.Common.Utilities.Logger;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.RTSCamera.Extension;
 using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.Audio.Utilities;
 
 namespace Alliance.Server.Extensions.VOIP.Behaviors
 {
@@ -79,7 +79,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
                     Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
                 }
 
-                if (VoipHelper.CanTargetHearVoice(speakerPosition, listenerPosition) || sendVoiceRecord.IsAnnouncement)
+                if (AudioHelper.CanTargetHearSound(speakerPosition, listenerPosition) || sendVoiceRecord.IsAnnouncement)
                 {
                     GameNetwork.BeginModuleEventAsServerUnreliable(listenerPeer.Peer);
                     GameNetwork.WriteMessage(new SendVoiceToPlay(speaker, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength));
@@ -93,7 +93,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
                 {
                     if (target.MissionPeer != null) continue;
 
-                    if (VoipHelper.CanTargetHearVoice(speakerPosition, target.Position) || sendVoiceRecord.IsAnnouncement)
+                    if (AudioHelper.CanTargetHearSound(speakerPosition, target.Position) || sendVoiceRecord.IsAnnouncement)
                     {
                         // For test purpose, make bot repeat what player said
                         MakeBotTalk(target, sendVoiceRecord.Buffer, sendVoiceRecord.BufferLength, 1, 1);
@@ -139,7 +139,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
                     Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
                 }
 
-                if (VoipHelper.CanTargetHearVoice(speaker.Position, listenerPosition))
+                if (AudioHelper.CanTargetHearSound(speaker.Position, listenerPosition))
                 {
                     GameNetwork.BeginModuleEventAsServerUnreliable(listenerPeer.Peer);
                     GameNetwork.WriteMessage(new SendBotVoiceToPlay(speaker, buffer, bufferLength));
@@ -151,7 +151,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
             {
                 if (target.MissionPeer != null) continue;
 
-                if (speaker != target && VoipHelper.CanTargetHearVoice(speaker.Position, target.Position))
+                if (speaker != target && AudioHelper.CanTargetHearSound(speaker.Position, target.Position))
                 {
                     // For test purpose, make bot repeat what player said
                     MakeBotTalk(target, buffer, bufferLength, nbRepeat - 1, delay);

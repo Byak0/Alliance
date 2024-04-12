@@ -1,6 +1,4 @@
-﻿using Alliance.Common.Extensions;
-using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
+﻿using Alliance.Common.Extensions.ClassLimiter.Models;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.ClassLimiter.Behaviors

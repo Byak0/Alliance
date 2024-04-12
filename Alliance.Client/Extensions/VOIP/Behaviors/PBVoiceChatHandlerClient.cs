@@ -16,11 +16,11 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.MountAndBlade;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer;
-using Alliance.Common.Extensions.VOIP.Utilities;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Configuration.Models;
 using static Alliance.Common.Utilities.Logger;
 using TaleWorlds.InputSystem;
+using Alliance.Common.Extensions.Audio.Utilities;
 
 namespace Alliance.Client.Extensions.VOIP.Behaviors
 {
@@ -1005,7 +1005,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
                 }
 
 
-                if (VoipHelper.CanTargetHearVoice(agentPosition, myPosition))
+                if (AudioHelper.CanTargetHearSound(agentPosition, myPosition))
                 {
                     int peerVoiceDataIndex = GetPlayerVoiceDataIndex(iteratedMissionPeer);
 
@@ -1032,7 +1032,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
             {
                 if (target.MissionPeer != null) continue;
 
-                if (VoipHelper.CanTargetHearVoice(myPosition, target.Position))
+                if (AudioHelper.CanTargetHearSound(myPosition, target.Position))
                 {
                     int agentVoiceDataIndex = _playerVoiceList.FindIndex(x => x.Agent == target);
 

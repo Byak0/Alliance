@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
-using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.Audio;
+using Alliance.Common.Extensions.Audio.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromClient;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,8 +31,8 @@ namespace Alliance.Client.Core.Console
             return result;
         }
 
-        [CommandLineFunctionality.CommandLineArgumentFunction("play_sound", "alliance")]
-        public static string PlaySound(List<string> args)
+        [CommandLineFunctionality.CommandLineArgumentFunction("play_sound_native", "alliance")]
+        public static string PlaySoundNative(List<string> args)
         {
             if (GameNetwork.NetworkPeerCount == 0)
             {
@@ -43,7 +44,8 @@ namespace Alliance.Client.Core.Console
             }
             else if (args.ElementAtOrValue(0, "") == "")
             {
-                return "Usage: alliance.play_sound sound_name sound_duration";
+                return "Usage: alliance.play_sound_native sound_name sound_duration\n" +
+                    "Example: alliance.play_sound_native event:/music/musicians/aserai/01 30";
             }
 
             int soundIndex = SoundEvent.GetEventIdFromString(args[0]);
@@ -58,6 +60,39 @@ namespace Alliance.Client.Core.Console
             GameNetwork.EndModuleEventAsClient();
 
             return "Requested server to play " + soundIndex + " for " + soundDuration + " seconds.";
+        }
+
+        [CommandLineFunctionality.CommandLineArgumentFunction("play_sound", "alliance")]
+        public static string PlaySound(List<string> args)
+        {
+            if (GameNetwork.NetworkPeerCount == 0)
+            {
+                return "Log into a server to use this command.";
+            }
+            else if (!GameNetwork.MyPeer.IsAdmin())
+            {
+                return "You need to be admin to use this command.";
+            }
+            else if (args.ElementAtOrValue(0, "") == "")
+            {
+                return "Usage: alliance.play_sound sound_name\n" +
+                    "Example: alliance.play_sound Victory - This will be a day to remember.wav";
+            }
+
+            string soundName = string.Join(" ", args);
+            soundName = soundName.Trim('"');
+            int soundIndex = AudioPlayer.Instance.GetAudioId(soundName);
+
+            if(soundIndex == -1)
+            {
+                return "Sound not found.";
+            }
+
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AudioRequest(soundIndex));
+            GameNetwork.EndModuleEventAsClient();
+
+            return "Requested server to play " + soundName;
         }
 
         [CommandLineFunctionality.CommandLineArgumentFunction("toggle_invulnerable", "alliance")]

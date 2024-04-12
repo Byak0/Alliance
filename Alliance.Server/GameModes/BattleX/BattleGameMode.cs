@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using Alliance.Server.GameModes.CaptainX.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;

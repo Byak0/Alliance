@@ -25,6 +25,7 @@
 						<xs:attribute name="prefab" type="xs:string" use="optional" />
 						<xs:attribute name="particle_name" type="xs:string" use="optional" />
 						<xs:attribute name="sound_on_use" type="xs:string" use="optional" />
+						<xs:attribute name="sound_volume" type="xs:float" use="optional" />
 						<xs:attribute name="sound_distance" type="xs:int" use="optional" />
 						<xs:attribute name="animation_on_use" type="xs:string" use="optional"/>
 						<xs:attribute name="use_limit" type="xs:int" use="optional" />

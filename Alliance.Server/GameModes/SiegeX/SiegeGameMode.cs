@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Siege.Behaviors;
 using Alliance.Server.GameModes.SiegeX.Behaviors;
 using Alliance.Server.Patch.Behaviors;

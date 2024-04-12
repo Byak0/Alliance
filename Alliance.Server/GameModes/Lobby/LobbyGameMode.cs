@@ -1,4 +1,3 @@
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Lobby.Behaviors;
 using Alliance.Server.Extensions.GameModeMenu.Behaviors;
 using Alliance.Server.GameModes.Lobby.Behaviors;

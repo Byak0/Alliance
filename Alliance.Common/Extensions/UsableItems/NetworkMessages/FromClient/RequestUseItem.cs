@@ -2,7 +2,7 @@
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
-namespace Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient
+namespace Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient
 {
     /// <summary>
     /// Request to play equipped item.

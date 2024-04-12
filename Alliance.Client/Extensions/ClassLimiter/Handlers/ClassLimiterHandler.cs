@@ -3,7 +3,7 @@ using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromServer;
 using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Client.Extensions.ClassLimiter.Behaviors
+namespace Alliance.Client.Extensions.ClassLimiter.Handlers
 {
     public class ClassLimiterHandler : IHandlerRegister
     {

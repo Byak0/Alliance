@@ -1,5 +1,4 @@
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.Patch.Behaviors;
