@@ -45,12 +45,15 @@ namespace Alliance.Common.Extensions.Audio
         public AudioPlayer()
         {
             audioDirectory = ModuleHelper.GetModuleFullPath("Alliance") + "ModuleSounds/";
-            InitializeAudioMappings();            
-            waveOutDevice = new WaveOutEvent();
-            mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-            mixer.ReadFully = true;            
-            waveOutDevice.Init(mixer);
-            waveOutDevice.Play();                    
+            InitializeAudioMappings();          
+            if(GameNetwork.IsClient)
+            {
+                waveOutDevice = new WaveOutEvent();
+                mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+                mixer.ReadFully = true;
+                waveOutDevice.Init(mixer);
+                waveOutDevice.Play();
+            }                
         }
 
         public void SetVolume(float newVolume)
