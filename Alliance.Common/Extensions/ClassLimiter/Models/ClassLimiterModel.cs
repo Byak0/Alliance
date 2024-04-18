@@ -21,10 +21,10 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         private static readonly ClassLimiterModel instance = new();
         public static ClassLimiterModel Instance { get { return instance; } }
 
-        public Dictionary<BasicCharacterObject, bool> CharacterAvailability => _characterAvailability;
         public event Action<BasicCharacterObject, bool> CharacterAvailabilityChanged;
-        private Dictionary<BasicCharacterObject, bool> _characterAvailability = new();
-        private Dictionary<BasicCharacterObject, int> _charactersTaken = new();
+        public Dictionary<BasicCharacterObject, CharacterAvailability> CharactersAvailability { get; private set; }
+        public Dictionary<BasicCharacterObject, bool> CharactersAvailable { get; private set; }
+
         private Dictionary<MissionPeer, BasicCharacterObject> _characterSelected = new();
 
         public ClassLimiterModel()
@@ -33,17 +33,28 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
         public void Init()
         {
-            _charactersTaken = new Dictionary<BasicCharacterObject, int>();
-            _characterAvailability = new Dictionary<BasicCharacterObject, bool>();
-            foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+            if(GameNetwork.IsServer)
             {
-                ExtendedCharacter exCharacter = character.GetExtendedCharacterObject();
-                _charactersTaken.Add(character, 0);
-                int scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
-                bool isAvailable = exCharacter.HardLimit ? exCharacter.PlayerSelectLimit >= 1 : exCharacter.PlayerSelectLimit * scaledPlayerCount / 100 >= 1;
-                ChangeCharacterAvailability(character, isAvailable);
+                CharactersAvailability = new();
+                CharactersAvailable = new();
+                foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+                {
+                    CharactersAvailability.Add(character, new CharacterAvailability(character));
+                    CharactersAvailable.Add(character, CharactersAvailability[character].IsAvailable);
+                }
+                foreach (BasicCharacterObject character in _characterSelected.Values)
+                {
+                    ReserveCharacterSlot(character);
+                }
+            } 
+            else
+            {
+                CharactersAvailable = new();
+                foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+                {
+                    CharactersAvailable.Add(character, true);
+                }
             }
-            _characterSelected = new();
         }
 
         /// <summary>
@@ -65,24 +76,25 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
             if (missionPeer == null || !Config.Instance.UsePlayerLimit) return false;
 
-            Log($"{missionPeer.Name} is requesting to use {message.Character.Name} ({_charactersTaken[message.Character]} remaining).", LogLevel.Debug);
+            Log($"{missionPeer.Name} is requesting to use {message.Character.Name} ({CharactersAvailability[message.Character].Slots} remaining).", LogLevel.Debug);
 
-            bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer, out BasicCharacterObject previousSelection);
-
-            if (hadPreviousSelection)
+            if (CharactersAvailability[message.Character].IsAvailable)
             {
-                FreeCharacterSlot(previousSelection);
-            }
-
-            if (TryReserveCharacterSlot(message.Character))
-            {
-                // Character is reserved
+                bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer, out BasicCharacterObject previousSelection);
+                if (hadPreviousSelection)
+                {
+                    CharactersAvailability[previousSelection].FreeSlot();
+                    if (CharactersAvailability[previousSelection].IsAvailable)
+                    {
+                        ChangeCharacterAvailability(previousSelection, true);
+                    }
+                }
+                ReserveCharacterSlot(message.Character);
                 _characterSelected[missionPeer] = message.Character;
-                SendMessageToPeer($"You reserved {message.Character.Name}. {_charactersTaken[message.Character]} remaining.", peer);
+                SendMessageToPeer($"You reserved {message.Character.Name} ({CharactersAvailability[message.Character].Taken}/{CharactersAvailability[message.Character].Slots})", peer);
             }
             else
             {
-                // No slot remaining
                 SendMessageToPeer($"There is no slot remaining for {message.Character.Name} !", peer);
             }
             return true;
@@ -91,35 +103,12 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         /// <summary>
         /// Request usage of a specific character and check its availability.
         /// </summary>
-        /// <returns>True if usage permitted. False otherwise.</returns>
-        public bool TryReserveCharacterSlot(BasicCharacterObject character)
+        public void ReserveCharacterSlot(BasicCharacterObject character)
         {
-            ExtendedCharacter exCharacter = character.GetExtendedCharacterObject();
-            int scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
-            int availableSlots = exCharacter.HardLimit ? exCharacter.PlayerSelectLimit : exCharacter.PlayerSelectLimit * scaledPlayerCount / 100;
-            if (_charactersTaken[character] < availableSlots)
+            CharactersAvailability[character].ReserveSlot();
+            if (!CharactersAvailability[character].IsAvailable)
             {
-                _charactersTaken[character]++;
-                if (_charactersTaken[character] >= availableSlots)
-                {
-                    ChangeCharacterAvailability(character, false);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void FreeCharacterSlot(BasicCharacterObject character)
-        {
-            ExtendedCharacter exCharacter = character.GetExtendedCharacterObject();
-            int availableSlots = exCharacter.HardLimit ? exCharacter.PlayerSelectLimit : exCharacter.PlayerSelectLimit * GameNetwork.NetworkPeers.Count / 100;
-            _charactersTaken[character]--;
-            if (!_characterAvailability[character] && availableSlots > _charactersTaken[character])
-            {
-                ChangeCharacterAvailability(character, true);
+                ChangeCharacterAvailability(character, false);
             }
         }
 
@@ -127,7 +116,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         {
             Log($"Changed availability of {character.Name} to {isAvailable}", LogLevel.Debug);
 
-            _characterAvailability[character] = isAvailable;
+            CharactersAvailable[character] = isAvailable;
             CharacterAvailabilityChanged?.Invoke(character, isAvailable);
 
             if (GameNetwork.IsServer)
@@ -145,12 +134,46 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         {
             Log($"Sending available characters to {peer.UserName}", LogLevel.Debug);
 
-            foreach (KeyValuePair<BasicCharacterObject, bool> kvp in _characterAvailability)
+            foreach (KeyValuePair<BasicCharacterObject, bool> kvp in CharactersAvailable)
             {
                 GameNetwork.BeginModuleEventAsServer(peer);
                 GameNetwork.WriteMessage(new CharacterAvailableMessage(kvp.Key, kvp.Value));
                 GameNetwork.EndModuleEventAsServer();
             }
+        }
+    }
+
+    public class CharacterAvailability
+    {
+        private int _taken;
+
+        public BasicCharacterObject Character { get; set; }
+        public ExtendedCharacter ExtendedCharacter { get; set; }
+        public int Taken => _taken;
+        public int Slots => GetSlots();
+        public bool IsAvailable => _taken < Slots;
+
+        public CharacterAvailability(BasicCharacterObject character)
+        {
+            Character = character;
+            ExtendedCharacter = character.GetExtendedCharacterObject();
+            _taken = 0;
+        }
+
+        public void ReserveSlot()
+        {
+            _taken++;
+        }
+
+        public void FreeSlot()
+        {
+            _taken--;
+        }
+
+        private int GetSlots()
+        {
+            int scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+            return ExtendedCharacter.HardLimit ? ExtendedCharacter.PlayerSelectLimit : ExtendedCharacter.PlayerSelectLimit * scaledPlayerCount / 100;
         }
     }
 }

@@ -379,7 +379,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         public void UpdateEnabled()
         {
             // Check if character is available
-            IsEnabled = (!Config.Instance.UsePlayerLimit || ClassLimiterModel.Instance.CharacterAvailability[_character]) && _gameMode.IsClassAvailable(HeroClass) && (_gameMode.IsInWarmup || !_gameMode.IsGameModeUsingGold || _gameMode.GetGoldAmount() >= Gold);
+            IsEnabled = (!Config.Instance.UsePlayerLimit || ClassLimiterModel.Instance.CharactersAvailable[_character]) && _gameMode.IsClassAvailable(HeroClass) && (_gameMode.IsInWarmup || !_gameMode.IsGameModeUsingGold || _gameMode.GetGoldAmount() >= Gold);
         }
 
         [UsedImplicitly]
