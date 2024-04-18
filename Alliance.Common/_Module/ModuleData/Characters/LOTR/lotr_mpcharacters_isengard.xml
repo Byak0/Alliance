@@ -1017,7 +1017,7 @@
                 level="30"
                 voice="curt"
                 is_female="false"
-								name="{=al_lotr_isen_berserk_t}Uruk-hai Berserker"
+				name="{=al_lotr_isen_berserk_t}Uruk-hai Berserker"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
@@ -1088,21 +1088,18 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Berserker - HERO -->
 	<NPCCharacter id="mp_berserk_isengard_hero"
-                default_group="Infantry"
-                level="30"
-                voice="curt"
-                is_female="false"
-								name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker"
-                occupation="Soldier"
-                culture="Culture.isengard">
+        default_group="Infantry"
+        level="30"
+        voice="curt"
+        is_female="false"
+		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker"
+        occupation="Soldier"
+        culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="22.56" weight="0.65" build="0.85"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.75"
-                         build="0.95"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4" age="40.83" weight="0.75" build="0.95"
+				key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1146,21 +1143,18 @@
 
 	<!-- Uruk-hai Archer - TROOP -->
 	<NPCCharacter id="mp_light_ranged_isengard_troop"
-									default_group="Ranged"
-									level="5"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_archer_t}Uruk-hai Archer"
-									occupation="Soldier"
-									culture="Culture.isengard">
+		default_group="Ranged"
+		level="10"
+		voice="curt"
+		is_female="false"
+		name="{=al_lotr_isen_archer_t}Uruk-hai Archer"
+		occupation="Soldier"
+		culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
 				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-												 age="40.83"
-												 weight="0.65"
-												 build="0.65"
-												 key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+			<BodyPropertiesMax version="4" age="40.83" weight="0.65" build="0.65"
+				key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1168,7 +1162,7 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="100" />
+						 value="120" />
 			<skill id="TwoHanded"
 						 value="60" />
 			<skill id="Polearm"
@@ -1217,21 +1211,18 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Archer - HERO -->
 	<NPCCharacter id="mp_light_ranged_isengard_hero"
-									default_group="Ranged"
-									level="5"
-									voice="curt"
-									is_female="false"
-									name="{=al_lotr_isen_archer_h}Uruk-hai Archer"
-									occupation="Soldier"
-									culture="Culture.isengard">
+		default_group="Ranged"
+		level="10"
+		voice="curt"
+		is_female="false"
+		name="{=al_lotr_isen_archer_h}Uruk-hai Archer"
+		occupation="Soldier"
+		culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="22.56" weight="0.65" build="0.65"
-        key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
-			<BodyPropertiesMax version="4"
-                         age="40.83"
-                         weight="0.65"
-                         build="0.65"
-                         key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
+				key="003FF00F00CC3000FF47AF68FFD8E19BFDD199BAB5F0B91FA9AAAEAA1F087FE100FAA6030FEAFAA800000000000000000000000000000000000000003FFC0142"  />
+			<BodyPropertiesMax version="4" age="40.83" weight="0.65" build="0.65"
+				key="003FF00F00CC1013FFF7AFCEFFD8E89B9F003FB0BFF4FF1F80114121AF11FFE10077760307FEBFEE00000000000000000000000000000000000000003EF400C2"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1239,7 +1230,7 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="100" />
+						 value="120" />
 			<skill id="TwoHanded"
 						 value="60" />
 			<skill id="Polearm"
@@ -1258,7 +1249,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
+									 id="Item.mp_arrows_bodkin" />
 				<equipment slot="Item3"
 									 id="Item.isengard_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
