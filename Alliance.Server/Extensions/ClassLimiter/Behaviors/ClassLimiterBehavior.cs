@@ -39,10 +39,10 @@ namespace Alliance.Server.Extensions.ClassLimiter.Behaviors
         public override void OnAgentBuild(Agent agent, Banner banner)
         {
             // For test purpose, reserve slot whenever a bot spawn.
-            if (agent.Character != null && agent.MissionPeer == null)
-            {
-                ClassLimiterModel.Instance.ReserveCharacterSlot(agent.Character);
-            }
+            //if (agent.Character != null && agent.MissionPeer == null)
+            //{
+            //    ClassLimiterModel.Instance.ReserveCharacterSlot(agent.Character);
+            //}
         }
 
         private void OnRoundStart()

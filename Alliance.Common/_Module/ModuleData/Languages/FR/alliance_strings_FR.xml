@@ -48,6 +48,7 @@
 		<string id="str_alliance_scene_les_plaines_eastemnet_uruk" text="Les Plaines de l'Eastemnet par Adwennor (Isengard)" />
 		<string id="str_alliance_scene_lotr_westfold_village" text="Village de l'Ouestfolde par Esperanza" />
 		<string id="str_alliance_scene_lotr_westfold_village_lobby" text="Village de l'Ouestfolde par Esperanza (Lobby)" />
+		<string id="str_alliance_scene_westfold_burned" text="Village de l'Ouestfolde par Esperanza (Isengard)" />
 		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
 
 		<!-- Unit names -->

@@ -96,7 +96,8 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
         {
             await Task.Delay(15000);
 
-            if (Mission.Current == null || Mission.Current.AllAgents == null || agentManager == null) return;
+            if (Mission.Current == null || Mission.Current.AllAgents == null) return;
+            if (agentManager == null) agentManager = new DieAgentManager();
 
             allAgentList = Mission.Current.AllAgents;
             agentManager.UpdateAgentDieDico(allAgentList);

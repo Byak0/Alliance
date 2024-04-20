@@ -30,5 +30,6 @@
 	<string id="str_multiplayer_scene_name.Les_plaines_eastemnet_uruk" text="{=str_alliance_scene_les_plaines_eastemnet_uruk}The Eastemnet Plains by Adwennor (Isengard)" />
 	<string id="str_multiplayer_scene_name.LOTR_WestFold_Village" text="{=str_alliance_scene_lotr_westfold_village}WestFold Village by Esperanza" />
 	<string id="str_multiplayer_scene_name.LOTR_WestFold_Village_Lobby" text="{=str_alliance_scene_lotr_westfold_village_lobby}WestFold Village by Esperanza (Lobby)" />
+	<string id="str_multiplayer_scene_name.Westfold_burned" text="{=str_alliance_scene_westfold_burned}WestFold Village by Esperanza (Isengard)" />
 	<string id="str_multiplayer_scene_name.Gues_isen" text="{=str_alliance_scene_gues_isen}The Fords of Isen by Adwennor" />
 </strings>

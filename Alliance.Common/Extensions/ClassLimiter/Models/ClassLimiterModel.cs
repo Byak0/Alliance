@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using TaleWorlds.PlatformService.Steam;
+using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.ClassLimiter.Models
@@ -25,7 +27,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         public Dictionary<BasicCharacterObject, CharacterAvailability> CharactersAvailability { get; private set; }
         public Dictionary<BasicCharacterObject, bool> CharactersAvailable { get; private set; }
 
-        private Dictionary<MissionPeer, BasicCharacterObject> _characterSelected = new();
+        private Dictionary<PlayerId, BasicCharacterObject> _characterSelected = new();
 
         public ClassLimiterModel()
         {
@@ -41,10 +43,12 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
                 {
                     CharactersAvailability.Add(character, new CharacterAvailability(character));
                     CharactersAvailable.Add(character, CharactersAvailability[character].IsAvailable);
+                    ChangeCharacterAvailability(character, CharactersAvailability[character].IsAvailable);
                 }
-                foreach (BasicCharacterObject character in _characterSelected.Values)
+                foreach (KeyValuePair<PlayerId, BasicCharacterObject> kvp in _characterSelected)
                 {
-                    ReserveCharacterSlot(character);
+                    Log($"Reserving slot for {kvp.Key.Id1} : {kvp.Value.Name}", LogLevel.Debug);
+                    ReserveCharacterSlot(kvp.Value);
                 }
             } 
             else
@@ -80,7 +84,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
             if (CharactersAvailability[message.Character].IsAvailable)
             {
-                bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer, out BasicCharacterObject previousSelection);
+                bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer.Peer.Id, out BasicCharacterObject previousSelection);
                 if (hadPreviousSelection)
                 {
                     CharactersAvailability[previousSelection].FreeSlot();
@@ -90,7 +94,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
                     }
                 }
                 ReserveCharacterSlot(message.Character);
-                _characterSelected[missionPeer] = message.Character;
+                _characterSelected[missionPeer.Peer.Id] = message.Character;
                 SendMessageToPeer($"You reserved {message.Character.Name} ({CharactersAvailability[message.Character].Taken}/{CharactersAvailability[message.Character].Slots})", peer);
             }
             else
@@ -114,6 +118,8 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
         public void ChangeCharacterAvailability(BasicCharacterObject character, bool isAvailable)
         {
+            if(isAvailable == CharactersAvailable[character]) return;
+
             Log($"Changed availability of {character.Name} to {isAvailable}", LogLevel.Debug);
 
             CharactersAvailable[character] = isAvailable;
