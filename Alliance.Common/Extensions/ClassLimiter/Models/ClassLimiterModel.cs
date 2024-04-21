@@ -35,28 +35,25 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
         public void Init()
         {
-            if(GameNetwork.IsServer)
+            CharactersAvailable = new();
+            foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+            {
+                CharactersAvailable.Add(character, false);
+                ChangeCharacterAvailability(character, true);
+            }
+
+            if (GameNetwork.IsServer)
             {
                 CharactersAvailability = new();
-                CharactersAvailable = new();
                 foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
                 {
                     CharactersAvailability.Add(character, new CharacterAvailability(character));
-                    CharactersAvailable.Add(character, CharactersAvailability[character].IsAvailable);
                     ChangeCharacterAvailability(character, CharactersAvailability[character].IsAvailable);
                 }
                 foreach (KeyValuePair<PlayerId, BasicCharacterObject> kvp in _characterSelected)
                 {
                     Log($"Reserving slot for {kvp.Key.Id1} : {kvp.Value.Name}", LogLevel.Debug);
                     ReserveCharacterSlot(kvp.Value);
-                }
-            } 
-            else
-            {
-                CharactersAvailable = new();
-                foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
-                {
-                    CharactersAvailable.Add(character, true);
                 }
             }
         }

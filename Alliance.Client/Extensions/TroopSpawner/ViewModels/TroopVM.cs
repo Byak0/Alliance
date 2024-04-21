@@ -310,11 +310,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
             RefreshValues();
 
             SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshCost;
+            SpawnTroopsModel.Instance.OnTroopSpawned += RefreshTroopCount;
         }
 
         public override void OnFinalize()
         {
             SpawnTroopsModel.Instance.OnDifficultyUpdated -= RefreshCost;
+            SpawnTroopsModel.Instance.OnTroopSpawned -= RefreshTroopCount;
         }
 
         public override void RefreshValues()
@@ -336,6 +338,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
         private void RefreshCost()
         {
             TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
+        }
+
+        private void RefreshTroopCount(TroopSpawnedEventArgs args)
+        {
+            TroopLimit = ExtendedTroop?.TroopLeft + "/" + ExtendedTroop?.TroopLimit;
         }
 
         private void InitPerksList()

@@ -29,7 +29,6 @@ namespace Alliance.Server.GameModes.CvC
             {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new RespawnBehavior(),
                     new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new MultiplayerRoundController(),
                     new CvCGameModeClientBehavior(),
