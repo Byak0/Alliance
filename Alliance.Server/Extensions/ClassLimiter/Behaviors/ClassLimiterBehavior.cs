@@ -1,6 +1,5 @@
-﻿using Alliance.Common.Extensions;
-using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
+﻿using Alliance.Common.Extensions.ClassLimiter.Models;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.ClassLimiter.Behaviors
@@ -37,13 +36,13 @@ namespace Alliance.Server.Extensions.ClassLimiter.Behaviors
             }
         }
 
-        public override void OnAgentCreated(Agent agent)
+        public override void OnAgentBuild(Agent agent, Banner banner)
         {
-            // For test purpose, reserver slot whenever a bot spawn.
-            if (agent.Character != null && agent.MissionPeer == null)
-            {
-                ClassLimiterModel.Instance.TryReserveCharacterSlot(agent.Character);
-            }
+            // For test purpose, reserve slot whenever a bot spawn.
+            //if (agent.Character != null && agent.MissionPeer == null)
+            //{
+            //    ClassLimiterModel.Instance.ReserveCharacterSlot(agent.Character);
+            //}
         }
 
         private void OnRoundStart()

@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
@@ -27,15 +26,14 @@ namespace Alliance.Common.GameModes.PvC
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
-            ModOptions = Config.Instance;
             ModOptions.ActivateSAE = true;
             ModOptions.SAERange = 50;
-            ModOptions.TimeBeforeFlagRemoval = 450;
+            ModOptions.TimeBeforeFlagRemoval = 300;
             ModOptions.MoraleMultiplierForFlag = 1f;
             ModOptions.MoraleMultiplierForLastFlag = 1f;
             ModOptions.UseTroopCost = true;
             ModOptions.UseTroopLimit = false;
-            ModOptions.GoldMultiplier = 3f;
+            ModOptions.GoldMultiplier = 1.3f;
             ModOptions.StartingGold = 0;
             ModOptions.GoldPerKill = 0;
             ModOptions.GoldPerAssist = 0;

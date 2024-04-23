@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Extensions;
-using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.RTSCamera.Models;
 using Alliance.Common.Extensions.RTSCamera.NetworkMessages.FromClient;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.MountAndBlade.GameNetwork;

@@ -450,7 +450,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.ScoreBoard.ViewModels
             {
                 foreach (MissionScoreboardPlayerVM player in side.Players)
                 {
-                    if (player.Peer.Peer.Id.Equals(playerId))
+                    if (player?.Peer?.Peer.Id.Equals(playerId) ?? false)
                     {
                         player.UpdateIsMuted();
                         return;
@@ -465,7 +465,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.ScoreBoard.ViewModels
             {
                 foreach (MissionScoreboardPlayerVM player in side.Players)
                 {
-                    if (player.Peer.Peer.Id.Equals(playerId))
+                    if (player?.Peer?.Peer.Id.Equals(playerId) ?? false)
                     {
                         player.UpdateIsMuted();
                         return;

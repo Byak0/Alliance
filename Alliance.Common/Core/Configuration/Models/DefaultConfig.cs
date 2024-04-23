@@ -52,6 +52,8 @@ namespace Alliance.Common.Core.Configuration.Models
         public int SAERange = 30;
         [ConfigProperty("Toggle formation", "Activate or not the formation system (debuff isolated players).", ConfigValueType.Bool)]
         public bool EnableFormation = true;
+        [ConfigProperty("Enable player limits", "Limit the number of characters available to players. Limits are defined in CharactersExtended.xml.", ConfigValueType.Bool)]
+        public bool UsePlayerLimit = true;
 
         [ConfigProperty("Use gold to recruit troops", "Use gold system to recruit troops.", ConfigValueType.Bool)]
         public bool UseTroopCost = false;

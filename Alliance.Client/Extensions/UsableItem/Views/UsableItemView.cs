@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

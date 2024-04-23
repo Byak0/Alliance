@@ -14,6 +14,7 @@ namespace Alliance.Common.Core.ExtendedXML.Models
         public string Prefab { get; private set; }
         public string ParticleName { get; private set; }
         public string SoundOnUse { get; private set; }
+        public float SoundVolume { get; private set; }
         public string AnimationOnUse { get; private set; }
         public int SoundDistance { get; private set; }
         public float Cooldown { get; private set; }
@@ -31,6 +32,7 @@ namespace Alliance.Common.Core.ExtendedXML.Models
             Prefab = XmlHelper.ReadString(node, "prefab");
             ParticleName = XmlHelper.ReadString(node, "particle_name");
             SoundOnUse = XmlHelper.ReadString(node, "sound_on_use");
+            SoundVolume = XmlHelper.ReadFloat(node, "sound_volume");
             AnimationOnUse = XmlHelper.ReadString(node, "animation_on_use");
             Cooldown = XmlHelper.ReadFloat(node, "cooldown");
             SoundDistance = XmlHelper.ReadInt(node, "sound_distance");

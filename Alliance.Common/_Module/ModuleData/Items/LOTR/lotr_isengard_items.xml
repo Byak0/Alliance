@@ -2,35 +2,34 @@
 <Items>
 	<!-- HORNS -->
 	<Item id="isengard_horn_1"
-					name="Isengard Horn"
-					is_merchandise="false"
-					body_name="bo_mace_a"
-					recalculate_body="true"
-					mesh="isengard_horn"
-					culture="Culture.isengard"
-					value="4"
-					weight="0.2"
-					Type="OneHandedWeapon"
-					item_holsters="throwing_stone_2">
+	name="Isengard Horn"
+	is_merchandise="false"
+	body_name="bo_mace_a"
+	recalculate_body="true"
+	mesh="isengard_horn"
+	culture="Culture.isengard"
+	value="4"
+	weight="0.2"
+	Type="OneHandedWeapon"
+	item_holsters="throwing_stone_2">
 		<ItemComponent>
 			<Weapon weapon_class="OneHandedAxe"
-              weapon_balance="100"
-              thrust_speed="78"
-              speed_rating="97"
-              missile_speed="0"
-              weapon_length="65"
-              swing_damage="6"
-              swing_damage_type="Blunt"
-							item_usage="al_horn"
-							rotation="0.0,-5.0,91.2"
-              physics_material="wood_weapon">
+			weapon_balance="100"
+			thrust_speed="78"
+			speed_rating="97"
+			missile_speed="0"
+			weapon_length="65"
+			swing_damage="6"
+			swing_damage_type="Blunt"
+			item_usage="al_horn"
+			rotation="-16.0,-52.0,58.0"
+			physics_material="wood_weapon">
 				<WeaponFlags MeleeWeapon="true" />
 			</Weapon>
 		</ItemComponent>
 		<Flags DropOnWeaponChange="false"
-           ForceAttachOffHandPrimaryItemBone="true"
-           HeldInOffHand="true"
-           HasToBeHeldUp="false" />
+		ForceAttachOffHandPrimaryItemBone="true"
+		HeldInOffHand="true"
+		HasToBeHeldUp="false" />
 	</Item>
-
 </Items>

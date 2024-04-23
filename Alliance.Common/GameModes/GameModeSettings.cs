@@ -65,7 +65,7 @@ namespace Alliance.Common.GameModes
         /// </summary>
         public virtual void SetDefaultModOptions()
         {
-            ModOptions = new Config();
+            ModOptions = ConfigManager.Instance.GetModOptionsCopy();
         }
 
         /// <summary>

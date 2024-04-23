@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions.ClassLimiter.Models;
+﻿using Alliance.Common.Extensions.RTSCamera.Models;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;

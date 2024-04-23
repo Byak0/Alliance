@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.ClassLimiter.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -671,7 +672,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             heroClass.IsSelected = true;
             CurrentSelectedClass = heroClass;
 
-            ClassLimiterModel.Instance.RequestUsage(heroClass.Character);
+            if(Config.Instance.UsePlayerLimit)
+            {
+                ClassLimiterModel.Instance.RequestUsage(heroClass.Character);
+            }            
 
             if (GameNetwork.IsMyPeerReady)
             {

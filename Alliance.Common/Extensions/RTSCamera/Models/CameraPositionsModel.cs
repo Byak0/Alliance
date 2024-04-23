@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Common.Extensions.ClassLimiter.Models
+namespace Alliance.Common.Extensions.RTSCamera.Models
 {
     /// <summary>
     /// Model storing camera positions of players.
@@ -28,7 +28,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
             }
             return false;
         }
-        
+
         /// <summary>
         /// Client method - Request update of camera position.
         /// </summary>

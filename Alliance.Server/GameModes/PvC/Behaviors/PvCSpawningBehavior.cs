@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
@@ -80,6 +81,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     _spawningTimer = 0f;
                     _spawningTimerTicking = false;
                     StartFightAfterTimer(Config.Instance.TimeBeforeStart * 1000);
+                    ReportClassRepartition();
                 }
             }
         }
@@ -266,6 +268,32 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     agent.SetMortalityState(MortalityState.Mortal);
                 }
             }
+        }
+
+        private void ReportClassRepartition()
+        {
+            // Report class repartition at the beginning of the round
+            BasicCultureObject cultureTeam1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+            BasicCultureObject cultureTeam2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+            string reportTeam1 = $"{cultureTeam1.Name}: \n ";
+            string reportTeam2 = $"{cultureTeam2.Name}: \n ";
+            foreach (CharacterAvailability characterAvailability in ClassLimiterModel.Instance.CharactersAvailability.Values)
+            {
+                if (characterAvailability.Taken <= 0) continue;
+
+                if (characterAvailability.Character.Culture == cultureTeam1)
+                {
+                    reportTeam1 += $"{characterAvailability.Character.Name}: {characterAvailability.Taken}/{characterAvailability.Slots} \n ";
+                }
+                else if (characterAvailability.Character.Culture == cultureTeam2)
+                {
+                    reportTeam2 += $"{characterAvailability.Character.Name}: {characterAvailability.Taken}/{characterAvailability.Slots} \n ";
+                }
+            }
+            Log(reportTeam1, LogLevel.Information);
+            Log(reportTeam2, LogLevel.Information);
+            SendMessageToAll(reportTeam1);
+            SendMessageToAll(reportTeam2);
         }
 
         // Spawn agents preview
