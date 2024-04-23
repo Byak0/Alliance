@@ -44,8 +44,11 @@
 		<Exec Command="xcopy &quot;$(TargetDir)Mono.Cecil.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Alliance.Common.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Asio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Core.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Midi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinMM.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />

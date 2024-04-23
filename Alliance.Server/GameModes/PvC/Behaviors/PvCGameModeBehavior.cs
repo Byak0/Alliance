@@ -5,6 +5,7 @@ using Alliance.Server.GameModes.CaptainX.Behaviors;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -130,8 +131,10 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             }
         }
 
-        private void SetStartingGold()
+        private async void SetStartingGold()
         {
+            await Task.Delay(5000);
+
             int goldToGive = Config.Instance.StartingGold;
             List<MissionPeer> commandersAttack = new List<MissionPeer>();
             List<MissionPeer> commandersDefend = new List<MissionPeer>();
@@ -147,8 +150,8 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
                     commandersDefend.Add(peer);
                 }
             }
-            SplitGoldBetweenPlayers(goldToGive, commandersAttack);
-            SplitGoldBetweenPlayers(goldToGive, commandersDefend);
+            SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Defender), commandersAttack);
+            SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Attacker), commandersDefend);
         }
 
         private void SplitGoldBetweenPlayers(int goldToGive, List<MissionPeer> players)

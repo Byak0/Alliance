@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;

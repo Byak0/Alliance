@@ -36,7 +36,6 @@ namespace Alliance.Common.GameModes.CvC
         public override void SetDefaultModOptions()
         {
             base.SetDefaultModOptions();
-            ModOptions = Config.Instance;
             ModOptions.ActivateSAE = true;
             ModOptions.SAERange = 50;
             ModOptions.EnableFormation = false;

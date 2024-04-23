@@ -54,12 +54,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views
                 agentList = Mission.AllAgents.Where((x) => x.Team == Mission.PlayerTeam && x.MissionPeer != null && x.IsCameraAttachable()).ToList();
             }
 
-            Log($"{(GameNetwork.MyPeer.IsCommander() ? "Commander" : "Player")} - List of viewable agents = {agentList.Count}", LogLevel.Debug);
-
             if (agentList.Count == 0)
             {
                 agentList = Mission.AllAgents.Where((x) => x.IsCameraAttachable()).ToList();
-                Log($"{(GameNetwork.MyPeer.IsCommander() ? "Commander" : "Player")} - Empty list, adding every agents : {agentList.Count}", LogLevel.Debug);
             }
 
             return agentList;

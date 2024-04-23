@@ -1,6 +1,5 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.Extensions.VOIP.Behaviors;
 using Alliance.Common.GameModes.CvC.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
@@ -30,7 +29,6 @@ namespace Alliance.Server.GameModes.CvC
             {
                     new AllianceLobbyComponent(),
                     new FormationBehavior(),
-                    new RespawnBehavior(),
                     new PvCGameModeBehavior(MultiplayerGameType.Captain),
                     new MultiplayerRoundController(),
                     new CvCGameModeClientBehavior(),

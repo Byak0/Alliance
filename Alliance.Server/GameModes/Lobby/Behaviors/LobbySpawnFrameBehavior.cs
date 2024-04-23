@@ -7,6 +7,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Server.GameModes.Lobby.Behaviors
 {
@@ -14,7 +15,39 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
     {
         public override MatrixFrame GetSpawnFrame(Team team, bool hasMount, bool isInitialSpawn)
         {
-            return GetSpawnFrameFromSpawnPoints(SpawnPoints.ToList(), null, hasMount);
+            return GetBestSpawnPoint(SpawnPoints.ToList(), hasMount);
+        }
+
+        private MatrixFrame GetBestSpawnPoint(List<GameEntity> spawnPointList, bool hasMount)
+        {
+            float bestSpawnScore = float.MinValue;
+            int bestSpawnIndex = -1;
+            MBList<Agent> agents = (MBList<Agent>)Mission.Current.Agents;
+            for (int i = 0; i < spawnPointList.Count; i++)
+            {
+                float spawnScore = MBRandom.RandomFloat * 0.2f;
+                foreach (Agent agent in Mission.Current.GetNearbyAgents(spawnPointList[i].GlobalPosition.AsVec2, 2f, agents))
+                {
+                    float lengthSquared = (agent.Position - spawnPointList[i].GlobalPosition).LengthSquared;
+                    if (lengthSquared < 4f)
+                    {
+                        float length = MathF.Sqrt(lengthSquared);
+                        spawnScore -= (2f - length) * 5f;
+                    }
+                }
+                if (hasMount && spawnPointList[i].HasTag("exclude_mounted"))
+                {
+                    spawnScore -= 100f;
+                }
+                if (spawnScore > bestSpawnScore)
+                {
+                    bestSpawnScore = spawnScore;
+                    bestSpawnIndex = i;
+                }
+            }
+            MatrixFrame globalFrame = spawnPointList[bestSpawnIndex].GetGlobalFrame();
+            globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
+            return globalFrame;
         }
 
         public MatrixFrame GetClosestSpawnFrame(Team team, bool hasMount, bool isInitialSpawn, MatrixFrame spawnPos)

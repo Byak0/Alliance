@@ -2,9 +2,9 @@
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
-using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
-using Alliance.Common.Extensions.SoundPlayer;
+using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
+using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.ExtendedXML.Extension.ExtendedXMLExtension;
@@ -60,7 +60,8 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
                 }
                 if (itemEx.SoundOnUse != null)
                 {
-                    SoundSystem.Instance.PlaySoundLocalized(itemEx.SoundOnUse, userAgent.Position, synchronize: true);
+                    AudioPlayer.Instance.Play(itemEx.SoundOnUse, itemEx.SoundVolume, true, itemEx.SoundDistance, userAgent.Position, true);
+                    //NativeAudioPlayer.Instance.PlaySoundLocalized(itemEx.SoundOnUse, userAgent.Position, synchronize: true);
                 }
                 return true;
             }

@@ -1,32 +1,33 @@
-﻿using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromServer;
+﻿using Alliance.Common.Extensions.Audio.NetworkMessages.FromServer;
 using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Common.Extensions.SoundPlayer
+namespace Alliance.Common.Extensions.Audio
 {
     /// <summary>
-    /// Handle playing sounds and their synchronization.    
+    /// Audio player for native sounds. Sucks a bit. 
+    /// Prefer using AudioPlayer for custom sounds.
     /// </summary>
-    public class SoundSystem
+    public class NativeAudioPlayer
     {
-        private static SoundSystem _instance;
+        private static NativeAudioPlayer _instance;
 
-        public static SoundSystem Instance
+        public static NativeAudioPlayer Instance
         {
             get
             {
                 if (_instance == null)
                 {
-                    _instance = new SoundSystem();
+                    _instance = new NativeAudioPlayer();
                 }
                 return _instance;
             }
         }
 
-        public SoundSystem()
+        public NativeAudioPlayer()
         {
         }
 

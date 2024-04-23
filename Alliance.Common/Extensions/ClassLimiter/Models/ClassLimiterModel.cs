@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.ExtendedXML.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.ExtendedXML.Extension;
 using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.ClassLimiter.NetworkMessages.FromServer;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using TaleWorlds.PlatformService.Steam;
+using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.ClassLimiter.Models
@@ -20,11 +23,11 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         private static readonly ClassLimiterModel instance = new();
         public static ClassLimiterModel Instance { get { return instance; } }
 
-        public Dictionary<BasicCharacterObject, bool> CharacterAvailability => _characterAvailability;
         public event Action<BasicCharacterObject, bool> CharacterAvailabilityChanged;
-        private Dictionary<BasicCharacterObject, bool> _characterAvailability = new();
-        private Dictionary<BasicCharacterObject, int> _charactersLeft = new();
-        private Dictionary<MissionPeer, BasicCharacterObject> _characterSelected = new();
+        public Dictionary<BasicCharacterObject, CharacterAvailability> CharactersAvailability { get; private set; }
+        public Dictionary<BasicCharacterObject, bool> CharactersAvailable { get; private set; }
+
+        private Dictionary<PlayerId, BasicCharacterObject> _characterSelected = new();
 
         public ClassLimiterModel()
         {
@@ -32,15 +35,27 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
         public void Init()
         {
-            _charactersLeft = new Dictionary<BasicCharacterObject, int>();
-            _characterAvailability = new Dictionary<BasicCharacterObject, bool>();
+            CharactersAvailable = new();
             foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
             {
-                ExtendedCharacter exCharacter = character.GetExtendedCharacterObject();
-                _charactersLeft.Add(character, exCharacter.TroopLimit);
-                ChangeCharacterAvailability(character, exCharacter.TroopLimit > 0);
+                CharactersAvailable.Add(character, false);
+                ChangeCharacterAvailability(character, true);
             }
-            _characterSelected = new();
+
+            if (GameNetwork.IsServer)
+            {
+                CharactersAvailability = new();
+                foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
+                {
+                    CharactersAvailability.Add(character, new CharacterAvailability(character));
+                    ChangeCharacterAvailability(character, CharactersAvailability[character].IsAvailable);
+                }
+                foreach (KeyValuePair<PlayerId, BasicCharacterObject> kvp in _characterSelected)
+                {
+                    Log($"Reserving slot for {kvp.Key.Id1} : {kvp.Value.Name}", LogLevel.Debug);
+                    ReserveCharacterSlot(kvp.Value);
+                }
+            }
         }
 
         /// <summary>
@@ -60,26 +75,27 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         public bool HandleRequestUsage(NetworkCommunicator peer, RequestCharacterUsage message)
         {
             MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
-            if (missionPeer == null) return false;
+            if (missionPeer == null || !Config.Instance.UsePlayerLimit) return false;
 
-            Log($"{missionPeer.Name} is requesting to use {message.Character.Name} ({_charactersLeft[message.Character]} remaining).", LogLevel.Debug);
+            Log($"{missionPeer.Name} is requesting to use {message.Character.Name} ({CharactersAvailability[message.Character].Slots} remaining).", LogLevel.Debug);
 
-            bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer, out BasicCharacterObject previousSelection);
-
-            if (hadPreviousSelection)
+            if (CharactersAvailability[message.Character].IsAvailable)
             {
-                FreeCharacterSlot(previousSelection);
-            }
-
-            if (TryReserveCharacterSlot(message.Character))
-            {
-                // Character is reserved
-                _characterSelected[missionPeer] = message.Character;
-                SendMessageToPeer($"You reserved {message.Character.Name}. {_charactersLeft[message.Character]} remaining.", peer);
+                bool hadPreviousSelection = _characterSelected.TryGetValue(missionPeer.Peer.Id, out BasicCharacterObject previousSelection);
+                if (hadPreviousSelection)
+                {
+                    CharactersAvailability[previousSelection].FreeSlot();
+                    if (CharactersAvailability[previousSelection].IsAvailable)
+                    {
+                        ChangeCharacterAvailability(previousSelection, true);
+                    }
+                }
+                ReserveCharacterSlot(message.Character);
+                _characterSelected[missionPeer.Peer.Id] = message.Character;
+                SendMessageToPeer($"You reserved {message.Character.Name} ({CharactersAvailability[message.Character].Taken}/{CharactersAvailability[message.Character].Slots})", peer);
             }
             else
             {
-                // No slot remaining
                 SendMessageToPeer($"There is no slot remaining for {message.Character.Name} !", peer);
             }
             return true;
@@ -88,38 +104,22 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         /// <summary>
         /// Request usage of a specific character and check its availability.
         /// </summary>
-        /// <returns>True if usage permitted. False otherwise.</returns>
-        public bool TryReserveCharacterSlot(BasicCharacterObject character)
+        public void ReserveCharacterSlot(BasicCharacterObject character)
         {
-            if (_charactersLeft[character] > 0)
+            CharactersAvailability[character].ReserveSlot();
+            if (!CharactersAvailability[character].IsAvailable)
             {
-                _charactersLeft[character]--;
-                if (_charactersLeft[character] == 0)
-                {
-                    ChangeCharacterAvailability(character, false);
-                }
-                return true;
+                ChangeCharacterAvailability(character, false);
             }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void FreeCharacterSlot(BasicCharacterObject character)
-        {
-            if (_charactersLeft[character] == 0)
-            {
-                ChangeCharacterAvailability(character, true);
-            }
-            _charactersLeft[character]++;
         }
 
         public void ChangeCharacterAvailability(BasicCharacterObject character, bool isAvailable)
         {
+            if(isAvailable == CharactersAvailable[character]) return;
+
             Log($"Changed availability of {character.Name} to {isAvailable}", LogLevel.Debug);
 
-            _characterAvailability[character] = isAvailable;
+            CharactersAvailable[character] = isAvailable;
             CharacterAvailabilityChanged?.Invoke(character, isAvailable);
 
             if (GameNetwork.IsServer)
@@ -137,12 +137,46 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
         {
             Log($"Sending available characters to {peer.UserName}", LogLevel.Debug);
 
-            foreach (KeyValuePair<BasicCharacterObject, bool> kvp in _characterAvailability)
+            foreach (KeyValuePair<BasicCharacterObject, bool> kvp in CharactersAvailable)
             {
                 GameNetwork.BeginModuleEventAsServer(peer);
                 GameNetwork.WriteMessage(new CharacterAvailableMessage(kvp.Key, kvp.Value));
                 GameNetwork.EndModuleEventAsServer();
             }
+        }
+    }
+
+    public class CharacterAvailability
+    {
+        private int _taken;
+
+        public BasicCharacterObject Character { get; set; }
+        public ExtendedCharacter ExtendedCharacter { get; set; }
+        public int Taken => _taken;
+        public int Slots => GetSlots();
+        public bool IsAvailable => _taken < Slots;
+
+        public CharacterAvailability(BasicCharacterObject character)
+        {
+            Character = character;
+            ExtendedCharacter = character.GetExtendedCharacterObject();
+            _taken = 0;
+        }
+
+        public void ReserveSlot()
+        {
+            _taken++;
+        }
+
+        public void FreeSlot()
+        {
+            _taken--;
+        }
+
+        private int GetSlots()
+        {
+            int scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+            return ExtendedCharacter.HardLimit ? ExtendedCharacter.PlayerSelectLimit : ExtendedCharacter.PlayerSelectLimit * scaledPlayerCount / 100;
         }
     }
 }
