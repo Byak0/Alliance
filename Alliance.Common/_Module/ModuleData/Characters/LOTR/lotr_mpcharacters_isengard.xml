@@ -14,8 +14,8 @@
 				occupation="Soldier"
 				culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.5509" build="0.5"  key="0000080C59FC0003000010000110000010110000000A0101100001000101000000AB86030A000000000000000000000000000000000000000000000011440002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.4236" build="0.6898"  key="0039080F1EFC0003000010000110000010110000000A01011000010001010000009A6603090000000000000000000000000000000000000000000000452C0002"  />
+			<BodyProperties version="4" age="22" weight="0.15" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100007726030700000000000000000000000000000000000000000000001CEC0000"  />
+			<BodyPropertiesMax version="4" age="40" weight="0.3" build="0.6088"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F5545448009966030965357600000000000000000000000000000000000000003D240000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -88,15 +88,14 @@
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
                 race="uruk"
                 default_group="Infantry"
-                level="5"
+                level="10"
                 voice="curt"
                 is_female="false"
-				name="{=al_lotr_isen_scout_h}Uruk-hai Scout Hero"
+				name="{=al_lotr_isen_scout_h}Uruk-hai Scout Officer"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.5509" build="0.5"  key="0000080C59FC0003000010000110000010110000000A0101100001000101000000AB86030A000000000000000000000000000000000000000000000011440002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.4236" build="0.6898"  key="0039080F1EFC0003000010000110000010110000000A01011000010001010000009A6603090000000000000000000000000000000000000000000000452C0002"  />
+			<BodyProperties version="4" age="30" weight="0.3" build="0.6088"  key="0002000AD3FC000355F45541656433454587F566566D655531212023F554544800A966030A44044400000000000000000000000000000000000000002B3C0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -119,13 +118,13 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
+									 id="Item.uruk_sword_3" />
 				<equipment slot="Item1"
-									 id="Item.uruk_shield_1" />
+									 id="Item.uruk_shield_1_v1" />
 				<equipment slot="Item2"
 									 id="Item.isengard_horn_1" />
 				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
+									 id="Item.uruk_armor_scout_hero" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Gloves"
@@ -146,8 +145,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.5509" build="0.5"  key="0000080C59FC0003000010000110000010110000000A0101100001000101000000AB86030A000000000000000000000000000000000000000000000011440002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.4236" build="0.6898"  key="0039080F1EFC0003000010000110000010110000000A01011000010001010000009A6603090000000000000000000000000000000000000000000000452C0002"  />
+			<BodyProperties version="4" age="22" weight="0.15" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100007726030700000000000000000000000000000000000000000000001CEC0000"  />
+			<BodyPropertiesMax version="4" age="40" weight="0.3" build="0.6088"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F5545448009966030965357600000000000000000000000000000000000000003D240000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -200,8 +199,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.2801" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100008746030800000000000000000000000000000000000000000000001D040000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.456" build="0.6644"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800AA76030A65357600000000000000000000000000000000000000003D540000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -286,15 +285,14 @@
 	<NPCCharacter id="mp_pike_infantry_isengard_hero"
 									race="uruk"
 									default_group="Infantry"
-									level="15"
+									level="20"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_pikeman_h}Uruk-hai Pikeman Hero"
+									name="{=al_lotr_isen_pikeman_h}Uruk-hai Pikeman Officer"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="30" weight="0.456" build="0.6644"  key="0018000F1EFC0003366326242594334742645444433A543636443643A362626400BA76030B46364700000000000000000000000000000000000000002B6C0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -323,7 +321,7 @@
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
+									 id="Item.uruk_armor_1_hero" />
 				<equipment slot="Gloves"
 									 id="Item.uruk_arm_2" />
 				<equipment slot="Leg"
@@ -346,8 +344,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.2801" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100008746030800000000000000000000000000000000000000000000001D040000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.456" build="0.6644"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800AA76030A65357600000000000000000000000000000000000000003D540000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -448,8 +446,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.2801" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100008746030800000000000000000000000000000000000000000000001D040000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.456" build="0.6644"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800AA76030A65357600000000000000000000000000000000000000003D540000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -542,15 +540,14 @@
 	<NPCCharacter id="mp_sword_infantry_isengard_hero"
 									race="uruk"
 									default_group="Infantry"
-									level="15"
+									level="20"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_warrior_h}Uruk-hai Warrior Hero"
+									name="{=al_lotr_isen_warrior_h}Uruk-hai Warrior Officer"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="30" weight="0.3935" build="0.6644"  key="0023000D96FC0003360567571754652866B4A4444369543634221230C372526600AA66030A64454500000000000000000000000000000000000000002B5C0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -581,7 +578,7 @@
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
-									 id="Item.uruk_armor_1_v3" />
+									 id="Item.uruk_armor_1_hero" />
 				<equipment slot="Gloves"
 									 id="Item.uruk_arm_1" />
 				<equipment slot="Leg"
@@ -604,8 +601,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.2801" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100008746030800000000000000000000000000000000000000000000001D040000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.456" build="0.6644"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800AA76030A65357600000000000000000000000000000000000000003D540000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -706,8 +703,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.4125" build="0.7551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.4421" build="0.6806"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000AA76030A00000000000000000000000000000000000000000000001D540000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.5162" build="0.8403"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800ED86030E65357600000000000000000000000000000000000000003DCC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -803,12 +800,11 @@
 									level="30"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_heavy_h}Heavy Uruk-hai Hero"
+									name="{=al_lotr_isen_heavy_h}Heavy Uruk-hai Officer"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.4125" build="0.7551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="30" weight="0.5162" build="0.8403"  key="0029000FDEFC000356F45544435733474587E5665666665544355234F554544800ED86030E331343000000000000000000000000000000000000000027CC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -864,8 +860,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.4125" build="0.7551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.9005" build="0.9931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.4421" build="0.6806"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000AA76030A00000000000000000000000000000000000000000000001D540000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.5162" build="0.8403"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800ED86030E65357600000000000000000000000000000000000000003DCC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -934,8 +930,8 @@
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.4954" build="0.8194"  key="0013080F1EFC0003000010000110000010110000000A0101100001000101000000DC76030D000000000000000000000000000000000000000000000035B40002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.6157" build="0.9931"  key="0039080F1EFC0003000010000110000010110000000A0101100001000101000000EF96030E00000000000000000000000000000000000000000000000BCC0002"  />
+			<BodyProperties version="4" age="22" weight="0.1157" build="0.7547"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000CB26030C00000000000000000000000000000000000000000000001D9C0000"  />
+			<BodyPropertiesMax version="4" age="40" weight="0.2801" build="0.9051"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800FE46030F653576000000000000000000000000000000000000000035EC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1001,12 +997,11 @@
         level="30"
         voice="curt"
         is_female="false"
-		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker Hero"
+		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker Officer"
         occupation="Soldier"
         culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.4954" build="0.8194"  key="0013080F1EFC0003000010000110000010110000000A0101100001000101000000DC76030D000000000000000000000000000000000000000000000035B40002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.6157" build="0.9931"  key="0039080F1EFC0003000010000110000010110000000A0101100001000101000000EF96030E00000000000000000000000000000000000000000000000BCC0002"  />
+			<BodyProperties version="4" age="30" weight="0.2801" build="0.9745"  key="0005000F16FC000356F45544435733474587E5665666665544305133F554544800EF46030E20033200000000000000000000000000000000000000002DE40000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1059,8 +1054,8 @@
 		occupation="Soldier"
 		culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.5509" build="0.5"  key="0000080C59FC0003000010000110000010110000000A0101100001000101000000AB86030A000000000000000000000000000000000000000000000011440002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.4236" build="0.6898"  key="0039080F1EFC0003000010000110000010110000000A01011000010001010000009A6603090000000000000000000000000000000000000000000000452C0002"  />
+			<BodyProperties version="4" age="22" weight="0.15" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100007726030700000000000000000000000000000000000000000000001CEC0000"  />
+			<BodyPropertiesMax version="4" age="40" weight="0.3" build="0.6088"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F5545448009966030965357600000000000000000000000000000000000000003D240000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1119,15 +1114,14 @@
 	<NPCCharacter id="mp_light_ranged_isengard_hero"
 		race="uruk"
 		default_group="Ranged"
-		level="10"
+		level="15"
 		voice="curt"
 		is_female="false"
-		name="{=al_lotr_isen_archer_h}Uruk-hai Archer Hero"
+		name="{=al_lotr_isen_archer_h}Uruk-hai Archer Officer"
 		occupation="Soldier"
 		culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.5509" build="0.5"  key="0000080C59FC0003000010000110000010110000000A0101100001000101000000AB86030A000000000000000000000000000000000000000000000011440002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.4236" build="0.6898"  key="0039080F1EFC0003000010000110000010110000000A01011000010001010000009A6603090000000000000000000000000000000000000000000000452C0002"  />
+			<BodyProperties version="4" age="30" weight="0.3" build="0.669"  key="000A000FD7FC000355F47541656433457595F566566E6555333333238434673B009A46030952342400000000000000000000000000000000000000002B240000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1160,7 +1154,7 @@
 				<equipment slot="ExtraWeaponSlot"
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
+									 id="Item.uruk_armor_scout_hero" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 			</EquipmentRoster>
@@ -1180,8 +1174,8 @@
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.7005" build="0.8931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="22" weight="0.3" build="0.4398"  key="0000000ACEFC0003100000000000010100010010110000001000110100111100008746030800000000000000000000000000000000000000000000001D040000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.5" build="0.6644"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800AA76030A65357600000000000000000000000000000000000000003D540000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1273,12 +1267,11 @@
 									level="20"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_arbalest_h}Uruk-hai Crossbowman Hero"
+									name="{=al_lotr_isen_arbalest_h}Uruk-hai Crossbowman Officer"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22.19" weight="0.3125" build="0.6551"  key="0018640D88E4000346B4643500660554B987678643CF795345556555BA997576008A5603084543340000000000000000000000000000000000000000310C0002"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.7005" build="0.8931"  key="003C080F1EFC0000000010000110000010110000000A0101100001000101000000DFE6030D00000000000000000000000000000000000000000000000BB40002"  />
+			<BodyProperties version="4" age="30" weight="0.287" build="0.6644"  key="0015000D99FC0003533847373627444545877867486A485546613284F554544800AA46030A37357600000000000000000000000000000000000000002F4C0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"

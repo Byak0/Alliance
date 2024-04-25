@@ -3,7 +3,7 @@
 	<voice_definition
 		name="uruk_01"
 		sound_and_collision_info_class="human"
-		only_for_npcs="true"
+		only_for_npcs="false"
 		min_pitch_multiplier="0.8"
 		max_pitch_multiplier="1.1">
 		<!--Warband-->

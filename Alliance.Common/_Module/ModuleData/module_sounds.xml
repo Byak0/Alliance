@@ -15,14 +15,14 @@
         <!--Sounds in LOTR/Isengard/Voice/Uruk-->
 		<module_sound
 			name="event:/al/lotr/isengard/voice/uruk/deaths"
-			sound_category="mission_voice"
+			sound_category="mission_voice_shout"
 			min_pitch_multiplier="0.8"
 			max_pitch_multiplier="1.0">
-			<variation path="LOTR/Isengard/Voice/Uruk/Death.wav" weight="1" />
+			<!--<variation path="LOTR/Isengard/Voice/Uruk/Death.wav" weight="1" />-->
 			<variation path="LOTR/Isengard/Voice/Uruk/AAAh.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Grunt.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/No.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Uruk/Pain.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Yell 1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Stun.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Saruman.wav" weight="0.2" />
 		</module_sound>
@@ -34,8 +34,9 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Death.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/AAAh.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Grunt.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Uruk/Pain.wav" weight="1" />
+			<!--<variation path="LOTR/Isengard/Voice/Uruk/Pain.wav" weight="1" />-->
 			<variation path="LOTR/Isengard/Voice/Uruk/Stun.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Yell 1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" weight="1" />
 		</module_sound>
@@ -44,7 +45,7 @@
 			sound_category="mission_voice"
 			min_pitch_multiplier="0.8"
 			max_pitch_multiplier="1.2">
-			<variation path="LOTR/Isengard/Voice/Uruk/Death.wav" weight="1" />
+			<!--<variation path="LOTR/Isengard/Voice/Uruk/Death.wav" weight="1" />-->
 			<variation path="LOTR/Isengard/Voice/Uruk/AAAh.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Grunt.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 1.wav" weight="1" />

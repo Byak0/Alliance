@@ -44,9 +44,21 @@
 		</ItemComponent>
 		<Flags />
 	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_scout_hero" name="Uruk-Hai Scout Armor (Hero)" mesh="uruk_armor_2" culture="Culture.isengard" weight="4.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="15" arm_armor="10" head_armor="25" has_gender_variations="false" covers_body="false" modifier_group="leather" material_type="Leather" />
+		</ItemComponent>
+		<Flags />
+	</Item>
 	<Item multiplayer_item="true" id="uruk_armor_1_v3" name="Uruk-Hai Plate Armor With Mail" mesh="uruk_armor_1_v3" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
 		<ItemComponent>
 			<Armor body_armor="27" leg_armor="2" arm_armor="1" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_armor_1_hero" name="Uruk-Hai Plate Armor With Mail (Hero)" mesh="uruk_armor_1_v3" culture="Culture.isengard" weight="11.2" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="30" leg_armor="10" arm_armor="10" head_armor="30" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>

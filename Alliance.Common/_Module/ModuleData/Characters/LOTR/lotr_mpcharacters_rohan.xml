@@ -107,11 +107,11 @@
 				<equipment slot="Item2"
                    id="Item.rohan_horn_1" />
 				<equipment slot="Body"
-									 id="Item.armor_rohan_4" />
+					id="Item.armor_rohan_aragorn" />
 				<equipment slot="Leg"
-									 id="Item.rohan_greaves_1" />
+					id="Item.rohan_greaves_1" />
 				<equipment slot="Cape"
-									 id="Item.armor_rohan_shoulder_6" />
+					id="Item.armor_rohan_shoulder_6" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -1227,7 +1227,7 @@
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
-                   id="Item.armor_rohan_3" />
+                   id="Item.armor_rohan_officer" />
 				<equipment slot="Gloves"
                    id="Item.rohan_arm_2" />
 				<equipment slot="Leg"
@@ -1251,8 +1251,7 @@
 										occupation="Soldier"
 										culture="Culture.rohan">
 		<face>
-			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
-			<BodyProperties version="4" age="64.58" weight="0.5" build="0.5"  key="0005A80800CC3306895694C672C4E9C8A59C77838C46ACA48EDC88726E6773AB068776680859767C00000000000000000000000000000000000000005B0C4004"  />
+			<BodyProperties version="4" age="30" weight="0.5" build="0.5"  key="0005A80800CC3306895694C672C4E9C8A59C77838C46ACA48EDC88726E6773AB068776680859767C00000000000000000000000000000000000000005B0C4004"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1283,7 +1282,7 @@
 				<equipment slot="ExtraWeaponSlot"
                    id="Item.rohan_kingdom_banner" />
 				<equipment slot="Body"
-                   id="Item.armor_rohan_3" />
+                   id="Item.armor_rohan_officer" />
 				<equipment slot="Gloves"
                    id="Item.rohan_arm_2" />
 				<equipment slot="Leg"
