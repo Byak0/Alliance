@@ -23,7 +23,7 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="50" />
+             value="120" />
 			<skill id="TwoHanded"
              value="20" />
 			<skill id="Polearm"
@@ -91,7 +91,7 @@
                 level="5"
                 voice="curt"
                 is_female="false"
-								name="{=al_lotr_isen_scout_h}Uruk-hai Scout"
+				name="{=al_lotr_isen_scout_h}Uruk-hai Scout Hero"
                 occupation="Soldier"
                 culture="Culture.isengard">
 		<face>
@@ -104,7 +104,7 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="50" />
+             value="150" />
 			<skill id="TwoHanded"
              value="20" />
 			<skill id="Polearm"
@@ -126,44 +126,8 @@
 									 id="Item.isengard_horn_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1_v1" />
-				<equipment slot="Item2"
-									 id="Item.isengard_horn_1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Gloves"
-									 id="Item.uruk_arm_1" />
-			</EquipmentRoster>
-			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.uruk_sword_1" />
-				<equipment slot="Item1"
-									 id="Item.uruk_shield_1" />
-				<equipment slot="Item2"
-									 id="Item.isengard_horn_1" />
-				<equipment slot="Body"
-									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
-				<equipment slot="Leg"
-									 id="Item.uruk_greaves_1" />
-				<equipment slot="Cape"
-									 id="Item.uruk_shoulder_1_1" />
 				<equipment slot="Gloves"
 									 id="Item.uruk_arm_1" />
 			</EquipmentRoster>
@@ -191,7 +155,7 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="50" />
+             value="120" />
 			<skill id="TwoHanded"
              value="20" />
 			<skill id="Polearm"
@@ -325,7 +289,7 @@
 									level="15"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_pikeman_h}Uruk-hai Pikeman"
+									name="{=al_lotr_isen_pikeman_h}Uruk-hai Pikeman Hero"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -338,11 +302,11 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="200" />
 			<skill id="TwoHanded"
-             value="150" />
+             value="200" />
 			<skill id="Polearm"
-             value="150" />
+             value="200" />
 			<skill id="Bow"
              value="20" />
 			<skill id="Crossbow"
@@ -364,8 +328,6 @@
 									 id="Item.uruk_arm_2" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v1" />
 				<equipment slot="Cape"
 									 id="Item.uruk_shoulder_1_1" />
 			</EquipmentRoster>
@@ -583,7 +545,7 @@
 									level="15"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_warrior_h}Uruk-hai Warrior"
+									name="{=al_lotr_isen_warrior_h}Uruk-hai Warrior Hero"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -596,11 +558,11 @@
 			<skill id="Riding"
              value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="200" />
 			<skill id="TwoHanded"
-             value="150" />
+             value="200" />
 			<skill id="Polearm"
-             value="150" />
+             value="200" />
 			<skill id="Bow"
              value="30" />
 			<skill id="Crossbow"
@@ -624,8 +586,6 @@
 									 id="Item.uruk_arm_1" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_1_v2" />
 				<equipment slot="Cape"
 									 id="Item.uruk_shoulder_1" />
 			</EquipmentRoster>
@@ -843,7 +803,7 @@
 									level="30"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_heavy_h}Heavy Uruk-hai"
+									name="{=al_lotr_isen_heavy_h}Heavy Uruk-hai Hero"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -1041,7 +1001,7 @@
         level="30"
         voice="curt"
         is_female="false"
-		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker"
+		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker Hero"
         occupation="Soldier"
         culture="Culture.isengard">
 		<face>
@@ -1081,7 +1041,7 @@
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 				<equipment slot="Head"
-									 id="Item.uruk_helm_4_v1" />
+									 id="Item.uruk_helm_5" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -1162,7 +1122,7 @@
 		level="10"
 		voice="curt"
 		is_female="false"
-		name="{=al_lotr_isen_archer_h}Uruk-hai Archer"
+		name="{=al_lotr_isen_archer_h}Uruk-hai Archer Hero"
 		occupation="Soldier"
 		culture="Culture.isengard">
 		<face>
@@ -1175,15 +1135,15 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="120" />
+						 value="150" />
 			<skill id="TwoHanded"
 						 value="60" />
 			<skill id="Polearm"
 						 value="80" />
 			<skill id="Bow"
-						 value="120" />
+						 value="150" />
 			<skill id="Crossbow"
-						 value="120" />
+						 value="150" />
 			<skill id="Throwing"
 						 value="60" />
 		</skills>
@@ -1201,8 +1161,6 @@
 									 id="Item.isengard_banner" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
-				<equipment slot="Head"
-									 id="Item.uruk_helm_2" />
 				<equipment slot="Leg"
 									 id="Item.uruk_greaves_1" />
 			</EquipmentRoster>
@@ -1315,7 +1273,7 @@
 									level="20"
 									voice="curt"
 									is_female="false"
-									name="{=al_lotr_isen_arbalest_h}Uruk-hai Crossbowman"
+									name="{=al_lotr_isen_arbalest_h}Uruk-hai Crossbowman Hero"
 									occupation="Soldier"
 									culture="Culture.isengard">
 		<face>
@@ -1324,19 +1282,19 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-						 value="100" />
+			 value="100" />
 			<skill id="Riding"
-						 value="0" />
+			 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+             value="200" />
 			<skill id="TwoHanded"
              value="120" />
 			<skill id="Polearm"
              value="120" />
 			<skill id="Crossbow"
-             value="200" />
+             value="250" />
 			<skill id="Bow"
-             value="200" />
+             value="250" />
 			<skill id="Throwing"
              value="100" />
 		</skills>

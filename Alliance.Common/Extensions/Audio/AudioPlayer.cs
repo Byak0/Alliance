@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.Audio.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.Audio.Utilities;
+using Alliance.Common.Utilities;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using System;
@@ -73,20 +74,20 @@ namespace Alliance.Common.Extensions.Audio
 
         private void InitializeAudioMappings()
         {
-            var files = Directory.EnumerateFiles(audioDirectory)
+            var files = Directory.EnumerateFiles(audioDirectory, "*.*", SearchOption.AllDirectories)
                         .Where(file => file.EndsWith(".wav") || file.EndsWith(".ogg") || file.EndsWith(".mp3"))
                         .OrderBy(file => file)
                         .ToList();
 
             for (int i = 0; i < files.Count; i++)
             {
-                string fileName = Path.GetFileName(files[i]);
+                string fileName = PathHelper.GetRelativePath(audioDirectory, (files[i]));
                 audioIdToFileName[i] = fileName;
                 fileNameToAudioId[fileName] = i;
             }
 
-            Log($"Registered {files.Count} audio files.", LogLevel.Debug);
-        }        
+            Log($"Registered {files.Count} audio files.");
+        }
 
         private void CacheSound(string fileName)
         {
