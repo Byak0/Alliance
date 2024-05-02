@@ -1,5 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <WeaponDescriptions>
+	<WeaponDescription
+	id="lotr_OneHandedSword"
+	weapon_class="OneHandedSword"
+	item_usage_features="onehanded:block:shield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_saber_blade_1" />
+			<AvailablePiece id="orc_rider_saber_guard_1" />
+			<AvailablePiece id="orc_rider_saber_handle_1" />
+			<AvailablePiece id="orc_rider_saber_pommel_1" />
+			<AvailablePiece id="orc_rider_shortsword_blade_1" />
+			<AvailablePiece id="orc_rider_shortsword_guard_1" />
+			<AvailablePiece id="orc_rider_shortsword_grip_1" />
+			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
+		</AvailablePieces>
+	</WeaponDescription>
+	
+	<WeaponDescription
+		id="lotr_BastardSword"
+		weapon_class="OneHandedSword"
+		item_usage_features="onehanded:block:rshield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_saber_blade_1" />
+			<AvailablePiece id="orc_rider_saber_guard_1" />
+			<AvailablePiece id="orc_rider_saber_handle_1" />
+			<AvailablePiece id="orc_rider_saber_pommel_1" />
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_TwoHandedSword"
+		weapon_class="TwoHandedSword"
+		item_usage_features="twohanded:block:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+			<WeaponFlag
+				value="NotUsableWithOneHand" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_saber_blade_1" />
+			<AvailablePiece id="orc_rider_saber_guard_1" />
+			<AvailablePiece id="orc_rider_saber_handle_1" />
+			<AvailablePiece id="orc_rider_saber_pommel_1" />
+			<AvailablePiece id="orc_rider_longsword_blade_1" />
+			<AvailablePiece id="orc_rider_longsword_guard_1" />
+			<AvailablePiece id="orc_rider_longsword_grip_1" />
+			<AvailablePiece id="orc_rider_longsword_pommel_1" />
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_BastardSwordAlternative"
+		weapon_class="OneHandedSword"
+		item_usage_features="onehanded:block:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag
+				value="MeleeWeapon" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_saber_blade_1" />
+			<AvailablePiece id="orc_rider_saber_guard_1" />
+			<AvailablePiece id="orc_rider_saber_handle_1" />
+			<AvailablePiece id="orc_rider_saber_pommel_1" />
+		</AvailablePieces>
+	</WeaponDescription>
+	
 	<WeaponDescription id="foa_OneHandedPolearm"
                      weapon_class="OneHandedPolearm"
                      item_usage_features="onehanded_polearm:block:long:rshield:thrust">
@@ -351,14 +425,10 @@
 				value="BonusAgainstShield" />
 		</WeaponFlags>
 		<AvailablePieces>
-			<AvailablePiece
-				id="gimli_one_handed_axe_handle" />
-			<AvailablePiece
-				id="gimli_one_handed_axe_head" />
-			<AvailablePiece
-				id="gimli_throwing_axe_head" />
-			<AvailablePiece
-				id="gimli_throwing_axe_handle" />
+			<AvailablePiece id="gimli_one_handed_axe_handle" />
+			<AvailablePiece id="gimli_one_handed_axe_head" />
+			<AvailablePiece id="gimli_throwing_axe_head" />
+			<AvailablePiece id="gimli_throwing_axe_handle" />
 		</AvailablePieces>
 	</WeaponDescription>
 
@@ -381,10 +451,8 @@
 				value="UnloadWhenSheathed" />
 		</WeaponFlags>
 		<AvailablePieces>
-			<AvailablePiece
-				id="gimli_throwing_axe_head" />
-			<AvailablePiece
-				id="gimli_throwing_axe_handle" />
+			<AvailablePiece id="gimli_throwing_axe_head" />
+			<AvailablePiece id="gimli_throwing_axe_handle" />
 		</AvailablePieces>
 	</WeaponDescription>
 </WeaponDescriptions>

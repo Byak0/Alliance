@@ -1,39 +1,4 @@
-<Items>
-	<!-- Isengard Banner -->
-	<Item multiplayer_item="true" 
-				id="isengard_banner"
-        name="{=M3ZTF7rj}Isengard banner"
-        is_merchandise="false"
-        body_name="bo_mace_a"
-        recalculate_body="true"
-        mesh="isengard_banner"
-        prefab="isengard_banner"
-        culture="Culture.isengard"
-        weight="0.2"
-        Type="Banner"
-        using_tableau="true"
-        item_holsters="abdomen_left">
-		<ItemComponent>
-			<Banner banner_level="3"
-              weapon_class="Banner"
-              effect="IncreasedTroopMovementSpeed"
-              weapon_balance="100"
-              thrust_speed="78"
-              speed_rating="97"
-              missile_speed="0"
-              weapon_length="150"
-              swing_damage="6"
-              swing_damage_type="Blunt"
-              item_usage="banner"
-              physics_material="metal_weapon"
-              position="0.0, 0.0, -0.8"></Banner>
-		</ItemComponent>
-		<Flags DropOnWeaponChange="true"
-           ForceAttachOffHandPrimaryItemBone="true"
-           HeldInOffHand="true"
-           HasToBeHeldUp="true"
-           CanBePickedUpFromCorpse="false" />
-	</Item>
+<Items>	
 	<!-- Uruk Shields -->
 	<Item multiplayer_item="true" id="uruk_shield_1" name="Uruk-Hai White Hand Shield" body_name="bo_cap_uruk_shield_1" shield_body_name="bo_uruk_shield_1" recalculate_body="false" mesh="uruk_shield_1" using_tableau="true" weight="2.1" appearance="0.7" Type="Shield" item_holsters="shield_oval:shield_4:shield_3:shield_2" has_lower_holster_priority="true" holster_position_shift="-0.00,-0.0,0">
 		<ItemComponent>
@@ -83,6 +48,7 @@
     </ItemComponent>
     <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
   </Item>
+	
 	<!-- Uruk Swords -->
 	<CraftedItem multiplayer_item="true" id="uruk_sword_1" name="Uruk-Hai Cleaver" crafting_template="uruk_one_handed" has_modifier="false">
 		<Pieces>
@@ -103,6 +69,33 @@
 			<Piece id="uruk_handle_1" Type="Handle" scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
+	
+	<!-- Orc Rider Swords -->
+	<CraftedItem multiplayer_item="true" id="orc_rider_saber_1" name="Orc Rider Saber" crafting_template="lotr_BastardSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_saber_blade_1" Type="Blade" scale_factor="110" />
+			<Piece id="orc_rider_saber_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_saber_handle_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_saber_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_longsword_1" name="Orc Rider Longsword" crafting_template="lotr_TwoHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_longsword_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_longsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_longsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_longsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_shortsword_1" name="Orc Rider Shortsword" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_shortsword_blade_1" Type="Blade" scale_factor="120" />
+			<Piece id="orc_rider_shortsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	
 	<!-- Uruk Polearms -->
 	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike" culture="Culture.isengard">
 		<Pieces>
@@ -111,6 +104,7 @@
 			<Piece id="uruk_pommel_1" Type="Pommel" scale_factor="90" />
 		</Pieces>
 	</CraftedItem>
+	
 	<!-- Uruk Ranged -->
 	<Item multiplayer_item="true" id="uruk_crossbow_1" name="Uruk-Hai Heavy Crossbow" body_name="bo_cross_bow_heavy" mesh="uruk_crossbow_1" culture="Culture.isengard" weight="2.7" appearance="0.7" difficulty="20" Type="Crossbow" AmmoOffset="0.0, 0.02131, 0.24975" item_holsters="crossbow_back:bow_hip:mace_right_hip:bow_hip_2" holster_position_shift="0.02,0,-0.4">
 		<ItemComponent>

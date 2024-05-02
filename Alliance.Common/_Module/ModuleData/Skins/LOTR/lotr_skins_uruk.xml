@@ -7,7 +7,7 @@
 			  morph_key="0"
 			  uses_stitching="true"
 			  body_mesh_suffix=""
-			  min_scale ="1.07"
+			  min_scale ="1.12"
 			  skeleton="human_skeleton"
 			  body_meta_mesh="body_uruk_a"
 			  body_meta_mesh_shoulders="body_male_a_sh"

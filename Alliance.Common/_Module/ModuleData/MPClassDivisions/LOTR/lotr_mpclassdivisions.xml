@@ -201,6 +201,32 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<!-- Orc Rider -->
+	<MPClassDivision
+			id="mp_orc_rider_isengard"
+			hero="mp_orc_rider_isengard_troop"
+			troop="mp_orc_rider_isengard_troop"
+			hero_mount_idle_anim="act_battania_mp_mounted_warrior_mount_idle"
+			troop_mount_idle_anim="act_horse_idle_1"
+			multiplier="0.50"
+			cost="300"
+			icon="Cavalry_Light"
+			melee_ai="50"
+			ranged_ai="50"
+			armor="40"
+			movement_speed="0.78"
+			combat_movement_speed="0.7"
+			acceleration="2.8">
+		<Perks>
+			<Perk
+				game_mode="all"
+				name="{=*}Default"
+				description="{=*}Default."
+				icon="PerkToughness"
+				perk_list="1">
+			</Perk>
+		</Perks>
+	</MPClassDivision>
 
 	<!-- ROHAN -->
 	<MPClassDivision

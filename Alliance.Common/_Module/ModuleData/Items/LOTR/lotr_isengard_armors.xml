@@ -140,4 +140,44 @@
 		</ItemComponent>
 		<Flags />
 	</Item>
+	
+	<!-- Orc Rider Armor -->
+	<Item multiplayer_item="true" id="orc_rider_armor" name="Orc Rider Armor" mesh="orc_rider_armor" culture="Culture.isengard" weight="11.9" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="25" leg_armor="12" arm_armor="1" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Orc Rider Arms -->
+	<Item multiplayer_item="true" id="orc_rider_arms" name="Orc Rider Bracers" mesh="orc_rider_arms" culture="Culture.isengard" weight="1.7" appearance="1" Type="HandArmor">
+		<ItemComponent>
+			<Armor arm_armor="12" covers_hands="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Orc Rider Greaves -->
+	<Item multiplayer_item="true" id="orc_rider_greaves" name="Orc Rider Greaves" mesh="orc_rider_greaves" culture="Culture.isengard" weight="1.7" difficulty="0" appearance="1" Type="LegArmor">
+		<ItemComponent>
+			<Armor leg_armor="15" covers_legs="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Orc Rider Helmet -->
+	<Item multiplayer_item="true" id="orc_rider_helmet" name="Orc Rider Helmet" mesh="orc_rider_helmet" culture="Culture.isengard" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+		<ItemComponent>
+			<Armor head_armor="27" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Orc Rider Hood -->
+	<Item multiplayer_item="true" id="orc_rider_hood" name="Orc Rider Hood" mesh="orc_rider_hood" culture="Culture.isengard" subtype="body_armor" weight="1.5" difficulty="0" appearance="1" Type="Cape">
+		<ItemComponent>
+			<Armor body_armor="13" arm_armor="5" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
 </Items>

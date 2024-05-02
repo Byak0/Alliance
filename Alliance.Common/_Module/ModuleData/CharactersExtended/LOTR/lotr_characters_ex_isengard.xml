@@ -23,4 +23,6 @@
 	
 	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_isengard_troop" troop_limit="1000" player_select_limit="8" />
 	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_isengard_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/>
+
+	<CharacterExtended id="NPCCharacter.mp_orc_rider_isengard_troop" troop_limit="500" player_select_limit="8" />
 </CharactersExtended>

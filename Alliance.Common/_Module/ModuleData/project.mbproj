@@ -7,7 +7,9 @@
 	<file id="soln_action_types" name="ModuleData/Animations/action_types.xml" type="action_type" />
 	<file id="soln_module_sound" name="ModuleData/module_sounds.xml" type="module_sound" />
 	<file id="soln_physics_materials" name="ModuleData/physics_materials.xml" type="physics_material" />
-	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_uruk_skins.xml" type="skin" />
+	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_skins_uruk.xml" type="skin" />
+	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_skins_orc.xml" type="skin" />
+	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_skins_dwarf.xml" type="skin" />
 	<file id="soln_voice_definitions" name="ModuleData/VoiceDefinitions/LOTR/lotr_uruk_voice_def.xml" type="voice_definitions" />
 	<file id="soln_item_usage_sets" name="ModuleData/ItemUsage/Native/nat_item_usage.xml" type="item_usage_set" />
 </base>
