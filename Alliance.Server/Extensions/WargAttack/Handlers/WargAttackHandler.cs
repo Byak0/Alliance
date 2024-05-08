@@ -11,15 +11,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 {
     public class WargAttackHandler : IHandlerRegister
     {
-        //UsableEntityBehavior _gameMode;
-
-        //UsableEntityBehavior GameMode
-        //{
-        //    get
-        //    {
-        //        return _gameMode ??= Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
-        //    }
-        //}
+       
         public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
         {
             reg.Register<RequestWargAttack>(HandleWargAttack);
@@ -116,7 +108,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             }
             try
             {
-                // Registering a blow causes the agent to react/stagger. Manipulate health directly if the damage won't kill the agent.
+                // Modifie health directement si les degats ne tuent pas.
                 if (agent.State == AgentState.Active || agent.State == AgentState.Routed)
                 {
                     if (agent.Health > damageAmount)
