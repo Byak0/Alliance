@@ -16,14 +16,9 @@ namespace Alliance.Common.Utilities
         /// <exception cref="InvalidOperationException"></exception>
         public static string GetRelativePath(string fromPath, string toPath)
         {
-            if (string.IsNullOrEmpty(fromPath))
+            if (string.IsNullOrEmpty(fromPath) || string.IsNullOrEmpty(toPath))
             {
-                throw new ArgumentNullException("fromPath");
-            }
-
-            if (string.IsNullOrEmpty(toPath))
-            {
-                throw new ArgumentNullException("toPath");
+                throw new ArgumentNullException($"fromPath or toPath is null");
             }
 
             // Normalize the paths
@@ -32,11 +27,6 @@ namespace Alliance.Common.Utilities
 
             Uri fromUri = new Uri(AppendDirectorySeparatorChar(fromPath));
             Uri toUri = new Uri(AppendDirectorySeparatorChar(toPath));
-
-            if (fromUri.Scheme != toUri.Scheme)
-            {
-                return toPath;
-            }
 
             Uri relativeUri = fromUri.MakeRelativeUri(toUri);
             string relativePath = Uri.UnescapeDataString(relativeUri.ToString());

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+﻿using Alliance.Common.Extensions.Audio;
+using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -397,10 +398,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
         {
             if (GameNetwork.IsClient)
             {
-                SoundEvent eventRef = SoundEvent.CreateEvent(SoundEvent.GetEventIdFromString(SoundEffectOnDestroy), Scene);
-                eventRef.SetPosition(GameEntity.GetGlobalFrame().origin);
-                eventRef.Play();
-                DelayedStop(eventRef);
+                AudioPlayer.Instance.Play(AudioPlayer.Instance.GetAudioId(SoundEffectOnDestroy), 1f, false, 10000, GameEntity.GetGlobalFrame().origin);
             }
             else if (GameNetwork.IsServerOrRecorder)
             {

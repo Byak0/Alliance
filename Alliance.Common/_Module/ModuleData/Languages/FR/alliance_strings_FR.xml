@@ -35,9 +35,11 @@
 		<string id="str_alliance_scene_rangefire_distance_test" text="Range fire test" />
 		<string id="str_alliance_scene_mp_meteoraterra_yurek" text="Meteoraterra par Yurek" />
 		<string id="str_alliance_scene_mp_longisland_bullero" text="Long Island par Bullero" />
+		<string id="str_alliance_scene_mp_beefbacon_craglowe" text="Craglowe par beefbacon" />
 		<string id="str_alliance_scene_bfhd_helms_deep_act_I" text="Gouffre de Helm - Acte 1" />
 		<string id="str_alliance_scene_bfhd_helms_deep_act_II" text="Gouffre de Helm - Acte 2" />
 		<string id="str_alliance_scene_bfhd_helms_deep_lobby" text="Gouffre de Helm" />
+		<string id="str_alliance_scene_bfhd_helms_deep_v2" text="En mémoire de Bernard Hill" />
 		<string id="str_alliance_scene_scn_bilbo2" text="???" />
 		<string id="str_alliance_scene_captain_french_castle" text="Château Français par Path" />
 		<string id="str_alliance_scene_FrenchCastlePathEdC" text="L'Aigle captif" />
@@ -50,6 +52,7 @@
 		<string id="str_alliance_scene_lotr_westfold_village_lobby" text="Village de l'Ouestfolde par Esperanza (Lobby)" />
 		<string id="str_alliance_scene_westfold_burned" text="Village de l'Ouestfolde par Esperanza (Isengard)" />
 		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
+		<string id="str_alliance_scene_lotr_the_wold" text="Le Plateau de l'Eastemnet par Esperanza" />
 
 		<!-- Unit names -->
 		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />

@@ -65,7 +65,7 @@ namespace Alliance.Common.Extensions.Audio
 
         public int GetAudioId(string fileName)
         {
-            if (fileNameToAudioId.TryGetValue(fileName, out var audioId))
+            if (fileNameToAudioId.TryGetValue(fileName.ToLowerInvariant(), out var audioId))
             {
                 return audioId;
             }
@@ -81,7 +81,7 @@ namespace Alliance.Common.Extensions.Audio
 
             for (int i = 0; i < files.Count; i++)
             {
-                string fileName = PathHelper.GetRelativePath(audioDirectory, (files[i]));
+                string fileName = PathHelper.GetRelativePath(audioDirectory, (files[i])).ToLowerInvariant();
                 audioIdToFileName[i] = fileName;
                 fileNameToAudioId[fileName] = i;
             }

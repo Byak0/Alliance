@@ -139,6 +139,8 @@
         <module_sound name="event:/al/lotr/rohan/alert/french_horn_1" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_1.wav" />
         <module_sound name="event:/al/lotr/rohan/alert/french_horn_2" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_2.wav" />
         <module_sound name="event:/al/lotr/rohan/alert/horn_1" sound_category="alert" path="LOTR/Rohan/Alert/horn_1.wav" />
+		<module_sound name="event:/al/lotr/rohan/alert/bfhd_hd_horn" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_hd_horn.wav" />
+		<module_sound name="event:/al/lotr/rohan/alert/bfhd_explosion" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_explosion.mp3" />
         <!--Sounds in LOTR/Rohan/Voice/Theoden-->
         <module_sound name="event:/al/lotr/rohan/voice/theoden/advance_crush_this_evil" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Crush this evil.wav" />
         <module_sound name="event:/al/lotr/rohan/voice/theoden/advance_forth_and_fear_no_darkness" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Forth and fear no darkness.wav" />

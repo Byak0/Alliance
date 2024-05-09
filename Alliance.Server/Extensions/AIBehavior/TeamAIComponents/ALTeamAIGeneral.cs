@@ -137,14 +137,11 @@ namespace Alliance.Server.Extensions.AIBehavior.TeamAIComponents
                 formation.AI.AddAiBehavior(new BehaviorSkirmishLine(formation));
                 formation.AI.AddAiBehavior(new BehaviorVanguard(formation));
 
-                if (Mission.Current.ActiveMissionObjects.Exists(missionObject => missionObject is FlagCapturePoint))
-                {
-                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPInfantry(formation));
-                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPLastFlagLastStand(formation));
-                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMounted(formation));
-                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMountedRanged(formation));
-                    formation.AI.AddAiBehavior(new ALBehaviorSergeantMPRanged(formation));
-                }
+                formation.AI.AddAiBehavior(new ALBehaviorSergeantMPInfantry(formation));
+                formation.AI.AddAiBehavior(new ALBehaviorSergeantMPLastFlagLastStand(formation));
+                formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMounted(formation));
+                formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMountedRanged(formation));
+                formation.AI.AddAiBehavior(new ALBehaviorSergeantMPRanged(formation));
             }
         }
     }
