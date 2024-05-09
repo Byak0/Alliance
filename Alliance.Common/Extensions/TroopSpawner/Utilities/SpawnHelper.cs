@@ -302,10 +302,10 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
                         .InitialPosition(matrixFrame.origin);
                     Vec2 vec = matrixFrame.rotation.f.AsVec2;
                     vec = vec.Normalized();
-                    AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(vec).IsFemale(peer.Peer.IsFemale);
+                    AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(vec);
 
-                    // If custom body is allowed, retrieve player's choice
-                    if (Config.Instance.AllowCustomBody) agentBuildData2.BodyProperties(GetBodyProperties(peer, culture));
+                    // If custom body is allowed, retrieve player's gender and body properties
+                    if (Config.Instance.AllowCustomBody) agentBuildData2.IsFemale(peer.Peer.IsFemale).BodyProperties(GetBodyProperties(peer, culture));
 
                     agentBuildData2.VisualsIndex(0)
                         .ClothingColor1(peer.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)

@@ -109,33 +109,27 @@ namespace Alliance.Common.Extensions.Audio
 
         public void Play(int audioId, float volume, bool stackable = true, int maxHearingDistance = 100, Vec3? soundOrigin = null, bool synchronize = false)
         {
-            if (audioIdToFileName.TryGetValue(audioId, out string fileName))
-            {
-                Play(fileName, volume, stackable, maxHearingDistance, soundOrigin, synchronize);
-            } 
-            else
+            if (audioId < 0 || !audioIdToFileName.TryGetValue(audioId, out string fileName))
             {
                 Log($"ERROR : Audio ID {audioId} not found in mappings.", LogLevel.Error);
+                return;
             }
-        }
 
-        public void Play(string fileName, float volume, bool stackable = true, int maxHearingDistance = 100, Vec3? soundOrigin = null, bool synchronize = false)
-        {
             if (synchronize)
             {
                 if (soundOrigin.HasValue)
                 {
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new SyncAudioLocalized(fileNameToAudioId[fileName], volume, soundOrigin.Value, maxHearingDistance, stackable));
+                    GameNetwork.WriteMessage(new SyncAudioLocalized(audioId, volume, soundOrigin.Value, maxHearingDistance, stackable));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-                } 
+                }
                 else
                 {
                     GameNetwork.BeginBroadcastModuleEvent();
-                    GameNetwork.WriteMessage(new SyncAudio(fileNameToAudioId[fileName], volume, stackable));
+                    GameNetwork.WriteMessage(new SyncAudio(audioId, volume, stackable));
                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
                 }
-                    
+
                 return;
             }
 
@@ -156,7 +150,7 @@ namespace Alliance.Common.Extensions.Audio
                 {
                     activeStreams[fileName] = new List<CachedSound>();
                 }
-                
+
                 if (soundOrigin.HasValue)
                 {
                     mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin.Value, volume, maxHearingDistance));
@@ -173,6 +167,11 @@ namespace Alliance.Common.Extensions.Audio
             {
                 Log($"An error occurred when playing audio: {ex.Message}", LogLevel.Debug);
             }
+        }
+
+        public void Play(string fileName, float volume, bool stackable = true, int maxHearingDistance = 100, Vec3? soundOrigin = null, bool synchronize = false)
+        {
+            Play(GetAudioId(fileName), volume, stackable, maxHearingDistance, soundOrigin, synchronize);
         }
 
         private ISampleProvider Apply3DSpatialization(ref CachedSound reader, Vec3 soundOrigin, float initialVolume, int maxHearingDistance)

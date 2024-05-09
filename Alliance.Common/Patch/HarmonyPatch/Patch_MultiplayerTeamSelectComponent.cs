@@ -9,6 +9,9 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Patch.HarmonyPatch
 {
+    /// <summary>
+    /// NOT USED. This patch is a test for assigning a different team to each captain.
+    /// </summary>
     public class Patch_MultiplayerTeamSelectComponent
     {
         private static readonly Harmony Harmony = new Harmony(nameof(Patch_MultiplayerTeamSelectComponent));
