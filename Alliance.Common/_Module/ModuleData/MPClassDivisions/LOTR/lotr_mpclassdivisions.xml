@@ -14,8 +14,8 @@
 			hero="mp_light_infantry_isengard_hero"
 			troop="mp_light_infantry_isengard_troop"
 			banner_bearer="mp_light_infantry_isengard_banner_bearer"
-			hero_idle_anim="act_vlandia_mp_peasant_levy_idle"
-			troop_idle_anim="act_idle_unarmed_1"
+			hero_idle_anim="act_taunt_24"
+			troop_idle_anim="act_taunt_24"
 			multiplier="0.92"
 			cost="80"
 			casual_cost="90"
@@ -42,8 +42,8 @@
 			hero="mp_pike_infantry_isengard_hero"
 			troop="mp_pike_infantry_isengard_troop"
 			banner_bearer="mp_pike_infantry_isengard_banner_bearer"
-			hero_idle_anim="act_vlandia_mp_voulgier_idle"
-			troop_idle_anim="act_vlandia_mp_voulgier_idle"
+			hero_idle_anim="act_main_story_troop_guard_idle_2"
+			troop_idle_anim="act_main_story_troop_guard_idle_2"
 			multiplier="0.68"
 			cost="110"
 			icon="Infantry_Light"
@@ -70,8 +70,8 @@
 			hero="mp_sword_infantry_isengard_hero"
 			troop="mp_sword_infantry_isengard_troop"
 			banner_bearer="mp_sword_infantry_isengard_banner_bearer"
-			hero_idle_anim="act_vlandia_mp_sergeant_idle"
-			troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
+			hero_idle_anim="act_taunt_08"
+			troop_idle_anim="act_taunt_08"
 			multiplier="0.68"
 			cost="110"
 			icon="Infantry_Heavy"
@@ -98,8 +98,8 @@
 			hero="mp_heavy_infantry_isengard_hero"
 			troop="mp_heavy_infantry_isengard_troop"
 			banner_bearer="mp_heavy_infantry_isengard_banner_bearer"
-			hero_idle_anim="act_vlandia_mp_sergeant_idle"
-			troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
+			hero_idle_anim="act_taunt_09"
+			troop_idle_anim="act_taunt_09"
 			multiplier="0.4"
 			cost="200"
 			icon="Infantry_Heavy"
@@ -125,8 +125,8 @@
 			id="mp_berserk_isengard"
 			hero="mp_berserk_isengard_hero"
 			troop="mp_berserk_isengard_troop"
-			hero_idle_anim="act_vlandia_mp_voulgier_idle"
-			troop_idle_anim="act_vlandia_mp_voulgier_idle"
+			hero_idle_anim="act_taunt_31"
+			troop_idle_anim="act_taunt_31"
 			multiplier="0.2"
 			cost="350"
 			icon="Special_Falxman"
@@ -152,8 +152,8 @@
 			id="mp_light_ranged_isengard"
 			hero="mp_light_ranged_isengard_hero"
 			troop="mp_light_ranged_isengard_troop"
-			hero_idle_anim="act_battania_mp_ranger_idle"
-			troop_idle_anim="act_idle_bow_1"
+			hero_idle_anim="act_cheering_high_01"
+			troop_idle_anim="act_cheering_high_01"
 			multiplier="0.77"
 			cost="110"
 			icon="Archer_Light"
@@ -179,8 +179,8 @@
 			id="mp_heavy_ranged_isengard"
 			hero="mp_heavy_ranged_isengard_hero"
 			troop="mp_heavy_ranged_isengard_troop"
-			hero_idle_anim="act_vlandia_mp_sharpshooter_idle"
-			troop_idle_anim="act_idle_1h_with_shield_1_left_stance"
+			hero_idle_anim="act_cheering_high_01"
+			troop_idle_anim="act_cheering_high_01"
 			multiplier="0.46"
 			cost="160"
 			icon="Crossbowman_Heavy"
@@ -202,7 +202,7 @@
 		</Perks>
 	</MPClassDivision>
 	<!-- Orc Rider -->
-	<MPClassDivision
+	<!--<MPClassDivision
 			id="mp_orc_rider_isengard"
 			hero="mp_orc_rider_isengard_troop"
 			troop="mp_orc_rider_isengard_troop"
@@ -226,7 +226,7 @@
 				perk_list="1">
 			</Perk>
 		</Perks>
-	</MPClassDivision>
+	</MPClassDivision>-->
 
 	<!-- ROHAN -->
 	<MPClassDivision
