@@ -135,6 +135,7 @@
         <module_sound name="event:/al/lotr/isengard/voice/uruk/you_know_where_to_go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/You know where to go.wav" />
         <!--Sounds in LOTR/OST-->
         <module_sound name="event:/al/lotr/ost/flaming_red_hair" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
+		<module_sound name="event:/al/lotr/ost/charge_theoden" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
         <!--Sounds in LOTR/Rohan/Alert-->
         <module_sound name="event:/al/lotr/rohan/alert/french_horn_1" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_1.wav" />
         <module_sound name="event:/al/lotr/rohan/alert/french_horn_2" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_2.wav" />

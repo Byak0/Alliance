@@ -389,4 +389,56 @@
 			</Perk>
 		</Perks>
 	</MPClassDivision>
+	<MPClassDivision
+			id="mp_royal_guard_rohan1"
+			hero="mp_light_cavalry_rohan_royal_guard_1"
+			troop="mp_light_cavalry_rohan_troop"
+			banner_bearer="mp_light_cavalry_rohan_troop"
+			hero_mount_idle_anim="act_battania_mp_mounted_warrior_mount_idle"
+			troop_mount_idle_anim="act_horse_idle_1"
+			multiplier="0.50"
+			cost="300"
+			icon="Cavalry_Light"
+			melee_ai="50"
+			ranged_ai="50"
+			armor="40"
+			movement_speed="0.78"
+			combat_movement_speed="0.7"
+			acceleration="2.8">
+		<Perks>
+			<Perk
+				game_mode="all"
+				name="{=*}Default"
+				description="{=*}Default."
+				icon="PerkToughness"
+				perk_list="1">
+			</Perk>
+		</Perks>
+	</MPClassDivision>
+	<MPClassDivision
+		id="mp_royal_guard_rohan2"
+		hero="mp_light_cavalry_rohan_royal_guard_2"
+		troop="mp_light_cavalry_rohan_troop"
+		banner_bearer="mp_light_cavalry_rohan_troop"
+		hero_mount_idle_anim="act_battania_mp_mounted_warrior_mount_idle"
+		troop_mount_idle_anim="act_horse_idle_1"
+		multiplier="0.50"
+		cost="300"
+		icon="Cavalry_Light"
+		melee_ai="50"
+		ranged_ai="50"
+		armor="40"
+		movement_speed="0.78"
+		combat_movement_speed="0.7"
+		acceleration="2.8">
+		<Perks>
+			<Perk
+				game_mode="all"
+				name="{=*}Default"
+				description="{=*}Default."
+				icon="PerkToughness"
+				perk_list="1">
+			</Perk>
+		</Perks>
+	</MPClassDivision>
 </MPClassDivisions>

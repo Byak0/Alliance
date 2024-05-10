@@ -72,6 +72,10 @@ namespace Alliance.Client.Patch.HarmonyPatch
             }
 
             missionPeer.ClearVisuals(buildData.AgentVisualsIndex);
+
+            // Always free spawn point
+            SpawnFrameSelectionHelper.FreeSpawnPointFromPlayer(missionPeer.Peer);
+
             Equipment equipment = new Equipment(buildData.AgentOverridenSpawnEquipment);
 
             // Remove banner from equipment visuals to prevent weird appearance
@@ -243,7 +247,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
             AudioPlayer.Instance.Play(RandomUrukCheers[_lastUrukCheerIndex], 0.5f, soundOrigin: origin);
         }
 
-        public static bool Prefix_RemoveAgentVisuals(MultiplayerMissionAgentVisualSpawnComponent  __instance, MissionPeer missionPeer, bool sync = false)
+        public static bool Prefix_RemoveAgentVisuals(MultiplayerMissionAgentVisualSpawnComponent __instance, MissionPeer missionPeer, bool sync = false)
         {
             missionPeer.ClearAllVisuals();
             if (!GameNetwork.IsDedicatedServer && !missionPeer.Peer.IsMine)
@@ -377,7 +381,6 @@ namespace Alliance.Client.Patch.HarmonyPatch
                 if (_visualSpawnPointUsers[i] == player)
                 {
                     _visualSpawnPointUsers[i] = null;
-                    break;
                 }
             }
         }
