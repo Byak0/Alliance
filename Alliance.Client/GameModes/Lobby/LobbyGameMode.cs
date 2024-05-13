@@ -1,3 +1,4 @@
+using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.GameModes.Lobby.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -19,6 +20,7 @@ namespace Alliance.Client.GameModes.Lobby
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new LobbyClientBehavior(),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     new MultiplayerAdminComponent(),
                     new MultiplayerTimerComponent(),

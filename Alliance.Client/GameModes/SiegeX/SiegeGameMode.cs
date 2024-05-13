@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+﻿using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Siege.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -24,6 +25,7 @@ namespace Alliance.Client.GameModes.SiegeX
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     new MultiplayerWarmupComponent(),
                     new PvCMissionMultiplayerSiegeClient(),

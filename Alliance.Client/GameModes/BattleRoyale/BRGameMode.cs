@@ -1,3 +1,4 @@
+using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using TaleWorlds.Core;
@@ -23,6 +24,7 @@ namespace Alliance.Client.GameModes.BattleRoyale
                     // Custom behaviors
                     new BRCommonBehavior(),
                     new ShrinkingZoneBehavior(),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     // Native behaviors
                     new MultiplayerTimerComponent(),

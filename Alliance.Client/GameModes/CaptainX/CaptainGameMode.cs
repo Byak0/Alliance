@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+﻿using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -26,6 +27,7 @@ namespace Alliance.Client.GameModes.CaptainX
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     new MultiplayerAchievementComponent(),
                     new MultiplayerWarmupComponent(),
