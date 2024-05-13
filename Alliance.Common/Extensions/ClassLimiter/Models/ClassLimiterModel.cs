@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
-using TaleWorlds.PlatformService.Steam;
 using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
 
@@ -115,7 +114,7 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
         public void ChangeCharacterAvailability(BasicCharacterObject character, bool isAvailable)
         {
-            if(isAvailable == CharactersAvailable[character]) return;
+            if (isAvailable == CharactersAvailable[character]) return;
 
             Log($"Changed availability of {character.Name} to {isAvailable}", LogLevel.Debug);
 

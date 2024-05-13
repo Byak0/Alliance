@@ -163,27 +163,43 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
             // Spawn bots for attacker
             if (nbBotsToSpawnAtt > 0)
             {
-                BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-
-                for (int i = 0; i < nbBotsToSpawnAtt; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.AttackerTeam, culture1, troopCharacter, botDifficulty: difficulty);
-                }
-                SendMessageToAll("Spawned " + nbBotsToSpawnAtt + " bots in Attacker team.");
+                BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+                SpawnBotsForTeam(Mission.AttackerTeam, culture1, difficulty, nbBotsToSpawnAtt);
             }
             // Spawn bots for defender
             if (nbBotsToSpawnDef > 0)
             {
-                BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-                for (int i = 0; i < nbBotsToSpawnDef; i++)
-                {
-                    BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture2).ToList().GetRandomElement().TroopCharacter;
-                    SpawnHelper.SpawnBot(Mission.DefenderTeam, culture2, troopCharacter, botDifficulty: difficulty); ;
-                }
-                SendMessageToAll("Spawned " + nbBotsToSpawnDef + " bots in Defender team.");
+                BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+                SpawnBotsForTeam(Mission.DefenderTeam, culture2, difficulty, nbBotsToSpawnAtt);
             }
             _haveBotsBeenSpawned = true;
+        }
+
+        private void SpawnBotsForTeam(Team team, BasicCultureObject culture, float difficulty, int nbBotsToSpawn)
+        {
+            int i;
+            for (i = 0; i < nbBotsToSpawn; i++)
+            {
+                BasicCharacterObject troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture).ToList().GetRandomElement().TroopCharacter;
+                if (Config.Instance.UsePlayerLimit)
+                {
+                    if (!ClassLimiterModel.Instance.CharactersAvailability[troopCharacter].IsAvailable)
+                    {
+                        List<BasicCharacterObject> availableCharacters = ClassLimiterModel.Instance.CharactersAvailable.Where(p => p.Value == true).Select(p => p.Key).ToList();
+                        if (availableCharacters.Count > 0)
+                        {
+                            troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture).ToList().GetRandomElementWithPredicate(c => availableCharacters.Contains(c.TroopCharacter)).TroopCharacter;
+                        }
+                        else
+                        {
+                            Log("No more available characters to spawn bots.", LogLevel.Warning);
+                            break;
+                        }
+                    }
+                }
+                SpawnHelper.SpawnBot(team, culture, troopCharacter, botDifficulty: difficulty);
+            }
+            SendMessageToAll($"Spawned {i} bots in {team.Side}");
         }
 
         private void SpawnBotsForCvC()
@@ -226,14 +242,14 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
         private async void StartFightAfterTimer(int waitTime)
         {
-            if(waitTime <= 0)
+            if (waitTime <= 0)
             {
                 EnableMortality();
             }
             else
             {
                 ToggleBarriers(TEMPORARY_BARRIER_TAG, true);
-                await Task.Delay(waitTime-3000);
+                await Task.Delay(waitTime - 3000);
                 SendInformationToAll($"Starting in 3...");
                 await Task.Delay(1000);
                 SendInformationToAll($"Starting in 2...");

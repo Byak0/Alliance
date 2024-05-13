@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
@@ -58,7 +59,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         private ALHeroClassVM _currentSelectedClass;
         private MBBindingList<MPPlayerVM> _teammates;
         private MBBindingList<MPPlayerVM> _enemies;
-        private MissionRepresentativeBase missionRep => GameNetwork.MyPeer?.VirtualPlayer?.GetComponent<MissionRepresentativeBase>();
 
         private Team _playerTeam
         {
@@ -508,33 +508,50 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             }
 
             int num = ((initialHeroSelection != null) ? (gameMode.IsGameModeUsingCasualGold ? initialHeroSelection.TroopCasualCost : ((gameMode.GameType == MultiplayerGameType.Battle) ? initialHeroSelection.TroopBattleCost : initialHeroSelection.TroopCost)) : 0);
-            if (initialHeroSelection == null || (IsGoldEnabled && num > Gold))
+
+            if (initialHeroSelection != null)
             {
-                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
-            }
-            else
-            {
-                foreach (ALHeroClassGroupVM @class in Classes)
+                if (Config.Instance.UsePlayerLimit)
                 {
-                    foreach (ALHeroClassVM subClass in @class.SubClasses)
+                    BasicCharacterObject initialChoiceCharacter = GameNetwork.MyPeer.IsOfficer() ? initialHeroSelection.HeroCharacter : initialHeroSelection.TroopCharacter;
+                    bool initialChoiceUnavailable = Config.Instance.UsePlayerLimit && !ClassLimiterModel.Instance.CharactersAvailable[initialHeroSelection.TroopCharacter];
+                    if (initialChoiceUnavailable)
                     {
-                        if (subClass.HeroClass == initialHeroSelection)
+                        ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+                    }
+                }
+                else if (IsGoldEnabled && initialHeroSelection.TroopCost > Gold)
+                {
+                    ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+                }
+                else
+                {
+                    foreach (ALHeroClassGroupVM @class in Classes)
+                    {
+                        foreach (ALHeroClassVM subClass in @class.SubClasses)
                         {
-                            ALHeroClassVM = subClass;
+                            if (subClass.HeroClass == initialHeroSelection)
+                            {
+                                ALHeroClassVM = subClass;
+                                break;
+                            }
+                        }
+
+                        if (ALHeroClassVM != null)
+                        {
                             break;
                         }
                     }
 
-                    if (ALHeroClassVM != null)
+                    if (ALHeroClassVM == null)
                     {
-                        break;
+                        ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
                     }
                 }
-
-                if (ALHeroClassVM == null)
-                {
-                    ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
-                }
+            }
+            else
+            {
+                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
             }
 
             _isInitializing = false;
@@ -672,10 +689,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             heroClass.IsSelected = true;
             CurrentSelectedClass = heroClass;
 
-            if(Config.Instance.UsePlayerLimit)
+            if (Config.Instance.UsePlayerLimit)
             {
                 ClassLimiterModel.Instance.RequestUsage(heroClass.Character);
-            }            
+            }
 
             if (GameNetwork.IsMyPeerReady)
             {

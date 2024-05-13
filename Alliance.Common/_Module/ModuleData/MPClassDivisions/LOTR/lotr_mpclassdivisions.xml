@@ -202,7 +202,7 @@
 		</Perks>
 	</MPClassDivision>
 	<!-- Orc Rider -->
-	<!--<MPClassDivision
+	<MPClassDivision
 			id="mp_orc_rider_isengard"
 			hero="mp_orc_rider_isengard_troop"
 			troop="mp_orc_rider_isengard_troop"
@@ -226,7 +226,7 @@
 				perk_list="1">
 			</Perk>
 		</Perks>
-	</MPClassDivision>-->
+	</MPClassDivision>
 
 	<!-- ROHAN -->
 	<MPClassDivision
