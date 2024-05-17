@@ -1337,7 +1337,7 @@
 			<skill id="Athletics"
              value="100" />
 			<skill id="Riding"
-             value="150" />
+             value="200" />
 			<skill id="OneHanded"
              value="150" />
 			<skill id="TwoHanded"
@@ -1353,22 +1353,16 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.orc_rider_saber_1" />
-				<equipment slot="Item1"
-									 id="Item.orc_rider_longsword_1" />
-				<equipment slot="Item2"
-									 id="Item.orc_rider_shortsword_1" />
-				<equipment slot="Body"
-									 id="Item.orc_rider_armor" />
-				<equipment slot="Gloves"
-									 id="Item.orc_rider_arms" />
-				<equipment slot="Leg"
-									 id="Item.orc_rider_greaves" />
-				<equipment slot="Head"
-									 id="Item.orc_rider_helmet" />
-				<equipment slot="Cape"
-									 id="Item.orc_rider_hood" />
+				<equipment slot="Item0" id="Item.orc_rider_saber_1" />
+				<equipment slot="Item1" id="Item.orc_rider_longsword_1" />
+				<equipment slot="Item2" id="Item.orc_rider_shortsword_1" />
+				<equipment slot="Body" id="Item.orc_rider_armor" />
+				<equipment slot="Gloves" id="Item.orc_rider_arms" />
+				<equipment slot="Leg" id="Item.orc_rider_greaves" />
+				<equipment slot="Head" id="Item.orc_rider_helmet" />
+				<equipment slot="Cape" id="Item.orc_rider_hood" />
+				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances

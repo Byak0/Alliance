@@ -18,7 +18,11 @@ namespace Alliance.Common.Utilities
         {
             if (string.IsNullOrEmpty(fromPath) || string.IsNullOrEmpty(toPath))
             {
-                throw new ArgumentNullException($"fromPath or toPath is null");
+                throw new ArgumentNullException(
+                    $@"Following parameters are null : 
+                    {(fromPath == null ? "fromPath" : "")}
+                    {(toPath == null ? "toPath" : "")}"
+                );
             }
 
             // Normalize the paths

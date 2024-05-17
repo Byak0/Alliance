@@ -4,6 +4,7 @@ using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.GameModels
@@ -129,6 +130,13 @@ namespace Alliance.Common.GameModels
             agentDrivenProperties.MountManeuver *= 1f + ridingSkill * 0.0035f;
             float num2 = mountElement.Weight / 2f + (harness.IsEmpty ? 0f : harness.Weight);
             agentDrivenProperties.MountDashAccelerationMultiplier = !(num2 > 200f) ? 1f : num2 < 300f ? 1f - (num2 - 200f) / 111f : 0.1f;
+
+            if (agent.Monster.StringId == "warg")
+            {
+                agentDrivenProperties.TopSpeedReachDuration *= 4f;
+                agentDrivenProperties.MountDashAccelerationMultiplier *= 5f;
+                Log($"Adjusting stats of warg ({agentDrivenProperties.TopSpeedReachDuration}|{agentDrivenProperties.MountDashAccelerationMultiplier}|{agentDrivenProperties.MountManeuver}|{agentDrivenProperties.MountSpeed})", LogLevel.Debug);
+            }
         }
 
         private void UpdateHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties)

@@ -1,0 +1,641 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<base
+	type="collision_infos">
+	<collision_infos>
+		<!--Ajouter les sons avec template cheval native -->
+
+		<!-- For humanoid: pace_1: Walk. pace_2: Run. -->
+		<!-- For horse: pace_1: Walk. pace_2: Walk. pace_3: Trot. pace_4: Canter. pace_5: Gallop. -->
+		<!-- pace_1, pace_2, pace_3, pace_4, pace_5, jump, land, bodyfall, sneak, slide -->
+		<monster
+			sound_and_collision_info_class="warg">
+			<collision_info
+				second_material="default">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_default_col"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_default_col"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_default_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_default_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/dirt" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					effect_type="pace_1"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/wood" />
+				<collision_effect
+					effect_type="pace_2"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/wood" />
+				<collision_effect
+					effect_type="pace_3"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/wood" />
+				<collision_effect
+					effect_type="pace_4"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/wood"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/wood"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/wood" />
+				<collision_effect
+					effect_type="land"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/wood" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/wood" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/wood" />
+			</collision_info>
+			<collision_info
+				second_material="wood_nonstick"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="pot"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="siege_engines"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_grass_col"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_grass_col"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_grass_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_grass_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/grass" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_stone_col"
+					trail_particle="psys_game_hoof_dust_on_stone"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/stone"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_stone_col"
+					trail_particle="psys_game_hoof_dust_on_stone"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/stone"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_stone_col"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/stone" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_stone_col"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/stone" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/sand" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/sand" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/sand" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/sand"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/sand"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/sand" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/sand" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/sand" />
+			</collision_info>
+			<collision_info
+				second_material="path"
+				fallback_material_for_effects="stone" />
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust_snow"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust_snow"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust_snow"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust_snow"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/snow"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust_snow"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/snow"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/snow" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/snow" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/snow" />
+			</collision_info>
+			<collision_info
+				second_material="ice"
+				fallback_material_for_effects="snow" />
+			<collision_info
+				second_material="adobe"
+				fallback_material_for_effects="stone" />
+			<collision_info
+				second_material="straw"
+				fallback_material_for_effects="default">
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/grass" />
+			</collision_info>
+			<collision_info
+				second_material="fabric">
+				<collision_effect
+					effect_type="pace_1"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_2"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_3"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/snow" />
+				<collision_effect
+					effect_type="pace_4"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/snow"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/snow"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/snow" />
+				<collision_effect
+					effect_type="land"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/snow" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/wood" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/snow" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					effect_type="pace_1"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_2"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_3"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/stone" />
+				<collision_effect
+					effect_type="pace_4"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/stone"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/stone"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/stone" />
+				<collision_effect
+					effect_type="land"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/stone" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_mud_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_mud_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_mud_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/default" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_mud_col"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_mud_col"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/default"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_mud_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_mud_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/mud" />
+			</collision_info>
+			<collision_info
+				second_material="soil">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_soil_col_s"
+					trail_particle="psys_game_hoof_dust_on_soil"
+					decal="" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_soil_col_s"
+					trail_particle="psys_game_hoof_dust_on_soil"
+					decal="" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_soil_col_s"
+					trail_particle="psys_game_hoof_dust_on_soil"
+					decal="" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_soil_col"
+					trail_particle="psys_game_hoof_dust_on_soil"
+					decal="" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_soil_col"
+					trail_particle="psys_game_hoof_dust_on_soil"
+					decal="" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_soil_col_s"
+					decal="" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_soil_col_s"
+					decal="" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/water" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/water" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/walk/water" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_water_coll"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/canter/water"
+					one_shot="true" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_water_coll"
+					trail_particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/gallop/water"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_water_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/water" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_water_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/water" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/water" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/water" />
+				<collision_effect
+					effect_type="pass_through"
+					sound="event:/physics/water"
+					do_not_send_armor_parameter_to_sound="true"
+					upper_bound_of_size_parameter_for_sound="5000" />
+			</collision_info>
+		</monster>
+	</collision_infos>
+</base>
