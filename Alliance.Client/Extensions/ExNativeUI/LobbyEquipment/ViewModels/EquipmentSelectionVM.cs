@@ -519,6 +519,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                     {
                         ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
                     }
+                    else
+                    {
+                        ALHeroClassVM = InitHeroFromPreviousSelection(initialHeroSelection, ALHeroClassVM);
+                    }
                 }
                 else if (IsGoldEnabled && initialHeroSelection.TroopCost > Gold)
                 {
@@ -526,27 +530,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 }
                 else
                 {
-                    foreach (ALHeroClassGroupVM @class in Classes)
-                    {
-                        foreach (ALHeroClassVM subClass in @class.SubClasses)
-                        {
-                            if (subClass.HeroClass == initialHeroSelection)
-                            {
-                                ALHeroClassVM = subClass;
-                                break;
-                            }
-                        }
-
-                        if (ALHeroClassVM != null)
-                        {
-                            break;
-                        }
-                    }
-
-                    if (ALHeroClassVM == null)
-                    {
-                        ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
-                    }
+                    ALHeroClassVM = InitHeroFromPreviousSelection(initialHeroSelection, ALHeroClassVM);
                 }
             }
             else
@@ -594,6 +578,33 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 OnRefreshTeamMembers();
                 OnRefreshEnemyMembers();
             }
+        }
+
+        private ALHeroClassVM InitHeroFromPreviousSelection(MultiplayerClassDivisions.MPHeroClass initialHeroSelection, ALHeroClassVM ALHeroClassVM)
+        {
+            foreach (ALHeroClassGroupVM @class in Classes)
+            {
+                foreach (ALHeroClassVM subClass in @class.SubClasses)
+                {
+                    if (subClass.HeroClass == initialHeroSelection)
+                    {
+                        ALHeroClassVM = subClass;
+                        break;
+                    }
+                }
+
+                if (ALHeroClassVM != null)
+                {
+                    break;
+                }
+            }
+
+            if (ALHeroClassVM == null)
+            {
+                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+            }
+
+            return ALHeroClassVM;
         }
 
         public override void RefreshValues()
