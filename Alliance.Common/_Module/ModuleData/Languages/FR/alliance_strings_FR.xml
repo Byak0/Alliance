@@ -53,6 +53,7 @@
 		<string id="str_alliance_scene_westfold_burned" text="Village de l'Ouestfolde par Esperanza (Isengard)" />
 		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
 		<string id="str_alliance_scene_lotr_the_wold" text="Le Plateau de l'Eastemnet par Esperanza" />
+		<string id="str_alliance_scene_warg3" text="Embuscade par Adwennor" />
 
 		<!-- Unit names -->
 		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />

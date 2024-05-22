@@ -46,7 +46,7 @@
 		<Capsules>
 			<body_capsule
 				radius="0.4"
-				pos1="0, 1.0, 1.15"
+				pos1="0, 1.5, 1.15"
 				pos2="0, -0.57, 1.15" />
 		</Capsules>
 		<Flags

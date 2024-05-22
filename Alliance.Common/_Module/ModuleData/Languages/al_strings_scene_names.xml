@@ -35,4 +35,5 @@
 	<string id="str_multiplayer_scene_name.Westfold_burned" text="{=str_alliance_scene_westfold_burned}WestFold Village by Esperanza (Isengard)" />
 	<string id="str_multiplayer_scene_name.Gues_isen" text="{=str_alliance_scene_gues_isen}The Fords of Isen by Adwennor" />
 	<string id="str_multiplayer_scene_name.LOTR_The_Wold" text="{=str_alliance_scene_lotr_the_wold}The Wold by Esperanza" />
+	<string id="str_multiplayer_scene_name.Warg3" text="{=str_alliance_scene_warg3}Ambush by Adwennor" />
 </strings>

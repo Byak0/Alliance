@@ -5,9 +5,20 @@
 	<action name="act_blow_horn" />
 
 	<!-- Warg -->
+	<action name="act_warg_attack_stand" />
+	<action name="act_warg_attack_running" />
+	
 	<action name="act_warg_stand_for_movement_data"/>
 	<action name="act_warg_stand_1"/>
 	<action name="act_warg_idle_1" type="actt_idle" />
+	<action name="act_warg_rear"/>
+	<action name="act_warg_rear_damaged"/>
+	<action name="act_warg_kick"/>
+	
+	<action name="act_warg_hit_object" type="actt_hit_object" />
+	<action name="act_warg_hit_object_while_falling" type="actt_hit_object" />
+	
+	<action name="act_warg_gallop_acceleration_head"/>
 	<action name="act_warg_forward_walk_stand" />
 	<action name="act_warg_forward_walk" />
 	<action name="act_warg_forward_walk_strafe_right" />
@@ -22,8 +33,12 @@
 	<action name="act_warg_forward_canter_strafe_left" />
 	<action name="act_warg_forward_gallop_left_foot_stand" />
 	<action name="act_warg_forward_gallop_left_foot" />
+	<action name="act_warg_forward_gallop_left_foot_strafe_right" />
+	<action name="act_warg_forward_gallop_left_foot_strafe_left" />
 	<action name="act_warg_forward_gallop_right_foot_stand" />
 	<action name="act_warg_forward_gallop_right_foot" />
+	<action name="act_warg_forward_gallop_right_foot_strafe_right" />
+	<action name="act_warg_forward_gallop_right_foot_strafe_left" />
 	<action name="act_warg_turn_right" />
 	<action name="act_warg_turn_left" />
 	<action name="act_warg_backward_walk_stand" />
@@ -32,6 +47,9 @@
 	<action name="act_warg_backward_walk_strafe_left" />
 	<action name="act_warg_strike_back" type="actt_mount_strike" />
 	<action name="act_warg_strike_front" type="actt_mount_strike" />
+	<action name="act_warg_strike_back_while_moving" />
+	<action name="act_warg_strike_front_while_moving" />
+	
 
 	<action name="act_warg_strafe_right" />
 	<action name="act_warg_strafe_left" />
@@ -40,20 +58,40 @@
 	<action name="act_warg_walk_turn_right_head" />
 	<action name="act_warg_trot_turn_right_head" />
 	<action name="act_warg_canter_turn_right_head" />
+	<action name="act_warg_gallop_turn_right_head" />
 
 	<action name="act_warg_turn_left_head" />
 	<action name="act_warg_walk_turn_left_head" />
 	<action name="act_warg_trot_turn_left_head" />
 	<action name="act_warg_canter_turn_left_head" />
+	<action name="act_warg_gallop_turn_left_head" />
 
 	<action name="act_warg_quick_stop" type="actt_mount_quick_stop" />
 	<action name="act_warg_quick_stop_when_fast" type="actt_mount_quick_stop" />
 	<action name="act_warg_jump_start" type="actt_dash" />
 	<action name="act_warg_dash" type="actt_dash" />
 
+	<action name="act_warg_jump_forward" type="actt_jump_start" />
+	<action name="act_warg_jump_forward_loop" type="actt_jump" />
+	<action name="act_warg_jump_forward_end" type="actt_jump_end" />
+	<action name="act_warg_jump_forward_end_hard" type="actt_jump_end_hard" />
+	<action name="act_warg_jump_high" type="actt_jump_start" />
 	<action name="act_warg_jump_high_loop" type="actt_jump" />
 	<action name="act_warg_jump_high_end" type="actt_jump_end" />
 	<action name="act_warg_jump_high_end_hard" type="actt_jump_end_hard" />
+
+	<action name="act_warg_fall_right" type="actt_fall" />
+	<action name="act_warg_fall_left" type="actt_fall" />
+	<action name="act_warg_fall_right_continue" type="actt_fall" />
+	<action name="act_warg_fall_left_continue" type="actt_fall" />
+	<action name="act_warg_fall_roll" type="actt_fall" />
+	<action name="act_warg_fall_roll_continue" type="actt_fall" />
+	<action name="act_warg_fall_backwards" type="actt_fall" />
+	<action name="act_warg_fall_backwards_continue" type="actt_fall" />
+	<action name="act_warg_fall_slow_right" type="actt_fall" />
+	<action name="act_warg_fall_slow_right_continue" type="actt_fall" />
+	<action name="act_warg_fall_slow_left" type="actt_fall" />
+	<action name="act_warg_fall_slow_left_continue" type="actt_fall" />
 	<!-- Warg END -->
-	
+
 </action_types>

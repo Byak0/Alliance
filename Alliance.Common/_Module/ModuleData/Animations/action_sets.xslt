@@ -11,10 +11,6 @@
 		<xsl:copy>
 			<xsl:copy-of select="@*" />
 			<xsl:copy-of select="*" />
-
-			<action type="act_horse_rear" animation="rider_forward_gallop_right_foot" />
-			<action type="act_horse_rear_damaged" animation="rider_forward_gallop_right_foot" />
-
 		</xsl:copy>
 	</xsl:template>
 
