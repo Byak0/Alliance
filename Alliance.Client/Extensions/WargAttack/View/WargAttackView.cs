@@ -10,7 +10,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
     [DefaultView]
     public class WargAttackView : MissionView
     {
-        private float cooldownDuration = 1.0f; // Durée du cooldown en secondes
+        private float cooldownDuration = 1.0f; // Durée du cooldown en secondes entre deux attaques
         private DateTime lastAttackTime = DateTime.MinValue; // Initialise le dernier moment où l'attaque a été utilisée à une valeur minimale
 
 
@@ -19,8 +19,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
         {
             base.OnMissionScreenTick(dt);
             if (Agent.Main != null)
-            {
-                //Modification à faire : Verifier touche + si joueur sur un Warg. Pour l'instant vérifie uniquement si sur une monture
+            {                
                 if (Agent.Main.HasMount && Agent.Main.MountAgent.Monster.StringId == "warg" && Input.IsKeyPressed(TaleWorlds.InputSystem.InputKey.Q))
                 {
                     if (CanUseWargAttack())
@@ -45,15 +44,8 @@ namespace Alliance.Client.Extensions.WargAttack.View
 
         public void WargAttack()
         {
-
-
-            Log($"Using WargAttack !", LogLevel.Debug);            
-            
-            //TODO
-            //Test pour jouer une action avec la fonctionnalité attaque. Devra être refait pour partie multijoueur
-            //ActionIndexCache myAction = ActionIndexCache.Create("act_warg_attack_stand");
-            //Agent.Main.MountAgent.SetActionChannel(0, myAction, true);
-
+            Log($"Using WargAttack !", LogLevel.Debug);        
+                   
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new RequestWargAttack()); // Envoi message au Common
             GameNetwork.EndModuleEventAsClient();

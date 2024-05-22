@@ -5,6 +5,7 @@ using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.WargAttack.NetworkMessages.FromClient;
 using Alliance.Server.Core.Utils;
 using System;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -27,10 +28,36 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                 return false;
             }
 
+            Agent userAgent = peer.ControlledAgent.MountAgent;
+            int waitTime = 800;//1000 = 1s. Temps d'attente entre début animation en mouvement et le dégat
+
+            //On détermine si on joue l'animation attaque en mouvement(avec un cooldown l'exec du degat) ou attaque statique en se basant sur la velocité
+            if (peer.ControlledAgent.MountAgent.Velocity.x == 0 && peer.ControlledAgent.MountAgent.Velocity.y == 0 && peer.ControlledAgent.MountAgent.Velocity.z == 0)
+            {                
+                Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
+                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
+
+                wargAttack(peer, 0);
+            }
+            else
+            {               
+                Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_running");
+                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
+
+                wargAttack(peer, waitTime);
+            }
+
+            return true;
+        }
+
+        // Détection agent autour du joueur et application dégats
+        public async void wargAttack(NetworkCommunicator peer, int waitTime)
+        {
+            await Task.Delay(waitTime);
             Vec3 PlayerPosition = peer.ControlledAgent.Position;
             Vec3 MountDirection = peer.ControlledAgent.MountAgent.GetMovementDirection().ToVec3();
 
-            Agent userAgent = peer.ControlledAgent.MountAgent;
+
 
             int damageAmount = 100; // Degat appliqué à la cible
             float radius = 3f; // Radius de recherche ennemi
@@ -47,6 +74,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             {
                 if (agent != null && agent != peer.ControlledAgent)
                 {
+
                     //Debug
                     //Log($"Agent {agent.Name} position {agent.Position}", LogLevel.Debug);
                     //Common.Utilities.Logger.SendMessageToAll($"Nom agent =  {agent.Name} et agent position = {agent.Position}");                    
@@ -58,6 +86,9 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     float angleInRadians = (float)Math.Atan2(PlayerToAgent.y * MountDirection.x - PlayerToAgent.x * MountDirection.y, PlayerToAgent.x * MountDirection.x + PlayerToAgent.y * MountDirection.y);
                     float angleInDegrees = (float)(angleInRadians * (180f / Math.PI));
 
+                    //Calcul hauteur pour ne pas tuer un agent trop haut ou trop bas
+                    float diffHauteur = Math.Abs(peer.ControlledAgent.MountAgent.Position.z - agent.Position.z);
+
                     //Debug
                     //Log($"Angle =  {angleInDegrees}", LogLevel.Debug);
                     //Common.Utilities.Logger.SendMessageToAll($"Angle =  {angleInDegrees}");                    
@@ -65,26 +96,26 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     //Devant = -180 ; Gauche = -90; Droite = 90; Derriere = 0
                     //Ici degat appliqué uniquement si ennemi se situe dans un angle de 45 Degree de chaque côté par rapport au centre de la direction du "Mount"
                     string position = string.Empty;
-                    if (angleInDegrees < -135f && angleInDegrees > -180f)
+                    if (angleInDegrees < -135f && angleInDegrees > -180f && diffHauteur < 2f)
                     {
                         position = "Front Left";
-                        Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
+                        // Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
                         DealDamage(agent, damageAmount, agent.Position, peer.ControlledAgent);
                     }
                     else if (angleInDegrees < 0f && angleInDegrees > -90f)
                     {
                         position = "Back Left";
-                        Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
+                        //Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
                     }
                     else if (angleInDegrees < 90f && angleInDegrees > 0f)
                     {
                         position = "Back Right";
-                        Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
+                        //Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
                     }
-                    else if (angleInDegrees > 135f || angleInDegrees < -180f)
+                    else if ((angleInDegrees > 135f || angleInDegrees < -180f) && diffHauteur < 2f)
                     {
                         position = "Front Right";
-                        Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
+                        //Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
                         DealDamage(agent, damageAmount, agent.Position, peer.ControlledAgent);
                     }
                     else
@@ -94,11 +125,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
                 }
             }
-            Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
-            AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
-            return true;
         }
-
 
         // <summary>
         /// Apply damage to an agent. 
@@ -109,7 +136,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
         public void DealDamage(Agent agent, int damageAmount, Vec3 impactPosition, Agent damager = null)
         {
 
-            if (agent == null || !agent.IsActive() || agent.Health < 1)
+            if (agent == null || !agent.IsActive())
             {
                 Log("DealDamage: attempted to apply damage to a null or dead agent.", LogLevel.Warning);
                 return;
@@ -123,7 +150,6 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     {
                         agent.Health -= damageAmount;
 
-                        //Log("DoT has been applied");
                         return;
                     }
 
@@ -132,7 +158,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
                     var damagerAgent = damager != null ? damager : agent;
 
-                    CoreUtils.TakeDamage(agent, damagerAgent, damageAmount);
+                    CoreUtils.TakeDamage(agent, damagerAgent, damageAmount); // Application du blow
                 }
             }
             catch (Exception e)
