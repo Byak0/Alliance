@@ -1,8 +1,9 @@
 ﻿using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
-using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.WargAttack.NetworkMessages.FromClient;
+using Alliance.Server.Core.Utils;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -13,7 +14,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 {
     public class WargAttackHandler : IHandlerRegister
     {
-       
+
         public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
         {
             reg.Register<RequestWargAttack>(HandleWargAttack);
@@ -131,64 +132,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
                     var damagerAgent = damager != null ? damager : agent;
 
-                    var blow = new Blow(damagerAgent.Index);
-                    blow.DamageType = DamageTypes.Blunt;
-                    blow.BoneIndex = agent.Monster.HeadLookDirectionBoneIndex;
-                    blow.GlobalPosition = agent.GetChestGlobalPosition();
-                    blow.BaseMagnitude = damageAmount;
-                    blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
-                    blow.InflictedDamage = damageAmount;
-                    var direction = agent.Position == impactPosition ? agent.LookDirection : agent.Position - impactPosition;
-                    direction.Normalize();
-                    blow.Direction = direction;
-                    blow.SwingDirection = direction;
-                    blow.DamageCalculated = true;
-                    blow.AttackType = AgentAttackType.Kick;
-                    blow.BlowFlag = BlowFlags.NoSound;
-                    blow.VictimBodyPart = BoneBodyPartType.Chest;
-                    blow.StrikeType = StrikeType.Thrust;
-
-
-                    bool isFriendlyFire = damager != null && agent != null && damager.IsFriendOf(agent);
-                    if (agent.Health <= damageAmount)
-                    {
-                        agent.Die(blow, Agent.KillInfo.Invalid);
-                        return;
-                    }
-                    sbyte mainHandItemBoneIndex = damagerAgent.Monster.MainHandItemBoneIndex;
-
-                    AttackCollisionData attackCollisionData = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(
-                        false,
-                        false,
-                        false,
-                        true,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        CombatCollisionResult.StrikeAgent,
-                        -1,
-                        1,
-                        2,
-                        blow.BoneIndex,
-                        blow.VictimBodyPart,
-                        mainHandItemBoneIndex,
-                        Agent.UsageDirection.AttackUp,
-                        -1,
-                        CombatHitResultFlags.NormalHit,
-                        0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f,
-                        Vec3.Up,
-                        blow.Direction,
-                        blow.GlobalPosition,
-                        Vec3.Zero,
-                        Vec3.Zero,
-                        agent.Velocity,
-                        Vec3.Up);
-                    agent.RegisterBlow(blow, attackCollisionData);
+                    CoreUtils.TakeDamage(agent, damagerAgent, damageAmount);
                 }
             }
             catch (Exception e)
