@@ -21,7 +21,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
             if (Agent.Main != null)
             {
                 //Modification à faire : Verifier touche + si joueur sur un Warg. Pour l'instant vérifie uniquement si sur une monture
-                if (Agent.Main.HasMount && Input.IsKeyPressed(TaleWorlds.InputSystem.InputKey.Q))
+                if (Agent.Main.HasMount && Agent.Main.MountAgent.Monster.StringId == "warg" && Input.IsKeyPressed(TaleWorlds.InputSystem.InputKey.Q))
                 {
                     if (CanUseWargAttack())
                     {
@@ -33,7 +33,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
                         Log($"Warg Attack on cooldown! {TimeSpan.FromSeconds(cooldownDuration) - (DateTime.UtcNow - lastAttackTime)} secondes remaining", LogLevel.Debug);
                     }
 
-                }
+                }               
             }
         }
 
@@ -51,8 +51,8 @@ namespace Alliance.Client.Extensions.WargAttack.View
             
             //TODO
             //Test pour jouer une action avec la fonctionnalité attaque. Devra être refait pour partie multijoueur
-            ActionIndexCache myAction = ActionIndexCache.Create("act_horse_kick");
-            Agent.Main.MountAgent.SetActionChannel(0, myAction, true);
+            //ActionIndexCache myAction = ActionIndexCache.Create("act_warg_attack_stand");
+            //Agent.Main.MountAgent.SetActionChannel(0, myAction, true);
 
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new RequestWargAttack()); // Envoi message au Common

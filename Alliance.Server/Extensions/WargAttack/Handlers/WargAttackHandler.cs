@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.AnimationPlayer.Models;
+using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.WargAttack.NetworkMessages.FromClient;
 using System;
 using TaleWorlds.Core;
@@ -26,6 +28,9 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
             Vec3 PlayerPosition = peer.ControlledAgent.Position;
             Vec3 MountDirection = peer.ControlledAgent.MountAgent.GetMovementDirection().ToVec3();
+
+            Agent userAgent = peer.ControlledAgent.MountAgent;
+
             int damageAmount = 100; // Degat appliqué à la cible
             float radius = 3f; // Radius de recherche ennemi
 
@@ -88,6 +93,8 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
                 }
             }
+            Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
+            AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
             return true;
         }
 
