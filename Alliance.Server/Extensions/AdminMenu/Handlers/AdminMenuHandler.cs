@@ -223,6 +223,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
+            if (playerSelected == null) return true;
+
             killPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été tué par l'admin {peer.UserName}.", LogLevel.Information);

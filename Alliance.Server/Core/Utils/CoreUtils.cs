@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Core;
+﻿using System.Collections.Generic;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.MountAndBlade.Agent;
@@ -77,6 +78,43 @@ namespace Alliance.Server.Core.Utils
                 Vec3.Up
             );
             victim.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
+        }
+
+        /// <summary>
+        /// Return the list of all agents alives that are near the target.
+        /// IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED
+        /// </summary>
+        /// <param name="range"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static List<Agent> GetNearAliveAgentsInRange(float range, Agent target)
+        {
+            //Contain all agent (Players/Bots/Ridings)
+            List<Agent> allAgents = Mission.Current.AllAgents;
+            List<Agent> agentsInRange = new List<Agent>();
+
+            foreach (Agent agent in allAgents)
+            {
+                if (!agent.IsActive() || agent.State == AgentState.Routed) continue;
+
+                // Do not include mount of player and player.
+                if (agent == target.MountAgent || agent == target) continue;
+
+                float distance = agent.Position.Distance(target.Position);
+
+                //Add offset in case of mount since mount are large
+                if (agent.IsMount)
+                {
+                    distance -= 0.5f;
+                }
+
+                if (distance < range)
+                {
+                    agentsInRange.Add(agent);
+                }
+            }
+
+            return agentsInRange;
         }
     }
 }

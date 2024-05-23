@@ -5,6 +5,7 @@ using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.WargAttack.NetworkMessages.FromClient;
 using Alliance.Server.Core.Utils;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -33,14 +34,14 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
             //On détermine si on joue l'animation attaque en mouvement(avec un cooldown l'exec du degat) ou attaque statique en se basant sur la velocité
             if (peer.ControlledAgent.MountAgent.Velocity.x == 0 && peer.ControlledAgent.MountAgent.Velocity.y == 0 && peer.ControlledAgent.MountAgent.Velocity.z == 0)
-            {                
+            {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
                 AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
 
                 wargAttack(peer, 0);
             }
             else
-            {               
+            {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_running");
                 AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
 
@@ -54,27 +55,24 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
         public async void wargAttack(NetworkCommunicator peer, int waitTime)
         {
             await Task.Delay(waitTime);
+
+            if (peer.ControlledAgent == null || peer.ControlledAgent.MountAgent == null) return;
+
             Vec3 PlayerPosition = peer.ControlledAgent.Position;
             Vec3 MountDirection = peer.ControlledAgent.MountAgent.GetMovementDirection().ToVec3();
 
-
-
             int damageAmount = 100; // Degat appliqué à la cible
-            float radius = 3f; // Radius de recherche ennemi
-
-            MBList<Agent> nearbyAll = (MBList<Agent>)Mission.Current.AllAgents;
+            float radius = 3.5f; // Radius de recherche ennemi
 
             //Debug
             //Common.Utilities.Logger.SendMessageToAll($"Mount direction =  {MountDirection} , playerPosition {PlayerPosition}");
 
-            //On récupère la liste des ennemis à proximités
-            MBList<Agent> nearbyAllAgents = Mission.Current.GetNearbyAgents(peer.ControlledAgent.Position.AsVec2, radius, nearbyAll);
+            List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, peer.ControlledAgent);
 
             foreach (var agent in nearbyAllAgents)
             {
                 if (agent != null && agent != peer.ControlledAgent)
                 {
-
                     //Debug
                     //Log($"Agent {agent.Name} position {agent.Position}", LogLevel.Debug);
                     //Common.Utilities.Logger.SendMessageToAll($"Nom agent =  {agent.Name} et agent position = {agent.Position}");                    
@@ -82,12 +80,13 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     //Calcul du Vecteur entre position joueur et position ennemi                    
                     Vec3 PlayerToAgent = (PlayerPosition - agent.Position).NormalizedCopy();
 
-                    // Calculer l'angle entre la direction ddu joueur Peer et la direction de l'agent cible
+                    // Calculer l'angle entre la direction du joueur Peer et la direction de l'agent cible
                     float angleInRadians = (float)Math.Atan2(PlayerToAgent.y * MountDirection.x - PlayerToAgent.x * MountDirection.y, PlayerToAgent.x * MountDirection.x + PlayerToAgent.y * MountDirection.y);
                     float angleInDegrees = (float)(angleInRadians * (180f / Math.PI));
 
                     //Calcul hauteur pour ne pas tuer un agent trop haut ou trop bas
-                    float diffHauteur = Math.Abs(peer.ControlledAgent.MountAgent.Position.z - agent.Position.z);
+                    float peerZAxe = peer.ControlledAgent.MountAgent.Position.z;
+                    float diffHauteur = Math.Abs(peerZAxe - agent.Position.z);
 
                     //Debug
                     //Log($"Angle =  {angleInDegrees}", LogLevel.Debug);
@@ -146,13 +145,6 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                 // Modifie health directement si les degats ne tuent pas.
                 if (agent.State == AgentState.Active || agent.State == AgentState.Routed)
                 {
-                    if (agent.Health > damageAmount)
-                    {
-                        agent.Health -= damageAmount;
-
-                        return;
-                    }
-
                     if (agent.IsFadingOut())
                         return;
 
@@ -170,6 +162,4 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             }
         }
     }
-
-
 }
