@@ -5,7 +5,10 @@
 	<ModuleAssemblyDirectory>..\WOTS\bin\</ModuleAssemblyDirectory>
 	<file id="soln_action_sets" name="ModuleData/Animations/action_sets.xml" type="action_set" />
 	<file id="soln_action_types" name="ModuleData/Animations/action_types.xml" type="action_type" />
-	<file id="soln_collision_infos" name="ModuleData/CollisionInfos/LOTR/collision_infos_warg.xml" type="collision_infos" />
+	<file id="soln_monsters" name="ModuleData/Monsters/LOTR/lotr_monster_dwarf.xml" type="monster" />
+	<file id="soln_monsters" name="ModuleData/Monsters/LOTR/lotr_monster_orc.xml" type="monster" />
+	<file id="soln_monsters" name="ModuleData/Monsters/LOTR/lotr_monster_uruk.xml" type="monster" />
+	<file id="soln_monsters" name="ModuleData/Monsters/LOTR/lotr_monster_warg.xml" type="monster" />
 	<file id="soln_module_sound" name="ModuleData/module_sounds.xml" type="module_sound" />
 	<file id="soln_physics_materials" name="ModuleData/physics_materials.xml" type="physics_material" />
 	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_skins_uruk.xml" type="skin" />
@@ -13,5 +16,7 @@
 	<file id="soln_skins" name="ModuleData/Skins/LOTR/lotr_skins_dwarf.xml" type="skin" />
 	<file id="soln_monster_usage_sets" name="ModuleData/MonsterUsage/LOTR/lotr_monster_usage_warg.xml" type="monster_usage_set" />
 	<file id="soln_voice_definitions" name="ModuleData/VoiceDefinitions/LOTR/lotr_uruk_voice_def.xml" type="voice_definitions" />
+	<file id="soln_voice_definitions" name="ModuleData/VoiceDefinitions/LOTR/lotr_warg_voice_def.xml" type="voice_definitions" />
 	<file id="soln_item_usage_sets" name="ModuleData/ItemUsage/Native/nat_item_usage.xml" type="item_usage_set" />
+	<file id="soln_collision_infos" name="ModuleData/CollisionInfos/LOTR/collision_infos_warg.xml" type="collision_infos" />
 </base>

@@ -9,7 +9,7 @@
         absorbed_damage_ratio="1.0"
         num_paces="5"
         jump_acceleration="6.5"
-        sound_and_collision_info_class="bovine"
+        sound_and_collision_info_class="warg"
         rider_camera_height_adder="-1"
 		rider_body_capsule_height_adder="0"
 		rider_body_capsule_forward_adder="0"

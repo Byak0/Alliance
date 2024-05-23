@@ -20,7 +20,7 @@
 				extra_health="15">
 				<AdditionalMeshes>
 					<Mesh
-						name="warg_low_fur"
+						name="warg_low_fur_with_saddle"
 						affected_by_cover="true" />
 				</AdditionalMeshes>
 				<Materials>

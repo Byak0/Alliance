@@ -133,6 +133,68 @@
         <module_sound name="event:/al/lotr/isengard/voice/uruk/yell_2" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 2.wav" />
         <module_sound name="event:/al/lotr/isengard/voice/uruk/yell_3" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" />
         <module_sound name="event:/al/lotr/isengard/voice/uruk/you_know_where_to_go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/You know where to go.wav" />
+		<!--Sounds in LOTR/Isengard/Voice/Warg-->
+		<module_sound name="event:/al/lotr/isengard/voice/warg/attacks" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/attack_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/attack_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/attack_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/attack_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/attack_5.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/barks" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/bark_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/bark_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/bark_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/bark_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/bark_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/bark_6.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/dies" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/die_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_10.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_11.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_8.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/die_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/grunts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/grunt_8.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/hits" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/hit_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/hit_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/hit_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/hit_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/howlss" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/howls_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/howls_7.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/saddles" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/saddle_6.wav" weight="1" />
+		</module_sound>
         <!--Sounds in LOTR/OST-->
         <module_sound name="event:/al/lotr/ost/flaming_red_hair" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
 		<module_sound name="event:/al/lotr/ost/charge_theoden" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
