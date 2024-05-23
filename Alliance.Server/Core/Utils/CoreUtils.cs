@@ -95,7 +95,7 @@ namespace Alliance.Server.Core.Utils
 
             foreach (Agent agent in allAgents)
             {
-                if (!agent.IsActive() || agent.State == AgentState.Routed) continue;
+                if (!agent.IsActive()) continue;
 
                 // Do not include mount of player and player.
                 if (agent == target.MountAgent || agent == target) continue;
