@@ -33,19 +33,19 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             int waitTime = 800;//1000 = 1s. Temps d'attente entre début animation en mouvement et le dégat
 
             //On détermine si on joue l'animation attaque en mouvement(avec un cooldown l'exec du degat) ou attaque statique en se basant sur la velocité
-            if (peer.ControlledAgent.MountAgent.Velocity.x == 0 && peer.ControlledAgent.MountAgent.Velocity.y == 0 && peer.ControlledAgent.MountAgent.Velocity.z == 0)
-            {
-                Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
-                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
-
-                wargAttack(peer, 0);
-            }
-            else
+            if (peer.ControlledAgent.MountAgent.MovementVelocity.Y >= 4)
             {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_running");
                 AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
 
                 wargAttack(peer, waitTime);
+            }
+            else
+            {
+                Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
+                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
+
+                wargAttack(peer, 0);
             }
 
             return true;
