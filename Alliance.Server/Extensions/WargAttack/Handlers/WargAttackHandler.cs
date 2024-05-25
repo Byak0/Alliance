@@ -61,8 +61,8 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             Vec3 PlayerPosition = peer.ControlledAgent.Position;
             Vec3 MountDirection = peer.ControlledAgent.MountAgent.GetMovementDirection().ToVec3();
 
-            int damageAmount = 100; // Degat appliqué à la cible
-            float radius = 3f; // Radius de recherche ennemi
+            int damageAmount = 60; // Degat appliqué à la cible
+            float radius = 3.5f; // Radius de recherche ennemi
 
             //Debug
             //Common.Utilities.Logger.SendMessageToAll($"Mount direction =  {MountDirection} , playerPosition {PlayerPosition}");
