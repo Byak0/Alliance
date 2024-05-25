@@ -7,7 +7,7 @@
 		weight="500"
 		hit_points="200"
         absorbed_damage_ratio="1.0"
-        num_paces="5"
+        num_paces="6"
         jump_acceleration="6.5"
         sound_and_collision_info_class="warg"
         rider_camera_height_adder="-1"

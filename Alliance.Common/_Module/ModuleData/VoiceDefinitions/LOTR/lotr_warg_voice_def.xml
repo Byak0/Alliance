@@ -6,8 +6,17 @@
 		min_pitch_multiplier="0.95"
 		max_pitch_multiplier="1.05">
 		<voice
-			type="Neigh"
+			type="Grunt"
+			path="event:/al/lotr/isengard/voice/warg/grunts" />
+		<voice
+			type="Jump"
+			path="event:/al/lotr/isengard/voice/warg/attacks" />
+		<voice
+			type="Yell"
 			path="event:/al/lotr/isengard/voice/warg/howlss" />
+		<voice
+			type="Neigh"
+			path="event:/al/lotr/isengard/voice/warg/barks" />
 		<voice
 			type="Idle"
 			path="event:/al/lotr/isengard/voice/warg/grunts" />

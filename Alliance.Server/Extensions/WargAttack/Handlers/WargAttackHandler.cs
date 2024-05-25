@@ -62,7 +62,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             Vec3 MountDirection = peer.ControlledAgent.MountAgent.GetMovementDirection().ToVec3();
 
             int damageAmount = 100; // Degat appliqué à la cible
-            float radius = 3.5f; // Radius de recherche ennemi
+            float radius = 3f; // Radius de recherche ennemi
 
             //Debug
             //Common.Utilities.Logger.SendMessageToAll($"Mount direction =  {MountDirection} , playerPosition {PlayerPosition}");
@@ -95,7 +95,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     //Devant = -180 ; Gauche = -90; Droite = 90; Derriere = 0
                     //Ici degat appliqué uniquement si ennemi se situe dans un angle de 45 Degree de chaque côté par rapport au centre de la direction du "Mount"
                     string position = string.Empty;
-                    if (angleInDegrees < -135f && angleInDegrees > -180f && diffHauteur < 2f)
+                    if (angleInDegrees < -160f && angleInDegrees > -180f && diffHauteur < 2f)
                     {
                         position = "Front Left";
                         // Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
@@ -111,7 +111,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                         position = "Back Right";
                         //Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");
                     }
-                    else if ((angleInDegrees > 135f || angleInDegrees < -180f) && diffHauteur < 2f)
+                    else if ((angleInDegrees > 160f || angleInDegrees < -180f) && diffHauteur < 2f)
                     {
                         position = "Front Right";
                         //Common.Utilities.Logger.SendMessageToAll($"Position calculée =  {position}");

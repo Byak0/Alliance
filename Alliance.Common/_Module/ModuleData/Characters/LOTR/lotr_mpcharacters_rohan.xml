@@ -112,6 +112,10 @@
 					id="Item.rohan_greaves_1" />
 				<equipment slot="Cape"
 					id="Item.armor_rohan_shoulder_6" />
+				<equipment slot="Horse"
+                   id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+                   id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -297,7 +301,7 @@
 			<skill id="Athletics"
              value="150" />
 			<skill id="Riding"
-             value="0" />
+             value="50" />
 			<skill id="OneHanded"
              value="150" />
 			<skill id="TwoHanded"
@@ -313,24 +317,28 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.gimli_d_axe" />
-				<equipment slot="Item1"
-									 id="Item.gimli_onehanded_axe" />
-				<equipment slot="Item2"
-									 id="Item.gimli_throwing_axe" />
-				<equipment slot="Item3"
-                   id="Item.rohan_horn_1" />
-				<equipment slot="Head"
-                   id="Item.gimli_helm" />
-				<equipment slot="Body"
-                   id="Item.gimli_torso" />
-				<equipment slot="Leg"
-                   id="Item.gimli_boots" />
-				<equipment slot="Gloves"
-                   id="Item.gimli_gloves" />
-				<equipment slot="Cape"
-                   id="Item.gimli_cloak" />
+				<equipment slot="Item0" 
+									id="Item.gimli_d_axe" />
+				<equipment slot="Item1" 
+									id="Item.gimli_onehanded_axe" />
+				<equipment slot="Item2" 
+									id="Item.gimli_throwing_axe" />
+				<equipment slot="Item3" 
+									id="Item.rohan_horn_1" />
+				<equipment slot="Head" 
+									id="Item.gimli_helm" />
+				<equipment slot="Body" 
+									id="Item.gimli_torso" />
+				<equipment slot="Leg" 
+									id="Item.gimli_boots" />
+				<equipment slot="Gloves" 
+									id="Item.gimli_gloves" />
+				<equipment slot="Cape" 
+									id="Item.gimli_cloak" />
+				<equipment slot="Horse" 
+									id="Item.rohan_horse" />
+				<equipment slot="HorseHarness" 
+									id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -861,7 +869,7 @@
 			<skill id="Athletics"
              value="180" />
 			<skill id="Riding"
-             value="80" />
+             value="120" />
 			<skill id="OneHanded"
              value="200" />
 			<skill id="TwoHanded"
@@ -877,20 +885,24 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0"
-									 id="Item.elf_bow_2" />
-				<equipment slot="Item1"
-									 id="Item.legolas_arrows" />
-				<equipment slot="Item2"
-									 id="Item.legolas_dagger" />
-				<equipment slot="Item3"
-									 id="Item.legolas_dagger" />
-				<equipment slot="Body"
-									 id="Item.legolas_torso" />
-				<equipment slot="Leg"
-									 id="Item.legolas_legs" />
-				<equipment slot="Cape"
-									 id="Item.legolas_rohan_shoulder" />
+				<equipment slot="Item0" 
+									id="Item.elf_bow_2" />
+				<equipment slot="Item1" 
+									id="Item.legolas_arrows" />
+				<equipment slot="Item2" 
+									id="Item.legolas_dagger" />
+				<equipment slot="Item3" 
+									id="Item.legolas_dagger" />
+				<equipment slot="Body" 
+									id="Item.legolas_torso" />
+				<equipment slot="Leg" 
+									id="Item.legolas_legs" />
+				<equipment slot="Cape" 
+									id="Item.legolas_rohan_shoulder" />
+				<equipment slot="Horse" 
+									id="Item.rohan_horse" />
+				<equipment slot="HorseHarness" 
+									id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances

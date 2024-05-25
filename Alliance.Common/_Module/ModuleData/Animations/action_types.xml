@@ -10,7 +10,9 @@
 	
 	<action name="act_warg_stand_for_movement_data"/>
 	<action name="act_warg_stand_1"/>
+	<action name="act_warg_stand_2"/>
 	<action name="act_warg_idle_1" type="actt_idle" />
+	<action name="act_warg_idle_2" type="actt_idle" />
 	<action name="act_warg_rear"/>
 	<action name="act_warg_rear_damaged"/>
 	<action name="act_warg_kick"/>
@@ -87,7 +89,6 @@
 	<action name="act_warg_fall_roll" type="actt_fall" />
 	<action name="act_warg_fall_roll_continue" type="actt_fall" />
 	<action name="act_warg_fall_backwards" type="actt_fall" />
-	<action name="act_warg_fall_backwards_continue" type="actt_fall" />
 	<action name="act_warg_fall_slow_right" type="actt_fall" />
 	<action name="act_warg_fall_slow_right_continue" type="actt_fall" />
 	<action name="act_warg_fall_slow_left" type="actt_fall" />

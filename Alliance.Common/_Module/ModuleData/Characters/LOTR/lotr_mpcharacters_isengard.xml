@@ -1368,4 +1368,54 @@
 		<Resistances
 			dismount="40" />
 	</NPCCharacter>
+
+	<!-- Orc Rider - Hero -->
+	<NPCCharacter id="mp_orc_rider_isengard_hero"
+									race="orc"
+									default_group="Cavalry"
+									level="20"
+									voice="curt"
+									is_female="false"
+									name="{=al_lotr_isen_orc_rider_t}Orc Rider Officer"
+									occupation="Soldier"
+									culture="Culture.isengard">
+		<face>
+			<BodyProperties version="4" age="22" weight="0" build="0.5861"  key="00007405404400002A749979D4641569A5539DDAC66B579634434333953835A3007706030722223A000000000000000000000000000000000000000038E40000"  />
+			<BodyPropertiesMax version="4" age="42" weight="0.1875" build="0.7204"  key="0010E0055644000066F5746A76473395C378FDABD93783B38889ADA90D9C86D70099360309BABADE0000000000000000000000000000000000000000492C0000"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+             value="150" />
+			<skill id="Riding"
+             value="250" />
+			<skill id="OneHanded"
+             value="200" />
+			<skill id="TwoHanded"
+             value="200" />
+			<skill id="Polearm"
+             value="200" />
+			<skill id="Bow"
+             value="120" />
+			<skill id="Crossbow"
+             value="120" />
+			<skill id="Throwing"
+             value="120" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.orc_rider_saber_1" />
+				<equipment slot="Item1" id="Item.orc_rider_longsword_1" />
+				<equipment slot="Item2" id="Item.orc_rider_shortsword_1" />
+				<equipment slot="Body" id="Item.orc_rider_armor" />
+				<equipment slot="Gloves" id="Item.orc_rider_arms" />
+				<equipment slot="Leg" id="Item.orc_rider_greaves" />
+				<equipment slot="Head" id="Item.orc_rider_helmet" />
+				<equipment slot="Cape" id="Item.orc_rider_hood" />
+				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="HorseHarness" id="Item.warg_saddle" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="40" />
+	</NPCCharacter>
 </MPCharacters>

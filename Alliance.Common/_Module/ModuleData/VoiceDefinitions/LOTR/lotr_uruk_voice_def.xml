@@ -53,7 +53,7 @@
 			face_anim="victory" />
 		<voice
 			type="HorseRally"
-			path="event:/al/lotr/isengard/voice/uruk/get_over_here"
+			path="event:/al/lotr/isengard/voice/uruk/go"
 			face_anim="yeah" />
 		<voice
 			type="HorseStop"

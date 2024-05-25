@@ -6,18 +6,18 @@
 		<action type="act_blow_horn" animation="anim_blow_horn" />
 
 		<!-- Warg rider - Basic actions -->
-		<action type="act_warg_rear" animation="rider_forward_gallop_right_foot" />
-		<action type="act_warg_rear_damaged" animation="rider_forward_gallop_right_foot" />
+		<action type="act_warg_rear" animation="map_rider_stand_with_flag" />
+		<action type="act_warg_rear_damaged" animation="rider_horse_hit_object" />
 		<action type="act_warg_dash" animation="rider_horse_dash" />
 		<action type="act_warg_kick" animation="rider_forward_gallop_right_foot" />
 		<action type="act_warg_quick_stop" animation="rider_horse_quick_stop" />
 		<action type="act_warg_quick_stop_when_fast" animation="rider_horse_quick_stop_when_fast" />
 		<action type="act_warg_hit_object" animation="rider_horse_hit_object" />
 		<action type="act_warg_hit_object_while_falling" animation="rider_horse_hit_object_while_falling" />
-		<action type="act_warg_jump_start" animation="rider_horse_jump_start" />		
+		<action type="act_warg_jump_start" animation="map_rider_stand_with_flag" />		
 		
 		<!-- Warg rider - monster_usage_upper_body_movements -->
-		<!--<action type="act_warg_turn_right_head" animation="rider_horse_rotate_right" />
+		<action type="act_warg_turn_right_head" animation="rider_horse_rotate_right" />
 		<action type="act_warg_turn_left_head" animation="rider_horse_rotate_left" />
 		<action type="act_warg_walk_turn_right_head" animation="rider_horse_walk_turn_right" />
 		<action type="act_warg_walk_turn_left_head" animation="rider_horse_walk_turn_left" />
@@ -28,7 +28,7 @@
 		<action type="act_warg_gallop_turn_right_head" animation="rider_horse_gallop_turn_right" />
 		<action type="act_warg_gallop_turn_left_head" animation="rider_horse_gallop_turn_left" />
 		<action type="act_warg_idle_1" animation="horse_rider_idle_1" />
-		<action type="act_warg_stand_1" animation="horse_rider_stand_1" />-->
+		<action type="act_warg_stand_1" animation="horse_rider_stand_1" />
 		
 		<!-- Warg rider - monster_usage_movements -->
 		<action type="act_warg_stand_for_movement_data" animation="map_rider_stand_with_flag" />
@@ -103,55 +103,57 @@
 		<action type="act_warg_kick" animation="warg_idle" />
 		<action type="act_warg_quick_stop" animation="warg_quick_stop" />
 		<action type="act_warg_quick_stop_when_fast" animation="warg_quick_stop" />
-		<action type="act_warg_gallop_acceleration_head" animation="warg_dash" />
+		<action type="act_warg_gallop_acceleration_head" animation="warg_placeholder" />
 		<action type="act_warg_hit_object" animation="warg_rear_damaged" />
 		<action type="act_warg_hit_object_while_falling" animation="warg_rear_damaged" />
-		<action type="act_warg_jump_start" animation="warg_jump_forward" />
+		<action type="act_warg_jump_start" animation="warg_dash" />
 
 		<!-- Warg - monster_usage_upper_body_movements -->
-		<action type="act_warg_turn_right_head" animation="warg_turn_left" />
-		<action type="act_warg_turn_left_head" animation="warg_turn_left" />
-		<action type="act_warg_walk_turn_right_head" animation="warg_turn_left" />
-		<action type="act_warg_walk_turn_left_head" animation="warg_turn_left" />
-		<action type="act_warg_trot_turn_right_head" animation="warg_turn_left" />
-		<action type="act_warg_trot_turn_left_head" animation="warg_turn_left" />
-		<action type="act_warg_canter_turn_right_head" animation="warg_turn_left" />
-		<action type="act_warg_canter_turn_left_head" animation="warg_turn_left" />
-		<action type="act_warg_gallop_turn_right_head" animation="warg_turn_left" />
-		<action type="act_warg_gallop_turn_left_head" animation="warg_turn_left" />
+		<action type="act_warg_turn_right_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_turn_left_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_walk_turn_right_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_walk_turn_left_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_trot_turn_right_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_trot_turn_left_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_canter_turn_right_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_canter_turn_left_head" animation="warg_walk_turn_left_head" />
+		<action type="act_warg_gallop_turn_right_head" animation="warg_gallop_turn_right_head" />
+		<action type="act_warg_gallop_turn_left_head" animation="warg_gallop_turn_left_head" />
 		<action type="act_warg_stand_1" animation="warg_idle" alternative_group="warg_stand_alternative_group" />
+		<action type="act_warg_stand_2" animation="warg_idle_2" alternative_group="warg_stand_alternative_group" />
 		<action type="act_warg_idle_1" animation="warg_idle" alternative_group="idle_warg" />
+		<action type="act_warg_idle_2" animation="warg_idle_2" alternative_group="idle_warg" />
 
 		<!-- Warg - monster_usage_movements -->
-		<action type="act_warg_turn_right" animation="warg_turn_left" />
-		<action type="act_warg_turn_left" animation="warg_turn_left" />
+		<action type="act_warg_turn_right" animation="warg_strafe_right_faster" />
+		<action type="act_warg_turn_left" animation="warg_strafe_left_faster" />
 		<action type="act_warg_backward_walk_stand" animation="warg_walkbackfast" />
 		<action type="act_warg_backward_walk" animation="warg_walkbackfast" />
 		<action type="act_warg_backward_walk_strafe_right" animation="warg_strafe_right_faster" />
 		<action type="act_warg_backward_walk_strafe_left" animation="warg_strafe_left_faster" />
 		<action type="act_warg_strafe_right" animation="warg_strafe_right_faster" />
 		<action type="act_warg_strafe_left" animation="warg_strafe_left_faster" />
-		<action type="act_warg_stand_for_movement_data" animation="warg_idle" />
+		<action type="act_warg_stand_for_movement_data" animation="warg_stand_for_movement_data" />
 		<action type="act_warg_forward_walk" animation="warg_walkfast" />
 		<action type="act_warg_forward_walk_strafe_right" animation="warg_strafe_right_faster" />
 		<action type="act_warg_forward_walk_strafe_left" animation="warg_strafe_left_faster" />
 		<action type="act_warg_forward_walk_stand" animation="warg_walkfast" />
-		<action type="act_warg_forward_trot" animation="warg_forward_gallop_left_foot" />
-		<action type="act_warg_forward_trot_strafe_right" animation="warg_turn_left" />
-		<action type="act_warg_forward_trot_strafe_left" animation="warg_turn_left" />
-		<action type="act_warg_forward_trot_stand" animation="warg_forward_gallop_left_foot" />
-		<action type="act_warg_forward_canter" animation="warg_forward_gallop_left_foot" />
-		<action type="act_warg_forward_canter_strafe_right" animation="warg_turn_left" />
-		<action type="act_warg_forward_canter_strafe_left" animation="warg_turn_left" />
-		<action type="act_warg_forward_canter_stand" animation="warg_forward_gallop_left_foot" />
+		<action type="act_warg_forward_trot" animation="warg_walkfast" />
+		<action type="act_warg_forward_trot_strafe_right" animation="warg_strafe_right_faster" />
+		<action type="act_warg_forward_trot_strafe_left" animation="warg_strafe_left_faster" />
+		<action type="act_warg_forward_trot_stand" animation="warg_walkfast" />
+		<action type="act_warg_forward_canter" animation="warg_trot" />
+		<action type="act_warg_forward_canter_strafe_right" animation="warg_trot_strafe" />
+		<action type="act_warg_forward_canter_strafe_left" animation="warg_trot_strafe" />
+		<action type="act_warg_forward_canter_stand" animation="warg_trot_stand" />
 		<action type="act_warg_forward_gallop_right_foot" animation="warg_forward_gallop_left_foot" />
-		<action type="act_warg_forward_gallop_right_foot_strafe_right" animation="warg_turn_left" />
-		<action type="act_warg_forward_gallop_right_foot_strafe_left" animation="warg_turn_left" />
-		<action type="act_warg_forward_gallop_right_foot_stand" animation="warg_forward_gallop_left_foot" />
+		<action type="act_warg_forward_gallop_right_foot_strafe_right" animation="warg_forward_gallop_left_foot_strafe" />
+		<action type="act_warg_forward_gallop_right_foot_strafe_left" animation="warg_forward_gallop_left_foot_strafe" />
+		<action type="act_warg_forward_gallop_right_foot_stand" animation="warg_forward_gallop_left_foot_stand" />
 		<action type="act_warg_forward_gallop_left_foot" animation="warg_forward_gallop_left_foot" />
-		<action type="act_warg_forward_gallop_left_foot_strafe_right" animation="warg_turn_left" />
-		<action type="act_warg_forward_gallop_left_foot_strafe_left" animation="warg_turn_left" />
-		<action type="act_warg_forward_gallop_left_foot_stand" animation="warg_forward_gallop_left_foot" />
+		<action type="act_warg_forward_gallop_left_foot_strafe_right" animation="warg_forward_gallop_left_foot_strafe" />
+		<action type="act_warg_forward_gallop_left_foot_strafe_left" animation="warg_forward_gallop_left_foot_strafe" />
+		<action type="act_warg_forward_gallop_left_foot_stand" animation="warg_forward_gallop_left_foot_stand" />
 
 		<!-- Warg - monster_usage_jumps -->
 		<action type="act_warg_jump_forward" animation="warg_jump_forward" />
@@ -165,17 +167,16 @@
 
 		<!-- Warg - monster_usage_falls -->
 		<action type="act_warg_fall_right" animation="warg_death_right_side" />
-		<action type="act_warg_fall_left" animation="warg_death_right_side" />
+		<action type="act_warg_fall_left" animation="warg_death_left_side" />
 		<action type="act_warg_fall_right_continue" animation="warg_death_right_side_continue" />
-		<action type="act_warg_fall_left_continue" animation="warg_death_right_side_continue" />
+		<action type="act_warg_fall_left_continue" animation="warg_death_left_side_continue" />
 		<action type="act_warg_fall_roll" animation="warg_death_right_side" />
 		<action type="act_warg_fall_roll_continue" animation="warg_death_right_side_continue" />
-		<action type="act_warg_fall_backwards" animation="warg_death_right_side" />
-		<action type="act_warg_fall_backwards_continue" animation="warg_death_right_side_continue" />
+		<action type="act_warg_fall_backwards" animation="warg_death_backward" />
 		<action type="act_warg_fall_slow_right" animation="warg_death_right_side" />
 		<action type="act_warg_fall_slow_right_continue" animation="warg_death_right_side_continue" />
-		<action type="act_warg_fall_slow_left" animation="warg_death_right_side" />
-		<action type="act_warg_fall_slow_left_continue" animation="warg_death_right_side_continue" />
+		<action type="act_warg_fall_slow_left" animation="warg_death_left_side" />
+		<action type="act_warg_fall_slow_left_continue" animation="warg_death_left_side_continue" />
 
 		<!-- Warg - monster_usage_strikes -->
 		<action type="act_warg_strike_back" animation="warg_rear_damaged" />

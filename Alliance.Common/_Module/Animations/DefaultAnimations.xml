@@ -4733,8 +4733,10 @@
     <float>4.2</float>
     <float>3.329</float>
     <float>3.329</float>
-    <float>0.53</float>
-    <float>0.53</float>
+    <float>3.329</float>
+    <float>3.329</float>
+    <float>4.2</float>
+    <float>2.1</float>
     <float>0.53</float>
     <float>1.3</float>
     <float>1</float>
@@ -4783,7 +4785,7 @@
     <float>0.667</float>
     <float>2.5</float>
     <float>2.4</float>
-    <float>1.25</float>
+    <float>4.2</float>
     <float>0.8</float>
     <float>1</float>
     <float>0.37</float>
@@ -4800,7 +4802,6 @@
     <float>1.3</float>
     <float>0.9</float>
     <float>2.8</float>
-    <float>2</float>
     <float>2.15</float>
     <float>0.5</float>
     <float>2.15</float>

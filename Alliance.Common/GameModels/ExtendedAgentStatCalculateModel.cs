@@ -4,7 +4,6 @@ using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.GameModels
@@ -133,9 +132,9 @@ namespace Alliance.Common.GameModels
 
             if (agent.Monster.StringId == "warg")
             {
+                agentDrivenProperties.MountManeuver *= 0.85f;
                 agentDrivenProperties.TopSpeedReachDuration *= 4f;
-                agentDrivenProperties.MountDashAccelerationMultiplier *= 5f;
-                Log($"Adjusting stats of warg ({agentDrivenProperties.TopSpeedReachDuration}|{agentDrivenProperties.MountDashAccelerationMultiplier}|{agentDrivenProperties.MountManeuver}|{agentDrivenProperties.MountSpeed})", LogLevel.Debug);
+                agentDrivenProperties.MountDashAccelerationMultiplier *= 3f;
             }
         }
 

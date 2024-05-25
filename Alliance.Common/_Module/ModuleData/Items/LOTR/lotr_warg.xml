@@ -13,11 +13,10 @@
 			<Horse
 				monster="Monster.warg"
 				maneuver="60"
-				speed="40"
-				charge_damage="10"
+				speed="37"
+				charge_damage="6"
 				body_length="104"
-				is_mountable="true"
-				extra_health="15">
+				is_mountable="true" >
 				<AdditionalMeshes>
 					<Mesh
 						name="warg_low_fur_with_saddle"
