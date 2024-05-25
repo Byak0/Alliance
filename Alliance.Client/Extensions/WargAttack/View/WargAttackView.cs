@@ -29,7 +29,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
                     }
                     else
                     {
-                        Log($"Warg Attack on cooldown! {TimeSpan.FromSeconds(cooldownDuration) - (DateTime.UtcNow - lastAttackTime)} secondes remaining", LogLevel.Debug);
+                        Log($"Warg Attack on cooldown! {TimeSpan.FromSeconds(cooldownDuration) - (DateTime.UtcNow - lastAttackTime)} secondes remaining", LogLevel.Information);
                     }
 
                 }
@@ -44,7 +44,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
 
         public void WargAttack()
         {
-            Log($"Using WargAttack !", LogLevel.Debug);
+            Log($"Using WargAttack !", LogLevel.Information);
 
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new RequestWargAttack()); // Envoi message au Common

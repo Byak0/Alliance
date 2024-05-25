@@ -155,6 +155,40 @@
 		</AvailablePieces>
 	</WeaponDescription>
 
+	<WeaponDescription id="lotr_orc_TwoHandedAxe"
+					   weapon_class="TwoHandedAxe"
+					   item_usage_features="twohanded:widegrip:axe">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon" />
+			<WeaponFlag value="NotUsableWithOneHand" />
+			<WeaponFlag value="BonusAgainstShield" />
+			<WeaponFlag value="TwoHandIdleOnMount" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_axe_blade_1" />
+			<AvailablePiece id="orc_rider_axe_grip_1" />
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription id="lotr_orc_TwoHandedPolearm"
+        weapon_class="TwoHandedPolearm"
+        item_usage_features="polearm:block:long:shield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="NotUsableWithOneHand"/>
+			<WeaponFlag value="WideGrip"/>
+			<WeaponFlag value="TwoHandIdleOnMount"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_guard_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
 	<WeaponDescription id="uruk_twoHandedPolearm_Pike"
                      weapon_class="TwoHandedPolearm"
                      item_usage_features="polearm:pike">
@@ -188,8 +222,8 @@
 	</WeaponDescription>
 
 	<WeaponDescription id="uruk_one_handed"
-									 weapon_class="OneHandedSword"
-									 item_usage_features="onehanded:block:shield:swing:thrust">
+					weapon_class="OneHandedSword"
+					item_usage_features="onehanded:block:shield:swing:thrust">
 		<WeaponFlags>
 			<WeaponFlag value="MeleeWeapon"/>
 		</WeaponFlags>

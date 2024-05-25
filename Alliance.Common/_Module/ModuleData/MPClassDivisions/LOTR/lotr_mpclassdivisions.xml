@@ -204,7 +204,7 @@
 	<!-- Orc Rider -->
 	<MPClassDivision
 			id="mp_orc_rider_isengard"
-			hero="mp_orc_rider_isengard_troop"
+			hero="mp_orc_rider_isengard_hero"
 			troop="mp_orc_rider_isengard_troop"
 			hero_mount_idle_anim="act_battania_mp_mounted_warrior_mount_idle"
 			troop_mount_idle_anim="act_horse_idle_1"

@@ -180,10 +180,10 @@
 		<action type="act_warg_fall_slow_left_continue" animation="warg_death_left_side_continue" />
 
 		<!-- Warg - monster_usage_strikes -->
-		<action type="act_warg_strike_back" animation="warg_rear_damaged" />
-		<action type="act_warg_strike_back_while_moving" animation="warg_rear_damaged" />
-		<action type="act_warg_strike_front" animation="warg_rear_damaged" />
-		<action type="act_warg_strike_front_while_moving" animation="warg_rear_damaged" />
+		<action type="act_warg_strike_back" animation="warg_hit_from_back_while_moving" />
+		<action type="act_warg_strike_back_while_moving" animation="warg_hit_from_back_while_moving" />
+		<action type="act_warg_strike_front" animation="warg_hit_from_back_while_moving" />
+		<action type="act_warg_strike_front_while_moving" animation="warg_hit_from_back_while_moving" />
 
 		<!-- Warg - Misc -->
 		<action type="act_hero_mount_idle_horse" animation="warg_idle" />

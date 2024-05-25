@@ -70,32 +70,6 @@
 		</Pieces>
 	</CraftedItem>
 	
-	<!-- Orc Rider Swords -->
-	<CraftedItem multiplayer_item="true" id="orc_rider_saber_1" name="Orc Rider Saber" crafting_template="lotr_BastardSword" culture="Culture.isengard">
-		<Pieces>
-			<Piece id="orc_rider_saber_blade_1" Type="Blade" scale_factor="110" />
-			<Piece id="orc_rider_saber_guard_1" Type="Guard" scale_factor="100" />
-			<Piece id="orc_rider_saber_handle_1" Type="Handle" scale_factor="100" />
-			<Piece id="orc_rider_saber_pommel_1" Type="Pommel" scale_factor="100" />
-		</Pieces>
-	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="orc_rider_longsword_1" name="Orc Rider Longsword" crafting_template="lotr_TwoHandedSword" culture="Culture.isengard">
-		<Pieces>
-			<Piece id="orc_rider_longsword_blade_1" Type="Blade" scale_factor="100" />
-			<Piece id="orc_rider_longsword_guard_1" Type="Guard" scale_factor="100" />
-			<Piece id="orc_rider_longsword_grip_1" Type="Handle" scale_factor="100" />
-			<Piece id="orc_rider_longsword_pommel_1" Type="Pommel" scale_factor="100" />
-		</Pieces>
-	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="orc_rider_shortsword_1" name="Orc Rider Shortsword" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
-		<Pieces>
-			<Piece id="orc_rider_shortsword_blade_1" Type="Blade" scale_factor="120" />
-			<Piece id="orc_rider_shortsword_guard_1" Type="Guard" scale_factor="100" />
-			<Piece id="orc_rider_shortsword_grip_1" Type="Handle" scale_factor="100" />
-			<Piece id="orc_rider_shortsword_pommel_1" Type="Pommel" scale_factor="100" />
-		</Pieces>
-	</CraftedItem>
-	
 	<!-- Uruk Polearms -->
 	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike" culture="Culture.isengard">
 		<Pieces>
@@ -121,4 +95,55 @@
 		</ItemComponent>
 		<Flags ForceAttachOffHandPrimaryItemBone="true" />
 	</Item>
+
+	<!-- Orc Rider Swords -->
+	<CraftedItem multiplayer_item="true" id="orc_rider_saber_1" name="Orc Rider Saber" crafting_template="lotr_BastardSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_saber_blade_1" Type="Blade" scale_factor="110" />
+			<Piece id="orc_rider_saber_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_saber_handle_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_saber_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_longsword_1" name="Orc Rider Longsword" crafting_template="lotr_TwoHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_longsword_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_longsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_longsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_longsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_shortsword_1" name="Orc Rider Shortsword" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_shortsword_blade_1" Type="Blade" scale_factor="120" />
+			<Piece id="orc_rider_shortsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Orc Rider Polearms -->
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_2haxe"
+				 name="Orc Rider Heavy Axe"
+				 crafting_template="lotr_orc_TwoHandedAxe"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_axe_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_axe_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Orc Rider Scythe/Spear -->
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_spear"
+				 name="Orc Rider Spear"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_spear_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_spear_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	
 </Items>
