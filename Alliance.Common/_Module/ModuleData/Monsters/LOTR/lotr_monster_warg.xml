@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Monsters>
+	<Monster
+		id="warg"
+		action_set="as_warg"
+		monster_usage="warg"
+		weight="500"
+		hit_points="250"
+        absorbed_damage_ratio="1.0"
+        num_paces="6"
+        jump_acceleration="6.5"
+        sound_and_collision_info_class="warg"
+        rider_camera_height_adder="-1"
+		rider_body_capsule_height_adder="0"
+		rider_body_capsule_forward_adder="0"
+        standing_chest_height="1.30"
+		standing_pelvis_height="1.40"
+		standing_eye_height="1.85"
+		rider_eye_height_adder="1.7"
+		eye_offset_wrt_head="0.13, -0.15, 0.0"
+        jump_speed_limit="3.5"
+        relative_speed_limit_for_charge="3.5"
+        family_type="1"
+        rider_sit_bone="Spine1_M"
+        rein_handle_bone="Spine3_M"
+        rein_collision_1_bone="Spine2_M"
+        rein_collision_2_bone="Spine2_M"
+        neck_root_bone="Neck_M"
+        pelvis_bone="Root_M"
+        right_upper_arm_bone="Scapula_R"
+        left_upper_arm_bone="Scapula_L"
+        terrain_decal_bone_0="Fingers2_L"
+        terrain_decal_bone_1="Fingers2_R"
+        front_bone_to_detect_ground_slope_index="2"
+        back_bone_to_detect_ground_slope_index="4"
+        bones_to_modify_on_sloping_ground_0="Neck_M"
+        bones_to_modify_on_sloping_ground_1="Scapula_L"
+        bones_to_modify_on_sloping_ground_2="Scapula_R"
+        bones_to_modify_on_sloping_ground_3="Hip_L"
+        bones_to_modify_on_sloping_ground_4="Hip_R"
+		body_rotation_reference_bone="Spine3_M"
+        head_look_direction_bone="Neck1_M"
+        thorax_look_direction_bone="Spine3_M"
+        rein_handle_left_local_pos="0.25,-0.3,0.15"
+        rein_handle_right_local_pos="0.25,-0.3,-0.15">
+		<Capsules>
+			<body_capsule
+				radius="0.4"
+				pos1="0, 1.5, 1.15"
+				pos2="0, -0.57, 1.15" />
+		</Capsules>
+		<Flags
+			Mountable="true"
+			CanRear="true"
+			RunsAwayWhenHit="true"
+			CanCharge="true"
+			CanWander="true" />
+	</Monster>
+</Monsters>

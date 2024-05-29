@@ -18,7 +18,7 @@ namespace Alliance.Server.Extensions.AIBehavior.BehaviorComponents
         public ALBehaviorSergeantMPMountedRanged(Formation formation)
             : base(formation)
         {
-            _flagpositions = Formation.Team.Mission.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>().ToList();
+            _flagpositions = Formation.Team.Mission.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>()?.ToList() ?? new List<FlagCapturePoint>();
             _flagDominationGameMode = Formation.Team.Mission.GetMissionBehavior<ALMissionMultiplayerFlagDomination>();
             CalculateCurrentOrder();
         }

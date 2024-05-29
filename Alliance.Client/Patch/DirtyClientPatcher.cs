@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Patch.HarmonyPatch;
+using Alliance.Common.Patch.HarmonyPatch;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Patch
@@ -18,7 +19,7 @@ namespace Alliance.Client.Patch
             patchSuccess &= Patch_KeyBinder.Patch();
             patchSuccess &= Patch_MissionNetworkComponent.Patch();
             patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
-
+            patchSuccess &= Patch_AllianceAgentVisualSpawnComponent.Patch();
 
             if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
             return patchSuccess;

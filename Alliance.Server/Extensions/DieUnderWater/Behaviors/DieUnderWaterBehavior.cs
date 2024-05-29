@@ -1,12 +1,11 @@
 ﻿using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using Alliance.Server.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
-using static TaleWorlds.MountAndBlade.Agent;
 
 namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 {
@@ -246,25 +245,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
                         GameNetwork.EndModuleEventAsServer();
                     }
 
-                    //TODO extract me and add me into a static Utils method
-
-                    Blow blow = new Blow(agent.Index);
-                    blow.DamageType = DamageTypes.Pierce;
-                    blow.BoneIndex = agent.Monster.HeadLookDirectionBoneIndex;
-                    blow.GlobalPosition = agent.Position;
-                    blow.GlobalPosition.z = blow.GlobalPosition.z + agent.GetEyeGlobalHeight();
-                    blow.BaseMagnitude = 50f;
-                    blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
-                    blow.InflictedDamage = 10;
-                    blow.SwingDirection = agent.LookDirection;
-                    MatrixFrame frame = agent.Frame;
-                    blow.SwingDirection = frame.rotation.TransformToParent(new Vec3(-1f, 0f, 0f, -1f));
-                    blow.SwingDirection.Normalize();
-                    blow.Direction = blow.SwingDirection;
-                    blow.DamageCalculated = true;
-                    sbyte mainHandItemBoneIndex = agent.Monster.MainHandItemBoneIndex;
-                    AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.GlobalPosition, Vec3.Zero, Vec3.Zero, agent.Velocity, Vec3.Up);
-                    agent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
+                    CoreUtils.TakeDamage(agent, 10);
                 }
             }
         }

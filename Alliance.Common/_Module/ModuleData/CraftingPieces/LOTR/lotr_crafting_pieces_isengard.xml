@@ -63,4 +63,139 @@
 	<CraftingPiece id="uruk_pommel_1" name="Uruk-Hai Pike Pommel" tier="4" piece_type="Pommel" mesh="uruk_pike_1_pommel" culture="Culture.isengard" length="18.7" weight="0">
 		<BuildData piece_offset="20" />
 	</CraftingPiece>
+	
+	<!-- ORC RIDER SABER -->
+	<CraftingPiece id="orc_rider_saber_blade_1" name="Orc Rider Saber Blade" tier="3" piece_type="Blade" mesh="orc_rider_sword_01_saber_blade" culture="Culture.isengard" length="69.7" weight="1.6" excluded_item_usage_features="thrust">
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Swing damage_type="Cut" damage_factor="3.8" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_saber_guard_1" name="Orc Rider Saber Guard" tier="3" piece_type="Guard" mesh="orc_rider_sword_01_saber_guard" culture="Culture.isengard" length="2" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="8.26" />
+		<StatContributions armor_bonus="2" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_saber_handle_1" name="Orc Rider Saber Handle" tier="3" piece_type="Handle" mesh="orc_rider_sword_01_saber_grip" culture="Culture.isengard" length="23" weight="0.1">
+		<BuildData piece_offset="0" previous_piece_offset="10" next_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_saber_pommel_1" name="Orc Rider Saber Pommel" tier="3" piece_type="Pommel" mesh="orc_rider_01_saber_pommel" culture="Culture.isengard" length="2.3" weight="0.2">		
+	</CraftingPiece>
+
+	<!-- ORC RIDER LONG SWORD -->
+	<CraftingPiece id="orc_rider_longsword_blade_1" name="Orc Rider Longsword Blade" tier="3" piece_type="Blade" mesh="orc_rider_sword_02_longsSword_blade" culture="Culture.isengard" length="86.5" weight="2" >
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Thrust damage_type="Pierce" damage_factor="3" />
+			<Swing damage_type="Cut" damage_factor="4" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_longsword_guard_1" name="Orc Rider Longsword Guard" tier="3" piece_type="Guard" mesh="orc_rider_sword_02_longsSword_guard" culture="Culture.isengard" length="17.3" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="8" />
+		<StatContributions armor_bonus="2" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_longsword_grip_1" name="Orc Rider Longsword Handle" tier="3" piece_type="Handle" mesh="orc_rider_sword_02_longsSword_grip" culture="Culture.isengard" length="29.2" weight="0.1">
+		<BuildData piece_offset="-6" previous_piece_offset="0" next_piece_offset="8" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_longsword_pommel_1" name="Orc Rider Longsword Pommel" tier="3" piece_type="Pommel" mesh="orc_rider_sword_02_longsSword_pommel" culture="Culture.isengard" length="4.17" weight="0.2">
+	</CraftingPiece>
+
+	<!-- ORC RIDER SHORT SWORD -->
+	<CraftingPiece id="orc_rider_shortsword_blade_1" name="Orc Rider Shortsword Blade" tier="3" piece_type="Blade" mesh="orc_rider_sword_03_shortSword_blade" culture="Culture.isengard" length="44.9" weight="1" excluded_item_usage_features="thrust">
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" >
+			<Swing damage_type="Cut" damage_factor="3.6" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_shortsword_guard_1" name="Orc Rider Shortsword Guard" tier="3" piece_type="Guard" mesh="orc_rider_sword_03_shortSword_guard" culture="Culture.isengard" length="2.6" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="10" />
+		<StatContributions armor_bonus="2" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_shortsword_grip_1" name="Orc Rider Shortsword Handle" tier="3" piece_type="Handle" mesh="orc_rider_sword_03_shortSword_grip" culture="Culture.isengard" length="21.37" weight="0.1">
+		<BuildData piece_offset="4" previous_piece_offset="0" next_piece_offset="2.5" />
+	</CraftingPiece>
+	<CraftingPiece id="orc_rider_shortsword_pommel_1" name="Orc Rider Shortsword Pommel" tier="3" piece_type="Pommel" mesh="orc_rider_sword_03_shortSword_pommel" culture="Culture.isengard" length="1.55" weight="0.1">
+	</CraftingPiece>
+
+	<!-- ORC RIDER HEAVY AXE -->
+	<CraftingPiece id="orc_rider_axe_blade_1"
+				   name="Orc Rider Heavy Axe Head"
+				   tier="3"
+				   piece_type="Blade"
+				   mesh="orc_rider_polearm_01_axe_blade"
+				   distance_to_next_piece="0"
+				   distance_to_previous_piece="22.35"
+				   culture="Culture.isengard"
+				   weight="2.15" >
+		<BuildData piece_offset="0" />
+		<BladeData stack_amount="3"
+				   blade_length="64.70"
+				   blade_width="23.23"
+				   physics_material="metal_weapon"
+				   body_name="bo_axe_longer_b" >
+			<Thrust damage_type="Blunt"
+					damage_factor="2.4" />
+			<Swing damage_type="Cut"
+				   damage_factor="5.8" />
+		</BladeData>
+		<Flags>
+			<Flag name="CanBePickedUpFromCorpse"
+				  type="ItemFlags" />
+			<Flag name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_axe_grip_1"
+				   name="Orc Rider Heavy Axe Handle"
+				   tier="2"
+				   piece_type="Handle"
+				   mesh="orc_rider_polearm_01_axe_grip"
+				   culture="Culture.isengard"
+				   length="121.15"
+				   weight="0.6"
+				   CraftingCost="30">
+		<BuildData piece_offset="10" />
+	</CraftingPiece>
+
+	<!-- ORC RIDER SCYTHE -->
+	<CraftingPiece id="orc_rider_spear_blade_1"
+				   name="Orc Rider Scythe Blade"
+				   tier="3"
+				   piece_type="Blade"
+				   mesh="orc_rider_polearm_03_spear_blade"
+				   culture="Culture.isengard"
+				   length="63"
+				   weight="0.85" >
+		<BuildData piece_offset="-20" />
+		<BladeData stack_amount="3"
+				   physics_material="metal_weapon"
+				   body_name="bo_spear_b" >
+			<Thrust damage_type="Pierce"
+					damage_factor="2.4" />
+			<Swing damage_type="Cut"
+				   damage_factor="3.6" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian"
+				  type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_spear_grip_1"
+				   name="Orc Rider Spear Grip"
+				   tier="2"
+				   piece_type="Handle"
+				   mesh="orc_rider_polearm_03_spear_grip"
+				   culture="Culture.isengard"
+				   length="174.63"
+				   weight="0.45"
+				   CraftingCost="30">
+		<BuildData piece_offset="15" />
+	</CraftingPiece>
+	
 </CraftingPieces>

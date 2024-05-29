@@ -38,14 +38,21 @@ namespace Alliance.Common.Extensions.Audio
         public void PlaySound(int soundIndex, Vec3 position, int soundDuration = -1, bool synchronize = false)
         {
             SoundEvent eventRef = SoundEvent.CreateEvent(soundIndex, Mission.Current?.Scene);
-            if (position != Vec3.Invalid) eventRef.SetPosition(position);
+            if (position.IsValid) eventRef.SetPosition(position);
             eventRef.Play();
             if (soundDuration != -1) DelayedStop(eventRef, soundDuration * 1000);
 
             if (synchronize)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncSoundLocalized(soundIndex, soundDuration, position));
+                if (position.IsValid)
+                {
+                    GameNetwork.WriteMessage(new SyncSoundLocalized(soundIndex, soundDuration, position));
+                }
+                else
+                {
+                    GameNetwork.WriteMessage(new SyncSound(soundIndex, soundDuration));
+                }
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }

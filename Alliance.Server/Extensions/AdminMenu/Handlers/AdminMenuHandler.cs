@@ -3,6 +3,7 @@ using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
 using Alliance.Server.Core.Security;
+using Alliance.Server.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,6 +223,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
         {
             NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
+            if (playerSelected == null) return true;
+
             killPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
             Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été tué par l'admin {peer.UserName}.", LogLevel.Information);
@@ -359,23 +362,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
                     // Check si joueur existe et contrôle un agent
                     if (playerToKill == null || playerToKill.ControlledAgent == null) continue;
 
-                    Blow blow = new Blow(playerToKill.ControlledAgent.Index);
-                    blow.DamageType = DamageTypes.Pierce;
-                    blow.BoneIndex = playerToKill.ControlledAgent.Monster.HeadLookDirectionBoneIndex;
-                    blow.GlobalPosition = playerToKill.ControlledAgent.Position;
-                    blow.GlobalPosition.z = blow.GlobalPosition.z + playerToKill.ControlledAgent.GetEyeGlobalHeight();
-                    blow.BaseMagnitude = 2000f;
-                    blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
-                    blow.InflictedDamage = 2000;
-                    blow.SwingDirection = playerToKill.ControlledAgent.LookDirection;
-                    MatrixFrame frame = playerToKill.ControlledAgent.Frame;
-                    blow.SwingDirection = frame.rotation.TransformToParent(new Vec3(-1f, 0f, 0f, -1f));
-                    blow.SwingDirection.Normalize();
-                    blow.Direction = blow.SwingDirection;
-                    blow.DamageCalculated = true;
-                    sbyte mainHandItemBoneIndex = playerToKill.ControlledAgent.Monster.MainHandItemBoneIndex;
-                    AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(false, false, false, true, false, false, false, false, false, false, false, false, CombatCollisionResult.StrikeAgent, -1, 0, 2, blow.BoneIndex, BoneBodyPartType.Head, mainHandItemBoneIndex, UsageDirection.AttackLeft, -1, CombatHitResultFlags.NormalHit, 0.5f, 1f, 0f, 0f, 0f, 0f, 0f, 0f, Vec3.Up, blow.Direction, blow.GlobalPosition, Vec3.Zero, Vec3.Zero, playerToKill.ControlledAgent.Velocity, Vec3.Up);
-                    playerToKill.ControlledAgent.RegisterBlow(blow, attackCollisionDataForDebugPurpose);
+                    CoreUtils.TakeDamage(playerToKill.ControlledAgent, 2000, 2000f);
                 }
             }
             catch (Exception e)

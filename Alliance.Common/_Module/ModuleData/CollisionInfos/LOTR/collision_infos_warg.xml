@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<base
+	type="collision_infos">
+	<collision_infos>
+		<!--Ajouter les sons avec template cheval native -->
+
+		<!-- For humanoid: pace_1: Walk. pace_2: Run. -->
+		<!-- For horse: pace_1: Walk. pace_2: Walk. pace_3: Trot. pace_4: Canter. pace_5: Gallop. -->
+		<!-- pace_1, pace_2, pace_3, pace_4, pace_5, jump, land, bodyfall, sneak, slide -->
+		<monster sound_and_collision_info_class="warg">
+			<collision_info second_material="default">
+				<collision_effect effect_type="pace_1"
+								  particle="psys_game_hoof_default_col_s"
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_2"
+								  particle="psys_game_hoof_default_col_s"
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_3"
+								  particle="psys_game_hoof_default_col_s"
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_4"
+								  particle="psys_game_hoof_default_col"
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/foley/animals/footsteps/bovine_run"
+								  one_shot="true"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_5"
+								  particle="psys_game_hoof_default_col"
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/foley/animals/footsteps/bovine_run"
+								  one_shot="true"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="jump"
+								  particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/jump/default"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="land"
+								  particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/land/default"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="bodyfall"
+								  particle=""
+								  decal=""
+								  sound="event:/physics/bodyfall/big_animal"
+								  do_not_send_armor_parameter_to_sound="true" />
+			</collision_info>
+
+			<collision_info second_material="water">
+				<collision_effect effect_type="pace_1"
+								  particle=""
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/walk/water"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_2"
+								  particle=""
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/walk/water"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="pace_3"
+								  particle=""
+								  trail_particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/walk/water"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="jump"
+								  particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/jump/water"
+								  do_not_send_armor_parameter_to_sound="true" />
+				<collision_effect effect_type="land"
+								  particle=""
+								  decal=""
+								  sound="event:/mission/movement/footsteps/horse/land/water"
+								  do_not_send_armor_parameter_to_sound="true" />
+			</collision_info>
+		</monster>
+	</collision_infos>
+</base>

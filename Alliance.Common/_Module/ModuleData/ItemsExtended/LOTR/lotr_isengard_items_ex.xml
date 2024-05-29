@@ -3,7 +3,7 @@
 	<ItemExtended
 		id="item.isengard_horn_1"
 		usable="true"
-		sound_on_use="trombone_reverb_1.wav"
+		sound_on_use="LOTR/Isengard/Alert/horn_trombone_1.wav"
 		sound_volume="0.7"
 		sound_distance="200"
 		animation_on_use="act_blow_horn"

@@ -76,7 +76,7 @@ namespace Alliance.Client.Core.Console
             else if (args.ElementAtOrValue(0, "") == "")
             {
                 return "Usage: alliance.play_sound sound_name\n" +
-                    "Example: alliance.play_sound Victory - This will be a day to remember.wav";
+                    "Example: alliance.play_sound LOTR\\Rohan\\Voice\\Theoden\\This will be a day to remember.wav";
             }
 
             string soundName = string.Join(" ", args);

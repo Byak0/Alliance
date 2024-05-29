@@ -1,3 +1,4 @@
+using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.CvC.Behaviors;
 using TaleWorlds.Core;
@@ -23,6 +24,7 @@ namespace Alliance.Client.GameModes.CvC
                 {
                     MissionLobbyComponent.CreateBehavior(),
                     new FormationBehavior(),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     new MultiplayerAchievementComponent(),
                     new MultiplayerWarmupComponent(),

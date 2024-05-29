@@ -18,6 +18,7 @@ namespace Alliance.Server.Extensions.AIBehavior.TacticComponents
                     item.AI.ResetBehaviorWeights();
                     item.AI.SetBehaviorWeight<BehaviorCharge>(1f);
                     item.AI.SetBehaviorWeight<BehaviorTacticalCharge>(1f);
+
                     item.AI.SetBehaviorWeight<ALBehaviorSergeantMPInfantry>(1f);
                     item.AI.SetBehaviorWeight<ALBehaviorSergeantMPRanged>(1f);
                     item.AI.SetBehaviorWeight<ALBehaviorSergeantMPMounted>(1f);

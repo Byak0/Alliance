@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<voice_definitions>
+	<voice_definition
+		name="warg_01"
+		sound_and_collision_info_class="warg"
+		min_pitch_multiplier="0.95"
+		max_pitch_multiplier="1.05">
+		<voice
+			type="Grunt"
+			path="event:/al/lotr/isengard/voice/warg/grunts" />
+		<voice
+			type="Jump"
+			path="event:/al/lotr/isengard/voice/warg/attacks" />
+		<voice
+			type="Yell"
+			path="event:/al/lotr/isengard/voice/warg/howlss" />
+		<voice
+			type="Neigh"
+			path="event:/al/lotr/isengard/voice/warg/barks" />
+		<voice
+			type="Idle"
+			path="event:/al/lotr/isengard/voice/warg/grunts" />
+		<voice
+			type="Pain"
+			path="event:/al/lotr/isengard/voice/warg/hits" />
+		<voice
+			type="Death"
+			path="event:/al/lotr/isengard/voice/warg/dies" />
+		<voice
+			type="Collide"
+			path="event:/al/lotr/isengard/voice/warg/hits" />
+	</voice_definition>
+</voice_definitions>

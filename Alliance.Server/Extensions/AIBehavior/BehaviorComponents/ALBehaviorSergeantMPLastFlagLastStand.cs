@@ -19,7 +19,7 @@ namespace Alliance.Server.Extensions.AIBehavior.BehaviorComponents
         public ALBehaviorSergeantMPLastFlagLastStand(Formation formation)
             : base(formation)
         {
-            _flagpositions = Mission.Current.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>().ToList();
+            _flagpositions = Formation.Team.Mission.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>()?.ToList() ?? new List<FlagCapturePoint>();
             _flagDominationGameMode = Mission.Current.GetMissionBehavior<ALMissionMultiplayerFlagDomination>();
             CalculateCurrentOrder();
         }

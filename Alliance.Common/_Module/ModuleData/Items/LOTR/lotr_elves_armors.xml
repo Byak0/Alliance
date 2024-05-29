@@ -15,7 +15,7 @@
 	</Item>
 	<Item multiplayer_item="true" id="elf_armor_2" name="Galadhrim Plate Armor (Haldir)" mesh="elf_armor_1" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
 		<ItemComponent>
-			<Armor body_armor="55" leg_armor="21" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+			<Armor body_armor="55" leg_armor="21" arm_armor="3" head_armor="35" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>
@@ -55,7 +55,7 @@
   </Item>
     <Item multiplayer_item="true" id="legolas_torso" name="Legolas Torso" mesh="legolas_torso" culture="Culture.rohan" weight="8.6" appearance="1" Type="BodyArmor">
     <ItemComponent>
-      <Armor body_armor="55" leg_armor="21" arm_armor="3" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
+      <Armor body_armor="55" leg_armor="21" arm_armor="3" head_armor="35" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
     </ItemComponent>
     <Flags />
   </Item>

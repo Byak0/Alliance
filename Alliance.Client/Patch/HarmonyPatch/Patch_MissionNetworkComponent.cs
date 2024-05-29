@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Core.Configuration.Models;
 using HarmonyLib;
 using NetworkMessages.FromServer;
 using System;
@@ -110,7 +111,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
             {
                 agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, message.BodyPropertiesSeed, character.HairTags, character.BeardTags, character.TattooTags));
             }
-            Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
+            Mission.Current.GetMissionBehavior<AllianceAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
 
             if (agentBuildData.AgentVisualsIndex == 0)
             {
@@ -196,7 +197,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
 			{
 				agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, message.BodyPropertiesSeed, character.HairTags, character.BeardTags, character.TattooTags));
 			}
-			base.Mission.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
+			base.Mission.GetMissionBehavior<ALAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
 		}
         */
     }

@@ -28,7 +28,7 @@ namespace Alliance.Server.Extensions.AIBehavior.BehaviorComponents
             : base(formation)
         {
             _behaviorState = BehaviorState.Unset;
-            _flagpositions = Formation.Team.Mission.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>().ToList();
+            _flagpositions = Formation.Team.Mission.ActiveMissionObjects.FindAllWithType<FlagCapturePoint>()?.ToList() ?? new List<FlagCapturePoint>();
             _flagDominationGameMode = Formation.Team.Mission.GetMissionBehavior<ALMissionMultiplayerFlagDomination>();
             CalculateCurrentOrder();
         }

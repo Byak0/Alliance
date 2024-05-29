@@ -129,6 +129,13 @@ namespace Alliance.Common.GameModels
             agentDrivenProperties.MountManeuver *= 1f + ridingSkill * 0.0035f;
             float num2 = mountElement.Weight / 2f + (harness.IsEmpty ? 0f : harness.Weight);
             agentDrivenProperties.MountDashAccelerationMultiplier = !(num2 > 200f) ? 1f : num2 < 300f ? 1f - (num2 - 200f) / 111f : 0.1f;
+
+            if (agent.Monster.StringId == "warg")
+            {
+                agentDrivenProperties.MountManeuver *= 0.85f;
+                agentDrivenProperties.TopSpeedReachDuration *= 4f;
+                agentDrivenProperties.MountDashAccelerationMultiplier *= 3f;
+            }
         }
 
         private void UpdateHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties)

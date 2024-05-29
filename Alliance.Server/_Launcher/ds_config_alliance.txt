@@ -1,8 +1,8 @@
 ServerName Alliance - Test Server
 GameType Lobby
 AdminPassword test123
-Map LOTR_WestFold_Village_Lobby
-CultureTeam1 rohan
+Map Warg3
+CultureTeam1 isengard
 CultureTeam2 rohan
 MaxNumberOfPlayers 500
 MinNumberOfPlayersForMatchStart 0

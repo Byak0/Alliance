@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Core.Configuration.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -427,7 +428,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             }
 
             Mission.Current.OnMissionReset += OnMissionReset;
-            MultiplayerMissionAgentVisualSpawnComponent missionBehavior = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
+            AllianceAgentVisualSpawnComponent missionBehavior = Mission.Current.GetMissionBehavior<AllianceAgentVisualSpawnComponent>();
             missionBehavior.OnMyAgentSpawnedFromVisual += OnPreparationEnded;
             missionBehavior.OnMyAgentVisualSpawned += OnRoundStarted;
             OnTeamChanged();
@@ -473,7 +474,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
             }
 
             Mission.Current.OnMissionReset -= OnMissionReset;
-            MultiplayerMissionAgentVisualSpawnComponent missionBehavior = Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>();
+            AllianceAgentVisualSpawnComponent missionBehavior = Mission.Current.GetMissionBehavior<AllianceAgentVisualSpawnComponent>();
             missionBehavior.OnMyAgentSpawnedFromVisual -= OnPreparationEnded;
             missionBehavior.OnMyAgentVisualSpawned -= OnRoundStarted;
             if (_siegeClient != null)

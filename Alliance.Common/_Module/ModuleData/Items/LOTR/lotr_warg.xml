@@ -1,0 +1,55 @@
+<Items>
+	<Item id="warg"
+		name="Warg"
+		mesh="warg_low"
+		subtype="horse"
+		item_category="sumpter_horse"
+		value="1"
+		is_merchandise="false"
+		weight="400"
+		difficulty="200"
+		Type="Horse">
+		<ItemComponent>
+			<Horse
+				monster="Monster.warg"
+				maneuver="60"
+				speed="37"
+				charge_damage="6"
+				body_length="104"
+				is_mountable="true" >
+				<AdditionalMeshes>
+					<Mesh
+						name="warg_low_fur_with_saddle"
+						affected_by_cover="true" />
+				</AdditionalMeshes>
+				<Materials>
+					<Material
+						name="warg_skin">
+					</Material>
+				</Materials>
+			</Horse>
+		</ItemComponent>
+	</Item>
+
+	<Item
+        id="warg_saddle"
+        name="Warg Saddle"
+        mesh="orc_rider_saddle_1"
+        is_merchandise="true"
+        weight="16"
+        appearance="0.5"
+        Type="HorseHarness">
+		<ItemComponent>
+			<Armor
+                body_armor="12"
+                mane_cover_type="none"
+                maneuver_bonus="0"
+                speed_bonus="0"
+                charge_bonus="0"
+                family_type="1"
+                material_type="Leather" />
+		</ItemComponent>
+		<Flags
+            Civilian="true" />
+	</Item>
+</Items>

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
@@ -58,7 +59,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
         private ALHeroClassVM _currentSelectedClass;
         private MBBindingList<MPPlayerVM> _teammates;
         private MBBindingList<MPPlayerVM> _enemies;
-        private MissionRepresentativeBase missionRep => GameNetwork.MyPeer?.VirtualPlayer?.GetComponent<MissionRepresentativeBase>();
 
         private Team _playerTeam
         {
@@ -508,33 +508,34 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             }
 
             int num = ((initialHeroSelection != null) ? (gameMode.IsGameModeUsingCasualGold ? initialHeroSelection.TroopCasualCost : ((gameMode.GameType == MultiplayerGameType.Battle) ? initialHeroSelection.TroopBattleCost : initialHeroSelection.TroopCost)) : 0);
-            if (initialHeroSelection == null || (IsGoldEnabled && num > Gold))
-            {
-                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
-            }
-            else
-            {
-                foreach (ALHeroClassGroupVM @class in Classes)
-                {
-                    foreach (ALHeroClassVM subClass in @class.SubClasses)
-                    {
-                        if (subClass.HeroClass == initialHeroSelection)
-                        {
-                            ALHeroClassVM = subClass;
-                            break;
-                        }
-                    }
 
-                    if (ALHeroClassVM != null)
+            if (initialHeroSelection != null)
+            {
+                if (Config.Instance.UsePlayerLimit)
+                {
+                    BasicCharacterObject initialChoiceCharacter = GameNetwork.MyPeer.IsOfficer() ? initialHeroSelection.HeroCharacter : initialHeroSelection.TroopCharacter;
+                    bool initialChoiceUnavailable = Config.Instance.UsePlayerLimit && !ClassLimiterModel.Instance.CharactersAvailable[initialHeroSelection.TroopCharacter];
+                    if (initialChoiceUnavailable)
                     {
-                        break;
+                        ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+                    }
+                    else
+                    {
+                        ALHeroClassVM = InitHeroFromPreviousSelection(initialHeroSelection, ALHeroClassVM);
                     }
                 }
-
-                if (ALHeroClassVM == null)
+                else if (IsGoldEnabled && initialHeroSelection.TroopCost > Gold)
                 {
                     ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
                 }
+                else
+                {
+                    ALHeroClassVM = InitHeroFromPreviousSelection(initialHeroSelection, ALHeroClassVM);
+                }
+            }
+            else
+            {
+                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
             }
 
             _isInitializing = false;
@@ -577,6 +578,33 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
                 OnRefreshTeamMembers();
                 OnRefreshEnemyMembers();
             }
+        }
+
+        private ALHeroClassVM InitHeroFromPreviousSelection(MultiplayerClassDivisions.MPHeroClass initialHeroSelection, ALHeroClassVM ALHeroClassVM)
+        {
+            foreach (ALHeroClassGroupVM @class in Classes)
+            {
+                foreach (ALHeroClassVM subClass in @class.SubClasses)
+                {
+                    if (subClass.HeroClass == initialHeroSelection)
+                    {
+                        ALHeroClassVM = subClass;
+                        break;
+                    }
+                }
+
+                if (ALHeroClassVM != null)
+                {
+                    break;
+                }
+            }
+
+            if (ALHeroClassVM == null)
+            {
+                ALHeroClassVM = Classes.FirstOrDefault()?.SubClasses.FirstOrDefault();
+            }
+
+            return ALHeroClassVM;
         }
 
         public override void RefreshValues()
@@ -672,10 +700,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
             heroClass.IsSelected = true;
             CurrentSelectedClass = heroClass;
 
-            if(Config.Instance.UsePlayerLimit)
+            if (Config.Instance.UsePlayerLimit)
             {
                 ClassLimiterModel.Instance.RequestUsage(heroClass.Character);
-            }            
+            }
 
             if (GameNetwork.IsMyPeerReady)
             {

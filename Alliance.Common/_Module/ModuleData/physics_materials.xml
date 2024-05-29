@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <base>
+	<sound_and_collision_info_class_definitions>
+		<sound_and_collision_info_class_definition name="warg" />
+	</sound_and_collision_info_class_definitions>
 	<physics_materials>
 		<physics_material
 			id="al_metal_shield_nostick"

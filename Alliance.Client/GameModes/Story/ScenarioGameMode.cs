@@ -1,3 +1,4 @@
+using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
@@ -26,6 +27,7 @@ namespace Alliance.Client.GameModes.Story
                     new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with scenario infos
                     new FormationBehavior(),
                     new ObjectivesBehavior(ScenarioPlayer.Instance),
+                    new AllianceAgentVisualSpawnComponent(),
 
                     // Native components from Captain mode
                     new MultiplayerAchievementComponent(),

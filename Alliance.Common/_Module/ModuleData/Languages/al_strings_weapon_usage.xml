@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <strings>
 	<!-- Weapon usages -->
+	<string id="str_weapon_usage.lotr_OneHandedSword" text="{=desc_lotr_oneh_sword}One Handed"/>
+	<string id="str_weapon_usage.lotr_BastardSword" text="{=desc_lotr_bastard_sword}Bastard"/>
+	<string id="str_weapon_usage.lotr_TwoHandedSword" text="{=desc_lotr_twoh_sword}Two Handed"/>
+	<string id="str_weapon_usage.lotr_orc_TwoHandedAxe" text="{=desc_lotr_orc_twoh_axe}Two Handed"/>
+	<string id="str_weapon_usage.lotr_orc_TwoHandedPolearm" text="{=desc_lotr_orc_twoh_polearm}Two Handed"/>
 	<string id="str_weapon_usage.uruk_two_handed" text="{=desc_uruk_two_handed}Two Handed"/>
 	<string id="str_weapon_usage.uruk_twoHandedPolearm_Pike" text="{=desc_uruk_twoHandedPolearm_Pike}Two Handed"/>
 	<string id="str_weapon_usage.uruk_twoHandedPolearm_Bracing" text="{=desc_uruk_twoHandedPolearm_Bracing}Spear Brace"/>

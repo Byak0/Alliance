@@ -20,9 +20,21 @@
 	</Item>
 
 	<!-- Rohan Armors -->
+	<Item multiplayer_item="true" id="armor_rohan_officer" name="Rohan Guard Scale Armor (Hero)" mesh="armor_rohan_3" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="30" leg_armor="11" arm_armor="1" head_armor="45" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
 	<Item multiplayer_item="true" id="armor_rohan_3" name="Rohan Guard Scale Armor" mesh="armor_rohan_3" culture="Culture.rohan" weight="7.6" appearance="1" Type="BodyArmor">
 		<ItemComponent>
 			<Armor body_armor="30" leg_armor="11" arm_armor="1" has_gender_variations="false" covers_body="true" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item multiplayer_item="true" id="armor_rohan_aragorn" name="Rohan Knightly Armor (Aragorn)" mesh="armor_rohan_4" culture="Culture.rohan" weight="8.6" appearance="1" Type="BodyArmor">
+		<ItemComponent>
+			<Armor body_armor="47" leg_armor="15" arm_armor="15" head_armor="45" has_gender_variations="false" covers_body="true" modifier_group="leather" material_type="Leather" />
 		</ItemComponent>
 		<Flags />
 	</Item>
