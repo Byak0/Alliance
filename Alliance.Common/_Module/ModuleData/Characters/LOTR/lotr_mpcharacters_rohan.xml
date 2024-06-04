@@ -675,7 +675,7 @@
 			<skill id="Polearm"
              value="60" />
 			<skill id="Bow"
-             value="120" />
+             value="150" />
 			<skill id="Crossbow"
              value="45" />
 			<skill id="Throwing"
@@ -688,7 +688,7 @@
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
+									 id="Item.rohan_arrows" />
 				<equipment slot="Item3"
 									 id="Item.rohan_shield_4" />
 				<equipment slot="Body"
@@ -708,7 +708,7 @@
 				<equipment slot="Item1"
 									 id="Item.mp_hatchet_axe" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_barbed" />
+									 id="Item.rohan_arrows" />
 				<equipment slot="Item3"
 									 id="Item.rohan_shield_4" />
 				<equipment slot="Body"
@@ -728,16 +728,17 @@
 	</NPCCharacter>
 	<!-- LIGHT RANGED - HERO (HALDIR) -->
 	<NPCCharacter id="mp_light_ranged_rohan_hero"
-									default_group="Ranged"
-									level="20"
-									voice="earnest"
-									is_female="false"
-									name="{=al_lotr_rohan_l_ranged_h}Haldir"
-									occupation="Soldier"
-									culture="Culture.rohan">
+		race="elf"
+		default_group="Ranged"
+		level="20"
+		voice="earnest"
+		is_female="false"
+		name="{=al_lotr_rohan_l_ranged_h}Haldir"
+		occupation="Soldier"
+		culture="Culture.rohan">
 		<face>
 			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
-			<BodyProperties version="4" age="25" weight="0.5" build="0.5"  key="0005080140000003B77744884574573753AA8662A5A55646DCB377878A84865B0177761307C3E49400000000000000000000000000000000000000003EFC7002"  />
+			<BodyProperties version="4" age="40" weight="0.169" build="0.4144"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -745,13 +746,13 @@
 			<skill id="Riding"
              value="100" />
 			<skill id="OneHanded"
-             value="100" />
+             value="200" />
 			<skill id="TwoHanded"
-             value="160" />
+             value="200" />
 			<skill id="Polearm"
              value="120" />
 			<skill id="Bow"
-             value="220" />
+             value="280" />
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
@@ -766,7 +767,7 @@
 				<equipment slot="Item2"
 									 id="Item.elf_sword_2" />
 				<equipment slot="Item3"
-                   id="Item.rohan_horn_1" />
+									 id="Item.rohan_horn_1" />
 				<equipment slot="Body"
 									 id="Item.elf_armor_2" />
 				<equipment slot="Gloves"
@@ -783,15 +784,16 @@
 
 	<!-- HEAVY RANGED - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_troop"
-									default_group="Ranged"
-									level="15"
-									name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
-									occupation="Soldier"
-									culture="Culture.rohan">
+		race="elf"
+		default_group="Ranged"
+		level="15"
+		name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
+		occupation="Soldier"
+		culture="Culture.rohan">
 		<face>
 			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
-			<BodyProperties version="4" age="25" weight="0.5" build="0.5"  key="00080C0C40000003CC7F976CDCB0958270718D62C4CE9749C472A7D98E9116120177761307A4410000000000000000000000000000000000000000003AFC3005"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.5" build="0.5"  key="00050C00000000037C7F976EEEB0A5A47577866254C69643C4B647398C95A6140677766707A7497300000000000000000000000000000000000000003AF47004"  />
+			<BodyProperties version="4" age="20" weight="0.1" build="0.3"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
+			<BodyPropertiesMax version="4" age="50" weight="0.3" build="0.44"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -801,11 +803,11 @@
 			<skill id="OneHanded"
              value="100" />
 			<skill id="TwoHanded"
-             value="120" />
+             value="150" />
 			<skill id="Polearm"
-             value="120" />
+             value="100" />
 			<skill id="Bow"
-             value="180" />
+             value="200" />
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
@@ -854,16 +856,17 @@
 	</NPCCharacter>
 	<!-- HEAVY RANGED - HERO (LEGOLAS) -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_hero"
-									default_group="Ranged"
-									level="26"
-									voice="earnest"
-									is_female="false"
-									name="{=al_lotr_rohan_h_ranged_h}Legolas"
-									occupation="Soldier"
-									culture="Culture.rohan">
+		race="elf"
+		default_group="Ranged"
+		level="26"
+		voice="earnest"
+		is_female="false"
+		name="{=al_lotr_rohan_h_ranged_h}Legolas"
+		occupation="Soldier"
+		culture="Culture.rohan">
 		<face>
 			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
-			<BodyProperties version="4" age="25" weight="0.5" build="0.5"  key="00000C0000CC00038276B779733463546368846A51B667A76126AC3E8BA4976501B776130B4791850000000000000000000000000000000000000000017C4002"  />
+			<BodyProperties version="4" age="30" weight="0.2" build="0.37"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -871,13 +874,13 @@
 			<skill id="Riding"
              value="120" />
 			<skill id="OneHanded"
-             value="200" />
+             value="250" />
 			<skill id="TwoHanded"
-             value="120" />
+             value="250" />
 			<skill id="Polearm"
              value="120" />
 			<skill id="Bow"
-             value="280" />
+             value="300" />
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
@@ -910,15 +913,16 @@
 	</NPCCharacter>
 	<!-- HEAVY RANGED - TROOP -->
 	<NPCCharacter id="mp_heavy_ranged_rohan_banner_bearer"
-									default_group="Ranged"
-									level="15"
-									name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
-									occupation="Soldier"
-									culture="Culture.rohan">
+		race="elf"
+		default_group="Ranged"
+		level="15"
+		name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
+		occupation="Soldier"
+		culture="Culture.rohan">
 		<face>
 			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
-			<BodyProperties version="4" age="25" weight="0.5" build="0.5"  key="00080C0C40000003CC7F976CDCB0958270718D62C4CE9749C472A7D98E9116120177761307A4410000000000000000000000000000000000000000003AFC3005"  />
-			<BodyPropertiesMax version="4" age="50" weight="0.5" build="0.5"  key="00050C00000000037C7F976EEEB0A5A47577866254C69643C4B647398C95A6140677766707A7497300000000000000000000000000000000000000003AF47004"  />
+			<BodyProperties version="4" age="20" weight="0.1" build="0.3"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
+			<BodyPropertiesMax version="4" age="50" weight="0.3" build="0.44"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -928,11 +932,11 @@
 			<skill id="OneHanded"
              value="100" />
 			<skill id="TwoHanded"
-             value="120" />
+             value="150" />
 			<skill id="Polearm"
-             value="120" />
+             value="100" />
 			<skill id="Bow"
-             value="180" />
+             value="200" />
 			<skill id="Crossbow"
              value="80" />
 			<skill id="Throwing"
@@ -943,7 +947,7 @@
 				<equipment slot="Item1"
 									 id="Item.elf_1h_sword" />
 				<equipment slot="ExtraWeaponSlot"
-                   id="Item.al_galadhrim_kingdom_banner_t3" />
+									 id="Item.al_galadhrim_kingdom_banner_t3" />
 				<equipment slot="Body"
 									 id="Item.elf_armor_1" />
 				<equipment slot="Head"
@@ -1044,11 +1048,11 @@
 			<skill id="Riding"
              value="150" />
 			<skill id="OneHanded"
-             value="150" />
+             value="200" />
 			<skill id="TwoHanded"
              value="150" />
 			<skill id="Polearm"
-             value="120" />
+             value="200" />
 			<skill id="Bow"
              value="100" />
 			<skill id="Crossbow"
@@ -1213,7 +1217,7 @@
 			<skill id="Riding"
              value="110" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
              value="80" />
 			<skill id="Polearm"
@@ -1269,7 +1273,7 @@
 			<skill id="Riding"
              value="110" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
              value="80" />
 			<skill id="Polearm"
@@ -1325,7 +1329,7 @@
 			<skill id="Riding"
              value="110" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
              value="80" />
 			<skill id="Polearm"
@@ -1380,7 +1384,7 @@
 			<skill id="Riding"
              value="110" />
 			<skill id="OneHanded"
-             value="110" />
+             value="150" />
 			<skill id="TwoHanded"
              value="80" />
 			<skill id="Polearm"

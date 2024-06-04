@@ -8,8 +8,8 @@
 
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="elf_sword_1_holster" >
-			<Thrust damage_type="Pierce" damage_factor="2.9" />
-			<Swing damage_type="Cut" damage_factor="3.2" />
+			<Thrust damage_type="Pierce" damage_factor="3" />
+			<Swing damage_type="Cut" damage_factor="4" />
 		</BladeData>
 		<Flags>
 			<Flag name="Civilian" type="ItemFlags" />
@@ -19,8 +19,8 @@
 
 		<BuildData previous_piece_offset="-0.4" />
 		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="elf_sword_2_holster" >
-			<Thrust damage_type="Pierce" damage_factor="2.9" />
-			<Swing damage_type="Cut" damage_factor="3.2" />
+			<Thrust damage_type="Pierce" damage_factor="3" />
+			<Swing damage_type="Cut" damage_factor="4" />
 		</BladeData>
 		<Flags>
 			<Flag name="Civilian" type="ItemFlags" />
