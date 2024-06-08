@@ -1069,7 +1069,7 @@
 			<skill id="Polearm"
 						 value="80" />
 			<skill id="Bow"
-						 value="120" />
+						 value="150" />
 			<skill id="Crossbow"
 						 value="120" />
 			<skill id="Throwing"
@@ -1082,7 +1082,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.uruk_arrows_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
 				<equipment slot="Gloves"
@@ -1098,7 +1098,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.uruk_arrows_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
 				<equipment slot="Head"
@@ -1135,7 +1135,7 @@
 			<skill id="Polearm"
 						 value="80" />
 			<skill id="Bow"
-						 value="150" />
+						 value="200" />
 			<skill id="Crossbow"
 						 value="150" />
 			<skill id="Throwing"
@@ -1148,7 +1148,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_arrows_bodkin" />
+									 id="Item.uruk_arrows_1" />
 				<equipment slot="Item3"
 									 id="Item.isengard_horn_1" />
 				<equipment slot="ExtraWeaponSlot"
@@ -1202,9 +1202,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
+									 id="Item.uruk_bolt_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v3" />
 				<equipment slot="Gloves"
@@ -1222,9 +1220,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
+									 id="Item.uruk_bolt_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_1" />
 				<equipment slot="Gloves"
@@ -1242,9 +1238,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
-				<equipment slot="Item3"
-									 id="Item.mp_bolts_western" />
+									 id="Item.uruk_bolt_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_1_v1" />
 				<equipment slot="Gloves"
@@ -1298,7 +1292,7 @@
 				<equipment slot="Item1"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item2"
-									 id="Item.mp_bolts_western" />
+									 id="Item.uruk_bolt_1" />
 				<equipment slot="Item3"
 									 id="Item.isengard_horn_1" />
 				<equipment slot="ExtraWeaponSlot"

@@ -82,18 +82,34 @@
 	<!-- Uruk Ranged -->
 	<Item multiplayer_item="true" id="uruk_crossbow_1" name="Uruk-Hai Heavy Crossbow" body_name="bo_cross_bow_heavy" mesh="uruk_crossbow_1" culture="Culture.isengard" weight="2.7" appearance="0.7" difficulty="20" Type="Crossbow" AmmoOffset="0.0, 0.02131, 0.24975" item_holsters="crossbow_back:bow_hip:mace_right_hip:bow_hip_2" holster_position_shift="0.02,0,-0.4">
 		<ItemComponent>
-			<Weapon weapon_class="Crossbow" ammo_class="Bolt" missile_speed="85" accuracy="90" thrust_damage="87" thrust_speed="80" speed_rating="61" weapon_length="100" ammo_limit="1" thrust_damage_type="Pierce" item_usage="crossbow" physics_material="wood_weapon" center_of_mass="0,0,0.4" modifier_group="crossbow">
+			<Weapon weapon_class="Crossbow" ammo_class="Bolt" missile_speed="100" accuracy="95" thrust_damage="84" thrust_speed="50" speed_rating="57" weapon_length="100" ammo_limit="1" thrust_damage_type="Pierce" item_usage="crossbow" physics_material="wood_weapon" center_of_mass="0,0,0.4" modifier_group="crossbow">
 				<WeaponFlags RangedWeapon="true" HasString="true" CantReloadOnHorseback="true" CanPenetrateShield="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" />
 			</Weapon>
 		</ItemComponent>
 	</Item>
 	<Item multiplayer_item="true" id="uruk_bow_1" name="Uruk-Hai Short Bow" body_name="bo_composite_shotbow_c" mesh="uruk_bow_1" culture="Culture.isengard" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
 		<ItemComponent>
-			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" missile_speed="70" accuracy="90" thrust_damage="48" thrust_speed="100" speed_rating="89" weapon_length="95" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
+			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" missile_speed="80" accuracy="90" thrust_damage="48" thrust_speed="80" speed_rating="89" weapon_length="95" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
 				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />
 			</Weapon>
 		</ItemComponent>
 		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+	<Item id="uruk_bolt_1" name="Uruk Bolt" body_name="bo_capsule_arrow" holster_body_name="bo_axe_short" mesh="bolt_bl_c" value="1" is_merchandise="false" holster_mesh="bolt_bl_c_quiver" holster_mesh_with_weapon="bolt_bl_c_quiver" flying_mesh="bolt_bl_flying" weight="0.05" appearance="1" Type="Bolts" item_holsters="quiver_bolts:quiver_bolts_2:quiver_back_middle:quiver_back_top">
+		<ItemComponent>
+			<Weapon weapon_class="Bolt" stack_amount="35" thrust_speed="0" thrust_damage_type="Pierce" thrust_damage="0" speed_rating="0" missile_speed="10" weapon_length="37" item_usage="" passby_sound_code="event:/mission/combat/missile/passby" rotation="180, 0, 0" physics_material="missile" sticking_position="0,-0.37,0" sticking_rotation="90,0,0" center_of_mass="0,0,-0.1" modifier_group="bolt">
+				<WeaponFlags AttachAmmoToVisual="true" Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+	<Item id="uruk_arrows_1" name="Uruk Arrow" body_name="bo_capsule_arrow" holster_body_name="bo_axe_short" mesh="arrow_bl_g" value="1" is_merchandise="false" weight="0.05" appearance="1" flying_mesh="arrow_bl_flying" holster_mesh="arrow_bl_h_quiver" holster_mesh_with_weapon="arrow_bl_h_quiver" Type="Arrows" item_holsters="quiver_back_middle:quiver_bolts_2:quiver_bolts" holster_position_shift="0.0,0.0,0.15">
+		<ItemComponent>
+			<Weapon weapon_class="Arrow" stack_amount="35" thrust_speed="0" speed_rating="0" physics_material="missile" missile_speed="10" weapon_length="97" thrust_damage="0" thrust_damage_type="Pierce" item_usage="arrow_right" passby_sound_code="event:/mission/combat/missile/passby" rotation="0, -80, 25" sticking_position="0,-0.97,0" sticking_rotation="90,0,0" center_of_mass="0,0,-0.13" modifier_group="arrow">
+				<WeaponFlags Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags />
 	</Item>
 
 	<!-- Orc Rider Swords -->

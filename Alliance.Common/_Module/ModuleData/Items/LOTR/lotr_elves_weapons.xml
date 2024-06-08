@@ -21,7 +21,7 @@
 	<!-- Elven Ranged Weapons -->
 	<Item multiplayer_item="true" id="elf_bow_1" name="Galadhrim Longbow" body_name="bo_composite_longbow_g" mesh="elf_bow_1" culture="Culture.rohan" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
 		<ItemComponent>
-			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" thrust_speed="82" speed_rating="89" missile_speed="71" weapon_length="198" accuracy="95" thrust_damage="52" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
+			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" thrust_speed="82" speed_rating="89" missile_speed="80" weapon_length="198" accuracy="95" thrust_damage="52" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
 				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />
 			</Weapon>
 		</ItemComponent>
@@ -29,7 +29,7 @@
 	</Item>
 	<Item multiplayer_item="true" id="elf_bow_2" name="Galadhrim Longbow" body_name="bo_composite_longbow_g" mesh="sm_legolas_bow" culture="Culture.neutral_culture" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
 		<ItemComponent>
-			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" thrust_speed="82" speed_rating="89" missile_speed="71" weapon_length="198" accuracy="95" thrust_damage="52" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
+			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" thrust_speed="82" speed_rating="89" missile_speed="80" weapon_length="198" accuracy="95" thrust_damage="52" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
 				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />
 			</Weapon>
 		</ItemComponent>
@@ -38,15 +38,7 @@
 	<!-- Elven Quivers -->
 	<Item multiplayer_item="true" id="elf_quiver_1" name="Galahdrim Arrows" body_name="bo_capsule_arrow" holster_body_name="bo_axe_short" mesh="arrow_bl_g" holster_mesh="elf_quiver_1" holster_mesh_with_weapon="elf_quiver_1" subtype="arrows" flying_mesh="arrow_bl_g" weight="0.06" difficulty="0" appearance="1" Type="Arrows" item_holsters="quiver_back_top:quiver_back_top_2" holster_position_shift="0,0,0.15">
 		<ItemComponent>
-			<Weapon weapon_class="Arrow" stack_amount="35" thrust_speed="0" speed_rating="0" physics_material="missile" missile_speed="10" weapon_length="97" thrust_damage="4" thrust_damage_type="Pierce" item_usage="arrow_top" passby_sound_code="event:/mission/combat/missile/passby" rotation="0, -80, 25" sticking_position="0,-0.97,0" sticking_rotation="90,0,0" center_of_mass="0,0.0,-0.13" modifier_group="arrow">
-				<WeaponFlags Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
-			</Weapon>
-		</ItemComponent>
-		<Flags />
-	</Item>
-	<Item multiplayer_item="true" id="elf_quiver_1" name="Galahdrim Arrows" body_name="bo_capsule_arrow" culture="Culture.neutral_culture" holster_body_name="bo_axe_short" mesh="arrow_bl_g" holster_mesh="elf_quiver_1" holster_mesh_with_weapon="elf_quiver_1" subtype="arrows" flying_mesh="arrow_bl_g" weight="0.06" difficulty="0" appearance="1" Type="Arrows" item_holsters="quiver_back_top:quiver_back_top_2" holster_position_shift="0,0,0.15">
-		<ItemComponent>
-			<Weapon weapon_class="Arrow" stack_amount="35" thrust_speed="0" speed_rating="0" physics_material="missile" missile_speed="10" weapon_length="97" thrust_damage="4" thrust_damage_type="Pierce" item_usage="arrow_top" passby_sound_code="event:/mission/combat/missile/passby" rotation="0, -80, 25" sticking_position="0,-0.97,0" sticking_rotation="90,0,0" center_of_mass="0,0.0,-0.13" modifier_group="arrow">
+			<Weapon weapon_class="Arrow" stack_amount="35" thrust_speed="0" speed_rating="0" physics_material="missile" missile_speed="10" weapon_length="97" thrust_damage="1" thrust_damage_type="Pierce" item_usage="arrow_top" passby_sound_code="event:/mission/combat/missile/passby" rotation="0, -80, 25" sticking_position="0,-0.97,0" sticking_rotation="90,0,0" center_of_mass="0,0.0,-0.13" modifier_group="arrow">
 				<WeaponFlags Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
 			</Weapon>
 		</ItemComponent>
