@@ -54,7 +54,8 @@
 		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
 		<string id="str_alliance_scene_lotr_the_wold" text="Le Plateau de l'Eastemnet par Esperanza" />
 		<string id="str_alliance_scene_warg3" text="Embuscade par Adwennor" />
-
+		<string id="str_alliance_scene_lisiere2" text="Lisière de Fangorn par Adwennor" />
+		
 		<!-- Unit names -->
 		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />
 		<string id="al_lotr_isen_scout_h" text="Scout Uruk-hai" />
