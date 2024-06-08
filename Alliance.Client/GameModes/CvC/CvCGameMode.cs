@@ -8,48 +8,48 @@ using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.CvC
 {
-    public class CvCGameMode : MissionBasedMultiplayerGameMode
-    {
-        public CvCGameMode(string name) : base(name) { }
+	public class CvCGameMode : MissionBasedMultiplayerGameMode
+	{
+		public CvCGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
-        }
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
+		}
 
-        private MissionBehavior[] GetMissionBehaviors()
-        {
-            MissionBehavior[] behaviors = new MissionBehavior[]
-                {
-                    MissionLobbyComponent.CreateBehavior(),
-                    new FormationBehavior(),
-                    new AllianceAgentVisualSpawnComponent(),
+		private MissionBehavior[] GetMissionBehaviors()
+		{
+			MissionBehavior[] behaviors = new MissionBehavior[]
+				{
+					MissionLobbyComponent.CreateBehavior(),
+					new FormationBehavior(),
+					new AllianceAgentVisualSpawnComponent(),
 
-                    new MultiplayerAchievementComponent(),
-                    new MultiplayerWarmupComponent(),
-                    new CvCGameModeClientBehavior(),
-                    new MultiplayerRoundComponent(),
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MultiplayerTeamSelectComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerAdminComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent(),
-                    new MissionScoreboardComponent(new CaptainScoreboardData()),
-                    MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
-                    new EquipmentControllerLeaveLogic(),
-                    new MissionRecentPlayersComponent(),
-                    new MultiplayerPreloadHelper()
-                };
+					new MultiplayerAchievementComponent(),
+					new MultiplayerWarmupComponent(),
+					new CvCGameModeClientBehavior(),
+					new MultiplayerRoundComponent(),
+					new MultiplayerTimerComponent(),
+					new MultiplayerMissionAgentVisualSpawnComponent(),
+					new ConsoleMatchStartEndHandler(),
+					new MissionLobbyEquipmentNetworkComponent(),
+					new MultiplayerTeamSelectComponent(),
+					new MissionHardBorderPlacer(),
+					new MissionBoundaryPlacer(),
+					new MissionBoundaryCrossingHandler(),
+					new MultiplayerPollComponent(),
+					new MultiplayerAdminComponent(),
+					new MultiplayerGameNotificationsComponent(),
+					new MissionOptionsComponent(),
+					new MissionScoreboardComponent(new CaptainScoreboardData()),
+					MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
+					new EquipmentControllerLeaveLogic(),
+					new MissionRecentPlayersComponent(),
+					new MultiplayerPreloadHelper()
+				};
 
-            return behaviors;
-        }
-    }
+			return behaviors;
+		}
+	}
 }

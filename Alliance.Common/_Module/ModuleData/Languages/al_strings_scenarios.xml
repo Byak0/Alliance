@@ -81,4 +81,20 @@
 	<string id="str_alliance_obj_description.GP_4_1" text="{=str_alliance_obj_description_GP_4_1}Leave no enemy alive within the Manor walls." />
 	<string id="str_alliance_obj_name.GP_4_2" text="{=str_alliance_obj_name_GP_4_2}Protect the Emperor" />
 	<string id="str_alliance_obj_description.GP_4_2" text="{=str_alliance_obj_description_GP_4_2}Fight off every last foe threatening the Emperor's safety." />
+
+	<!-- Scenario text for GdCFinal -->
+	<string id="str_alliance_scenario_name.GdCFinal" text="{=str_alliance_scenario_name_GdCFinal}GdC - Helm's Deep" />
+	<string id="str_alliance_scenario_description.GdCFinal" text="{=str_alliance_scenario_description_GP}Defend Helm's Deep against Isengard." />
+	<!-- Act 1 -->
+	<string id="str_alliance_act_name.GdCFinal_1" text="{=str_alliance_act_name_GdCFinal_1}So it begins..." />
+	<string id="str_alliance_act_description.GdCFinal_1" text="{=str_alliance_act_description_GdCFinal_1}The Isengard army is approaching." />
+	<string id="str_alliance_act_lose_defender.GdCFinal_1" text="{=str_alliance_act_lose_defender_GdCFinal_1}Defeat... The Rohan army has fallen to the wicked Saruman." />
+	<string id="str_alliance_act_lose_attacker.GdCFinal_1" text="{=str_alliance_act_lose_attacker_GdCFinal_1}Defeat... You have fallen on the battlefield." />
+	<string id="str_alliance_act_victory_attacker.GdCFinal_1" text="{=str_alliance_act_victory_attacker_GdCFinal_1}Victory! The Rohan army has fallen to the proud Uruk-Hai!" />
+	<string id="str_alliance_act_victory_defender.GdCFinal_1" text="{=str_alliance_act_victory_defender_GdCFinal_1}Victory! The wicked Uruk-Hai have been defeated!" />
+	<!-- Act 1 - Objectives -->
+	<string id="str_alliance_obj_name.GdCFinal_1_1" text="{=str_alliance_obj_name_GdCFinal_1_1}Defeat Saruman forces" />
+	<string id="str_alliance_obj_description.GdCFinal_1_1" text="{=str_alliance_obj_description_GdCFinal_1_1}Survive the onslaught." />
+	<string id="str_alliance_obj_name.GdCFinal_1_2" text="{=str_alliance_obj_name_GdCFinal_1_2}Rohan is wounded... Finish them!" />
+	<string id="str_alliance_obj_description.GdCFinal_1_2" text="{=str_alliance_obj_description_GdCFinal_1_2}Kill every enemy." />
 </strings>
