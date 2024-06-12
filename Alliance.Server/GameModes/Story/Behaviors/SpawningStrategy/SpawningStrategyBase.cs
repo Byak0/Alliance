@@ -123,6 +123,19 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			}
 		}
 
+		/// <summary>
+		/// If battle side was not found, return 0;
+		/// </summary>
+		/// <param name="battleSide"></param>
+		/// <returns>Number of tickets of selected side. <b>/!\ Should only be use for ATTACKER and DEFENDER sides /!\</b></returns>
+		public int GetRemainingLives(BattleSideEnum battleSide)
+		{
+			return TeamRemainingLives.Where(e => e.Key.Side == battleSide)
+				.ToList()
+				.FirstOrDefault(new KeyValuePair<Team, int>(null, 0))
+				.Value;
+		}
+
 		public virtual void SpawnPlayer(NetworkCommunicator player, MissionPeer peer)
 		{
 			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForPeer(peer);

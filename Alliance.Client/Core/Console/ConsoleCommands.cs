@@ -276,6 +276,25 @@ namespace Alliance.Client.Core.Console
 			return $"Requested server to set winner of current scenario to {args[0]}";
 		}
 
+		[CommandLineFunctionality.CommandLineArgumentFunction("start_fake_army", "alliance")]
+		public static string SpawnFakeArmy(List<string> args)
+		{
+			if (GameNetwork.NetworkPeerCount == 0 || Mission.Current?.Scene == null)
+			{
+				return "Log into a server to use this command.";
+			}
+			else if (!GameNetwork.MyPeer.IsAdmin())
+			{
+				return "You need to be admin to use this command.";
+			}
+
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new StartFakeArmyMessage());
+			GameNetwork.EndModuleEventAsClient();
+
+			return "Requested server to set start fake army";
+		}
+
 		public static string ConcatenateString(List<string> strings)
 		{
 			if (strings == null || strings.IsEmpty())

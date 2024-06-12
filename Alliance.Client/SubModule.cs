@@ -13,6 +13,7 @@ using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.FakeArmy.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -94,6 +95,7 @@ namespace Alliance.Client
 			mission.AddMissionBehavior(new ClientAutoHandler());
 			mission.AddMissionBehavior(new UsableEntityBehavior());
 			mission.AddMissionBehavior(new PBVoiceChatHandlerClient());
+			mission.AddMissionBehavior(new FakeArmyBehavior());
 		}
 	}
 }

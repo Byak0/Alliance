@@ -402,7 +402,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnTags: new string[] { "defender", "attacker" },
 				storeAgentsInfo: false,
 				usePreviousActAgents: false,
-				maxLives: new int[] { 200, 10000 },
+				maxLives: new int[] { 200, 4000 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
 					LocationStrategy.OnlyTags,
