@@ -19,27 +19,29 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="120" />
+						 value="120" />
 			<skill id="TwoHanded"
-             value="20" />
+						 value="20" />
 			<skill id="Polearm"
-             value="40" />
+						 value="40" />
 			<skill id="Bow"
-             value="15" />
+						 value="15" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="25" />
+						 value="25" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item1"
+									 id="Item.mp_torch" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
@@ -54,6 +56,8 @@
 				<equipment slot="Item0"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item1"
+									 id="Item.mp_torch" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1_v1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
@@ -68,6 +72,8 @@
 				<equipment slot="Item0"
 									 id="Item.uruk_sword_1" />
 				<equipment slot="Item1"
+									 id="Item.mp_torch" />
+				<equipment slot="Item2"
 									 id="Item.uruk_shield_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_2" />
@@ -86,42 +92,44 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Scout - HERO -->
 	<NPCCharacter id="mp_light_infantry_isengard_hero"
-                race="uruk"
-                default_group="Infantry"
-                level="10"
-                voice="curt"
-                is_female="false"
+								race="uruk"
+								default_group="Infantry"
+								level="10"
+								voice="curt"
+								is_female="false"
 				name="{=al_lotr_isen_scout_h}Uruk-hai Scout Officer"
-                occupation="Soldier"
-                culture="Culture.isengard">
+								occupation="Soldier"
+								culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="30" weight="0.4" build="0.7088"  key="0002000AD3FC000355F45541656433454587F566566D655531212023F554544800A966030A44044400000000000000000000000000000000000000002B3C0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="20" />
+						 value="20" />
 			<skill id="Polearm"
-             value="40" />
+						 value="40" />
 			<skill id="Bow"
-             value="15" />
+						 value="15" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="25" />
+						 value="25" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0"
 									 id="Item.uruk_sword_3" />
 				<equipment slot="Item1"
-									 id="Item.uruk_shield_1_v1" />
+									 id="Item.mp_torch" />
 				<equipment slot="Item2"
+									 id="Item.uruk_shield_1_v1" />
+				<equipment slot="Item3"
 									 id="Item.isengard_horn_1" />
 				<equipment slot="Body"
 									 id="Item.uruk_armor_scout_hero" />
@@ -150,21 +158,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="120" />
+						 value="120" />
 			<skill id="TwoHanded"
-             value="20" />
+						 value="20" />
 			<skill id="Polearm"
-             value="40" />
+						 value="40" />
 			<skill id="Bow"
-             value="15" />
+						 value="15" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="25" />
+						 value="25" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -204,21 +212,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="20" />
+						 value="20" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -296,21 +304,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="200" />
+						 value="200" />
 			<skill id="Polearm"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="20" />
+						 value="20" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -349,21 +357,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="20" />
+						 value="20" />
 			<skill id="Crossbow"
-             value="20" />
+						 value="20" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -451,21 +459,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="30" />
+						 value="30" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -551,21 +559,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="200" />
+						 value="200" />
 			<skill id="Polearm"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="30" />
+						 value="30" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -606,21 +614,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="30" />
+						 value="30" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -708,21 +716,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="140" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="250" />
+						 value="250" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="75" />
+						 value="75" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="150" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -808,21 +816,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="140" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="250" />
+						 value="250" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="75" />
+						 value="75" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="150" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -865,21 +873,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="140" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="250" />
+						 value="250" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="75" />
+						 value="75" />
 			<skill id="Crossbow"
-             value="30" />
+						 value="30" />
 			<skill id="Throwing"
-             value="150" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -921,35 +929,35 @@
 
 	<!-- Uruk-hai Berserker - TROOP -->
 	<NPCCharacter id="mp_berserk_isengard_troop"
-                race="uruk"
-                default_group="Infantry"
-                level="30"
-                voice="curt"
-                is_female="false"
+								race="uruk"
+								default_group="Infantry"
+								level="30"
+								voice="curt"
+								is_female="false"
 				name="{=al_lotr_isen_berserk_t}Uruk-hai Berserker"
-                occupation="Soldier"
-                culture="Culture.isengard">
+								occupation="Soldier"
+								culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="22" weight="0.3157" build="0.8547"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000CB26030C00000000000000000000000000000000000000000000001D9C0000"  />
 			<BodyPropertiesMax version="4" age="40" weight="0.4801" build="1"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800FE46030F653576000000000000000000000000000000000000000035EC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="140" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="300" />
+						 value="300" />
 			<skill id="Polearm"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="45" />
+						 value="45" />
 			<skill id="Crossbow"
-             value="50" />
+						 value="50" />
 			<skill id="Throwing"
-             value="150" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -992,34 +1000,34 @@
 	</NPCCharacter>
 	<!-- Uruk-hai Berserker - HERO -->
 	<NPCCharacter id="mp_berserk_isengard_hero"
-        race="uruk"
-        default_group="Infantry"
-        level="30"
-        voice="curt"
-        is_female="false"
+				race="uruk"
+				default_group="Infantry"
+				level="30"
+				voice="curt"
+				is_female="false"
 		name="{=al_lotr_isen_berserk_h}Uruk-hai Berserker Officer"
-        occupation="Soldier"
-        culture="Culture.isengard">
+				occupation="Soldier"
+				culture="Culture.isengard">
 		<face>
 			<BodyProperties version="4" age="30" weight="0.3801" build="0.9945"  key="0005000F16FC000356F45544435733474587E5665666665544305133F554544800EF46030E20033200000000000000000000000000000000000000002DE40000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="140" />
+						 value="140" />
 			<skill id="Riding"
-             value="0" />
+						 value="0" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="300" />
+						 value="300" />
 			<skill id="Polearm"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="45" />
+						 value="45" />
 			<skill id="Crossbow"
-             value="50" />
+						 value="50" />
 			<skill id="Throwing"
-             value="150" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -1183,17 +1191,17 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="120" />
+						 value="120" />
 			<skill id="Polearm"
-             value="120" />
+						 value="120" />
 			<skill id="Crossbow"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="200" />
+						 value="200" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -1273,17 +1281,17 @@
 			<skill id="Riding"
 			 value="0" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="120" />
+						 value="120" />
 			<skill id="Polearm"
-             value="120" />
+						 value="120" />
 			<skill id="Crossbow"
-             value="250" />
+						 value="250" />
 			<skill id="Bow"
-             value="250" />
+						 value="250" />
 			<skill id="Throwing"
-             value="100" />
+						 value="100" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -1329,21 +1337,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="100" />
+						 value="100" />
 			<skill id="Riding"
-             value="200" />
+						 value="200" />
 			<skill id="OneHanded"
-             value="150" />
+						 value="150" />
 			<skill id="TwoHanded"
-             value="150" />
+						 value="150" />
 			<skill id="Polearm"
-             value="150" />
+						 value="150" />
 			<skill id="Bow"
-             value="120" />
+						 value="120" />
 			<skill id="Crossbow"
-             value="120" />
+						 value="120" />
 			<skill id="Throwing"
-             value="120" />
+						 value="120" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -1403,21 +1411,21 @@
 		</face>
 		<skills>
 			<skill id="Athletics"
-             value="150" />
+						 value="150" />
 			<skill id="Riding"
-             value="250" />
+						 value="250" />
 			<skill id="OneHanded"
-             value="200" />
+						 value="200" />
 			<skill id="TwoHanded"
-             value="200" />
+						 value="200" />
 			<skill id="Polearm"
-             value="200" />
+						 value="200" />
 			<skill id="Bow"
-             value="120" />
+						 value="120" />
 			<skill id="Crossbow"
-             value="120" />
+						 value="120" />
 			<skill id="Throwing"
-             value="120" />
+						 value="120" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>

@@ -652,7 +652,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 			// Handle scenario case (no round component)
 			else if (_missionMultiplayerGameMode is ScenarioClientBehavior)
 			{
-				IsSpawnTimerVisible = !_missionMultiplayerGameMode.IsRoundInProgress;
+				//IsSpawnTimerVisible = !_missionMultiplayerGameMode.IsRoundInProgress;
+				IsSpawnTimerVisible = false;
 				IsSpawnLabelVisible = false;
 			}
 			else

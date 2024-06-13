@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromServer;
 using System;
-using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -17,6 +16,7 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 		private GameEntity particuleEntity;
 		private ParticleSystem particule;
 		private bool isInit = false;
+		private float timer;
 
 		public int NbTickets
 		{
@@ -59,7 +59,21 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 			Log($"Created emitter at {position}", LogLevel.Debug);
 
 			NbTickets = currentTickets;
-			PeriodiclyUpdateFakeArmy();
+			//PeriodiclyUpdateFakeArmy();
+		}
+
+		public override void OnMissionTick(float dt)
+		{
+			if (!isInit) return;
+
+			timer += dt;
+			if (timer <= 15) return;
+			timer = 0;
+
+			Log("Ask server to refresh nbTickedOfTeam");
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new GetTicketsOfTeamRequest());
+			GameNetwork.EndModuleEventAsClient();
 		}
 
 		/// <summary>
@@ -83,16 +97,16 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 			NbTickets = currentTickets;
 		}
 
-		public async void PeriodiclyUpdateFakeArmy()
-		{
-			await Task.Delay(15000);
+		//public async void PeriodiclyUpdateFakeArmy()
+		//{
+		//	await Task.Delay(15000);
 
-			Log("Ask server to refresh nbTickedOfTeam");
+		//	Log("Ask server to refresh nbTickedOfTeam");
 
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new GetTicketsOfTeamRequest());
-			GameNetwork.EndModuleEventAsClient();
-			PeriodiclyUpdateFakeArmy();
-		}
+		//	GameNetwork.BeginModuleEventAsClient();
+		//	GameNetwork.WriteMessage(new GetTicketsOfTeamRequest());
+		//	GameNetwork.EndModuleEventAsClient();
+		//	//PeriodiclyUpdateFakeArmy();
+		//}
 	}
 }

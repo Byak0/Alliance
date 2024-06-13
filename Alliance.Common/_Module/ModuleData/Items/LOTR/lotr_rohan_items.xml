@@ -14,23 +14,23 @@
 					item_holsters="throwing_stone_2">
 		<ItemComponent>
 			<Weapon weapon_class="OneHandedAxe"
-              weapon_balance="100"
-              thrust_speed="78"
-              speed_rating="97"
-              missile_speed="0"
-              weapon_length="65"
-              swing_damage="6"
-              swing_damage_type="Blunt"
+							weapon_balance="100"
+							thrust_speed="78"
+							speed_rating="97"
+							missile_speed="0"
+							weapon_length="65"
+							swing_damage="6"
+							swing_damage_type="Blunt"
 							item_usage="al_horn"
 							rotation="0.0,-5.0,91.2"
-              physics_material="wood_weapon">
+							physics_material="wood_weapon">
 				<WeaponFlags MeleeWeapon="true" />
 			</Weapon>
 		</ItemComponent>
 		<Flags DropOnWeaponChange="false"
-           ForceAttachOffHandPrimaryItemBone="true"
-           HeldInOffHand="true"
-           HasToBeHeldUp="false" />
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="false" />
 	</Item>
 
 	<!-- HORSES -->

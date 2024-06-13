@@ -389,12 +389,13 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			// Act 1 - Defend the fortress
 			string actId = "_1";
 			ScenarioGameModeSettings act1Settings = new ScenarioGameModeSettings();
-			act1Settings.SetNativeOption(OptionType.Map, "bfhd_helms_deep_v2");
+			act1Settings.SetNativeOption(OptionType.Map, "bfhd_helms_deep_gdc");
 			act1Settings.SetNativeOption(OptionType.CultureTeam1, "isengard"); // Attacker
 			act1Settings.SetNativeOption(OptionType.CultureTeam2, "rohan"); // Defender
-			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam1, 20);
-			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam2, 20);
+			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
+			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
 			act1Settings.SetNativeOption(OptionType.RoundPreparationTimeLimit, 20);
+			act1Settings.SetNativeOption(OptionType.RoundTimeLimit, 4000);
 			act1Settings.ModOptions.ActivateSAE = true;
 			act1Settings.ModOptions.SAERange = 60;
 			SpawnLogic act1SpawnLogic = new SpawnLogic(
@@ -416,7 +417,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				name: GameTexts.FindText("str_alliance_act_name", scenarioId + actId).ToString(),
 				desc: GameTexts.FindText("str_alliance_act_description", scenarioId + actId).ToString(),
 				loadMap: true,
-				mapId: "bfhd_helms_deep_v2",
+				mapId: "bfhd_helms_deep_gdc",
 				actSettings: act1Settings,
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic

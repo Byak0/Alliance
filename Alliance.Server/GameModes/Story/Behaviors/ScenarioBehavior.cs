@@ -241,7 +241,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		public override void OnRemoveBehavior()
 		{
-			ScenarioManagerServer.Instance.CurrentAct.UnregisterObjectives();
+			ScenarioManagerServer.Instance.CurrentAct?.UnregisterObjectives();
 			GameNetwork.RemoveNetworkHandler(this);
 		}
 

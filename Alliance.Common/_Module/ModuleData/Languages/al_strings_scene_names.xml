@@ -18,6 +18,7 @@
 	<string id="str_multiplayer_scene_name.bfhd_helms_deep_act_II" text="{=str_alliance_scene_bfhd_helms_deep_act_II}Helm's Deep - Act 2" />
 	<string id="str_multiplayer_scene_name.bfhd_helms_deep_lobby" text="{=str_alliance_scene_bfhd_helms_deep_lobby}Helm's Deep" />
 	<string id="str_multiplayer_scene_name.bfhd_helms_deep_v2" text="{=str_alliance_scene_bfhd_helms_deep_v2}In memory of Bernard Hill" />
+	<string id="str_multiplayer_scene_name.bfhd_helms_deep_gdc" text="{=str_alliance_scene_bfhd_helms_deep_gdc}GdC Final - Helm's Deep" />
 	<string id="str_multiplayer_scene_name.scn_bilbo2" text="{=str_alliance_scene_scn_bilbo2}???" />
 	<string id="str_multiplayer_scene_name.captain_french_castle" text="{=str_alliance_scene_captain_french_castle}French Castle by Path" />
 	<string id="str_multiplayer_scene_name.FrenchCastlePathEdC" text="{=str_alliance_scene_FrenchCastlePathEdC}The captive Eagle: Napoleon's Rescue" />

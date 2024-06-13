@@ -136,8 +136,8 @@ namespace Alliance.Client.GameModes.Story.Scenarios
 					string suffix = winnerSide == playerSide ? winnerSuffix : loserSuffix;
 					Color color = winnerSide == playerSide ? new Color(0.4f, 0.7f, 0.1f) : new Color(0.7f, 0.1f, 0.1f);
 					sv.ShowResultScreen(
-							GameTexts.FindText($"str_alliance_act_{suffix}", "GdCFinal").ToString(),
-							GameTexts.FindText($"str_alliance_act_{suffix}", "GdCFinal").ToString(),
+							GameTexts.FindText($"str_alliance_act_{suffix}", "GdCFinal_1").ToString(),
+							GameTexts.FindText($"str_alliance_act_{suffix}", "GdCFinal_1").ToString(),
 							color);
 				},
 				onActCompleted: null);

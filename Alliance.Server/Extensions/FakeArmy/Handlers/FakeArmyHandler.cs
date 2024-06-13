@@ -37,9 +37,9 @@ namespace Alliance.Client.Extensions.FakeArmy.Handlers
 
 			if (!fakeArmyBehavior.IsReady) return false;
 
-			GameNetwork.BeginModuleEventAsServer(peer);
+			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new InitFakeArmyMessage(fakeArmyBehavior.PositionToSpawnEmitterForClient, fakeArmyBehavior.GetMaxTickets(), fakeArmyBehavior.GetCurrentTickets()));
-			GameNetwork.EndModuleEventAsServer();
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients);
 
 			return true;
 		}
@@ -66,9 +66,10 @@ namespace Alliance.Client.Extensions.FakeArmy.Handlers
 
 			if (!fakeArmyBehavior.IsReady) return false;
 
-			GameNetwork.BeginModuleEventAsServer(peer);
+
+			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new InitFakeArmyMessage(fakeArmyBehavior.PositionToSpawnEmitterForClient, fakeArmyBehavior.GetMaxTickets(), fakeArmyBehavior.GetCurrentTickets()));
-			GameNetwork.EndModuleEventAsServer();
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients);
 
 			return true;
 		}
@@ -83,7 +84,7 @@ namespace Alliance.Client.Extensions.FakeArmy.Handlers
 		{
 			FakeArmyBehavior fakeArmyBehavior = Mission.Current.GetMissionBehavior<FakeArmyBehavior>();
 
-			if (fakeArmyBehavior == null)
+			if (fakeArmyBehavior == null || !fakeArmyBehavior.IsReady)
 			{
 				Debug.Print("This mission do not contain FakeArmyBehavior. Request aborded");
 				return false;

@@ -83,7 +83,7 @@ namespace Alliance.Server.GameModes.Story
 		{
 			base.SetActState(newState);
 
-			if (newState == ActState.Completed && CurrentScenario.Acts.Count < CurrentScenario.Acts.IndexOf(CurrentAct))
+			if (newState == ActState.Completed && CurrentScenario.Acts.Count == CurrentScenario.Acts.IndexOf(CurrentAct) + 1)
 			{
 				StopScenario();
 			}

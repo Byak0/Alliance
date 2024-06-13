@@ -33,39 +33,125 @@
 		HasToBeHeldUp="false" />
 	</Item>
 
+	<!-- TORCH -->
+	<Item id="isengard_torch"
+	name="Isengard Torch"
+	is_merchandise="false"
+	body_name="bo_mace_a"
+	recalculate_body="true"
+	mesh="isengard_torch"
+	culture="Culture.isengard"
+	value="4"
+	weight="0.2"
+	Type="OneHandedWeapon"
+	item_holsters="">
+		<ItemComponent>
+			<Weapon
+				weapon_class="OneHandedAxe"
+				weapon_balance="100"
+				thrust_speed="78"
+				speed_rating="97"
+				missile_speed="0"
+				weapon_length="65"
+				swing_damage="6"
+				swing_damage_type="Blunt"
+				item_usage="al_torch"
+				physics_material="metal_weapon">
+				<WeaponFlags
+					MeleeWeapon="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			CannotBePickedUp="false"
+			DropOnWeaponChange="true"
+			HasToBeHeldUp="true" />
+	</Item>
+
+	<!-- BOMB -->
+	<Item
+		id="isengard_bomb"
+		name="Isengard Bomb"
+		multiplayer_item="true"
+		is_merchandise="false"
+		body_name="bo_projectile_rock"
+		holster_body_name="bo_axe_short"
+		mesh="mine_isengard"
+		holster_mesh=""
+		subtype="arrows"
+		value="1"
+		weight="15"
+		difficulty="0"
+		appearance="0.5"
+		Type="Thrown"
+		item_holsters="">
+		<ItemComponent>
+			<Weapon
+				weapon_class="Boulder"
+				ammo_class="Boulder"
+				stack_amount="1"
+				position="0.05, -0.15, 0"
+				center_of_mass="0,0,0"
+				physics_material="boulder_stone"
+				thrust_speed="100"
+				speed_rating="0"
+				missile_speed="8"
+				weapon_length="95"
+				thrust_damage="70"
+				item_usage="heavy_stone"
+				flying_sound_code="event:/mission/combat/boulder/passby"
+				rotation_speed="2, 0.5, 0">
+				<WeaponFlags
+					RangedWeapon="true"
+					Consumable="true"
+					NotUsableWithOneHand="true"
+					TwoHandIdleOnMount="true"
+					CanPenetrateShield="true"
+					MissileWithPhysics="true"
+					UseHandAsThrowBase="true"
+					LeavesTrail="true"
+					AmmoCanBreakOnBounceBack="true"
+					CanKillEvenIfBlunt="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			CannotBePickedUp="false"
+			DropOnWeaponChange="true"
+			DropOnAnyAction="false" />
+	</Item>
+	
 	<!-- Isengard Banner -->
 	<Item multiplayer_item="true"
 				id="isengard_banner"
-        name="{=M3ZTF7rj}Isengard banner"
-        is_merchandise="false"
-        body_name="bo_mace_a"
-        recalculate_body="true"
-        mesh="isengard_banner"
-        prefab="isengard_banner"
-        culture="Culture.isengard"
-        weight="0.2"
-        Type="Banner"
-        using_tableau="true"
-        item_holsters="abdomen_left">
+				name="{=M3ZTF7rj}Isengard banner"
+				is_merchandise="false"
+				body_name="bo_mace_a"
+				recalculate_body="true"
+				mesh="isengard_banner"
+				prefab="isengard_banner"
+				culture="Culture.isengard"
+				weight="0.2"
+				Type="Banner"
+				using_tableau="true"
+				item_holsters="abdomen_left">
 		<ItemComponent>
 			<Banner banner_level="3"
-              weapon_class="Banner"
-              effect="IncreasedTroopMovementSpeed"
-              weapon_balance="100"
-              thrust_speed="78"
-              speed_rating="97"
-              missile_speed="0"
-              weapon_length="150"
-              swing_damage="6"
-              swing_damage_type="Blunt"
-              item_usage="banner"
-              physics_material="metal_weapon"
-              position="0.0, 0.0, -0.8"></Banner>
+							weapon_class="Banner"
+							effect="IncreasedTroopMovementSpeed"
+							weapon_balance="100"
+							thrust_speed="78"
+							speed_rating="97"
+							missile_speed="0"
+							weapon_length="150"
+							swing_damage="6"
+							swing_damage_type="Blunt"
+							item_usage="banner"
+							physics_material="metal_weapon"
+							position="0.0, 0.0, -0.8"></Banner>
 		</ItemComponent>
 		<Flags DropOnWeaponChange="true"
-           ForceAttachOffHandPrimaryItemBone="true"
-           HeldInOffHand="true"
-           HasToBeHeldUp="true"
-           CanBePickedUpFromCorpse="false" />
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
 	</Item>
 </Items>

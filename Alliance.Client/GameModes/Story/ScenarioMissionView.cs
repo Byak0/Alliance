@@ -22,7 +22,6 @@ namespace Alliance.Client.GameModes.Story
 			List<MissionView> missionViews = new List<MissionView>
 			{
 				// Custom views
-				//new KillNotificationView(),
 				new EquipmentSelectionView(),
 				new AgentStatusView(),
 				//new TeamSelectView(),
@@ -32,12 +31,12 @@ namespace Alliance.Client.GameModes.Story
 				new ScenarioView(),
 				new CaptureMarkerUIView(),
 				new SpectatorView(),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 
 				// Native views from Captain mode
 				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
 				MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
+				MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
 				ViewCreator.CreateMissionMainAgentEquipmentController(mission),
 				ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
 				MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("Scenario"),
@@ -49,6 +48,7 @@ namespace Alliance.Client.GameModes.Story
 				new MissionItemContourControllerView(),
 				new MissionAgentContourControllerView(),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 				ViewCreator.CreateOptionsUIHandler(),
 				ViewCreator.CreateMissionMainAgentEquipDropView(mission),
 				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),

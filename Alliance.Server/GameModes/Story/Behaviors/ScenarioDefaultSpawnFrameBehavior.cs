@@ -107,9 +107,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			}
 			if (isInitialSpawn)
 			{
-				return _spawnZonesByTeam[(int)team.Side].Single((sz) => sz.HasTag(StartingTag));
+				return _spawnZonesByTeam[(int)team.Side].Single((sz) => sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents());
 			}
-			List<GameEntity> list = _spawnZonesByTeam[(int)team.Side].Where((sz) => !sz.HasTag(StartingTag)).ToList();
+			List<GameEntity> list = _spawnZonesByTeam[(int)team.Side].Where((sz) => !sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents()).ToList();
 			if (!list.Any())
 			{
 				return null;
@@ -153,6 +153,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			MBList<Agent> agents = (MBList<Agent>)Mission.Current.Agents;
 			for (int i = 0; i < spawnPointList.Count; i++)
 			{
+				if (!spawnPointList[i].IsVisibleIncludeParents())
+				{
+					continue;
+				}
+
 				float spawnScore = MBRandom.RandomFloat * 0.2f;
 				int nbAgents = 0;
 				foreach (Agent agent in Mission.Current.GetNearbyAgents(spawnPointList[i].GlobalPosition.AsVec2, 2f, agents))
@@ -214,6 +219,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 			for (int i = 0; i < spawnPoints.Count; i++)
 			{
+				if (!spawnPoints[i].IsVisibleIncludeParents())
+				{
+					continue;
+				}
+
 				float spawnScore = 0;
 
 				// The farther away the spawn point is from the desired position, the lower it scores
