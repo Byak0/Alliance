@@ -570,7 +570,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 			MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
 			_isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
 			_missionLobbyEquipmentNetworkComponent = mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
-			IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown;
+			IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown && _gameMode is not ScenarioClientBehavior;
 			IsRoundCountdownSuspended = false;
 			// Disable Score depending on config
 			_isTeamScoresEnabled = _isTeamsEnabled && Config.Instance.ShowScore;
@@ -766,37 +766,42 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
 		private void OnRefreshTeamMembers()
 		{
-			List<MPPlayerVM> list = Teammates.ToList();
+			List<MPPlayerVM> currentTeammates = Teammates.ToList();
 
 			if (!Config.Instance.ShowOfficers) return;
 
-			foreach (MissionPeer item in VirtualPlayer.Peers<MissionPeer>())
+			HashSet<MissionPeer> processedPeers = new HashSet<MissionPeer>();
+
+			foreach (MissionPeer peer in VirtualPlayer.Peers<MissionPeer>())
 			{
-				if (item.GetNetworkPeer().GetComponent<MissionPeer>() != null && _playerTeam != null && item.Team != null && item.Team == _playerTeam)
+				if (peer.GetNetworkPeer().GetComponent<MissionPeer>() != null && _playerTeam != null && peer.Team != null && peer.Team == _playerTeam)
 				{
-					// Only show officers name
-					if (item.Peer.IsOfficer())
+					if (peer.Peer.IsOfficer())
 					{
-						if (!_teammateDictionary.ContainsKey(item))
+						processedPeers.Add(peer);
+
+						if (!_teammateDictionary.ContainsKey(peer))
 						{
-							MPPlayerVM mPPlayerVM = new MPPlayerVM(item);
-							Teammates.Add(mPPlayerVM);
-							_teammateDictionary.Add(item, mPPlayerVM);
+							MPPlayerVM newTeammate = new MPPlayerVM(peer);
+							Teammates.Add(newTeammate);
+							_teammateDictionary.Add(peer, newTeammate);
 						}
 						else
 						{
-							list.Remove(_teammateDictionary[item]);
+							currentTeammates.Remove(_teammateDictionary[peer]);
 						}
 					}
 				}
 			}
 
-			foreach (MPPlayerVM item2 in list)
+			// Remove teammates who are no longer valid officers
+			foreach (MPPlayerVM oldTeammate in currentTeammates)
 			{
-				Teammates.Remove(item2);
-				_teammateDictionary.Remove(item2.Peer);
+				Teammates.Remove(oldTeammate);
+				_teammateDictionary.Remove(oldTeammate.Peer);
 			}
 
+			// Refresh properties for each valid teammate
 			foreach (MPPlayerVM teammate in Teammates)
 			{
 				teammate.RefreshDivision();

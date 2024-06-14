@@ -1,0 +1,50 @@
+<Prefab>
+  <Constants>
+    <Constant Name="Perks.Frame.Width" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Width" />
+    <Constant Name="Perks.Frame.Height" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Height" />
+    <Constant Name="Perks.Name.Width" Additive="10" Value="!Perks.Frame.Width" />
+  </Constants>
+  <Parameters>
+    <Parameter Name="DataSource" DefaultValue="" />
+  </Parameters>
+  <Window>
+    <MultiplayerPerkPopupWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Sprite="perks_popup_bg_9" IsVisible="false">
+      <Children>
+        <NavigationForcedScopeCollectionTargeter CollectionID="PerkPopupCollection" CollectionParent="..\." />
+        <NavigationScopeTargeter ScopeID="PerkPopupScope" ScopeParent="..\Perks" ScopeMovements="Horizontal"/>
+        <NavigatableListPanel Id="Perks" DataSource="*DataSource" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginTop="15" MarginBottom="15" MarginLeft="15" MarginRight="15">
+          <ItemTemplate>
+            <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren">
+              <Children>
+
+                <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" MinWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="115" Command.Click="ExecuteSelectPerk" IconType="@IconType" IconWidget="Placement\Icon" IsEnabled="@IsSelectable" UpdateChildrenStates="true" Brush="MPClassLoadout.Perks.Button">
+                  <Children>
+
+                    <ListPanel Id="Placement" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" UpdateChildrenStates="true" MarginTop="25" MarginBottom="15" MarginLeft="10" MarginRight="10" >
+                      <Children>
+                        <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.PopupIcon" UpdateChildrenStates="true">
+                          <Children>
+                            <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
+                          </Children>
+                        </BrushWidget>
+                        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="150" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="5" Brush="MPClassLoadout.PerkPopup.NameText" ClipContents="false" Text="@Name" />
+                      </Children>
+                    </ListPanel>
+
+                    <HintWidget Id="Hint" DataSource="{Hint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" HorizontalAlignment="Center" />
+                  
+                  </Children>
+                </MultiplayerPerkItemToggleWidget>
+
+                <HintWidget Id="Hint" DataSource="{Hint}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" HorizontalAlignment="Center" />
+
+              </Children>
+            </Widget>
+
+          </ItemTemplate>
+        </NavigatableListPanel>
+      </Children>
+    </MultiplayerPerkPopupWidget>
+  
+</Window>
+</Prefab>

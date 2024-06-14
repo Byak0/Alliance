@@ -112,10 +112,6 @@
 					id="Item.rohan_greaves_1" />
 				<equipment slot="Cape"
 					id="Item.armor_rohan_shoulder_6" />
-				<equipment slot="Horse"
-									 id="Item.rohan_horse" />
-				<equipment slot="HorseHarness"
-									 id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -335,10 +331,6 @@
 									id="Item.gimli_gloves" />
 				<equipment slot="Cape" 
 									id="Item.gimli_cloak" />
-				<equipment slot="Horse" 
-									id="Item.rohan_horse" />
-				<equipment slot="HorseHarness" 
-									id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
@@ -902,10 +894,6 @@
 									id="Item.legolas_legs" />
 				<equipment slot="Cape" 
 									id="Item.legolas_rohan_shoulder" />
-				<equipment slot="Horse" 
-									id="Item.rohan_horse" />
-				<equipment slot="HorseHarness" 
-									id="Item.mp_stripped_leather_harness" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances

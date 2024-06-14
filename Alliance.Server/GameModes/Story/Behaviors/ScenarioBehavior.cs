@@ -3,7 +3,6 @@ using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
-using Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -255,14 +254,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			agent.UpdateSyncHealthToAllClients(value: true);
 
 			// Set ammo of players to 0 when respawning
-			if (SpawningBehavior.SpawningStrategy is SpawningStrategyBase baseSpawningStrategy && agent?.MissionPeer != null)
-			{
-				// Check if player is respawning
-				if (baseSpawningStrategy.PlayerUsedLives.ContainsKey(agent.MissionPeer) && baseSpawningStrategy.PlayerUsedLives[agent.MissionPeer] > 1)
-				{
-					SetAmmoOfAgent(agent, 0);
-				}
-			}
+			//if (SpawningBehavior.SpawningStrategy is SpawningStrategyBase baseSpawningStrategy && agent?.MissionPeer != null)
+			//{
+			//	// Check if player is respawning
+			//	if (baseSpawningStrategy.PlayerUsedLives.ContainsKey(agent.MissionPeer) && baseSpawningStrategy.PlayerUsedLives[agent.MissionPeer] > 1)
+			//	{
+			//		SetAmmoOfAgent(agent, 0);
+			//	}
+			//}
 		}
 
 		public void SetAmmoOfAgent(Agent agent, short ammoCount)

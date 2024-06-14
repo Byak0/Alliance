@@ -652,8 +652,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 			// Handle scenario case (no round component)
 			else if (_missionMultiplayerGameMode is ScenarioClientBehavior)
 			{
-				//IsSpawnTimerVisible = !_missionMultiplayerGameMode.IsRoundInProgress;
-				IsSpawnTimerVisible = false;
+				IsSpawnTimerVisible = _missionMultiplayerGameMode.IsRoundInProgress;
 				IsSpawnLabelVisible = false;
 			}
 			else
@@ -905,7 +904,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 		public void RefreshRemainingTime()
 		{
 			int num = MathF.Ceiling(_missionMultiplayerGameMode.RemainingTime);
+
 			RemainingTimeText = TimeSpan.FromSeconds(num).ToString("mm':'ss");
+			RemainingTimeText = "test";
 			WarnRemainingTime = (float)num < 5f;
 		}
 	}

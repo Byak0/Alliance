@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.GameModes.Story.Behaviors;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
@@ -282,7 +283,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 			Gold = (_gameMode.IsGameModeUsingCasualGold ? HeroClass.TroopCasualCost : ((_gameMode.GameType == MultiplayerGameType.Battle) ? HeroClass.TroopBattleCost : HeroClass.TroopCost));
 			InitPerksList();
 			int intValue = MultiplayerOptions.OptionType.NumberOfBotsPerFormation.GetIntValue();
-			IsNumOfTroopsEnabled = !_gameMode.IsInWarmup && intValue > 0;
+			IsNumOfTroopsEnabled = !_gameMode.IsInWarmup && intValue > 0 && _gameMode is not ScenarioClientBehavior;
 			if (IsNumOfTroopsEnabled)
 			{
 				NumOfTroops = MPPerkObject.GetTroopCount(heroClass, intValue, MPPerkObject.GetOnSpawnPerkHandler(_perks.Select((HeroPerkVM p) => p.SelectedPerk)));

@@ -70,7 +70,7 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 			if (timer <= 15) return;
 			timer = 0;
 
-			Log("Ask server to refresh nbTickedOfTeam");
+			Log("Ask server to refresh nbTickedOfTeam", LogLevel.Debug);
 			GameNetwork.BeginModuleEventAsClient();
 			GameNetwork.WriteMessage(new GetTicketsOfTeamRequest());
 			GameNetwork.EndModuleEventAsClient();
@@ -88,7 +88,7 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 			if (ratio < 0.8) newIntensity = ratio * 0.6f;
 			if (newIntensity < 0.1) newIntensity = 0;
 			if (newIntensity > 1) newIntensity = 1;
-			Log("newIntensity = " + newIntensity);
+			Log("newIntensity = " + newIntensity, LogLevel.Debug);
 			particule.SetRuntimeEmissionRateMultiplier(newIntensity);
 		}
 
@@ -96,17 +96,5 @@ namespace Alliance.Common.Extensions.FakeArmy.Behaviors
 		{
 			NbTickets = currentTickets;
 		}
-
-		//public async void PeriodiclyUpdateFakeArmy()
-		//{
-		//	await Task.Delay(15000);
-
-		//	Log("Ask server to refresh nbTickedOfTeam");
-
-		//	GameNetwork.BeginModuleEventAsClient();
-		//	GameNetwork.WriteMessage(new GetTicketsOfTeamRequest());
-		//	GameNetwork.EndModuleEventAsClient();
-		//	//PeriodiclyUpdateFakeArmy();
-		//}
 	}
 }
