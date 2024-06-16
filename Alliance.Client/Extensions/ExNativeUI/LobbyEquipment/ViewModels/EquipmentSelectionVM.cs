@@ -906,7 +906,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 			int num = MathF.Ceiling(_missionMultiplayerGameMode.RemainingTime);
 
 			RemainingTimeText = TimeSpan.FromSeconds(num).ToString("mm':'ss");
-			RemainingTimeText = "test";
 			WarnRemainingTime = (float)num < 5f;
 		}
 	}

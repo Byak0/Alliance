@@ -1,5 +1,5 @@
 <CharactersExtended>
-	<CharacterExtended id="NPCCharacter.mp_light_infantry_rohan_troop" troop_limit="100" player_select_limit="100" /> <!-- 50 -->
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_rohan_troop" troop_limit="100" player_select_limit="50" /> <!-- 50 -->
 	<CharacterExtended id="NPCCharacter.mp_light_infantry_rohan_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/> <!-- 1 -->
 	<CharacterExtended id="NPCCharacter.mp_light_infantry_rohan_banner_bearer" troop_limit="3" player_select_limit="3" />
 	
@@ -8,15 +8,15 @@
 	<CharacterExtended id="NPCCharacter.mp_shock_infantry_rohan_banner_bearer" troop_limit="3" player_select_limit="3" />
 	
 	<CharacterExtended id="NPCCharacter.mp_skirmisher_rohan_troop" troop_limit="100" player_select_limit="30" /> <!-- 10 -->
-	<CharacterExtended id="NPCCharacter.mp_skirmisher_rohan_hero" troop_limit="0" player_select_limit="0" hard_limit="true"/> <!-- 1 -->
+	<CharacterExtended id="NPCCharacter.mp_skirmisher_rohan_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/> <!-- 1 -->
 	<CharacterExtended id="NPCCharacter.mp_skirmisher_rohan_banner_bearer" troop_limit="3" player_select_limit="1" />
 	
-	<CharacterExtended id="NPCCharacter.mp_light_ranged_rohan_troop" troop_limit="100" player_select_limit="50" /> <!-- 10 -->
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_rohan_troop" troop_limit="100" player_select_limit="20" /> <!-- 10 -->
 	<CharacterExtended id="NPCCharacter.mp_light_ranged_rohan_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/>	<!-- 1 -->
 	
-	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_rohan_troop" troop_limit="0" player_select_limit="0" /> <!-- 0 -->
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_rohan_troop" troop_limit="0" player_select_limit="10" /> <!-- 0 -->
 	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_rohan_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/> <!-- 1 -->
-	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_rohan_banner_bearer" troop_limit="0" player_select_limit="0" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_rohan_banner_bearer" troop_limit="1" player_select_limit="1" />
 	
 	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_troop" troop_limit="100" player_select_limit="10" /> <!-- 10 -->
 	<CharacterExtended id="NPCCharacter.mp_light_cavalry_rohan_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/> <!-- 1 -->
