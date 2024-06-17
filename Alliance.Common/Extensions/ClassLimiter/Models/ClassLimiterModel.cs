@@ -176,7 +176,17 @@ namespace Alliance.Common.Extensions.ClassLimiter.Models
 
 		private int GetSlots()
 		{
-			int scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+			int scaledPlayerCount;
+			// In CvC, number of slots take into account the starting gold
+			if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC")
+			{
+				scaledPlayerCount = GameNetwork.NetworkPeers.Count + Config.Instance.StartingGold / 15;
+			}
+			else
+			{
+				scaledPlayerCount = GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+			}
+
 			return ExtendedCharacter.HardLimit ? ExtendedCharacter.PlayerSelectLimit : ExtendedCharacter.PlayerSelectLimit * scaledPlayerCount / 100;
 		}
 	}

@@ -364,17 +364,17 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			{
 				BasicCharacterObject bco;
 				// Every 99 agents, spawn a hero
-				if (nbAgents % 50 == 0)
+				if (nbAgents % 99 == 0)
 				{
 					// Get a random hero from the available classes
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => ClassLimiterModel.Instance.CharactersAvailable[troop.HeroCharacter]).GetRandomElementInefficiently()?.HeroCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.HeroCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.HeroCharacter]).GetRandomElementInefficiently()?.HeroCharacter;
 					// If no hero is available, try again without class limitation
 					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().HeroCharacter;
 				}
 				// Every 50 agents, spawn a banner bearer
 				else if (nbAgents % 50 == 0)
 				{
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => ClassLimiterModel.Instance.CharactersAvailable[troop.BannerBearerCharacter]).GetRandomElementInefficiently()?.BannerBearerCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.BannerBearerCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.BannerBearerCharacter]).GetRandomElementInefficiently()?.BannerBearerCharacter;
 					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().BannerBearerCharacter;
 				}
 				else

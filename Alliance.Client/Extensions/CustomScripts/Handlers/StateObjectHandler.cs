@@ -24,15 +24,5 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 				missionObject?.GameEntity?.GetFirstScriptOfType<CS_StateObject>()?.SetState(message.State);
 			}
 		}
-
-		//public void CS_HandleSyncAbilityOfNavmesh(SyncAbilityOfNavmesh message)
-		//{
-		//	MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-		//	if (missionObject == null)
-		//	{
-		//		return;
-		//	}
-		//	missionObject.GameEntity.GetFirstScriptOfType<CS_StateObject>().SetAbilityOfNavmesh(message.Navmesh1, message.Navmesh2);
-		//}
 	}
 }

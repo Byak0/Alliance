@@ -66,7 +66,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int BRZoneLifeTime = 300;
 
 		[ConfigProperty("Time before start", "Duration in seconds during which players are stuck in starting zone.", ConfigValueType.Integer, 0, 600)]
-		public int TimeBeforeStart = 60;
+		public int TimeBeforeStart = 30;
 
 		[ConfigProperty("Allow spawn during round", "Allow players to spawn while round is in progress.", ConfigValueType.Bool)]
 		public bool AllowSpawnInRound = true;

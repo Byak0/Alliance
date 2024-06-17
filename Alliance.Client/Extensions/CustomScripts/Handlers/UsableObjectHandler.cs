@@ -13,22 +13,10 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
-			//reg.Register<SyncSetActionChannel>(CS_HandleSyncSetActionChannel);
 			reg.Register<SyncNumberOfUse>(CS_HandleSyncNumberOfUse);
 			reg.Register<SyncSoundObject>(CS_HandleSyncSound);
 			reg.Register<SyncParticleObject>(CS_HandleSyncParticle);
 		}
-
-		//public void CS_HandleSyncSetActionChannel(SyncSetActionChannel message)
-		//{
-		//    MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-		//    Agent agent = Mission.MissionNetworkHelper.GetAgentFromIndex(message.AgentIndex);
-		//    if (missionObject == null || agent == null)
-		//    {
-		//        return;
-		//    }
-		//    missionObject.GameEntity.GetFirstScriptOfType<CS_UsableObject>().SyncSetActionChannel(agent, message.Action);
-		//}
 
 		public void CS_HandleSyncNumberOfUse(SyncNumberOfUse message)
 		{
