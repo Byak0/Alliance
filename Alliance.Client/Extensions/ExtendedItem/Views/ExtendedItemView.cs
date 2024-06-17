@@ -41,26 +41,11 @@ namespace Alliance.Client.Extensions.UsableItem.Views
 			InitializeMainAgentPropterties();
 		}
 
-		public override void OnAgentBuild(Agent agent, Banner banner)
-		{
-			//if (agent?.Equipment == null) return;
-
-			//(ItemObject item, ExtendedItem itemEx, sbyte boneType) = GetWieldedItemAndExtendedInfo(agent, true);
-			//if (itemEx == null || string.IsNullOrEmpty(itemEx.Prefab)) return;
-
-			//GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
-			//SetPrefabGlobalFrame(agent, boneType, prefab);
-
-			//_extendedItemsWithPrefab[agent] = new AttachedPrefab { Prefab = prefab, BoneType = boneType };
-			//Log($"Added prefab {itemEx.Prefab} to {itemEx.StringId}", LogLevel.Debug);
-		}
-
 		private (ItemObject item, ExtendedItem itemEx, sbyte boneType) GetWieldedItemAndExtendedInfo(Agent agent, bool isLeftHand)
 		{
-			sbyte boneType = 0;
-			ItemObject item = null;
-			ExtendedItem itemEx = null;
-
+			sbyte boneType;
+			ItemObject item;
+			ExtendedItem itemEx;
 			if (isLeftHand && agent.WieldedOffhandWeapon.Item != null)
 			{
 				item = agent.WieldedOffhandWeapon.Item;
@@ -149,118 +134,6 @@ namespace Alliance.Client.Extensions.UsableItem.Views
 				Log($"Added prefab {itemEx2.Prefab} to {itemEx2.StringId}", LogLevel.Debug);
 			}
 		}
-
-		//public override void OnAgentBuild(Agent agent, Banner banner)
-		//{
-		//	if (agent?.Equipment != null)
-		//	{
-		//		ItemObject item;
-		//		ExtendedItem itemEx;
-		//		sbyte boneType;
-		//		if (agent.WieldedOffhandWeapon.Item?.GetExtendedItem() != null)
-		//		{
-		//			item = agent.WieldedOffhandWeapon.Item;
-		//			itemEx = item.GetExtendedItem();
-		//			boneType = agent.Monster.OffHandItemBoneIndex;
-		//		}
-		//		else if (agent.WieldedWeapon.Item?.GetExtendedItem() != null)
-		//		{
-		//			item = agent.WieldedWeapon.Item;
-		//			itemEx = item.GetExtendedItem();
-		//			boneType = agent.Monster.MainHandItemBoneIndex;
-		//		}
-		//		else
-		//		{
-		//			return;
-		//		}
-		//		if (itemEx != null && itemEx.Prefab != string.Empty)
-		//		{
-		//			//GameEntity weaponEntity = agent.GetWeaponEntityFromEquipmentSlot(slot);
-		//			//weaponEntity.EntityFlags -= EntityFlags.Ignore;
-		//			GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
-
-		//			//agent.AgentVisuals.GetSkeleton().ForceUpdateBoneFrames();
-		//			MatrixFrame agentGlobalFrame = agent.Frame;
-		//			MatrixFrame localWeaponFrame = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(boneType);
-
-		//			// Transform the local position and rotation to global coordinates
-		//			Vec3 weaponGlobalPosition = agentGlobalFrame.TransformToParent(localWeaponFrame.origin);
-		//			Mat3 weaponGlobalRotation = agentGlobalFrame.rotation.TransformToParent(localWeaponFrame.rotation);
-
-		//			prefab.SetGlobalFrame(new MatrixFrame(weaponGlobalRotation, weaponGlobalPosition));
-
-		//			_extendedItemsWithPrefab[agent] = prefab;
-
-		//			Log($"Added prefab {itemEx.Prefab} to {itemEx.StringId}", LogLevel.Debug);
-		//		}
-		//	}
-		//}
-
-		//// Triggered by Patch_MissionNetworkComponent.Prefix_HandleServerEventSetWieldedItemIndex
-		//public void OnAgentWieldedItemChange(Agent agent, SetWieldedItemIndex message)
-		//{
-		//	if (_extendedItemsWithPrefab.TryGetValue(agent, out GameEntity entity))
-		//	{
-		//		try
-		//		{
-		//			entity.Remove(0);
-		//			_extendedItemsWithPrefab.Remove(agent);
-		//		}
-		//		catch (Exception e)
-		//		{
-		//			Log($"Failed to remove prefab {entity} - {e.Message}", LogLevel.Error);
-		//		}
-		//	}
-		//	ItemObject item;
-		//	ExtendedItem itemEx;
-		//	//EquipmentIndex slot;
-		//	if (message.IsLeftHand)
-		//	{
-		//		if (agent.WieldedOffhandWeapon.Item?.GetExtendedItem() != null)
-		//		{
-		//			item = agent.WieldedOffhandWeapon.Item;
-		//			itemEx = item.GetExtendedItem();
-		//			//slot = agent.GetWieldedItemIndex(HandIndex.OffHand);
-		//		}
-		//		else
-		//		{
-		//			return;
-		//		}
-		//	}
-		//	else if (agent.WieldedWeapon.Item?.GetExtendedItem() != null)
-		//	{
-		//		item = agent.WieldedWeapon.Item;
-		//		itemEx = item.GetExtendedItem();
-		//		//slot = agent.GetWieldedItemIndex(HandIndex.MainHand);
-		//	}
-		//	else
-		//	{
-		//		return;
-		//	}
-		//	if (itemEx != null && itemEx.Prefab != string.Empty)
-		//	{
-		//		sbyte boneType = message.IsLeftHand ? agent.Monster.OffHandItemBoneIndex : agent.Monster.MainHandItemBoneIndex;
-
-		//		//GameEntity weaponEntity = agent.GetWeaponEntityFromEquipmentSlot(slot);
-		//		//weaponEntity.EntityFlags -= EntityFlags.Ignore;
-		//		GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
-
-		//		//agent.AgentVisuals.GetSkeleton().ForceUpdateBoneFrames();
-		//		MatrixFrame agentGlobalFrame = agent.Frame;
-		//		MatrixFrame localWeaponFrame = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(boneType);
-
-		//		// Transform the local position and rotation to global coordinates
-		//		Vec3 weaponGlobalPosition = agentGlobalFrame.TransformToParent(localWeaponFrame.origin);
-		//		Mat3 weaponGlobalRotation = agentGlobalFrame.rotation.TransformToParent(localWeaponFrame.rotation);
-
-		//		prefab.SetGlobalFrame(new MatrixFrame(weaponGlobalRotation, weaponGlobalPosition));
-
-		//		_extendedItemsWithPrefab[agent] = prefab;
-
-		//		Log($"Added prefab {itemEx.Prefab} to {itemEx.StringId}", LogLevel.Debug);
-		//		//Log($"weapon : {weaponEntity.GetFrame().origin} | prefab {prefab.GetFrame().origin}", LogLevel.Debug);
-		//	}
-		//}
 
 		public void InitializeMainAgentPropterties()
 		{
