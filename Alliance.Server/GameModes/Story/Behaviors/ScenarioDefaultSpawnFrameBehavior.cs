@@ -101,48 +101,73 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		private GameEntity GetBestZone(Team team, bool isInitialSpawn)
 		{
+			// Check if there are any spawn zones for the given team
 			if (!_spawnZonesByTeam[(int)team.Side].Any())
 			{
 				return null;
 			}
+
+			// Handle initial spawn
 			if (isInitialSpawn)
 			{
-				return _spawnZonesByTeam[(int)team.Side].Single((sz) => sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents());
+				GameEntity initialSpawnZone = _spawnZonesByTeam[(int)team.Side]
+					.SingleOrDefault(sz => sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents());
+
+				if (initialSpawnZone != null)
+				{
+					return initialSpawnZone;
+				}
 			}
-			List<GameEntity> list = _spawnZonesByTeam[(int)team.Side].Where((sz) => !sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents()).ToList();
-			if (!list.Any())
+
+			// Get a list of spawn zones excluding the initial spawn zones
+			List<GameEntity> spawnZones = _spawnZonesByTeam[(int)team.Side]
+				.Where(sz => !sz.HasTag(StartingTag) && sz.IsVisibleIncludeParents())
+				.ToList();
+
+			if (!spawnZones.Any())
 			{
 				return null;
 			}
-			float[] array = new float[list.Count];
+
+			float[] spawnZoneScores = new float[spawnZones.Count];
+
+			// Calculate the score for each spawn zone. We try to spawn the agent close to its team members
 			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
 			{
-				MissionPeer component = networkCommunicator.GetComponent<MissionPeer>();
-				if ((component?.Team) != null && component.Team.Side != BattleSideEnum.None && component.ControlledAgent != null && component.ControlledAgent.IsActive())
+				MissionPeer missionPeer = networkCommunicator.GetComponent<MissionPeer>();
+
+				if (missionPeer?.Team != null && missionPeer.Team.Side != BattleSideEnum.None && missionPeer.ControlledAgent != null && missionPeer.ControlledAgent.IsActive())
 				{
-					for (int i = 0; i < list.Count; i++)
+					for (int i = 0; i < spawnZones.Count; i++)
 					{
-						Vec3 globalPosition = list[i].GlobalPosition;
-						if (component.Team != team)
+						Vec3 spawnZonePosition = spawnZones[i].GlobalPosition;
+						float distance = missionPeer.ControlledAgent.Position.Distance(spawnZonePosition);
+						float influence = 1f / (0.0001f + distance);
+
+						if (missionPeer.Team != team)
 						{
-							array[i] -= 1f / (0.0001f + component.ControlledAgent.Position.Distance(globalPosition)) * 1f;
+							spawnZoneScores[i] -= influence;
 						}
 						else
 						{
-							array[i] += 1f / (0.0001f + component.ControlledAgent.Position.Distance(globalPosition)) * 1.5f;
+							spawnZoneScores[i] += influence * 1.5f;
 						}
 					}
 				}
 			}
-			int num = -1;
-			for (int j = 0; j < array.Length; j++)
+
+			// Get the spawn zone with the highest score
+			int bestZoneIndex = -1;
+			for (int i = 0; i < spawnZoneScores.Length; i++)
 			{
-				if (num < 0 || array[j] > array[num])
+				if (bestZoneIndex < 0 || spawnZoneScores[i] > spawnZoneScores[bestZoneIndex])
 				{
-					num = j;
+					bestZoneIndex = i;
 				}
 			}
-			return list[num];
+
+			// Return the best spawn zone
+			return spawnZones[bestZoneIndex];
 		}
 
 		private MatrixFrame GetBestSpawnPoint(List<GameEntity> spawnPointList, bool hasMount)
