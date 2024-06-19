@@ -73,7 +73,7 @@ namespace Alliance.Client.Extensions.UsableItem.Views
 
 		private void SetPrefabGlobalFrame(Agent agent, sbyte boneType, GameEntity prefab)
 		{
-			MatrixFrame agentGlobalFrame = agent.Frame;
+			MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
 			MatrixFrame localWeaponFrame = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(boneType);
 			Vec3 weaponGlobalPosition = agentGlobalFrame.TransformToParent(localWeaponFrame.origin);
 			Mat3 weaponGlobalRotation = agentGlobalFrame.rotation.TransformToParent(localWeaponFrame.rotation);
