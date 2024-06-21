@@ -38,7 +38,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		public GameEntity CurrentState { get; private set; }
 		public int CurrentStateIndex { get; private set; }
 
-		private bool HasState => _statesNames != null && !_statesNames.IsEmpty();
+		public bool HasState => _statesNames != null && !_statesNames.IsEmpty();
 
 		public event Action OnNextState;
 
@@ -50,22 +50,45 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			base.OnInit();
 
+			InitStates();
+
+			_originalState = GetOriginalState();
+			CurrentState = _originalState;
+
+			// Init the children of current state 
+			List<GameEntity> originalChildren = new List<GameEntity>();
+			GameEntity.GetChildrenRecursive(ref originalChildren);
+			IEnumerable<GameEntity> dynamicOriginalChildren = originalChildren.Where((child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic));
+			foreach (GameEntity gameEntity4 in dynamicOriginalChildren)
+			{
+				gameEntity4.SetPhysicsState(false, true);
+				gameEntity4.SetFrameChanged();
+			}
+			GameEntity.SetAnimationSoundActivation(true);
+
+			// At start, disable NavigationMeshIdEnabledOnFinalState
+			SetAbilityOfNavmesh(false, true);
+		}
+
+		private void InitStates()
+		{
 			if (!string.IsNullOrEmpty(States))
 			{
+				// Extract states names
 				_statesNames = States.Replace(" ", string.Empty).Split(new char[] { ',' });
 				bool hasPhysic = false;
-				string[] states = _statesNames;
-				_states = new GameEntity[states.Length];
-				for (int i = 0; i < states.Length; i++)
+				_states = new GameEntity[_statesNames.Length];
+
+				// Iterate over states names and assign GameEntity to _states
+				for (int i = 0; i < _statesNames.Length; i++)
 				{
-					string item = states[i];
-					if (!string.IsNullOrEmpty(item))
+					string stateName = _statesNames[i];
+					if (!string.IsNullOrEmpty(stateName))
 					{
-						GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == item);
+						GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == stateName);
 						if (gameEntity != null)
 						{
 							_states[i] = gameEntity;
-							//gameEntity.AddBodyFlags(BodyFlags.Moveable, true);
 							PhysicsShape bodyShape = gameEntity.GetBodyShape();
 							if (bodyShape != null)
 							{
@@ -81,51 +104,21 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					PhysicsShape.ProcessPreloadQueue();
 				}
 			}
-
-			_originalState = GetOriginalState();
-			CurrentState = _originalState;
-			//_originalState.AddBodyFlags(BodyFlags.Moveable, true);
-
-			List<GameEntity> originalChildren = new List<GameEntity>();
-			GameEntity.GetChildrenRecursive(ref originalChildren);
-			IEnumerable<GameEntity> dynamicOriginalChildren = originalChildren.Where((child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic));
-			foreach (GameEntity gameEntity4 in dynamicOriginalChildren)
-			{
-				gameEntity4.SetPhysicsState(false, true);
-				gameEntity4.SetFrameChanged();
-			}
-			GameEntity.SetAnimationSoundActivation(true);
-
-			// At start, disable NavigationMeshIdEnabledOnFinalState
-			SetAbilityOfNavmesh(false, true);
 		}
 
 		public GameEntity GetOriginalState()
 		{
-			if (_states.ElementAtOrDefault(0) != null)
-			{
-				return _states[0];
-			}
-			else
-			{
-				return GameEntity;
-			}
+			return _states.ElementAtOrDefault(0) != null ? _states[0] : GameEntity;
 		}
 
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
-
-			//_referenceEntity = string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetChildren().FirstOrDefault((x) => x.HasTag(ReferenceEntityTag));
 		}
 
 		protected override void OnEditorVariableChanged(string variableName)
 		{
 			base.OnEditorVariableChanged(variableName);
-			//if (variableName.Equals(ReferenceEntityTag))
-			//{
-			//	_referenceEntity = string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetChildren().SingleOrDefault((x) => x.HasTag(ReferenceEntityTag));
-			//}
 		}
 
 		protected override void OnMissionReset()
@@ -149,14 +142,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				for (i = 0; i < _states.Count(); i = j + 1)
 				{
 					GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == _states[i].ToString());
-					if (gameEntity != null)
-					{
-						Skeleton skeleton = gameEntity.Skeleton;
-						if (skeleton != null)
-						{
-							skeleton.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
-						}
-					}
+					gameEntity?.Skeleton?.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
 					j = i;
 				}
 			}
@@ -328,8 +314,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			bool result = base.OnCheckForProblems();
 
 			string[] statesNames = States.Replace(" ", string.Empty).Split(',');
-			int i;
-			for (i = 0; i < statesNames.Count(); i++)
+			for (int i = 0; i < statesNames.Count(); i++)
 			{
 				if (!string.IsNullOrEmpty(statesNames[i]) && !(GameEntity.GetChildren().FirstOrDefault((x) => x.Name == statesNames[i]) != null))
 				{
@@ -356,8 +341,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public string GetDescriptionText(GameEntity gameEntity = null)
 		{
-			int num;
-			if (int.TryParse(gameEntity.Name.Split(new char[] { '_' }).Last(), out num))
+			if (int.TryParse(gameEntity.Name.Split(new char[] { '_' }).Last(), out int num))
 			{
 				string text = gameEntity.Name;
 				text = text.Remove(text.Count() - num.ToString().Count());
