@@ -39,7 +39,7 @@ namespace Alliance.Server.GameModes.Story
 					//new PollBehavior(),
 					new FormationBehavior(),
 					new ObjectivesBehavior(ScenarioManagerServer.Instance),
-					//new FlagTrackerBehavior(),
+					new FlagTrackerBehavior(),
 					new CapturableZoneBehavior(),
 
 					// Native components

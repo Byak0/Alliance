@@ -193,7 +193,10 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public static EquipmentElement GetBannerItem(BasicCultureObject culture)
 		{
-			return new EquipmentElement(MBObjectManager.Instance.GetObjectTypeList<ItemObject>().First(item => item.IsBannerItem && item.Culture == culture), null, null, false);
+			ItemObject banner = MBObjectManager.Instance.GetObjectTypeList<ItemObject>().FirstOrDefault(item => item.IsBannerItem && item.Culture == culture);
+			// If no banner found for culture, get first banner found
+			banner ??= MBObjectManager.Instance.GetObjectTypeList<ItemObject>().FirstOrDefault(item => item.IsBannerItem);
+			return new EquipmentElement(banner, null, null, false);
 		}
 
 		public virtual void InitPlayerLives(MissionPeer peer)
