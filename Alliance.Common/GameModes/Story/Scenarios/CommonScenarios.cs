@@ -438,5 +438,67 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			return scenarGdCFinal;
 		}
+
+		public static Scenario OrgaDefault(OnActVictoryDelegate onActShowResults, OnActVictoryDelegate onActCompleted)
+		{
+			string scenarioId = nameof(OrgaDefault);
+			Scenario scenarOrgaDefault = new Scenario(
+				id: scenarioId,
+				name: GameTexts.FindText("str_alliance_scenario_name", scenarioId).ToString(),
+				desc: GameTexts.FindText("str_alliance_scenario_description", scenarioId).ToString()
+				);
+
+			// Act 1
+			string actId = "_1";
+			ScenarioGameModeSettings act1Settings = new ScenarioGameModeSettings();
+			act1Settings.SetNativeOption(OptionType.Map, "captain_battlefield_O");
+			act1Settings.SetNativeOption(OptionType.CultureTeam1, "explorator"); // Attacker
+			act1Settings.SetNativeOption(OptionType.CultureTeam2, "autochtone"); // Defender
+			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam1, 20);
+			act1Settings.SetNativeOption(OptionType.NumberOfBotsTeam2, 20);
+			act1Settings.SetNativeOption(OptionType.RoundPreparationTimeLimit, 20);
+			act1Settings.SetNativeOption(OptionType.RoundTimeLimit, 4000);
+			act1Settings.ModOptions.ActivateSAE = true;
+			act1Settings.ModOptions.SAERange = 60;
+			SpawnLogic act1SpawnLogic = new SpawnLogic(
+				defaultCharacters: new string[] { "", "" },
+				spawnTags: new string[] { "defender", "attacker" },
+				storeAgentsInfo: false,
+				usePreviousActAgents: false,
+				maxLives: new int[] { 0, 100 },
+				keepLivesFromPreviousAct: false,
+				locationStrategies: new LocationStrategy[] {
+					LocationStrategy.OnlyTags,
+					LocationStrategy.TagsThenFlags },
+				respawnStrategies: new RespawnStrategy[] {
+					RespawnStrategy.NoRespawn,
+					RespawnStrategy.MaxLivesPerTeam }
+				);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(onActShowResults, onActCompleted);
+			Act act1 = new Act(
+				name: GameTexts.FindText("str_alliance_act_name", scenarioId + actId).ToString(),
+				desc: GameTexts.FindText("str_alliance_act_description", scenarioId + actId).ToString(),
+				loadMap: true,
+				mapId: "captain_battlefield_O",
+				actSettings: act1Settings,
+				spawnLogic: act1SpawnLogic,
+				victoryLogic: act1VictoryLogic
+				);
+			KillAllObjective act1objective1 = new KillAllObjective(
+				BattleSideEnum.Defender,
+				GameTexts.FindText("str_alliance_obj_name", scenarioId + actId + "_1").ToString(),
+				GameTexts.FindText("str_alliance_obj_description", scenarioId + actId + "_1").ToString(),
+				true, true);
+			KillAllObjective act1objective2 = new KillAllObjective(
+				BattleSideEnum.Attacker,
+				GameTexts.FindText("str_alliance_obj_name", scenarioId + actId + "_2").ToString(),
+				GameTexts.FindText("str_alliance_obj_description", scenarioId + actId + "_2").ToString(),
+				true, true);
+			act1.Objectives.Add(act1objective1);
+			act1.Objectives.Add(act1objective2);
+			scenarOrgaDefault.Acts.Add(act1);
+
+			return scenarOrgaDefault;
+		}
 	}
 }

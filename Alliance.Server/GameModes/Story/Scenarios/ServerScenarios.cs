@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Server.Core;
 using TaleWorlds.Core;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.GameModes.Story.Scenarios
 {
@@ -70,6 +71,20 @@ namespace Alliance.Server.GameModes.Story.Scenarios
 					{
 						if (side == BattleSideEnum.Attacker) GameModeStarter.Instance.StartLobby("bfhd_helms_deep_v2", "isengard", "rohan");
 						else GameModeStarter.Instance.StartLobby("bfhd_helms_deep_v2", "rohan", "isengard");
+					});
+		}
+
+		public static Scenario OrgaDefault()
+		{
+			string map = MultiplayerOptions.OptionType.Map.GetStrValue();
+			string attacker = MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
+			string defender = MultiplayerOptions.OptionType.CultureTeam2.GetStrValue();
+			return CommonScenarios.OrgaDefault(
+					onActShowResults: null,
+					onActCompleted: side =>
+					{
+						if (side == BattleSideEnum.Attacker) GameModeStarter.Instance.StartLobby(map, attacker, defender);
+						else GameModeStarter.Instance.StartLobby(map, defender, attacker);
 					});
 		}
 	}

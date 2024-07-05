@@ -142,5 +142,28 @@ namespace Alliance.Client.GameModes.Story.Scenarios
 				},
 				onActCompleted: null);
 		}
+
+		public static Scenario OrgaDefault()
+		{
+			return CommonScenarios.OrgaDefault(
+				onActShowResults: winnerSide =>
+				{
+					if (Mission.Current.PlayerTeam == null)
+					{
+						return;
+					}
+					BattleSideEnum playerSide = Mission.Current.PlayerTeam.Side;
+					ScenarioView sv = Mission.Current.GetMissionBehavior<ScenarioView>();
+					string winnerSuffix = winnerSide == BattleSideEnum.Attacker ? "victory_attacker" : "victory_defender";
+					string loserSuffix = winnerSide == BattleSideEnum.Attacker ? "lose_defender" : "lose_attacker";
+					string suffix = winnerSide == playerSide ? winnerSuffix : loserSuffix;
+					Color color = winnerSide == playerSide ? new Color(0.4f, 0.7f, 0.1f) : new Color(0.7f, 0.1f, 0.1f);
+					sv.ShowResultScreen(
+							GameTexts.FindText($"str_alliance_act_{suffix}", "OrgaDefault_1").ToString(),
+							GameTexts.FindText($"str_alliance_act_{suffix}", "OrgaDefault_1").ToString(),
+							color);
+				},
+				onActCompleted: null);
+		}
 	}
 }
