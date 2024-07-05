@@ -198,6 +198,21 @@
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_5.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_6.wav" weight="1" />
 		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/footsteps" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		</module_sound>
 		<!--Sounds in LOTR/OST-->
 		<module_sound name="event:/al/lotr/ost/flaming_red_hair" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
 		<module_sound name="event:/al/lotr/ost/charge_theoden" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
