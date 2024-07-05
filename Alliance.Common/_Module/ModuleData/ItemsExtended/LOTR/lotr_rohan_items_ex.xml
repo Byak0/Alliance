@@ -5,7 +5,7 @@
 		usable="true"
 		sound_on_use="LOTR/Rohan/Alert/horn_1.wav"
 		sound_volume="0.7"
-		sound_distance="200"
+		sound_distance="300"
 		animation_on_use="act_blow_horn"
 		cooldown="1">
 	</ItemExtended>

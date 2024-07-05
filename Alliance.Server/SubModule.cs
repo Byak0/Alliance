@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.FakeArmy.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -29,94 +30,95 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server
 {
-    public class SubModule : MBSubModuleBase
-    {
-        public const string ModuleId = "Alliance.Server";
-        public const string RolesFilePath = "./alliance_roles.txt";
-        public const string ConfigFilePath = "./alliance_config.txt";
+	public class SubModule : MBSubModuleBase
+	{
+		public const string ModuleId = "Alliance.Server";
+		public const string RolesFilePath = "./alliance_roles.txt";
+		public const string ConfigFilePath = "./alliance_config.txt";
 
-        protected override void OnSubModuleLoad()
-        {
-            // Initialize player roles and access level
-            SecurityInitializer.Init();
+		protected override void OnSubModuleLoad()
+		{
+			// Initialize player roles and access level
+			SecurityInitializer.Init();
 
-            // Initialize mod configuration
-            ConfigInitializer.Init();
+			// Initialize mod configuration
+			ConfigInitializer.Init();
 
-            // Apply Harmony patches
-            DirtyCommonPatcher.Patch();
-            DirtyServerPatcher.Patch();
+			// Apply Harmony patches
+			DirtyCommonPatcher.Patch();
+			DirtyServerPatcher.Patch();
 
-            AddGameModes();
-        }
+			AddGameModes();
+		}
 
-        public override void OnBeforeMissionBehaviorInitialize(Mission mission)
-        {
-            // Initialize animation system and all the game animations
-            AnimationSystem.Instance.Init();
+		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
+		{
+			// Initialize animation system and all the game animations
+			AnimationSystem.Instance.Init();
 
-            SceneList.Initialize();
-            ClassLimiterModel.Instance.Init();
+			SceneList.Initialize();
+			ClassLimiterModel.Instance.Init();
 
-            AddCommonBehaviors(mission);
+			AddCommonBehaviors(mission);
 
-            // Apply additional native fixes through MissionBehaviors
-            DirtyServerPatcher.AddFixBehaviors(mission);
+			// Apply additional native fixes through MissionBehaviors
+			DirtyServerPatcher.AddFixBehaviors(mission);
 
-            Log("Alliance behaviors initialized.", LogLevel.Debug);
-        }
+			Log("Alliance behaviors initialized.", LogLevel.Debug);
+		}
 
-        protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
-        {
-            // TODO : Check which limits still need to be increased after 1.2
-            // Increase native network compression limits to prevent crashes
-            DirtyCommonPatcher.IncreaseNativeLimits();
+		protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
+		{
+			// TODO : Check which limits still need to be increased after 1.2
+			// Increase native network compression limits to prevent crashes
+			DirtyCommonPatcher.IncreaseNativeLimits();
 
-            // Add player connection watcher for auto-kick
-            game.AddGameHandler<PlayerConnectionWatcher>();
-        }
+			// Add player connection watcher for auto-kick
+			game.AddGameHandler<PlayerConnectionWatcher>();
+		}
 
-        public override void OnGameInitializationFinished(Game game)
-        {
-            // Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
-            ExtendedXMLLoader.Init();
-        }
+		public override void OnGameInitializationFinished(Game game)
+		{
+			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
+			ExtendedXMLLoader.Init();
+		}
 
-        protected override void OnGameStart(Game game, IGameStarter gameStarter)
-        {
-            // Add our custom GameModels 
-            gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            //gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
-        }
+		protected override void OnGameStart(Game game, IGameStarter gameStarter)
+		{
+			// Add our custom GameModels 
+			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
+			//gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+		}
 
-        public override void OnGameEnd(Game game)
-        {
-            game.RemoveGameHandler<PlayerConnectionWatcher>();
-        }
+		public override void OnGameEnd(Game game)
+		{
+			game.RemoveGameHandler<PlayerConnectionWatcher>();
+		}
 
-        private void AddGameModes()
-        {
-            Module.CurrentModule.AddMultiplayerGameMode(new LobbyGameMode("Lobby"));
-            Module.CurrentModule.AddMultiplayerGameMode(new BRGameMode("BattleRoyale"));
-            Module.CurrentModule.AddMultiplayerGameMode(new PvCGameMode("PvC"));
-            Module.CurrentModule.AddMultiplayerGameMode(new CvCGameMode("CvC"));
-            Module.CurrentModule.AddMultiplayerGameMode(new ScenarioGameMode("Scenario"));
-            Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
-            Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
-            Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
-        }
+		private void AddGameModes()
+		{
+			Module.CurrentModule.AddMultiplayerGameMode(new LobbyGameMode("Lobby"));
+			Module.CurrentModule.AddMultiplayerGameMode(new BRGameMode("BattleRoyale"));
+			Module.CurrentModule.AddMultiplayerGameMode(new PvCGameMode("PvC"));
+			Module.CurrentModule.AddMultiplayerGameMode(new CvCGameMode("CvC"));
+			Module.CurrentModule.AddMultiplayerGameMode(new ScenarioGameMode("Scenario"));
+			Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
+			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
+			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
+		}
 
-        private void AddCommonBehaviors(Mission mission)
-        {
-            mission.AddMissionBehavior(new SyncRolesBehavior());
-            mission.AddMissionBehavior(new SyncConfigBehavior());
-            mission.AddMissionBehavior(new ServerAutoHandler());
-            mission.AddMissionBehavior(new UsableEntityBehavior());
-            mission.AddMissionBehavior(new TroopSpawnerBehavior());
-            mission.AddMissionBehavior(new ClassLimiterBehavior());
-            mission.AddMissionBehavior(new BattlePowerCalculationLogic());
-            mission.AddMissionBehavior(new ALGlobalAIBehavior());
-            mission.AddMissionBehavior(new DieUnderWaterBehavior());
-        }
-    }
+		private void AddCommonBehaviors(Mission mission)
+		{
+			mission.AddMissionBehavior(new SyncRolesBehavior());
+			mission.AddMissionBehavior(new SyncConfigBehavior());
+			mission.AddMissionBehavior(new ServerAutoHandler());
+			mission.AddMissionBehavior(new UsableEntityBehavior());
+			mission.AddMissionBehavior(new TroopSpawnerBehavior());
+			mission.AddMissionBehavior(new ClassLimiterBehavior());
+			mission.AddMissionBehavior(new BattlePowerCalculationLogic());
+			mission.AddMissionBehavior(new ALGlobalAIBehavior());
+			mission.AddMissionBehavior(new DieUnderWaterBehavior());
+			mission.AddMissionBehavior(new FakeArmyBehavior());
+		}
+	}
 }

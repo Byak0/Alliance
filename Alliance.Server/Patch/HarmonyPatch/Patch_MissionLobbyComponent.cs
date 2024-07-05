@@ -6,71 +6,69 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Patch.HarmonyPatch
 {
+	class Patch_MissionLobbyComponent
+	{
+		private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_MissionLobbyComponent));
 
-    class Patch_MissionLobbyComponent
-    {
-        private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_MissionLobbyComponent));
+		private static bool _patched;
+		public static bool Patch()
+		{
+			try
+			{
+				if (_patched)
+					return false;
+				_patched = true;
+				Harmony.Patch(
+					typeof(MissionLobbyComponent).GetMethod(nameof(MissionLobbyComponent.OnMissionTick),
+						BindingFlags.Instance | BindingFlags.Public),
+					prefix: new HarmonyMethod(typeof(Patch_MissionLobbyComponent).GetMethod(
+						nameof(Prefix_OnMissionTick), BindingFlags.Static | BindingFlags.Public)));
+			}
+			catch (Exception e)
+			{
+				Log($"Alliance - ERROR in {nameof(Patch_MissionLobbyComponent)}", LogLevel.Error);
+				Log(e.ToString(), LogLevel.Error);
+				return false;
+			}
 
-        private static bool _patched;
-        public static bool Patch()
-        {
-            try
-            {
-                if (_patched)
-                    return false;
-                _patched = true;
-                Harmony.Patch(
-                    typeof(MissionLobbyComponent).GetMethod(nameof(MissionLobbyComponent.OnMissionTick),
-                        BindingFlags.Instance | BindingFlags.Public),
-                    prefix: new HarmonyMethod(typeof(Patch_MissionLobbyComponent).GetMethod(
-                        nameof(Prefix_OnMissionTick), BindingFlags.Static | BindingFlags.Public)));
-            }
-            catch (Exception e)
-            {
-                Log($"Alliance - ERROR in {nameof(Patch_MissionLobbyComponent)}", LogLevel.Error);
-                Log(e.ToString(), LogLevel.Error);
-                return false;
-            }
+			return true;
+		}
 
-            return true;
-        }
+		// Prevent server from closing if only one player is connected after warmup
+		public static bool Prefix_OnMissionTick(MissionLobbyComponent __instance, MultiplayerWarmupComponent ____warmupComponent, MultiplayerTimerComponent ____timerComponent, MissionMultiplayerGameModeBase ____gameMode)
+		{
+			if (__instance.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.WaitingFirstPlayers)
+			{
+				bool timerPassed = ____timerComponent.CheckIfTimerPassed();
+				bool isInWarmup = ____warmupComponent?.IsInWarmup ?? false;
+				if (____warmupComponent == null || isInWarmup && timerPassed)
+				{
+					Log($"Alliance - Prefix_OnMissionTick => Forcing MissionLobbyComponent.SetStatePlayingAsServer()", LogLevel.Debug);
 
-        // Prevent server from closing if only one player is connected after warmup
-        public static bool Prefix_OnMissionTick(MissionLobbyComponent __instance, MultiplayerWarmupComponent ____warmupComponent, MultiplayerTimerComponent ____timerComponent, MissionMultiplayerGameModeBase ____gameMode)
-        {
-            if (__instance.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.WaitingFirstPlayers)
-            {
-                bool isServer = GameNetwork.IsServer;
-                bool timerPassed = ____timerComponent.CheckIfTimerPassed();
-                bool isInWarmup = ____warmupComponent?.IsInWarmup ?? false;
-                if (isServer && (____warmupComponent == null || isInWarmup && timerPassed))
-                {
-                    Log($"Alliance - Prefix_OnMissionTick => Forcing MissionLobbyComponent.SetStatePlayingAsServer()", LogLevel.Debug);
+					// Force server playing even if not enough players
+					typeof(MissionLobbyComponent).GetMethod("SetStatePlayingAsServer",
+						BindingFlags.Instance | BindingFlags.NonPublic)?
+						.Invoke(__instance, new object[] { });
 
-                    // Force server playing even if not enough players
-                    typeof(MissionLobbyComponent).GetMethod("SetStatePlayingAsServer",
-                        BindingFlags.Instance | BindingFlags.NonPublic)?
-                        .Invoke(__instance, new object[] { });
-
-                    // Skip original method
-                    return false;
-                }
-            }
-            else if (__instance.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.Playing)
-            {
-                if (GameNetwork.IsServerOrRecorder && !____gameMode.UseRoundController())
-                {
-                    //Log("Vulcain - Prefix_OnMissionTick => Skipping MissionLobbyComponent.SetStateEndingAsServer()", 0, Debug.DebugColor.Yellow);
-                    // Skip original method and prevent server ending
-                    return false;
-                }
-            }
-            // Run original method
-            return true;
-        }
+					// Skip original method
+					return false;
+				}
+			}
+			else if (__instance.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.Playing)
+			{
+				if (GameNetwork.IsServerOrRecorder && !____gameMode.UseRoundController())
+				{
+					//Log("Vulcain - Prefix_OnMissionTick => Skipping MissionLobbyComponent.SetStateEndingAsServer()", 0, Debug.DebugColor.Yellow);
+					// Skip original method and prevent server ending
+					return false;
+				}
+			}
+			// Run original method
+			return true;
+		}
 
 
-        /* Original method 
+		/* Original method 
          * 		
         public override void OnMissionTick(float dt)
 		{
@@ -104,5 +102,5 @@ namespace Alliance.Server.Patch.HarmonyPatch
 				}
 			}
 		}*/
-    }
+	}
 }

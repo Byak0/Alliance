@@ -73,9 +73,9 @@
 	<!-- Uruk Polearms -->
 	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike" culture="Culture.isengard">
 		<Pieces>
-			<Piece id="uruk_blade_3" Type="Blade" scale_factor="90" />
-			<Piece id="uruk_handle_3" Type="Handle" scale_factor="90" />
-			<Piece id="uruk_pommel_1" Type="Pommel" scale_factor="90" />
+			<Piece id="uruk_blade_3" Type="Blade" scale_factor="100" />
+			<Piece id="uruk_handle_3" Type="Handle" scale_factor="80" />
+			<Piece id="uruk_pommel_1" Type="Pommel" scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
 	

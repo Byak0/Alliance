@@ -1,0 +1,9 @@
+<ItemsExtended>
+
+	<ItemExtended
+		id="item.mp_torch"
+		usable="false"
+		prefab="mp_torch_fx">
+	</ItemExtended>
+
+</ItemsExtended>
