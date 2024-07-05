@@ -1,0 +1,601 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MPCharacters>
+	<!-- ************************************************************************* -->
+	<!-- ****************************   ROHAN   ********************************** -->
+	<!-- ************************************************************************* -->
+	<!-- LIGHT INFANTRY - TROOP -->
+	<NPCCharacter id="mp_light_infantry_explo_troop"
+								default_group="Infantry"
+								level="10"
+								name="{=al_sop_explo_light_t}Light Infantry"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="100" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="100" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="100" />
+			<skill id="Crossbow" value="100" />
+			<skill id="Throwing" value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.worn_kite_shield" />
+				<equipment slot="Item2" id="Item.fine_pike_t4" />
+				<equipment slot="Head" id="Item.leather_studdedhelm" />
+				<equipment slot="Body" id="Item.nordic_sloven" />
+				<equipment slot="Leg" id="Item.empire_horseman_boots" />
+				<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.small_heater_shield" />
+				<equipment slot="Body" id="Item.layered_leather_tunic" />
+				<equipment slot="Leg" id="Item.reinforced_suede_boots" />
+				<equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+				<equipment slot="Cape" id="Item.steppe_leather_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.woodland_axe_t3" />
+				<equipment slot="Item1" id="Item.jousting_shield" />
+				<equipment slot="Body" id="Item.padded_leather_shirt" />
+				<equipment slot="Leg" id="Item.wrapped_leather_boots" />
+				<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+				<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT INFANTRY - HERO -->
+	<NPCCharacter id="mp_light_infantry_explo_hero"
+								default_group="Infantry"
+								level="25"
+								voice="earnest"
+								is_female="false"
+								name="{=al_sop_explo_light_h}Light Infantry Leader"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.worn_kite_shield" />
+				<equipment slot="Item2" id="Item.fine_pike_t4" />
+				<equipment slot="Head" id="Item.leather_studdedhelm" />
+				<equipment slot="Body" id="Item.nordic_sloven" />
+				<equipment slot="Leg" id="Item.empire_horseman_boots" />
+				<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="85" />
+	</NPCCharacter>
+	<!-- LIGHT INFANTRY - BANNER BEARER -->
+	<NPCCharacter id="mp_light_infantry_explo_banner_bearer"
+								default_group="Infantry"
+								level="10"
+								name="{=al_sop_explo_light_b}Light Infantry"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="100" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="100" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="100" />
+			<skill id="Crossbow" value="100" />
+			<skill id="Throwing" value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_1_t2" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Body" id="Item.layered_leather_tunic" />
+				<equipment slot="Leg" id="Item.reinforced_suede_boots" />
+				<equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+				<equipment slot="Cape" id="Item.steppe_leather_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.woodland_axe_t3" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Body" id="Item.padded_leather_shirt" />
+				<equipment slot="Leg" id="Item.wrapped_leather_boots" />
+				<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+				<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+
+	<!-- MEDIUM INFANTRY - TROOP -->
+	<NPCCharacter id="mp_mid_infantry_explo_troop"
+								default_group="Infantry"
+								level="15"
+								name="{=al_sop_explo_mid_inf_t}Medium Infantry"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="150" />
+			<skill id="Riding" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="TwoHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Bow" value="150" />
+			<skill id="Crossbow" value="150" />
+			<skill id="Throwing" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.flat_heater_shield" />
+				<equipment slot="Item2" id="Item.empire_polearm_1_t4" />
+				<equipment slot="Head" id="Item.peaked_helmet_over_laced_coif" />
+				<equipment slot="Body" id="Item.khuzait_leather_stitched" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.wide_heater_shield" />
+				<equipment slot="Head" id="Item.segmented_skullcap_over_laced_coif" />
+				<equipment slot="Body" id="Item.banded_leather_over_mail" />
+				<equipment slot="Leg" id="Item.empire_horseman_boots" />
+				<equipment slot="Gloves" id="Item.woven_leather_bracers" />
+				<equipment slot="Cape" id="Item.desert_leather_shoulderpad" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.small_flat_heater_shield" />
+				<equipment slot="Item2" id="Item.aserai_2haxe_3_t5" />
+				<equipment slot="Head" id="Item.nasal_cervelliere_over_laced_coif" />
+				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.chainmail_shoulder_armor" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="35" />
+	</NPCCharacter>
+	<!-- MEDIUM INFANTRY - HERO -->
+	<NPCCharacter id="mp_mid_infantry_explo_hero"
+								default_group="Infantry"
+								level="27"
+								voice="earnest"
+								is_female="false"
+								name="{=al_sop_explo_mid_inf_h}Medium Infantry Leader"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.small_flat_heater_shield" />
+				<equipment slot="Item2" id="Item.aserai_2haxe_3_t5" />
+				<equipment slot="Head" id="Item.nasal_cervelliere_over_laced_coif" />
+				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.chainmail_shoulder_armor" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="85" />
+	</NPCCharacter>
+	<!-- MEDIUM INFANTRY - BANNER BEARER -->
+	<NPCCharacter id="mp_mid_infantry_explo_banner_bearer"
+								default_group="Infantry"
+								level="15"
+								name="{=al_sop_explo_mid_inf_b}Lancier"
+								occupation="Soldier"
+								culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="150" />
+			<skill id="Riding" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="TwoHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Bow" value="150" />
+			<skill id="Crossbow" value="150" />
+			<skill id="Throwing" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Item2" id="Item.empire_polearm_1_t4" />
+				<equipment slot="Head" id="Item.peaked_helmet_over_laced_coif" />
+				<equipment slot="Body" id="Item.khuzait_leather_stitched" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Head" id="Item.segmented_skullcap_over_laced_coif" />
+				<equipment slot="Body" id="Item.banded_leather_over_mail" />
+				<equipment slot="Leg" id="Item.empire_horseman_boots" />
+				<equipment slot="Gloves" id="Item.woven_leather_bracers" />
+				<equipment slot="Cape" id="Item.desert_leather_shoulderpad" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Item2" id="Item.aserai_2haxe_3_t5" />
+				<equipment slot="Head" id="Item.nasal_cervelliere_over_laced_coif" />
+				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.chainmail_shoulder_armor" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="35" />
+	</NPCCharacter>
+
+	<!-- HEAVY INFANTRY - TROOP -->
+	<NPCCharacter id="mp_heavy_inf_explo_troop"
+									default_group="Infantry"
+									level="20"
+									name="{=al_sop_explo_heavy_inf_t}Heavy Infantry"
+									occupation="Soldier"
+									culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="200" />
+			<skill id="Riding" value="200" />
+			<skill id="OneHanded" value="200" />
+			<skill id="TwoHanded" value="200" />
+			<skill id="Polearm" value="200" />
+			<skill id="Bow" value="200" />
+			<skill id="Crossbow" value="200" />
+			<skill id="Throwing" value="200" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
+				<equipment slot="Item1" id="Item.steppe_guardian_shield" />
+				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
+				<equipment slot="Body" id="Item.nordic_sloven_over_mail" />
+				<equipment slot="Leg" id="Item.lamellar_plate_boots" />
+				<equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+				<equipment slot="Cape" id="Item.noble_pauldron" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
+				<equipment slot="Item1" id="Item.tall_heater_shield" />
+				<equipment slot="Item2" id="Item.vlandia_lance_2_t4" />
+				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
+				<equipment slot="Body" id="Item.imperial_mail_vest" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.imperial_lamellar_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_axe_5_t5" />
+				<equipment slot="Item1" id="Item.tall_heater_shield" />
+				<equipment slot="Item2" id="Item.sturgia_2haxe_2_t5" />
+				<equipment slot="Head" id="Item.segmented_skullcap_over_mail_coif" />
+				<equipment slot="Body" id="Item.plated_leather_coat" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.noble_pauldron_with_scarf" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+	<!-- HEAVY INFANTRY - HERO -->
+	<NPCCharacter id="mp_heavy_inf_explo_hero"
+									default_group="Infantry"
+									level="20"
+									voice="earnest"
+									is_female="false"
+									name="{=al_sop_explo_heavy_inf_h}Heavy Infantry Leader"
+									occupation="Soldier"
+									culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_axe_5_t5" />
+				<equipment slot="Item1" id="Item.tall_heater_shield" />
+				<equipment slot="Item2" id="Item.sturgia_2haxe_2_t5" />
+				<equipment slot="Head" id="Item.segmented_skullcap_over_mail_coif" />
+				<equipment slot="Body" id="Item.plated_leather_coat" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.noble_pauldron_with_scarf" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="85" />
+	</NPCCharacter>
+	<!-- HEAVY INFANTRY - BANNER BEARER -->
+	<NPCCharacter id="mp_heavy_inf_explo_banner_bearer"
+									default_group="Infantry"
+									level="10"
+									name="{=al_sop_explo_heavy_inf_b}Heavy Infantry"
+									occupation="Soldier"
+									culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="200" />
+			<skill id="Riding" value="200" />
+			<skill id="OneHanded" value="200" />
+			<skill id="TwoHanded" value="200" />
+			<skill id="Polearm" value="200" />
+			<skill id="Bow" value="200" />
+			<skill id="Crossbow" value="200" />
+			<skill id="Throwing" value="200" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
+				<equipment slot="Body" id="Item.nordic_sloven_over_mail" />
+				<equipment slot="Leg" id="Item.lamellar_plate_boots" />
+				<equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+				<equipment slot="Cape" id="Item.noble_pauldron" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
+				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="Item2" id="Item.vlandia_lance_2_t4" />
+				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
+				<equipment slot="Body" id="Item.imperial_mail_vest" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.imperial_lamellar_shoulders" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+
+	<!-- LIGHT RANGED - TROOP -->
+	<NPCCharacter id="mp_light_ranged_explo_troop"
+									default_group="Ranged"
+									level="10"
+									name="{=al_sop_explo_l_ranged_t}Light Crossbow"
+									occupation="Soldier"
+									culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="100" />
+			<skill id="Riding" value="100" />
+			<skill id="OneHanded" value="100" />
+			<skill id="TwoHanded" value="100" />
+			<skill id="Polearm" value="100" />
+			<skill id="Bow" value="150" />
+			<skill id="Crossbow" value="100" />
+			<skill id="Throwing" value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.studded_adarga" />
+				<equipment slot="Item2" id="Item.crossbow_a_blunt" />
+				<equipment slot="Item3" id="Item.bolt_e" />
+				<equipment slot="Head" id="Item.arming_coif" />
+				<equipment slot="Body" id="Item.sleeveless_padded_short_coat" />
+				<equipment slot="Leg" id="Item.reinforced_suede_boots" />
+				<equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.crossbow_a_blunt" />
+				<equipment slot="Item2" id="Item.bolt_e" />
+				<equipment slot="Item3" id="Item.bolt_e" />
+				<equipment slot="Head" id="Item.leather_studdedhelm_over_thinhide" />
+				<equipment slot="Body" id="Item.layered_leather_tunic" />
+				<equipment slot="Leg" id="Item.leather_boots" />
+				<equipment slot="Gloves" id="Item.woven_leather_bracers" />
+				<equipment slot="Cape" id="Item.a_khuzait_leather_shoulder_b_b" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.crossbow_a_blunt" />
+				<equipment slot="Item2" id="Item.bolt_e" />
+				<equipment slot="Item3" id="Item.bolt_e" />
+				<equipment slot="Head" id="Item.laced_cloth_coif" />
+				<equipment slot="Body" id="Item.woven_leather_vest" />
+				<equipment slot="Leg" id="Item.wrapped_leather_boots" />
+				<equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+				<equipment slot="Cape" id="Item.battania_woodland_cloak" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT RANGED - HERO -->
+	<NPCCharacter id="mp_light_ranged_explo_hero"
+		default_group="Ranged"
+		level="25"
+		voice="earnest"
+		is_female="false"
+		name="{=al_sop_explo_l_ranged_h}Light Crossbow Leader"
+		occupation="Soldier"
+		culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.studded_adarga" />
+				<equipment slot="Item2" id="Item.crossbow_a_blunt" />
+				<equipment slot="Item3" id="Item.bolt_e" />
+				<equipment slot="Head" id="Item.arming_coif" />
+				<equipment slot="Body" id="Item.sleeveless_padded_short_coat" />
+				<equipment slot="Leg" id="Item.reinforced_suede_boots" />
+				<equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="65" />
+	</NPCCharacter>
+
+	<!-- HEAVY RANGED - TROOP -->
+	<NPCCharacter id="mp_heavy_ranged_explo_troop"
+		default_group="Ranged"
+		level="15"
+		name="{=al_sop_explo_h_ranged_t}Heavy Crossbow"
+		occupation="Soldier"
+		culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="200" />
+			<skill id="Riding" value="200" />
+			<skill id="OneHanded" value="200" />
+			<skill id="TwoHanded" value="200" />
+			<skill id="Polearm" value="200" />
+			<skill id="Bow" value="200" />
+			<skill id="Crossbow" value="200" />
+			<skill id="Throwing" value="200" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.crossbow_g" />
+				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item3" id="Item.bolt_c" />
+				<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
+				<equipment slot="Body" id="Item.leather_scale_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.steppe_guardian_shield" />
+				<equipment slot="Item2" id="Item.crossbow_g" />
+				<equipment slot="Item3" id="Item.bolt_c" />
+				<equipment slot="Head" id="Item.cervelliere_over_padded_cap" />
+				<equipment slot="Body" id="Item.gambeson_b" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.padded_leather_shoulders" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="40" />
+	</NPCCharacter>
+	<!-- HEAVY RANGED - HERO -->
+	<NPCCharacter id="mp_heavy_ranged_explo_hero"
+		default_group="Ranged"
+		level="26"
+		voice="earnest"
+		is_female="false"
+		name="{=al_sop_explo_h_ranged_h}Heavy Crossbow Leader"
+		occupation="Soldier"
+		culture="Culture.explorator">
+		<face>
+			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.crossbow_g" />
+				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item3" id="Item.bolt_c" />
+				<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
+				<equipment slot="Body" id="Item.leather_scale_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.hood" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="75" />
+	</NPCCharacter>
+
+</MPCharacters>

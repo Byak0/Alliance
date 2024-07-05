@@ -1,0 +1,15 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_explo_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_explo_hero" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_explo_banner_bearer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_explo_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_explo_hero" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_explo_banner_bearer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_explo_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_explo_hero" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_explo_banner_bearer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_explo_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_explo_hero" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_explo_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_explo_hero" troop_limit="100" player_select_limit="100" />
+</CharactersExtended>

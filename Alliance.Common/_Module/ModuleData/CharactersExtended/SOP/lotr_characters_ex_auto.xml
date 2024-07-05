@@ -1,0 +1,6 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_auto_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_auto_hero" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_auto_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_auto_hero" troop_limit="100" player_select_limit="100" />
+</CharactersExtended>

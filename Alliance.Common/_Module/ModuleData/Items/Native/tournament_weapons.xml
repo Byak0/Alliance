@@ -1,0 +1,831 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<!-- #Blunt Tournament Weapons -->
+	<CraftedItem
+		id="aserai_sword_1_t2_blunt"
+		name="{=cG1g4T3t}Sparring Flyssa"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.aserai"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="aserai_blade_4_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="aserai_guard_1"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="aserai_grip_1"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="aserai_pommel_1"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<Item
+		id="crossbow_a_blunt"
+		name="{=4Ea6pr5p}Sparring Crossbow"
+		body_name="bo_cross_bow_heavy"
+		mesh="crossbow_a"
+		culture="Culture.vlandia"
+		weight="1.0"
+		appearance="0.8"
+		difficulty="0"
+		Type="Crossbow"
+		is_merchandise="false"
+		AmmoOffset="0.0, 0.02131, 0.24650"
+		item_holsters="crossbow_back:bow_hip:mace_right_hip:bow_hip_2"
+		holster_position_shift="0.02,0,-0.4">
+		<ItemComponent>
+			<Weapon
+				weapon_class="Crossbow"
+				ammo_class="Bolt"
+				missile_speed="77"
+				accuracy="95"
+				thrust_damage="75"
+				thrust_speed="92"
+				speed_rating="62"
+				weapon_length="95"
+				ammo_limit="1"
+				thrust_damage_type="Pierce"
+				item_usage="crossbow_fast"
+				reload_phase_count="2"
+				physics_material="wood_weapon"
+				center_of_mass="0,0,0.4">
+				<WeaponFlags
+					RangedWeapon="true"
+					HasString="true"
+					NotUsableWithOneHand="true"
+					TwoHandIdleOnMount="true" />
+			</Weapon>
+		</ItemComponent>
+	</Item>
+	<CraftedItem
+		id="aserai_sword_2_t2_blunt"
+		name="{=Kba6rxWK}Sparring Scimitar"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.aserai"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="aserai_blade_3_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="aserai_guard_6"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="aserai_grip_5"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="aserai_pommel_1"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="seax_blunt"
+		name="{=YmoddWwb}Sparring Seax"
+		crafting_template="Dagger"
+		is_merchandise="false"
+		culture="Culture.sturgia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="dagger_blade_3_blunt"
+				Type="Blade"
+				scale_factor="93" />
+			<Piece
+				id="sturgian_dagger_guard_8"
+				Type="Guard"
+				scale_factor="90" />
+			<Piece
+				id="aserai_grip_3"
+				Type="Handle"
+				scale_factor="110" />
+			<Piece
+				id="khuzait_pommel_2"
+				Type="Pommel" />
+		</Pieces>
+		<!-- Length: 61 Weight: 0.52 SwingSpeed: 135 ThrustSpeed: 112 SwingDamage: 4B, 18S ThrustDamage: 11B, 33S -->
+	</CraftedItem>
+	<CraftedItem
+		id="eastern_spear_1_t2_blunt"
+		name="{=BACi0kaM}Sparring Jagged Spear"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.aserai"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_35_blunt"
+				Type="Blade"
+				scale_factor="95" />
+			<Piece
+				id="spear_handle_3"
+				Type="Handle"
+				scale_factor="95" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="khuzait_polearm_1_t4_blunt"
+		name="{=YQ9ybgmj}Sparring Glaive"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.khuzait">
+		<Pieces>
+			<Piece
+				id="spear_blade_19_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_15"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="desert_throwing_knife_blunt"
+		name="{=es77bJBa}Sparring Throwing Dagger"
+		crafting_template="ThrowingKnife"
+		is_merchandise="false"
+		culture="Culture.aserai"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="dagger_blade_13_blunt"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="aserai_dagger_guard_4"
+				Type="Guard" />
+			<Piece
+				id="aserai_grip_8"
+				Type="Handle" />
+			<Piece
+				id="aserai_pommel_3"
+				Type="Pommel" />
+		</Pieces>
+		<!-- Length: 69 Weight: 0.76 SwingSpeed: 113 ThrustSpeed: 108 -->
+	</CraftedItem>
+	<CraftedItem
+		id="eastern_javelin_1_t2_blunt"
+		name="{=B0E6Zfyk}Sparring Javelin"
+		crafting_template="Javelin"
+		is_merchandise="false"
+		culture="Culture.khuzait"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_35_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_9"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="aserai_axe_2_t2_blunt"
+		name="{=8WlRREMh}Sparring Bamboo Handled Axe"
+		crafting_template="OneHandedAxe"
+		is_merchandise="false"
+		culture="Culture.aserai"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="axe_craft_30_head_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="axe_craft_15_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="battania_2haxe_1_t2_blunt"
+		name="{=APO9YcBv}Sparring Two Handed Axe"
+		crafting_template="TwoHandedAxe"
+		is_merchandise="false"
+		culture="Culture.battania"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="axe_craft_14_head_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="axe_craft_30_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="battania_2hsword_1_t2_blunt"
+		name="{=lGHrlYqQ}Sparring Twohander"
+		crafting_template="TwoHandedSword"
+		is_merchandise="false"
+		culture="Culture.battania"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="battania_blade_3_iron_blunt"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="battania_guard_8"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_grip_27"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_pommel_4"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="battania_sword_1_t2_blunt"
+		name="{=D1webCRZ}Sparring Broadsword"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.battania">
+		<Pieces>
+			<Piece
+				id="battania_blade_3_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="battania_guard_7"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="cleaver_grip_3"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="battania_pommel_1"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="empire_sword_1_t2_blunt"
+		name="{=2Igdc86g}Sparing Spatha"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.empire"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="empire_blade_4_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="cleaver_guard_4"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="empire_grip_6"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="empire_pommel_1"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="western_javelin_1_t2_blunt"
+		name="{=tcN9Vyn7}Sparring Blunt Javelin"
+		is_merchandise="false"
+		crafting_template="Javelin"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_15_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_2"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="empire_lance_1_t3_blunt"
+		name="{=XU0b0yiW}Sparring Lance"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.empire"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_23_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_13"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="khuzait_sword_1_t2_blunt"
+		name="{=LpN4YWb2}Sparring Saber"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.khuzait"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="khuzait_blade_7_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="khuzait_guard_4"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="khuzait_grip_7"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="khuzait_pommel_2"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="vlandia_sword_1_t2_blunt"
+		name="{=LLaFEt1m}Sparring Arming Sword"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.vlandia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="vlandian_blade_1_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="cleaver_guard_2"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="vlandian_grip_2"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="vlandian_pommel_1"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="billhook_polearm_t2_blunt"
+		name="{=EbWA5mcO}Sparring Billhook"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.vlandia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_33_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_4"
+				Type="Handle"
+				scale_factor="90" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="vlandia_lance_1_t3_blunt"
+		name="{=XU0b0yiW}Sparring Lance"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.vlandia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_20_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_23"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="sturgia_axe_2_t2_blunt"
+		name="{=5dQdBOTa}Sparring Galloglaich Axe"
+		crafting_template="OneHandedAxe"
+		is_merchandise="false"
+		culture="Culture.sturgia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="axe_craft_20_head_blunt"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="axe_craft_2_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="northern_throwing_axe_1_t1_blunt"
+		name="{=M75Ybg6r}Sparring Throwing Axe"
+		crafting_template="ThrowingAxe"
+		is_merchandise="false"
+		culture="Culture.sturgia">
+		<Pieces>
+			<Piece
+				id="axe_craft_13_head_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="axe_craft_11_handle"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="northern_spear_1_t2_blunt"
+		name="{=HIjSiX4E}Sparring Spear"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.sturgia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_15_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="spear_handle_6"
+				Type="Handle"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="sturgia_sword_1_t2_blunt"
+		name="{=Rwp23MLA}Sparring Blade"
+		crafting_template="OneHandedSword"
+		is_merchandise="false"
+		culture="Culture.sturgia"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="sturgian_blade_1_blunt"
+				Type="Blade"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_guard_1"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_grip_13"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_pommel_7"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<!-- #Tournament Shields -->
+	<Item
+		id="bound_desert_round_sparring_shield"
+		name="{=pdtQybBM}Desert Round Sparring Shield"
+		using_tableau="true"
+		body_name="bo_cap_aserai_shields_c"
+		shield_body_name="bo_aserai_shields_d"
+		recalculate_body="false"
+		mesh="aserai_shields_d"
+		culture="Culture.aserai"
+		weight="7.3"
+		is_merchandise="false"
+		appearance="1"
+		Type="Shield"
+		item_holsters="shield:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="-0.12,-0.15,-0.025">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				physics_material="wood_shield"
+				item_usage="shield"
+				position="0.0, 0.00, 0.00"
+				rotation="0.0,10.0,40.00"
+				weapon_length="60"
+				center_of_mass="-0.0, 0.1, 0.1"
+				hit_points="210"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item
+		id="battania_targe_b_sparring"
+		name="{=hyagO05b}Sparring Targe"
+		using_tableau="true"
+		body_name="bo_cap_battania_targe_b"
+		shield_body_name="bo_battania_targe_b"
+		recalculate_body="false"
+		mesh="battania_targe_b"
+		culture="Culture.battania"
+		weight="2.5"
+		appearance="1.1"
+		Type="Shield"
+		is_merchandise="false"
+		item_holsters="shield_kite:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="0.0,0.0,0">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				physics_material="wood_shield"
+				item_usage="shield"
+				position="0.18, -0.04, 0.00"
+				rotation="-5.90,19.00,38.50"
+				weapon_length="70"
+				center_of_mass="-0.0, 0.12, 0.1"
+				hit_points="260"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item
+		id="old_kite_sparring_shield"
+		name="{=cDetN1Ao}Makeshift Kite Sparring Shield"
+		body_name="bo_cap_kite_shield_a"
+		shield_body_name="bo_kite_shield_a"
+		recalculate_body="false"
+		mesh="kite_shield_a"
+		using_tableau="true"
+		weight="4.2"
+		is_merchandise="false"
+		appearance="0.3"
+		Type="Shield"
+		item_holsters="shield_kite:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="-0.1,0,-0.025">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				item_usage="shield"
+				position="0.0, 0.00, 0.00"
+				rotation="0.0,10.0,40.00"
+				physics_material="wood_shield"
+				weapon_length="170"
+				center_of_mass="0.0,0.05,0.05"
+				hit_points="145"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item
+		id="eastern_wicker_sparring_shield"
+		name="{=89bCqb0Z}Wicker Square Tournament Shield"
+		body_name="bo_cap_shield_khuzait_infantary_a"
+		shield_body_name="bo_shield_khuzait_infantary_a"
+		recalculate_body="false"
+		mesh="shield_khuzait_infantary_a"
+		culture="Culture.khuzait"
+		using_tableau="true"
+		weight="2.7"
+		is_merchandise="false"
+		appearance="1"
+		Type="Shield"
+		item_holsters="shield:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="-0.1,-0.1,0.01">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				physics_material="wood_shield"
+				item_usage="shield"
+				position="0.0, 0.00, 0.00"
+				rotation="0.0,10.0,40.00"
+				weapon_length="90"
+				center_of_mass="-0.0,0.25,0.05"
+				hit_points="220"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item
+		id="northern_round_sparring_shield"
+		name="{=faiiCbbS}Sparring Round Shield"
+		body_name="bo_cap_shield_sturgia_infantary_a"
+		shield_body_name="bo_cap_shield_sturgia_infantary_b"
+		recalculate_body="false"
+		mesh="shield_sturgia_infantary_b"
+		using_tableau="true"
+		weight="3.3"
+		is_merchandise="false"
+		difficulty="0"
+		appearance="1"
+		Type="Shield"
+		item_holsters="shield_round:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="0.0,0,0.01">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="5"
+				thrust_speed="82"
+				thrust_damage="5"
+				thrust_damage_type="Blunt"
+				speed_rating="87"
+				physics_material="wood_shield"
+				item_usage="hand_shield"
+				position="-0.02, 0.0, 0.0"
+				rotation="-15.0,-90.0,-10.0"
+				weapon_length="70"
+				center_of_mass="0.0,0.065,0.05"
+				hit_points="240"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			ForceAttachOffHandPrimaryItemBone="true"
+			HeldInOffHand="true" />
+	</Item>
+	<Item
+		id="western_riders_kite_sparring_shield"
+		name="{=feMEjAIj}Horseman Sparring Kite Shield"
+		body_name="bo_cap_shield_vlandia_cavalary_a"
+		shield_body_name="bo_shield_vlandia_cavalary_a"
+		recalculate_body="false"
+		mesh="shield_vlandia_cavalary_a"
+		using_tableau="true"
+		weight="4.7"
+		is_merchandise="false"
+		appearance="1"
+		Type="Shield"
+		item_holsters="shield_kite:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="-0.1,-0.1,0">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				physics_material="wood_shield"
+				item_usage="shield"
+				position="0.0, 0.00, 0.00"
+				rotation="0.0,10.0,40.00"
+				weapon_length="85"
+				center_of_mass="0.0,0.1,0.05"
+				hit_points="235"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item
+		id="western_kite_sparring_shield"
+		name="{=lW3smDRu}Kite Sparring Shield"
+		body_name="bo_cap_shield_vlandia_infantary_a"
+		shield_body_name="bo_shield_vlandia_infantary_a"
+		recalculate_body="false"
+		mesh="shield_vlandia_infantary_a"
+		using_tableau="true"
+		weight="4.7"
+		is_merchandise="false"
+		appearance="1"
+		Type="Shield"
+		item_holsters="shield_kite:shield_2:shield_3:shield_4"
+		has_lower_holster_priority="true"
+		holster_position_shift="-0.1,0.1,0">
+		<ItemComponent>
+			<Weapon
+				weapon_class="LargeShield"
+				body_armor="1"
+				thrust_speed="82"
+				thrust_damage_type="Blunt"
+				speed_rating="82"
+				physics_material="wood_shield"
+				item_usage="shield"
+				position="0.0, 0.00, 0.00"
+				rotation="0.0,10.0,40.00"
+				weapon_length="110"
+				center_of_mass="-0.070,0.0,0.05"
+				hit_points="265"
+				modifier_group="shield_wood">
+				<WeaponFlags
+					CanBlockRanged="true"
+					HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			WoodenParry="true"
+			HeldInOffHand="true"
+			ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<!-- #Tournament Shields END -->
+</Items>
