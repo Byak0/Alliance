@@ -34,7 +34,7 @@ namespace Alliance.Server.Core.Utils
 
             if (attacker != null)
             {
-                //Communication des dégats aux client afin d'afficher le PersonalKillFeed
+                //Communicate damage to client to display PersonalKillFeed
                 GameNetwork.BeginModuleEventAsServer(attacker.MissionPeer.GetNetworkPeer());
                 GameNetwork.WriteMessage(new SyncPersonalKillFeedNotification(attacker, victim, false, false, false, victim.Health <= damage, false, false, damage));
                 GameNetwork.EndModuleEventAsServer();
@@ -55,12 +55,6 @@ namespace Alliance.Server.Core.Utils
             blow.Direction = blow.SwingDirection;
             blow.DamageCalculated = true;
             sbyte mainHandItemBoneIndex = attacker.Monster.MainHandItemBoneIndex;
-
-            //if (victim.Health <= damage)
-            //{
-            //    victim.Die(blow, Agent.KillInfo.Invalid);
-            //    return;
-            //}
 
             AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(
                 false,

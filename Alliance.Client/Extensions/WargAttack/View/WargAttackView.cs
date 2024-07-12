@@ -10,7 +10,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
     [DefaultView]
     public class WargAttackView : MissionView
     {
-        private float cooldownDuration = 1.0f; // Durée du cooldown en secondes entre deux attaques
+        private float cooldownDuration = 10.0f; // Durée du cooldown en secondes entre deux attaques
         private DateTime lastAttackTime = DateTime.MinValue; // Initialise le dernier moment où l'attaque a été utilisée à une valeur minimale
 
 

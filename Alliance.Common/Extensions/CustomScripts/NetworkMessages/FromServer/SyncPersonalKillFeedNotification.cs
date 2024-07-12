@@ -17,6 +17,18 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         public bool IsHeadshot { get; set; }
         public int HealthDifference { get; set; }
 
+        /// <summary>
+        /// Retrieve damage applied to communicate it to Client (special cases like Warg Attack)
+        /// </summary>
+        /// <param name="casterAgent"></param>
+        /// <param name="targetAgent"></param>
+        /// <param name="isFriendlyFireDamage"></param>
+        /// <param name="isFriendlyFireKill"></param>
+        /// <param name="isTargetMount"></param>
+        /// <param name="isFatal"></param>
+        /// <param name="isHeal"></param>
+        /// <param name="isHeadshot"></param>
+        /// <param name="healthDifference"></param>
         public SyncPersonalKillFeedNotification(Agent casterAgent, Agent targetAgent, bool isFriendlyFireDamage, bool isFriendlyFireKill, bool isTargetMount, bool isFatal, bool isHeal, bool isHeadshot, int healthDifference)
         {
             CasterAgent = casterAgent;
