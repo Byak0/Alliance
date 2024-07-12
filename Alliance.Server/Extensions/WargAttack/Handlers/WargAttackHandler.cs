@@ -92,8 +92,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                     //Log($"Angle =  {angleInDegrees}", LogLevel.Debug);
                     //Common.Utilities.Logger.SendMessageToAll($"Angle =  {angleInDegrees}");                    
 
-                    //Devant = -180 ; Gauche = -90; Droite = 90; Derriere = 0
-                    //Ici degat appliqué uniquement si ennemi se situe dans un angle de 45 Degree de chaque côté par rapport au centre de la direction du "Mount"
+                    //Devant = -180 ; Gauche = -90; Droite = 90; Derriere = 0                    
                     string position = string.Empty;
                     if (angleInDegrees < -155f && angleInDegrees > -180f && diffHauteur < 2f)
                     {
@@ -142,7 +141,6 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             }
             try
             {
-                // Modifie health directement si les degats ne tuent pas.
                 if (agent.State == AgentState.Active || agent.State == AgentState.Routed)
                 {
                     if (agent.IsFadingOut())

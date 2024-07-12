@@ -22,6 +22,12 @@
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Reference Include="TaleWorlds.MountAndBlade.ViewModelCollection">
+	    <HintPath>H:\Jeux\Jeux Steam\steamapps\common\Mount &amp; Blade II Bannerlord\bin\Win64_Shipping_wEditor\TaleWorlds.MountAndBlade.ViewModelCollection.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
 	<Target Name="RemoveModulePackageDir" AfterTargets="BeforeBuild">
 		<!-- Clean folders before build -->
 		<Exec Command="rmdir &quot;$(ProjectDir)\obj\$(ModuleName)\&quot; /s /q" />
