@@ -213,6 +213,61 @@
 			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
 		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/footsteps_rock" sound_category="mission_voice" min_pitch_multiplier="1" max_pitch_multiplier="1.2">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/footstep_grass" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="1.2" path="LOTR/Isengard/Voice/Warg/footstep_grass_1.wav" />
+		<module_sound name="event:/al/lotr/isengard/voice/warg/footstep_snow" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="0.9">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/footstep_water" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_1.wav" weight="0.1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/run_dirts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_5.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/run_grasss" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/run_rocks" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_6.wav" weight="0.1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/run_snows" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="event:/al/lotr/isengard/voice/warg/run_waters" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_3.wav" weight="1" />
+		</module_sound>
 		<!--Sounds in LOTR/OST-->
 		<module_sound name="event:/al/lotr/ost/flaming_red_hair" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
 		<module_sound name="event:/al/lotr/ost/charge_theoden" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
