@@ -161,5 +161,18 @@
 			<Piece id="orc_rider_spear_grip_1" Type="Handle" scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
-	
+
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_gladius"
+				 name="Orc Rider Gladius"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_gladius_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_gladius_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_gladius_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_gladius_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
 </Items>
