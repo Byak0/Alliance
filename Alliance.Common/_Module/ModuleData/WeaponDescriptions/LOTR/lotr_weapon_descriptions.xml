@@ -17,6 +17,8 @@
 			<AvailablePiece id="orc_rider_shortsword_guard_1" />
 			<AvailablePiece id="orc_rider_shortsword_grip_1" />
 			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
+			<AvailablePiece id="orc_rider_knife_blade_1" />
+			<AvailablePiece id="orc_rider_knife_grip_1" />
 		</AvailablePieces>
 	</WeaponDescription>
 	
@@ -186,6 +188,10 @@
 			<AvailablePiece id="orc_rider_gladius_guard_1"/>
 			<AvailablePiece id="orc_rider_gladius_grip_1"/>
 			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
+			<AvailablePiece id="orc_rider_sickle_blade_1"/>
+			<AvailablePiece id="orc_rider_sickle_guard_1"/>
+			<AvailablePiece id="orc_rider_sickle_grip_1"/>
+			<AvailablePiece id="orc_rider_sickle_pommel_1"/>
 		</AvailablePieces>
 	</WeaponDescription>
 
