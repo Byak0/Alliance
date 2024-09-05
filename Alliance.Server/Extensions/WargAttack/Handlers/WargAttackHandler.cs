@@ -29,21 +29,21 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                 return false;
             }
 
-            Agent userAgent = peer.ControlledAgent.MountAgent;
+            Agent mountAgent = peer.ControlledAgent.MountAgent;
             int waitTime = 800;//1000 = 1s. Temps d'attente entre début animation en mouvement et le dégat
 
-            //On détermine si on joue l'animation attaque en mouvement(avec un cooldown l'exec du degat) ou attaque statique en se basant sur la velocité
-            if (peer.ControlledAgent.MountAgent.MovementVelocity.Y >= 4)
+            //On détermine si on joue l'animation attaque en mouvement(avec un cooldown à l'exec du degat) ou attaque statique en se basant sur la velocité
+            if (mountAgent.MovementVelocity.Y >= 4)
             {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_running");
-                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
+                AnimationSystem.Instance.PlayAnimation(mountAgent, animation, true);
 
                 wargAttack(peer, waitTime);
             }
             else
             {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
-                AnimationSystem.Instance.PlayAnimation(userAgent, animation, true);
+                AnimationSystem.Instance.PlayAnimation(mountAgent, animation, true);
 
                 wargAttack(peer, 0);
             }
