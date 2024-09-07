@@ -1,10 +1,9 @@
-﻿using Alliance.Client.GameModes.Story.Scenarios;
-using Alliance.Common.Extensions;
+﻿using Alliance.Common.Extensions;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using System;
-using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -42,8 +41,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			try
 			{
-				MethodInfo scenarioMethod = typeof(ClientScenarios).GetMethod(scenarioId);
-				return scenarioMethod?.Invoke(null, null) as Scenario;
+				return ScenarioManager.Instance.AvailableScenario.Find(scenario => scenario.Id == scenarioId);
 			}
 			catch (Exception ex)
 			{

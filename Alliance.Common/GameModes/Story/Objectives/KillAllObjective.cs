@@ -1,17 +1,20 @@
-﻿using TaleWorlds.Core;
+﻿using Alliance.Common.GameModes.Story.Models;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Common.GameModes.Story.Models.Objectives
+namespace Alliance.Common.GameModes.Story.Objectives
 {
 	public class KillAllObjective : ObjectiveBase
 	{
-		public int EnemiesLeft { get; set; }
+		private int _enemiesLeft;
 
-		public KillAllObjective(BattleSideEnum side, string name, string desc, bool instantWin, bool requiredForWin) :
+		public KillAllObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin) :
 			base(side, name, desc, instantWin, requiredForWin)
 		{
-			EnemiesLeft = -1;
+			_enemiesLeft = -1;
 		}
+
+		public KillAllObjective() { }
 
 		public override void RegisterForUpdate()
 		{
@@ -23,7 +26,7 @@ namespace Alliance.Common.GameModes.Story.Models.Objectives
 
 		public void UpdateEnemiesLeft(int enemiesLeft)
 		{
-			EnemiesLeft = enemiesLeft;
+			_enemiesLeft = enemiesLeft;
 		}
 
 		public override bool CheckObjective()
@@ -32,13 +35,13 @@ namespace Alliance.Common.GameModes.Story.Models.Objectives
 
 			if (Side == BattleSideEnum.Defender)
 			{
-				EnemiesLeft = Mission.Current.AttackerTeam.ActiveAgents.Count;
+				_enemiesLeft = Mission.Current.AttackerTeam.ActiveAgents.Count;
 			}
 			else
 			{
-				EnemiesLeft = Mission.Current.DefenderTeam.ActiveAgents.Count;
+				_enemiesLeft = Mission.Current.DefenderTeam.ActiveAgents.Count;
 			}
-			if (EnemiesLeft == 0) return true;
+			if (_enemiesLeft == 0) return true;
 			return false;
 		}
 
@@ -49,7 +52,7 @@ namespace Alliance.Common.GameModes.Story.Models.Objectives
 
 		public override string GetProgressAsString()
 		{
-			return EnemiesLeft != -1 ? EnemiesLeft + " enemies left." : "";
+			return _enemiesLeft != -1 ? _enemiesLeft + " enemies left." : "";
 		}
 	}
 }

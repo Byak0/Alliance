@@ -1,5 +1,6 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Core.KeyBinder;
+using Alliance.Client.Extensions.FakeArmy.Behaviors;
 using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
@@ -9,11 +10,11 @@ using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
+using Alliance.Client.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.FakeArmy.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -32,6 +33,10 @@ namespace Alliance.Client
 		{
 			// Register and initialize Key Binder
 			KeyBinder.Initialize();
+
+			// Init for Scenario
+			Client_ActionFactory.Initialize();
+			ScenarioPlayer.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
@@ -72,7 +77,7 @@ namespace Alliance.Client
 		{
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			//gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		private void AddGameModes()

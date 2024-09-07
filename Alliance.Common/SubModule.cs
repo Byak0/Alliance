@@ -1,28 +1,30 @@
-﻿using Alliance.Common.GameModels;
+﻿using Alliance.Common.GameModes.Story.Scenarios;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common
 {
-    public class SubModule : MBSubModuleBase
-    {
-        public const string ModuleId = "Alliance.Common";
+	public class SubModule : MBSubModuleBase
+	{
+		public const string ModuleId = "Alliance.Common";
 
-        protected override void OnSubModuleLoad()
-        {
-            Log("Alliance.Common initialized", LogLevel.Debug);
-        }
+		protected override void OnSubModuleLoad()
+		{
+			Log("Alliance.Common initialized", LogLevel.Debug);
+			ScenarioSerializer.SerializeScenarioToXML(ExampleScenarios.GdCFinal());
+			ScenarioSerializer.SerializeScenarioToXML(ExampleScenarios.BFHD());
+			ScenarioSerializer.SerializeScenarioToXML(ExampleScenarios.OrgaDefault());
+			ScenarioSerializer.SerializeScenarioToXML(ExampleScenarios.GP());
+		}
 
-        protected override void OnBeforeInitialModuleScreenSetAsRoot()
-        {
-        }
+		protected override void OnBeforeInitialModuleScreenSetAsRoot()
+		{
+		}
 
-        // TODO => Find if GameModels can be moved to their own extension
-        protected override void OnGameStart(Game game, IGameStarter gameStarter)
-        {
-            gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-            gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
-        }
-    }
+		public override void OnGameInitializationFinished(Game game)
+		{
+		}
+	}
 }

@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.FakeArmy.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -14,6 +13,7 @@ using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.DieUnderWater.Behaviors;
+using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
@@ -23,6 +23,7 @@ using Alliance.Server.GameModes.Lobby;
 using Alliance.Server.GameModes.PvC;
 using Alliance.Server.GameModes.SiegeX;
 using Alliance.Server.GameModes.Story;
+using Alliance.Server.GameModes.Story.Actions;
 using Alliance.Server.Patch;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -40,6 +41,10 @@ namespace Alliance.Server
 		{
 			// Initialize player roles and access level
 			SecurityInitializer.Init();
+
+			// Init for Scenario
+			Server_ActionFactory.Initialize();
+			ScenarioManagerServer.Initialize();
 
 			// Initialize mod configuration
 			ConfigInitializer.Init();
@@ -87,7 +92,7 @@ namespace Alliance.Server
 		{
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			//gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		public override void OnGameEnd(Game game)

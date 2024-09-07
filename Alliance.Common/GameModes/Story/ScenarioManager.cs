@@ -1,17 +1,31 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Models.Objectives;
+using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using TaleWorlds.Core;
+using TaleWorlds.ModuleManager;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story
 {
 	/// <summary>
-	/// Abstract base class for managing a Scenario and Act, including its current state and objectives.
+	/// Base class for managing a Scenario and Act, including its current state and objectives.
 	/// </summary>
-	public abstract class ScenarioManager
+	public class ScenarioManager
 	{
-		public delegate void OnActEndDelegate(BattleSideEnum side, string text);
+		private static ScenarioManager _instance;
+		public static ScenarioManager Instance
+		{
+			get
+			{
+				if (_instance == null)
+					throw new InvalidOperationException("ScenarioManager has not been initialized.");
+				return _instance;
+			}
+			set => _instance = value;
+		}
 
 		public event Action OnStartScenario;
 		public event Action OnStopScenario;
@@ -22,13 +36,16 @@ namespace Alliance.Common.GameModes.Story
 		public event Action OnActStateDisplayResults;
 		public event Action OnActStateCompleted;
 
+		public List<Scenario> AvailableScenario { get; protected set; }
+
 		// Current scenario, act, act state and winner
 		public Scenario CurrentScenario { get; protected set; }
 		public Act CurrentAct { get; protected set; }
+		public int CurrentActIndex => CurrentScenario.Acts.IndexOf(CurrentAct);
 		public ActState ActState { get; protected set; }
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
-		public abstract void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid);
+		public virtual void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid) { }
 
 		/// <summary>
 		/// Initializes and starts a new scenario with the specified act and state.
@@ -75,7 +92,7 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					CurrentAct.VictoryLogic.HandleActCompleted(CurrentWinner);
+					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
 					OnActStateCompleted?.Invoke();
 					break;
 			}
@@ -87,7 +104,7 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void SetWinner(BattleSideEnum winner)
 		{
 			CurrentWinner = winner;
-			CurrentAct.VictoryLogic.HandleResults(winner);
+			CurrentAct.VictoryLogic.OnDisplayResults(winner);
 		}
 
 		/// <summary>
@@ -170,6 +187,12 @@ namespace Alliance.Common.GameModes.Story
 			ConsoleColor logColor = objectiveCompleted ? ConsoleColor.Green : ConsoleColor.Cyan;
 
 			Log(logMessage, LogLevel.Debug);
+		}
+
+		public void RefreshAvailableScenarios()
+		{
+			AvailableScenario = new List<Scenario>();
+			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath("Alliance"), "Scenarios")));
 		}
 	}
 }
