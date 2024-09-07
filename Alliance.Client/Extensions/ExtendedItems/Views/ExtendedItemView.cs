@@ -13,7 +13,7 @@ using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Core.ExtendedXML.Extension.ExtendedXMLExtension;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Client.Extensions.UsableItem.Views
+namespace Alliance.Client.Extensions.ExtendedItems.Views
 {
 	/// <summary>
 	/// Interact with extended items.

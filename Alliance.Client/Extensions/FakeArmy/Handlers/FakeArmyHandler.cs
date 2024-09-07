@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Extensions;
-using Alliance.Common.Extensions.FakeArmy.Behaviors;
+﻿using Alliance.Client.Extensions.FakeArmy.Behaviors;
+using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromServer;
 using Alliance.Common.Utilities;
 using TaleWorlds.MountAndBlade;

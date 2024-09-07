@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.Audio.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromClient;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromClient;
 using System.Collections.Generic;

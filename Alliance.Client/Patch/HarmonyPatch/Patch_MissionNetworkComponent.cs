@@ -1,4 +1,4 @@
-﻿using Alliance.Client.Extensions.UsableItem.Views;
+﻿using Alliance.Client.Extensions.ExtendedItems.Views;
 using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Core.Configuration.Models;
 using HarmonyLib;
