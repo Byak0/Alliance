@@ -14,9 +14,9 @@ namespace Alliance.Common.GameModes.Battle
 		public override void SetDefaultNativeOptions()
 		{
 			base.SetDefaultNativeOptions();
-			SetNativeOption(OptionType.NumberOfBotsPerFormation, 0);
-			SetNativeOption(OptionType.UnlimitedGold, true);
-			SetNativeOption(OptionType.RoundTotal, 9);
+			TWOptions[OptionType.NumberOfBotsPerFormation] = 0;
+			TWOptions[OptionType.UnlimitedGold] = true;
+			TWOptions[OptionType.RoundTotal] = 9;
 		}
 
 		public override void SetDefaultModOptions()

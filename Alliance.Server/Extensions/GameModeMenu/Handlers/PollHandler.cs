@@ -15,9 +15,6 @@ using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Utilities;
 using Alliance.Server.Core;
-using Alliance.Server.GameModes.Story;
-using Alliance.Server.GameModes.Story.Scenarios;
-using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -38,12 +35,12 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 		{
 			// TODO : make use of PollRequest content to start a poll
 			bool isInLobby = MultiplayerOptions.OptionType.GameType.GetStrValue() == "Lobby";
-			message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
+			string gameType = message.NativeOptions[MultiplayerOptions.OptionType.GameType].ToString();
 
 			// Check whether the request comes from an admin, or is an authorized game mode launch from Lobby
 			if (message.SkipPoll && peer.IsAdmin() || isInLobby && Config.Instance.AuthorizePoll && GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameType))
 			{
-				message.GetOption(MultiplayerOptions.OptionType.Map).GetValue(out string map);
+				string map = message.NativeOptions[MultiplayerOptions.OptionType.Map].ToString();
 
 				// Check if the scene exist on server side
 				if (!SceneList.Scenes.Exists(sceneInfo => sceneInfo.Name == map))
@@ -52,8 +49,8 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 					return false;
 				}
 
-				message.GetOption(MultiplayerOptions.OptionType.CultureTeam1).GetValue(out string cultureTeam1);
-				message.GetOption(MultiplayerOptions.OptionType.CultureTeam2).GetValue(out string cultureTeam2);
+				string cultureTeam1 = message.NativeOptions[MultiplayerOptions.OptionType.CultureTeam1].ToString();
+				string cultureTeam2 = message.NativeOptions[MultiplayerOptions.OptionType.CultureTeam2].ToString();
 
 				GameModeSettings gameModeSettings = CreateSettingsFromMessage(message);
 				GameModeStarter.Instance.StartMission(gameModeSettings);
@@ -72,7 +69,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 		{
 			GameModeSettings gameModeSettings;
 
-			message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
+			string gameType = message.NativeOptions[MultiplayerOptions.OptionType.GameType].ToString();
 
 			switch (gameType)
 			{
@@ -89,7 +86,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 					return null;
 			}
 
-			gameModeSettings.NativeOptions = message.NativeOptions;
+			gameModeSettings.TWOptions = message.NativeOptions;
 			gameModeSettings.ModOptions = message.ModOptions;
 
 			return gameModeSettings;
@@ -101,23 +98,12 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 
 			if (message.SkipPoll && peer.IsAdmin())
 			{
-				Scenario currentScenario;
-				Act currentAct;
-				MethodInfo scenarioMethod = typeof(ServerScenarios).GetMethod(message.Scenario);
-
-				if (scenarioMethod == null)
-				{
-					currentScenario = null;
-				}
-				else
-				{
-					currentScenario = scenarioMethod.Invoke(null, null) as Scenario;
-				}
+				Scenario currentScenario = ScenarioManager.Instance.AvailableScenario.Find(scenario => scenario.Id == message.Scenario);
 
 				if (currentScenario != null && currentScenario.Acts.Count > message.Act)
 				{
-					currentAct = currentScenario.Acts[message.Act];
-					ScenarioManagerServer.Instance.StartScenario(currentScenario, currentAct);
+					Act currentAct = currentScenario.Acts[message.Act];
+					ScenarioManager.Instance.StartScenario(currentScenario, currentAct);
 				}
 				else
 				{

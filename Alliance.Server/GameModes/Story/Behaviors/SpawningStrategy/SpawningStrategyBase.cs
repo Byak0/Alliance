@@ -453,9 +453,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			_spawnPreparationTimeLimit = OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions);
 
 			// Init available cultures based on current act
-			List<MultiplayerOption> currentActOptions = CurrentAct.ActSettings.NativeOptions;
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam1).GetValue(out string cultureAttacker);
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam2).GetValue(out string cultureDefender);
+			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
+			string cultureDefender = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam2].ToString();
 			_cultures = new BasicCultureObject[2]
 			{
 				MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureDefender),

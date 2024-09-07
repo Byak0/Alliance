@@ -3,8 +3,6 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Server.Core;
 using Alliance.Server.GameModes.Story.Behaviors;
-using Alliance.Server.GameModes.Story.Scenarios;
-using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -17,27 +15,19 @@ namespace Alliance.Server.GameModes.Story
 	/// </summary>
 	public class ScenarioManagerServer : ScenarioManager
 	{
-		private static readonly ScenarioManagerServer instance = new ScenarioManagerServer();
-		public static ScenarioManagerServer Instance { get { return instance; } }
+		public static void Initialize()
+		{
+			Instance = new ScenarioManagerServer();
+			Instance.RefreshAvailableScenarios();
+		}
 
 		public override void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid)
 		{
-			Scenario currentScenario;
-			Act currentAct;
-			MethodInfo scenarioMethod = typeof(ServerScenarios).GetMethod(scenarioId);
-
-			if (scenarioMethod == null)
-			{
-				currentScenario = null;
-			}
-			else
-			{
-				currentScenario = scenarioMethod.Invoke(null, null) as Scenario;
-			}
+			Scenario currentScenario = AvailableScenario.Find(scenario => scenario.Id == scenarioId);
 
 			if (currentScenario != null && currentScenario.Acts.Count > actIndex)
 			{
-				currentAct = currentScenario.Acts[actIndex];
+				Act currentAct = currentScenario.Acts[actIndex];
 				StartScenario(currentScenario, currentAct, state);
 				Log($"Starting scenario \"{currentScenario?.Name}\" at act {actIndex}", LogLevel.Debug);
 			}

@@ -2,7 +2,6 @@
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
-using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -41,9 +40,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 			if (ScenarioManagerServer.Instance.CurrentAct == null) return;
 
-			List<MultiplayerOption> currentActOptions = ScenarioManagerServer.Instance.CurrentAct.ActSettings.NativeOptions;
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam1).GetValue(out string cultureTeam1);
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam2).GetValue(out string cultureTeam2);
+			string cultureTeam1 = ScenarioManagerServer.Instance.CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
+			string cultureTeam2 = ScenarioManagerServer.Instance.CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam2].ToString();
 			_cultureAttacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureTeam1);
 			_cultureDefender = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureTeam2);
 

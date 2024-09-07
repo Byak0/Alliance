@@ -20,17 +20,17 @@ namespace Alliance.Common.GameModes.CvC
 		public override void SetDefaultNativeOptions()
 		{
 			base.SetDefaultNativeOptions();
-			SetNativeOption(OptionType.RoundPreparationTimeLimit, 30);
-			SetNativeOption(OptionType.RoundTimeLimit, 1200);
-			SetNativeOption(OptionType.RoundTotal, 3);
-			SetNativeOption(OptionType.NumberOfBotsTeam1, 0);
-			SetNativeOption(OptionType.NumberOfBotsTeam2, 0);
-			SetNativeOption(OptionType.NumberOfBotsPerFormation, 0);
-			SetNativeOption(OptionType.FriendlyFireDamageMeleeFriendPercent, 75);
-			SetNativeOption(OptionType.FriendlyFireDamageMeleeSelfPercent, 0);
-			SetNativeOption(OptionType.FriendlyFireDamageRangedFriendPercent, 75);
-			SetNativeOption(OptionType.FriendlyFireDamageRangedSelfPercent, 0);
-			SetNativeOption(OptionType.AutoTeamBalanceThreshold, 1);
+			TWOptions[OptionType.RoundPreparationTimeLimit] = 30;
+			TWOptions[OptionType.RoundTimeLimit] = 1200;
+			TWOptions[OptionType.RoundTotal] = 3;
+			TWOptions[OptionType.NumberOfBotsTeam1] = 0;
+			TWOptions[OptionType.NumberOfBotsTeam2] = 0;
+			TWOptions[OptionType.NumberOfBotsPerFormation] = 0;
+			TWOptions[OptionType.FriendlyFireDamageMeleeFriendPercent] = 75;
+			TWOptions[OptionType.FriendlyFireDamageMeleeSelfPercent] = 0;
+			TWOptions[OptionType.FriendlyFireDamageRangedFriendPercent] = 75;
+			TWOptions[OptionType.FriendlyFireDamageRangedSelfPercent] = 0;
+			TWOptions[OptionType.AutoTeamBalanceThreshold] = 1;
 		}
 
 		public override void SetDefaultModOptions()
