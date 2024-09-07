@@ -1,12 +1,10 @@
-﻿using NetworkMessages.FromServer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Utilities.Logger;
 using MathF = TaleWorlds.Library.MathF;
 
@@ -332,52 +330,52 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 
 		public virtual void ServerSynchronize()
 		{
-			if (GameNetwork.IsServer)
-			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SynchronizeMissionObject(this));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None, null);
-			}
+			//if (GameNetwork.IsServer)
+			//{
+			//	GameNetwork.BeginBroadcastModuleEvent();
+			//	GameNetwork.WriteMessage(new SynchronizeMissionObject(this));
+			//	GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None, null);
+			//}
 		}
 
-		public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
-		{
-			//base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
-			CS_CapturableZoneRecord destructableComponentRecord = (CS_CapturableZoneRecord)synchedMissionObjectReadableRecord.Item2;
-			Position = destructableComponentRecord.Position;
-			Team ownerTeam = Mission.Current.Teams[destructableComponentRecord.TeamIndex]; // TODO : Check if Teams[] are stored using the TeamIndex
-			if (ownerTeam != OwnerTeam) OnOwnerChange?.Invoke(this, ownerTeam);
-			Owner = ownerTeam?.Side ?? BattleSideEnum.None;
-		}
+		//public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
+		//{
+		//	base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
+		//	CS_CapturableZoneRecord destructableComponentRecord = (CS_CapturableZoneRecord)synchedMissionObjectReadableRecord.Item2;
+		//	Position = destructableComponentRecord.Position;
+		//	Team ownerTeam = Mission.Current.Teams[destructableComponentRecord.TeamIndex]; // TODO : Check if Teams[] are stored using the TeamIndex
+		//	if (ownerTeam != OwnerTeam) OnOwnerChange?.Invoke(this, ownerTeam);
+		//	Owner = ownerTeam?.Side ?? BattleSideEnum.None;
+		//}
 
-		public override void WriteToNetwork()
-		{
-			if (GameNetwork.IsServer)
-			{
-				GameNetworkMessage.WriteTeamIndexToPacket(OwnerTeam?.TeamIndex ?? -1);
-				GameNetworkMessage.WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
-			}
-		}
+		//public override void WriteToNetwork()
+		//{
+		//	if (GameNetwork.IsServer)
+		//	{
+		//		GameNetworkMessage.WriteTeamIndexToPacket(OwnerTeam?.TeamIndex ?? -1);
+		//		GameNetworkMessage.WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
+		//	}
+		//}
 
-		[DefineSynchedMissionObjectTypeForMod(typeof(CS_CapturableZone))]
-		public struct CS_CapturableZoneRecord : ISynchedMissionObjectReadableRecord
-		{
-			public int TeamIndex { get; private set; }
+		//[DefineSynchedMissionObjectTypeForMod(typeof(CS_CapturableZone))]
+		//public struct CS_CapturableZoneRecord : ISynchedMissionObjectReadableRecord
+		//{
+		//	public int TeamIndex { get; private set; }
 
-			public Vec3 Position { get; private set; }
+		//	public Vec3 Position { get; private set; }
 
-			public CS_CapturableZoneRecord(int teamIndex, Vec3 position)
-			{
-				TeamIndex = teamIndex;
-				Position = position;
-			}
+		//	public CS_CapturableZoneRecord(int teamIndex, Vec3 position)
+		//	{
+		//		TeamIndex = teamIndex;
+		//		Position = position;
+		//	}
 
-			public bool ReadFromNetwork(ref bool bufferReadValid)
-			{
-				TeamIndex = GameNetworkMessage.ReadTeamIndexFromPacket(ref bufferReadValid);
-				Position = GameNetworkMessage.ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref bufferReadValid);
-				return bufferReadValid;
-			}
-		}
+		//	public bool ReadFromNetwork(ref bool bufferReadValid)
+		//	{
+		//		TeamIndex = GameNetworkMessage.ReadTeamIndexFromPacket(ref bufferReadValid);
+		//		Position = GameNetworkMessage.ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref bufferReadValid);
+		//		return bufferReadValid;
+		//	}
+		//}
 	}
 }
