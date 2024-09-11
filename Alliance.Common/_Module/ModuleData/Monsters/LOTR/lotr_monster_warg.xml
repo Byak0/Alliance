@@ -4,13 +4,13 @@
 		id="warg"
 		action_set="as_warg"
 		monster_usage="warg"
-		weight="500"
+		weight="400"
 		hit_points="250"
 		absorbed_damage_ratio="1.0"
 		num_paces="6"
 		jump_acceleration="6.5"
 		sound_and_collision_info_class="warg"
-		rider_camera_height_adder="0"
+		rider_camera_height_adder="-0.5"
 		rider_body_capsule_height_adder="0"
 		rider_body_capsule_forward_adder="0"
 		standing_chest_height="1.30"
@@ -41,8 +41,8 @@
 		body_rotation_reference_bone="Spine3_M"
 		head_look_direction_bone="Neck1_M"
 		thorax_look_direction_bone="Spine3_M"
-		rein_handle_left_local_pos="0.25,-0.3,0.15"
-		rein_handle_right_local_pos="0.25,-0.3,-0.15">
+		rein_handle_left_local_pos="0,0.5,0.15"
+		rein_handle_right_local_pos="0,0.5,-0.15">
 		<Capsules>
 			<body_capsule
 				radius="0.4"
