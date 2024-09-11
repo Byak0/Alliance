@@ -34,7 +34,7 @@ namespace Alliance.Server.GameModes.Story.Handlers
 				return false;
 			}
 			ScenarioManagerServer.Instance.SetWinner(message.Winner);
-			ScenarioManagerServer.Instance.SetActState(ActState.Completed);
+			ScenarioManagerServer.Instance.SetActState(ActState.DisplayingResults);
 			return true;
 		}
 	}

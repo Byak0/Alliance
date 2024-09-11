@@ -1,5 +1,4 @@
-﻿using Alliance.Common.GameModes;
-using Alliance.Common.GameModes.Story.Actions;
+﻿using Alliance.Common.GameModes.Story.Actions;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
@@ -10,19 +9,19 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// </summary>
 	public class Server_ActionFactory : ActionFactory
 	{
-		public static void Initialize()
+		public static new void Initialize()
 		{
 			Instance = new Server_ActionFactory();
 		}
 
-		public override StartGameAction StartGame(GameModeSettings settings)
+		public override StartGameAction StartGameAction()
 		{
-			return new Server_StartGameAction(settings);
+			return new Server_StartGameAction();
 		}
 
-		public override StartScenarioAction StartScenario(string scenarioId, int actIndex)
+		public override StartScenarioAction StartScenarioAction()
 		{
-			return new Server_StartScenarioAction(scenarioId, actIndex);
+			return new Server_StartScenarioAction();
 		}
 	}
 }

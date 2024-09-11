@@ -3,12 +3,14 @@ using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using TaleWorlds.ModuleManager;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -51,23 +53,14 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
 		}
 
-		public static void SerializeScenarioToXML(Scenario scenarioToSerialize)
-		{
-			// Construct the full file path
-			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath("Alliance"), "Scenarios");
-			string filename = Path.Combine(directoryPath, $"{scenarioToSerialize.Id}.xml");
-
-			// Ensure the directory exists
-			if (!Directory.Exists(directoryPath))
-			{
-				Directory.CreateDirectory(directoryPath);
-			}
-
-			SerializeScenarioToXML(scenarioToSerialize, filename);
-		}
-
 		public static void SerializeScenarioToXML(Scenario scenarioToSerialize, string filePath)
 		{
+			// Ensure the directory exists
+			if (!Directory.Exists(Path.GetDirectoryName(filePath)))
+			{
+				Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+			}
+
 			RecursiveSerializationCallBack(scenarioToSerialize, obj => obj.OnBeforeSerialize());
 
 			// Serialize the scenario to XML
@@ -113,6 +106,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 						deserializationCallback.OnAfterDeserialize();
 					}
 
+					RecursiveActionReplace(scenario);
+
 					RecursiveSerializationCallBack(scenario, obj => obj.OnAfterDeserialize());
 
 					return scenario;
@@ -122,6 +117,118 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				// Handle the case where the file does not exist
 				throw new FileNotFoundException($"The scenario file '{filename}' does not exist.");
+			}
+		}
+
+		/// <summary>
+		/// Recursively replaces all ActionBase objects with their correct version from Server or Client ActionFactory.
+		/// </summary>
+		private static void RecursiveActionReplace(object obj, object parentObj = null, FieldInfo fi = null)
+		{
+			if (obj == null) return;
+
+
+			// If the object is an ActionBase, replace it with the correct action type
+			if (parentObj != null && fi != null && obj is ActionBase)
+			{
+				object correctAction = CreateCorrectActionInstance(obj);
+				CopyActionState(obj, correctAction);
+
+				// Replace the parent list with the new element
+				if (typeof(IList).IsAssignableFrom(fi.FieldType))
+				{
+					IList list = fi.GetValue(parentObj) as IList;
+					list[list.IndexOf(obj)] = correctAction;
+					fi.SetValue(parentObj, list);
+				}
+				else
+				{
+					fi.SetValue(parentObj, correctAction);
+				}
+
+				// Set obj to the newly created action for further recursive inspection
+				obj = correctAction;
+			}
+
+			// Recursively check fields of the object
+			foreach (FieldInfo field in obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+			{
+				// Handle lists
+				if (typeof(IList).IsAssignableFrom(field.FieldType) && field.FieldType != typeof(string))
+				{
+					if (field.GetValue(obj) is IList collection)
+					{
+						for (int i = 0; i < collection.Count; i++)
+						{
+							RecursiveActionReplace(collection[i], obj, field);
+						}
+					}
+				}
+				// Ignore primitive types, strings, enums, and other simple types
+				else if (field.FieldType.IsPrimitive || field.FieldType.IsEnum || field.FieldType == typeof(string) || field.FieldType == typeof(decimal) || field.FieldType == typeof(DateTime))
+				{
+					continue;
+				}
+				else
+				{
+					var fieldValue = field.GetValue(obj);
+					RecursiveActionReplace(fieldValue, obj, field);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates the correct instance of an ActionBase object by invoking the corresponding method in the ActionFactory.
+		/// </summary>
+		private static object CreateCorrectActionInstance(object obj)
+		{
+			if (obj == null) return null;
+
+			// Get the corresponding method in the ActionFactory (e.g., StartGameAction)
+			MethodInfo actionMethod = ActionFactory.Instance.GetType().GetMethod(obj.GetType().Name);
+
+			if (actionMethod == null)
+			{
+				Log($"Action method '{obj.GetType().Name}' not found in ActionFactory.", LogLevel.Error);
+				return obj;
+			}
+
+			// Invoke the method on the ActionFactory to get the correct action instance
+			object newAction = actionMethod.Invoke(ActionFactory.Instance, null);
+			return newAction;
+		}
+
+		/// <summary>
+		/// Copies the state of an object to another object.
+		/// </summary>
+		private static void CopyActionState(object source, object target)
+		{
+			var sourceType = source.GetType();
+			var targetType = target.GetType();
+
+			// Copy fields
+			foreach (var field in sourceType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+			{
+				var value = field.GetValue(source);
+				var targetField = targetType.GetField(field.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				if (targetField != null && targetField.FieldType == field.FieldType)
+				{
+					targetField.SetValue(target, value);
+				}
+			}
+
+			// Copy properties
+			foreach (var property in sourceType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+			{
+				if (property.CanRead && property.CanWrite)
+				{
+					var value = property.GetValue(source);
+					var targetProperty = targetType.GetProperty(property.Name, BindingFlags.Instance | BindingFlags.Public);
+					if (targetProperty != null && targetProperty.PropertyType == property.PropertyType)
+					{
+						targetProperty.SetValue(target, value);
+					}
+				}
 			}
 		}
 

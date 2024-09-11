@@ -19,11 +19,33 @@
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<PackageReference Include="Concentus" Version="1.1.7" />
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Resource Include="Resources\alliance_delete.png" />
+	  <Resource Include="Resources\alliance_edit.png" />
+	  <Resource Include="Resources\alliance_edit2.png" />
+	  <Resource Include="Resources\alliance_help.png" />
+		<Resource Include="Resources\alliance_help2.png" />
+	  <Resource Include="Resources\alliance_ico.ico" />
+	  <Resource Include="Resources\alliance_info.png" />
+	  <Resource Include="Resources\alliance_manual.png" />
+	  <Resource Include="Resources\alliance_save.png" />
+	  <Resource Include="Resources\alliance_saveas.png" />
+	  <Resource Include="Resources\alliance_translation.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Properties\Resources.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

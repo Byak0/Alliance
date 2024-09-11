@@ -107,7 +107,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 				}
 				else
 				{
-					Log($"Failed to start scenario \"{currentScenario?.Name}\" at act {message.Act}", LogLevel.Error);
+					Log($"Failed to start scenario \"{currentScenario?.Name.LocalizedText}\" at act {message.Act}", LogLevel.Error);
 				}
 
 				return true;

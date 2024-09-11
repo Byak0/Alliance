@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Actions;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.GameModes.Story.Actions
 {
@@ -22,6 +23,7 @@ namespace Alliance.Client.GameModes.Story.Actions
 			BattleSideEnum playerSide = Mission.Current.PlayerTeam.Side;
 			ScenarioView sv = Mission.Current.GetMissionBehavior<ScenarioView>();
 			bool isWinner = ScenarioPlayer.Instance.CurrentWinner == playerSide;
+			Log($"Winner is : {ScenarioPlayer.Instance.CurrentWinner}", LogLevel.Debug);
 			string title;
 			string description;
 			if (playerSide == BattleSideEnum.Attacker)

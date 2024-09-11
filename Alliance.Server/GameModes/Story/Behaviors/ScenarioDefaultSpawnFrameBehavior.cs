@@ -40,7 +40,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		public void Clear()
 		{
-			SpawnPoints = null;
+			//SpawnPoints = null;
 			ScenarioManagerServer.Instance.OnActStateAwaitPlayerJoin -= InitSpawnFrames;
 			ScenarioManagerServer.Instance.OnStopScenario -= Clear;
 		}

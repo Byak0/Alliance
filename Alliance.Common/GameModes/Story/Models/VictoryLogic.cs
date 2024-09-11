@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -28,6 +29,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public void OnDisplayResults(BattleSideEnum winner)
 		{
+			Log($"Winner is : {winner}", LogLevel.Debug);
 			foreach (ActionBase action in ActionsOnDisplayResults)
 			{
 				action.Execute();

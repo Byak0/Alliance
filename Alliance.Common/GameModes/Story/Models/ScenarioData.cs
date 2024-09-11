@@ -1,13 +1,11 @@
 ﻿using Alliance.Common.Utilities;
-using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.ObjectSystem;
 
-namespace Alliance.Common.GameModes.Story.Utilities
+namespace Alliance.Common.GameModes.Story.Models
 {
 	/// <summary>
 	/// Get available data for different types of scenario data.
+	/// TODO: Find a way to load data from xml files instead of hardcoded lists.
 	/// </summary>
 	public static class ScenarioData
 	{
@@ -23,32 +21,37 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		}
 
 		public static string[] AvailableMaps() => SceneList.Scenes.ConvertAll(s => s.Name).ToArray();
-		public static string[] AvailableCultures() => Factions.Instance.AvailableCultures.Keys.ToArray();
-		public static string[] AvailableSides() => new string[] { BattleSideEnum.Attacker.ToString(), BattleSideEnum.Defender.ToString() };
+
+		public static string[] AvailableCultures()
+		{
+			// Not usable when in Editor, xml not loaded...
+			//return Factions.Instance.AvailableCultures.Keys.ToArray();
+			return new string[] { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait", "rohan", "isengard", "autochtone", "explorator" };
+		}
+
+		public static string[] AvailableSides()
+		{
+			return new string[] { BattleSideEnum.Attacker.ToString(), BattleSideEnum.Defender.ToString() };
+		}
+
 		public static string[] AvailableCharacters()
 		{
-			// Todo : move this to a more appropriate place. Editor doesn't load these by default
-			//MBObjectManager.Instance.LoadXML("NPCCharacter");
-			//MBObjectManager.Instance.LoadXML("MPCharacters", false);
-			List<string> list = new List<string>();
-			foreach (BasicCharacterObject character in MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>())
-			{
-				if (character.IsPlayerCharacter)
-				{
-					list.Add(character.StringId);
-				}
-			}
-			return list.ToArray();
+			// Not usable when in Editor, xml not loaded...
+			//return MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>().ConvertAll(c => c.Name.ToString()).ToArray();
+			return new string[] { "TODO" };
 		}
-		public static string[] AvailableItems() => MBObjectManager.Instance.GetObjectTypeList<ItemObject>().ConvertAll(c => c.Name.ToString()).ToArray();
-		public static string[] AvailableGameModes() => GetAvailableGameModes();
 
-		private static string[] GetAvailableGameModes()
+		public static string[] AvailableItems()
+		{
+			// Not usable when in Editor, xml not loaded...
+			//return MBObjectManager.Instance.GetObjectTypeList<ItemObject>().ConvertAll(c => c.Name.ToString()).ToArray();
+			return new string[] { "TODO" };
+		}
+
+		public static string[] AvailableGameModes()
 		{
 			// Not usable when in Editor, game modes are loaded in Client or Server.
 			// return Module.CurrentModule.GetMultiplayerGameTypes().Select(g => g.GameType).ToArray();
-
-			// Return hardcoded list instead.
 			return new string[] { "Lobby", "Scenario", "BattleRoyale", "PvC", "CvC", "CaptainX", "BattleX", "SiegeX", "Captain", "Battle", "Siege", "Skirmish" };
 		}
 

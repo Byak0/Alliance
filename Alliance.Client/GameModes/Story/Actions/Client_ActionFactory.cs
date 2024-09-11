@@ -9,12 +9,12 @@ namespace Alliance.Client.GameModes.Story.Actions
 	/// </summary>
 	public class Client_ActionFactory : ActionFactory
 	{
-		public static void Initialize()
+		public static new void Initialize()
 		{
 			Instance = new Client_ActionFactory();
 		}
 
-		public override ShowResultScreenAction ShowResultScreen()
+		public override ShowResultScreenAction ShowResultScreenAction()
 		{
 			return new Client_ShowResultScreenAction();
 		}

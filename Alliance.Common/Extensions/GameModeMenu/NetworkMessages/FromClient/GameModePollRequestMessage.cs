@@ -113,7 +113,7 @@ namespace Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient
 
 		private void ReadNativeOptions(ref bool bufferReadValid)
 		{
-			NativeOptions = new TWConfig(init: false);
+			NativeOptions = new TWConfig();
 			for (MultiplayerOptions.OptionType optionType = MultiplayerOptions.OptionType.ServerName; optionType < MultiplayerOptions.OptionType.NumOfSlots; optionType++)
 			{
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();

@@ -1,5 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Conditions;
-using System;
+﻿using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
@@ -8,7 +7,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Actions are implemented in either Common, Client, or Server projects for specific behavior.
 	/// Instance of this class is set to either Client_ActionFactory or Server_ActionFactory during module initialization.
 	/// </summary>
-	public abstract class ActionFactory
+	public class ActionFactory
 	{
 		private static ActionFactory _instance;
 		public static ActionFactory Instance
@@ -22,24 +21,29 @@ namespace Alliance.Common.GameModes.Story.Actions
 			protected set => _instance = value;
 		}
 
-		public virtual ConditionalAction ConditionalAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse)
+		public static void Initialize()
 		{
-			return new ConditionalAction(condition, actionIfTrue, actionIfFalse);
+			Instance = new ActionFactory();
 		}
 
-		public virtual ShowResultScreenAction ShowResultScreen()
+		public virtual ConditionalAction ConditionalAction()
+		{
+			return new ConditionalAction();
+		}
+
+		public virtual ShowResultScreenAction ShowResultScreenAction()
 		{
 			return new ShowResultScreenAction();
 		}
 
-		public virtual StartGameAction StartGame(GameModeSettings settings)
+		public virtual StartGameAction StartGameAction()
 		{
-			return new StartGameAction(settings);
+			return new StartGameAction();
 		}
 
-		public virtual StartScenarioAction StartScenario(string scenarioId, int actIndex)
+		public virtual StartScenarioAction StartScenarioAction()
 		{
-			return new StartScenarioAction(scenarioId, actIndex);
+			return new StartScenarioAction();
 		}
 
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.

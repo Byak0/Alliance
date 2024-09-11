@@ -1,8 +1,9 @@
 ﻿using System;
+using Alliance.Common.GameModes.Story.Models;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
-	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class ScenarioEditorAttribute : Attribute
 	{
 		public bool IsEditable { get; }

@@ -29,7 +29,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 
 			if (currentScenario.Acts.Count <= message.Act)
 			{
-				Log($"Failed to start scenario \"{currentScenario.Name}\" at act {message.Act}. Act index out of range.", LogLevel.Error);
+				Log($"Failed to start scenario \"{currentScenario.Name.LocalizedText}\" at act {message.Act}. Act index out of range.", LogLevel.Error);
 				return;
 			}
 

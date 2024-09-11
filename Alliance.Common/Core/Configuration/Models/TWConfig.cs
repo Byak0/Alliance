@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -15,42 +16,42 @@ namespace Alliance.Common.Core.Configuration.Models
 	[Serializable]
 	public class TWConfig
 	{
-		[ScenarioEditor(isEditable: false)]
-		public string ServerName;
+		//[ScenarioEditor(isEditable: false)]
+		//public string ServerName;
 		[ScenarioEditor(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
-		public string WelcomeMessage;
-		[ScenarioEditor(isEditable: false)]
-		public string GamePassword;
-		[ScenarioEditor(isEditable: false)]
-		public string AdminPassword;
-		[ScenarioEditor(isEditable: false)]
-		public int GameDefinitionId;
-		[ScenarioEditor(isEditable: false)]
-		public bool AllowPollsToKickPlayers;
-		[ScenarioEditor(isEditable: false)]
-		public bool AllowPollsToBanPlayers;
-		[ScenarioEditor(isEditable: false)]
-		public bool AllowPollsToChangeMaps;
-		[ScenarioEditor(label: "Allow players to use their custom banner.")]
+		public string WelcomeMessage = "Hello";
+		//[ScenarioEditor(isEditable: false)]
+		//public string GamePassword;
+		//[ScenarioEditor(isEditable: false)]
+		//public string AdminPassword;
+		//[ScenarioEditor(isEditable: false)]
+		//public int GameDefinitionId;
+		//[ScenarioEditor(isEditable: false)]
+		//public bool AllowPollsToKickPlayers;
+		//[ScenarioEditor(isEditable: false)]
+		//public bool AllowPollsToBanPlayers;
+		//[ScenarioEditor(isEditable: false)]
+		//public bool AllowPollsToChangeMaps;
+		[ScenarioEditor(label: "Allow individual banner.", tooltip: "Allow players to use their custom banner.")]
 		public bool AllowIndividualBanners;
-		[ScenarioEditor(label: "Use animation progress dependent blocking.")]
+		[ScenarioEditor(label: "Realistic blocking", tooltip: "Use animation progress dependent blocking.")]
 		public bool UseRealisticBlocking;
-		[ScenarioEditor(isEditable: false)]
-		public string PremadeMatchGameMode;
+		//[ScenarioEditor(isEditable: false)]
+		//public string PremadeMatchGameMode;
 		[ScenarioEditor(label: "Game mode", dataType: ScenarioData.DataTypes.GameMode)]
 		public string GameType;
-		[ScenarioEditor(isEditable: false)]
-		public Enum PremadeGameType;
+		//[ScenarioEditor(isEditable: false)]
+		//public Enum PremadeGameType;
 		[ScenarioEditor(label: "Map", dataType: ScenarioData.DataTypes.Map)]
 		public string Map;
 		[ScenarioEditor(label: "Culture for attacker", dataType: ScenarioData.DataTypes.Culture)]
 		public string CultureTeam1;
 		[ScenarioEditor(label: "Culture for defender", dataType: ScenarioData.DataTypes.Culture)]
 		public string CultureTeam2;
-		[ScenarioEditor(isEditable: false)]
-		public int MaxNumberOfPlayers;
-		[ScenarioEditor(isEditable: false)]
-		public int MinNumberOfPlayersForMatchStart;
+		//[ScenarioEditor(isEditable: false)]
+		//public int MaxNumberOfPlayers;
+		//[ScenarioEditor(isEditable: false)]
+		//public int MinNumberOfPlayersForMatchStart;
 		[ScenarioEditor(label: "Number of bots for attacker")]
 		public int NumberOfBotsTeam1;
 		[ScenarioEditor(label: "Number of bots for defender")]
@@ -102,14 +103,6 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ScenarioEditor(label: "Disables the inactivity kick timer.")]
 		public bool DisableInactivityKick;
 
-		public TWConfig(bool init)
-		{
-			if (init)
-			{
-				Initialize();
-			}
-		}
-
 		public TWConfig() { }
 
 		/// <summary>
@@ -120,42 +113,62 @@ namespace Alliance.Common.Core.Configuration.Models
 		/// <returns>Value of the option.</returns>
 		public object this[OptionType option]
 		{
-			get => typeof(TWConfig).GetField(option.ToString()).GetValue(this) ?? GetDefaultValue(option);
-			set => typeof(TWConfig).GetField(option.ToString()).SetValue(this, value);
+			get => GetBoundedOption(option, typeof(TWConfig).GetField(option.ToString())?.GetValue(this) ?? GetDefaultValue(option));
+			set => SetBoundedOption(option, value);
 		}
 
-		// Initialize default values using the current options.
-		private void Initialize()
+		/// <summary>
+		/// Ensure the value is within the bounds of the option.
+		/// </summary>
+		private void SetBoundedOption(OptionType option, object value)
 		{
-			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
+			if (option.GetOptionProperty().HasBounds)
 			{
-				MultiplayerOption option = MultiplayerOption.CreateMultiplayerOption(optionType);
-				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
-				switch (optionProperty.OptionValueType)
+				if (option.GetMaximumValue() is int max && option.GetMinimumValue() is int min)
 				{
-					case OptionValueType.Bool:
+					if (value is int val)
+					{
+						if (val > max)
 						{
-							Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out bool flag);
-							this[option.OptionType] = flag;
-							break;
+							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Warning);
+							value = max;
 						}
-					case OptionValueType.Integer:
-					case OptionValueType.Enum:
+						if (val < min)
 						{
-							Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out int num);
-							this[option.OptionType] = num;
-							break;
+							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Warning);
+							value = min;
 						}
-					case OptionValueType.String:
-						{
-							Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out string text);
-							this[option.OptionType] = text;
-							break;
-						}
-					default:
-						throw new ArgumentOutOfRangeException();
+					}
 				}
 			}
+			typeof(TWConfig).GetField(option.ToString())?.SetValue(this, value);
+		}
+
+		/// <summary>
+		/// Ensure the value is within the bounds of the option.
+		/// </summary>
+		private object GetBoundedOption(OptionType option, object value)
+		{
+			if (option.GetOptionProperty().HasBounds)
+			{
+				if (option.GetMaximumValue() is int max && option.GetMinimumValue() is int min)
+				{
+					if (value is int val)
+					{
+						if (val > max)
+						{
+							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Warning);
+							return max;
+						}
+						if (val < min)
+						{
+							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Warning);
+							return min;
+						}
+					}
+				}
+			}
+			return value;
 		}
 
 		private object GetDefaultValue(OptionType key)

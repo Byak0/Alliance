@@ -138,6 +138,11 @@ namespace Alliance.Common.Core.Configuration
 		/// </summary>
 		public void ApplyNativeOptions(TWConfig optionList)
 		{
+			if (optionList == null)
+			{
+				Log("Tried to apply empty native options, skipping...", LogLevel.Warning);
+				return;
+			}
 			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
 			{
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
@@ -183,6 +188,11 @@ namespace Alliance.Common.Core.Configuration
 		/// </summary>
 		public void ApplyModOptions(Config modOptions)
 		{
+			if (modOptions == null)
+			{
+				Log("Tried to apply empty mod options, skipping...", LogLevel.Warning);
+				return;
+			}
 			Config.Instance = modOptions;
 			SendConfigToAllPeers();
 		}

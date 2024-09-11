@@ -62,8 +62,8 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void StopScenario()
 		{
 			UnregisterObjectives();
-			CurrentScenario = null;
-			CurrentAct = null;
+			//CurrentScenario = null;
+			//CurrentAct = null;
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
 			OnStopScenario?.Invoke();
@@ -135,24 +135,40 @@ namespace Alliance.Common.GameModes.Story
 				return true;
 			}
 
-			bool[] objectivesCompletedBySide = new bool[(int)BattleSideEnum.NumSides + 1];
-
-			foreach (ObjectiveBase objective in CurrentAct.Objectives)
+			foreach (BattleSideEnum side in Enum.GetValues(typeof(BattleSideEnum)))
 			{
-				if (!objective.Active) continue;
+				if (CheckObjectivesForSide(side))
+				{
+					Log($"Side {side} has completed all objectives.", LogLevel.Debug);
+					return true;
+				}
+			}
 
+			return false;
+		}
+
+		private bool CheckObjectivesForSide(BattleSideEnum side)
+		{
+			List<ObjectiveBase> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
+
+			if (objectives.Count == 0)
+			{
+				Log($"No objectives found for side {side}.", LogLevel.Warning);
+				return false;
+			}
+
+			bool sideWin = true;
+
+			foreach (ObjectiveBase objective in objectives)
+			{
 				bool objectiveCompleted = objective.CheckObjective();
 				LogObjectiveProgress(objective, objectiveCompleted);
 
-				if (objective.RequiredForActWin)
-				{
-					objectivesCompletedBySide[(int)objective.Side] &= objectiveCompleted;
-				}
-
 				if (objectiveCompleted)
 				{
-					objective.Active = false;
+					objective.Active = false; // Disable objective to no longer check it
 
+					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
 						UnregisterObjectives();
@@ -160,16 +176,19 @@ namespace Alliance.Common.GameModes.Story
 						return true;
 					}
 				}
+
+				if (objective.RequiredForActWin)
+				{
+					sideWin &= objectiveCompleted;
+				}
 			}
 
-			for (int i = 0; i < objectivesCompletedBySide.Length; i++)
+			// If all objectives for the side are completed, the side wins
+			if (sideWin)
 			{
-				if (objectivesCompletedBySide[i])
-				{
-					UnregisterObjectives();
-					SetWinner((BattleSideEnum)i);
-					return true;
-				}
+				UnregisterObjectives();
+				SetWinner(side);
+				return true;
 			}
 
 			return false;
@@ -181,8 +200,8 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void LogObjectiveProgress(ObjectiveBase objective, bool objectiveCompleted)
 		{
 			string logMessage = objectiveCompleted
-				? $"{objective.Name} ({objective.Side}) completed : {objective.GetProgressAsString()}"
-				: $"{objective.Name} ({objective.Side}) : {objective.GetProgressAsString()}";
+				? $"{objective.Name.LocalizedText} ({objective.Side}) completed : {objective.GetProgressAsString()}"
+				: $"{objective.Name.LocalizedText} ({objective.Side}) : {objective.GetProgressAsString()}";
 
 			ConsoleColor logColor = objectiveCompleted ? ConsoleColor.Green : ConsoleColor.Cyan;
 

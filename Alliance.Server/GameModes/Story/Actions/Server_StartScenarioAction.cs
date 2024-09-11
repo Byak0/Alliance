@@ -7,7 +7,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// </summary>
 	public class Server_StartScenarioAction : StartScenarioAction
 	{
-		public Server_StartScenarioAction(string scenarioId, int actIndex) : base(scenarioId, actIndex) { }
+		public Server_StartScenarioAction() : base() { }
 
 		public override void Execute()
 		{

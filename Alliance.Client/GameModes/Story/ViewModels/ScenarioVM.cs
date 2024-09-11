@@ -191,7 +191,7 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 			Objectives = new MBBindingList<ObjectiveVM>();
 			foreach (ObjectiveBase objective in act?.Objectives.FindAll(obj => obj.Side == side))
 			{
-				Log(objective.Name + " - " + objective.Description, LogLevel.Debug);
+				Log(objective.Name.LocalizedText + " - " + objective.Description.LocalizedText, LogLevel.Debug);
 				Objectives.Add(new ObjectiveVM(objective));
 			}
 		}

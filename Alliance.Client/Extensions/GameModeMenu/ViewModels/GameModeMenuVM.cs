@@ -174,7 +174,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 
 		public void RequestGameModeAsAdmin()
 		{
-			if (_selectedGameMode.GameModeSettings.GameMode == "Scenario")
+			if (_selectedMap is ActCardVM)
 			{
 				Scenario scenario = ((ActCardVM)_selectedMap).Scenario;
 				int actIndex = scenario.Acts.IndexOf(((ActCardVM)_selectedMap).Act);
@@ -226,7 +226,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		{
 			Maps = new MBBindingList<MapCardVM>();
 
-			if (_selectedGameMode.GameModeSettings.GameMode == "Scenario")
+			if (_selectedGameMode.Name == "Scenario")
 			{
 				foreach (Scenario scenario in ScenarioManager.Instance.AvailableScenario)
 				{
@@ -260,7 +260,6 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 
 		private void RefreshNativeOptions()
 		{
-			// Refresh native options
 			NativeOptions = new MBBindingList<OptionVM>();
 
 			// Set default options only if selected map is not a Scenario Act
@@ -306,7 +305,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		{
 			ModOptions = new MBBindingList<OptionVM>();
 
-			if (_selectedMap is not ActCardVM)
+			if (_selectedMap is not ActCardVM || _selectedGameMode.GameModeSettings.ModOptions == null)
 			{
 				_selectedGameMode.GameModeSettings.SetDefaultModOptions();
 			}

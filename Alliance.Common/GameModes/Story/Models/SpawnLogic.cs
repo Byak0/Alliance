@@ -10,25 +10,25 @@ namespace Alliance.Common.GameModes.Story.Models
 	[Serializable]
 	public class SpawnLogic
 	{
-		[ScenarioEditor(label: "Attacker default character", tooltip: "Default character to spawn for attacker")]
+		[ScenarioEditor(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker")]
 		public string DefaultCharacterAttacker;
-		[ScenarioEditor(label: "Defender default character", tooltip: "Default character to spawn for defender")]
+		[ScenarioEditor(label: "Default unit (defender)", tooltip: "Default character to spawn for defender")]
 		public string DefaultCharacterDefender;
-		[ScenarioEditor(label: "Attacker default spawn location", tooltip: "By default, use spawn positions with this tag for attacker")]
+		[ScenarioEditor(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker")]
 		public string DefaultSpawnTagAttacker;
-		[ScenarioEditor(label: "Defender default spawn location", tooltip: "By default, use spawn positions with this tag for defender")]
+		[ScenarioEditor(label: "Default spawn (defender)", tooltip: "By default, use spawn positions with this tag for defender")]
 		public string DefaultSpawnTagDefender;
-		[ScenarioEditor(label: "Attacker location type", tooltip: "How to choose the spawn location for the attacker")]
+		[ScenarioEditor(label: "Spawn type (attacker)", tooltip: "How to choose the spawn location for the attacker")]
 		public LocationStrategy LocationStrategyAttacker;
-		[ScenarioEditor(label: "Defender location type", tooltip: "How to choose the spawn location for the defender")]
+		[ScenarioEditor(label: "Spawn type (defender)", tooltip: "How to choose the spawn location for the defender")]
 		public LocationStrategy LocationStrategyDefender;
-		[ScenarioEditor(label: "Attacker lives", tooltip: "Number of lives for attacker")]
+		[ScenarioEditor(label: "Number of lives (attacker)", tooltip: "Number of lives for attacker")]
 		public int MaxLivesAttacker;
-		[ScenarioEditor(label: "Defender lives", tooltip: "Number of lives for defender")]
+		[ScenarioEditor(label: "Number of lives (defender)", tooltip: "Number of lives for defender")]
 		public int MaxLivesDefender;
-		[ScenarioEditor(label: "Attacker respawn", tooltip: "Define how attackers can respawn")]
+		[ScenarioEditor(label: "Respawn type (attacker)", tooltip: "Define how attackers can respawn")]
 		public RespawnStrategy RespawnStrategyAttacker;
-		[ScenarioEditor(label: "Defender respawn", tooltip: "Define how defenders can respawn")]
+		[ScenarioEditor(label: "Respawn type (defender)", tooltip: "Define how defenders can respawn")]
 		public RespawnStrategy RespawnStrategyDefender;
 		[ScenarioEditor(label: "Keep lives", tooltip: "If enabled, add number of lives on top of the lives left from previous act. Otherwise previous lives left are lost.")]
 		public bool KeepLivesFromPreviousAct;
@@ -37,17 +37,16 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ScenarioEditor(label: "Use stored agents", tooltip: "If enabled, spawn the agents that were stored in a previous act.")]
 		public bool UsePreviousActAgents;
 
-
 		[XmlIgnore]
 		public string[] DefaultCharacters
 		{
-			get => new[] { DefaultCharacterAttacker, DefaultCharacterDefender };
+			get => new[] { DefaultCharacterDefender, DefaultCharacterAttacker };
 			set
 			{
 				if (value.Length >= 2)
 				{
-					DefaultCharacterAttacker = value[0];
-					DefaultCharacterDefender = value[1];
+					DefaultCharacterDefender = value[0];
+					DefaultCharacterAttacker = value[1];
 				}
 			}
 		}
@@ -55,13 +54,13 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public string[] DefaultSpawnTags
 		{
-			get => new[] { DefaultSpawnTagAttacker, DefaultSpawnTagDefender };
+			get => new[] { DefaultSpawnTagDefender, DefaultSpawnTagAttacker };
 			set
 			{
 				if (value.Length >= 2)
 				{
-					DefaultSpawnTagAttacker = value[0];
-					DefaultSpawnTagDefender = value[1];
+					DefaultSpawnTagDefender = value[0];
+					DefaultSpawnTagAttacker = value[1];
 				}
 			}
 		}
@@ -69,13 +68,13 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public int[] MaxLives
 		{
-			get => new[] { MaxLivesAttacker, MaxLivesDefender };
+			get => new[] { MaxLivesDefender, MaxLivesAttacker };
 			set
 			{
 				if (value.Length >= 2)
 				{
-					MaxLivesAttacker = value[0];
-					MaxLivesDefender = value[1];
+					MaxLivesDefender = value[0];
+					MaxLivesAttacker = value[1];
 				}
 			}
 		}
@@ -83,13 +82,13 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public LocationStrategy[] LocationStrategies
 		{
-			get => new[] { LocationStrategyAttacker, LocationStrategyDefender };
+			get => new[] { LocationStrategyDefender, LocationStrategyAttacker };
 			set
 			{
 				if (value.Length >= 2)
 				{
-					LocationStrategyAttacker = value[0];
-					LocationStrategyDefender = value[1];
+					LocationStrategyDefender = value[0];
+					LocationStrategyAttacker = value[1];
 				}
 			}
 		}
@@ -97,13 +96,13 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public RespawnStrategy[] RespawnStrategies
 		{
-			get => new[] { RespawnStrategyAttacker, RespawnStrategyDefender };
+			get => new[] { RespawnStrategyDefender, RespawnStrategyAttacker };
 			set
 			{
 				if (value.Length >= 2)
 				{
-					RespawnStrategyAttacker = value[0];
-					RespawnStrategyDefender = value[1];
+					RespawnStrategyDefender = value[0];
+					RespawnStrategyAttacker = value[1];
 				}
 			}
 		}

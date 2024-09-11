@@ -23,7 +23,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public string LocalizedText => GetText(MBTextManager.ActiveTextLanguage);
 
-		public string GetText(string languageCode)
+		public string GetText(string languageCode = "English")
 		{
 			if (Translations.ContainsKey(languageCode))
 			{

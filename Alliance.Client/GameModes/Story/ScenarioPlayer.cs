@@ -25,11 +25,11 @@ namespace Alliance.Client.GameModes.Story
 			{
 				currentAct = currentScenario.Acts[actIndex];
 				StartScenario(currentScenario, currentAct, state);
-				Log($"Starting scenario \"{currentScenario?.Name}\" at act {actIndex}", LogLevel.Information);
+				Log($"Starting scenario \"{currentScenario?.Name.LocalizedText}\" at act {actIndex}", LogLevel.Information);
 			}
 			else
 			{
-				Log($"Failed to start scenario \"{currentScenario?.Name}\" at act {actIndex}", LogLevel.Error);
+				Log($"Failed to start scenario \"{currentScenario?.Name.LocalizedText}\" at act {actIndex}", LogLevel.Error);
 			}
 		}
 	}
