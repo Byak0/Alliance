@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="Alliance.Editor.Extensions.Story.Views.ObjectEditorContentControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Alliance.Editor.Extensions.Story.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ScenarioEditorResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</UserControl.Resources>
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel Margin="24, 8, 0, 32">
+			<ItemsControl ItemsSource="{Binding Fields}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal" >
+							<ContentControl Content="{Binding}" Margin="0, 24, 0, 0" VerticalAlignment="Center">
+								<ContentControl.Style>
+									<Style TargetType="ContentControl">
+										<Style.Triggers>
+											<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
+												<Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource StringMultiChoiceTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsLocalizedString}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource LocalizedStringTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Boolean}">
+												<Setter Property="ContentTemplate" Value="{StaticResource BooleanTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding FieldType.IsEnum}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Int32}">
+												<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Double}">
+												<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Single}">
+												<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsCollection}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource ListTemplate}"/>
+											</DataTrigger>
+											<DataTrigger Binding="{Binding IsComplexType}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource EditButtonTemplate}"/>
+											</DataTrigger>
+										</Style.Triggers>
+									</Style>
+								</ContentControl.Style>
+							</ContentControl>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</StackPanel>
+	</ScrollViewer>
+</UserControl>

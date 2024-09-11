@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
 	<PropertyGroup>
@@ -9,6 +9,8 @@
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Editor</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +25,10 @@
 		</Reference>
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
@@ -54,6 +60,8 @@
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinForms.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignThemes.Wpf.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignColors.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
 	</Target>

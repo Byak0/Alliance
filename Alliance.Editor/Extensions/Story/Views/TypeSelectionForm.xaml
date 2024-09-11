@@ -1,0 +1,32 @@
+﻿<Window x:Class="Alliance.Editor.Extensions.Story.Views.TypeSelectionForm"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+		Title="Select Type"
+		Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
+		Width="256"
+		MaxHeight="256"
+		Loaded="Window_Loaded">
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ScenarioEditorResources.xaml" />
+				<materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="Indigo" SecondaryColor="Amber" />
+				<ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign2.Defaults.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<ScrollViewer VerticalScrollBarVisibility="Auto">
+		<StackPanel Margin="8">
+			<!-- ListBox to display the available concrete types -->
+			<ListBox ItemsSource="{Binding ConcreteTypes}" 
+                     SelectedItem="{Binding SelectedType}" 
+                     DisplayMemberPath="Name" 
+                     MaxHeight="200"
+                     />
+			<!-- OK button -->
+			<Button Content="OK" Command="{Binding OKCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" HorizontalAlignment="Center" Width="80" Margin="0,16,0,8"/>
+		</StackPanel>
+	</ScrollViewer>
+</Window>
