@@ -450,8 +450,8 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_1_t2" />
-				<equipment slot="Item1" id="Item.crossbow_a_blunt" />
-				<equipment slot="Item2" id="Item.bolt_e" />
+				<equipment slot="Item1" id="Item.bolt_e" />
+				<equipment slot="Item2" id="Item.crossbow_a_blunt" />
 				<equipment slot="Item3" id="Item.bolt_e" />
 				<equipment slot="Head" id="Item.leather_studdedhelm_over_thinhide" />
 				<equipment slot="Body" id="Item.layered_leather_tunic" />
@@ -461,8 +461,8 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
-				<equipment slot="Item1" id="Item.crossbow_a_blunt" />
-				<equipment slot="Item2" id="Item.bolt_e" />
+				<equipment slot="Item1" id="Item.bolt_e" />
+				<equipment slot="Item2" id="Item.crossbow_a_blunt" />
 				<equipment slot="Item3" id="Item.bolt_e" />
 				<equipment slot="Head" id="Item.laced_cloth_coif" />
 				<equipment slot="Body" id="Item.woven_leather_vest" />
@@ -536,8 +536,8 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
-				<equipment slot="Item1" id="Item.crossbow_g" />
-				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item1" id="Item.bolt_c" />
+				<equipment slot="Item2" id="Item.crossbow_g" />
 				<equipment slot="Item3" id="Item.bolt_c" />
 				<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
 				<equipment slot="Body" id="Item.leather_scale_armor" />
@@ -585,8 +585,8 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
-				<equipment slot="Item1" id="Item.crossbow_g" />
-				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item1" id="Item.bolt_c" />
+				<equipment slot="Item2" id="Item.crossbow_g" />
 				<equipment slot="Item3" id="Item.bolt_c" />
 				<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
 				<equipment slot="Body" id="Item.leather_scale_armor" />

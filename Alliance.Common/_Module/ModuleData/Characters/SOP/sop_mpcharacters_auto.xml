@@ -116,8 +116,8 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.mountain_hunting_bow" />
-				<equipment slot="Item1" id="Item.default_arrows" />
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.mountain_hunting_bow" />
 				<equipment slot="Item2" id="Item.default_arrows" />
 				<equipment slot="Item3" id="Item.default_arrows" />
 				<equipment slot="Body" id="Item.sleeveless_fur_coat" />
@@ -125,8 +125,8 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
-				<equipment slot="Item1" id="Item.adarga" />
-				<equipment slot="Item2" id="Item.hunting_bow" />
+				<equipment slot="Item1" id="Item.hunting_bow" />
+				<equipment slot="Item2" id="Item.adarga" />
 				<equipment slot="Item3" id="Item.default_arrows" />
 				<equipment slot="Body" id="Item.fur_skirt" />
 				<equipment slot="Leg" id="Item.battania_woodland_boots" />
