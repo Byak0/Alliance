@@ -49,7 +49,6 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
 				foreach (FlagTracker flagTracker in FlagTrackers)
 				{
 					flagTracker.FlagZone.Position = flagTracker.GetPosition().origin;
-					flagTracker.FlagZone.UpdateCapturableZone();
 				}
 				_delay = 0f;
 			}
