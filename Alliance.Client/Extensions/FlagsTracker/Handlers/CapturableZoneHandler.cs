@@ -29,6 +29,7 @@ namespace Alliance.Client.Extensions.FlagsTracker.Handlers
 				{
 					capturableZone.SetOwner(message.Owner);
 				}
+				capturableZone.SetBearer(message.Bearer);
 			}
 		}
 	}

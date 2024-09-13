@@ -34,6 +34,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		public BattleSideEnum CapturingTeam { get; private set; }
 		public float CaptureProgress { get; private set; }
 		public Action<CS_CapturableZone, Team> OnOwnerChange { get; set; }
+		public Agent Bearer { get; private set; }
 
 		private SynchedMissionObject[] _flags = new SynchedMissionObject[2];
 		private List<SynchedMissionObject> _flagDependentObjects;
@@ -189,6 +190,8 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		{
 			base.OnTick(dt);
 
+			if (Bearer != null) Position = Bearer.Position;
+
 			_delay += dt;
 			if (_delay >= 0.2f)
 			{
@@ -335,12 +338,19 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 			_flagHolder.SetFrameSynchedOverTime(ref targetFrame, duration, false);
 		}
 
+		public void SetBearer(Agent agent)
+		{
+			Bearer = agent;
+			if (Bearer != null) Position = Bearer.Position;
+			Log($"{ZoneName} picked up by {agent?.Name}", LogLevel.Debug);
+		}
+
 		public virtual void ServerSynchronize()
 		{
 			if (GameNetwork.IsServer)
 			{
 				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncCapturableZone(Id, Position, Owner));
+				GameNetwork.WriteMessage(new SyncCapturableZone(Id, Position, Owner, Bearer));
 				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 			}
 		}

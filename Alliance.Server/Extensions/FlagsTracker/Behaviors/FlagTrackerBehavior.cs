@@ -14,8 +14,6 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
 	/// </summary>
 	public class FlagTrackerBehavior : MissionNetwork, IMissionBehavior
 	{
-		private float _delay;
-
 		public List<FlagTracker> FlagTrackers { get; protected set; }
 		public Dictionary<Agent, FlagTracker> FlagBearers { get; protected set; }
 		public Dictionary<SpawnedItemEntity, FlagTracker> FlagsOnGround { get; protected set; }
@@ -39,19 +37,6 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
 			base.OnEndMission();
 			Mission.OnItemPickUp -= OnItemPickup;
 			Mission.OnItemDrop -= OnItemDrop;
-		}
-
-		public override void OnMissionTick(float dt)
-		{
-			_delay += dt;
-			if (_delay >= 0.2f)
-			{
-				foreach (FlagTracker flagTracker in FlagTrackers)
-				{
-					flagTracker.FlagZone.Position = flagTracker.GetPosition().origin;
-				}
-				_delay = 0f;
-			}
 		}
 
 		public override void OnAgentBuild(Agent agent, Banner banner)
@@ -114,30 +99,29 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
 			GameEntity entity = GameEntity.Instantiate(Mission.Current.Scene, "script_capturable_zone", agent.Frame);
 			CS_CapturableZone flagZone = entity.GetFirstScriptOfType<CS_CapturableZone>();
 			List<MissionObjectId> list = new List<MissionObjectId>();
-			//Utility.Log($"I'm sending message CreateMissionObject. ID={flagZone.Id} | {agent.Frame} | {list})", color: System.ConsoleColor.Green, logToAll: true);
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new CreateMissionObject(flagZone.Id, "script_capturable_zone", agent.Frame, list));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-			//Utility.Log($"Message sent.", color: System.ConsoleColor.Green, logToAll: true);
-			//Mission.Current.AddActiveMissionObject(flagZone);
 			Mission.Current.AddDynamicallySpawnedMissionObjectInfo(new Mission.DynamicallyCreatedEntity("script_capturable_zone", flagZone.Id, agent.Frame, ref list));
 			flagZone.SetOwner(agent.Team.Side);
 			flagZone.ServerSynchronize();
 			FlagZone = flagZone;
-			//Mission.Current.AddDynamicallySpawnedMissionObjectInfo(new Mission.DynamicallyCreatedEntity("CS_Capturable_Zone", firstScriptOfType.Id, agent.Frame, ref list));
-			//FlagZone.Init();
 		}
 
 		public void DropFlag(SpawnedItemEntity flag)
 		{
 			FlagBearer = null;
 			FlagOnGround = flag;
+			FlagZone?.SetBearer(null);
+			FlagZone?.ServerSynchronize();
 		}
 
 		public void PickupFlag(Agent agent)
 		{
 			FlagOnGround = null;
 			FlagBearer = agent;
+			FlagZone?.SetBearer(agent);
+			FlagZone?.ServerSynchronize();
 		}
 
 		public bool UnderControl()

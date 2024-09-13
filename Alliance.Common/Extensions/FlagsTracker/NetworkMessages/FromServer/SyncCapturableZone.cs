@@ -11,12 +11,14 @@ namespace Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer
 		public MissionObjectId MissionObjectId { get; private set; }
 		public Vec3 Position { get; private set; }
 		public BattleSideEnum Owner { get; private set; }
+		public Agent Bearer { get; private set; }
 
-		public SyncCapturableZone(MissionObjectId missionObjectId, Vec3 position, BattleSideEnum owner)
+		public SyncCapturableZone(MissionObjectId missionObjectId, Vec3 position, BattleSideEnum owner, Agent bearer)
 		{
 			MissionObjectId = missionObjectId;
 			Position = position;
 			Owner = owner;
+			Bearer = bearer;
 		}
 
 		public SyncCapturableZone()
@@ -29,6 +31,8 @@ namespace Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer
 			MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
 			Position = ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref bufferReadValid);
 			Owner = (BattleSideEnum)ReadIntFromPacket(CompressionMission.TeamSideCompressionInfo, ref bufferReadValid);
+			int bearerIndex = ReadAgentIndexFromPacket(ref bufferReadValid);
+			Bearer = Mission.MissionNetworkHelper.GetAgentFromIndex(bearerIndex, true);
 			return bufferReadValid;
 		}
 
@@ -37,6 +41,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer
 			WriteMissionObjectIdToPacket(MissionObjectId);
 			WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
 			WriteIntToPacket((int)Owner, CompressionMission.TeamSideCompressionInfo);
+			WriteAgentIndexToPacket(Bearer?.Index ?? -1);
 		}
 
 		protected override MultiplayerMessageFilter OnGetLogFilter()
