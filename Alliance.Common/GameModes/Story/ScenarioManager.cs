@@ -62,8 +62,6 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void StopScenario()
 		{
 			UnregisterObjectives();
-			//CurrentScenario = null;
-			//CurrentAct = null;
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
 			OnStopScenario?.Invoke();
@@ -92,8 +90,17 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
-					OnActStateCompleted?.Invoke();
+					if (CurrentScenario.Acts.Count == (CurrentScenario.Acts.IndexOf(CurrentAct) + 1))
+					{
+						CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
+						OnActStateCompleted?.Invoke();
+						OnStopScenario?.Invoke();
+					}
+					else
+					{
+						CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
+						OnActStateCompleted?.Invoke();
+					}
 					break;
 			}
 		}
