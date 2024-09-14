@@ -10,7 +10,8 @@
         mc:Ignorable="d"
         Title="{Binding ObjectEditorVM.Title}" Height="480" Width="512"
 		Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
-        d:DataContext="{d:DesignInstance Type=vm:ScenarioEditorViewModel, IsDesignTimeCreatable=True}">
+        d:DataContext="{d:DesignInstance Type=vm:ScenarioEditorViewModel, IsDesignTimeCreatable=True}"
+		Closing="Window_Closing">
 
 	<Window.Resources>
 		<ResourceDictionary>

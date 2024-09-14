@@ -24,5 +24,13 @@ namespace Alliance.Editor.Extensions.Story.Views
 		private void ObjectEditorContentControl_Loaded(object sender, RoutedEventArgs e)
 		{
 		}
+
+		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (_viewModel != null && !_viewModel.ConfirmUnsavedChanges())
+			{
+				e.Cancel = true;
+			}
+		}
 	}
 }

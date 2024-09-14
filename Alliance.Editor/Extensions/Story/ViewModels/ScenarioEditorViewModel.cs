@@ -140,7 +140,7 @@ namespace Alliance.Editor.Extensions.Story.ViewModels
 			}
 		}
 
-		private bool ConfirmUnsavedChanges()
+		public bool ConfirmUnsavedChanges()
 		{
 			MessageBoxResult result = MessageBox.Show(
 				"You have unsaved changes. Do you want to save them before continuing?",

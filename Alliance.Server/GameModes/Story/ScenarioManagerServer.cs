@@ -18,7 +18,7 @@ namespace Alliance.Server.GameModes.Story
 		public static void Initialize()
 		{
 			Instance = new ScenarioManagerServer();
-			Instance.RefreshAvailableScenarios();
+			Instance.RefreshAvailableScenarios("Alliance");
 		}
 
 		public override void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid)

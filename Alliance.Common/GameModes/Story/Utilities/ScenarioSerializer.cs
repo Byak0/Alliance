@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
-using TaleWorlds.ModuleManager;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story.Utilities
@@ -74,6 +73,12 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			List<Scenario> scenarios = new List<Scenario>();
 
+			if (!Directory.Exists(directoryPath))
+			{
+				Log($"Directory '{directoryPath}' does not exist.", LogLevel.Warning);
+				return scenarios;
+			}
+
 			// Get all XML files in the specified directory
 			string[] files = Directory.GetFiles(directoryPath, "*.xml");
 
@@ -84,12 +89,6 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			}
 
 			return scenarios;
-		}
-
-		public static Scenario DeserializeScenarioFromId(string scenarioId)
-		{
-			string filename = Path.Combine(ModuleHelper.GetModuleFullPath("Alliance"), "Scenarios", $"{scenarioId}.xml");
-			return DeserializeScenarioFromPath(filename);
 		}
 
 		public static Scenario DeserializeScenarioFromPath(string filename)
@@ -115,8 +114,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			}
 			else
 			{
-				// Handle the case where the file does not exist
-				throw new FileNotFoundException($"The scenario file '{filename}' does not exist.");
+				Log($"The scenario file '{filename}' does not exist.", LogLevel.Error);
+				return null;
 			}
 		}
 

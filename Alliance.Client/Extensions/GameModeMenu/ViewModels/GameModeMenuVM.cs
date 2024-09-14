@@ -200,7 +200,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		private void OnGameModeSelected(GameModeCardVM gameModeCardVM)
 		{
 			if (_selectedGameMode != null) _selectedGameMode.IsSelected = false;
-			ScenarioManager.Instance.RefreshAvailableScenarios();
+			ScenarioManager.Instance.RefreshAvailableScenarios("Alliance");
 			_selectedGameMode = gameModeCardVM;
 			_selectedGameMode.IsSelected = true;
 			RefreshMaps();

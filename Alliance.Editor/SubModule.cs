@@ -28,13 +28,20 @@ namespace Alliance.Editor
 		{
 			ActionFactory.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
-			ScenarioManager.Instance.RefreshAvailableScenarios();
+			ScenarioManager.Instance.RefreshAvailableScenarios("Alliance.Editor");
 			SceneList.Initialize();
 
 			// Need to force load MaterialDesign dlls for obscure reasons
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignThemes.Wpf.dll"));
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignColors.dll"));
 
+			GenerateScenarioExamples();
+
+			Log("Alliance.Editor initialized", LogLevel.Debug);
+		}
+
+		private void GenerateScenarioExamples()
+		{
 			// Generate example scenario XML files
 			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath("Alliance.Editor"), "Scenarios");
 			if (!Directory.Exists(directoryPath) || Directory.GetFiles(directoryPath).Length == 0)
@@ -44,8 +51,6 @@ namespace Alliance.Editor
 				GenerateExampleScenarioXML(ExampleScenarios.OrgaDefault(), directoryPath);
 				GenerateExampleScenarioXML(ExampleScenarios.GP(), directoryPath);
 			}
-
-			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}
 
 		private void GenerateExampleScenarioXML(Scenario scenario, string directory)
@@ -77,6 +82,7 @@ namespace Alliance.Editor
 		{
 			// Create and show the editor window
 			Scenario scenario = ScenarioManager.Instance.AvailableScenario.FirstOrDefault();
+			scenario ??= new Scenario(new LocalizedString("New scenario"), new LocalizedString());
 			if (_scenarioEditorWindow == null || !_scenarioEditorWindow.IsLoaded)
 			{
 				_scenarioEditorWindow = new ScenarioEditorWindow(scenario);
