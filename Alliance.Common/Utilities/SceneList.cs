@@ -96,7 +96,7 @@ namespace Alliance.Common.Utilities
 							Name = sceneNode.Attributes["name"].Value,
 							HasSpawnForAttacker = xmlDoc.SelectNodes("//game_entity[.//tag[@name='attacker'] and @name='mp_spawnpoint' or .//tag[@name='attacker'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_attacker']").Count > 0,
 							HasSpawnForDefender = xmlDoc.SelectNodes("//game_entity[.//tag[@name='defender'] and @name='mp_spawnpoint' or .//tag[@name='defender'] and .//tag[@name='spawnpoint'] or @prefab='mp_spawnpoint_defender' or @prefab='skirmish_start_spawn']").Count > 0,
-							HasGenericSpawn = xmlDoc.SelectNodes("//game_entity[@name='mp_spawnpoint' or @prefab='mp_spawnpoint'] | //tag[@name='spawnpoint']").Count > 0,
+							HasGenericSpawn = xmlDoc.SelectNodes("//game_entity[@name='mp_spawnpoint' or @name='mp_spawnpoint_attacker' or @name='mp_spawnpoint_defender' or @prefab='mp_spawnpoint' or @prefab='mp_spawnpoint_attacker' or @prefab='mp_spawnpoint_defender'] | //tag[@name='spawnpoint']").Count > 0,
 							HasSpawnVisual = xmlDoc.SelectNodes("//game_entity[@name='spawn_visual'] | //game_entity[@prefab='spawn_visual']").Count > 0,
 							HasNavmesh = File.Exists(Path.Combine(dir, "navmesh.bin")),
 							HasSAEPos = xmlDoc.SelectNodes($"//game_entity[@prefab='{SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME}']").Count > 0
