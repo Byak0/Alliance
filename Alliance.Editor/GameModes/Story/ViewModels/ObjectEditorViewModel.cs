@@ -1,22 +1,24 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.GameModes.Story.Utilities;
-using Alliance.Editor.Extensions.Story.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
 
-namespace Alliance.Editor.Extensions.Story.ViewModels
+namespace Alliance.Editor.GameModes.Story.ViewModels
 {
+	/// <summary>
+	/// VM representing an object in the scenario editor.
+	/// </summary>
 	public class ObjectEditorViewModel : INotifyPropertyChanged
 	{
 		private ScenarioEditorViewModel _parentViewModel;
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public string Title { get; set; }
-		public string SelectedLanguage => _parentViewModel?.SelectedLanguage;
+		public string SelectedLanguage => _parentViewModel?.SelectedLanguage ?? "English";
 
 		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title)
 		{

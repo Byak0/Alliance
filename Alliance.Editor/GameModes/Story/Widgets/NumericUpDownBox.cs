@@ -2,8 +2,11 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace Alliance.Editor.Extensions.Story.Widgets
+namespace Alliance.Editor.GameModes.Story.Widgets
 {
+	/// <summary>
+	/// A control that allows the user to input a numeric value using buttons, text input or mouse wheel.
+	/// </summary>
 	public class NumericUpDownBox : Control
 	{
 		private Button _incrementButton;
@@ -122,7 +125,7 @@ namespace Alliance.Editor.Extensions.Story.Widgets
 			var cultureSeparator = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
 			return int.TryParse(text, out _) ||
 				   float.TryParse(text, out _) ||
-				   (allowDecimal && (text == cultureSeparator || text == "."));
+				   allowDecimal && (text == cultureSeparator || text == ".");
 		}
 
 		private void OnMouseWheel(object sender, MouseWheelEventArgs e)

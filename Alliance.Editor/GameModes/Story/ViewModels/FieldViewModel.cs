@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
-using Alliance.Editor.Extensions.Story.Views;
+using Alliance.Editor.GameModes.Story.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,10 +11,10 @@ using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace Alliance.Editor.Extensions.Story.ViewModels
+namespace Alliance.Editor.GameModes.Story.ViewModels
 {
 	/// <summary>
-	/// VM representing a single field in a scenario.
+	/// VM representing a single field in a scenario or any object.
 	/// </summary>
 	public class FieldViewModel : INotifyPropertyChanged
 	{
@@ -145,10 +145,7 @@ namespace Alliance.Editor.Extensions.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow
-			{
-				DataContext = new ObjectEditorViewModel(obj, _scenarioEditorViewModel, _parentViewModel.Title)
-			};
+			var editorWindow = new ObjectEditorWindow(obj, _scenarioEditorViewModel, _parentViewModel.Title);
 			editorWindow.Show();
 
 			// Update DisplayName when the editor window is closed

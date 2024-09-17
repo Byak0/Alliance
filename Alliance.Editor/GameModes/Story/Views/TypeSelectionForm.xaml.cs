@@ -1,11 +1,11 @@
-﻿using Alliance.Editor.Extensions.Story.ViewModels;
+﻿using Alliance.Editor.GameModes.Story.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace Alliance.Editor.Extensions.Story.Views
+namespace Alliance.Editor.GameModes.Story.Views
 {
 	/// <summary>
 	/// Logique d'interaction pour TypeSelectionForm.xaml

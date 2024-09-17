@@ -4,13 +4,11 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Utilities;
-using Alliance.Editor.Extensions.ScenarioMaker.State;
-using Alliance.Editor.Extensions.Story.Views;
+using Alliance.Editor.GameModes.Story.Utilities;
+using Alliance.Editor.GameModes.Story.Views;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
@@ -30,6 +28,8 @@ namespace Alliance.Editor
 			ScenarioManager.Instance = new ScenarioManager();
 			ScenarioManager.Instance.RefreshAvailableScenarios("Alliance.Editor");
 			SceneList.Initialize();
+
+			EditorToolsManager.EditorTools = new EditorTools();
 
 			// Need to force load MaterialDesign dlls for obscure reasons
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignThemes.Wpf.dll"));
@@ -62,12 +62,6 @@ namespace Alliance.Editor
 			string filename = Path.Combine(directory, $"EXAMPLE_{safeScenarioName}_{scenario.Id}.xml");
 
 			ScenarioSerializer.SerializeScenarioToXML(scenario, filename);
-		}
-
-		public void OpenScenarioMakerMenu(Scene scene)
-		{
-			ScenarioMakerState scenarioMakerState = GameStateManager.Current.CreateState<ScenarioMakerState>(new object[] { scene });
-			GameStateManager.Current.PushState(scenarioMakerState, 0);
 		}
 
 		protected override void OnApplicationTick(float dt)

@@ -2,12 +2,15 @@
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
 
@@ -21,6 +24,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 	public class ScenarioSerializer
 	{
 		private static XmlSerializer _xmlSerializer;
+		private static XmlSerializer _conditionalActionSerializer;
 
 		private static XmlSerializer XmlSerializer
 		{
@@ -30,6 +34,17 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					rootType: typeof(Scenario),
 					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings));
 				return _xmlSerializer;
+			}
+		}
+
+		private static XmlSerializer ConditionalActionSerializer
+		{
+			get
+			{
+				_conditionalActionSerializer ??= CreateSerializer(
+					rootType: typeof(ConditionalActionStruct),
+					typeof(Condition), typeof(ActionBase));
+				return _conditionalActionSerializer;
 			}
 		}
 
@@ -116,6 +131,101 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				Log($"The scenario file '{filename}' does not exist.", LogLevel.Error);
 				return null;
+			}
+		}
+
+		/// <summary>
+		/// Serialize a ConditionalActionStruct into a base64 string.
+		/// </summary>
+		public static string SerializeConditionalActionStruct(ConditionalActionStruct conditionalActionStruct)
+		{
+			// Serialize the struct to XML
+			using (StringWriter stringWriter = new StringWriter())
+			{
+				// Serialize the object to XML
+				ConditionalActionSerializer.Serialize(stringWriter, conditionalActionStruct);
+				string xmlString = stringWriter.ToString();
+
+				return CompressString(xmlString);
+			}
+		}
+
+		/// <summary>
+		/// Deserialize a base64 string into a ConditionalActionStruct.
+		/// </summary>
+		public static ConditionalActionStruct DeserializeConditionalActionStruct(string serializedConditionalAction)
+		{
+			try
+			{
+				string xmlString = DecompressString(serializedConditionalAction);
+
+				if (string.IsNullOrEmpty(xmlString))
+				{
+					return new ConditionalActionStruct();
+				}
+
+				ConditionalActionStruct conditionalActionStruct;
+
+				// Deserialize the XML string back into the object
+				using (StringReader stringReader = new StringReader(xmlString))
+				{
+					conditionalActionStruct = (ConditionalActionStruct)ConditionalActionSerializer.Deserialize(stringReader);
+				}
+				RecursiveActionReplace(conditionalActionStruct);
+				RecursiveSerializationCallBack(conditionalActionStruct, obj => obj.OnAfterDeserialize());
+				return conditionalActionStruct;
+			}
+			catch (FormatException ex)
+			{
+				// Log and handle any Base64 decoding issues
+				Log($"Base64 decoding failed: {ex.Message}", LogLevel.Error);
+			}
+			catch (Exception ex)
+			{
+				// Log and handle any XML deserialization issues
+				Log($"XML deserialization failed: {ex.Message}", LogLevel.Error);
+			}
+
+			return new ConditionalActionStruct();
+		}
+
+		public static string CompressString(string text)
+		{
+			byte[] buffer = Encoding.UTF8.GetBytes(text);
+			var memoryStream = new MemoryStream();
+			using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Compress, true))
+			{
+				gZipStream.Write(buffer, 0, buffer.Length);
+			}
+
+			memoryStream.Position = 0;
+
+			var compressedData = new byte[memoryStream.Length];
+			memoryStream.Read(compressedData, 0, compressedData.Length);
+
+			var gZipBuffer = new byte[compressedData.Length + 4];
+			Buffer.BlockCopy(compressedData, 0, gZipBuffer, 4, compressedData.Length);
+			Buffer.BlockCopy(BitConverter.GetBytes(buffer.Length), 0, gZipBuffer, 0, 4);
+			return Convert.ToBase64String(gZipBuffer);
+		}
+
+		public static string DecompressString(string compressedText)
+		{
+			byte[] gZipBuffer = Convert.FromBase64String(compressedText);
+			using (var memoryStream = new MemoryStream())
+			{
+				int dataLength = BitConverter.ToInt32(gZipBuffer, 0);
+				memoryStream.Write(gZipBuffer, 4, gZipBuffer.Length - 4);
+
+				var buffer = new byte[dataLength];
+
+				memoryStream.Position = 0;
+				using (var gZipStream = new GZipStream(memoryStream, CompressionMode.Decompress))
+				{
+					gZipStream.Read(buffer, 0, buffer.Length);
+				}
+
+				return Encoding.UTF8.GetString(buffer);
 			}
 		}
 

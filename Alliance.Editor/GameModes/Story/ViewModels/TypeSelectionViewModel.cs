@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Alliance.Editor.Extensions.Story.ViewModels
+namespace Alliance.Editor.GameModes.Story.ViewModels
 {
+	/// <summary>
+	/// VM for the dialog allowing user to select a type.
+	/// </summary>
 	public class TypeSelectionViewModel : INotifyPropertyChanged
 	{
 		public List<Type> ConcreteTypes { get; }

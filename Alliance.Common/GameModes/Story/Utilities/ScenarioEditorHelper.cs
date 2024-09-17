@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 
-namespace Alliance.Editor.Extensions.Story.Utilities
+namespace Alliance.Common.GameModes.Story.Utilities
 {
 	public static class ScenarioEditorHelper
 	{

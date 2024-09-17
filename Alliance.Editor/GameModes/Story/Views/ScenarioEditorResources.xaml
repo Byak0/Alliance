@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:sys="clr-namespace:System;assembly=mscorlib"
-					xmlns:vm="clr-namespace:Alliance.Editor.Extensions.Story.ViewModels"
-					xmlns:widgets="clr-namespace:Alliance.Editor.Extensions.Story.Widgets">
+					xmlns:vm="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
+					xmlns:widgets="clr-namespace:Alliance.Editor.GameModes.Story.Widgets">
 
 	<!-- Font and color definitions -->
 	<FontFamily x:Key="DefaultFontFamily">Arial</FontFamily>

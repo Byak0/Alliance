@@ -1,10 +1,10 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Editor.Extensions.Story.ViewModels;
+using Alliance.Editor.GameModes.Story.ViewModels;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace Alliance.Editor.Extensions.Story.Views
+namespace Alliance.Editor.GameModes.Story.Views
 {
 	public partial class ScenarioEditorWindow : Window
 	{

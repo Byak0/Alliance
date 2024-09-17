@@ -2,7 +2,7 @@
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace Alliance.Editor.Extensions.Story.Views
+namespace Alliance.Editor.GameModes.Story.Views
 {
 	/// <summary>
 	/// Logique d'interaction pour ObjectEditorContentControl.xaml

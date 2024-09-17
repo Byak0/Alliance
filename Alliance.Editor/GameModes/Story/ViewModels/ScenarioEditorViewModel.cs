@@ -9,8 +9,11 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
-namespace Alliance.Editor.Extensions.Story.ViewModels
+namespace Alliance.Editor.GameModes.Story.ViewModels
 {
+	/// <summary>
+	/// VM for the scenario editor.
+	/// </summary>
 	public class ScenarioEditorViewModel : INotifyPropertyChanged
 	{
 		public ObjectEditorViewModel ObjectEditorVM { get; private set; }
@@ -110,7 +113,8 @@ namespace Alliance.Editor.Extensions.Story.ViewModels
 		{
 			if (string.IsNullOrEmpty(_currentFilePath))
 			{
-				SaveAsScenario(obj);  // If no file path exists, fall back to Save As
+				// If no file path exists, fall back to Save As
+				SaveAsScenario(obj);
 			}
 			else
 			{

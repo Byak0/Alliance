@@ -1,9 +1,12 @@
-﻿using Alliance.Editor.Extensions.Story.Utilities;
+﻿using Alliance.Common.GameModes.Story.Utilities;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace Alliance.Editor.Extensions.Story.ViewModels
+namespace Alliance.Editor.GameModes.Story.ViewModels
 {
+	/// <summary>
+	/// VM representing a single item in a collection.
+	/// </summary>
 	public class ItemViewModel : INotifyPropertyChanged
 	{
 		public object Item { get; }
