@@ -75,7 +75,7 @@ jobs:
         run: nuget restore ./Alliance.Common/Alliance.Common.csproj
 
       - name: Build Alliance Common
-        run: MSBuild.exe ./Alliance.Common/Alliance.Common.csproj /p:Configuration=Release /p:Platform=x64 /p:BANNERLORD_GAME_DIR="$PWD\BannerlordClient\"
+        run: MSBuild.exe ./Alliance.Common/Alliance.Common.csproj /p:Configuration=Release /p:Platform=x64 /t:Build /p:EmbedAllSources=true /p:IncludeSymbols=true /p:BANNERLORD_GAME_DIR="$PWD\BannerlordClient\" 
       
       # Build Alliance Client
       - name: Restore NuGet packages for Alliance Client
