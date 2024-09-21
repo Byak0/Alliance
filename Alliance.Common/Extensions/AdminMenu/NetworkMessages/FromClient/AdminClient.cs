@@ -18,7 +18,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool KillAll { get; set; }
 		public bool Kick { get; set; }
 		public bool Ban { get; set; }
-		public bool SetAdmin { get; set; }
+        public bool Respawn { get; set; }
+        public bool SetAdmin { get; set; }
 		public bool ToggleInvulnerable { get; set; }
 		public bool TeleportToPlayer { get; set; }
 		public bool TeleportPlayerToYou { get; set; }
@@ -35,7 +36,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(KillAll);
 			WriteBoolToPacket(Kick);
 			WriteBoolToPacket(Ban);
-			WriteBoolToPacket(SetAdmin);
+            WriteBoolToPacket(Respawn);
+            WriteBoolToPacket(SetAdmin);
 			WriteBoolToPacket(ToggleInvulnerable);
 			WriteBoolToPacket(TeleportToPlayer);
 			WriteBoolToPacket(TeleportPlayerToYou);
@@ -55,7 +57,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			KillAll = ReadBoolFromPacket(ref bufferReadValid);
 			Kick = ReadBoolFromPacket(ref bufferReadValid);
 			Ban = ReadBoolFromPacket(ref bufferReadValid);
-			SetAdmin = ReadBoolFromPacket(ref bufferReadValid);
+            Respawn = ReadBoolFromPacket(ref bufferReadValid);
+            SetAdmin = ReadBoolFromPacket(ref bufferReadValid);
 			ToggleInvulnerable = ReadBoolFromPacket(ref bufferReadValid);
 			TeleportToPlayer = ReadBoolFromPacket(ref bufferReadValid);
 			TeleportPlayerToYou = ReadBoolFromPacket(ref bufferReadValid);
