@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -14,7 +15,10 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public SerializableZone Zone;
 		public SideType Side = SideType.All;
 		public TargetType Target = TargetType.All;
+		[ScenarioEditor(label: "Target count", tooltip: "How many matching agents must be present in the zone.")]
 		public int TargetCount = 1;
+		[ScenarioEditor(label: "Exact count only", tooltip: "If enabled, the condition will only trigger if there is the EXACT number of matching agents in the zone (not more, not less).")]
+		public bool ExactCountOnly = false;
 
 		public enum TargetType
 		{
@@ -39,7 +43,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(Zone.Position.AsVec2, Zone.Radius, agents);
 			agents.RemoveAll(agent => !IsValidTarget(agent));
-			return agents.Count >= TargetCount;
+			return ExactCountOnly ? agents.Count == TargetCount : agents.Count >= TargetCount;
 		}
 
 		public bool IsValidTarget(Agent agent)

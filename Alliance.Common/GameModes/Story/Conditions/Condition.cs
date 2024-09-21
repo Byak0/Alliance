@@ -7,5 +7,7 @@
 	public abstract class Condition
 	{
 		public abstract bool Evaluate(ScenarioManager context);
+		public virtual void Register() { }
+		public virtual void Unregister() { }
 	}
 }

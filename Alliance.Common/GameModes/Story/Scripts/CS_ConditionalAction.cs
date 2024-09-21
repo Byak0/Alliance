@@ -43,12 +43,25 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		{
 			base.OnInit();
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+			foreach (Condition condition in _conditionalActionStruct.Conditions)
+			{
+				condition.Register();
+			}
 		}
 
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+		}
+
+		protected override void OnRemoved(int removeReason)
+		{
+			base.OnRemoved(removeReason);
+			foreach (Condition condition in _conditionalActionStruct?.Conditions)
+			{
+				condition.Unregister();
+			}
 		}
 
 		private string GetCombinedChunks()
