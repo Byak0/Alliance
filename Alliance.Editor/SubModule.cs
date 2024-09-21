@@ -66,6 +66,7 @@ namespace Alliance.Editor
 
 		protected override void OnApplicationTick(float dt)
 		{
+			EditZoneView.Tick(dt);
 			if (Input.IsKeyPressed(InputKey.O))
 			{
 				OpenScenarioEditor();

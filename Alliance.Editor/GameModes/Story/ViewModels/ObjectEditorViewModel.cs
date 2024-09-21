@@ -1,5 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Objectives;
+﻿using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.ObjectModel;
@@ -14,11 +14,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	/// </summary>
 	public class ObjectEditorViewModel : INotifyPropertyChanged
 	{
-		private ScenarioEditorViewModel _parentViewModel;
+		protected ScenarioEditorViewModel parentViewModel;
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public string Title { get; set; }
-		public string SelectedLanguage => _parentViewModel?.SelectedLanguage ?? "English";
+		public string SelectedLanguage => parentViewModel?.SelectedLanguage ?? "English";
 
 		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title)
 		{
@@ -30,7 +30,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			// If in design mode, create a dummy object to display in the designer
 			if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{
-				object obj = new KillAllObjective();
+				AgentEnteredZoneCondition obj = new AgentEnteredZoneCondition()
+				{
+					Zone = new SerializableZone(new TaleWorlds.Library.Vec3(12f, 102.56f, 69442.1f), 124.41f)
+				};
+				obj.TargetCount = 5;
 				string title = "Alliance - Scenario Editor";
 				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
 
@@ -61,7 +65,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 
 			Object = obj;
-			_parentViewModel = parentViewModel;
+			this.parentViewModel = parentViewModel;
 			Fields = new ObservableCollection<FieldViewModel>();
 
 			// Iterate over all public fields
@@ -72,14 +76,31 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				if (attribute == null || attribute.IsEditable)
 				{
 					// Create a view model to display the field content
-					FieldViewModel fvm = new FieldViewModel(fi, fi.GetValue(obj), this, _parentViewModel);
+					FieldViewModel fvm = new FieldViewModel(fi, fi.GetValue(obj), this, this.parentViewModel);
 					Fields.Add(fvm);
 				}
 			}
 			Title = title + " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
+
+			if (parentViewModel != null)
+			{
+				parentViewModel.OnLanguageChange += UpdateAllFieldsLanguage;
+			}
 		}
 
-		public void UpdateAllFieldsLanguage()
+		public void Close()
+		{
+			foreach (var field in Fields)
+			{
+				field.Close();
+			}
+			if (parentViewModel != null)
+			{
+				parentViewModel.OnLanguageChange -= UpdateAllFieldsLanguage;
+			}
+		}
+
+		public void UpdateAllFieldsLanguage(object sender, EventArgs args)
 		{
 			foreach (var field in Fields)
 			{

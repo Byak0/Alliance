@@ -46,6 +46,16 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new StartScenarioAction();
 		}
 
+		public virtual SpawnAgentAction SpawnAgentAction()
+		{
+			return new SpawnAgentAction();
+		}
+
+		public virtual DamageAgentInZoneAction DamageAgentInZoneAction()
+		{
+			return new DamageAgentInZoneAction();
+		}
+
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.
 	}
 }

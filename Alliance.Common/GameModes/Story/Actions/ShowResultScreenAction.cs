@@ -4,7 +4,7 @@ using System;
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
-	/// Action for showing a result screen with text.
+	/// Show a result screen with text.
 	/// </summary>
 	[Serializable]
 	public class ShowResultScreenAction : ActionBase
@@ -20,7 +20,5 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public LocalizedString TextAttackerLost = new("The attacker has lost the act !");
 
 		public ShowResultScreenAction() { }
-
-		public override void Execute() { }
 	}
 }

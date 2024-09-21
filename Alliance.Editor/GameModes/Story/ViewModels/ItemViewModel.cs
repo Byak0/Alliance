@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.GameModes.Story.Utilities;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 
@@ -10,7 +11,10 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	public class ItemViewModel : INotifyPropertyChanged
 	{
 		public object Item { get; }
+
+		private FieldViewModel _fieldViewModel;
 		private string _displayName;
+
 		public string DisplayName
 		{
 			get => _displayName;
@@ -30,15 +34,26 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ItemViewModel(object item, FieldViewModel parentViewModel)
 		{
 			Item = item;
-			DisplayName = ScenarioEditorHelper.GetItemDisplayName(item);
+			_fieldViewModel = parentViewModel;
+			if (_fieldViewModel.scenarioEditorViewModel != null)
+			{
+				_fieldViewModel.scenarioEditorViewModel.OnLanguageChange += UpdateDisplayName;
+			}
 
-			EditCommand = new RelayCommand(_ => parentViewModel.EditObject(Item, this));
-			DeleteCommand = new RelayCommand(_ => parentViewModel.DeleteItem(this));
+			DisplayName = ScenarioEditorHelper.GetItemDisplayName(item, _fieldViewModel.parentViewModel.SelectedLanguage);
+
+			EditCommand = new RelayCommand(_ => _fieldViewModel.EditObject(Item, this));
+			DeleteCommand = new RelayCommand(_ => _fieldViewModel.DeleteItem(this));
 		}
 
-		public void UpdateDisplayName()
+		public void UpdateDisplayName(object sender = null, EventArgs args = null)
 		{
-			DisplayName = ScenarioEditorHelper.GetItemDisplayName(Item);
+			DisplayName = ScenarioEditorHelper.GetItemDisplayName(Item, _fieldViewModel.parentViewModel.SelectedLanguage);
+		}
+
+		public void OnClose()
+		{
+			UpdateDisplayName();
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

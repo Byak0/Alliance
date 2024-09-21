@@ -8,26 +8,19 @@ namespace Alliance.Editor.GameModes.Story.Views
 {
 	public partial class ScenarioEditorWindow : Window
 	{
-		private readonly ScenarioEditorViewModel _viewModel;
-
 		public ScenarioEditorWindow(Scenario scenario)
 		{
 			InitializeComponent();
 
-			_viewModel = new ScenarioEditorViewModel(scenario);
-			DataContext = _viewModel;
+			DataContext = new ScenarioEditorViewModel(scenario);
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 		}
 
-		private void ObjectEditorContentControl_Loaded(object sender, RoutedEventArgs e)
-		{
-		}
-
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (_viewModel != null && !_viewModel.ConfirmUnsavedChanges())
+			if (DataContext != null && !(DataContext as ScenarioEditorViewModel).ConfirmUnsavedChanges())
 			{
 				e.Cancel = true;
 			}

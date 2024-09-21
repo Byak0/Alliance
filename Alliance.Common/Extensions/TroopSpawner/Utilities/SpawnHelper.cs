@@ -35,6 +35,17 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
 		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
 		{
+			return SpawnBot(out _, team, culture, character, position, onSpawnPerkHandler, selectedFormation, botDifficulty, mortalityState);
+		}
+
+		/// <summary>
+		/// Spawn a bot with the specified parameters.
+		/// </summary>
+		/// <param name="agent">Return the agent instance after spawn.</param>
+		/// <returns>True if spawn successful, false otherwise.</returns>
+		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+		{
+			agent = null;
 			try
 			{
 				// Define formation
@@ -100,7 +111,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
 				agentBuildData2.Index(forcedIndex[0]);
 				if (hasMount) agentBuildData2.MountIndex(forcedIndex[1]);
-				Agent agent = Mission.Current.SpawnAgent(agentBuildData2, false);
+				agent = Mission.Current.SpawnAgent(agentBuildData2, false);
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;

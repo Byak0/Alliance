@@ -56,6 +56,9 @@
 											<DataTrigger Binding="{Binding IsComplexType}" Value="True">
 												<Setter Property="ContentTemplate" Value="{StaticResource EditButtonTemplate}"/>
 											</DataTrigger>
+											<DataTrigger Binding="{Binding IsZone}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
+											</DataTrigger>
 										</Style.Triggers>
 									</Style>
 								</ContentControl.Style>

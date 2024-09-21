@@ -22,6 +22,8 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// </summary>
 	public class CS_UsableObject : UsableMachine
 	{
+		public string ObjectId;
+
 		public int NumberOfUseMax = -1;
 
 		public string TextWhenUsable = "Use object";
@@ -243,10 +245,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		protected virtual void AfterUse(Agent userAgent, bool actionCompleted = true)
 		{
+			NumberOfUse++;
+
 			if (NumberOfUseMax > 0)
 			{
-				NumberOfUse++;
-
 				if (_numberOfUse == NumberOfUseMax)
 				{
 					Deactivate();

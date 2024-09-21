@@ -1,4 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Interfaces;
+using Alliance.Common.GameModes.Story.Models;
+using System;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -9,9 +11,29 @@ namespace Alliance.Common.GameModes.Story.Utilities
 	{
 		public static IEditorTools EditorTools;
 
-		public static object OpenEditor(object obj)
+		public static void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)
 		{
-			return EditorTools?.OpenEditor(obj);
+			EditorTools?.AddZoneToEditor(zone, zoneName, onEditCallback);
+		}
+
+		public static void RemoveZoneFromEditor(SerializableZone zone)
+		{
+			EditorTools?.RemoveZoneFromEditor(zone);
+		}
+
+		public static void SetEditableZone(SerializableZone zone)
+		{
+			EditorTools?.SetEditableZone(zone);
+		}
+
+		public static void ClearZones()
+		{
+			EditorTools?.ClearZones();
+		}
+
+		public static void OpenEditor(object obj, Action<object> onCloseCallback)
+		{
+			EditorTools?.OpenEditor(obj, onCloseCallback);
 		}
 	}
 }

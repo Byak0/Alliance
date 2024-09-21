@@ -23,5 +23,15 @@ namespace Alliance.Server.GameModes.Story.Actions
 		{
 			return new Server_StartScenarioAction();
 		}
+
+		public override SpawnAgentAction SpawnAgentAction()
+		{
+			return new Server_SpawnAgentAction();
+		}
+
+		public override DamageAgentInZoneAction DamageAgentInZoneAction()
+		{
+			return new Server_DamageAgentInZoneAction();
+		}
 	}
 }

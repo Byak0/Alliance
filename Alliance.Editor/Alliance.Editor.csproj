@@ -11,6 +11,7 @@
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
 		<UseWPF>true</UseWPF>
 		<OutputType>Library</OutputType>
+		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -23,6 +24,7 @@
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
 	<ItemGroup>

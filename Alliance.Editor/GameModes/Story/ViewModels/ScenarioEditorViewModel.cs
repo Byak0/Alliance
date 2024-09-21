@@ -18,6 +18,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	{
 		public ObjectEditorViewModel ObjectEditorVM { get; private set; }
 		public Scenario Scenario { get; private set; }
+		public event EventHandler OnLanguageChange;
 
 		private List<string> _availableLanguages;
 		private string _selectedLanguage;
@@ -42,7 +43,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				{
 					_selectedLanguage = value;
 					OnPropertyChanged(nameof(SelectedLanguage));
-					ObjectEditorVM?.UpdateAllFieldsLanguage();
+					OnLanguageChange?.Invoke(this, null);
 				}
 			}
 		}

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Input;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -18,8 +19,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	/// </summary>
 	public class FieldViewModel : INotifyPropertyChanged
 	{
-		private readonly ObjectEditorViewModel _parentViewModel;
-		private readonly ScenarioEditorViewModel _scenarioEditorViewModel;
+		internal readonly ObjectEditorViewModel parentViewModel;
+		internal readonly ScenarioEditorViewModel scenarioEditorViewModel;
 		private object _fieldValue;
 
 		public FieldInfo FieldInfo { get; private set; }
@@ -33,7 +34,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
 		public bool IsComplexType => !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
+		public bool IsZone => FieldType == typeof(SerializableZone);
 		public ObservableCollection<ItemViewModel> Items { get; }
+		public ZoneViewModel ZoneVM { get; }
 
 		public object FieldValue
 		{
@@ -44,7 +47,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				{
 					_fieldValue = value;
 					// Propagate the value to the parent object
-					FieldInfo.SetValue(_parentViewModel.Object, _fieldValue);
+					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
 				}
 			}
@@ -52,13 +55,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public string LocalizedText
 		{
-			get => (FieldValue as LocalizedString)?.GetText(_parentViewModel.SelectedLanguage);
+			get => (FieldValue as LocalizedString)?.GetText(parentViewModel.SelectedLanguage);
 			set
 			{
 				if (FieldInfo.FieldType != typeof(LocalizedString)) return;
 
 				FieldValue ??= new LocalizedString(value);
-				((LocalizedString)FieldValue).SetText(_parentViewModel.SelectedLanguage, value);
+				((LocalizedString)FieldValue).SetText(parentViewModel.SelectedLanguage, value);
 				OnPropertyChanged(nameof(LocalizedText));
 			}
 		}
@@ -70,8 +73,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
 		{
 			FieldInfo = fieldInfo;
-			_parentViewModel = parentViewModel;
-			_scenarioEditorViewModel = scenarioEditorViewModel;
+			this.parentViewModel = parentViewModel;
+			this.scenarioEditorViewModel = scenarioEditorViewModel;
 			FieldName = fieldInfo.Name;
 			FieldValue = fieldValue;
 			FieldType = fieldInfo.FieldType;
@@ -103,6 +106,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			else
 			{
 				Items = new ObservableCollection<ItemViewModel>();
+			}
+
+			if (IsZone)
+			{
+				ZoneVM = new ZoneViewModel((SerializableZone)FieldValue, FieldInfo, this);
 			}
 		}
 
@@ -145,20 +153,20 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow(obj, _scenarioEditorViewModel, _parentViewModel.Title);
+			var editorWindow = new ObjectEditorWindow(obj, scenarioEditorViewModel, parentViewModel.Title);
 			editorWindow.Show();
 
 			// Update DisplayName when the editor window is closed
 			editorWindow.Closing += (sender, args) =>
 			{
-				itemViewModel?.UpdateDisplayName();
+				itemViewModel?.OnClose();
 				OnPropertyChanged(nameof(FieldValue));
 			};
 		}
 
 		public void EditObjectFromFieldInfo(FieldInfo fieldInfo)
 		{
-			var obj = fieldInfo.GetValue(_parentViewModel.Object);
+			var obj = fieldInfo.GetValue(parentViewModel.Object);
 
 			if (obj == null)
 			{
@@ -174,7 +182,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				if (typeToCreate == null) return;
 
 				obj = Activator.CreateInstance(typeToCreate);
-				fieldInfo.SetValue(_parentViewModel.Object, obj);
+				fieldInfo.SetValue(parentViewModel.Object, obj);
 			}
 
 			EditObject(obj);
@@ -201,7 +209,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				{
 					foreach (var loaderException in ex.LoaderExceptions)
 					{
-						Console.WriteLine(loaderException.Message);
+						Log(loaderException.Message, LogLevel.Error);
 					}
 
 					// Add successfully loaded types only
@@ -234,6 +242,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public virtual void OnPropertyChanged(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		public void Close()
+		{
+			ZoneVM?.Close();
 		}
 	}
 

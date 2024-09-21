@@ -10,7 +10,9 @@
         mc:Ignorable="d"
         Title="{Binding Title}" Height="480" Width="560"
 		Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
-		d:DataContext="{d:DesignInstance Type=vm:ObjectEditorViewModel, IsDesignTimeCreatable=True}">
+		d:DataContext="{d:DesignInstance Type=vm:ObjectEditorViewModel, IsDesignTimeCreatable=True}"
+		Loaded="Window_Loaded"
+		Closing="Window_Closing">
 
 	<Window.Resources>
 		<ResourceDictionary>
@@ -23,6 +25,6 @@
 	</Window.Resources>
 
 	<Grid>
-		<views:ObjectEditorContentControl Grid.Row="1"/>
+		<views:ObjectEditorContentControl Grid.Row="1" />
 	</Grid>
 </Window>

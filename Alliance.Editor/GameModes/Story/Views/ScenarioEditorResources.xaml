@@ -8,6 +8,19 @@
 	<FontFamily x:Key="DefaultFontFamily">Arial</FontFamily>
 	<sys:Double x:Key="DefaultFontSize">16</sys:Double>
 	<SolidColorBrush x:Key="DefaultFontColor">#FF000000</SolidColorBrush>
+	
+	<!-- Default values for TextBox -->
+	<Style TargetType="TextBox">
+		<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+		<Setter Property="Foreground" Value="{StaticResource DefaultFontColor}" />
+	</Style>
+
+	<Style TargetType="TextBlock">
+		<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+		<Setter Property="Foreground" Value="{StaticResource DefaultFontColor}" />
+	</Style>
 
 	<vm:EnumToListConverter x:Key="EnumToListConverter" />
 	<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -19,7 +32,7 @@
 					Margin="0,0,16,0"
 					Orientation="Horizontal" 
 					VerticalAlignment="Center">
-			<Image 
+			<Image
 				Source="pack://application:,,,/Alliance.Common;component/Resources/alliance_help2.png"
 				Width="24"
 				Height="24"
@@ -33,12 +46,7 @@
 			</Image>
 
 			<!-- Text for the label -->
-			<TextBlock Text="{Binding Label}"
-					FontFamily="{StaticResource DefaultFontFamily}"
-					FontSize="{StaticResource DefaultFontSize}"
-					Foreground="{StaticResource DefaultFontColor}"
-					VerticalAlignment="Center">
-			</TextBlock>
+			<TextBlock Text="{Binding Label}" VerticalAlignment="Center" FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}" />
 		</StackPanel>
 	</DataTemplate>
 
@@ -49,9 +57,6 @@
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
 			<TextBox Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 FontFamily="{StaticResource DefaultFontFamily}"
-					 FontSize="{StaticResource DefaultFontSize}"
-					 Foreground="{StaticResource DefaultFontColor}"
 					 Width="264"
 					 VerticalAlignment="Center">
 				<TextBox.ToolTip>
@@ -90,9 +95,6 @@
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
 			<TextBox Text="{Binding LocalizedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				 FontFamily="{StaticResource DefaultFontFamily}"
-				 FontSize="{StaticResource DefaultFontSize}"
-				 Foreground="{StaticResource DefaultFontColor}"
 				 Width="264"
 				 VerticalAlignment="Center">
 				<TextBox.ToolTip>
@@ -124,9 +126,7 @@
 					<StackPanel Orientation="Horizontal" >
 						<Button x:Name="PART_DecrementButton" Content="-" Width="24" Height="24" Padding="0, 0, 0, 4"/>
 						<TextBox x:Name="PART_TextBox" 
-								 Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-								 FontFamily="{StaticResource DefaultFontFamily}"
-								 FontSize="{StaticResource DefaultFontSize}"
+								 Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 								 Width="80" 
 								 HorizontalAlignment="Center" 
 								 VerticalAlignment="Center" 
@@ -180,7 +180,56 @@
 					FontSize="{StaticResource DefaultFontSize}"/>
 		</StackPanel>
 	</DataTemplate>
-	
+
+	<!-- Template for Zone - Show button to edit zone in Scene directly -->
+	<DataTemplate x:Key="ZoneTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<!-- X/Y/Z/Radius Fields -->
+			<StackPanel Orientation="Vertical" Width="200" >
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="X" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Y" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Z" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Radius" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+			</StackPanel>
+
+			<Button
+                Command="{Binding ZoneVM.EditZoneCommand}"
+                Height="64"
+                Width="64"
+                Margin="4,0,0,0"
+                Padding="4, 0, 4, 4">
+				<TextBlock TextWrapping="Wrap" Foreground="White" TextAlignment="Center">Edit Zone</TextBlock>
+			</Button>
+		</StackPanel>
+	</DataTemplate>
+
 	<!-- Template for List values -->
 	<DataTemplate x:Key="ListTemplate">
 		<StackPanel Orientation="Vertical" Margin="0">
@@ -192,13 +241,6 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<StackPanel Orientation="Horizontal" Margin="0, 8, 0, 0">
-							<!--<TextBlock Text="{Binding DisplayName}"
-								   FontFamily="{StaticResource DefaultFontFamily}"
-								   FontSize="{StaticResource DefaultFontSize}"
-								   Foreground="{StaticResource DefaultFontColor}"
-								   Width="320"
-								   VerticalAlignment="Center"
-								   Margin="16, 0, 0, 0"/>-->
 							<Button Content="{Binding DisplayName}" 
 									Command="{Binding EditCommand}" 
 									Height="24" 

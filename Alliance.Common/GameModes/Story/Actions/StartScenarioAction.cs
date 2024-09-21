@@ -21,7 +21,5 @@ namespace Alliance.Common.GameModes.Story.Actions
 		}
 
 		public StartScenarioAction() { }
-
-		public override void Execute() { }
 	}
 }

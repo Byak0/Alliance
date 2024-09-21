@@ -60,6 +60,6 @@
 		</Menu>
 
 		<!-- Main Content -->
-		<views:ObjectEditorContentControl Grid.Row="1" DataContext="{Binding ObjectEditorVM}" Loaded="ObjectEditorContentControl_Loaded"/>
+		<views:ObjectEditorContentControl Grid.Row="1" DataContext="{Binding ObjectEditorVM}" />
 	</Grid>
 </Window>
