@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Objectives;
+﻿using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ScenarioEditor(label: "Objectives", tooltip: "List of objectives to complete in this act.")]
 		public List<ObjectiveBase> Objectives;
 
+		[ScenarioEditor(label: "Conditional actions", tooltip: "List of actions to trigger based on conditions.")]
+		public List<ConditionalActionStruct> ConditionalActions = new List<ConditionalActionStruct>();
+
 		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, GameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)
 		{
 			Name = name;
@@ -53,6 +57,13 @@ namespace Alliance.Common.GameModes.Story.Models
 				objective.Reset();
 				objective.RegisterForUpdate();
 			}
+			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
+			{
+				foreach (Condition condition in conditionalAction.Conditions)
+				{
+					condition.Register();
+				}
+			}
 		}
 
 		public void UnregisterObjectives()
@@ -60,6 +71,13 @@ namespace Alliance.Common.GameModes.Story.Models
 			foreach (ObjectiveBase objective in Objectives)
 			{
 				objective.UnregisterForUpdate();
+			}
+			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
+			{
+				foreach (Condition condition in conditionalAction.Conditions)
+				{
+					condition.Unregister();
+				}
 			}
 		}
 	}

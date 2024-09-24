@@ -56,6 +56,16 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new DamageAgentInZoneAction();
 		}
 
+		public virtual ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
+		{
+			return new ShowOrHideEntitiesAction();
+		}
+
+		public virtual TeleportAgentAction TeleportAgentAction()
+		{
+			return new TeleportAgentAction();
+		}
+
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.
 	}
 }

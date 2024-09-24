@@ -105,6 +105,17 @@ namespace Alliance.Common.GameModes.Story
 			}
 		}
 
+		public virtual void OnMissionTick(float dt)
+		{
+			if (ActState > ActState.SpawningParticipants)
+			{
+				foreach (ConditionalActionStruct conditionalActionStruct in CurrentAct.ConditionalActions)
+				{
+					conditionalActionStruct.Tick(dt);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Sets the winner of the current act.
 		/// </summary>

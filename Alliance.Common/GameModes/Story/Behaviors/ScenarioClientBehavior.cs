@@ -41,6 +41,11 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 			}
 		}
 
+		public override void OnMissionTick(float dt)
+		{
+			ScenarioManager.Instance.OnMissionTick(dt);
+		}
+
 		private void OnMyClientSynchronized()
 		{
 			_myRepresentative = GameNetwork.MyPeer.GetComponent<FlagDominationMissionRepresentative>();

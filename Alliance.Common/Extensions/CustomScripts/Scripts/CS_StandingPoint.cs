@@ -60,7 +60,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				userAgent.TeleportToPosition(GameEntity.GlobalPosition);
 
 				// Play animation
-				AnimationSystem.Instance.PlayAnimation(userAgent, Animation, true);
+				if (Animation != null) AnimationSystem.Instance.PlayAnimation(userAgent, Animation, true);
 			}
 
 			OnUseEvent?.Invoke(userAgent);

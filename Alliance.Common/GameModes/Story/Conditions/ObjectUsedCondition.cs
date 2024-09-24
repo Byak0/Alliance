@@ -15,17 +15,12 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		private bool _used;
 
-		public ObjectUsedCondition(string objectId)
-		{
-			ObjectId = objectId;
-		}
-
 		public ObjectUsedCondition() { }
 
 		public override void Register()
 		{
 			// Retrieve all usable objects with the correct ObjectId
-			IEnumerable<CS_UsableObject> usableObjects = from amo in Mission.Current.ActiveMissionObjects
+			IEnumerable<CS_UsableObject> usableObjects = from amo in Mission.Current.MissionObjects
 														 where amo is CS_UsableObject && (amo as CS_UsableObject).ObjectId == ObjectId
 														 select (amo as CS_UsableObject);
 
@@ -38,8 +33,10 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public override void Unregister()
 		{
+			if (Mission.Current == null) return;
+
 			// Retrieve all usable objects with the correct ObjectId
-			IEnumerable<CS_UsableObject> usableObjects = from amo in Mission.Current.ActiveMissionObjects
+			IEnumerable<CS_UsableObject> usableObjects = from amo in Mission.Current.MissionObjects
 														 where amo is CS_UsableObject && (amo as CS_UsableObject).ObjectId == ObjectId
 														 select (amo as CS_UsableObject);
 

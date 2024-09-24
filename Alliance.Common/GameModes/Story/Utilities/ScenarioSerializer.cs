@@ -2,7 +2,6 @@
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
-using Alliance.Common.GameModes.Story.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;

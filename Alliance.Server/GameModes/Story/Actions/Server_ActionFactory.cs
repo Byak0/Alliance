@@ -33,5 +33,15 @@ namespace Alliance.Server.GameModes.Story.Actions
 		{
 			return new Server_DamageAgentInZoneAction();
 		}
+
+		public override ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
+		{
+			return new Server_ShowOrHideEntitiesAction();
+		}
+
+		public override TeleportAgentAction TeleportAgentAction()
+		{
+			return new Server_TeleportAgentAction();
+		}
 	}
 }

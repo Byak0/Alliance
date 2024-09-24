@@ -15,11 +15,19 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				return "null";
 			}
 			var nameProperty = item.GetType().GetProperty("Name");
+			if (nameProperty != null && nameProperty.PropertyType == typeof(string))
+			{
+				return (string)nameProperty.GetValue(item) ?? item.GetType().Name;
+			}
 			if (nameProperty != null && nameProperty.PropertyType == typeof(LocalizedString))
 			{
 				return ((LocalizedString)nameProperty.GetValue(item))?.GetText(language) ?? item.GetType().Name;
 			}
 			var nameField = item.GetType().GetField("Name");
+			if (nameField != null && nameField.FieldType == typeof(string))
+			{
+				return (string)nameField.GetValue(item) ?? item.GetType().Name;
+			}
 			if (nameField != null && nameField.FieldType == typeof(LocalizedString))
 			{
 				return ((LocalizedString)nameField.GetValue(item))?.GetText(language) ?? item.GetType().Name;

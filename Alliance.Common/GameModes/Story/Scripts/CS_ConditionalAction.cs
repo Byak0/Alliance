@@ -1,11 +1,10 @@
-﻿using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Common.GameModes.Story.Conditions;
+﻿using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.DotNet;
 using TaleWorlds.Engine;
-using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Scripts
 {
@@ -32,8 +31,6 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		// Struct for the conditions and actions, retrieved from the serialized string
 		private ConditionalActionStruct _conditionalActionStruct = new ConditionalActionStruct();
-
-		private float _refreshTimer = 0f;
 
 		public CS_ConditionalAction()
 		{
@@ -137,61 +134,12 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public override TickRequirement GetTickRequirement()
 		{
-			if (GameNetwork.IsClientOrReplay)
-			{
-				return base.GetTickRequirement();
-			}
 			return TickRequirement.TickParallel | base.GetTickRequirement();
 		}
 
 		protected override void OnTickParallel(float dt)
 		{
-			_conditionalActionStruct.Enabled = true;
-			if (_conditionalActionStruct.Enabled)
-			{
-				_refreshTimer += dt;
-				if (_refreshTimer < _conditionalActionStruct.RefreshDelay) return;
-				_refreshTimer = 0f;
-
-				bool conditionsMet = true;
-				foreach (Condition condition in _conditionalActionStruct.Conditions)
-				{
-					if (!condition.Evaluate(ScenarioManager.Instance))
-					{
-						conditionsMet = false;
-						break;
-					}
-				}
-
-				if (conditionsMet)
-				{
-					foreach (ActionBase action in _conditionalActionStruct.Actions)
-					{
-						action.Execute();
-					}
-
-					if (_conditionalActionStruct.OneTimeOnly)
-					{
-						_conditionalActionStruct.Enabled = false;
-					}
-				}
-			}
+			_conditionalActionStruct.Tick(dt);
 		}
-	}
-
-	public class ConditionalActionStruct
-	{
-		[ScenarioEditor(label: "Conditions", tooltip: "If multiple conditions are set, they must all be true to trigger the actions.")]
-		public List<Condition> Conditions = new List<Condition>();
-		[ScenarioEditor(label: "Actions", tooltip: "Actions triggered when conditions are met.")]
-		public List<ActionBase> Actions = new List<ActionBase>();
-		[ScenarioEditor(label: "Enabled", tooltip: "Enable or disable the conditional action.")]
-		public bool Enabled = true;
-		[ScenarioEditor(label: "One Time Only", tooltip: "If true, the conditional action will only trigger once.")]
-		public bool OneTimeOnly = false;
-		[ScenarioEditor(label: "Refresh Delay", tooltip: "Delay between condition checks in seconds. Longer delays are preferable for performance.")]
-		public float RefreshDelay = 1f;
-
-		public ConditionalActionStruct() { }
 	}
 }
