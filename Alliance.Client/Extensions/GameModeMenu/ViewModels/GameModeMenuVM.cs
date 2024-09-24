@@ -13,6 +13,7 @@ using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
@@ -275,26 +276,44 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				MultiplayerOption option = MultiplayerOption.CreateMultiplayerOption(optionType);
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
 
-				if (_selectedGameMode.GameModeSettings.TWOptions[optionType] == null)
-				{
-					continue;
-				}
+				FieldInfo fi = typeof(TWConfig).GetField(optionType.ToString());
+				if (fi == null) continue; // Skip if option type is not found
+
+				// Retrieve attribute for option type
+				ScenarioEditorAttribute attribute = fi.GetCustomAttribute<ScenarioEditorAttribute>();
+				if (attribute != null && !attribute.IsEditable) continue; // Skip if option is not editable
 
 				switch (optionProperty.OptionValueType)
 				{
 					case OptionValueType.Bool:
-						option.UpdateValue((bool)_selectedGameMode.GameModeSettings.TWOptions[optionType]);
-						NativeOptions.Add(new BoolOptionVM(option));
+						NativeOptions.Add(new BoolOptionVM(
+							new TextObject(attribute.Label ?? optionType.ToString()),
+							new TextObject(attribute.Tooltip ?? optionType.ToString()),
+							() => (bool)_selectedGameMode.GameModeSettings.TWOptions[optionType],
+							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = newValue));
 						break;
 					case OptionValueType.Integer:
-						option.UpdateValue((int)_selectedGameMode.GameModeSettings.TWOptions[optionType]);
-						NativeOptions.Add(new NumericOptionVM(option));
+						NativeOptions.Add(new NumericOptionVM(
+							new TextObject(attribute.Label ?? optionType.ToString()),
+							new TextObject(attribute.Tooltip ?? optionType.ToString()),
+							() => (int)_selectedGameMode.GameModeSettings.TWOptions[optionType],
+							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = newValue,
+							optionProperty.BoundsMin,
+							optionProperty.BoundsMax,
+							true, true));
 						break;
 					case OptionValueType.String:
-						option.UpdateValue((string)_selectedGameMode.GameModeSettings.TWOptions[optionType]);
 						if (option.OptionType == OptionType.CultureTeam1 || option.OptionType == OptionType.CultureTeam2)
 						{
-							NativeOptions.Add(new SelectionOptionVM(option, GetFactionChoices()));
+							NativeOptions.Add(new SelectionOptionVM(
+								new TextObject(attribute.Label ?? optionType.ToString()),
+								new TextObject(attribute.Tooltip ?? optionType.ToString()),
+								new SelectionOptionData(
+									() => GetFactionChoices().FindIndex(item => item.Data == (string)_selectedGameMode.GameModeSettings.TWOptions[optionType]),
+									newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = GetFactionChoices().ElementAtOrDefault(newValue).Data,
+									2,
+									GetFactionChoices()),
+								false));
 						}
 						break;
 				}
