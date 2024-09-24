@@ -107,9 +107,9 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return Kick(peer, admin);
 				if (admin.Ban)
 					return Ban(peer, admin);
-                if (admin.Respawn)
-                	return Respawn(peer, admin);
-                if (admin.ToggleInvulnerable)
+				if (admin.Respawn)
+					return Respawn(peer, admin);
+				if (admin.ToggleInvulnerable)
 					return ToggleInvulnerable(peer, admin);
 				if (admin.TeleportToPlayer)
 					return TeleportToPlayer(peer, admin);
@@ -171,36 +171,36 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
-            healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
+			healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
 			Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
 			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
-        public  bool Respawn(NetworkCommunicator peer, AdminClient admin)
-        {
-            NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
-            MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
+		public  bool Respawn(NetworkCommunicator peer, AdminClient admin)
+		{
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
+			MissionPeer missionPeer = playerSelected.GetComponent<MissionPeer>();
 
-            if (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam)
-            {
-                Mission.Current.GetMissionBehavior<RespawnBehavior>().RespawnPlayer(peer);
-                Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été respawn par l'administrateur {peer.UserName}", LogLevel.Information);
-                SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est respawn par {peer.UserName}", AdminServerLog.ColorList.Success, true);
-                return true; 
+			if (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam)
+			{
+				Mission.Current.GetMissionBehavior<RespawnBehavior>().RespawnPlayer(playerSelected);
+				Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été respawn par l'administrateur {peer.UserName}", LogLevel.Information);
+				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est respawn par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				return true; 
 				
-            }
-            else
-            {
-                Log($"[AdminPanel] Erreur lors du respawn, le joueur n'est pas dans une équipe ", LogLevel.Information);
-                SendMessageToClient(peer, $"[AdminPanel]  Erreur lors du respawn, le joueur n'est pas dans une équipe.", AdminServerLog.ColorList.Danger, true);
-                return false;
-            }  
+			}
+			else
+			{
+				Log($"[AdminPanel] Erreur lors du respawn, le joueur n'est pas dans une équipe ", LogLevel.Information);
+				SendMessageToClient(peer, $"[AdminPanel]  Erreur lors du respawn, le joueur n'est pas dans une équipe.", AdminServerLog.ColorList.Danger, true);
+				return false;
+			}
 
         }
 
-        public bool HealAll(NetworkCommunicator peer)
+		public bool HealAll(NetworkCommunicator peer)
 		{
 			List<NetworkCommunicator> playersSelected = GameNetwork.NetworkPeers.ToList();
 

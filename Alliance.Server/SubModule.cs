@@ -120,7 +120,7 @@ namespace Alliance.Server
 			mission.AddMissionBehavior(new ALGlobalAIBehavior());
 			mission.AddMissionBehavior(new DieUnderWaterBehavior());
 			mission.AddMissionBehavior(new FakeArmyBehavior());
-            mission.AddMissionBehavior(new RespawnBehavior());
-        }
+			mission.AddMissionBehavior(new RespawnBehavior());
+		}
 	}
 }
