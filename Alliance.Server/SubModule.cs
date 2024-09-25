@@ -11,6 +11,7 @@ using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
+using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.DieUnderWater.Behaviors;
@@ -119,6 +120,7 @@ namespace Alliance.Server
 			mission.AddMissionBehavior(new ALGlobalAIBehavior());
 			mission.AddMissionBehavior(new DieUnderWaterBehavior());
 			mission.AddMissionBehavior(new FakeArmyBehavior());
+			mission.AddMissionBehavior(new RespawnBehavior());
 		}
 	}
 }

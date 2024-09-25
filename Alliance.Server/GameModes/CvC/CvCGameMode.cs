@@ -2,7 +2,6 @@ using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.CvC.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
-using Alliance.Server.Extensions.SimpleRespawn.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
 using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
