@@ -95,14 +95,9 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
 
                     float distanceSquared = (targetBoneGlobalPosition - agentBoneGlobalPosition).LengthSquared;
 
-                    if (distanceSquared < closestDistanceSquared)
-                    {
-                        closestDistanceSquared = distanceSquared;
-                        closestBone = (sbyte)i;
-                    }
-
                     if (distanceSquared <= rangeSquared)
                     {
+                        closestBone = (sbyte)i;
                         return closestBone;
                     }
                 }

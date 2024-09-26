@@ -71,12 +71,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             foreach (Agent agent in nearbyAllAgents)
             {
                 if (agent != null && agent != peer.ControlledAgent)
-                {
-                    //float peerZAxe = peer.ControlledAgent.MountAgent.Position.z;
-                    //float diffHauteur = Math.Abs(peerZAxe - nearbyAgent.Position.z);
-
-                    //if (diffHauteur < 2f)
-                    //{
+                {                    
                     Mission.Current.AddMissionBehavior(new BoneCheckDuringAnimationBehavior(
                         peer.ControlledAgent.MountAgent,
                         agent,
@@ -84,8 +79,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                         0.5f, // Duration of the detection. Must be lower than animation timing, the calculation of very short time intervals is not well managed by MB system
                         impactDistance,
                         (agent, target) => DealDamage(target, 60, peer.ControlledAgent)
-                    ));
-                    //}
+                    ));           
                 }
             }
         }
