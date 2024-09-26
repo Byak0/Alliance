@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
@@ -8,7 +9,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
     {
         private Agent agent;
         private Agent target;
-        private sbyte agentBoneType;
+        private List<sbyte> boneIds;
         private float minDistanceSquared;
         private float startTime;
         private float endTime;
@@ -18,11 +19,11 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
         public Action<Agent, Agent> OnBoneFoundCallback;
 
         // Constructor callback
-        public BoneCheckDuringAnimationBehavior(Agent agent, Agent target, sbyte agentBoneType, float duration, float minDistanceSquared, Action<Agent, Agent> onBoneFoundCallback)
+        public BoneCheckDuringAnimationBehavior(Agent agent, Agent target, List<sbyte> boneIds, float duration, float minDistanceSquared, Action<Agent, Agent> onBoneFoundCallback)
         {
             this.agent = agent;
             this.target = target;
-            this.agentBoneType = agentBoneType;
+            this.boneIds = boneIds;
             this.minDistanceSquared = minDistanceSquared;
             this.startTime = Mission.Current.CurrentTime;
             this.endTime = this.startTime + duration;
@@ -53,7 +54,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
             }
 
             // search bone in range
-            sbyte boneInRange = SearchBoneInRange(agent, target, agentBoneType, minDistanceSquared);
+            sbyte boneInRange = SearchBoneInRange(agent, target, boneIds, minDistanceSquared);
 
             if (boneInRange != -1)
             {
@@ -72,38 +73,40 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
         /// <param name="boneType">Bone type of the player to check the collision</param>
         /// <param name="rangeSquared"></param>
         /// <returns>-1 if no target bone in range else the first target bone id in range</returns>
-        private static sbyte SearchBoneInRange(Agent agent, Agent target, sbyte boneType, float rangeSquared)
+        private static sbyte SearchBoneInRange(Agent agent, Agent target, List<sbyte> boneType, float rangeSquared)
         {
-            MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
-            MatrixFrame targetGlobalFrame = target.AgentVisuals.GetGlobalFrame();
-            MatrixFrame agentBone = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(boneType);
-
-            Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
-
-            sbyte closestBone = -1;
-            float closestDistanceSquared = float.MaxValue;
-
             int targetBoneCount = target.AgentVisuals.GetSkeleton().GetBoneCount();
 
-            for (int i = 0; i < targetBoneCount; i++)
+            foreach (sbyte bone in boneType)
             {
-                MatrixFrame targetBoneFrame = target.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex((sbyte)i);
-                Vec3 targetBoneGlobalPosition = targetGlobalFrame.TransformToParent(targetBoneFrame.origin);
+                MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
+                MatrixFrame targetGlobalFrame = target.AgentVisuals.GetGlobalFrame();
+                MatrixFrame agentBone = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(bone);
 
-                float distanceSquared = (targetBoneGlobalPosition - agentBoneGlobalPosition).LengthSquared;
+                Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
 
-                if (distanceSquared < closestDistanceSquared)
+                sbyte closestBone = -1;
+                float closestDistanceSquared = float.MaxValue;                
+
+                for (int i = 0; i < targetBoneCount; i++)
                 {
-                    closestDistanceSquared = distanceSquared;
-                    closestBone = (sbyte)i;
-                }
+                    MatrixFrame targetBoneFrame = target.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex((sbyte)i);
+                    Vec3 targetBoneGlobalPosition = targetGlobalFrame.TransformToParent(targetBoneFrame.origin);
 
-                if (distanceSquared <= rangeSquared)
-                {
-                    return closestBone;
+                    float distanceSquared = (targetBoneGlobalPosition - agentBoneGlobalPosition).LengthSquared;
+
+                    if (distanceSquared < closestDistanceSquared)
+                    {
+                        closestDistanceSquared = distanceSquared;
+                        closestBone = (sbyte)i;
+                    }
+
+                    if (distanceSquared <= rangeSquared)
+                    {
+                        return closestBone;
+                    }
                 }
             }
-
             return -1; // no target found in range
         }
 
