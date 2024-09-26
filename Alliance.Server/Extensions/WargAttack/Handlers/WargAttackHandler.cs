@@ -44,14 +44,14 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_running");
                 AnimationSystem.Instance.PlayAnimation(mountAgent, animation, true);
-            
+
                 WargAttack(peer, wargBoneIds);
             }
             else
             {
                 Animation animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_attack_stand");
                 AnimationSystem.Instance.PlayAnimation(mountAgent, animation, true);
-                
+
                 WargAttack(peer, wargBoneIds);
             }
 
@@ -65,23 +65,27 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
 
             float radius = 10f;
             float impactDistance = 0.5f;
-            Agent nearbyAgent = CoreUtils.GetNearestAliveAgentInRange(radius, peer.ControlledAgent);
 
-            if (nearbyAgent != null && nearbyAgent != peer.ControlledAgent)
+            List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, peer.ControlledAgent);
+
+            foreach (Agent agent in nearbyAllAgents)
             {
-                float peerZAxe = peer.ControlledAgent.MountAgent.Position.z;
-                float diffHauteur = Math.Abs(peerZAxe - nearbyAgent.Position.z);
-
-                if (diffHauteur < 2f)
+                if (agent != null && agent != peer.ControlledAgent)
                 {
+                    //float peerZAxe = peer.ControlledAgent.MountAgent.Position.z;
+                    //float diffHauteur = Math.Abs(peerZAxe - nearbyAgent.Position.z);
+
+                    //if (diffHauteur < 2f)
+                    //{
                     Mission.Current.AddMissionBehavior(new BoneCheckDuringAnimationBehavior(
                         peer.ControlledAgent.MountAgent,
-                        nearbyAgent,
+                        agent,
                         boneIds,
                         0.5f, // Duration of the detection. Must be lower than animation timing, the calculation of very short time intervals is not well managed by MB system
                         impactDistance,
                         (agent, target) => DealDamage(target, 60, peer.ControlledAgent)
                     ));
+                    //}
                 }
             }
         }

@@ -86,7 +86,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
                 Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
 
                 sbyte closestBone = -1;
-                float closestDistanceSquared = float.MaxValue;                
+                float closestDistanceSquared = float.MaxValue;
 
                 for (int i = 0; i < targetBoneCount; i++)
                 {
