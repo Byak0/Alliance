@@ -100,7 +100,7 @@ namespace Alliance.Server.Core.Utils
         }
 
         /// <summary>
-        /// Return the list of all agents alives that are near the target.
+        /// Return the list of all agents alive that are near the target.
         /// IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED
         /// </summary>
         /// <param name="range"></param>
@@ -119,6 +119,7 @@ namespace Alliance.Server.Core.Utils
                 // Do not include mount of player and player.
                 if (agent == target.MountAgent || agent == target) continue;
 
+                //float distance = agent.Position.Distance(target.Position);
                 float distance = agent.Position.Distance(target.Position);
 
                 //Add offset in case of mount since mount are large
