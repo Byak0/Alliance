@@ -64,7 +64,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
             if (peer.ControlledAgent == null || peer.ControlledAgent.MountAgent == null) return;
 
             float radius = 10f;
-            float impactDistance = 0.5f;
+            float impactDistance = 0.1f;
 
             List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, peer.ControlledAgent);
 
@@ -76,7 +76,7 @@ namespace Alliance.Server.Extensions.WargAttack.Handlers
                         peer.ControlledAgent.MountAgent,
                         agent,
                         boneIds,
-                        0.5f, // Duration of the detection. Must be lower than animation timing, the calculation of very short time intervals is not well managed by MB system
+                        0.7f,
                         impactDistance,
                         (agent, target) => DealDamage(target, 60, peer.ControlledAgent)
                     ));           

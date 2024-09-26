@@ -13,7 +13,10 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
         private float minDistanceSquared;
         private float startTime;
         private float endTime;
+        private float duration;
         private bool isChecking;
+
+        float time = 0f;
 
         // Callback to signal when a bone is found
         public Action<Agent, Agent> OnBoneFoundCallback;
@@ -27,6 +30,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
             this.minDistanceSquared = minDistanceSquared;
             this.startTime = Mission.Current.CurrentTime;
             this.endTime = this.startTime + duration;
+            this.duration = duration;
             this.isChecking = true;
             this.OnBoneFoundCallback = onBoneFoundCallback; // register callback
         }
@@ -35,10 +39,10 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
         {
             base.OnMissionTick(dt);
 
-
+            time += dt;            
             // Check duration
-            if (!isChecking || Mission.Current.CurrentTime >= endTime)
-            {
+            if (!isChecking || time >= duration)
+            {                
                 isChecking = false;
                 Mission.Current.RemoveMissionBehavior(this);
                 return;
@@ -47,7 +51,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
             // Check if the agent or the target is inactive
             if (agent == null || target == null || !agent.IsActive() || !target.IsActive())
             {
-                Common.Utilities.Logger.SendMessageToAll("Agent ou cible invalide.");
+                //Common.Utilities.Logger.SendMessageToAll("Agent ou cible invalide.");
                 isChecking = false;
                 Mission.Current.RemoveMissionBehavior(this);
                 return;
@@ -57,7 +61,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
             sbyte boneInRange = SearchBoneInRange(agent, target, boneIds, minDistanceSquared);
 
             if (boneInRange != -1)
-            {
+            {                
                 // If a bone is found, call the callback.
                 OnBoneFoundCallback?.Invoke(agent, target); // Execute the callback
                 isChecking = false; // Stop the check after executing the action.
@@ -85,8 +89,7 @@ namespace Alliance.Server.Extensions.WargAttack.MissionBehavior
 
                 Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
 
-                sbyte closestBone = -1;
-                float closestDistanceSquared = float.MaxValue;
+                sbyte closestBone = -1;                
 
                 for (int i = 0; i < targetBoneCount; i++)
                 {
