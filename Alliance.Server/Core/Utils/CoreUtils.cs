@@ -141,15 +141,15 @@ namespace Alliance.Server.Core.Utils
         /// Determine nearest agent alive from the target
         /// IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED
         /// </summary>
-        /// <param name="range">Ranger of search</param>
+        /// <param name="range">Range of search</param>
         /// <param name="target">eg : Current player</param>
         /// <returns>Nearest agent but not current player's mount</returns>
         public static Agent GetNearestAliveAgentInRange(float range, Agent target)
         {
             MBList<Agent> nearbyAgents = new MBList<Agent>();
-            Mission.Current.GetNearbyAgents(target.Position.AsVec2,range,nearbyAgents);
+            Mission.Current.GetNearbyAgents(target.Position.AsVec2, range, nearbyAgents);
             Agent closestAgentInRange = null;
-            
+
 
             float closestDistanceSquared = float.MaxValue;//To be sure the first agent range is always at lower range value
 
@@ -160,14 +160,14 @@ namespace Alliance.Server.Core.Utils
                 // Do not include mount of player and player.
                 if (agent == target.MountAgent || agent == target) continue;
 
-                //float distance = agent.Position.Distance(target.Position);
+
                 float distance = (agent.Position - target.Position).LengthSquared;// Work with square length. Better perf         
 
                 //Keep in memory the closest agent
                 if (distance < closestDistanceSquared)
                 {
                     closestDistanceSquared = distance;
-                   closestAgentInRange = agent;
+                    closestAgentInRange = agent;
                 }
             }
 
