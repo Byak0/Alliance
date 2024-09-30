@@ -73,14 +73,14 @@
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
 			<ComboBox ItemsSource="{Binding PossibleValues}"
-					SelectedItem="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					FontFamily="{StaticResource DefaultFontFamily}"
-					FontSize="{StaticResource DefaultFontSize}"
-					Foreground="{StaticResource DefaultFontColor}"
-					Width="264"
-					VerticalAlignment="Center"
-					IsEditable="True"
-					Padding="0,0,8,0">
+				  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				  FontFamily="{StaticResource DefaultFontFamily}"
+				  FontSize="{StaticResource DefaultFontSize}"
+				  Foreground="{StaticResource DefaultFontColor}"
+				  Width="264"
+				  VerticalAlignment="Center"
+				  IsEditable="True"
+				  Padding="0,0,8,0">
 				<ComboBox.ToolTip>
 					<ToolTip Content="{Binding Tooltip}" />
 				</ComboBox.ToolTip>

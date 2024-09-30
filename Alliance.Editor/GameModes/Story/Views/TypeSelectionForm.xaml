@@ -5,8 +5,11 @@
         Title="Select Type"
         Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
         Width="256"
-        MaxHeight="304"
+        SizeToContent="Height"
+        MinHeight="200"
+        MaxHeight="512"
         Loaded="Window_Loaded">
+
 	<Window.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
@@ -17,15 +20,23 @@
 		</ResourceDictionary>
 	</Window.Resources>
 
-	<StackPanel Margin="8">
+	<Grid Margin="8">
+		<Grid.RowDefinitions>
+			<!-- First row for the ListBox with star sizing -->
+			<RowDefinition Height="*" />
+			<!-- Second row for the OK button with automatic height -->
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
 		<!-- ListBox to display the available concrete types -->
-		<ListBox ItemsSource="{Binding ConcreteTypes}" 
+		<ListBox Grid.Row="0" ItemsSource="{Binding ConcreteTypes}" 
                  SelectedItem="{Binding SelectedType}" 
                  DisplayMemberPath="Name"
-                 MaxHeight="248" />
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 MaxHeight="288" />
 
 		<!-- OK button -->
-		<Button Content="OK" Command="{Binding OKCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
+		<Button Grid.Row="1" Content="OK" Command="{Binding OKCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}" 
                 HorizontalAlignment="Center" Width="80" Margin="0,16,0,8"/>
-	</StackPanel>
+	</Grid>
 </Window>

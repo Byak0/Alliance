@@ -33,7 +33,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ScenarioEditor(label: "Objectives", tooltip: "List of objectives to complete in this act.")]
 		public List<ObjectiveBase> Objectives;
 
-		[ScenarioEditor(label: "Conditional actions", tooltip: "List of actions to trigger based on conditions.")]
+		[ScenarioEditor(label: "Trigger actions", tooltip: "List of actions to trigger based on conditions.")]
 		public List<ConditionalActionStruct> ConditionalActions = new List<ConditionalActionStruct>();
 
 		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, GameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)

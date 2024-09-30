@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Utilities;
+﻿using Alliance.Common.Extensions.Audio;
+using Alliance.Common.Utilities;
 using TaleWorlds.Core;
 
 namespace Alliance.Common.GameModes.Story.Models
@@ -17,7 +18,8 @@ namespace Alliance.Common.GameModes.Story.Models
 			BattleSide,
 			Character,
 			Item,
-			GameMode
+			GameMode,
+			Sounds
 		}
 
 		public static string[] AvailableMaps() => SceneList.Scenes.ConvertAll(s => s.Name).ToArray();
@@ -55,6 +57,11 @@ namespace Alliance.Common.GameModes.Story.Models
 			return new string[] { "Lobby", "Scenario", "BattleRoyale", "PvC", "CvC", "CaptainX", "BattleX", "SiegeX", "Captain", "Battle", "Siege", "Skirmish" };
 		}
 
+		public static string[] AvailableSounds()
+		{
+			return AudioPlayer.Instance.GetAvailableSounds();
+		}
+
 		public static string[] GetData(DataTypes dataType)
 		{
 			return dataType switch
@@ -65,6 +72,7 @@ namespace Alliance.Common.GameModes.Story.Models
 				DataTypes.Character => AvailableCharacters(),
 				DataTypes.Item => AvailableItems(),
 				DataTypes.GameMode => AvailableGameModes(),
+				DataTypes.Sounds => AvailableSounds(),
 				_ => new string[] { },
 			};
 		}

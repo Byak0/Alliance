@@ -11,7 +11,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 	/// <summary>
 	/// Script component allowing map makers to use conditions and actions outside of scenario.
 	/// </summary>
-	public class CS_ConditionalAction : ScriptComponentBehavior
+	public class AL_TriggerAction : ScriptComponentBehavior
 	{
 		// Button to open the editor
 		[EditableScriptComponentVariable(true)]
@@ -32,7 +32,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		// Struct for the conditions and actions, retrieved from the serialized string
 		private ConditionalActionStruct _conditionalActionStruct = new ConditionalActionStruct();
 
-		public CS_ConditionalAction()
+		public AL_TriggerAction()
 		{
 		}
 
