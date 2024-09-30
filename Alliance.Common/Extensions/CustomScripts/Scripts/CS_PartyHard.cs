@@ -83,7 +83,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             int soundIndex = SoundEvent.GetEventIdFromString(_sounds[randomIndex]);
             int soundDuration = _soundsDurations[randomIndex];
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new SyncSound(soundIndex, soundDuration));
+            GameNetwork.WriteMessage(new SyncNativeSound(soundIndex, soundDuration));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 

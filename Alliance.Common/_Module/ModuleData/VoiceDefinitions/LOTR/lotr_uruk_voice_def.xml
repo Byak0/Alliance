@@ -9,148 +9,148 @@
 		<!--Warband-->
 		<voice
 			type="Grunt"
-			path="event:/al/lotr/isengard/voice/uruk/grunts"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
 			face_anim="grunt" />
 		<voice
 			type="Jump"
-			path="event:/al/lotr/isengard/voice/uruk/yells"
+			path="LOTR/Isengard/Voice/Uruk/Yells"
 			face_anim="scream" />
 		<voice
 			type="Yell"
-			path="event:/al/lotr/isengard/voice/uruk/yells"
+			path="LOTR/Isengard/Voice/Uruk/Yells"
 			face_anim="yell" />
 		<voice
 			type="Pain"
-			path="event:/al/lotr/isengard/voice/uruk/pains"
+			path="LOTR/Isengard/Voice/Uruk/Pains"
 			face_anim="hit" />
 		<voice
 			type="Death"
-			path="event:/al/lotr/isengard/voice/uruk/deaths"
+			path="LOTR/Isengard/Voice/Uruk/Deaths"
 			face_anim="death" />
 		<voice
 			type="Stun"
-			path="event:/al/lotr/isengard/voice/uruk/stun"
+			path="LOTR/Isengard/Voice/Uruk/Stun.wav"
 			face_anim="yeah" />
 		<voice
 			type="Fear"
-			path="event:/al/lotr/isengard/voice/uruk/no"
+			path="LOTR/Isengard/Voice/Uruk/no"
 			face_anim="terrified" />
 		<voice
 			type="Climb"
-			path="event:/al/lotr/isengard/voice/uruk/aaah"
+			path="LOTR/Isengard/Voice/Uruk/AAAh.wav"
 			face_anim="terrified" />
 		<voice
 			type="Focus"
-			path="event:/al/lotr/isengard/voice/uruk/grunts"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
 			face_anim="terrified" />
 		<voice
 			type="Debacle"
-			path="event:/al/lotr/isengard/voice/uruk/no"
+			path="LOTR/Isengard/Voice/Uruk/no"
 			face_anim="terrified" />
 		<voice
 			type="Victory"
-			path="event:/al/lotr/isengard/voice/uruk/victories"
+			path="LOTR/Isengard/Voice/Uruk/Victories"
 			face_anim="victory" />
 		<voice
 			type="HorseRally"
-			path="event:/al/lotr/isengard/voice/uruk/go"
+			path="LOTR/Isengard/Voice/Uruk/go"
 			face_anim="yeah" />
 		<voice
 			type="HorseStop"
-			path="event:/al/lotr/isengard/voice/uruk/stay_right_there"
+			path="LOTR/Isengard/Voice/Uruk/stay_right_there"
 			face_anim="wow" />
 		<!--TEMP-->
 		<voice
 			type="Infantry"
-			path="event:/al/lotr/isengard/voice/uruk/select_uruks"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
 			face_anim="infantry" />
 		<voice
 			type="Cavalry"
-			path="event:/al/lotr/isengard/voice/uruk/select_uruks"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
 			face_anim="cavalry" />
 		<voice
 			type="Archers"
-			path="event:/al/lotr/isengard/voice/uruk/select_uruks"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
 			face_anim="archers" />
 		<voice
 			type="Everyone"
-			path="event:/al/lotr/isengard/voice/uruk/are_you_all_dead"
+			path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav"
 			face_anim="everyone" />
 		<voice
 			type="HorseArchers"
-			path="event:/al/lotr/isengard/voice/uruk/select_uruks"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
 			face_anim="attack" />
 		<voice
 			type="Mixed"
-			path="event:/al/lotr/isengard/voice/uruk/are_you_all_dead"
+			path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav"
 			face_anim="everyone" />
 		<voice
 			type="Charge"
-			path="event:/al/lotr/isengard/voice/uruk/attack_2"
+			path="LOTR/Isengard/Voice/Uruk/Attack 2.wav"
 			face_anim="attack" />
 		<voice
 			type="Move"
-			path="event:/al/lotr/isengard/voice/uruk/go"
+			path="LOTR/Isengard/Voice/Uruk/go"
 			face_anim="move" />
 		<voice
 			type="Retreat"
-			path="event:/al/lotr/isengard/voice/uruk/retreat_get_back_you_scrum"
+			path="LOTR/Isengard/Voice/Uruk/retreat_get_back_you_scrum"
 			face_anim="retreat" />
 		<voice
 			type="Follow"
-			path="event:/al/lotr/isengard/voice/uruk/get_over_here"
+			path="LOTR/Isengard/Voice/Uruk/get_over_here"
 			face_anim="followme" />
 		<voice
 			type="Advance"
-			path="event:/al/lotr/isengard/voice/uruk/there_there"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
 			face_anim="attack" />
 		<voice
 			type="Dismount"
-			path="event:/al/lotr/isengard/voice/uruk/let_them_be"
+			path="LOTR/Isengard/Voice/Uruk/let_them_be"
 			face_anim="attack" />
 		<voice
 			type="Mount"
-			path="event:/al/lotr/isengard/voice/uruk/faster"
+			path="LOTR/Isengard/Voice/Uruk/faster"
 			face_anim="attack" />
 		<voice
 			type="FallBack"
-			path="event:/al/lotr/isengard/voice/uruk/stand_back_uruks"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
 			face_anim="attack" />
 		<voice
 			type="FireAtWill"
-			path="event:/al/lotr/isengard/voice/uruk/kill_them"
+			path="LOTR/Isengard/Voice/Uruk/kill_them"
 			face_anim="attack" />
 		<voice
 			type="HoldFire"
-			path="event:/al/lotr/isengard/voice/uruk/ready_weapons"
+			path="LOTR/Isengard/Voice/Uruk/ready_weapons"
 			face_anim="attack" />
 		<voice
 			type="Stop"
-			path="event:/al/lotr/isengard/voice/uruk/stay_right_there"
+			path="LOTR/Isengard/Voice/Uruk/stay_right_there"
 			face_anim="attack" />
 		<voice
 			type="PickSpears"
-			path="event:/al/lotr/isengard/voice/uruk/draw_your_weapons"
+			path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav"
 			face_anim="attack" />
 		<voice
 			type="PickDefault"
-			path="event:/al/lotr/isengard/voice/uruk/draw_your_weapons"
+			path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav"
 			face_anim="attack" />
 		<voice
 			type="FaceEnemy"
-			path="event:/al/lotr/isengard/voice/uruk/get_ready_to_fight"
+			path="LOTR/Isengard/Voice/Uruk/get_ready_to_fight"
 			face_anim="attack" />
 		<voice
 			type="FaceDirection"
-			path="event:/al/lotr/isengard/voice/uruk/there_there"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
 			face_anim="attack" />
 		<voice
 			type="AttackGate"
-			path="event:/al/lotr/isengard/voice/uruk/burn_it_to_the_ground"
+			path="LOTR/Isengard/Voice/Uruk/Burn it to the ground.wav"
 			face_anim="attack" />
 		<voice
 			type="UseSiegeWeapon"
-			path="event:/al/lotr/isengard/voice/uruk/ready_weapons"
+			path="LOTR/Isengard/Voice/Uruk/ready_weapons"
 			face_anim="attack" />
 		<voice
 			type="UseLadders"
@@ -158,79 +158,79 @@
 			face_anim="attack" />
 		<voice
 			type="CommandDelegate"
-			path="event:/al/lotr/isengard/voice/uruk/you_know_where_to_go"
+			path="LOTR/Isengard/Voice/Uruk/you_know_where_to_go"
 			face_anim="attack" />
 		<voice
 			type="CommandUndelegate"
-			path="event:/al/lotr/isengard/voice/uruk/come_here_you"
+			path="LOTR/Isengard/Voice/Uruk/Come here you.wav"
 			face_anim="attack" />
 		<voice
 			type="FormCircle"
-			path="event:/al/lotr/isengard/voice/uruk/come_on"
+			path="LOTR/Isengard/Voice/Uruk/Come on.wav"
 			face_anim="attack" />
 		<voice
 			type="FormColumn"
-			path="event:/al/lotr/isengard/voice/uruk/come_on"
+			path="LOTR/Isengard/Voice/Uruk/Come on.wav"
 			face_anim="attack" />
 		<voice
 			type="FormLine"
-			path="event:/al/lotr/isengard/voice/uruk/get_in_line"
+			path="LOTR/Isengard/Voice/Uruk/get_in_line"
 			face_anim="attack" />
 		<voice
 			type="FormLoose"
-			path="event:/al/lotr/isengard/voice/uruk/stand_back_uruks"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
 			face_anim="attack" />
 		<voice
 			type="FormScatter"
-			path="event:/al/lotr/isengard/voice/uruk/run_for_cover"
+			path="LOTR/Isengard/Voice/Uruk/run_for_cover"
 			face_anim="attack" />
 		<voice
 			type="FormShieldWall"
-			path="event:/al/lotr/isengard/voice/uruk/stay_together"
+			path="LOTR/Isengard/Voice/Uruk/stay_together"
 			face_anim="attack" />
 		<voice
 			type="FormSkein"
-			path="event:/al/lotr/isengard/voice/uruk/get_ready_to_fight"
+			path="LOTR/Isengard/Voice/Uruk/get_ready_to_fight"
 			face_anim="attack" />
 		<voice
 			type="FormSquare"
-			path="event:/al/lotr/isengard/voice/uruk/stay_together"
+			path="LOTR/Isengard/Voice/Uruk/stay_together"
 			face_anim="attack" />
 		<voice
 			type="MpHelp"
-			path="event:/al/lotr/isengard/voice/uruk/grunts"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
 			face_anim="attack" />
 		<voice
 			type="MpSpot"
-			path="event:/al/lotr/isengard/voice/uruk/there_there"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
 			face_anim="attack" />
 		<voice
 			type="MpThanks"
-			path="event:/al/lotr/isengard/voice/uruk/laughs"
+			path="LOTR/Isengard/Voice/Uruk/Laughs"
 			face_anim="attack" />
 		<voice
 			type="MpSorry"
-			path="event:/al/lotr/isengard/voice/uruk/laughs"
+			path="LOTR/Isengard/Voice/Uruk/Laughs"
 			face_anim="attack" />
 		<voice
 			type="MpAffirmative"
-			path="event:/al/lotr/isengard/voice/uruk/laugh_4"
+			path="LOTR/Isengard/Voice/Uruk/laugh_4"
 			face_anim="attack" />
 		<voice
 			type="MpNegative"
-			path="event:/al/lotr/isengard/voice/uruk/no"
+			path="LOTR/Isengard/Voice/Uruk/no"
 			face_anim="attack" />
 		<voice
 			type="MpRegroup"
-			path="event:/al/lotr/isengard/voice/uruk/regroup"
+			path="LOTR/Isengard/Voice/Uruk/regroup"
 			face_anim="attack" />
 		<voice
 			type="MpDefend"
-			path="event:/al/lotr/isengard/voice/uruk/stand_back_uruks"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
 			face_anim="attack" />
 		<voice
 			type="MpAttack"
-			path="event:/al/lotr/isengard/voice/uruk/attack_1"
+			path="LOTR/Isengard/Voice/Uruk/Attack 1.wav"
 			face_anim="attack" />
 	</voice_definition>
 </voice_definitions>

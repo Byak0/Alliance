@@ -4,18 +4,18 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.Extensions.Audio.NetworkMessages.FromClient
 {
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
-	public sealed class AudioRequest : GameNetworkMessage
+	public sealed class MusicRequest : GameNetworkMessage
 	{
 		static readonly CompressionInfo.Integer SoundIndexCompressionInfo = new CompressionInfo.Integer(0, 10000, true);
 
 		public int SoundIndex { get; private set; }
 
-		public AudioRequest(int soundIndex)
+		public MusicRequest(int soundIndex)
 		{
 			SoundIndex = soundIndex;
 		}
 
-		public AudioRequest()
+		public MusicRequest()
 		{
 		}
 
@@ -38,7 +38,7 @@ namespace Alliance.Common.Extensions.Audio.NetworkMessages.FromClient
 
 		protected override string OnGetLogFormat()
 		{
-			return string.Concat("Request sound ", SoundIndex);
+			return string.Concat("Request music ", SoundIndex);
 		}
 	}
 }

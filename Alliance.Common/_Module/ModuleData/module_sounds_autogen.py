@@ -31,7 +31,7 @@ def generate_xml(directory):
             last_dir = current_dir
 
         if len(files) > 1:
-            event_name = "event:/al/" + current_dir.lower().replace(' ', '_') + '/' + base_name.lower().replace(' ', '_') + 's'
+            event_name = current_dir + '/' + base_name + 's'
             sound_category = determine_sound_category(files[0])
             
             sound_element = ET.SubElement(sounds, 'module_sound', attrib={
@@ -47,7 +47,7 @@ def generate_xml(directory):
                     'weight': '1'
                 })
         else:
-            event_name = "event:/al/" + files[0].lower().replace(' ', '_').replace('.wav', '').replace('.mp3', '')
+            event_name = files[0]
             sound_category = determine_sound_category(files[0])
             
             sound_element = ET.SubElement(sounds, 'module_sound', attrib={

@@ -66,6 +66,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new TeleportAgentAction();
 		}
 
+		public virtual PlaySoundAction PlaySoundAction()
+		{
+			return new PlaySoundAction();
+		}
+
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.
 	}
 }

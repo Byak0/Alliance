@@ -7,27 +7,27 @@
 		max_pitch_multiplier="1.05">
 		<voice
 			type="Grunt"
-			path="event:/al/lotr/isengard/voice/warg/grunts" />
+			path="LOTR/Isengard/Voice/Warg/grunts" />
 		<voice
 			type="Jump"
-			path="event:/al/lotr/isengard/voice/warg/attacks" />
+			path="LOTR/Isengard/Voice/Warg/attacks" />
 		<voice
 			type="Yell"
-			path="event:/al/lotr/isengard/voice/warg/howlss" />
+			path="LOTR/Isengard/Voice/Warg/howlss" />
 		<voice
 			type="Neigh"
-			path="event:/al/lotr/isengard/voice/warg/barks" />
+			path="LOTR/Isengard/Voice/Warg/barks" />
 		<voice
 			type="Idle"
-			path="event:/al/lotr/isengard/voice/warg/grunts" />
+			path="LOTR/Isengard/Voice/Warg/grunts" />
 		<voice
 			type="Pain"
-			path="event:/al/lotr/isengard/voice/warg/hits" />
+			path="LOTR/Isengard/Voice/Warg/hits" />
 		<voice
 			type="Death"
-			path="event:/al/lotr/isengard/voice/warg/dies" />
+			path="LOTR/Isengard/Voice/Warg/dies" />
 		<voice
 			type="Collide"
-			path="event:/al/lotr/isengard/voice/warg/hits" />
+			path="LOTR/Isengard/Voice/Warg/hits" />
 	</voice_definition>
 </voice_definitions>
