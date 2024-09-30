@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance.Editor" />
   <Name value="Alliance.Editor" />
-  <Version value="v0.1.8.2" />
+  <Version value="v0.1.8.5" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
