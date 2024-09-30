@@ -3,8 +3,10 @@ using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -32,6 +34,48 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
 		static SpawnComponent SpawnComponent => Mission.Current.GetMissionBehavior<SpawnComponent>();
 		static MissionLobbyComponent MissionLobbyComponent => Mission.Current.GetMissionBehavior<MissionLobbyComponent>();
+
+		private static ConcurrentQueue<SpawnRequest> _spawnQueue = new ConcurrentQueue<SpawnRequest>();
+
+		/// <summary>
+		/// Use this method if you want to spawn a bot from multi-threaded/async code.
+		/// </summary>
+		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+		{
+			var spawnRequest = new SpawnRequest
+			{
+				Team = team,
+				Culture = culture,
+				Character = character,
+				Position = position,
+				OnSpawnPerkHandler = onSpawnPerkHandler,
+				SelectedFormation = selectedFormation,
+				BotDifficulty = botDifficulty,
+				MortalityState = mortalityState,
+				CompletionSource = new TaskCompletionSource<Agent>()
+			};
+
+			_spawnQueue.Enqueue(spawnRequest);
+			return spawnRequest.CompletionSource.Task;
+		}
+
+		public static void ProcessSpawnQueue()
+		{
+			while (_spawnQueue.TryDequeue(out var spawnRequest))
+			{
+				Agent agent;
+				bool success = SpawnHelper.SpawnBot(out agent, spawnRequest.Team, spawnRequest.Culture, spawnRequest.Character, spawnRequest.Position, spawnRequest.OnSpawnPerkHandler, spawnRequest.SelectedFormation, spawnRequest.BotDifficulty, spawnRequest.MortalityState);
+
+				if (success && agent != null)
+				{
+					spawnRequest.CompletionSource.SetResult(agent);
+				}
+				else
+				{
+					spawnRequest.CompletionSource.SetException(new Exception("Failed to spawn bot."));
+				}
+			}
+		}
 
 		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
 		{
@@ -501,5 +545,18 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				default: return Difficulty.Normal;
 			}
 		}
+	}
+
+	public class SpawnRequest
+	{
+		public Team Team { get; set; }
+		public BasicCultureObject Culture { get; set; }
+		public BasicCharacterObject Character { get; set; }
+		public MatrixFrame? Position { get; set; }
+		public MPOnSpawnPerkHandler OnSpawnPerkHandler { get; set; }
+		public int SelectedFormation { get; set; }
+		public float BotDifficulty { get; set; }
+		public Agent.MortalityState MortalityState { get; set; }
+		public TaskCompletionSource<Agent> CompletionSource { get; set; }
 	}
 }

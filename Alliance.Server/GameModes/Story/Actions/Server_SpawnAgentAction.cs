@@ -18,6 +18,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override void Execute()
 		{
+			Spawn();
+		}
+
+		private async void Spawn()
+		{
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
@@ -34,13 +39,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 				Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.Position, Direction.Radius);
 				WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 
-				SpawnHelper.SpawnBot(out Agent agent, team, culture, character, position, selectedFormation: (int)Formation, botDifficulty: difficulty);
+				Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position, selectedFormation: (int)Formation, botDifficulty: difficulty);
 
 				// Move the agent to the target position
 				agent.SetScriptedPosition(ref target, false);
 			}
 		}
-
-
 	}
 }
