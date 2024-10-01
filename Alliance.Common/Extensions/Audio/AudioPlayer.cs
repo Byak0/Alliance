@@ -53,7 +53,7 @@ namespace Alliance.Common.Extensions.Audio
 
 		public AudioPlayer()
 		{
-			audioDirectory = ModuleHelper.GetModuleFullPath("Alliance") + "ModuleSounds/";
+			audioDirectory = ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName) + "ModuleSounds/";
 			InitializeAudioMappings();
 			if (!GameNetwork.IsServer)
 			{

@@ -24,9 +24,11 @@ namespace Alliance.Editor
 
 		protected override void OnSubModuleLoad()
 		{
+			Common.SubModule.CurrentModuleName = ModuleId;
+
 			ActionFactory.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
-			ScenarioManager.Instance.RefreshAvailableScenarios("Alliance.Editor");
+			ScenarioManager.Instance.RefreshAvailableScenarios();
 			SceneList.Initialize();
 
 			EditorToolsManager.EditorTools = new EditorTools();
@@ -43,7 +45,7 @@ namespace Alliance.Editor
 		private void GenerateScenarioExamples()
 		{
 			// Generate example scenario XML files
-			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath("Alliance.Editor"), "Scenarios");
+			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath(Common.SubModule.CurrentModuleName), "Scenarios");
 			if (!Directory.Exists(directoryPath) || Directory.GetFiles(directoryPath).Length == 0)
 			{
 				GenerateExampleScenarioXML(ExampleScenarios.GdCFinal(), directoryPath);

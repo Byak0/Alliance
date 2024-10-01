@@ -12,7 +12,7 @@ namespace Alliance.Client.GameModes.Story
 		public static void Initialize()
 		{
 			Instance = new ScenarioPlayer();
-			Instance.RefreshAvailableScenarios("Alliance");
+			Instance.RefreshAvailableScenarios();
 		}
 
 		public override void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid)

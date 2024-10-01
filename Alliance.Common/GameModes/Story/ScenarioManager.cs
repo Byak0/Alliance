@@ -226,10 +226,10 @@ namespace Alliance.Common.GameModes.Story
 			Log(logMessage, LogLevel.Debug);
 		}
 
-		public void RefreshAvailableScenarios(string moduleName)
+		public void RefreshAvailableScenarios()
 		{
 			AvailableScenario = new List<Scenario>();
-			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath(moduleName), "Scenarios")));
+			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Scenarios")));
 		}
 	}
 }

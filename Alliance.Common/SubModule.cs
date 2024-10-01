@@ -7,6 +7,7 @@ namespace Alliance.Common
 	public class SubModule : MBSubModuleBase
 	{
 		public const string ModuleId = "Alliance.Common";
+		public static string CurrentModuleName = "Alliance";
 
 		protected override void OnSubModuleLoad()
 		{
