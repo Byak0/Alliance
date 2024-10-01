@@ -14,7 +14,7 @@
 		<action type="act_warg_quick_stop_when_fast" animation="rider_warg_quick_stop" />
 		<action type="act_warg_hit_object" animation="rider_horse_hit_object" />
 		<action type="act_warg_hit_object_while_falling" animation="rider_horse_hit_object_while_falling" />
-		<action type="act_warg_jump_start" animation="rider_warg_jump_forward" />		
+		<action type="act_warg_jump_start" animation="rider_warg_jump_forward" />
 		
 		<!-- Warg rider - monster_usage_upper_body_movements -->
 		<action type="act_warg_turn_right_head" animation="rider_warg_walk_turn_right_head" />
@@ -27,8 +27,8 @@
 		<action type="act_warg_canter_turn_left_head" animation="rider_warg_walk_turn_left_head" />
 		<action type="act_warg_gallop_turn_right_head" animation="rider_warg_gallop_turn_right_head" />
 		<action type="act_warg_gallop_turn_left_head" animation="rider_warg_gallop_turn_left_head" />
-		<action type="act_warg_idle_1" animation="rider_warg_forward_walk" />
-		<action type="act_warg_stand_1" animation="rider_warg_forward_walk" />
+		<action type="act_warg_idle_1" animation="rider_warg_idle" />
+		<action type="act_warg_stand_1" animation="rider_warg_idle" />
 		
 		<!-- Warg rider - monster_usage_movements -->
 		<action type="act_warg_stand_for_movement_data" animation="rider_warg_forward_walk" />
