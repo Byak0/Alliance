@@ -107,7 +107,9 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return Kick(peer, admin);
 				if (admin.Ban)
 					return Ban(peer, admin);
-				if (admin.Respawn)
+                if (admin.Mute)
+                    return Mute(peer, admin);
+                if (admin.Respawn)
 					return Respawn(peer, admin);
 				if (admin.ToggleInvulnerable)
 					return ToggleInvulnerable(peer, admin);
@@ -310,7 +312,39 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-		public bool SetAdmin(NetworkCommunicator peer, AdminClient admin)
+		public bool Mute(NetworkCommunicator peer, AdminClient admin)
+		{
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
+
+			// Check si joueur existe
+			if (playerSelected == null) return false;
+
+			if (playerSelected.IsMuted())
+			{
+
+				GameNetwork.BeginModuleEventAsServer(playerSelected);
+				GameNetwork.WriteMessage(new SendNotification($"Vous avez été démute par un Admin ({peer.UserName}) !", 0));
+				GameNetwork.EndModuleEventAsServer();
+
+				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} n'est plus mute.", LogLevel.Information);
+				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été retiré des jouers mués par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				SecurityManager.RemoveMute(playerSelected.VirtualPlayer);
+			}
+			else
+			{
+				GameNetwork.BeginModuleEventAsServer(playerSelected);
+				GameNetwork.WriteMessage(new SendNotification($"Vous avez été mute par un Admin ({peer.UserName}) !", 0));
+				GameNetwork.EndModuleEventAsServer();
+
+				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été mute.", LogLevel.Information);
+				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mute par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				SecurityManager.AddMute(playerSelected.VirtualPlayer);
+			}
+
+			return true;
+		}
+
+        public bool SetAdmin(NetworkCommunicator peer, AdminClient admin)
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 

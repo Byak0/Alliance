@@ -22,6 +22,8 @@ namespace Alliance.Common.Core.Security.Models
 
         public List<Player> Banned;
 
+        public List<Player> Muted;
+
         public DefaultRoles()
         {
             Commanders = new List<Player>();
@@ -30,6 +32,7 @@ namespace Alliance.Common.Core.Security.Models
             Devs = new List<Player>();
             Moderators = new List<Player>();
             Banned = new List<Player>();
+            Muted = new List<Player>();
         }
 
         public void Init()

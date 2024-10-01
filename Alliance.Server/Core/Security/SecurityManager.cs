@@ -27,6 +27,16 @@ namespace Alliance.Server.Core.Security
 			UpdateRole(nameof(DefaultRoles.Banned), player.Id, true);
 		}
 
+		public static void AddMute(VirtualPlayer player)
+		{
+			UpdateRole(nameof(DefaultRoles.Muted), player.Id);
+		}
+
+	public static void RemoveMute(VirtualPlayer player)
+	{
+		UpdateRole(nameof(DefaultRoles.Muted), player.Id, true);
+	}
+
 		public static void AddAdmin(VirtualPlayer player)
 		{
 			UpdateRole(nameof(DefaultRoles.Admins), player.Id);

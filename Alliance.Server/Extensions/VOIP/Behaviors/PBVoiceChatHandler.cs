@@ -37,7 +37,8 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
             ALSendVoiceRecord sendVoiceRecord = (ALSendVoiceRecord)baseMessage;
             MissionPeer speakerPeer = speaker.GetComponent<MissionPeer>();
 
-            if (speakerPeer?.Team == null || sendVoiceRecord.BufferLength <= 0)
+
+            if (speakerPeer?.Team == null || sendVoiceRecord.BufferLength <= 0 || speaker.IsMuted())
             {
                 return false;
             }
