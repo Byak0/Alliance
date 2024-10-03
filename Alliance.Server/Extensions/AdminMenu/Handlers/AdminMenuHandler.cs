@@ -107,9 +107,9 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return Kick(peer, admin);
 				if (admin.Ban)
 					return Ban(peer, admin);
-                if (admin.Mute)
-                    return Mute(peer, admin);
-                if (admin.Respawn)
+				if (admin.Mute)
+					return Mute(peer, admin);
+				if (admin.Respawn)
 					return Respawn(peer, admin);
 				if (admin.ToggleInvulnerable)
 					return ToggleInvulnerable(peer, admin);
