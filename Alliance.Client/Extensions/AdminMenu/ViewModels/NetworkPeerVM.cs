@@ -11,8 +11,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
         private string _Username;
         private bool _isSelected;
         private bool _isFiltered;
+		private bool _isMuted;
 
-        public Action<NetworkPeerVM> OnSelect
+		public Action<NetworkPeerVM> OnSelect
         {
             get => _onSelect;
             set => _onSelect = value;
@@ -102,8 +103,23 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
                 }
             }
         }
+		public bool IsMuted
+		{
+			get
+			{
+				return _isMuted;
+			}
+			set
+			{
+				if (value != _isMuted)
+				{
+					_isMuted = value;
+					OnPropertyChangedWithValue(value, "IsMuted");
+				}
+			}
+		}
 
-        public void SelectPeer()
+		public void SelectPeer()
         {
             OnSelect(this);
         }

@@ -27,7 +27,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
         private NetworkPeerVM _selectedPeer;
         private bool _isSudo;
 
-        public AdminVM()
+		public AdminVM()
         {
             _isSudo = GameNetwork.MyPeer.IsDev();
             _unitCharacter = new CharacterViewModel();
@@ -53,7 +53,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             }
         }
 
-        [DataSourceProperty]
+		[DataSourceProperty]
         public string Username
         {
             get
@@ -347,7 +347,8 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new AdminClient() { Mute = true, PlayerSelected = _selectedPeer.PeerId });
             GameNetwork.EndModuleEventAsClient();
-        }
+            _selectedPeer.IsMuted = !_selectedPeer.IsMuted;
+		}
 
         public void Respawn()
         {
@@ -403,7 +404,8 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
                     AgentIndex = x.ControlledAgent?.Index ?? -1,
                     PeerId = x.VirtualPlayer.Id.ToString(),
                     IsSelected = x.VirtualPlayer.Id.ToString() == _selectedPeer?.PeerId,
-                    OnSelect = OnNetworkPeerSelected
+                    OnSelect = OnNetworkPeerSelected,
+                    IsMuted = x.IsMuted()
                 });
             });
             _selectedPeer = _networkCommunicators.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);

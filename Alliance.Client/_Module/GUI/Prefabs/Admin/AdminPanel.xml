@@ -347,6 +347,7 @@
 												<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Center" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsHidden="@IsFiltered" IsSelected="@IsSelected" Command.Click="SelectPeer">
 													<Children>
 														<TextWidget SuggestedHeight="100" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" HorizontalAlignment="Center"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" Text="@Username" />
+														<Widget IsVisible="@IsMuted" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="18" HorizontalAlignment="Right" VerticalAlignment="Center" MarginRight="5" Sprite="MPGeneral\MPScoreboard\mute_icon" />
 													</Children>
 												</ButtonWidget>
 											</ItemTemplate>
