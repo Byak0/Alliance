@@ -27,7 +27,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
         private NetworkPeerVM _selectedPeer;
         private bool _isSudo;
 
-		public AdminVM()
+        public AdminVM()
         {
             _isSudo = GameNetwork.MyPeer.IsDev();
             _unitCharacter = new CharacterViewModel();
@@ -53,7 +53,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             }
         }
 
-		[DataSourceProperty]
+        [DataSourceProperty]
         public string Username
         {
             get
