@@ -200,7 +200,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				return false;
 			}
 
-        }
+		}
 
 		public bool HealAll(NetworkCommunicator peer)
 		{
@@ -344,7 +344,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-        public bool SetAdmin(NetworkCommunicator peer, AdminClient admin)
+		public bool SetAdmin(NetworkCommunicator peer, AdminClient admin)
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
