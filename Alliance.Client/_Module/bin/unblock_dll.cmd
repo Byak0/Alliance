@@ -1,0 +1,1 @@
+forfiles /s /c "cmd /c echo.>@file:Zone.Identifier"
