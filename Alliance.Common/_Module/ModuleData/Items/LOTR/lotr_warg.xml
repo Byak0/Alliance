@@ -34,7 +34,7 @@
 	<Item
         id="warg_saddle"
         name="Warg Saddle"
-        mesh="orc_rider_saddle_1"
+        mesh="orc_rider_saddle"
         is_merchandise="true"
         weight="16"
         appearance="0.5"

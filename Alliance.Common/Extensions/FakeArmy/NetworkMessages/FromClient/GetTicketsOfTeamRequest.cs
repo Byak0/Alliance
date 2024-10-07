@@ -1,7 +1,7 @@
 ﻿using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
-namespace Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromServer
+namespace Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient
 {
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
 	public sealed class GetTicketsOfTeamRequest : GameNetworkMessage

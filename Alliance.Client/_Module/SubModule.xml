@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance" />
   <Name value="Alliance" />
-  <Version value="v0.1.7.0" />
+  <Version value="v0.1.8.6" />
   <ModuleCategory value="Multiplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
@@ -28,6 +28,9 @@
     </XmlNode>
     <XmlNode>
       <XmlName id="BasicCultures" path="Cultures/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="BasicCultures" path="Cultures/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="CharactersExtended" path="CharactersExtended/LOTR" />

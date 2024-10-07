@@ -6,7 +6,7 @@ using static TaleWorlds.MountAndBlade.Agent;
 
 namespace Alliance.Common.Core.Utils
 {
-	class CoreUtils
+	static class CoreUtils
 	{
 		public static void TakeDamage(Agent victim, int damage, float magnitude = 50f)
 		{
@@ -115,6 +115,14 @@ namespace Alliance.Common.Core.Utils
 			}
 
 			return agentsInRange;
+		}
+
+		/// <summary>
+		/// Return the number of seconds since the mission started.
+		/// </summary>
+		public static float GetMissionTimeInSeconds(this Mission mission)
+		{
+			return mission.MissionTimeTracker.NumberOfTicks / 10000000f;
 		}
 	}
 }

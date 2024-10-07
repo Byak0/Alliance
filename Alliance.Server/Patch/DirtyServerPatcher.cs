@@ -30,6 +30,7 @@ namespace Alliance.Server.Patch
 			patchSuccess &= Patch_BattlePowerCalculationLogic.Patch();
 			patchSuccess &= Patch_Formation.Patch();
 			patchSuccess &= Patch_Module.Patch();
+			patchSuccess &= Patch_ThreatSeeker.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

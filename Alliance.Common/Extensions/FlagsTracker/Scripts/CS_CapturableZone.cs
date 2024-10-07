@@ -1,4 +1,4 @@
-﻿using NetworkMessages.FromServer;
+﻿using Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,6 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Utilities.Logger;
 using MathF = TaleWorlds.Library.MathF;
 
@@ -35,6 +34,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		public BattleSideEnum CapturingTeam { get; private set; }
 		public float CaptureProgress { get; private set; }
 		public Action<CS_CapturableZone, Team> OnOwnerChange { get; set; }
+		public Agent Bearer { get; private set; }
 
 		private SynchedMissionObject[] _flags = new SynchedMissionObject[2];
 		private List<SynchedMissionObject> _flagDependentObjects;
@@ -51,19 +51,19 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		private float _startProgress;
 		private float _endProgress;
 		private bool _isProgressing;
-
+		private float _delay;
 		private const float _tolerance = 0.01f;
 
 		public Team OwnerTeam
 		{
 			get
 			{
-				switch (Owner)
+				return Owner switch
 				{
-					case BattleSideEnum.Defender: return Mission.Current.DefenderTeam;
-					case BattleSideEnum.Attacker: return Mission.Current.AttackerTeam;
-					default: return null;
-				}
+					BattleSideEnum.Defender => Mission.Current.DefenderTeam,
+					BattleSideEnum.Attacker => Mission.Current.AttackerTeam,
+					_ => null,
+				};
 			}
 		}
 
@@ -189,6 +189,14 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		protected override void OnTick(float dt)
 		{
 			base.OnTick(dt);
+
+			if (Bearer != null) Position = Bearer.Position;
+
+			_delay += dt;
+			if (_delay >= 0.2f)
+			{
+				UpdateCapturableZone();
+			}
 
 			if (_isProgressing)
 			{
@@ -330,53 +338,20 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 			_flagHolder.SetFrameSynchedOverTime(ref targetFrame, duration, false);
 		}
 
+		public void SetBearer(Agent agent)
+		{
+			Bearer = agent;
+			if (Bearer != null) Position = Bearer.Position;
+			Log($"{ZoneName} picked up by {agent?.Name}", LogLevel.Debug);
+		}
+
 		public virtual void ServerSynchronize()
 		{
 			if (GameNetwork.IsServer)
 			{
 				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SynchronizeMissionObject(this));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None, null);
-			}
-		}
-
-		public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
-		{
-			//base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
-			CS_CapturableZoneRecord destructableComponentRecord = (CS_CapturableZoneRecord)synchedMissionObjectReadableRecord.Item2;
-			Position = destructableComponentRecord.Position;
-			Team ownerTeam = Mission.Current.Teams[destructableComponentRecord.TeamIndex]; // TODO : Check if Teams[] are stored using the TeamIndex
-			if (ownerTeam != OwnerTeam) OnOwnerChange?.Invoke(this, ownerTeam);
-			Owner = ownerTeam?.Side ?? BattleSideEnum.None;
-		}
-
-		public override void WriteToNetwork()
-		{
-			if (GameNetwork.IsServer)
-			{
-				GameNetworkMessage.WriteTeamIndexToPacket(OwnerTeam?.TeamIndex ?? -1);
-				GameNetworkMessage.WriteVec3ToPacket(Position, CompressionBasic.PositionCompressionInfo);
-			}
-		}
-
-		[DefineSynchedMissionObjectTypeForMod(typeof(CS_CapturableZone))]
-		public struct CS_CapturableZoneRecord : ISynchedMissionObjectReadableRecord
-		{
-			public int TeamIndex { get; private set; }
-
-			public Vec3 Position { get; private set; }
-
-			public CS_CapturableZoneRecord(int teamIndex, Vec3 position)
-			{
-				TeamIndex = teamIndex;
-				Position = position;
-			}
-
-			public bool ReadFromNetwork(ref bool bufferReadValid)
-			{
-				TeamIndex = GameNetworkMessage.ReadTeamIndexFromPacket(ref bufferReadValid);
-				Position = GameNetworkMessage.ReadVec3FromPacket(CompressionBasic.PositionCompressionInfo, ref bufferReadValid);
-				return bufferReadValid;
+				GameNetwork.WriteMessage(new SyncCapturableZone(Id, Position, Owner, Bearer));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 			}
 		}
 	}

@@ -32,21 +32,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		public override void Initialize()
 		{
-			base.Initialize();
+			SpawnPoints = Mission.Current.Scene.FindEntitiesWithTag("spawnpoint");
 
-			ScenarioManagerServer.Instance.OnActStateAwaitPlayerJoin += InitSpawnFrames;
-			ScenarioManagerServer.Instance.OnStopScenario += Clear;
-		}
-
-		public void Clear()
-		{
-			SpawnPoints = null;
-			ScenarioManagerServer.Instance.OnActStateAwaitPlayerJoin -= InitSpawnFrames;
-			ScenarioManagerServer.Instance.OnStopScenario -= Clear;
-		}
-
-		public void InitSpawnFrames()
-		{
 			// Initialize spawn points and zones
 			_spawnPointsByTeam = new IEnumerable<GameEntity>[2];
 			_spawnZonesByTeam = new IEnumerable<GameEntity>[2];

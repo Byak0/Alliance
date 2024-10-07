@@ -1,4 +1,4 @@
-ServerName Alliance - Test Server
+ServerName Alliance - Test Server 1
 GameType Lobby
 AdminPassword test123
 Map bfhd_helms_deep_v2

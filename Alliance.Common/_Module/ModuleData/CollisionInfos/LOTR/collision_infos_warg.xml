@@ -1,92 +1,1105 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <base
-	type="collision_infos">
+type="collision_infos">
 	<collision_infos>
-		<!--Ajouter les sons avec template cheval native -->
-
+		<material
+		id="wood_weapon">
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="metal_weapon">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_metal_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="adobe">
+				<collision_effect
+					particle="psys_game_metal_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_game_metal_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_game_metal_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_game_metal_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_game_metal_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_metal_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_game_missile_water_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="metal">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_metal_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_game_metal_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_metal_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_game_metal_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_game_metal_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_game_metal_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_game_missile_water_coll"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="missile">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_missile_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_game_missile_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_game_missile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_game_missile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_game_missile_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_game_missile_mud_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="soil">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="path">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_game_missile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_game_missile_sand_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_game_missile_water_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="ballista_missile">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_ballistamissile_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_game_ballistamissile_metal_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_game_ballistamissile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_game_ballistamissile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_game_ballistamissile_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_game_ballistamissile_mud_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_game_ballistamissile_grass_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_game_ballistamissile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_game_ballistamissile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_game_ballistamissile_sand_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="path">
+				<collision_effect
+					particle="psys_game_ballistamissile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_game_ballista_water_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="boulder_stone">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_game_boulder_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_game_boulder_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_game_boulder_stone_coll"
+					decal="wall_damage_decal_vlandia_a" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_game_boulder_mud_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="path">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_game_stone_water_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="straw">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="lambert1">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="adobe">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="soil">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_nonstick">
+				<collision_effect
+					particle="psys_game_boulder_default_coll"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="burning_jar">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_burning_projectile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_burning_projectile_wood_coll"
+					decal="fire_damage_a_mat" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_burning_projectile_wood_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_burning_projectile_stone_coll"
+					decal="fire_damage" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="path">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="straw">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="lambert1">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="adobe">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="soil">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_nonstick">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+		</material>
+		<material
+			id="burning_jar_small">
+			<collision_info
+				second_material="metal_weapon">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_shield">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_weapon">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					particle="psys_burning_projectile_stone_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="mud">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="default">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="path">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="snow">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="water">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="flesh">
+				<collision_effect
+					particle="psys_game_empty_particle"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="straw">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="lambert1">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="adobe">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="soil">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+			<collision_info
+				second_material="wood_nonstick">
+				<collision_effect
+					particle="psys_burning_projectile_default_coll"
+					decal="" />
+			</collision_info>
+		</material>
 		<!-- For humanoid: pace_1: Walk. pace_2: Run. -->
 		<!-- For horse: pace_1: Walk. pace_2: Walk. pace_3: Trot. pace_4: Canter. pace_5: Gallop. -->
 		<!-- pace_1, pace_2, pace_3, pace_4, pace_5, jump, land, bodyfall, sneak, slide -->
 		<monster sound_and_collision_info_class="warg">
-			<collision_info second_material="default">
-				<collision_effect effect_type="pace_1"
-								  particle="psys_game_hoof_default_col_s"
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_2"
-								  particle="psys_game_hoof_default_col_s"
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_3"
-								  particle="psys_game_hoof_default_col_s"
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/foley/animals/footsteps/bovine_walk"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_4"
-								  particle="psys_game_hoof_default_col"
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/foley/animals/footsteps/bovine_run"
-								  one_shot="true"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_5"
-								  particle="psys_game_hoof_default_col"
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/foley/animals/footsteps/bovine_run"
-								  one_shot="true"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="jump"
-								  particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/jump/default"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="land"
-								  particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/land/default"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="bodyfall"
-								  particle=""
-								  decal=""
-								  sound="event:/physics/bodyfall/big_animal"
-								  do_not_send_armor_parameter_to_sound="true" />
+			<collision_info
+				second_material="default">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_default_col"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_default_col"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_dirts"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_default_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_default_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/dirt" />
 			</collision_info>
-
-			<collision_info second_material="water">
-				<collision_effect effect_type="pace_1"
-								  particle=""
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/walk/water"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_2"
-								  particle=""
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/walk/water"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="pace_3"
-								  particle=""
-								  trail_particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/walk/water"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="jump"
-								  particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/jump/water"
-								  do_not_send_armor_parameter_to_sound="true" />
-				<collision_effect effect_type="land"
-								  particle=""
-								  decal=""
-								  sound="event:/mission/movement/footsteps/horse/land/water"
-								  do_not_send_armor_parameter_to_sound="true" />
+			<collision_info
+				second_material="wood"
+				fallback_material_for_effects="stone">
+				<collision_effect
+					effect_type="jump"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/wood" />
+				<collision_effect
+					effect_type="land"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/wood" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/wood" />
+			</collision_info>
+			<collision_info
+				second_material="wood_nonstick"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="pot"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="siege_engines"
+				fallback_material_for_effects="wood" />
+			<collision_info
+				second_material="grass">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_grass_col_s"
+					trail_particle="psys_game_hoof_dust_on_grass"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_grass_col"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_grass_col"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_grasss"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_grass_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_grass_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/grass" />
+			</collision_info>
+			<collision_info
+				second_material="stone">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_default_col_s"
+					trail_particle="psys_game_hoof_dust_on_default"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_stone_col"
+					trail_particle="psys_game_hoof_dust_on_stone"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_stone_col"
+					trail_particle="psys_game_hoof_dust_on_stone"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_rocks"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_stone_col"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/default" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_grass_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/default" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+			</collision_info>
+			<collision_info
+				second_material="sand">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_sand_col_s"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_sand_col"
+					trail_particle="psys_game_hoof_dust"
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_snows"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/sand" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_sand_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/sand" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/sand" />
+			</collision_info>
+			<collision_info
+				second_material="path"
+				fallback_material_for_effects="stone" />
+			<collision_info
+				second_material="snow"
+				fallback_material_for_effects="sand" />
+			<collision_info
+				second_material="ice"
+				fallback_material_for_effects="snow" />
+			<collision_info
+				second_material="adobe"
+				fallback_material_for_effects="stone" />
+			<collision_info
+				second_material="straw"
+				fallback_material_for_effects="default">
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/grass" />
+			</collision_info>
+			<collision_info
+				second_material="fabric"
+				fallback_material_for_effects="sand" />
+			<collision_info
+				second_material="metal">
+				<collision_effect
+					effect_type="pace_1"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_2"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_3"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_4"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+				<collision_effect
+					effect_type="pace_5"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_rocks"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/stone" />
+				<collision_effect
+					effect_type="land"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/sand" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/default" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+			</collision_info>
+			<collision_info
+				second_material="mud"
+				fallback_material_for_effects="default" />
+			<collision_info
+				second_material="soil"
+				fallback_material_for_effects="default" />
+			<collision_info
+				second_material="water">
+				<collision_effect
+					effect_type="pace_1"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+				<collision_effect
+					effect_type="pace_2"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+				<collision_effect
+					effect_type="pace_3"
+					particle="psys_game_hoof_water_col_s"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+				<collision_effect
+					effect_type="pace_4"
+					particle="psys_game_hoof_water_coll"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+				<collision_effect
+					effect_type="pace_5"
+					particle="psys_game_hoof_water_coll"
+					trail_particle=""
+					decal=""
+					sound="LOTR/Isengard/Voice/Warg/run_waters"
+					one_shot="true" />
+				<collision_effect
+					effect_type="jump"
+					particle="psys_game_hoof_water_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/jump/water" />
+				<collision_effect
+					effect_type="land"
+					particle="psys_game_hoof_water_col_s"
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/land/water" />
+				<collision_effect
+					effect_type="bodyfall"
+					particle=""
+					decal=""
+					sound="event:/physics/bodyfall/horse/water" />
+				<collision_effect
+					effect_type="slide"
+					particle=""
+					decal=""
+					sound="event:/mission/movement/footsteps/horse/slide/water" />
+				<collision_effect
+					effect_type="pass_through"
+					sound="event:/physics/water"
+					do_not_send_armor_parameter_to_sound="true"
+					upper_bound_of_size_parameter_for_sound="5000" />
 			</collision_info>
 		</monster>
 	</collision_infos>

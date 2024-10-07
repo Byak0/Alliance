@@ -1,0 +1,277 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:sys="clr-namespace:System;assembly=mscorlib"
+					xmlns:vm="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
+					xmlns:widgets="clr-namespace:Alliance.Editor.GameModes.Story.Widgets">
+
+	<!-- Font and color definitions -->
+	<FontFamily x:Key="DefaultFontFamily">Arial</FontFamily>
+	<sys:Double x:Key="DefaultFontSize">16</sys:Double>
+	<SolidColorBrush x:Key="DefaultFontColor">#FF000000</SolidColorBrush>
+	
+	<!-- Default values for TextBox -->
+	<Style TargetType="TextBox">
+		<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+		<Setter Property="Foreground" Value="{StaticResource DefaultFontColor}" />
+	</Style>
+
+	<Style TargetType="TextBlock">
+		<Setter Property="FontFamily" Value="{StaticResource DefaultFontFamily}" />
+		<Setter Property="FontSize" Value="{StaticResource DefaultFontSize}" />
+		<Setter Property="Foreground" Value="{StaticResource DefaultFontColor}" />
+	</Style>
+
+	<vm:EnumToListConverter x:Key="EnumToListConverter" />
+	<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+	<!-- Template for a label with a tooltip (optional) -->
+	<DataTemplate x:Key="LabelWithTooltipTemplate">
+		<StackPanel Height="24" 
+					Width="176" 
+					Margin="0,0,16,0"
+					Orientation="Horizontal" 
+					VerticalAlignment="Center">
+			<Image
+				Source="pack://application:,,,/Alliance.Common;component/Resources/alliance_help2.png"
+				Width="24"
+				Height="24"
+				VerticalAlignment="Center"
+				HorizontalAlignment="Left"
+				Margin="-4,0,4,2"
+				Visibility="{Binding ShowTooltip, Converter={StaticResource BoolToVisibilityConverter}}">
+				<Image.ToolTip>
+					<ToolTip Content="{Binding Tooltip}" />
+				</Image.ToolTip>
+			</Image>
+
+			<!-- Text for the label -->
+			<TextBlock Text="{Binding Label}" VerticalAlignment="Center" FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}" />
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for basic strings -->
+	<DataTemplate x:Key="StringTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<TextBox Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					 Width="264"
+					 VerticalAlignment="Center">
+				<TextBox.ToolTip>
+					<ToolTip Content="{Binding Tooltip}" />
+				</TextBox.ToolTip>
+			</TextBox>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for strings with multiple choices -->
+	<DataTemplate x:Key="StringMultiChoiceTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<ComboBox ItemsSource="{Binding PossibleValues}"
+				  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				  FontFamily="{StaticResource DefaultFontFamily}"
+				  FontSize="{StaticResource DefaultFontSize}"
+				  Foreground="{StaticResource DefaultFontColor}"
+				  Width="264"
+				  VerticalAlignment="Center"
+				  IsEditable="True"
+				  Padding="0,0,8,0">
+				<ComboBox.ToolTip>
+					<ToolTip Content="{Binding Tooltip}" />
+				</ComboBox.ToolTip>
+			</ComboBox>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for LocalizedString values -->
+	<DataTemplate x:Key="LocalizedStringTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<TextBox Text="{Binding LocalizedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				 Width="264"
+				 VerticalAlignment="Center">
+				<TextBox.ToolTip>
+					<ToolTip Content="{Binding Tooltip}" />
+				</TextBox.ToolTip>
+			</TextBox>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for Boolean values -->
+	<DataTemplate x:Key="BooleanTemplate" DataType="{x:Type sys:Boolean}">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+			<CheckBox IsChecked="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					  Margin="0,0,0,0">
+				<CheckBox.LayoutTransform>
+					<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+				</CheckBox.LayoutTransform>
+			</CheckBox>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Design for NumericTemplate (int, double, float, etc.) -->
+	<Style TargetType="{x:Type widgets:NumericUpDownBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type widgets:NumericUpDownBox}">
+					<StackPanel Orientation="Horizontal" >
+						<Button x:Name="PART_DecrementButton" Content="-" Width="24" Height="24" Padding="0, 0, 0, 4"/>
+						<TextBox x:Name="PART_TextBox" 
+								 Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+								 Width="80" 
+								 HorizontalAlignment="Center" 
+								 VerticalAlignment="Center" 
+								 TextAlignment="Center" />
+						<Button x:Name="PART_IncrementButton" Content="+" Width="24" Height="24" Padding="0, 0, 0, 4"/>
+					</StackPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Template definition for numeric -->
+	<DataTemplate x:Key="NumericTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+			<widgets:NumericUpDownBox Value="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+									HorizontalAlignment="Center" 
+									VerticalAlignment="Center"
+									Margin="2,0,0,0"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for Enum values -->
+	<DataTemplate x:Key="EnumTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<ComboBox ItemsSource="{Binding FieldValue, Converter={StaticResource EnumToListConverter}}"
+				  SelectedItem="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				  FontFamily="{StaticResource DefaultFontFamily}"
+				  FontSize="{StaticResource DefaultFontSize}"
+				  Foreground="{StaticResource DefaultFontColor}"
+				  Width="264"
+				  VerticalAlignment="Center"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for a button to edit a complex object -->
+	<DataTemplate x:Key="EditButtonTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+			<Button Content="Edit"
+					Command="{Binding EditCommand}"
+					Height="24"
+					Width="128"
+					Padding="0, 0, 0, 0"
+					FontFamily="{StaticResource DefaultFontFamily}"
+					FontSize="{StaticResource DefaultFontSize}"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for Zone - Show button to edit zone in Scene directly -->
+	<DataTemplate x:Key="ZoneTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<!-- X/Y/Z/Radius Fields -->
+			<StackPanel Orientation="Vertical" Width="200" >
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="X" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Y" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Z" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Radius" VerticalAlignment="Center" Width="40" />
+					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+						HorizontalAlignment="Center" 
+						VerticalAlignment="Center"
+						Margin="8,0,0,0"/>
+				</StackPanel>
+			</StackPanel>
+
+			<Button
+                Command="{Binding ZoneVM.EditZoneCommand}"
+                Height="64"
+                Width="64"
+                Margin="4,0,0,0"
+                Padding="4, 0, 4, 4">
+				<TextBlock TextWrapping="Wrap" Foreground="White" TextAlignment="Center">Edit Zone</TextBlock>
+			</Button>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for List values -->
+	<DataTemplate x:Key="ListTemplate">
+		<StackPanel Orientation="Vertical" Margin="0">
+			<!-- Label for the list -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+
+			<!-- ItemsControl to display the list items -->
+			<ItemsControl ItemsSource="{Binding Items}" HorizontalAlignment="Left">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal" Margin="0, 8, 0, 0">
+							<Button Content="{Binding DisplayName}" 
+									Command="{Binding EditCommand}" 
+									Height="24" 
+									Width="416" 
+									Margin="0"
+									Padding="0, 0, 0, 0"
+									FontFamily="{StaticResource DefaultFontFamily}"
+									FontSize="{StaticResource DefaultFontSize}"/>
+							<Button Content="X" 
+									Command="{Binding DeleteCommand}" 
+									Height="24" 
+									Width="24" 
+									Margin="8, 0, 0, 0" 
+									Background="DarkRed"
+									Padding="0, 0, 0, 0"/>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+
+			<!-- Button to add a new item to the list -->
+			<Button Content="Add" 
+					Command="{Binding AddCommand}" 
+					Height="24" 
+					Width="56" 
+					Margin="2,10,0,0"
+					Padding="0, 0, 4, 2"
+					HorizontalAlignment="Center"/>
+			<Line Stroke="Black" X1="0" X2="192" Y1="0" Y2="0" StrokeThickness="1" Margin="0, -12, 0, 0"/>
+			<Line Stroke="Black" X1="0" X2="192" Y1="0" Y2="0" StrokeThickness="1" Margin="256, -12, 0, 0"/>
+		</StackPanel>
+	</DataTemplate>
+
+</ResourceDictionary>

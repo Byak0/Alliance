@@ -6,7 +6,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using Logger = Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Common.Extensions.FakeArmy.Behaviors
+namespace Alliance.Server.Extensions.FakeArmy.Behaviors
 {
 	public class FakeArmyBehavior : MissionNetwork
 	{

@@ -3,11 +3,9 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Server.Core;
 using Alliance.Server.GameModes.Story.Behaviors;
-using Alliance.Server.GameModes.Story.Scenarios;
-using System.Reflection;
-using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Server.GameModes.Story
@@ -17,33 +15,27 @@ namespace Alliance.Server.GameModes.Story
 	/// </summary>
 	public class ScenarioManagerServer : ScenarioManager
 	{
-		private static readonly ScenarioManagerServer instance = new ScenarioManagerServer();
-		public static ScenarioManagerServer Instance { get { return instance; } }
+		public static void Initialize()
+		{
+			Instance = new ScenarioManagerServer();
+			Instance.RefreshAvailableScenarios();
+		}
 
 		public override void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid)
 		{
-			Scenario currentScenario;
-			Act currentAct;
-			MethodInfo scenarioMethod = typeof(ServerScenarios).GetMethod(scenarioId);
-
-			if (scenarioMethod == null)
-			{
-				currentScenario = null;
-			}
-			else
-			{
-				currentScenario = scenarioMethod.Invoke(null, null) as Scenario;
-			}
+			Scenario currentScenario = AvailableScenario.Find(scenario => scenario.Id == scenarioId);
+			// Use current scenario if none provided
+			currentScenario ??= CurrentScenario;
 
 			if (currentScenario != null && currentScenario.Acts.Count > actIndex)
 			{
-				currentAct = currentScenario.Acts[actIndex];
+				Act currentAct = currentScenario.Acts[actIndex];
 				StartScenario(currentScenario, currentAct, state);
-				Log($"Starting scenario \"{currentScenario?.Name}\" at act {actIndex}", LogLevel.Debug);
+				Log($"Starting scenario \"{currentScenario?.Name.LocalizedText}\" at act {actIndex + 1}", LogLevel.Debug);
 			}
 			else
 			{
-				Log($"Failed to start scenario \"{currentScenario?.Name}\" at act {actIndex}", LogLevel.Error);
+				Log($"Failed to start scenario \"{currentScenario?.Name.LocalizedText}\" at act {actIndex + 1}", LogLevel.Error);
 			}
 		}
 
@@ -57,11 +49,11 @@ namespace Alliance.Server.GameModes.Story
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
 			// Log the start
-			string log = $"Starting scenario \"{scenario.Name}\" - Act \"{act.Name}\"...";
+			string log = $"Starting scenario \"{scenario.Name.LocalizedText}\" - Act \"{act.Name.LocalizedText}\"...";
 			Log(log, LogLevel.Information);
 
-			// If LoadMap enabled, start a complete new mission with act settings
-			if (act.LoadMap)
+			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
+			if (act.LoadMap || OptionType.Map.GetValueText() != act.MapID)
 			{
 				GameModeStarter.Instance.StartMission(act.ActSettings);
 			}
@@ -83,11 +75,6 @@ namespace Alliance.Server.GameModes.Story
 		{
 			base.SetActState(newState);
 
-			if (newState == ActState.Completed && CurrentScenario.Acts.Count == CurrentScenario.Acts.IndexOf(CurrentAct) + 1)
-			{
-				StopScenario();
-			}
-
 			SyncActState(newState);
 		}
 
@@ -100,11 +87,6 @@ namespace Alliance.Server.GameModes.Story
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new UpdateScenarioMessage(newState, MissionTime.Now.NumberOfTicks, MathF.Ceiling(stateRemainingTime)));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-		}
-
-		public override void SetWinner(BattleSideEnum winner)
-		{
-			base.SetWinner(winner);
 		}
 	}
 }

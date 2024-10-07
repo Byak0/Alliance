@@ -1,17 +1,31 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Models.Objectives;
+using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using TaleWorlds.Core;
+using TaleWorlds.ModuleManager;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story
 {
 	/// <summary>
-	/// Abstract base class for managing a Scenario and Act, including its current state and objectives.
+	/// Base class for managing a Scenario and Act, including its current state and objectives.
 	/// </summary>
-	public abstract class ScenarioManager
+	public class ScenarioManager
 	{
-		public delegate void OnActEndDelegate(BattleSideEnum side, string text);
+		private static ScenarioManager _instance;
+		public static ScenarioManager Instance
+		{
+			get
+			{
+				if (_instance == null)
+					throw new InvalidOperationException("ScenarioManager has not been initialized.");
+				return _instance;
+			}
+			set => _instance = value;
+		}
 
 		public event Action OnStartScenario;
 		public event Action OnStopScenario;
@@ -22,13 +36,16 @@ namespace Alliance.Common.GameModes.Story
 		public event Action OnActStateDisplayResults;
 		public event Action OnActStateCompleted;
 
+		public List<Scenario> AvailableScenario { get; protected set; }
+
 		// Current scenario, act, act state and winner
 		public Scenario CurrentScenario { get; protected set; }
 		public Act CurrentAct { get; protected set; }
+		public int CurrentActIndex => CurrentScenario.Acts.IndexOf(CurrentAct);
 		public ActState ActState { get; protected set; }
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
-		public abstract void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid);
+		public virtual void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid) { }
 
 		/// <summary>
 		/// Initializes and starts a new scenario with the specified act and state.
@@ -45,11 +62,9 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void StopScenario()
 		{
 			UnregisterObjectives();
-			CurrentScenario = null;
-			CurrentAct = null;
+			OnStopScenario?.Invoke();
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
-			OnStopScenario?.Invoke();
 		}
 
 		/// <summary>
@@ -75,9 +90,20 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					CurrentAct.VictoryLogic.HandleActCompleted(CurrentWinner);
+					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
 					OnActStateCompleted?.Invoke();
 					break;
+			}
+		}
+
+		public virtual void OnMissionTick(float dt)
+		{
+			if (CurrentAct != null && ActState > ActState.SpawningParticipants)
+			{
+				foreach (ConditionalActionStruct conditionalActionStruct in CurrentAct.ConditionalActions)
+				{
+					conditionalActionStruct.Tick(dt);
+				}
 			}
 		}
 
@@ -87,7 +113,7 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void SetWinner(BattleSideEnum winner)
 		{
 			CurrentWinner = winner;
-			CurrentAct.VictoryLogic.HandleResults(winner);
+			CurrentAct.VictoryLogic.OnDisplayResults(winner);
 		}
 
 		/// <summary>
@@ -118,24 +144,40 @@ namespace Alliance.Common.GameModes.Story
 				return true;
 			}
 
-			bool[] objectivesCompletedBySide = new bool[(int)BattleSideEnum.NumSides + 1];
-
-			foreach (ObjectiveBase objective in CurrentAct.Objectives)
+			foreach (BattleSideEnum side in Enum.GetValues(typeof(BattleSideEnum)))
 			{
-				if (!objective.Active) continue;
+				if (CheckObjectivesForSide(side))
+				{
+					Log($"Side {side} has completed all objectives.", LogLevel.Debug);
+					return true;
+				}
+			}
 
+			return false;
+		}
+
+		private bool CheckObjectivesForSide(BattleSideEnum side)
+		{
+			List<ObjectiveBase> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
+
+			if (objectives.Count == 0)
+			{
+				Log($"No objectives found for side {side}.", LogLevel.Debug);
+				return false;
+			}
+
+			bool sideWin = false;
+
+			foreach (ObjectiveBase objective in objectives)
+			{
 				bool objectiveCompleted = objective.CheckObjective();
 				LogObjectiveProgress(objective, objectiveCompleted);
 
-				if (objective.RequiredForActWin)
-				{
-					objectivesCompletedBySide[(int)objective.Side] &= objectiveCompleted;
-				}
-
 				if (objectiveCompleted)
 				{
-					objective.Active = false;
+					objective.Active = false; // Disable objective to no longer check it
 
+					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
 						UnregisterObjectives();
@@ -143,16 +185,20 @@ namespace Alliance.Common.GameModes.Story
 						return true;
 					}
 				}
+
+				if (objective.RequiredForActWin)
+				{
+					sideWin = true;
+					sideWin &= objectiveCompleted;
+				}
 			}
 
-			for (int i = 0; i < objectivesCompletedBySide.Length; i++)
+			// If all objectives for the side are completed, the side wins
+			if (sideWin)
 			{
-				if (objectivesCompletedBySide[i])
-				{
-					UnregisterObjectives();
-					SetWinner((BattleSideEnum)i);
-					return true;
-				}
+				UnregisterObjectives();
+				SetWinner(side);
+				return true;
 			}
 
 			return false;
@@ -164,12 +210,18 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void LogObjectiveProgress(ObjectiveBase objective, bool objectiveCompleted)
 		{
 			string logMessage = objectiveCompleted
-				? $"{objective.Name} ({objective.Side}) completed : {objective.GetProgressAsString()}"
-				: $"{objective.Name} ({objective.Side}) : {objective.GetProgressAsString()}";
+				? $"{objective.Name.LocalizedText} ({objective.Side}) completed : {objective.GetProgressAsString()}"
+				: $"{objective.Name.LocalizedText} ({objective.Side}) : {objective.GetProgressAsString()}";
 
 			ConsoleColor logColor = objectiveCompleted ? ConsoleColor.Green : ConsoleColor.Cyan;
 
 			Log(logMessage, LogLevel.Debug);
+		}
+
+		public void RefreshAvailableScenarios()
+		{
+			AvailableScenario = new List<Scenario>();
+			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Scenarios")));
 		}
 	}
 }

@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.Audio.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromClient;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromClient;
 using System.Collections.Generic;
@@ -46,18 +47,19 @@ namespace Alliance.Client.Core.Console
 			else if (args.ElementAtOrValue(0, "") == "")
 			{
 				return "Usage: alliance.play_sound_native sound_name sound_duration\n" +
-					"Example: alliance.play_sound_native event:/music/musicians/aserai/01 30";
+					"Example: alliance.play_sound_native LOTR/OST/Flaming Red Hair.wav 30";
 			}
 
-			int soundIndex = SoundEvent.GetEventIdFromString(args[0]);
 			int soundDuration = 300;
-			if (int.TryParse(args.ElementAtOrValue(1, ""), out int duration))
+			if (int.TryParse(args[args.Count], out int duration))
 			{
 				soundDuration = duration;
+				args.RemoveAt(args.Count);
 			}
+			int soundIndex = SoundEvent.GetEventIdFromString(ConcatenateString(args));
 
 			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new SoundRequest(soundIndex, soundDuration));
+			GameNetwork.WriteMessage(new NativeSoundRequest(soundIndex, soundDuration));
 			GameNetwork.EndModuleEventAsClient();
 
 			return "Requested server to play " + soundIndex + " for " + soundDuration + " seconds.";
@@ -77,7 +79,7 @@ namespace Alliance.Client.Core.Console
 			else if (args.ElementAtOrValue(0, "") == "")
 			{
 				return "Usage: alliance.play_sound sound_name\n" +
-					"Example: alliance.play_sound LOTR\\Rohan\\Voice\\Theoden\\This will be a day to remember.wav";
+					"Example: alliance.play_sound LOTR/Rohan/Voice/Theoden/This will be a day to remember.wav";
 			}
 
 			string soundName = string.Join(" ", args);
@@ -91,6 +93,39 @@ namespace Alliance.Client.Core.Console
 
 			GameNetwork.BeginModuleEventAsClient();
 			GameNetwork.WriteMessage(new AudioRequest(soundIndex));
+			GameNetwork.EndModuleEventAsClient();
+
+			return "Requested server to play " + soundName;
+		}
+
+		[CommandLineFunctionality.CommandLineArgumentFunction("play_music", "alliance")]
+		public static string PlayMusic(List<string> args)
+		{
+			if (GameNetwork.NetworkPeerCount == 0)
+			{
+				return "Log into a server to use this command.";
+			}
+			else if (!GameNetwork.MyPeer.IsAdmin())
+			{
+				return "You need to be admin to use this command.";
+			}
+			else if (args.ElementAtOrValue(0, "") == "")
+			{
+				return "Usage: alliance.play_music sound_name\n" +
+					"Example: alliance.play_music LOTR/OST/Flaming Red Hair.wav";
+			}
+
+			string soundName = string.Join(" ", args);
+			soundName = soundName.Trim('"');
+			int soundIndex = AudioPlayer.Instance.GetAudioId(soundName);
+
+			if (soundIndex == -1)
+			{
+				return "Sound not found.";
+			}
+
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new MusicRequest(soundIndex));
 			GameNetwork.EndModuleEventAsClient();
 
 			return "Requested server to play " + soundName;

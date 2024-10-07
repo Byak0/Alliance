@@ -2,22 +2,22 @@
 <base xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="module_sound">
 	<module_sounds>
 		<!--Sounds in LOTR/Elves/Alert-->
-		<module_sound name="event:/al/lotr/elves/alert/french_horn_1" sound_category="alert" path="LOTR/Elves/Alert/elf_horn.wav" />
+		<module_sound name="LOTR/Elves/Alert/elf_horn.wav" sound_category="alert" path="LOTR/Elves/Alert/elf_horn.wav" />
 		<!--Sounds in LOTR/Isengard/Alert-->
-		<module_sound name="event:/al/lotr/isengard/alert/horn_trombone_1" sound_category="alert" path="LOTR/Isengard/Alert/horn_trombone_1.wav" />
-		<module_sound name="event:/al/lotr/isengard/alert/horn_trombone_2" sound_category="alert" path="LOTR/Isengard/Alert/horn_trombone_2.wav" />
-		<module_sound name="event:/al/lotr/isengard/alert/horn_isengard_helmsdeep" sound_category="alert" path="LOTR/Isengard/Alert/horn_isengard_helmsdeep.wav" />
+		<module_sound name="LOTR/Isengard/Alert/horn_trombone_1.wav" sound_category="alert" path="LOTR/Isengard/Alert/horn_trombone_1.wav" />
+		<module_sound name="LOTR/Isengard/Alert/horn_trombone_2.wav" sound_category="alert" path="LOTR/Isengard/Alert/horn_trombone_2.wav" />
+		<module_sound name="LOTR/Isengard/Alert/horn_isengard_helmsdeep.wav" sound_category="alert" path="LOTR/Isengard/Alert/horn_isengard_helmsdeep.wav" />
 		<!--Sounds in LOTR/Isengard/Voice/Lurtz-->
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/attack" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Attack.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/attack2" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Attack2.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/come_here" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Come here.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/defend_me_you_cowards" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Defend me you cowards.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/draw_your_weapons" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Draw your weapons.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Go.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/lurtz/stay_together" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Stay together.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Attack.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Attack.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Attack2.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Attack2.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Come here.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Come here.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Defend me you cowards.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Defend me you cowards.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Draw your weapons.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Draw your weapons.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Go.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Go.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Lurtz/Stay together.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Lurtz/Stay together.wav" />
 		<!--Sounds in LOTR/Isengard/Voice/Uruk-->
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/deaths"
+			name="LOTR/Isengard/Voice/Uruk/Deaths"
 			sound_category="mission_voice_shout"
 			min_pitch_multiplier="0.8"
 			max_pitch_multiplier="1.0">
@@ -30,7 +30,7 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Saruman.wav" weight="0.2" />
 		</module_sound>
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/pains"
+			name="LOTR/Isengard/Voice/Uruk/Pains"
 			sound_category="mission_voice"
 			min_pitch_multiplier="0.9"
 			max_pitch_multiplier="1.1">
@@ -44,7 +44,7 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" weight="1" />
 		</module_sound>
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/grunts"
+			name="LOTR/Isengard/Voice/Uruk/Grunts"
 			sound_category="mission_voice"
 			min_pitch_multiplier="0.8"
 			max_pitch_multiplier="1.2">
@@ -56,7 +56,7 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" weight="1" />
 		</module_sound>
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/yells"
+			name="LOTR/Isengard/Voice/Uruk/Yells"
 			sound_category="mission_voice_shout"
 			min_pitch_multiplier="0.8"
 			max_pitch_multiplier="1.2">
@@ -66,7 +66,7 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" weight="1" />
 		</module_sound>
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/laughs"
+			name="LOTR/Isengard/Voice/Uruk/Laughs"
 			sound_category="mission_voice"
 			min_pitch_multiplier="0.9"
 			max_pitch_multiplier="1.1">
@@ -77,7 +77,7 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Meat is back on the menu.wav" weight="0.5" />
 		</module_sound>
 		<module_sound
-			name="event:/al/lotr/isengard/voice/uruk/victories"
+			name="LOTR/Isengard/Voice/Uruk/Victories"
 			sound_category="mission_voice"
 			min_pitch_multiplier="0.9"
 			max_pitch_multiplier="1.1">
@@ -90,61 +90,62 @@
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Uruk/Meat is back on the menu.wav" weight="0.1" />
-			<variation path="LOTR/Isengard/Voice/Uruk/Are you all dead.wavv" weight="0.1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav" weight="0.1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/aaah" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/AAAh.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/are_you_all_dead" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/attack_1" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Attack 1.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/attack_2" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Attack 2.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/burn_it_to_the_ground" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Burn it to the ground.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/come_here_you" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Come here you.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/come_on" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Come on.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/death" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Death.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/destroy_it" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Destroy it.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/draw_your_weapons" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/faster" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Faster.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/get_in_line" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get in line.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/get_over_here" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get over here.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/get_ready_to_fight" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get ready to fight.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Go.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/grunt" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Grunt.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/hurry_up" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/in_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/In there.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/kill_them" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Kill them.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/laugh_1" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 1.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/laugh_2" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 2.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/laugh_3" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 3.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/laugh_4" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 4.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/leave_non_alive" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Leave non alive.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/let_them_be" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Let them be.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/meat_is_back_on_the_menu" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Meat is back on the menu.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/more_orcs_now" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/More orcs now.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/no" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/No.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/pain" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Pain.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/ready_weapons" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Ready weapons.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/regroup" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Regroup.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/retreat_get_back_you_scrum" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Retreat_Get back you scrum.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/run_for_cover" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Run for cover.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/saruman" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Saruman.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/select_uruks" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Select_Uruks.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/stand_back_uruks" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stand back Uruks.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/stay_right_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stay right there.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/stay_together" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stay together.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/stun" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Stun.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/there_there" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/There There.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/yell_1" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 1.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/yell_2" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 2.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/yell_3" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" />
-		<module_sound name="event:/al/lotr/isengard/voice/uruk/you_know_where_to_go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/You know where to go.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/AAAh.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/AAAh.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Are you all dead.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Attack 1.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Attack 1.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Attack 2.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Attack 2.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Burn it to the ground.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Burn it to the ground.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Come here you.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Come here you.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Come on.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Come on.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Death.wav" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Death.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Destroy it.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Destroy it.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav" />
+		
+		<module_sound name="LOTR/Isengard/Voice/Uruk/faster" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Faster.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/get_in_line" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get in line.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/get_over_here" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get over here.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/get_ready_to_fight" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get ready to fight.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Go.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/grunt" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Grunt.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/hurry_up" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/in_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/In there.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/kill_them" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Kill them.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/laugh_1" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 1.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/laugh_2" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 2.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/laugh_3" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 3.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/laugh_4" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Laugh 4.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/leave_non_alive" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Leave non alive.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/let_them_be" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Let them be.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/meat_is_back_on_the_menu" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Meat is back on the menu.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/more_orcs_now" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/More orcs now.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/no" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/No.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/pain" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Pain.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/ready_weapons" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Ready weapons.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/regroup" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Regroup.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/retreat_get_back_you_scrum" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Retreat_Get back you scrum.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/run_for_cover" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Run for cover.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/saruman" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Saruman.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/select_uruks" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Select_Uruks.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/stand_back_uruks" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stand back Uruks.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/stay_right_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stay right there.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/stay_together" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Stay together.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/Stun.wav" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Stun.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/there_there" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/There There.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/yell_1" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 1.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/yell_2" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 2.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/yell_3" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Uruk/you_know_where_to_go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/You know where to go.wav" />
 		<!--Sounds in LOTR/Isengard/Voice/Warg-->
-		<module_sound name="event:/al/lotr/isengard/voice/warg/attacks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/attacks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/attack_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/attack_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/attack_3.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/attack_4.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/attack_5.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/barks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/barks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/bark_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/bark_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/bark_3.wav" weight="1" />
@@ -152,7 +153,7 @@
 			<variation path="LOTR/Isengard/Voice/Warg/bark_5.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/bark_6.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/die_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/die_10.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/die_11.wav" weight="1" />
@@ -165,7 +166,7 @@
 			<variation path="LOTR/Isengard/Voice/Warg/die_8.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/die_9.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/grunts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/grunts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/grunt_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/grunt_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/grunt_3.wav" weight="1" />
@@ -175,13 +176,13 @@
 			<variation path="LOTR/Isengard/Voice/Warg/grunt_7.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/grunt_8.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/hits" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/hits" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/hit_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/hit_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/hit_3.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/hit_4.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/howlss" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/howlss" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/howls_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/howls_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/howls_3.wav" weight="1" />
@@ -190,7 +191,7 @@
 			<variation path="LOTR/Isengard/Voice/Warg/howls_6.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/howls_7.wav" weight="1" />
 		</module_sound>
-		<module_sound name="event:/al/lotr/isengard/voice/warg/saddles" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+		<module_sound name="LOTR/Isengard/Voice/Warg/saddles" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_1.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_2.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_3.wav" weight="1" />
@@ -198,103 +199,173 @@
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_5.wav" weight="1" />
 			<variation path="LOTR/Isengard/Voice/Warg/saddle_6.wav" weight="1" />
 		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_rock" sound_category="mission_voice" min_pitch_multiplier="1" max_pitch_multiplier="1.2">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/footstep_grass" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="1.2" path="LOTR/Isengard/Voice/Warg/footstep_grass_1.wav" />
+		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_snow" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="0.9">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_water" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_1.wav" weight="0.1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/run_dirts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_5.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/run_grasss" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_grass_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/run_rocks" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_4.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_5.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_rock_6.wav" weight="0.1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/run_snows" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_3.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_snow_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Isengard/Voice/Warg/run_waters" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_1.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_2.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Warg/run_water_3.wav" weight="1" />
+		</module_sound>
 		<!--Sounds in LOTR/OST-->
-		<module_sound name="event:/al/lotr/ost/flaming_red_hair" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
-		<module_sound name="event:/al/lotr/ost/charge_theoden" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
-		<module_sound name="event:/al/lotr/ost/isengard_walking" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Isengard Walking.mp3" />
+		<module_sound name="LOTR/OST/Flaming Red Hair.wav" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
+		<module_sound name="LOTR/OST/Charge Theoden.mp3" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Charge Theoden.mp3" />
+		<module_sound name="LOTR/OST/Isengard Walking.mp3" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Isengard Walking.mp3" />
 		<!--Sounds in LOTR/Rohan/Alert-->
-		<module_sound name="event:/al/lotr/rohan/alert/french_horn_1" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_1.wav" />
-		<module_sound name="event:/al/lotr/rohan/alert/french_horn_2" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_2.wav" />
-		<module_sound name="event:/al/lotr/rohan/alert/horn_1" sound_category="alert" path="LOTR/Rohan/Alert/horn_1.wav" />
-		<module_sound name="event:/al/lotr/rohan/alert/bfhd_hd_horn" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_hd_horn.wav" />
-		<module_sound name="event:/al/lotr/rohan/alert/bfhd_explosion" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_explosion.mp3" />
+		<module_sound name="LOTR/Rohan/Alert/french_horn_1.wav" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_1.wav" />
+		<module_sound name="LOTR/Rohan/Alert/french_horn_2.wav" sound_category="alert" path="LOTR/Rohan/Alert/french_horn_2.wav" />
+		<module_sound name="LOTR/Rohan/Alert/horn_1.wav" sound_category="alert" path="LOTR/Rohan/Alert/horn_1.wav" />
+		<module_sound name="LOTR/Rohan/Alert/bfhd_hd_horn.wav" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_hd_horn.wav" />
+		<module_sound name="LOTR/Rohan/Alert/bfhd_explosion.mp3" sound_category="alert" path="LOTR/Rohan/Alert/bfhd_explosion.mp3" />
 		<!--Sounds in LOTR/Rohan/Voice/Theoden-->
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/advance_crush_this_evil" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Crush this evil.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/advance_forth_and_fear_no_darkness" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Forth and fear no darkness.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/advance_forward" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Forward.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/advance_go_forth" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Go forth.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/advance_to_their_ruin" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_To their ruin.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/as_king_of_rohan_i_grant_you_my_favour" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/As king of Rohan I grant you my favour.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/assail_the_enemy" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Assail the enemy.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/assemble_the_army_as_many_men_as_can_be_found" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Assemble the army as many men as can be found.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/bring_it_down" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Bring it down.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/cav_arise_riders_of_theoden" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Cav_Arise riders of Theoden.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/cav_riders_of_rohan" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Cav_Riders of Rohan.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_attack_1_" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Attack 1 .wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_attack_2" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Attack 2.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_charge" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Charge.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_death" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Death.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_drive_them_to_ruin" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Drive them to ruin.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_for_death_and_glory" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_For death and glory.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_forth_eorlingas" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Forth Eorlingas.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/charge_to_war" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_To war.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/come_little_one_you_will_ride_with_me" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Come little one you will ride with me.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/come_to_my_aid_rohirim" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Come to my aid Rohirim.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh1" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh1.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh2" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh2.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh3" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh3.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh4" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh4.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh5" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh5.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_argh6" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh6.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/death_i_see_the_darkness" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_I see the darkness.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/destroy_this_place" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Destroy this place.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/dismount_i_must_leave_my_horse" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Dismount_I must leave my horse.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/dismount_we_will_go_on_foot_from_here" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Dismount_We will go on foot from here.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/fear_no_darkness" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Fear no darkness.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/follow_follow_me" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Follow_Follow me.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/follow_rally_to_me" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Follow_Rally to me.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/hold_them_off" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold them off.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/hold_move_out" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Move out.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/hold_stand_firm" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Stand firm.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/hold_steel_yourselves" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Steel yourselves.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/hold_this_way" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_This way.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_fear_this_is_the_end" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I fear this is the end.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_have_returned_now_as_king_of_the_riddermark" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I have returned now as king of the Riddermark.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_join_my_ancestors_fight_on_rohan" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I join my ancestors fight on Rohan.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_must_leave_you_here" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I must leave you here.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_theoden_king_will_ride_to_war" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I Theoden King will ride to war.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_will_ride_once_again" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will ride once again.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_will_ride_this_day_as_king_of_rohan" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will ride this day as king of Rohan.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/i_will_take_you_little_one" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will take you little one.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/into_the_tower" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Into the tower.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/let_this_be_the_hour" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let this be the hour.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/let_this_be_their_end" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let this be their end.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/let_us_draw_swords_together" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let us draw swords together.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/let_us_ride" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let us ride.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/make_haste" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Make haste.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/may_you_fight_well_this_day" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/May you fight well this day.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/meet_them_head_on" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Meet them head on.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/mount_the_assault" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Mount the assault.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/muster_the_rohirrim" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Muster the Rohirrim.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/now_for_wrath_now_for_ruin" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Now for wrath now for ruin.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/now_rohirrim" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Now Rohirrim.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/quicly_now" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Quicly now.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/rally_to_me" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Rally to me.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/rally_to_my_aid" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Rally to my aid.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/ride_1" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride 1.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/ride_2" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride 2.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/ride_light_and_swift" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride light and swift.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/ride_with_me_" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride with me .wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/riders_of_the_riddermark" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Riders of the Riddermark.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/spears_shall_be_shaken" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Spears shall be shaken.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/speech_we_go_to_war" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Speech we go to war.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/take_your_leave" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Take your leave.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/tear_us" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Tear us.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/the_tower" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/The tower.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/this_is_no_place_for_a_hobbit" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/This is no place for a hobbit.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/this_will_be_a_day_to_remember" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/This will be a day to remember.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/to_the_castle" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To the castle.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/to_the_defences" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To the defences.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/to_their_ruin" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To their ruin.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/to_war" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To war.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/we_ride_to_war" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We ride to war.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/we_will_have_victory" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We will have victory.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/we_will_ride_this_day" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We will ride this day.wav" />
-		<module_sound name="event:/al/lotr/rohan/voice/theoden/you_have_my_blessings_friends_of_rohan" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/You have my blessings friends of Rohan.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Advance_Crush this evil.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Crush this evil.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Advance_Forth and fear no darkness.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Forth and fear no darkness.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Advance_Forward.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Forward.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Advance_Go forth.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_Go forth.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Advance_To their ruin.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Advance_To their ruin.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/As king of Rohan I grant you my favour.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/As king of Rohan I grant you my favour.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Assail the enemy.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Assail the enemy.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Assemble the army as many men as can be found.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Assemble the army as many men as can be found.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Bring it down.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Bring it down.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Cav_Arise riders of Theoden.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Cav_Arise riders of Theoden.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Cav_Riders of Rohan.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Cav_Riders of Rohan.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Attack 1 .wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Attack 1 .wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Attack 2.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Attack 2.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Charge.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Charge.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Death.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Death.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Drive them to ruin.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Drive them to ruin.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_For death and glory.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_For death and glory.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_Forth Eorlingas.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_Forth Eorlingas.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Charge_To war.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Charge_To war.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Come little one you will ride with me.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Come little one you will ride with me.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Come to my aid Rohirim.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Come to my aid Rohirim.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh1.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh1.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh2.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh2.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh3.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh3.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh4.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh4.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh5.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh5.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_Argh6.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_Argh6.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Death_I see the darkness.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Death_I see the darkness.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Destroy this place.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Destroy this place.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Dismount_I must leave my horse.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Dismount_I must leave my horse.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Dismount_We will go on foot from here.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Dismount_We will go on foot from here.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Fear no darkness.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Fear no darkness.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Follow_Follow me.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Follow_Follow me.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Follow_Rally to me.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Follow_Rally to me.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Hold them off.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold them off.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Hold_Move out.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Move out.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Hold_Stand firm.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Stand firm.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Hold_Steel yourselves.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_Steel yourselves.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Hold_This way.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Hold_This way.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I fear this is the end.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I fear this is the end.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I have returned now as king of the Riddermark.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I have returned now as king of the Riddermark.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I join my ancestors fight on Rohan.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I join my ancestors fight on Rohan.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I must leave you here.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I must leave you here.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I Theoden King will ride to war.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I Theoden King will ride to war.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I will ride once again.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will ride once again.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I will ride this day as king of Rohan.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will ride this day as king of Rohan.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/I will take you little one.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/I will take you little one.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Into the tower.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Into the tower.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Let this be the hour.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let this be the hour.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Let this be their end.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let this be their end.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Let us draw swords together.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let us draw swords together.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Let us ride.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Let us ride.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Make haste.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Make haste.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/May you fight well this day.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/May you fight well this day.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Meet them head on.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Meet them head on.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Mount the assault.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Mount the assault.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Muster the Rohirrim.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Muster the Rohirrim.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Now for wrath now for ruin.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Now for wrath now for ruin.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Now Rohirrim.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Now Rohirrim.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Quicly now.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Quicly now.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Rally to me.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Rally to me.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Rally to my aid.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Rally to my aid.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Ride 1.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride 1.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Ride 2.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride 2.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Ride light and swift.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride light and swift.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Ride with me .wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Ride with me .wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Riders of the Riddermark.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Riders of the Riddermark.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Spears shall be shaken.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Spears shall be shaken.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Speech we go to war.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Speech we go to war.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Take your leave.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Take your leave.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/Tear us.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/Tear us.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/The tower.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/The tower.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/This is no place for a hobbit.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/This is no place for a hobbit.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/This will be a day to remember.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/This will be a day to remember.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/To the castle.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To the castle.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/To the defences.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To the defences.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/To their ruin.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To their ruin.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/To war.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/To war.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/We ride to war.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We ride to war.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/We will have victory.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We will have victory.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/We will ride this day.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/We will ride this day.wav" />
+		<module_sound name="LOTR/Rohan/Voice/Theoden/You have my blessings friends of Rohan.wav" sound_category="mission_voice" path="LOTR/Rohan/Voice/Theoden/You have my blessings friends of Rohan.wav" />
 		<!--Sounds in Native/Alert-->
-		<module_sound name="event:/al/native/alert/car_horn" sound_category="alert" path="Native/Alert/Car horn.mp3" />
+		<module_sound name="Native/Alert/Car horn.mp3" sound_category="alert" path="Native/Alert/Car horn.mp3" />
 		<!--Sounds in Native/Ambient-->
-		<module_sound name="event:/al/native/ambient/fireworks_1" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 1.mp3" is_2d="true" />
-		<module_sound name="event:/al/native/ambient/fireworks_2" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 2.mp3" is_2d="true" />
+		<module_sound name="Native/Ambient/Fireworks 1.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 1.mp3" is_2d="true" />
+		<module_sound name="Native/Ambient/Fireworks 2.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 2.mp3" is_2d="true" />
 	</module_sounds>
 </base>

@@ -38,4 +38,5 @@
 	<string id="str_multiplayer_scene_name.LOTR_The_Wold" text="{=str_alliance_scene_lotr_the_wold}The Wold by Esperanza" />
 	<string id="str_multiplayer_scene_name.Warg3" text="{=str_alliance_scene_warg3}Ambush by Adwennor" />
 	<string id="str_multiplayer_scene_name.Lisiere2" text="{=str_alliance_scene_lisiere2}Border of Fangorn by Adwennor" />
+	<string id="str_multiplayer_scene_name.Amazonia" text="{=str_alliance_scene_amazonia}Amazonia by Esperanza" />
 </strings>

@@ -1,11 +1,11 @@
 ﻿using Alliance.Common.Extensions;
-using Alliance.Common.Extensions.FakeArmy.Behaviors;
+using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromServer;
-using Alliance.Common.GameModes.Story.NetworkMessages.FromClient;
+using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Client.Extensions.FakeArmy.Handlers
+namespace Alliance.Server.Extensions.FakeArmy.Handlers
 {
 	/// <summary>
 	/// All request related to FakeArmy send by CLIENT will be handled here

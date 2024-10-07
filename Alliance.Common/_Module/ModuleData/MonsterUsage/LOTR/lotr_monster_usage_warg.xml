@@ -8,7 +8,7 @@
   3: heavy crush
   4: knock down
   -->
-	<monster_usage_set	 id="warg"
+	<monster_usage_set id="warg"
 						 rear_action="act_warg_rear"
 						 rear_damaged_action="act_warg_rear_damaged"
 						 dash_action="act_warg_dash"

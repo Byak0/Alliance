@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Models.Objectives;
+using Alliance.Common.GameModes.Story.Objectives;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -179,9 +179,9 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 
 		public void SetAct(Act act)
 		{
-			Log("Setting Act in VM : " + act.Name + " - " + act.Description, LogLevel.Debug);
-			ActTitle = act?.Name;
-			ActDescription = act?.Description;
+			Log("Setting Act in VM : " + act.Name.LocalizedText, LogLevel.Debug);
+			ActTitle = act?.Name.LocalizedText;
+			ActDescription = act?.Description.LocalizedText;
 			if (Mission.Current.PlayerTeam != null) SetObjectives(act, Mission.Current.PlayerTeam.Side);
 		}
 
@@ -191,7 +191,7 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 			Objectives = new MBBindingList<ObjectiveVM>();
 			foreach (ObjectiveBase objective in act?.Objectives.FindAll(obj => obj.Side == side))
 			{
-				Log(objective.Name + " - " + objective.Description);
+				Log(objective.Name.LocalizedText + " - " + objective.Description.LocalizedText, LogLevel.Debug);
 				Objectives.Add(new ObjectiveVM(objective));
 			}
 		}

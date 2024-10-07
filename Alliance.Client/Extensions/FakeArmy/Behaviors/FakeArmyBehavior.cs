@@ -1,18 +1,17 @@
-﻿using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromServer;
-using System;
+﻿using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Common.Extensions.FakeArmy.Behaviors
+namespace Alliance.Client.Extensions.FakeArmy.Behaviors
 {
 	public class FakeArmyBehavior : MissionNetwork
 	{
 		private static readonly string FAKE_ARMY_EMITER_NAME = "uruk_army_walking";
 
-		private int nbTickedOfTeam = Int32.MaxValue;
-		private int nbTicketMax = Int32.MaxValue;
+		private int nbTickedOfTeam = int.MaxValue;
+		private int nbTicketMax = int.MaxValue;
 		private GameEntity particuleEntity;
 		private ParticleSystem particule;
 		private bool isInit = false;

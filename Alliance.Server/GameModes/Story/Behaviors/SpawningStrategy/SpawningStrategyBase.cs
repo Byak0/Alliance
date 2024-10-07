@@ -193,7 +193,10 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public static EquipmentElement GetBannerItem(BasicCultureObject culture)
 		{
-			return new EquipmentElement(MBObjectManager.Instance.GetObjectTypeList<ItemObject>().First(item => item.IsBannerItem && item.Culture == culture), null, null, false);
+			ItemObject banner = MBObjectManager.Instance.GetObjectTypeList<ItemObject>().FirstOrDefault(item => item.IsBannerItem && item.Culture == culture);
+			// If no banner found for culture, get first banner found
+			banner ??= MBObjectManager.Instance.GetObjectTypeList<ItemObject>().FirstOrDefault(item => item.IsBannerItem);
+			return new EquipmentElement(banner, null, null, false);
 		}
 
 		public virtual void InitPlayerLives(MissionPeer peer)
@@ -450,9 +453,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			_spawnPreparationTimeLimit = OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions);
 
 			// Init available cultures based on current act
-			List<MultiplayerOption> currentActOptions = CurrentAct.ActSettings.NativeOptions;
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam1).GetValue(out string cultureAttacker);
-			currentActOptions.First((x) => x.OptionType == OptionType.CultureTeam2).GetValue(out string cultureDefender);
+			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
+			string cultureDefender = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam2].ToString();
 			_cultures = new BasicCultureObject[2]
 			{
 				MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureDefender),

@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
@@ -22,6 +23,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// </summary>
 	public class CS_UsableObject : UsableMachine
 	{
+		public event Action OnUse;
+
+		public string ObjectId;
+
 		public int NumberOfUseMax = -1;
 
 		public string TextWhenUsable = "Use object";
@@ -243,10 +248,11 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		protected virtual void AfterUse(Agent userAgent, bool actionCompleted = true)
 		{
+			NumberOfUse++;
+			OnUse?.Invoke();
+
 			if (NumberOfUseMax > 0)
 			{
-				NumberOfUse++;
-
 				if (_numberOfUse == NumberOfUseMax)
 				{
 					Deactivate();

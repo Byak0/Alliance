@@ -84,7 +84,7 @@
 
 	<!-- Scenario text for GdCFinal -->
 	<string id="str_alliance_scenario_name.GdCFinal" text="{=str_alliance_scenario_name_GdCFinal}GdC - Helm's Deep" />
-	<string id="str_alliance_scenario_description.GdCFinal" text="{=str_alliance_scenario_description_GP}Defend Helm's Deep against Isengard." />
+	<string id="str_alliance_scenario_description.GdCFinal" text="{=str_alliance_scenario_description_GdCFinal}Defend Helm's Deep against Isengard." />
 	<!-- Act 1 -->
 	<string id="str_alliance_act_name.GdCFinal_1" text="{=str_alliance_act_name_GdCFinal_1}So it begins..." />
 	<string id="str_alliance_act_description.GdCFinal_1" text="{=str_alliance_act_description_GdCFinal_1}The Isengard army is approaching." />
@@ -97,4 +97,20 @@
 	<string id="str_alliance_obj_description.GdCFinal_1_1" text="{=str_alliance_obj_description_GdCFinal_1_1}Survive the onslaught." />
 	<string id="str_alliance_obj_name.GdCFinal_1_2" text="{=str_alliance_obj_name_GdCFinal_1_2}Rohan is wounded... Finish them!" />
 	<string id="str_alliance_obj_description.GdCFinal_1_2" text="{=str_alliance_obj_description_GdCFinal_1_2}Kill every enemy." />
+
+	<!-- Scenario text for OrgaDefault -->
+	<string id="str_alliance_scenario_name.OrgaDefault" text="{=str_alliance_scenario_name_OrgaDefault}Scenario" />
+	<string id="str_alliance_scenario_description.OrgaDefault" text="{=str_alliance_scenario_description_OrgaDefault}Follow instructions !" />
+	<!-- Act 1 -->
+	<string id="str_alliance_act_name.OrgaDefault_1" text="{=str_alliance_act_name_OrgaDefault_1}Act 1" />
+	<string id="str_alliance_act_description.OrgaDefault_1" text="{=str_alliance_act_description_OrgaDefault_1}Follow instructions !" />
+	<string id="str_alliance_act_lose_defender.OrgaDefault_1" text="{=str_alliance_act_lose_defender_OrgaDefault_1}Defeat..." />
+	<string id="str_alliance_act_lose_attacker.OrgaDefault_1" text="{=str_alliance_act_lose_attacker_OrgaDefault_1}Defeat..." />
+	<string id="str_alliance_act_victory_attacker.OrgaDefault_1" text="{=str_alliance_act_victory_attacker_OrgaDefault_1}Victory!" />
+	<string id="str_alliance_act_victory_defender.OrgaDefault_1" text="{=str_alliance_act_victory_defender_OrgaDefault_1}Victory!" />
+	<!-- Act 1 - Objectives -->
+	<string id="str_alliance_obj_name.OrgaDefault_1_1" text="{=str_alliance_obj_name_OrgaDefault_1_1}Unknown objective" />
+	<string id="str_alliance_obj_description.OrgaDefault_1_1" text="{=str_alliance_obj_description_OrgaDefault_1_1}Follow instructions !" />
+	<string id="str_alliance_obj_name.OrgaDefault_1_2" text="{=str_alliance_obj_name_OrgaDefault_1_2}Unknown objective" />
+	<string id="str_alliance_obj_description.OrgaDefault_1_2" text="{=str_alliance_obj_description_OrgaDefault_1_2}Follow instructions !" />
 </strings>

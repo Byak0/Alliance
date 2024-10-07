@@ -3,6 +3,7 @@ import re
 import xml.etree.ElementTree as ET
 from collections import defaultdict
 
+# This script generates the module_sounds.xml file automatically based on sound files arborescence in ModuleSounds dir
 def generate_xml(directory):
     base = ET.Element('base', attrib={
         'xmlns:xsi': "http://www.w3.org/2001/XMLSchema-instance",
@@ -30,7 +31,7 @@ def generate_xml(directory):
             last_dir = current_dir
 
         if len(files) > 1:
-            event_name = "event:/al/" + current_dir.lower().replace(' ', '_') + '/' + base_name.lower().replace(' ', '_') + 's'
+            event_name = current_dir + '/' + base_name + 's'
             sound_category = determine_sound_category(files[0])
             
             sound_element = ET.SubElement(sounds, 'module_sound', attrib={
@@ -46,7 +47,7 @@ def generate_xml(directory):
                     'weight': '1'
                 })
         else:
-            event_name = "event:/al/" + files[0].lower().replace(' ', '_').replace('.wav', '').replace('.mp3', '')
+            event_name = files[0]
             sound_category = determine_sound_category(files[0])
             
             sound_element = ET.SubElement(sounds, 'module_sound', attrib={
