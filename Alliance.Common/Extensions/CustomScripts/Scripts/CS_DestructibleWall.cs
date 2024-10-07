@@ -417,7 +417,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public void SetAbilityOfNavmesh(bool Navmesh1, bool Navmesh2)
 		{
-			Log($"Disabling navmesh {NavigationMeshIdEnabledOnDestroy}, enabling navmesh {NavigationMeshIdDisabledOnDestroy}");
+			Log($"Disabling navmesh {NavigationMeshIdEnabledOnDestroy}, enabling navmesh {NavigationMeshIdDisabledOnDestroy}", LogLevel.Debug);
 
 			if (NavigationMeshIdEnabledOnDestroy != -1)
 			{

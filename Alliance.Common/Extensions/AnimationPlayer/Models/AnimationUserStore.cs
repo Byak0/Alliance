@@ -54,7 +54,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 			}
 			else
 			{
-				_filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Mount and Blade II Bannerlord", "Configs", "Alliance", "MyAnimations.xml");
+				_filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Mount and Blade II Bannerlord", "Configs", SubModule.CurrentModuleName, "MyAnimations.xml");
 				// Only loads user config for admins for now
 				if (File.Exists(_filePath) && GameNetwork.MyPeer.IsAdmin())
 				{
@@ -67,18 +67,26 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 				}
 				else
 				{
-					string path = Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Animations/AvailableAnimations.xml");
-					if (File.Exists(path))
+					try
 					{
-						Deserialize(path);
-					}
+						string path = Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Animations/AvailableAnimations.xml");
+						if (File.Exists(path))
+						{
+							Deserialize(path);
+						}
 
-					string directory = Path.GetDirectoryName(_filePath);
-					if (!Directory.Exists(directory))
-					{
-						Directory.CreateDirectory(directory);
+						string directory = Path.GetDirectoryName(_filePath);
+						if (!Directory.Exists(directory))
+						{
+							Directory.CreateDirectory(directory);
+						}
+						Serialize();
 					}
-					Serialize();
+					catch (Exception ex)
+					{
+						Log("Alliance - Failed to save user animations.", LogLevel.Error);
+						Log(ex.Message, LogLevel.Error);
+					}
 				}
 			}
 		}
@@ -98,7 +106,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 			}
 			catch (Exception ex)
 			{
-				Log("Alliance - Failed to save user animations.", LogLevel.Error);
+				Log("Alliance - Failed to save file " + _filePath, LogLevel.Error);
 				Log(ex.Message, LogLevel.Error);
 			}
 		}

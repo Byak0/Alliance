@@ -130,12 +130,12 @@ namespace Alliance.Common.Core.Configuration.Models
 					{
 						if (val > max)
 						{
-							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Warning);
+							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
 							value = max;
 						}
 						if (val < min)
 						{
-							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Warning);
+							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Debug);
 							value = min;
 						}
 					}
@@ -157,12 +157,12 @@ namespace Alliance.Common.Core.Configuration.Models
 					{
 						if (val > max)
 						{
-							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Warning);
+							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
 							return max;
 						}
 						if (val < min)
 						{
-							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Warning);
+							Log($"Value for option {option} is too low, setting to minimum value : {min}", LogLevel.Debug);
 							return min;
 						}
 					}

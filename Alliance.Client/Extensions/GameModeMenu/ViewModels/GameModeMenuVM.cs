@@ -297,7 +297,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 							new TextObject(attribute.Label ?? optionType.ToString()),
 							new TextObject(attribute.Tooltip ?? optionType.ToString()),
 							() => (int)_selectedGameMode.GameModeSettings.TWOptions[optionType],
-							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = newValue,
+							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = (int)newValue,
 							optionProperty.BoundsMin,
 							optionProperty.BoundsMax,
 							true, true));

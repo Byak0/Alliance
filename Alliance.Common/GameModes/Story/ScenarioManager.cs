@@ -62,9 +62,9 @@ namespace Alliance.Common.GameModes.Story
 		public virtual void StopScenario()
 		{
 			UnregisterObjectives();
+			OnStopScenario?.Invoke();
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
-			OnStopScenario?.Invoke();
 		}
 
 		/// <summary>
@@ -90,24 +90,15 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					if (CurrentScenario.Acts.Count == (CurrentScenario.Acts.IndexOf(CurrentAct) + 1))
-					{
-						CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
-						OnActStateCompleted?.Invoke();
-						OnStopScenario?.Invoke();
-					}
-					else
-					{
-						CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
-						OnActStateCompleted?.Invoke();
-					}
+					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
+					OnActStateCompleted?.Invoke();
 					break;
 			}
 		}
 
 		public virtual void OnMissionTick(float dt)
 		{
-			if (ActState > ActState.SpawningParticipants)
+			if (CurrentAct != null && ActState > ActState.SpawningParticipants)
 			{
 				foreach (ConditionalActionStruct conditionalActionStruct in CurrentAct.ConditionalActions)
 				{
@@ -171,11 +162,11 @@ namespace Alliance.Common.GameModes.Story
 
 			if (objectives.Count == 0)
 			{
-				Log($"No objectives found for side {side}.", LogLevel.Warning);
+				Log($"No objectives found for side {side}.", LogLevel.Debug);
 				return false;
 			}
 
-			bool sideWin = true;
+			bool sideWin = false;
 
 			foreach (ObjectiveBase objective in objectives)
 			{
@@ -197,6 +188,7 @@ namespace Alliance.Common.GameModes.Story
 
 				if (objective.RequiredForActWin)
 				{
+					sideWin = true;
 					sideWin &= objectiveCompleted;
 				}
 			}

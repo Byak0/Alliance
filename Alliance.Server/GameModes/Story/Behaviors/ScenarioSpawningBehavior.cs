@@ -31,6 +31,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 			ScenarioManagerServer.Instance.OnActStateSpawnParticipants += StartSpawnSession;
 			ScenarioManagerServer.Instance.OnActStateDisplayResults += EndSpawnSession;
+			ScenarioManagerServer.Instance.OnActStateAwaitPlayerJoin += SpawnComponent.SpawnFrameBehavior.Initialize;
 
 			SpawningStrategy = new SpawningStrategyBase();
 			SpawningStrategy.Initialize(SpawnComponent, this, SpawnComponent.SpawnFrameBehavior);
@@ -48,6 +49,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 			ScenarioManagerServer.Instance.OnActStateSpawnParticipants -= StartSpawnSession;
 			ScenarioManagerServer.Instance.OnActStateDisplayResults -= EndSpawnSession;
+			ScenarioManagerServer.Instance.OnActStateAwaitPlayerJoin -= SpawnComponent.SpawnFrameBehavior.Initialize;
 		}
 
 		public override void OnTick(float dt)

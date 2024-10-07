@@ -23,7 +23,7 @@ namespace Alliance.Common.GameModes.Story.Objectives
 
 		public override void RegisterForUpdate()
 		{
-			_capturableZone = Mission.Current.MissionObjects.FindAllWithType<CS_CapturableZone>().FirstOrDefault(cz => cz.ZoneId == CapturableZoneId);
+			_capturableZone = Mission.Current.MissionObjects.FindAllWithType<CS_CapturableZone>().FirstOrDefault(cz => cz.ZoneId.ToLower() == CapturableZoneId.ToLower());
 			Log($"Registered {_capturableZone?.ZoneName} capturable zone.", LogLevel.Debug);
 		}
 
