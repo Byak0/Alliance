@@ -128,5 +128,22 @@ namespace Alliance.Common.Core.Security.Extension
             }
             return false;
         }
+
+        public static bool IsMuted(this NetworkCommunicator player)
+        {
+            return IsMuted(player.VirtualPlayer);
+        }
+
+        public static bool IsMuted(this VirtualPlayer player)
+        {
+            foreach (Player muted in Roles.Instance.Muted)
+            {
+                if (muted.Id.Equals(player.Id))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

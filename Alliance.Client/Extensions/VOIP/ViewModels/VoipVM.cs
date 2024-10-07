@@ -3,6 +3,8 @@ using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection;
+using static Alliance.Common.Utilities.Logger;
+using Alliance.Common.Core.Security.Extension;
 
 namespace Alliance.Client.Extensions.VOIP.ViewModels
 {
@@ -162,6 +164,11 @@ namespace Alliance.Client.Extensions.VOIP.ViewModels
 
         private void OnVoiceRecordStarted()
         {
+            if (GameNetwork.MyPeer.IsMuted())
+            {
+                Log($"You are muted. An Admin can unmute you", LogLevel.Warning);
+                return;
+            }
             ActiveVoicePlayers.Add(new MPVoicePlayerVM(GameNetwork.MyPeer.GetComponent<MissionPeer>()));
         }
 

@@ -18,6 +18,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool KillAll { get; set; }
 		public bool Kick { get; set; }
 		public bool Ban { get; set; }
+		public bool Mute { get; set; }
 		public bool Respawn { get; set; }
 		public bool SetAdmin { get; set; }
 		public bool ToggleInvulnerable { get; set; }
@@ -36,6 +37,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(KillAll);
 			WriteBoolToPacket(Kick);
 			WriteBoolToPacket(Ban);
+			WriteBoolToPacket(Mute);
 			WriteBoolToPacket(Respawn);
 			WriteBoolToPacket(SetAdmin);
 			WriteBoolToPacket(ToggleInvulnerable);
@@ -57,6 +59,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			KillAll = ReadBoolFromPacket(ref bufferReadValid);
 			Kick = ReadBoolFromPacket(ref bufferReadValid);
 			Ban = ReadBoolFromPacket(ref bufferReadValid);
+			Mute = ReadBoolFromPacket(ref bufferReadValid);
 			Respawn = ReadBoolFromPacket(ref bufferReadValid);
 			SetAdmin = ReadBoolFromPacket(ref bufferReadValid);
 			ToggleInvulnerable = ReadBoolFromPacket(ref bufferReadValid);
