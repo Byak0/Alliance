@@ -32,10 +32,10 @@ namespace Alliance.Server.Core.Security
 			UpdateRole(nameof(DefaultRoles.Muted), player.Id);
 		}
 
-	public static void RemoveMute(VirtualPlayer player)
-	{
-		UpdateRole(nameof(DefaultRoles.Muted), player.Id, true);
-	}
+		public static void RemoveMute(VirtualPlayer player)
+		{
+			UpdateRole(nameof(DefaultRoles.Muted), player.Id, true);
+		}
 
 		public static void AddAdmin(VirtualPlayer player)
 		{
