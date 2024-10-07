@@ -341,6 +341,15 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
+        public void MutePlayer()
+        {
+            if (_selectedPeer == null) { return; }
+            GameNetwork.BeginModuleEventAsClient();
+            GameNetwork.WriteMessage(new AdminClient() { Mute = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.EndModuleEventAsClient();
+            _selectedPeer.IsMuted = !_selectedPeer.IsMuted;
+		}
+
         public void Respawn()
         {
             if (_selectedPeer == null) { return; }
@@ -395,7 +404,8 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
                     AgentIndex = x.ControlledAgent?.Index ?? -1,
                     PeerId = x.VirtualPlayer.Id.ToString(),
                     IsSelected = x.VirtualPlayer.Id.ToString() == _selectedPeer?.PeerId,
-                    OnSelect = OnNetworkPeerSelected
+                    OnSelect = OnNetworkPeerSelected,
+                    IsMuted = x.IsMuted()
                 });
             });
             _selectedPeer = _networkCommunicators.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
