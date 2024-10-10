@@ -50,18 +50,18 @@ jobs:
       - name: Setup NuGet
         uses: NuGet/setup-nuget@v1.1.1
 
-      - name: Download DepotDownloader_2.5.0
+      - name: Download DepotDownloader_2.7.2
         uses: i3h/download-release-asset@v1.3.3
         with:
           owner: SteamRE
           repo: DepotDownloader
-          tag: DepotDownloader_2.5.0
-          file: depotdownloader-2.5.0.zip
+          tag: DepotDownloader_2.7.2
+          file: depotdownloader-2.7.2.zip
           
-      - name: Extract DepotDownloader_2.5.0
+      - name: Extract DepotDownloader_2.7.2
         uses: ihiroky/extract-action@v1
         with:
-          file_path: depotdownloader-2.5.0.zip
+          file_path: depotdownloader-2.7.2.zip
           extract_dir: depotdownloader
           
       - name: Download Bannerlord binaries
