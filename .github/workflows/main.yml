@@ -56,12 +56,12 @@ jobs:
           owner: SteamRE
           repo: DepotDownloader
           tag: DepotDownloader_2.7.2
-          file: DepotDownloader-windows-x64.zip
+          file: DepotDownloader-framework.zip
           
       - name: Extract DepotDownloader_2.7.2
         uses: ihiroky/extract-action@v1
         with:
-          file_path: DepotDownloader-windows-x64.zip
+          file_path: DepotDownloader-framework.zip
           extract_dir: depotdownloader
           
       - name: Download Bannerlord binaries
