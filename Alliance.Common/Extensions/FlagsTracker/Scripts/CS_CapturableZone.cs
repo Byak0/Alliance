@@ -252,7 +252,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 				{
 					UpdateProgress(FlagDirection.Down, _majorTeamAdvantage);
 					string losingControl = $"{CapturingTeam} is losing control of {ZoneName} due to {_majorTeamOnFlag} ({CaptureProgress * 100}%)";
-					Log(losingControl, LogLevel.Information);
+					Log(losingControl, LogLevel.Debug);
 				}
 				else
 				{
@@ -264,7 +264,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 					}
 					UpdateProgress(FlagDirection.Up, _majorTeamAdvantage);
 					string capturing = $"{CapturingTeam} is capturing {ZoneName} from {Owner} ({CaptureProgress * 100}%)";
-					Log(capturing, LogLevel.Information);
+					Log(capturing, LogLevel.Debug);
 				}
 			}
 
@@ -282,7 +282,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 			{
 				Owner = CapturingTeam;
 				ServerSynchronize();
-				string capture = $"{Owner} has captured {ZoneName} ({CaptureProgress * 100}%)";
+				string capture = $"{Owner} has captured {ZoneName}";
 				Log(capture, LogLevel.Information);
 			}
 		}
