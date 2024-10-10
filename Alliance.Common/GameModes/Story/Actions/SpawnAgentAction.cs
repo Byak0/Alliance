@@ -13,15 +13,15 @@ namespace Alliance.Common.GameModes.Story.Actions
 	public class SpawnAgentAction : ActionBase
 	{
 		[ScenarioEditor(label: "Character", tooltip: "ID of the character to spawn.")]
-		public string Character;
+		public string Character = "mp_heavy_infantry_vlandia_troop";
 		[ScenarioEditor(label: "Number", tooltip: "Number of characters to spawn.")]
-		public int Number;
+		public int Number = 1;
 		[ScenarioEditor(label: "Side", tooltip: "Which side the characters belongs to.")]
-		public BattleSideEnum Side;
+		public BattleSideEnum Side = BattleSideEnum.Defender;
 		[ScenarioEditor(label: "Formation", tooltip: "Formation to spawn the characters.")]
-		public FormationClass Formation;
+		public FormationClass Formation = FormationClass.Infantry;
 		[ScenarioEditor(label: "Difficulty", tooltip: "Difficulty of the characters.")]
-		public SpawnHelper.Difficulty Difficulty;
+		public SpawnHelper.Difficulty Difficulty = SpawnHelper.Difficulty.Normal;
 		[ScenarioEditor(label: "Position", tooltip: "Position to spawn the characters.")]
 		public SerializableZone SpawnZone;
 		[ScenarioEditor(label: "Direction", tooltip: "Direction the characters will move to.")]
