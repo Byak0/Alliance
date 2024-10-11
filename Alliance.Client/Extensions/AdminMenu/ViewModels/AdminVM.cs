@@ -341,14 +341,14 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
-        public void MutePlayer()
+        public void ToggleMutePlayer()
         {
             if (_selectedPeer == null) { return; }
             GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new AdminClient() { Mute = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.WriteMessage(new AdminClient() { ToggleMutePlayer = true, PlayerSelected = _selectedPeer.PeerId });
             GameNetwork.EndModuleEventAsClient();
             _selectedPeer.IsMuted = !_selectedPeer.IsMuted;
-		}
+        }
 
         public void Respawn()
         {
