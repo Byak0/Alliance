@@ -107,8 +107,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return Kick(peer, admin);
 				if (admin.Ban)
 					return Ban(peer, admin);
-				if (admin.Mute)
-					return Mute(peer, admin);
+				if (admin.ToggleMutePlayer)
+					return ToggleMutePlayer(peer, admin);
 				if (admin.Respawn)
 					return Respawn(peer, admin);
 				if (admin.ToggleInvulnerable)
@@ -312,7 +312,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-		public bool Mute(NetworkCommunicator peer, AdminClient admin)
+		public bool ToggleMutePlayer(NetworkCommunicator peer, AdminClient admin)
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 

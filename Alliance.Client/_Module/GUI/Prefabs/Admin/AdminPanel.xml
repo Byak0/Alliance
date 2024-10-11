@@ -189,7 +189,7 @@
 												</ListPanel>
 											</Children>
 										</ButtonWidget>
-										<ButtonWidget MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="MutePlayer">
+										<ButtonWidget MarginRight="20" DoNotPassEventsToChildren="true" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="ToggleMutePlayer">
 											<Children>
 												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
 													<Children>
