@@ -32,6 +32,8 @@
 			<UsablePiece piece_id="orc_rider_shortsword_guard_1"/>
 			<UsablePiece piece_id="orc_rider_shortsword_grip_1"/>
 			<UsablePiece piece_id="orc_rider_shortsword_pommel_1"/>
+			<UsablePiece piece_id="orc_rider_knife_blade_1"/>
+			<UsablePiece piece_id="orc_rider_knife_grip_1"/>
 		</UsablePieces>
 	</CraftingTemplate>
 	
