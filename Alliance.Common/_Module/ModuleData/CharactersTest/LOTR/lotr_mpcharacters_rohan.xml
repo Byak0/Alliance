@@ -1,0 +1,1415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<NPCCharacters>
+	<!-- ************************************************************************* -->
+	<!-- ****************************   ROHAN   ********************************** -->
+	<!-- ************************************************************************* -->
+	<!-- LIGHT INFANTRY - TROOP -->
+	<NPCCharacter id="mp_light_infantry_rohan_troop"
+								default_group="Infantry"
+								level="10"
+								name="{=al_lotr_rohan_light_t}Volontaire"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="50" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="20" />
+			<skill id="Polearm"
+						 value="40" />
+			<skill id="Bow"
+						 value="15" />
+			<skill id="Crossbow"
+						 value="15" />
+			<skill id="Throwing"
+						 value="20" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_7" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_6" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT INFANTRY - HERO (ARAGORN) -->
+	<NPCCharacter id="mp_light_infantry_rohan_hero"
+								default_group="Infantry"
+								level="28"
+								voice="earnest"
+								is_female="false"
+								name="{=al_lotr_rohan_light_h}Aragorn"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<face>
+			<BodyProperties version="4" age="22.92" weight="0.5" build="0.5"  key="0013440D800013420876648C6773595257968759E4763817DBB12A278A84D623007776030747833500000000000000000000000000000000000000003EFC8002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="150" />
+			<skill id="Riding"
+						 value="150" />
+			<skill id="OneHanded"
+						 value="300" />
+			<skill id="TwoHanded"
+						 value="300" />
+			<skill id="Polearm"
+						 value="250" />
+			<skill id="Bow"
+						 value="150" />
+			<skill id="Crossbow"
+						 value="15" />
+			<skill id="Throwing"
+						 value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.mp_vlandian_two_handed_sword" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="Body"
+					id="Item.armor_rohan_aragorn" />
+				<equipment slot="Leg"
+					id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+					id="Item.armor_rohan_shoulder_6" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="85" />
+	</NPCCharacter>
+	<!-- LIGHT INFANTRY - BANNER BEARER -->
+	<NPCCharacter id="mp_light_infantry_rohan_banner_bearer"
+								default_group="Infantry"
+								level="10"
+								name="{=al_lotr_rohan_light_b}Volontaire"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="50" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="20" />
+			<skill id="Polearm"
+						 value="40" />
+			<skill id="Bow"
+						 value="15" />
+			<skill id="Crossbow"
+						 value="15" />
+			<skill id="Throwing"
+						 value="20" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_7" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_6" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="25" />
+	</NPCCharacter>
+
+	<!-- SHOCK INFANTRY - TROOP -->
+	<NPCCharacter id="mp_shock_infantry_rohan_troop"
+								default_group="Infantry"
+								level="15"
+								name="{=al_lotr_rohan_shock_t}Lancier"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<face>
+			<!--face_key value="31;0.266;0.5247;141000340;100000000047000;7001000000000;0;8400408000000;0;0;380000" max_value="63.19;0.466;0.9994;BFC0B4D3C34D4;FFFFFAFFAAA7FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;F7FF70FFFFEFF;0;0;589181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="60" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="60" />
+			<skill id="Polearm"
+						 value="100" />
+			<skill id="Bow"
+						 value="45" />
+			<skill id="Crossbow"
+						 value="45" />
+			<skill id="Throwing"
+						 value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield_2v1" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_7" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield_5" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_axe_1" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield_2v1" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_1" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="35" />
+	</NPCCharacter>
+	<!-- SHOCK INFANTRY - HERO (GIMLI) -->
+	<NPCCharacter id="mp_shock_infantry_rohan_hero"
+				race="dwarf"
+								default_group="Infantry"
+								level="27"
+								voice="earnest"
+								is_female="false"
+								name="{=al_lotr_rohan_shock_h}Gimli"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<!-- race="dwarf"> -->
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="46" weight="0.919" build="0.9676"  key="0013D808C0001442117552700409732F47627668C732BE14DCB777276CC89945009FE6030978B8980000000000000000000000000000000000000000273C9002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="150" />
+			<skill id="Riding"
+						 value="50" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="280" />
+			<skill id="Polearm"
+						 value="120" />
+			<skill id="Bow"
+						 value="0" />
+			<skill id="Crossbow"
+						 value="0" />
+			<skill id="Throwing"
+						 value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" 
+									id="Item.gimli_d_axe" />
+				<equipment slot="Item1" 
+									id="Item.gimli_onehanded_axe" />
+				<equipment slot="Item2" 
+									id="Item.gimli_throwing_axe" />
+				<equipment slot="Item3" 
+									id="Item.rohan_horn_1" />
+				<equipment slot="Head" 
+									id="Item.gimli_helm" />
+				<equipment slot="Body" 
+									id="Item.gimli_torso" />
+				<equipment slot="Leg" 
+									id="Item.gimli_boots" />
+				<equipment slot="Gloves" 
+									id="Item.gimli_gloves" />
+				<equipment slot="Cape" 
+									id="Item.gimli_cloak" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="85" />
+	</NPCCharacter>
+	<!-- SHOCK INFANTRY - BANNER BEARER -->
+	<NPCCharacter id="mp_shock_infantry_rohan_banner_bearer"
+								default_group="Infantry"
+								level="15"
+								name="{=al_lotr_rohan_shock_b}Lancier"
+								occupation="Soldier"
+								culture="Culture.rohan">
+		<face>
+			<!--face_key value="31;0.266;0.5247;141000340;100000000047000;7001000000000;0;8400408000000;0;0;380000" max_value="63.19;0.466;0.9994;BFC0B4D3C34D4;FFFFFAFFAAA7FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;F7FF70FFFFEFF;0;0;589181"/-->
+			<BodyProperties version="4" age="22.98" weight="0.5" build="0.2568" key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="60" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="60" />
+			<skill id="Polearm"
+						 value="100" />
+			<skill id="Bow"
+						 value="45" />
+			<skill id="Crossbow"
+						 value="45" />
+			<skill id="Throwing"
+						 value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_7" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Item2"
+									 id="Item.rohan_spear_1" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Leg"
+									 id="Item.mp_leather_shoes" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="35" />
+	</NPCCharacter>
+
+	<!-- SKIRMISHER - TROOP -->
+	<NPCCharacter id="mp_skirmisher_rohan_troop"
+									default_group="Infantry"
+									level="10"
+									name="{=al_lotr_rohan_skirm_t}Combattants du Rohan"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="60" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="130" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="120" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="130" />
+			<skill id="Bow"
+						 value="60" />
+			<skill id="Crossbow"
+						 value="60" />
+			<skill id="Throwing"
+						 value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield_2v1" />
+				<equipment slot="Item2"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Item3"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Gloves"
+									 id="Item.reinforced_padded_mitten" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_axe" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield_2v1" />
+				<equipment slot="Item2"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Item3"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Gloves"
+									 id="Item.reinforced_padded_mitten" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="25" />
+	</NPCCharacter>
+	<!-- SKIRMISHER - HERO (EOMER) -->
+	<NPCCharacter id="mp_skirmisher_rohan_hero"
+									default_group="Cavalry"
+									level="20"
+									voice="earnest"
+									is_female="false"
+									name="{=al_lotr_rohan_skirm_h}Eomer"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="22.33" weight="0.4491" build="0.6034"  key="001BD00340000343587444B84CA3866CF027869973666600F46447497F00E04400B976030BA6696600000000000000000000000000000000000000003B642006"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="150" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="150" />
+			<skill id="Polearm"
+						 value="120" />
+			<skill id="Bow"
+						 value="100" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="200" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_sword_1" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_eomer_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_4" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_3" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_3" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_6" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_3" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="85" />
+	</NPCCharacter>
+	<!-- SKIRMISHER - BANNER BEARER -->
+	<NPCCharacter id="mp_skirmisher_rohan_banner_bearer"
+									default_group="Infantry"
+									level="10"
+									name="{=al_lotr_rohan_skirm_b}Combattants du Rohan"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="60" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="130" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="120" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="130" />
+			<skill id="Bow"
+						 value="60" />
+			<skill id="Crossbow"
+						 value="60" />
+			<skill id="Throwing"
+						 value="100" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Item2"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Item3"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Gloves"
+									 id="Item.reinforced_padded_mitten" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_sturgia_axe" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Item2"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Item3"
+									 id="Item.rohan_javlin" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_5" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Gloves"
+									 id="Item.reinforced_padded_mitten" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_4" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="25" />
+	</NPCCharacter>
+
+	<!-- LIGHT RANGED - TROOP -->
+	<NPCCharacter id="mp_light_ranged_rohan_troop"
+									default_group="Ranged"
+									level="5"
+									name="{=al_lotr_rohan_l_ranged_t}Archer"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4" age="60" weight="0.5" build="0.5"  key="001000028070144D3910F672709460FAB59106711F370000EF10EBB1690F0A8005577A570500B03C000000000000000000000000000000000000000000A00001"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="120" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="60" />
+			<skill id="Polearm"
+						 value="60" />
+			<skill id="Bow"
+						 value="150" />
+			<skill id="Crossbow"
+						 value="45" />
+			<skill id="Throwing"
+						 value="45" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_bow" />
+				<equipment slot="Item1"
+									 id="Item.mp_hatchet_axe" />
+				<equipment slot="Item2"
+									 id="Item.rohan_arrows" />
+				<equipment slot="Item3"
+									 id="Item.rohan_shield_4" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_5" />
+				<equipment slot="Gloves"
+									 id="Item.guarded_padded_vambrace" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_5" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_bow" />
+				<equipment slot="Item1"
+									 id="Item.mp_hatchet_axe" />
+				<equipment slot="Item2"
+									 id="Item.rohan_arrows" />
+				<equipment slot="Item3"
+									 id="Item.rohan_shield_4" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_6" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_7" />
+				<equipment slot="Gloves"
+									 id="Item.reinforced_padded_mitten" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_6" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT RANGED - HERO (HALDIR) -->
+	<NPCCharacter id="mp_light_ranged_rohan_hero"
+		race="elf"
+		default_group="Ranged"
+		level="20"
+		voice="earnest"
+		is_female="false"
+		name="{=al_lotr_rohan_l_ranged_h}Haldir"
+		occupation="Soldier"
+		culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="40" weight="0.169" build="0.4144"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="140" />
+			<skill id="Riding"
+						 value="100" />
+			<skill id="OneHanded"
+						 value="200" />
+			<skill id="TwoHanded"
+						 value="200" />
+			<skill id="Polearm"
+						 value="120" />
+			<skill id="Bow"
+						 value="280" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.elf_bow_2" />
+				<equipment slot="Item1"
+									 id="Item.elf_quiver_1" />
+				<equipment slot="Item2"
+									 id="Item.elf_sword_2" />
+				<equipment slot="Item3"
+									 id="Item.elf_horn" />
+				<equipment slot="Body"
+									 id="Item.elf_armor_2" />
+				<equipment slot="Gloves"
+									 id="Item.elf_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_6" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="65" />
+	</NPCCharacter>
+
+	<!-- HEAVY RANGED - TROOP -->
+	<NPCCharacter id="mp_heavy_ranged_rohan_troop"
+		race="elf"
+		default_group="Ranged"
+		level="15"
+		name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
+		occupation="Soldier"
+		culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="20" weight="0.1" build="0.3"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
+			<BodyPropertiesMax version="4" age="50" weight="0.3" build="0.44"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="80" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="150" />
+			<skill id="Polearm"
+						 value="100" />
+			<skill id="Bow"
+						 value="200" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.elf_bow_1" />
+				<equipment slot="Item1"
+									 id="Item.elf_quiver_1" />
+				<equipment slot="Item2"
+									 id="Item.elf_sword_1" />
+				<equipment slot="Body"
+									 id="Item.elf_armor_1" />
+				<equipment slot="Head"
+									 id="Item.elf_helm_1" />
+				<equipment slot="Gloves"
+									 id="Item.elf_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.elf_shoulder_1" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.elf_bow_1" />
+				<equipment slot="Item1"
+									 id="Item.elf_quiver_1" />
+				<equipment slot="Item2"
+									 id="Item.elf_sword_2" />
+				<equipment slot="Body"
+									 id="Item.elf_armor_1" />
+				<equipment slot="Head"
+									 id="Item.elf_helm_1" />
+				<equipment slot="Gloves"
+									 id="Item.elf_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.elf_shoulder_1" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="40" />
+	</NPCCharacter>
+	<!-- HEAVY RANGED - HERO (LEGOLAS) -->
+	<NPCCharacter id="mp_heavy_ranged_rohan_hero"
+		race="elf"
+		default_group="Ranged"
+		level="26"
+		voice="earnest"
+		is_female="false"
+		name="{=al_lotr_rohan_h_ranged_h}Legolas"
+		occupation="Soldier"
+		culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="30" weight="0.2" build="0.37"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="180" />
+			<skill id="Riding"
+						 value="120" />
+			<skill id="OneHanded"
+						 value="250" />
+			<skill id="TwoHanded"
+						 value="250" />
+			<skill id="Polearm"
+						 value="120" />
+			<skill id="Bow"
+						 value="300" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" 
+									id="Item.elf_bow_2" />
+				<equipment slot="Item1" 
+									id="Item.legolas_arrows" />
+				<equipment slot="Item2" 
+									id="Item.legolas_dagger" />
+				<equipment slot="Item3" 
+									id="Item.legolas_dagger" />
+				<equipment slot="Body" 
+									id="Item.legolas_torso" />
+				<equipment slot="Leg" 
+									id="Item.legolas_legs" />
+				<equipment slot="Cape" 
+									id="Item.legolas_rohan_shoulder" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+	<!-- HEAVY RANGED - TROOP -->
+	<NPCCharacter id="mp_heavy_ranged_rohan_banner_bearer"
+		race="elf"
+		default_group="Ranged"
+		level="15"
+		name="{=al_lotr_rohan_h_ranged_t}Elfe de la Lórien"
+		occupation="Soldier"
+		culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="20" weight="0.1" build="0.3"  key="00000C0000CC00028278B7C96A6000946367846A51C867A75ED55BC679A4A065007636030705EA1900000000000000000000000000000000000000004EFC4002"  />
+			<BodyPropertiesMax version="4" age="50" weight="0.3" build="0.44"  key="0002080140003003B7776488457A753893D98662A5A556467FD3D7868A84865B0096360309A1FC3200000000000000000000000000000000000000003F347002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="80" />
+			<skill id="OneHanded"
+						 value="100" />
+			<skill id="TwoHanded"
+						 value="150" />
+			<skill id="Polearm"
+						 value="100" />
+			<skill id="Bow"
+						 value="200" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.elf_1h_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.al_galadhrim_kingdom_banner_t3" />
+				<equipment slot="Body"
+									 id="Item.elf_armor_1" />
+				<equipment slot="Head"
+									 id="Item.elf_helm_1" />
+				<equipment slot="Gloves"
+									 id="Item.elf_arm_1" />
+				<equipment slot="Leg"
+									 id="Item.elf_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.elf_shoulder_1" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="40" />
+	</NPCCharacter>
+
+	<!-- LIGHT CAVALRY - TROOP -->
+	<NPCCharacter id="mp_light_cavalry_rohan_troop"
+									default_group="Cavalry"
+									level="20"
+									name="{=al_lotr_rohan_l_cav_t}Rohirrim"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4"
+				age="60"
+				weight="0.2993"
+				build="0.2568"
+				key="00110002C07C100D3910F672709460FAB59106711F370000EF10EBB1690F0A8000044A2C0700B03C000000000000000000000000000000000000000000A00001" />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="110" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Item1"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item2"
+									 id="Item.rohan_shield" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_3" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_3" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+	<!-- LIGHT CAVALRY - HERO (THEODEN) -->
+	<NPCCharacter id="mp_light_cavalry_rohan_hero"
+									default_group="Cavalry"
+									level="25"
+									voice="earnest"
+									is_female="false"
+									name="{=al_lotr_rohan_l_cav_h}Theoden"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="38.89;0.2;0.2;440000001;100000000037000;7001000000000;0;3300503000000;0;0;300000" max_value="63.08;0.5309;0.663;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;A8FF70AFFFEFF;0;0;489181"/-->
+			<BodyProperties version="4" age="55" weight="0.5" build="0.5"  key="0005000280B41244787664874403889B1F1070A35D080F9AE04507207985C0860487764608A552F6000000000000000000000000000000000000000045143006"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="150" />
+			<skill id="OneHanded"
+						 value="200" />
+			<skill id="TwoHanded"
+						 value="150" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="100" />
+			<skill id="Crossbow"
+						 value="80" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item1"
+									 id="Item.rohan_sword_1" />
+				<equipment slot="Item2"
+									 id="Item.rohan_shield_3" />
+				<equipment slot="Item3"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_8" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_7" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_7" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_3" />
+				<equipment slot="Gloves"
+									 id="item.rohan_arm_4" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="85" />
+	</NPCCharacter>
+	<!-- LIGHT CAVALRY - BANNER BEARER -->
+	<NPCCharacter id="mp_light_cavalry_rohan_banner_bearer"
+									default_group="Cavalry"
+									level="20"
+									name="{=al_lotr_rohan_l_cav_b}Rohirrim"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4"
+				age="22.98"
+				weight="0.5"
+				build="0.2568"
+				key="0008B802000000037C7F976EEEB0A5A17577866254C69643C4B647398C95A6140077760307A7497300000000000000000000000000000000000000003AF47004" />
+			<BodyPropertiesMax version="4"
+				age="60"
+				weight="0.2993"
+				build="0.2568"
+				key="00110002C07C100D3910F672709460FAB59106711F370000EF10EBB1690F0A8000044A2C0700B03C000000000000000000000000000000000000000000A00001" />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="110" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Item1"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_3" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_3" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_spear_2" />
+				<equipment slot="Item1"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_3" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_3" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.rohan_spear_1" />
+				<equipment slot="Item1"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_3" />
+				<equipment slot="Head"
+									 id="Item.rohan_helm_3" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+
+
+	<!-- OFFICERS - Royal Guard -->
+	<NPCCharacter id="mp_light_cavalry_rohan_royal_guard_1"
+									default_group="Cavalry"
+									level="20"
+									name="{=al_lotr_rohan_l_cav_b}Gamelin"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4" age="40" weight="0.7747" build="0.5"  key="0002000080CC2382777A259564616D71C055763908E5AE03610942068CC251050387C63508690EBA0000000000000000000000000000000000000000010C60C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_officer" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+
+	<NPCCharacter id="mp_light_cavalry_rohan_royal_guard_1b"
+									default_group="Cavalry"
+									level="20"
+									name="{=al_lotr_rohan_l_cav_b}Royal Guard"
+									occupation="Soldier"
+									culture="Culture.rohan">
+		<face>
+			<!--face_key value="22;0.1333;0;440000001;100000000027000;7001000000000;0;200306000000;0;0;300000" max_value="33.86;0.5333;0.3333;BFC0B4B3C300F;FFFFFAFFAAA8FFFF;FFBFFFF77FF7FFFF;FFFFFFFFFF6BFFFF;58FF405FFFEFF;0;0;389181"/-->
+			<BodyProperties version="4" age="38.59" weight="0.5" build="0.5"  key="0008D80600CC33815775338983A788745358763D85979B66749986588955576702977625093B9145000000000000000000000000000000000000000001244002"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_officer" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+
+
+	<NPCCharacter id="mp_light_cavalry_rohan_royal_guard_2"
+										default_group="Cavalry"
+										level="20"
+										name="{=al_lotr_rohan_l_cav_b}Hàma"
+										occupation="Soldier"
+										culture="Culture.rohan">
+		<face>
+			<BodyProperties version="4" age="35" weight="0.8519" build="0.4738"  key="00056004C0CC1902777A25956A068771C03171397AF16E03C0070206784698410177D61407625BA8000000000000000000000000000000000000000000FC20C2"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_officer" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+	
+	<NPCCharacter id="mp_light_cavalry_rohan_royal_guard_2b"
+										default_group="Cavalry"
+										level="20"
+										name="{=al_lotr_rohan_l_cav_b}Royal Guard"
+										occupation="Soldier"
+										culture="Culture.rohan">
+		<face>
+			<BodyProperties version="4" age="30" weight="0.5" build="0.5"  key="0005A80800CC3306895694C672C4E9C8A59C77838C46ACA48EDC88726E6773AB068776680859767C00000000000000000000000000000000000000005B0C4004"  />
+		</face>
+		<skills>
+			<skill id="Athletics"
+						 value="100" />
+			<skill id="Riding"
+						 value="110" />
+			<skill id="OneHanded"
+						 value="150" />
+			<skill id="TwoHanded"
+						 value="80" />
+			<skill id="Polearm"
+						 value="200" />
+			<skill id="Bow"
+						 value="70" />
+			<skill id="Crossbow"
+						 value="30" />
+			<skill id="Throwing"
+						 value="80" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0"
+									 id="Item.mp_vlandian_long_sword" />
+				<equipment slot="Item1"
+									 id="Item.rohan_shield" />
+				<equipment slot="Item2"
+									 id="Item.rohan_horn_1" />
+				<equipment slot="ExtraWeaponSlot"
+									 id="Item.rohan_kingdom_banner" />
+				<equipment slot="Body"
+									 id="Item.armor_rohan_officer" />
+				<equipment slot="Gloves"
+									 id="Item.rohan_arm_2" />
+				<equipment slot="Leg"
+									 id="Item.rohan_greaves_1" />
+				<equipment slot="Cape"
+									 id="Item.armor_rohan_shoulder_2" />
+				<equipment slot="Horse"
+									 id="Item.rohan_horse" />
+				<equipment slot="HorseHarness"
+									 id="Item.mp_stripped_leather_harness" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances
+			dismount="75" />
+	</NPCCharacter>
+
+</NPCCharacters>

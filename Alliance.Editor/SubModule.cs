@@ -3,9 +3,11 @@ using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
+using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
+using Alliance.Editor.Patch;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -38,6 +40,11 @@ namespace Alliance.Editor
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignColors.dll"));
 
 			GenerateScenarioExamples();
+
+			// Apply Harmony patches
+			DirtyCommonPatcher.Patch();
+
+			DirtyEditorPatcher.Patch();
 
 			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}

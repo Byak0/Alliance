@@ -6,6 +6,9 @@
 	<string id="str_weapon_usage.lotr_TwoHandedSword" text="{=desc_lotr_twoh_sword}Two Handed"/>
 	<string id="str_weapon_usage.lotr_orc_TwoHandedAxe" text="{=desc_lotr_orc_twoh_axe}Two Handed"/>
 	<string id="str_weapon_usage.lotr_orc_TwoHandedPolearm" text="{=desc_lotr_orc_twoh_polearm}Two Handed"/>
+	<string id="str_weapon_usage.lotr_orc_TwoHandedPolearm_Bracing" text="{=desc_lotr_orc_twoh_polearm_Bracing}Spear Brace"/>
+	<string id="str_weapon_usage.lotr_orc_TwoHandedPolearm_Couchable" text="{=desc_lotr_orc_twoh_polearm_Couchable}Couch Lance"/>
+	<string id="str_weapon_usage.lotr_orc_TwoHandedPolearm_Thrown" text="{=desc_lotr_orc_twoh_polearm_Thrown}Thrown"/>
 	<string id="str_weapon_usage.uruk_two_handed" text="{=desc_uruk_two_handed}Two Handed"/>
 	<string id="str_weapon_usage.uruk_twoHandedPolearm_Pike" text="{=desc_uruk_twoHandedPolearm_Pike}Two Handed"/>
 	<string id="str_weapon_usage.uruk_twoHandedPolearm_Bracing" text="{=desc_uruk_twoHandedPolearm_Bracing}Spear Brace"/>

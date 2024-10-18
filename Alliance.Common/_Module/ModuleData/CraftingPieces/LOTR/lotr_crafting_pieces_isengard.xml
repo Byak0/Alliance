@@ -197,5 +197,163 @@
 				   CraftingCost="30">
 		<BuildData piece_offset="15" />
 	</CraftingPiece>
+
+	<!-- ORC RIDER GLADIUS -->
+	<CraftingPiece id="orc_rider_gladius_blade_1"
+				   name="Orc Rider Gladius Blade"
+				   tier="3"
+				   piece_type="Blade"
+				   mesh="orc_rider_polearm_02_gladius_blade"
+				   culture="Culture.isengard"
+				   length="51.1"
+				   weight="0.65" >
+		<BuildData piece_offset="0" />
+		<BladeData stack_amount="3"
+				   physics_material="metal_weapon"
+				   body_name="bo_spear_b" >
+			<Thrust damage_type="Pierce"
+					damage_factor="2.3" />
+			<Swing damage_type="Cut"
+				   damage_factor="3.7" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian"
+				  type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_gladius_guard_1"
+				   name="Orc Rider Gladius Guard"
+				   tier="2"
+				   piece_type="Guard"
+				   mesh="orc_rider_polearm_02_gladius_guard"
+				   culture="Culture.isengard"
+				   length="0"
+				   weight="0.1"
+				   is_default="true">
+		<BuildData piece_offset="29" />
+		<StatContributions armor_bonus="0" />
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_gladius_grip_1"
+				   name="Orc Rider Gladius Grip"
+				   tier="2"
+				   piece_type="Handle"
+				   mesh="orc_rider_polearm_02_gladius_grip"
+				   culture="Culture.isengard"
+				   length="149.26"
+				   weight="0.50"
+				   CraftingCost="30">
+		<BuildData piece_offset="-5" />
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_gladius_pommel_1"
+				   name="Orc Rider Gladius Pommel"
+				   tier="1"
+				   piece_type="Pommel"
+				   mesh="orc_rider_polearm_02_gladius_pommel"
+				   culture="Culture.isengard"
+				   length="5.60"
+				   weight="0">
+		<BuildData piece_offset="-40.00" />
+	</CraftingPiece>
+
+	
+	<!-- ORC RIDER KNIFE -->
+	<CraftingPiece id="orc_rider_knife_blade_1"
+				   name="Orc Rider Knife Blade"
+				   tier="2"
+				   piece_type="Blade"
+				   mesh="orc_rider_sword_04_knife_blade"
+				   culture="Culture.isengard"
+				   length="28.5"
+				   weight="0.35" >
+		<BuildData piece_offset="-20" />
+		<BladeData stack_amount="3"
+				   physics_material="metal_weapon"
+				   body_name="bo_knife_a" >
+			<Thrust damage_type="Pierce"
+					damage_factor="3.3" />
+			<Swing damage_type="Cut"
+				   damage_factor="1.7" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian"
+				  type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_knife_grip_1"
+				   name="Orc Rider Knife Grip"
+				   tier="2"
+				   piece_type="Handle"
+				   mesh="orc_rider_sword_04_knife_grip"
+				   culture="Culture.isengard"
+				   length="11.7"
+				   weight="0.3"
+				   CraftingCost="30">
+		<BuildData piece_offset="0" />
+	</CraftingPiece>
+
+
+	<!-- ORC RIDER SICKLE -->
+	<CraftingPiece id="orc_rider_sickle_blade_1"
+				   name="Orc Rider Sickle Blade"
+				   tier="2"
+				   piece_type="Blade"
+				   mesh="orc_rider_polearm_04_sickle_blade"
+				   culture="Culture.isengard"
+				   length="31.91"
+				   weight="1.30" >
+		<BuildData piece_offset="0" />
+		<BladeData stack_amount="3"
+				   physics_material="metal_weapon"
+				   body_name="bo_spear_b" >
+			<Thrust damage_type="Pierce"
+					damage_factor="2.3" />
+			<Swing damage_type="Cut"
+				   damage_factor="3.7" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian"
+				  type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_sickle_guard_1"
+				   name="Orc Rider Sickle Guard"
+				   tier="2"
+				   piece_type="Guard"
+				   mesh="orc_rider_polearm_04_sickle_guard"
+				   culture="Culture.isengard"
+				   length="0.0"
+				   weight="0.15"
+				   is_default="true">
+		<BuildData piece_offset="33.5" />
+		<StatContributions armor_bonus="-32" />
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_sickle_grip_1"
+				   name="Orc Rider Sickle Grip"
+				   tier="2"
+				   piece_type="Handle"
+				   mesh="orc_rider_polearm_04_sickle_grip"
+				   culture="Culture.isengard"
+				   length="120.0"
+				   weight="0.65"
+				   CraftingCost="30">
+		<BuildData piece_offset="0" />
+	</CraftingPiece>
+
+	<CraftingPiece id="orc_rider_sickle_pommel_1"
+				   name="Orc Rider Sickle Pommel"
+				   tier="1"
+				   piece_type="Pommel"
+				   mesh="orc_rider_polearm_04_sickle_pommel"
+				   culture="Culture.isengard"
+				   length="0.08"
+				   weight="0.2">
+		<BuildData piece_offset="-29.0" />
+	</CraftingPiece>
 	
 </CraftingPieces>

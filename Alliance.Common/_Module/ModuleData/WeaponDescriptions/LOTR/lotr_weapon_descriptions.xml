@@ -17,6 +17,8 @@
 			<AvailablePiece id="orc_rider_shortsword_guard_1" />
 			<AvailablePiece id="orc_rider_shortsword_grip_1" />
 			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
+			<AvailablePiece id="orc_rider_knife_blade_1" />
+			<AvailablePiece id="orc_rider_knife_grip_1" />
 		</AvailablePieces>
 	</WeaponDescription>
 	
@@ -178,6 +180,69 @@
 			<WeaponFlag value="NotUsableWithOneHand"/>
 			<WeaponFlag value="WideGrip"/>
 			<WeaponFlag value="TwoHandIdleOnMount"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_guard_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
+			<AvailablePiece id="orc_rider_sickle_blade_1"/>
+			<AvailablePiece id="orc_rider_sickle_guard_1"/>
+			<AvailablePiece id="orc_rider_sickle_grip_1"/>
+			<AvailablePiece id="orc_rider_sickle_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Bracing"
+                     weapon_class="TwoHandedPolearm"
+                     item_usage_features="polearm:bracing">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="NotUsableWithOneHand"/>
+			<WeaponFlag value="WideGrip"/>
+			<WeaponFlag value="TwoHandIdleOnMount"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_guard_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Couchable"
+                     weapon_class="TwoHandedPolearm"
+                     item_usage_features="polearm:couch">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="WideGrip"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_guard_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Thrown"
+                     weapon_class="Javelin"
+                     item_usage_features="polearm:thrown"
+                     rotated_in_hand="true"
+                     use_center_of_mass_as_hand_base="true">
+		<WeaponFlags>
+			<WeaponFlag value="RangedWeapon"/>
+			<WeaponFlag value="Consumable"/>
+			<WeaponFlag value="AmmoSticksWhenShot"/>
+			<WeaponFlag value="UseHandAsThrowBase"/>
+			<WeaponFlag value="AutoReload"/>
+			<WeaponFlag value="UnloadWhenSheathed"/>
 		</WeaponFlags>
 		<AvailablePieces>
 			<AvailablePiece id="orc_rider_spear_blade_1" />

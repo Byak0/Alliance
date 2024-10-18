@@ -53,7 +53,7 @@ namespace Alliance.Common.GameModes.Battle
 				OptionType.FriendlyFireDamageMeleeFriendPercent,
 				OptionType.FriendlyFireDamageMeleeSelfPercent,
 				OptionType.FriendlyFireDamageRangedFriendPercent,
-				OptionType.FriendlyFireDamageRangedSelfPercent,
+				OptionType.FriendlyFireDamageRangedSelfPercent
 			};
 		}
 

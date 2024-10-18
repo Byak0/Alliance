@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<MPCharacters>
+<NPCCharacters>
 	<!-- ************************************************************************* -->
 	<!-- ***************************  ISENGARD  ********************************** -->
 	<!-- ************************************************************************* -->
@@ -1320,7 +1320,7 @@
 		<Resistances
 			dismount="35" />
 	</NPCCharacter>
-
+	
 	<!-- Orc Rider - TROOP -->
 	<NPCCharacter id="mp_orc_rider_isengard_troop"
 									race="orc"
@@ -1355,10 +1355,9 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.orc_rider_spear" />
-				<equipment slot="Item1" id="Item.orc_rider_2haxe" />
+				<equipment slot="Item0" id="Item.orc_rider_knife_1" />
+				<equipment slot="Item1" id="Item.orc_rider_gladius" />
 				<equipment slot="Item2" id="Item.orc_rider_sickle" />
-				<equipment slot="Item3" id="Item.orc_rider_gladius" />
 				<equipment slot="Body" id="Item.orc_rider_armor" />
 				<equipment slot="Gloves" id="Item.orc_rider_arms" />
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
@@ -1405,10 +1404,8 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.orc_rider_spear" />
+				<equipment slot="Item0" id="Item.orc_rider_saber_1" />
 				<equipment slot="Item1" id="Item.orc_rider_2haxe" />
-				<equipment slot="Item2" id="Item.orc_rider_sickle" />
-				<equipment slot="Item3" id="Item.orc_rider_gladius" />
 				<equipment slot="Body" id="Item.orc_rider_armor" />
 				<equipment slot="Gloves" id="Item.orc_rider_arms" />
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
@@ -1421,4 +1418,4 @@
 		<Resistances
 			dismount="40" />
 	</NPCCharacter>
-</MPCharacters>
+</NPCCharacters>

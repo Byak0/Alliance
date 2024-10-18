@@ -21,6 +21,9 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+		<Reference Include="$(GameFolder)\Modules\CustomBattle\bin\Win64_Shipping_Client\*.dll">
+			<HintPath>%(Identity)</HintPath>
+		</Reference>
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>

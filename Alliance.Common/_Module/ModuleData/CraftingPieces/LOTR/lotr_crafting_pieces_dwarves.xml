@@ -44,7 +44,7 @@
 		name="Gimli axe handle regular"
 		tier="2"
 		piece_type="Handle"
-		mesh="gimli_one_handed_axe_handle"
+		mesh="gimli_one_handed_axe_head"
 		length="81.2"
 		weight="0.329">
 		<BuildData
@@ -63,7 +63,7 @@
 		name="Gimli axe head regular"
 		tier="2"
 		piece_type="Blade"
-		mesh="gimli_one_handed_axe_head"
+		mesh="gimli_one_handed_axe_handle"
 		distance_to_next_piece="0"
 		distance_to_previous_piece="0"
 		weight="0.4">
