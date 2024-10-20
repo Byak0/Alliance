@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story;
+﻿using Alliance.Common.GameModels;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
@@ -11,6 +12,7 @@ using Alliance.Editor.Patch;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
@@ -47,6 +49,13 @@ namespace Alliance.Editor
 			DirtyEditorPatcher.Patch();
 
 			Log("Alliance.Editor initialized", LogLevel.Debug);
+		}
+
+		protected override void OnGameStart(Game game, IGameStarter gameStarter)
+		{
+			// Add our custom GameModels 
+			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
+			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		private void GenerateScenarioExamples()

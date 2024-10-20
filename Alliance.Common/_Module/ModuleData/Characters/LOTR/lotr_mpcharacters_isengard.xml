@@ -1339,7 +1339,7 @@
 			<skill id="Athletics"
 						 value="100" />
 			<skill id="Riding"
-						 value="200" />
+						 value="100" />
 			<skill id="OneHanded"
 						 value="150" />
 			<skill id="TwoHanded"
@@ -1355,10 +1355,45 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.orc_rider_spear" />
-				<equipment slot="Item1" id="Item.orc_rider_2haxe" />
+				<equipment slot="Item0" id="Item.orc_rider_knife_1" />
+				<equipment slot="Item1" id="Item.orc_rider_saber_1" />
+				<equipment slot="Item2" id="Item.orc_rider_spear" />
+				<equipment slot="Body" id="Item.orc_rider_armor" />
+				<equipment slot="Gloves" id="Item.orc_rider_arms" />
+				<equipment slot="Leg" id="Item.orc_rider_greaves" />
+				<equipment slot="Head" id="Item.orc_rider_helmet" />
+				<equipment slot="Cape" id="Item.orc_rider_hood" />
+				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="HorseHarness" id="Item.warg_saddle" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.orc_rider_shortsword_1" />
+				<equipment slot="Item1" id="Item.orc_rider_longsword_1" />
+				<equipment slot="Item2" id="Item.orc_rider_gladius" />
+				<equipment slot="Body" id="Item.orc_rider_armor" />
+				<equipment slot="Gloves" id="Item.orc_rider_arms" />
+				<equipment slot="Leg" id="Item.orc_rider_greaves" />
+				<equipment slot="Head" id="Item.orc_rider_helmet" />
+				<equipment slot="Cape" id="Item.orc_rider_hood" />
+				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="HorseHarness" id="Item.warg_saddle" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.orc_rider_knife_1" />
+				<equipment slot="Item1" id="Item.orc_rider_gladius" />
 				<equipment slot="Item2" id="Item.orc_rider_sickle" />
-				<equipment slot="Item3" id="Item.orc_rider_gladius" />
+				<equipment slot="Body" id="Item.orc_rider_armor" />
+				<equipment slot="Gloves" id="Item.orc_rider_arms" />
+				<equipment slot="Leg" id="Item.orc_rider_greaves" />
+				<equipment slot="Head" id="Item.orc_rider_helmet" />
+				<equipment slot="Cape" id="Item.orc_rider_hood" />
+				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="HorseHarness" id="Item.warg_saddle" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.orc_rider_shortsword_1" />
+				<equipment slot="Item1" id="Item.orc_rider_2haxe" />
+				<equipment slot="Item2" id="Item.orc_rider_spear" />
 				<equipment slot="Body" id="Item.orc_rider_armor" />
 				<equipment slot="Gloves" id="Item.orc_rider_arms" />
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
@@ -1389,7 +1424,7 @@
 			<skill id="Athletics"
 						 value="150" />
 			<skill id="Riding"
-						 value="250" />
+						 value="100" />
 			<skill id="OneHanded"
 						 value="200" />
 			<skill id="TwoHanded"
@@ -1405,10 +1440,10 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.orc_rider_spear" />
+				<equipment slot="Item0" id="Item.orc_rider_sickle" />
 				<equipment slot="Item1" id="Item.orc_rider_2haxe" />
-				<equipment slot="Item2" id="Item.orc_rider_sickle" />
-				<equipment slot="Item3" id="Item.orc_rider_gladius" />
+				<equipment slot="Item2" id="Item.orc_rider_gladius" />
+				<equipment slot="Item3" id="Item.orc_rider_spear" />
 				<equipment slot="Body" id="Item.orc_rider_armor" />
 				<equipment slot="Gloves" id="Item.orc_rider_arms" />
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />

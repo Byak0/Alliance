@@ -13,7 +13,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.warg"
-				maneuver="70"
+				maneuver="60"
 				speed="48"
 				charge_damage="6"
 				body_length="110"

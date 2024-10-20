@@ -12,8 +12,13 @@ namespace Alliance.Common.GameModels
 	/// GameModel calculating agents stats.
 	/// Apply different multiplier on stats depending on agents AI difficulty or player formation.    
 	/// </summary>
-	public class ExtendedAgentStatCalculateModel : MultiplayerAgentStatCalculateModel
+	public class ExtendedAgentStatCalculateModel : AgentStatCalculateModel
 	{
+		public override float GetDifficultyModifier()
+		{
+			return 0.5f;
+		}
+
 		private float GetSkillDifficultyModifier(Agent agent)
 		{
 			return AgentsInfoModel.Instance.Agents[agent.Index].Difficulty + 0.5f;
@@ -27,6 +32,11 @@ namespace Alliance.Common.GameModels
 		private int GetSkillBonus(Agent agent)
 		{
 			return (int)(AgentsInfoModel.Instance.Agents[agent.Index].Difficulty - 1f) * 50;
+		}
+
+		public override bool CanAgentRideMount(Agent agent, Agent targetMount)
+		{
+			return agent.CheckSkillForMounting(targetMount);
 		}
 
 		public override float GetKnockDownResistance(Agent agent, StrikeType strikeType = StrikeType.Invalid)
@@ -77,6 +87,19 @@ namespace Alliance.Common.GameModels
 			}
 
 			return MBMath.ClampInt(adjustedSkill, 0, 500);
+		}
+
+		public override void InitializeAgentStats(Agent agent, Equipment spawnEquipment, AgentDrivenProperties agentDrivenProperties, AgentBuildData agentBuildData)
+		{
+			agentDrivenProperties.ArmorEncumbrance = spawnEquipment.GetTotalWeightOfArmor(agent.IsHuman);
+			if (!agent.IsHuman)
+			{
+				InitializeHorseAgentStats(agent, spawnEquipment, agentDrivenProperties);
+			}
+			else
+			{
+				InitializeHumanAgentStats(agent, agentDrivenProperties, agentBuildData);
+			}
 		}
 
 		public override void UpdateAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties)
@@ -133,7 +156,7 @@ namespace Alliance.Common.GameModels
 			if (agent.Monster.StringId == "warg")
 			{
 				agentDrivenProperties.MountManeuver *= 0.6f;
-				agentDrivenProperties.TopSpeedReachDuration *= 4f;
+				agentDrivenProperties.TopSpeedReachDuration *= 2f;
 				agentDrivenProperties.MountDashAccelerationMultiplier *= 3f;
 			}
 		}
@@ -187,8 +210,12 @@ namespace Alliance.Common.GameModels
 			SetAllWeaponInaccuracy(agent, agentDrivenProperties, (int)wieldedItemIndex3, weaponComponentData);
 
 			// Native speed value
+			float movespeedMultiplier = 1f;
 			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-			float movespeedMultiplier = mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopMovementSpeedMultiplier : mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
+			if (mPHeroClassForCharacter != null)
+			{
+				movespeedMultiplier = mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopMovementSpeedMultiplier : mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
+			}
 			agentDrivenProperties.MaxSpeedMultiplier = 1.05f * (movespeedMultiplier * (100f / (100f + totalWeightOfWeapons)));
 
 			SetAgentSpeed(agent, agentDrivenProperties);
@@ -310,6 +337,81 @@ namespace Alliance.Common.GameModels
 			}
 
 			SetAiRelatedProperties(agent, agentDrivenProperties, weaponComponentData, secondaryItem);
+		}
+
+
+		private AgentDrivenProperties InitializeHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties, AgentBuildData agentBuildData)
+		{
+			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+			if (mPHeroClassForCharacter != null)
+			{
+				FillAgentStatsFromData(ref agentDrivenProperties, agent, mPHeroClassForCharacter, agentBuildData?.AgentMissionPeer, agentBuildData?.OwningAgentMissionPeer);
+				agentDrivenProperties.SetStat(DrivenProperty.UseRealisticBlocking, MultiplayerOptions.OptionType.UseRealisticBlocking.GetBoolValue() ? 1f : 0f);
+			}
+
+			if (mPHeroClassForCharacter != null)
+			{
+				agent.BaseHealthLimit = mPHeroClassForCharacter.Health;
+			}
+			else
+			{
+				agent.BaseHealthLimit = 100f;
+			}
+
+			agent.HealthLimit = agent.BaseHealthLimit;
+			agent.Health = agent.HealthLimit;
+			return agentDrivenProperties;
+		}
+
+		private static void InitializeHorseAgentStats(Agent agent, Equipment spawnEquipment, AgentDrivenProperties agentDrivenProperties)
+		{
+			agentDrivenProperties.AiSpeciesIndex = agent.Monster.FamilyType;
+			agentDrivenProperties.AttributeRiding = 0.8f + ((spawnEquipment[EquipmentIndex.HorseHarness].Item != null) ? 0.2f : 0f);
+			float num = 0f;
+			for (int i = 1; i < 12; i++)
+			{
+				if (spawnEquipment[i].Item != null)
+				{
+					num += (float)spawnEquipment[i].GetModifiedMountBodyArmor();
+				}
+			}
+
+			agentDrivenProperties.ArmorTorso = num;
+			_ = spawnEquipment[EquipmentIndex.ArmorItemEndSlot].Item.HorseComponent;
+			EquipmentElement equipmentElement = spawnEquipment[EquipmentIndex.ArmorItemEndSlot];
+			EquipmentElement harness = spawnEquipment[EquipmentIndex.HorseHarness];
+			agentDrivenProperties.MountChargeDamage = (float)equipmentElement.GetModifiedMountCharge(in harness) * 0.01f;
+			agentDrivenProperties.MountDifficulty = equipmentElement.Item.Difficulty;
+		}
+
+		private void FillAgentStatsFromData(ref AgentDrivenProperties agentDrivenProperties, Agent agent, MultiplayerClassDivisions.MPHeroClass heroClass, MissionPeer missionPeer, MissionPeer owningMissionPeer)
+		{
+			MissionPeer missionPeer2 = missionPeer ?? owningMissionPeer;
+			if (missionPeer2 != null)
+			{
+				MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(missionPeer2);
+				bool isPlayer = missionPeer != null;
+				for (int i = 0; i < 55; i++)
+				{
+					DrivenProperty drivenProperty = (DrivenProperty)i;
+					float stat = agentDrivenProperties.GetStat(drivenProperty);
+					if (drivenProperty == DrivenProperty.ArmorHead || drivenProperty == DrivenProperty.ArmorTorso || drivenProperty == DrivenProperty.ArmorLegs || drivenProperty == DrivenProperty.ArmorArms)
+					{
+						agentDrivenProperties.SetStat(drivenProperty, stat + (float)heroClass.ArmorValue + onSpawnPerkHandler.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat));
+					}
+					else
+					{
+						agentDrivenProperties.SetStat(drivenProperty, stat + onSpawnPerkHandler.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat));
+					}
+				}
+			}
+
+			float topSpeedReachDuration = (heroClass.IsTroopCharacter(agent.Character) ? heroClass.TroopTopSpeedReachDuration : heroClass.HeroTopSpeedReachDuration);
+			agentDrivenProperties.TopSpeedReachDuration = topSpeedReachDuration;
+			float managedParameter = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalCombatSpeedMinMultiplier);
+			float managedParameter2 = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalCombatSpeedMaxMultiplier);
+			float num = (heroClass.IsTroopCharacter(agent.Character) ? heroClass.TroopCombatMovementSpeedMultiplier : heroClass.HeroCombatMovementSpeedMultiplier);
+			agentDrivenProperties.CombatMaxSpeedMultiplier = managedParameter + (managedParameter2 - managedParameter) * num;
 		}
 
 		/// <summary>
@@ -440,6 +542,61 @@ namespace Alliance.Common.GameModels
 
 		public ExtendedAgentStatCalculateModel()
 		{
+		}
+
+		public override float GetWeaponDamageMultiplier(Agent agent, WeaponComponentData weapon)
+		{
+			return 1f;
+		}
+
+		public override float GetKnockBackResistance(Agent agent)
+		{
+			return agent.Character.KnockbackResistance;
+		}
+
+		public override float GetDismountResistance(Agent agent)
+		{
+			return agent.Character.DismountResistance;
+		}
+
+		private int GetSkillValueForItem(BasicCharacterObject characterObject, ItemObject primaryItem)
+		{
+			return characterObject.GetSkillValue((primaryItem != null) ? primaryItem.RelevantSkill : DefaultSkills.Athletics);
+		}
+
+		private void SetMountedWeaponPenaltiesOnAgent(Agent agent, AgentDrivenProperties agentDrivenProperties, WeaponComponentData equippedWeaponComponent)
+		{
+			int effectiveSkill = GetEffectiveSkill(agent, DefaultSkills.Riding);
+			float num = 0.3f - (float)effectiveSkill * 0.003f;
+			if (num > 0f)
+			{
+				float val = agentDrivenProperties.SwingSpeedMultiplier * (1f - num);
+				float val2 = agentDrivenProperties.ThrustOrRangedReadySpeedMultiplier * (1f - num);
+				float val3 = agentDrivenProperties.ReloadSpeed * (1f - num);
+				float val4 = agentDrivenProperties.WeaponBestAccuracyWaitTime * (1f + num);
+				agentDrivenProperties.SwingSpeedMultiplier = Math.Max(0f, val);
+				agentDrivenProperties.ThrustOrRangedReadySpeedMultiplier = Math.Max(0f, val2);
+				agentDrivenProperties.ReloadSpeed = Math.Max(0f, val3);
+				agentDrivenProperties.WeaponBestAccuracyWaitTime = Math.Max(0f, val4);
+			}
+
+			float num2 = 15f - (float)effectiveSkill * 0.15f;
+			if (num2 > 0f)
+			{
+				float val5 = agentDrivenProperties.WeaponInaccuracy * (1f + num2);
+				agentDrivenProperties.WeaponInaccuracy = Math.Max(0f, val5);
+			}
+		}
+
+		public static float CalculateMaximumSpeedMultiplier(Agent agent)
+		{
+			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+			if (!mPHeroClassForCharacter.IsTroopCharacter(agent.Character))
+			{
+				return mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
+			}
+
+			return mPHeroClassForCharacter.TroopMovementSpeedMultiplier;
 		}
 	}
 }

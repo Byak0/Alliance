@@ -141,23 +141,23 @@
 		<action type="act_warg_turn_left" animation="warg_turn_left" />
 		<action type="act_warg_backward_walk_stand" animation="warg_walkbackfast" />
 		<action type="act_warg_backward_walk" animation="warg_walkbackfast" />
-		<action type="act_warg_backward_walk_strafe_right" animation="warg_strafe_right_faster" />
-		<action type="act_warg_backward_walk_strafe_left" animation="warg_strafe_left_faster" />
+		<action type="act_warg_backward_walk_strafe_right" animation="warg_turn_left" />
+		<action type="act_warg_backward_walk_strafe_left" animation="warg_turn_right" />
 		<action type="act_warg_strafe_right" animation="warg_strafe_right_faster" />
 		<action type="act_warg_strafe_left" animation="warg_strafe_left_faster" />
 		<action type="act_warg_stand_for_movement_data" animation="warg_stand_for_movement_data" />
 		<action type="act_warg_forward_walk" animation="warg_walkfast" />
-		<action type="act_warg_forward_walk_strafe_right" animation="warg_strafe_right_faster" />
-		<action type="act_warg_forward_walk_strafe_left" animation="warg_strafe_left_faster" />
+		<action type="act_warg_forward_walk_strafe_right" animation="warg_walk_strafe_right" />
+		<action type="act_warg_forward_walk_strafe_left" animation="warg_walk_strafe_left" />
 		<action type="act_warg_forward_walk_stand" animation="warg_walkfast" />
-		<action type="act_warg_forward_trot" animation="warg_walkfast" />
-		<action type="act_warg_forward_trot_strafe_right" animation="warg_strafe_right_faster" />
-		<action type="act_warg_forward_trot_strafe_left" animation="warg_strafe_left_faster" />
-		<action type="act_warg_forward_trot_stand" animation="warg_walkfast" />
-		<action type="act_warg_forward_canter" animation="warg_trot" />
-		<action type="act_warg_forward_canter_strafe_right" animation="warg_trot_strafe" />
-		<action type="act_warg_forward_canter_strafe_left" animation="warg_trot_strafe" />
-		<action type="act_warg_forward_canter_stand" animation="warg_trot_stand" />
+		<action type="act_warg_forward_trot" animation="warg_trot" />
+		<action type="act_warg_forward_trot_strafe_right" animation="warg_trot_strafe" />
+		<action type="act_warg_forward_trot_strafe_left" animation="warg_trot_strafe" />
+		<action type="act_warg_forward_trot_stand" animation="warg_trot_stand" />
+		<action type="act_warg_forward_canter" animation="warg_canter" />
+		<action type="act_warg_forward_canter_strafe_right" animation="warg_canter_strafe" />
+		<action type="act_warg_forward_canter_strafe_left" animation="warg_canter_strafe" />
+		<action type="act_warg_forward_canter_stand" animation="warg_canter_stand" />
 		<action type="act_warg_forward_gallop_right_foot" animation="warg_forward_gallop_left_foot" />
 		<action type="act_warg_forward_gallop_right_foot_strafe_right" animation="warg_forward_gallop_left_foot_strafe" />
 		<action type="act_warg_forward_gallop_right_foot_strafe_left" animation="warg_forward_gallop_left_foot_strafe" />

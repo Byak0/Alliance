@@ -230,8 +230,8 @@
 		<WeaponDescriptions>
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm" />
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Bracing" />
-			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Couchable" />
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Thrown" />
+			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Couchable" />
 		</WeaponDescriptions>
 		<StatsData>
 			<StatData
@@ -261,13 +261,9 @@
 			<UsablePiece piece_id="orc_rider_spear_blade_1"/>
 			<UsablePiece piece_id="orc_rider_spear_grip_1"/>
 			<UsablePiece piece_id="orc_rider_gladius_blade_1"/>
-			<UsablePiece piece_id="orc_rider_gladius_guard_1"/>
 			<UsablePiece piece_id="orc_rider_gladius_grip_1"/>
-			<UsablePiece piece_id="orc_rider_gladius_pommel_1"/>
 			<UsablePiece piece_id="orc_rider_sickle_blade_1"/>
-			<UsablePiece piece_id="orc_rider_sickle_guard_1"/>
 			<UsablePiece piece_id="orc_rider_sickle_grip_1"/>
-			<UsablePiece piece_id="orc_rider_sickle_pommel_1"/>
 		</UsablePieces>
 	</CraftingTemplate>
 	
