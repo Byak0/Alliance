@@ -1363,7 +1363,7 @@
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
 				<equipment slot="Head" id="Item.orc_rider_helmet" />
 				<equipment slot="Cape" id="Item.orc_rider_hood" />
-				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="Horse" id="Item.warg_brown" />
 				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 			<EquipmentRoster>
@@ -1375,7 +1375,7 @@
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
 				<equipment slot="Head" id="Item.orc_rider_helmet" />
 				<equipment slot="Cape" id="Item.orc_rider_hood" />
-				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="Horse" id="Item.warg_dark" />
 				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 			<EquipmentRoster>
@@ -1387,7 +1387,7 @@
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
 				<equipment slot="Head" id="Item.orc_rider_helmet" />
 				<equipment slot="Cape" id="Item.orc_rider_hood" />
-				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="Horse" id="Item.warg_brown" />
 				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 			<EquipmentRoster>
@@ -1399,7 +1399,7 @@
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
 				<equipment slot="Head" id="Item.orc_rider_helmet" />
 				<equipment slot="Cape" id="Item.orc_rider_hood" />
-				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="Horse" id="Item.warg_dark" />
 				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 		</Equipments>
@@ -1436,7 +1436,7 @@
 			<skill id="Crossbow"
 						 value="120" />
 			<skill id="Throwing"
-						 value="120" />
+						 value="150" />
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
@@ -1449,7 +1449,7 @@
 				<equipment slot="Leg" id="Item.orc_rider_greaves" />
 				<equipment slot="Head" id="Item.orc_rider_helmet" />
 				<equipment slot="Cape" id="Item.orc_rider_hood" />
-				<equipment slot="Horse" id="Item.warg" />
+				<equipment slot="Horse" id="Item.warg_albino" />
 				<equipment slot="HorseHarness" id="Item.warg_saddle" />
 			</EquipmentRoster>
 		</Equipments>

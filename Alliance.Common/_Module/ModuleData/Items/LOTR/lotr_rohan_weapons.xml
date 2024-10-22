@@ -2,10 +2,10 @@
 	<!-- Rohan Shields -->
 	<Item multiplayer_item="true" id="rohan_shield"
 	 name="Rohirrim shield"
-	 body_name="bo_cap_shield_rohan"
-	 shield_body_name="bo_shield_rohan"
+	 body_name="bo_cap_rohan_shield"
+	 shield_body_name="bo_rohan_shield"
 	 recalculate_body="false"
-	 mesh="shield_rohan"
+	 mesh="rohan_shield"
 	 culture="Culture.rohan"
 	 using_tableau="true"
 	 weight="4.7"

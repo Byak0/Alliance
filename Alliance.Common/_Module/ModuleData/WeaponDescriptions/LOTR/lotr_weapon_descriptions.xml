@@ -233,7 +233,7 @@
 
 	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Thrown"
                      weapon_class="Javelin"
-                     item_usage_features="polearm:thrown"
+                     item_usage_features="throwing:javelin"
                      rotated_in_hand="true"
                      use_center_of_mass_as_hand_base="true">
 		<WeaponFlags>

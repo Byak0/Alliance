@@ -231,7 +231,6 @@
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm" />
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Bracing" />
 			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Thrown" />
-			<WeaponDescription id="lotr_orc_TwoHandedPolearm_Couchable" />
 		</WeaponDescriptions>
 		<StatsData>
 			<StatData
