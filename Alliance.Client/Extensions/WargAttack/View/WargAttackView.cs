@@ -10,8 +10,8 @@ namespace Alliance.Client.Extensions.WargAttack.View
     [DefaultView]
     public class WargAttackView : MissionView
     {
-        private float cooldownDuration = 10.0f; // Durée du cooldown en secondes entre deux attaques
-        private DateTime lastAttackTime = DateTime.MinValue; // Initialise le dernier moment où l'attaque a été utilisée à une valeur minimale
+        private float cooldownDuration = 1.0f; // Cooldown duration in seconds between two attacks.
+        private DateTime lastAttackTime = DateTime.MinValue; // Initialize the last moment when the attack was used to a minimum value.
 
 
         public WargAttackView() { }
@@ -25,7 +25,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
                     if (CanUseWargAttack())
                     {
                         WargAttack();
-                        lastAttackTime = DateTime.UtcNow; // Met à jour le dernier moment où l'attaque a été utilisée                            
+                        lastAttackTime = DateTime.UtcNow; // Update the last moment when the attack was used.                          
                     }
                     else
                     {
@@ -38,7 +38,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
 
         private bool CanUseWargAttack()
         {
-            // Vérifie si suffisamment de temps s'est écoulé depuis la dernière utilisation
+            // Check if enough time has passed since the last use.
             return DateTime.UtcNow - lastAttackTime >= TimeSpan.FromSeconds(cooldownDuration);
         }
 
@@ -47,7 +47,7 @@ namespace Alliance.Client.Extensions.WargAttack.View
             Log($"Using WargAttack !", LogLevel.Information);
 
             GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new RequestWargAttack()); // Envoi message au Common
+            GameNetwork.WriteMessage(new RequestWargAttack()); // Send message to Common.
             GameNetwork.EndModuleEventAsClient();
         }
     }

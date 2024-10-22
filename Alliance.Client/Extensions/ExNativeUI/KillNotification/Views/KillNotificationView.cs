@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
@@ -104,6 +105,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.KillNotification.Views
             if (_isPersonalFeedEnabled && (logData.IsAttackerAgentMine || logData.IsAttackerAgentRiderAgentMine) && logData.TotalDamage > 0 && !logData.IsVictimAgentSameAsAttackerAgent)
             {
                 _dataSource.OnPersonalDamage(logData.TotalDamage, logData.IsFatalDamage, logData.IsVictimAgentMount, logData.IsFriendlyFire, logData.BodyPartHit == BoneBodyPartType.Head, logData.VictimAgentName);
+            }
+        }
+
+        public void DisplayPersonalDamage(SyncPersonalKillFeedNotification message)
+        {
+            if (_isPersonalFeedEnabled && (message.CasterAgent == Agent.Main || message.CasterAgent == Agent.Main.MountAgent) && message.HealthDifference > 0 && message.CasterAgent != message.TargetAgent)
+            {
+                _dataSource.OnPersonalDamage(message.HealthDifference, message.IsFatal, message.IsTargetMount, message.IsFriendlyFireDamage, message.IsHeadshot, message.TargetAgent.Name);
             }
         }
 
