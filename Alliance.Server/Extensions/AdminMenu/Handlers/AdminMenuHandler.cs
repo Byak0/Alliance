@@ -485,12 +485,12 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			}
 		}
 
-        /// <summary>
-        /// Teleporte les joueurs passés en paramètre au Networkcommunicator passé en paramètre.
-        /// </summary>
-        /// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
-        /// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
-        private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
+		/// <summary>
+		/// Teleporte les joueurs passés en paramètre au Networkcommunicator passé en paramètre.
+		/// </summary>
+		/// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
+		/// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
+		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
 		{
 			try
 			{
