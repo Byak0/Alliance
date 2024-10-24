@@ -26,8 +26,9 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool TeleportPlayerToYou { get; set; }
 		public bool TeleportAllPlayerToYou { get; set; }
 		public bool SendWarningToPlayer { get; set; }
+        public string WarningMessageToPlayer{get; set;}
 
-		protected override void OnWrite()
+        protected override void OnWrite()
 		{
 			WriteBoolToPacket(Heal);
 			WriteBoolToPacket(HealAll);
@@ -46,6 +47,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(TeleportAllPlayerToYou);
 			WriteBoolToPacket(SendWarningToPlayer);
 			WriteStringToPacket(PlayerSelected);
+			WriteStringToPacket(WarningMessageToPlayer);
 		}
 
 		protected override bool OnRead()
@@ -68,6 +70,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			TeleportAllPlayerToYou = ReadBoolFromPacket(ref bufferReadValid);
 			SendWarningToPlayer = ReadBoolFromPacket(ref bufferReadValid);
 			PlayerSelected = ReadStringFromPacket(ref bufferReadValid);
+            WarningMessageToPlayer = ReadStringFromPacket(ref bufferReadValid);
 
 			return bufferReadValid;
 		}

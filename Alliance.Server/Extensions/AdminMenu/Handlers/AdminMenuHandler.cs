@@ -270,11 +270,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			if (playerSelected == null) return false;
 
 			GameNetwork.BeginModuleEventAsServer(playerSelected);
-			GameNetwork.WriteMessage(new SendNotification($"Vous avez reçu un avertissement d'un Admin ({peer.UserName}) !", 0));
+			GameNetwork.WriteMessage(new SendNotification($"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !", 0));
 			GameNetwork.EndModuleEventAsServer();
 
-			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}.", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}", AdminServerLog.ColorList.Success, true);
 			return true;
 
 		}

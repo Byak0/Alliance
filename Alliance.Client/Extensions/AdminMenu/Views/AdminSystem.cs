@@ -163,6 +163,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
             };
             adminVM.SelectTarget(agent);
             OpenAdminPanel(adminVM);
-        }
+        }        
     }
 }

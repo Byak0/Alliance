@@ -1,8 +1,10 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
+using System;
 using System.Linq;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
@@ -325,12 +327,32 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
             GameNetwork.EndModuleEventAsClient();
         }
 
-        public void SendWarningToPlayer()
+        public void SendWarningToPlayer(string customWarning)
         {
             if (_selectedPeer == null) { return; }
             GameNetwork.BeginModuleEventAsClient();
-            GameNetwork.WriteMessage(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId });
+            GameNetwork.WriteMessage(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId, WarningMessageToPlayer = customWarning });
             GameNetwork.EndModuleEventAsClient();
+        }
+
+        public void CustomWarning()
+        {
+            if (_selectedPeer == null) { return; }
+            // Prompt a text inquiry for user to enter a new name
+            InformationManager.ShowTextInquiry(
+                new TextInquiryData("Custom Warning message",
+                "Write your warning message :",
+                true,
+                true,
+                new TextObject("Done", null).ToString(),
+                new TextObject("Cancel", null).ToString(),
+                new Action<string>(SendWarningToPlayer),
+                null,
+                false,
+                null,
+                "",
+                "Your warning message"),
+                false);
         }
 
         public void BanPlayer()
