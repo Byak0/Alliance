@@ -268,8 +268,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			// Check si joueur existe
 			if (playerSelected == null) return false;
+            admin.WarningMessageToPlayer = string.IsNullOrEmpty(admin.WarningMessageToPlayer) ? "Vous avez reçu un avertissement d'un Admin" : admin.WarningMessageToPlayer;
 
-			GameNetwork.BeginModuleEventAsServer(playerSelected);
+
+            GameNetwork.BeginModuleEventAsServer(playerSelected);
 			GameNetwork.WriteMessage(new SendNotification($"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !", 0));
 			GameNetwork.EndModuleEventAsServer();
 

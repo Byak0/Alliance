@@ -335,7 +335,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			GameNetwork.EndModuleEventAsClient();
 		}
 
-		public void CustomWarning()
+		public void PrompWarningMessageSelection()
 		{
 			if (_selectedPeer == null) { return; }
 			// Prompt a text inquiry for user to enter a new name
