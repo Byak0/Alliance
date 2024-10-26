@@ -29,6 +29,7 @@
 		<Reference Include="System.Numerics.Vectors">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll</HintPath>
 		</Reference>
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
   <ItemGroup>

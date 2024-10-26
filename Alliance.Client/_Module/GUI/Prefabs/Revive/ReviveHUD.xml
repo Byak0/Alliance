@@ -1,0 +1,43 @@
+﻿<Prefab>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+			<Children>
+
+				<!-- List of wounded agents markers -->
+				<NameMarkerScreenWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Brush.AlphaFactor="0" Brush.Color="#000000FF" IsMarkersEnabled="@IsEnabled" TargetAlphaValue="0.0" MarkersContainer="MarkersContainer">
+					<Children>
+						<Widget Id="MarkersContainer" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+							<Children>
+								<Widget DataSource="{WoundedAgents}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+									<ItemTemplate>
+										<WoundedAgentMarker />
+									</ItemTemplate>
+								</Widget>
+							</Children>
+						</Widget>
+					</Children>
+				</NameMarkerScreenWidget>
+
+				<!-- Interaction -->
+				<Widget DataSource="{InteractionInterface}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsActive">
+					<Children>
+						<ListPanel DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-120" StackLayout.LayoutMethod="VerticalBottomToTop">
+							<Children>
+								<ListPanel DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="56" SuggestedHeight="42" VerticalAlignment="Center" Sprite="SPGeneral\GameMenu\mission_icon" IsVisible="@IsFocusedOnExit" />
+										<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="7" MarginRight="7" MarginTop="5" Brush="AgentHUD.Interaction.Text" ClipContents="false" Text="@PrimaryInteractionMessage" />
+									</Children>
+								</ListPanel>
+								<RichTextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="7" MarginRight="7" MarginTop="5" Brush="AgentHUD.Interaction.Text" ClipContents="false" Text="@SecondaryInteractionMessage" />
+							</Children>
+						</ListPanel>
+						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="220" SuggestedHeight="18" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-145" Sprite="SelectionBorder@2x_9" Color="#CCCCCCFF" IsVisible="@ShowHealthBar" />
+						<FillBar WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="210" SuggestedHeight="8" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-150" Brush="HealthBarBrush" InitialAmount="@TargetHealth" IsVertical="false" IsVisible="@ShowHealthBar" MaxAmount="100" />
+					</Children>
+				</Widget>
+
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

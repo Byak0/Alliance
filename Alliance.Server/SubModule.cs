@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.Revive.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -126,6 +127,7 @@ namespace Alliance.Server
 			mission.AddMissionBehavior(new DieUnderWaterBehavior());
 			mission.AddMissionBehavior(new FakeArmyBehavior());
 			mission.AddMissionBehavior(new RespawnBehavior());
-		}
+            mission.AddMissionBehavior(new ReviveBehavior());
+        }
 	}
 }
