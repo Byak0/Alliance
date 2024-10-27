@@ -12,10 +12,12 @@ using Alliance.Server.Core.Security;
 using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
+using Alliance.Server.Extensions.Animals.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
+using Alliance.Server.Extensions.WargAttack.Behavior;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
@@ -126,6 +128,8 @@ namespace Alliance.Server
 			mission.AddMissionBehavior(new DieUnderWaterBehavior());
 			mission.AddMissionBehavior(new FakeArmyBehavior());
 			mission.AddMissionBehavior(new RespawnBehavior());
+			mission.AddMissionBehavior(new WargBehavior());
+			mission.AddMissionBehavior(new AnimalBehavior());
 		}
 	}
 }

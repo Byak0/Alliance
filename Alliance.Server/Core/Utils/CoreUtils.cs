@@ -32,7 +32,7 @@ namespace Alliance.Server.Core.Utils
 
 			if (victim.Health <= 0) return;
 
-			if (attacker != null)
+			if (attacker?.MissionPeer != null)
 			{
 				//Communicate damage to client to display PersonalKillFeed
 				GameNetwork.BeginModuleEventAsServer(attacker.MissionPeer.GetNetworkPeer());

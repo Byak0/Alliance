@@ -155,7 +155,7 @@ namespace Alliance.Common.GameModels
 
 			if (agent.Monster.StringId == "warg")
 			{
-				agentDrivenProperties.MountManeuver *= 0.5f;
+				agentDrivenProperties.MountManeuver *= 0.8f;
 				agentDrivenProperties.TopSpeedReachDuration *= 2f;
 				agentDrivenProperties.MountDashAccelerationMultiplier *= 3f;
 			}

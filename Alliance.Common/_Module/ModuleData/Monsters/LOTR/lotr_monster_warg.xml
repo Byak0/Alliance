@@ -5,7 +5,7 @@
 		action_set="as_warg"
 		monster_usage="warg"
 		weight="500"
-		hit_points="250"
+		hit_points="200"
 		absorbed_damage_ratio="1.0"
 		num_paces="6"
 		jump_acceleration="8"

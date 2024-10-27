@@ -5,8 +5,8 @@
 	<action name="act_blow_horn" />
 
 	<!-- Warg -->
-	<action name="act_warg_attack_stand" />
-	<action name="act_warg_attack_running" />
+	<action name="act_warg_attack_stand" type="actt_mount_strike" />
+	<action name="act_warg_attack_running" type="actt_mount_strike" />
 	
 	<action name="act_warg_stand_for_movement_data"/>
 	<action name="act_warg_stand_1"/>

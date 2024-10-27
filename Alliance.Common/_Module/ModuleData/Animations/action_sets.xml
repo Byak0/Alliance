@@ -139,8 +139,8 @@
 		<!-- Warg - monster_usage_movements -->
 		<action type="act_warg_turn_right" animation="warg_strafe_right_faster" />
 		<action type="act_warg_turn_left" animation="warg_strafe_left_faster" />
-		<action type="act_warg_backward_walk_stand" animation="warg_walkbackfast" />
-		<action type="act_warg_backward_walk" animation="warg_walkbackfast" />
+		<action type="act_warg_backward_walk_stand" animation="warg_walkbackfast_straight" />
+		<action type="act_warg_backward_walk" animation="warg_walkbackfast_straight" />
 		<action type="act_warg_backward_walk_strafe_right" animation="warg_walkbackfast" />
 		<action type="act_warg_backward_walk_strafe_left" animation="warg_walkbackfast" />
 		<action type="act_warg_strafe_right" animation="warg_strafe_right_faster" />
@@ -184,8 +184,8 @@
 		<action type="act_warg_fall_left_continue" animation="warg_death_left_side_continue" />
 		<action type="act_warg_fall_roll" animation="warg_death_right_side" />
 		<action type="act_warg_fall_roll_continue" animation="warg_death_right_side_continue" />
-		<action type="act_warg_fall_backwards" animation="warg_death_backward" />
-		<action type="act_warg_fall_backwards_continue" animation="warg_death_backward_continue" />
+		<action type="act_warg_fall_backwards" animation="warg_death_right_side" />
+		<action type="act_warg_fall_backwards_continue" animation="warg_death_right_side_continue" />
 		<action type="act_warg_fall_slow_right" animation="warg_death_right_side" />
 		<action type="act_warg_fall_slow_right_continue" animation="warg_death_right_side_continue" />
 		<action type="act_warg_fall_slow_left" animation="warg_death_left_side" />
