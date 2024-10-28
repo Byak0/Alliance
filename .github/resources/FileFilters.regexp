@@ -1,6 +1,7 @@
 regex:bin/Win64_Shipping_Client/(?<=/)[^/]+dll
 regex:bin/Win64_Shipping_Client/Microsoft.NETCore.App/System.Numerics.dll
 regex:Modules/CustomBattle/bin/Win64_Shipping_Client/(?<=/)[^/]+dll
+regex:Modules/CustomBattle/bin/Win64_Shipping_wEditor/(?<=/)[^/]+dll
 regex:Modules/Native/bin/Win64_Shipping_Client/(?<=/)[^/]+dll
 regex:Modules/SandBox/bin/Win64_Shipping_Client/(?<=/)[^/]+dll
 regex:Modules/SandBoxCore/bin/Win64_Shipping_Client/(?<=/)[^/]+dll
