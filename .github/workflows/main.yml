@@ -67,6 +67,9 @@ jobs:
       - name: Download Bannerlord binaries
         run: dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -username ${{secrets.STEAM_LOGIN}} -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir BannerlordClient;
 
+      - name: Download Bannerlord binaries (modding kit)
+        run: dotnet depotdownloader/DepotDownloader.dll -app 1393600 -depot 1393601 -username ${{secrets.STEAM_LOGIN}} -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir BannerlordClient;
+
       - name: Download Bannerlord Dedicated Server binaries
         run: dotnet depotdownloader/DepotDownloader.dll -app 1863440 -depot 1863441 -username ${{secrets.STEAM_LOGIN}} -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir BannerlordServer;
       
