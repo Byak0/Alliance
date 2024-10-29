@@ -27,6 +27,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 		private Agent target;
 		private List<sbyte> boneIds;
 		private float minDistanceSquared;
+		private float startDelay;
 		private float duration;
 		private bool isChecking;
 
@@ -37,12 +38,13 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 		public Action<Agent, Agent> OnBoneFoundParryCallback;
 
 		// Constructor callback
-		public BoneCheckDuringAnimationBehavior(Agent agent, Agent target, List<sbyte> boneIds, float duration, float minDistanceSquared, Action<Agent, Agent> onBoneFoundCallback, Action<Agent, Agent> onBoneFoundParryCallback)
+		public BoneCheckDuringAnimationBehavior(Agent agent, Agent target, List<sbyte> boneIds, float startDelay, float duration, float minDistanceSquared, Action<Agent, Agent> onBoneFoundCallback, Action<Agent, Agent> onBoneFoundParryCallback)
 		{
 			this.agent = agent;
 			this.target = target;
 			this.boneIds = boneIds;
 			this.minDistanceSquared = minDistanceSquared;
+			this.startDelay = startDelay;
 			this.duration = duration;
 			isChecking = true;
 			OnBoneFoundCallback = onBoneFoundCallback; // register callback
@@ -61,6 +63,8 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 				Mission.Current.RemoveMissionBehavior(this);
 				return;
 			}
+
+			if (time < startDelay) return;
 
 			sbyte boneInRange = SearchBoneInRange(agent, target, boneIds, minDistanceSquared);
 

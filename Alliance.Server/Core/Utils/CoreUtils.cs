@@ -32,10 +32,12 @@ namespace Alliance.Server.Core.Utils
 
 			if (victim.Health <= 0) return;
 
-			if (attacker?.MissionPeer != null)
+			// Retrieve peer from either agent or rider agent
+			MissionPeer peer = attacker?.MissionPeer != null ? attacker.MissionPeer : attacker.RiderAgent?.MissionPeer != null ? attacker.RiderAgent.MissionPeer : null;
+			if (peer != null)
 			{
 				//Communicate damage to client to display PersonalKillFeed
-				GameNetwork.BeginModuleEventAsServer(attacker.MissionPeer.GetNetworkPeer());
+				GameNetwork.BeginModuleEventAsServer(peer.GetNetworkPeer());
 				GameNetwork.WriteMessage(new SyncPersonalKillFeedNotification(attacker, victim, false, false, false, victim.Health <= damage, false, false, damage));
 				GameNetwork.EndModuleEventAsServer();
 			}

@@ -30,6 +30,7 @@ namespace Alliance.Server.Extensions.WargAttack.Models
 		public const float LOW_HEALTH_THRESHOLD = 0.3f; // Threshold to consider warg as wounded
 		public const float MAINTAIN_DISTANCE = 5f; // Distance to keep when being careful of target
 		public const float TARGET_LOSE_INTEREST_TIME = 30; // Delay before warg lose interest in target
+		public const float ATTACK_COOLDOWN = 4; // Cooldown between attacks
 
 		static WargConstants()
 		{

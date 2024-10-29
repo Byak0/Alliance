@@ -18,6 +18,7 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			float radius = 10f;
 			float impactDistance = 0.1f;
 			float attackDuration = 0f;
+			float startDelay = 0f;
 
 			List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, warg);
 
@@ -25,21 +26,24 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackRunningAnimation, true);
 				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration;
+				startDelay = 0.2f;
 			}
 			else
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackAnimation, true);
 				attackDuration = WargConstants.AttackAnimation.MaxDuration;
+				startDelay = 0.1f;
 			}
 
 			foreach (Agent agent in nearbyAllAgents)
 			{
-				if (agent != null && agent != warg && agent.IsActive())
+				if (agent != null && agent != warg && agent.IsActive() && agent != warg.RiderAgent)
 				{
 					Mission.Current.AddMissionBehavior(new BoneCheckDuringAnimationBehavior(
 						warg,
 						agent,
 						WargConstants.WargBoneIds,
+						startDelay,
 						attackDuration,
 						impactDistance,
 						(agent, target) => HandleCollision(target, warg),
@@ -65,19 +69,23 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 						return;
 
 					var damagerAgent = damager != null ? damager : target;
+					int damage = target.Monster.StringId == "warg" ? 25 : 50; // Wargs do less damage to each other
 
 					// If target is AI controlled, chance of reverse damage to simulate target defending
 					if (target.IsAIControlled && target.IsHuman && MBRandom.RandomFloat < 0.5f)
 					{
 						// Target deals damage to warg
-						target.SetMovementDirection((damagerAgent.Position - target.Position).AsVec2);
-						AnimationSystem.Instance.PlayAnimation(target, WargConstants.DefendAnimation, true);
-						CoreUtils.TakeDamage(damagerAgent, target, 50);
+						if (!target.HasMount)
+						{
+							target.SetMovementDirection((damagerAgent.Position - target.Position).AsVec2);
+							AnimationSystem.Instance.PlayAnimation(target, WargConstants.DefendAnimation, true);
+						}
+						CoreUtils.TakeDamage(damagerAgent, target, damage);
 					}
 					else
 					{
 						// Warg deals damage to target
-						CoreUtils.TakeDamage(target, damagerAgent, 50);
+						CoreUtils.TakeDamage(target, damagerAgent, damage);
 					}
 				}
 			}
@@ -105,7 +113,7 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 
 					// TODO : if target parried with a shield, reduce shield durability, otherwise project target
 					var damagerAgent = damager != null ? damager : target;
-					CoreUtils.TakeDamage(target, damagerAgent, 0, 30); // Application of the blow.
+					CoreUtils.TakeDamage(target, damagerAgent, 0); // Application of the blow.
 				}
 			}
 			catch (Exception e)
