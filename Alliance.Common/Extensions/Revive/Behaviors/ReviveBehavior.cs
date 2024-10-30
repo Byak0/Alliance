@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.Revive.NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -89,7 +90,11 @@ namespace Alliance.Common.Extensions.Revive.Behaviors
                 1
             );
         }
-
+        /// <summary>
+        /// Creates an entity for the wounded agent
+        /// </summary>
+        /// <param name="woundedAgent"></param>
+        /// <returns></returns>
         public GameEntity CreateWoundedAgent(Agent woundedAgent)
         {
             GameEntity woundedAgentEntity = GameEntity.CreateEmpty(Mission.Current.Scene);
@@ -102,12 +107,27 @@ namespace Alliance.Common.Extensions.Revive.Behaviors
             uint color2 = woundedAgent.ClothingColor2;
 
             List<MetaMesh> metaMeshes = new List<MetaMesh>();
-            for (int i = 0; i < 9; i++)
+
+            List<string> meshNames = woundedAgent.AgentVisuals.GetSkeleton().GetAllMeshes().Where(mesh => !mesh.Name.Contains(".lod")).Select(mesh => { return mesh.Name; }).ToList();
+
+            foreach (string meshName in meshNames)
             {
-                string metaMeshName = woundedAgent.SpawnEquipment[i].Item?.MultiMeshName;
+                string metaMeshName = meshName;
                 if (!string.IsNullOrEmpty(metaMeshName))
                 {
                     MetaMesh mesh = MetaMesh.GetCopy(metaMeshName, true, false);
+                    mesh.SetFactor1(color1);
+                    mesh.SetFactor2(color2);
+                    metaMeshes.Add(mesh);
+                }
+            }
+            for (int i = 0; i < 9; i++)
+            {
+                string metaMeshName2 = woundedAgent.SpawnEquipment[i].Item?.MultiMeshName;
+                System.Diagnostics.Debug.WriteLine($"mesh equipement 2: {metaMeshName2}");
+                if (!string.IsNullOrEmpty(metaMeshName2))
+                {
+                    MetaMesh mesh = MetaMesh.GetCopy(metaMeshName2, true, false);
                     mesh.SetFactor1(color1);
                     mesh.SetFactor2(color2);
                     metaMeshes.Add(mesh);
@@ -118,11 +138,6 @@ namespace Alliance.Common.Extensions.Revive.Behaviors
             {
                 woundedAgentEntity.AddMultiMeshToSkeleton(metaMesh);
             }
-
-            woundedAgentEntity.AddMultiMeshToSkeleton(MetaMesh.GetCopy("head_male_a", true, false));
-            woundedAgentEntity.AddMultiMeshToSkeleton(MetaMesh.GetCopy("feet_male_a", true, false));
-            woundedAgentEntity.AddMultiMeshToSkeleton(MetaMesh.GetCopy("hands_male_a", true, false));
-            woundedAgentEntity.AddMultiMeshToSkeleton(MetaMesh.GetCopy("body_male_a", true, false));
 
             woundedAgentEntity.Skeleton.TickActionChannels();
             woundedAgentEntity.Skeleton.TickAnimationsAndForceUpdate(0.01f, woundedAgent.Frame, true);
