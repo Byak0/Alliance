@@ -155,7 +155,7 @@ namespace Alliance.Client.Extensions.Revive.ViewModels
             WoundedAgents.Add(new WoundedMarkerTargetVM(woundedAgentInfos));
         }
 
-        public void RemoveMarker(WoundedAgentInfos woundedAgentInfos)
+        public void RemoveMarkerOnRevive(WoundedAgentInfos woundedAgentInfos)
         {
             System.Diagnostics.Debug.WriteLine("Dans le remove marker");          
             var markersToRemove = WoundedAgents.Where(marker => marker.WoundedAgentEntity == woundedAgentInfos.WoundedAgentEntity).ToList();

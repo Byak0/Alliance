@@ -158,7 +158,7 @@ namespace Alliance.Client.Extensions.Revive.Views
         public void RemoveWoundMarker(WoundedAgentInfos woundedAgentInfos)
         {
             // Retirer le marqueur de l'UI
-            _dataSource.RemoveMarker(woundedAgentInfos);
+            _dataSource.RemoveMarkerOnRevive(woundedAgentInfos);
         }
 
         private void SetupCamera()
