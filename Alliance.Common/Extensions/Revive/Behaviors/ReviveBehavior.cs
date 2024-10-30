@@ -123,11 +123,10 @@ namespace Alliance.Common.Extensions.Revive.Behaviors
             }
             for (int i = 0; i < 9; i++)
             {
-                string metaMeshName2 = woundedAgent.SpawnEquipment[i].Item?.MultiMeshName;
-                System.Diagnostics.Debug.WriteLine($"mesh equipement 2: {metaMeshName2}");
-                if (!string.IsNullOrEmpty(metaMeshName2))
+                string metaMeshNameEquipment = woundedAgent.SpawnEquipment[i].Item?.MultiMeshName;                
+                if (!string.IsNullOrEmpty(metaMeshNameEquipment))
                 {
-                    MetaMesh mesh = MetaMesh.GetCopy(metaMeshName2, true, false);
+                    MetaMesh mesh = MetaMesh.GetCopy(metaMeshNameEquipment, true, false);
                     mesh.SetFactor1(color1);
                     mesh.SetFactor2(color2);
                     metaMeshes.Add(mesh);
