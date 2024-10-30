@@ -1,8 +1,6 @@
 ﻿using Alliance.Client.Extensions.Revive.ViewModels;
 using Alliance.Common.Extensions.Revive.Behaviors;
 using Alliance.Common.Extensions.Revive.Models;
-using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -11,9 +9,9 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using static Alliance.Common.Utilities.Logger;
-using TaleWorlds.MountAndBlade.View;
 
 namespace Alliance.Client.Extensions.Revive.Views
 {
@@ -24,7 +22,7 @@ namespace Alliance.Client.Extensions.Revive.Views
     /// </summary>
     public class ReviveView : MissionView
     {
-        
+
         private WoundedAgentInfos _playerWoundedInfos;
         private ReviveBehavior _reviveBehavior;
         private MissionCameraFadeView _cameraFadeView;
@@ -53,7 +51,7 @@ namespace Alliance.Client.Extensions.Revive.Views
 
             _reviveBehavior = Mission.Current.GetMissionBehavior<ReviveBehavior>();
             _cameraFadeView = Mission.Current.GetMissionBehavior<MissionCameraFadeView>();
-           
+
             System.Diagnostics.Debug.WriteLine("message from ReviveVM");
 
         }
@@ -70,14 +68,14 @@ namespace Alliance.Client.Extensions.Revive.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);                 
+            base.OnMissionScreenTick(dt);
 
             // Vérifie si la CombatCamera est null avant d'instancier ReviveVM
             if (_dataSource == null && MissionScreen != null && MissionScreen.CombatCamera != null)
             {
                 System.Diagnostics.Debug.WriteLine("dataSource est null");
                 _dataSource = new ReviveVM(MissionScreen.CombatCamera);
-            
+
                 _reviveBehavior.OnNewWounded += OnNewWounded;
 
                 _gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
@@ -86,7 +84,7 @@ namespace Alliance.Client.Extensions.Revive.Views
             }
 
             if (_dataSource != null)
-            {                
+            {
                 if (Input.IsGameKeyDown(5))
                 {
                     _dataSource.IsEnabled = true;
@@ -137,6 +135,7 @@ namespace Alliance.Client.Extensions.Revive.Views
                 if (_targetWoundedAgent != null && Input.IsKeyReleased(InputKey.F))
                 {
                     _reviveBehavior.RescueAgent(_targetWoundedAgent);
+                    RemoveWoundMarker(_targetWoundedAgent);
                     _targetWoundedAgent = null;
                 }
             }
@@ -155,6 +154,11 @@ namespace Alliance.Client.Extensions.Revive.Views
             {
                 _dataSource.OnNewWounded(woundedAgentInfos);
             }
+        }
+        public void RemoveWoundMarker(WoundedAgentInfos woundedAgentInfos)
+        {
+            // Retirer le marqueur de l'UI
+            _dataSource.RemoveMarker(woundedAgentInfos);
         }
 
         private void SetupCamera()

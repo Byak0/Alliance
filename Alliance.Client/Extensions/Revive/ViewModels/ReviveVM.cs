@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.Revive.Models;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -22,6 +23,7 @@ namespace Alliance.Client.Extensions.Revive.ViewModels
         private MBBindingList<WoundedMarkerTargetVM> _woundedAgents;
         private AgentInteractionInterfaceVM _agentInteractionVM;
         private bool _isEnabled;
+        private List<WoundedAgentInfos> _woundedMarkers;
 
         public class MarkerDistanceComparer : IComparer<MissionMarkerTargetVM>
         {
@@ -89,6 +91,7 @@ namespace Alliance.Client.Extensions.Revive.ViewModels
             WoundedAgents = new MBBindingList<WoundedMarkerTargetVM>();
             _distanceComparer = new MarkerDistanceComparer();
             InteractionInterface = new AgentInteractionInterfaceVM(Mission.Current);
+            _woundedMarkers = new List<WoundedAgentInfos>();
             InitWoundedAgents();
         }
 
@@ -150,6 +153,17 @@ namespace Alliance.Client.Extensions.Revive.ViewModels
         public void OnNewWounded(WoundedAgentInfos woundedAgentInfos)
         {
             WoundedAgents.Add(new WoundedMarkerTargetVM(woundedAgentInfos));
+        }
+
+        public void RemoveMarker(WoundedAgentInfos woundedAgentInfos)
+        {
+            System.Diagnostics.Debug.WriteLine("Dans le remove marker");          
+            var markersToRemove = WoundedAgents.Where(marker => marker.WoundedAgentEntity == woundedAgentInfos.WoundedAgentEntity).ToList();
+            
+            foreach (var marker in markersToRemove)
+            {
+                WoundedAgents.Remove(marker);
+            }            
         }
     }
 }
