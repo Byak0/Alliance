@@ -12,6 +12,8 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 	/// </summary>
 	public class ConditionsBehavior : MissionNetwork, IMissionBehavior
 	{
+
+		public event Action<Agent> UpdateAgentDeathCondition;
 		public override void OnBehaviorInitialize()
 		{
 			List<GameEntity> triggerActionEntities = new List<GameEntity>();
@@ -25,8 +27,6 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 				}
 			}
 		}
-
-		public event Action<Agent> UpdateAgentDeathCondition;
 
 		public override void OnAgentRemoved(Agent victim, Agent affectorAgent, AgentState agentState, KillingBlow blow)
 		{
