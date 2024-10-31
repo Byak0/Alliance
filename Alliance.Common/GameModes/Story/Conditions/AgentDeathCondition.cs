@@ -6,7 +6,7 @@ using TaleWorlds.MountAndBlade;
 namespace Alliance.Common.GameModes.Story.Conditions
 {
 	/// <summary>
-	/// Check if agents entered a zone.
+	/// Check if a specific agent (or a number of this specific agent) is dead
 	/// </summary>
 	public class AgentDeathCondition : Condition
 	{
@@ -48,7 +48,8 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		{
 			_deathCount = 0;
 		}
-
+		
+		// Check if number of specific agent  is reached to trigger condition
 		public override bool Evaluate(ScenarioManager context)
 		{
 			if (_deathCount >= DeathQuota)
