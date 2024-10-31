@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using System;
-using static Alliance.Common.GameModes.Story.Conditions.AgentEnteredZoneCondition;
+using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {

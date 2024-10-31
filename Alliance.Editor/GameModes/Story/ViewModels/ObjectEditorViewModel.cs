@@ -48,7 +48,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			// If there is only one non-abstract field of type object, directly open its UI
 			// (example: if the object has only one field of type TWConfig, open the TWConfig directly)
-			if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass)
+			if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);

@@ -20,21 +20,6 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		[ScenarioEditor(label: "Exact count only", tooltip: "If enabled, the condition will only trigger if there is the EXACT number of matching agents in the zone (not more, not less).")]
 		public bool ExactCountOnly = false;
 
-		public enum TargetType
-		{
-			All,
-			Bots,
-			Players,
-			Officers
-		}
-
-		public enum SideType
-		{
-			All = -1,
-			Defender = BattleSideEnum.Defender,
-			Attacker = BattleSideEnum.Attacker
-		}
-
 		public AgentEnteredZoneCondition() { }
 
 		public override bool Evaluate(ScenarioManager context)
