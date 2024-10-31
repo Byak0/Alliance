@@ -36,9 +36,8 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		{
 		}
 
-		protected override void OnInit()
+		public void Init()
 		{
-			base.OnInit();
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
 			foreach (Condition condition in _conditionalActionStruct.Conditions)
 			{

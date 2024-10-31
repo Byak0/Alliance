@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
+using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using Alliance.Server.Core;
@@ -126,6 +127,7 @@ namespace Alliance.Server
 			mission.AddMissionBehavior(new DieUnderWaterBehavior());
 			mission.AddMissionBehavior(new FakeArmyBehavior());
 			mission.AddMissionBehavior(new RespawnBehavior());
+			mission.AddMissionBehavior(new ConditionsBehavior());
 		}
 	}
 }
