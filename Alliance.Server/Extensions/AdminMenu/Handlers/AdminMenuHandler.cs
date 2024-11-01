@@ -268,13 +268,15 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			// Check si joueur existe
 			if (playerSelected == null) return false;
+            admin.WarningMessageToPlayer = string.IsNullOrEmpty(admin.WarningMessageToPlayer) ? "Vous avez reçu un avertissement d'un Admin" : admin.WarningMessageToPlayer;
 
-			GameNetwork.BeginModuleEventAsServer(playerSelected);
-			GameNetwork.WriteMessage(new SendNotification($"Vous avez reçu un avertissement d'un Admin ({peer.UserName}) !", 0));
+
+            GameNetwork.BeginModuleEventAsServer(playerSelected);
+			GameNetwork.WriteMessage(new SendNotification($"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !", 0));
 			GameNetwork.EndModuleEventAsServer();
 
-			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}.", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}", AdminServerLog.ColorList.Success, true);
 			return true;
 
 		}
@@ -485,12 +487,12 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			}
 		}
 
-        /// <summary>
-        /// Teleporte les joueurs passés en paramètre au Networkcommunicator passé en paramètre.
-        /// </summary>
-        /// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
-        /// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
-        private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
+		/// <summary>
+		/// Teleporte les joueurs passés en paramètre au Networkcommunicator passé en paramètre.
+		/// </summary>
+		/// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
+		/// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
+		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
 		{
 			try
 			{
