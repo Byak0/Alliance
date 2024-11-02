@@ -55,7 +55,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			if (GameNetwork.IsServerOrRecorder)
 			{
 				// Make agent invulnerable
-				userAgent.SetMortalityState(MortalityState.Invulnerable);
+				//userAgent.SetMortalityState(MortalityState.Invulnerable);
 				// Teleport agent to exact position
 				userAgent.TeleportToPosition(GameEntity.GlobalPosition);
 

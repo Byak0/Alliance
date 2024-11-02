@@ -4,7 +4,7 @@
                id="gimli_d_axe"
                name="Gimli Double Axe"
                crafting_template="rohan_TwoHandedAxe"
-               culture="Culture.neutral_culture">
+               culture="Culture.rohan">
 		<Pieces>
 			<Piece id="gimli_d_axe_blade"
              Type="Blade"
@@ -20,7 +20,7 @@
 		id="gimli_throwing_axe"
 		name="Gimli Throwing Axe"
 		crafting_template="gimli_ThrowingAxe"
-		culture="Culture.battania">
+		culture="Culture.rohan">
 		<Pieces>
 			<Piece
 				id="gimli_throwing_axe_head"
@@ -38,8 +38,7 @@
 		id="gimli_onehanded_axe"
 		name="Gimli One handed axe"
 		crafting_template="RohanOneHandedAxe"
-		culture="Culture.vlandia"
-		modifier_group="axe">
+		culture="Culture.rohan">
 		<Pieces>
 			<Piece
 				id="gimli_one_handed_axe_head"

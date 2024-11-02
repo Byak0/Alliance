@@ -53,7 +53,7 @@ namespace Alliance.Server.GameModes.Story
 			Log(log, LogLevel.Information);
 
 			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
-			if (act.LoadMap || OptionType.Map.GetValueText() != act.MapID)
+			if (act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
 			{
 				GameModeStarter.Instance.StartMission(act.ActSettings);
 			}

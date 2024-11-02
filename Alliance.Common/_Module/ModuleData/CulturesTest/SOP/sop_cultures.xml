@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SPCultures>
+	<Culture 
+		id="autochtone" 
+		name="{=al_nat_autochtone}Autochtones" 
+		is_main_culture="true" 
+		default_face_key="000fa92e90004202aced5d976886573d5d679585a376fdd605877a7764b8987c00000000000007520000037f0000000f00000037049140010000000000000000"
+		color="FF006400"
+		color2="FFf8faf6"
+		elite_basic_troop="NPCCharacter.imperial_vigla_recruit"
+		basic_troop="NPCCharacter.imperial_recruit"
+		faction_banner_key="11.96.40.1836.1836.768.788.1.0.0.222.156.116.1291.1291.764.764.1.1.315.416.149.116.662.662.764.764.1.1.315" />
+	<Culture 
+		id="explorator" 
+		name="{=al_nat_explorator}Explorators" 
+		is_main_culture="true" 
+		default_face_key="000fa92e90004202aced5d976886573d5d679585a376fdd605877a7764b8987c00000000000007520000037f0000000f00000037049140010000000000000000"
+		color="FFCC8324"
+		color2="FF4E1A13"
+		elite_basic_troop="NPCCharacter.imperial_vigla_recruit"
+		basic_troop="NPCCharacter.imperial_recruit"
+		faction_banner_key="11.128.116.1836.1836.768.788.1.0.0.505.127.116.1925.1566.765.762.1.0.0.522.148.40.1969.1969.764.764.1.0.0.316.131.116.760.760.764.764.1.0.0.423.148.116.511.511.764.764.1.0.0.326.148.116.240.240.764.764.1.0.0" />
+</SPCultures>

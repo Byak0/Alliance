@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.MountAndBlade.Agent;
+
 
 namespace Alliance.Server.Core.Utils
 {
@@ -13,6 +15,13 @@ namespace Alliance.Server.Core.Utils
 			TakeDamage(victim, victim, damage, magnitude);
 		}
 
+		/// <summary>
+		/// Apply damage without weapon. eg : Warg Attack
+		/// </summary>
+		/// <param name="victim">Agent taking damage</param>
+		/// <param name="attacker">Agent giving damage</param>
+		/// /// <param name="damage">Amount of damage</param>
+		/// <returns></returns>
 		public static void TakeDamage(Agent victim, Agent attacker, int damage, float magnitude = 50f)
 		{
 			if (victim == null || attacker == null)
@@ -22,6 +31,16 @@ namespace Alliance.Server.Core.Utils
 			};
 
 			if (victim.Health <= 0) return;
+
+			// Retrieve peer from either agent or rider agent
+			MissionPeer peer = attacker?.MissionPeer != null ? attacker.MissionPeer : attacker.RiderAgent?.MissionPeer != null ? attacker.RiderAgent.MissionPeer : null;
+			if (peer != null)
+			{
+				//Communicate damage to client to display PersonalKillFeed
+				GameNetwork.BeginModuleEventAsServer(peer.GetNetworkPeer());
+				GameNetwork.WriteMessage(new SyncPersonalKillFeedNotification(attacker, victim, false, false, false, victim.Health <= damage, false, false, damage));
+				GameNetwork.EndModuleEventAsServer();
+			}
 
 			Blow blow = new Blow(attacker.Index);
 			blow.DamageType = DamageTypes.Pierce;
@@ -81,7 +100,7 @@ namespace Alliance.Server.Core.Utils
 		}
 
 		/// <summary>
-		/// Return the list of all agents alives that are near the target.
+		/// Return the list of all agents alive that are near the target.
 		/// IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED
 		/// </summary>
 		/// <param name="range"></param>

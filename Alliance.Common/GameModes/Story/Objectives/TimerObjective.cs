@@ -1,4 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Behaviors;
+﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using TaleWorlds.Core;
@@ -11,7 +11,7 @@ namespace Alliance.Common.GameModes.Story.Objectives
 		public float Duration;
 
 		private float _remainingTime;
-		private ObjectivesBehavior _objectivesBehavior;
+		private float _startTime = 0f;
 
 		public TimerObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin, int duration) :
 			base(side, name, desc, instantWin, requiredForWin)
@@ -24,32 +24,36 @@ namespace Alliance.Common.GameModes.Story.Objectives
 
 		public override void RegisterForUpdate()
 		{
-			_objectivesBehavior = Mission.Current?.GetMissionBehavior<ObjectivesBehavior>();
-			if (GameNetwork.IsServer) _objectivesBehavior?.StartTimerAsServer(Duration);
+			_startTime = Mission.Current.GetMissionTimeInSeconds();
 		}
 
 		public override void UnregisterForUpdate()
 		{
-			_objectivesBehavior = null;
+			_startTime = Mission.Current.GetMissionTimeInSeconds();
 		}
 
 		public override void Reset()
 		{
+			_startTime = Mission.Current.GetMissionTimeInSeconds();
 			Active = true;
-			_objectivesBehavior = Mission.Current?.GetMissionBehavior<ObjectivesBehavior>();
-			if (GameNetwork.IsServer) _objectivesBehavior?.StartTimerAsServer(Duration);
 		}
 
 		public override bool CheckObjective()
 		{
-			if (Mission.Current == null || _objectivesBehavior == null) return false;
-			_remainingTime = _objectivesBehavior.GetRemainingTime(false);
-			return _objectivesBehavior.HasTimerElapsed();
+			if (Mission.Current == null) return false;
+
+			_remainingTime = Duration + _startTime - Mission.Current.GetMissionTimeInSeconds();
+
+			if (_remainingTime <= 0)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		public override string GetProgressAsString()
 		{
-			if (_objectivesBehavior != null && _objectivesBehavior.IsTimerRunning)
+			if (Mission.Current != null)
 				return TimeSpan.FromSeconds(_remainingTime).ToString("mm':'ss");
 			else
 				return "";

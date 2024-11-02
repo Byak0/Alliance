@@ -37,13 +37,20 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 			string itemName = entity.GetTagValue(AllianceTags.InteractiveItemTag);
 			ItemObject itemObject = MBObjectManager.Instance.GetObject<ItemObject>(itemName);
 			MissionWeapon missionWeapon = new MissionWeapon(itemObject, null, agent.Team.Banner);
-			EquipmentIndex slot = EquipmentIndex.WeaponItemBeginSlot;
-			while (!agent.Equipment[slot].IsEmpty && slot < EquipmentIndex.Weapon3)
+			if (itemObject.IsBannerItem)
 			{
-				slot++;
+				agent.EquipWeaponToExtraSlotAndWield(ref missionWeapon);
 			}
-			agent.EquipWeaponWithNewEntity(slot, ref missionWeapon);
-			agent.TryToWieldWeaponInSlot(slot, Agent.WeaponWieldActionType.WithAnimation, true);
+			else
+			{
+				EquipmentIndex slot = EquipmentIndex.WeaponItemBeginSlot;
+				while (!agent.Equipment[slot].IsEmpty && slot < EquipmentIndex.Weapon3)
+				{
+					slot++;
+				}
+				agent.EquipWeaponWithNewEntity(slot, ref missionWeapon);
+				agent.TryToWieldWeaponInSlot(slot, Agent.WeaponWieldActionType.WithAnimation, true);
+			}
 
 			HideEntity(entity);
 

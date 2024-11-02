@@ -137,6 +137,12 @@
 			<Piece id="orc_rider_shortsword_pommel_1" Type="Pommel" scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_knife_1" name="Orc Rider Knife" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_knife_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_knife_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
 
 	<!-- Orc Rider Polearms -->
 	<CraftedItem multiplayer_item="true"
@@ -159,6 +165,26 @@
 		<Pieces>
 			<Piece id="orc_rider_spear_blade_1" Type="Blade" scale_factor="100" />
 			<Piece id="orc_rider_spear_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_gladius"
+				 name="Orc Rider Gladius"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_gladius_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_gladius_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_sickle"
+				 name="Orc Rider Sickle"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_sickle_blade_1" Type="Blade" scale_factor="110" />
+			<Piece id="orc_rider_sickle_grip_1" Type="Handle" scale_factor="120" />
 		</Pieces>
 	</CraftedItem>
 	
