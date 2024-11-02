@@ -18,7 +18,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool KillAll { get; set; }
 		public bool Kick { get; set; }
 		public bool Ban { get; set; }
-		public bool Mute { get; set; }
+		public bool ToggleMutePlayer { get; set; }
 		public bool Respawn { get; set; }
 		public bool SetAdmin { get; set; }
 		public bool ToggleInvulnerable { get; set; }
@@ -26,6 +26,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool TeleportPlayerToYou { get; set; }
 		public bool TeleportAllPlayerToYou { get; set; }
 		public bool SendWarningToPlayer { get; set; }
+		public string WarningMessageToPlayer{get; set;}
 
 		protected override void OnWrite()
 		{
@@ -37,7 +38,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(KillAll);
 			WriteBoolToPacket(Kick);
 			WriteBoolToPacket(Ban);
-			WriteBoolToPacket(Mute);
+			WriteBoolToPacket(ToggleMutePlayer);
 			WriteBoolToPacket(Respawn);
 			WriteBoolToPacket(SetAdmin);
 			WriteBoolToPacket(ToggleInvulnerable);
@@ -46,6 +47,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(TeleportAllPlayerToYou);
 			WriteBoolToPacket(SendWarningToPlayer);
 			WriteStringToPacket(PlayerSelected);
+			WriteStringToPacket(WarningMessageToPlayer);
 		}
 
 		protected override bool OnRead()
@@ -59,7 +61,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			KillAll = ReadBoolFromPacket(ref bufferReadValid);
 			Kick = ReadBoolFromPacket(ref bufferReadValid);
 			Ban = ReadBoolFromPacket(ref bufferReadValid);
-			Mute = ReadBoolFromPacket(ref bufferReadValid);
+			ToggleMutePlayer = ReadBoolFromPacket(ref bufferReadValid);
 			Respawn = ReadBoolFromPacket(ref bufferReadValid);
 			SetAdmin = ReadBoolFromPacket(ref bufferReadValid);
 			ToggleInvulnerable = ReadBoolFromPacket(ref bufferReadValid);
@@ -68,6 +70,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			TeleportAllPlayerToYou = ReadBoolFromPacket(ref bufferReadValid);
 			SendWarningToPlayer = ReadBoolFromPacket(ref bufferReadValid);
 			PlayerSelected = ReadStringFromPacket(ref bufferReadValid);
+			WarningMessageToPlayer = ReadStringFromPacket(ref bufferReadValid);
 
 			return bufferReadValid;
 		}

@@ -1,4 +1,6 @@
-﻿namespace Alliance.Common.GameModes.Story.Conditions
+﻿using TaleWorlds.Core;
+
+namespace Alliance.Common.GameModes.Story.Conditions
 {
 	/// <summary>
 	/// Base class for conditions.
@@ -6,6 +8,20 @@
 	/// </summary>
 	public abstract class Condition
 	{
+		public enum TargetType
+		{
+			All,
+			Bots,
+			Players,
+			Officers
+		}
+
+		public enum SideType
+		{
+			All = -1,
+			Defender = BattleSideEnum.Defender,
+			Attacker = BattleSideEnum.Attacker
+		}
 		public abstract bool Evaluate(ScenarioManager context);
 		public virtual void Register() { }
 		public virtual void Unregister() { }

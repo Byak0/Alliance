@@ -3,7 +3,7 @@ using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Server.Core.Utils;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.GameModes.Story.Conditions.AgentEnteredZoneCondition;
+using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
