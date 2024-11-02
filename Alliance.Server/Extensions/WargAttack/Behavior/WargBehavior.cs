@@ -14,7 +14,6 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.WargAttack.Behavior
 {
-
 	/// <summary>
 	/// Ties a WargComponent to wargs when they spawn.
 	/// </summary>
@@ -418,11 +417,14 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 			WorldPosition destination = _target.Position.ToWorldPosition();
 
+			// If close to target, go straight at it
 			if (distanceToTarget < 2)
 			{
+				// Add an offset to target "behind" the target (so that the warg charge and don't walk in slowly)
 				Vec3 offset = new(Agent.GetMovementDirection() * 10);
 				destination = (Agent.Position + offset).ToWorldPosition();
 			}
+			// If far from target, randomly make a detour
 			else if (distanceToTarget > 8)
 			{
 				Vec3 offset = new(_target.GetMovementDirection() * distanceToTarget);
@@ -435,6 +437,8 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 
 
+
+			// TODO remove below if above code is satisfying
 
 			// Set speed depending on distance to target
 			if (distanceToTarget > WargConstants.CHASE_RADIUS / 2 || MBRandom.RandomFloat < 0.25f) // 25% chance to charge, or if far from target

@@ -25,13 +25,13 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			if (warg.MovementVelocity.Y >= 4)
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackRunningAnimation, true);
-				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration;
+				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration - 0.2f;
 				startDelay = 0.2f;
 			}
 			else
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackAnimation, true);
-				attackDuration = WargConstants.AttackAnimation.MaxDuration;
+				attackDuration = WargConstants.AttackAnimation.MaxDuration - 0.1f;
 				startDelay = 0.1f;
 			}
 
