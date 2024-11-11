@@ -97,38 +97,36 @@ namespace Alliance.Common.Core.Configuration
 		/// <summary>
 		/// Retrieve a copy of current list of native options.
 		/// </summary>
-		public List<MultiplayerOption> GetNativeOptionsCopy()
+		public TWConfig GetNativeOptionsCopy()
 		{
-			List<MultiplayerOption> nativeOptions = new();
+			TWConfig nativeOptions = new TWConfig();
 			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
 			{
-				MultiplayerOption option = MultiplayerOption.CreateMultiplayerOption(optionType);
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
 				switch (optionProperty.OptionValueType)
 				{
 					case OptionValueType.Bool:
 						{
 							MultiplayerOptions.Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out bool flag);
-							option.UpdateValue(flag);
+							nativeOptions[optionType] = flag;
 							break;
 						}
 					case OptionValueType.Integer:
 					case OptionValueType.Enum:
 						{
 							MultiplayerOptions.Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out int num);
-							option.UpdateValue(num);
+							nativeOptions[optionType] = num;
 							break;
 						}
 					case OptionValueType.String:
 						{
 							MultiplayerOptions.Instance.GetOptionFromOptionType(optionType, MultiplayerOptionsAccessMode.CurrentMapOptions).GetValue(out string text);
-							option.UpdateValue(text);
+							nativeOptions[optionType] = text;
 							break;
 						}
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
-				nativeOptions.Add(option);
 			}
 			return nativeOptions;
 		}

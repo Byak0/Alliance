@@ -34,9 +34,7 @@ namespace Alliance.Client
 			// Register and initialize Key Binder
 			KeyBinder.Initialize();
 
-			// Init for Scenario
 			Client_ActionFactory.Initialize();
-			ScenarioPlayer.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
@@ -71,6 +69,7 @@ namespace Alliance.Client
 
 			ClassLimiterModel.Instance.Init();
 			SceneList.Initialize();
+			ScenarioPlayer.Initialize();
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)

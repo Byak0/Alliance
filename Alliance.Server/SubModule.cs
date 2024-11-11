@@ -46,7 +46,6 @@ namespace Alliance.Server
 			// Initialize player roles and access level
 			SecurityInitializer.Init();
 
-			// Init for Scenario
 			Server_ActionFactory.Initialize();
 			ScenarioManagerServer.Initialize();
 
@@ -90,6 +89,8 @@ namespace Alliance.Server
 		{
 			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
 			ExtendedXMLLoader.Init();
+
+			ScenarioManagerServer.Initialize();
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)

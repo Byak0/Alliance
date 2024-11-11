@@ -45,7 +45,7 @@ namespace Alliance.Common.GameModes
 		/// </summary>
 		public virtual void SetDefaultNativeOptions()
 		{
-			TWOptions = new TWConfig();
+			TWOptions = ConfigManager.Instance.GetNativeOptionsCopy();
 			TWOptions[OptionType.GameType] = GameMode;
 		}
 
