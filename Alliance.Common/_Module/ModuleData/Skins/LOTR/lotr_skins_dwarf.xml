@@ -1983,7 +1983,7 @@
 			morph_key="1"
 			uses_stitching="true"
 			body_mesh_suffix="_fem"
-			min_scale ="1.06"
+			min_scale ="0.82"
 			skeleton="human_skeleton"
 			body_meta_mesh="body_female_a"
 			body_meta_mesh_shoulders="body_female_a_sh"
