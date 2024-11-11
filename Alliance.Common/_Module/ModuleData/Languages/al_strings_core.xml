@@ -22,4 +22,7 @@
 	<string id="str_multiplayer_official_game_type_name.BattleX" text="{=str_alliance_game_type_name_battlex}Battle" />
 	<string id="str_multiplayer_official_game_type_explainer.BattleX" text="{=str_alliance_game_type_explainer_battlex}·   Buy one spawn using gold{newline}·   Hold control points on the map to deplete enemy morale{newline}·   Kill the entire enemy team or exhaust their morale to win" />
 	<string id="str_multiplayer_game_type.BattleX" text="{=str_alliance_game_type_battlex}Battle" />
+	<string id="str_multiplayer_official_game_type_name.DuelX" text="{=str_alliance_game_type_name_duelx}DuelX" />
+	<string id="str_multiplayer_official_game_type_explainer.DuelX" text="{=str_alliance_game_type_explainer_duelx}·   Choose your desired class from all available troop types{newline}·   Fight an opponent in single combat{newline}·   Defeat your opponent three times to win the duel and claim their bounty" />
+	<string id="str_multiplayer_game_type.DuelX" text="{=str_alliance_game_type_duelx}Duel" />
 </strings>

@@ -6,6 +6,7 @@ using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
 using Alliance.Client.GameModes.CvC;
+using Alliance.Client.GameModes.DuelX;
 using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
@@ -89,6 +90,7 @@ namespace Alliance.Client
 			Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
+			Module.CurrentModule.AddMultiplayerGameMode(new DuelGameMode("DuelX"));
 		}
 
 		/// <summary>

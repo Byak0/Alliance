@@ -8,6 +8,7 @@ using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
 using Alliance.Common.GameModes.CvC;
+using Alliance.Common.GameModes.Duel;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
@@ -52,6 +53,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new CaptainGameModeSettings()),
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new BattleGameModeSettings()),
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new SiegeGameModeSettings()),
+				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new DuelGameModeSettings()),
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new ScenarioGameModeSettings())
 			};
 

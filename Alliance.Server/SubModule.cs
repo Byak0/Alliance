@@ -47,7 +47,6 @@ namespace Alliance.Server
 			SecurityInitializer.Init();
 
 			Server_ActionFactory.Initialize();
-			ScenarioManagerServer.Initialize();
 
 			// Initialize mod configuration
 			ConfigInitializer.Init();
@@ -115,6 +114,7 @@ namespace Alliance.Server
 			Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
+			Module.CurrentModule.AddMultiplayerGameMode(new DuelGameMode("DuelX"));
 		}
 
 		private void AddCommonBehaviors(Mission mission)

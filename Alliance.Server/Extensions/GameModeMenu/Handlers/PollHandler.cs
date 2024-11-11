@@ -8,6 +8,7 @@ using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
 using Alliance.Common.GameModes.CvC;
+using Alliance.Common.GameModes.Duel;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
@@ -76,6 +77,7 @@ namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 				case "CaptainX": gameModeSettings = new CaptainGameModeSettings(); break;
 				case "BattleX": gameModeSettings = new BattleGameModeSettings(); break;
 				case "SiegeX": gameModeSettings = new SiegeGameModeSettings(); break;
+				case "DuelX": gameModeSettings = new DuelGameModeSettings(); break;
 				case "Scenario": gameModeSettings = new ScenarioGameModeSettings(); break;
 				case "PvC": gameModeSettings = new PvCGameModeSettings(); break;
 				case "CvC": gameModeSettings = new CvCGameModeSettings(); break;
