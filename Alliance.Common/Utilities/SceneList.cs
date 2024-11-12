@@ -18,7 +18,7 @@ namespace Alliance.Common.Utilities
 	public static class SceneList
 	{
 		// These maps are causing unidentified crash and should not be used
-		public static List<string> InvalidMaps = new List<string>() { "mp_skirmish_map_004", "mp_compact", "benchmark_battle_11", "mp_duel_mode_map_004_night" };
+		public static List<string> InvalidMaps = new List<string>() { "mp_skirmish_map_004", "mp_compact", "benchmark_battle_11", "mp_duel_mode_map_004_night", "mp_duel_mode_map_004_w" };
 
 		public static List<SceneInfo> Scenes => _scenes;
 
