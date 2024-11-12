@@ -68,8 +68,22 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 					if (target.IsFadingOut())
 						return;
 
-					var damagerAgent = damager != null ? damager : target;
-					int damage = target.Monster.StringId == "warg" ? 25 : 50; // Wargs do less damage to each other
+					// Avoid friendly fire
+					if (target.Monster.StringId == "warg" && MBRandom.RandomFloat < 0.9f)
+						return;
+
+					int damage = 50;
+
+					// Check if damager is dead
+					Agent damagerAgent = damager;
+					if (damagerAgent == null || damagerAgent.Health <= 0)
+					{
+						// If damager is dead, use target as damager and reduce damage
+						damagerAgent = target;
+						damage = 20;
+					}
+
+					if (target.IsMount) damage *= 2; // todo use IsHorse here
 
 					// If target is AI controlled, chance of reverse damage to simulate target defending
 					if (target.IsAIControlled && target.IsHuman && MBRandom.RandomFloat < 0.5f)
