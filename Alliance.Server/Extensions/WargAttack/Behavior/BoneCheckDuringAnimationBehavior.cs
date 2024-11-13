@@ -47,7 +47,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			this.startDelay = startDelay;
 			this.duration = duration;
 			isChecking = true;
-			OnBoneFoundCallback = onBoneFoundCallback; // register callback
+			OnBoneFoundCallback = onBoneFoundCallback;
 			OnBoneFoundParryCallback = onBoneFoundParryCallback;
 		}
 
