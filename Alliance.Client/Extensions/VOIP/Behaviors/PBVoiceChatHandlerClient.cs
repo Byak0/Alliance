@@ -88,6 +88,40 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 		}
 
 		/// <summary>
+		/// Client side - Handle players voice records sent by server.
+		/// </summary>
+		public void HandleServerEventSendVoiceToPlay(GameNetworkMessage baseMessage)
+		{
+			SendVoiceToPlay sendVoiceToPlay = (SendVoiceToPlay)baseMessage;
+
+			if (_isVoiceChatDisabled)
+			{
+				return;
+			}
+
+			MissionPeer component = sendVoiceToPlay.Peer.GetComponent<MissionPeer>();
+			if (component == null || sendVoiceToPlay.BufferLength <= 0 || component.IsMutedFromGameOrPlatform)
+			{
+				return;
+			}
+
+			for (int i = 0; i < _playerVoiceList.Count; i++)
+			{
+				if (_playerVoiceList[i].Peer == component)
+				{
+					// Decode the compressed voice data
+					OpusDecoder decoder = _playerVoiceList[i].GetDecoder();
+					short[] outputBuffer = new short[OPUS_FRAME_SIZE];
+					decoder.Decode(sendVoiceToPlay.Buffer, 0, sendVoiceToPlay.BufferLength, outputBuffer, 0, OPUS_FRAME_SIZE, false);
+
+					// Write the decoded voice data to the player's voice data buffer
+					_playerVoiceList[i].WriteVoiceData(outputBuffer);
+					break;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Client side - Handle bot voice records sent by server.
 		/// </summary>
 		public void HandleServerEventSendBotVoiceToPlay(GameNetworkMessage message)
@@ -107,42 +141,27 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 			{
 				if (_playerVoiceList[i].Agent == sendVoiceToPlay.Agent)
 				{
-					byte[] voiceBuffer = new byte[COMPRESSION_MAX_CHUNK_SIZE_IN_BYTES];
-
-					int voiceData = _playerVoiceList[i].GetVoiceData();
-
+					// Decode the compressed voice data
 					OpusDecoder decoder = _playerVoiceList[i].GetDecoder();
-
-
 					short[] outputBuffer = new short[OPUS_FRAME_SIZE];
-					int frameSizeDecoded = decoder.Decode(sendVoiceToPlay.Buffer, 0, sendVoiceToPlay.BufferLength, outputBuffer, 0, OPUS_FRAME_SIZE, false);
+					decoder.Decode(sendVoiceToPlay.Buffer, 0, sendVoiceToPlay.BufferLength, outputBuffer, 0, OPUS_FRAME_SIZE, false);
 
-
+					// Write the decoded voice data to the player's voice data buffer
 					_playerVoiceList[i].WriteVoiceData(outputBuffer);
 					break;
 				}
-			}
-
-			SendBotVoiceToPlay sendBotVoiceToPlay = (SendBotVoiceToPlay)message;
-			if (_isVoiceChatDisabled)
-			{
-				return;
 			}
 		}
 
 		public override void OnBehaviorInitialize()
 		{
 			base.OnBehaviorInitialize();
-			if (!GameNetwork.IsDedicatedServer)
-			{
-			}
 
 			if (GameNetwork.IsClient)
 			{
 				_playerVoiceList = new List<PlayerVoiceData>();
 				_voiceToSend = new Queue<byte>();
 
-				int deviceNumber = 0;
 				_voipInVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceOverVolume);
 				_voipOutVolume = NativeOptions.GetConfig(NativeOptions.NativeOptionsType.VoiceChatVolume);
 
@@ -167,9 +186,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				_audioMixer = new MixingSampleProvider(waveFormat);
 				_waveOut.Init(_audioMixer);
 				_audioMixer.ReadFully = true;
-				//_waveOut.Play();
-
-				//StartAudioProcessing();
 
 				// Compress audio data using Concentus
 				_encoder = OpusEncoder.Create(SAMPLE_RATE, 1, OpusApplication.OPUS_APPLICATION_AUDIO);
@@ -200,11 +216,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 					byte[] byteBuffer = new byte[bytesRead * 2]; // Assuming float to 16-bit conversion
 					Buffer.BlockCopy(mixedSamples, 0, byteBuffer, 0, bytesRead * 2);
 					// Check to prevent buffer overflow
-					if (_waveProvider.BufferedBytes + byteBuffer.Length <= _waveProvider.BufferLength)
-					{
-						//_waveProvider.AddSamples(byteBuffer, 0, byteBuffer.Length);
-					}
-					else
+					if (_waveProvider.BufferedBytes + byteBuffer.Length > _waveProvider.BufferLength)
 					{
 						_waveProvider.ClearBuffer();
 					}
@@ -243,21 +255,10 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 			// Convert raw bytes to 16-bit samples
 			Buffer.BlockCopy(e.Buffer, 0, samples, 0, e.BytesRecorded);
 
-			//EnqueueVoiceData(e.Buffer, e.BytesRecorded);
-
 
 			ProcessVoiceFiltering(samples, out byte[] buffer, out int bufferLength);
 
 			EnqueueVoiceData(buffer, bufferLength);
-
-			//PlayAudio(samples);
-
-			//PBChatHelper.PrintToClientChat("Recorded bytes: " + e.BytesRecorded);
-
-			// Print the first 10 samples
-			//PBChatHelper.PrintToClientChat("First 10 samples: " + string.Join(", ", samples.Take(10)));
-			//PlayAudio(samples);
-			//await Task.Run(() => PlayAudio(samples));
 		}
 
 		public override void AfterStart()
@@ -350,6 +351,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				}
 			}
 
+			// Leaving this commented out for now, we can apply this later if we want
 			// Apply the muffler to the agent if he has a full face mask (wonky atm, mostly works)
 			//if (Mission.MainAgent != null && Mission.MainAgent.SpawnEquipment.EarsAreHidden)
 			//{
@@ -362,67 +364,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 
 			processedBuffer = byteArray;
 			processedBufferLength = byteArray.Length;
-		}
-
-		/*
-         * Handles playing audio
-         */
-		private void PlayAudio(short[] samples)
-		{
-			// Stop the playback if it's already running for better sound
-			if (_waveOut.PlaybackState == PlaybackState.Playing)
-			{
-				_waveOut.Stop();
-			}
-
-			short[] combinedBuffer = new short[samples.Length];
-			samples.CopyTo(combinedBuffer, 0);
-
-
-			// Loudness protection
-			float loudnessThreshold = 16000f; // Adjust the threshold as needed
-			float maxAmplitude = combinedBuffer.Max(x => Math.Abs(Math.Max((short)0, x)));
-
-			if (maxAmplitude > loudnessThreshold)
-			{
-				// Reduce the volume to avoid excessively loud sounds
-				float attenuationFactor = loudnessThreshold / maxAmplitude;
-
-				for (int i = 0; i < combinedBuffer.Length; i++)
-				{
-					combinedBuffer[i] = (short)(combinedBuffer[i] * attenuationFactor);
-				}
-			}
-
-			// Apply the muffler to the agent if he has a full face mask (wonky atm, mostly works)
-			//if (Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.All || Mission.MainAgent.SpawnEquipment.BeardCoverType == ArmorComponent.BeardCoverTypes.Type4)
-			//{
-			//    _muffleFilter.ApplyMuffle(combinedBuffer, 1.0f, 2.0f);
-			//}
-
-			//PBChatHelper.PrintToClientChat($"Max amplitude: {maxAmplitude}");
-
-			// Convert short array to byte array
-			byte[] byteArray = new byte[combinedBuffer.Length * 2];
-			Buffer.BlockCopy(combinedBuffer, 0, byteArray, 0, byteArray.Length);
-
-			// Check if the buffer has space before adding samples
-			if (_waveProvider.BufferLength - _waveProvider.BufferedBytes >= byteArray.Length)
-			{
-				// Add samples to the wave provider
-				_waveProvider.AddSamples(byteArray, 0, byteArray.Length);
-			}
-			else
-			{
-				_waveProvider.ClearBuffer();
-			}
-
-			if (_waveOut.PlaybackState != PlaybackState.Playing)
-			{
-				_waveOut.Play();
-			}
-
-			//CompressAndSendVoice(samples);
 		}
 
 		public List<SelectionData> GetAudioOutDevices()
@@ -454,43 +395,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 
 			return soundDevices;
 		}
-
-		public void HandleServerEventSendVoiceToPlay(GameNetworkMessage baseMessage)
-		{
-			SendVoiceToPlay sendVoiceToPlay = (SendVoiceToPlay)baseMessage;
-
-			if (_isVoiceChatDisabled)
-			{
-				return;
-			}
-
-			MissionPeer component = sendVoiceToPlay.Peer.GetComponent<MissionPeer>();
-			if (component == null || sendVoiceToPlay.BufferLength <= 0 || component.IsMutedFromGameOrPlatform)
-			{
-				return;
-			}
-
-			for (int i = 0; i < _playerVoiceList.Count; i++)
-			{
-				if (_playerVoiceList[i].Peer == component)
-				{
-					byte[] voiceBuffer = new byte[COMPRESSION_MAX_CHUNK_SIZE_IN_BYTES];
-
-					int voiceData = _playerVoiceList[i].GetVoiceData();
-
-					OpusDecoder decoder = _playerVoiceList[i].GetDecoder();
-
-
-					short[] outputBuffer = new short[OPUS_FRAME_SIZE];
-					int frameSizeDecoded = decoder.Decode(sendVoiceToPlay.Buffer, 0, sendVoiceToPlay.BufferLength, outputBuffer, 0, OPUS_FRAME_SIZE, false);
-
-
-					_playerVoiceList[i].WriteVoiceData(outputBuffer);
-					break;
-				}
-			}
-		}
-
 
 		/*
          * Constantly check for nearby agents to add to voice chat
@@ -554,11 +458,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				if (voiceToPlayForTick.Count > 0)
 				{
 					biggestVoiceToPlay = voiceToPlayForTick.Count() > biggestVoiceToPlay ? voiceToPlayForTick.Count() : biggestVoiceToPlay;
-
-					if (_waveOut.PlaybackState != PlaybackState.Playing)
-					{
-						//_waveOut.Play();
-					}
 
 					int count = voiceToPlayForTick.Count;
 
@@ -654,16 +553,12 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 					_isVoiceRecordActive = value;
 					if (_isVoiceRecordActive)
 					{
-						/*SoundManager.StartVoiceRecording();*/
-
 						OnVoiceRecordStarted?.Invoke();
 
 						_waveIn.StartRecording();
 					}
 					else
 					{
-						/*SoundManager.StopVoiceRecording();*/
-
 						OnVoiceRecordStopped?.Invoke();
 
 						_waveIn.StopRecording();
@@ -801,18 +696,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 			return -1;
 		}
 
-		public override void OnPlayerDisconnectedFromServer(NetworkCommunicator networkPeer)
-		{
-			base.OnPlayerDisconnectedFromServer(networkPeer);
-			MissionPeer missionPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-			MissionPeer component = networkPeer.GetComponent<MissionPeer>();
-			if (component?.Team == null || missionPeer?.Team == null)
-			{
-				return;
-			}
-		}
-
-
 		private static float CalculateVolume(Vec3 speakerPosition, Vec3 listenerPosition, float distanceCutoff, float maxVolume)
 		{
 			float distance = speakerPosition.Distance(listenerPosition);
@@ -866,19 +749,13 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				_nextPlayDelayResetTime = MissionTime.Now;
 				_decoder = OpusDecoder.Create(SAMPLE_RATE, 1);
 
-				//waveOut = new WaveOutEvent();
-
 				// Initialize NAudio components
 				waveProvider = new BufferedWaveProvider(new WaveFormat(SAMPLE_RATE, 16, 1));
 				waveProvider.BufferLength = VOICE_RECORD_MAX_CHUNK_SIZE_IN_BYTES;
-				//waveOut.Init(waveProvider);
 
 				volumeProvider = new VolumeSampleProvider(waveProvider.ToSampleProvider());
 				panProvider = new PanningSampleProvider(volumeProvider);
 				volumeProvider.Volume = 1;
-
-
-				//waveOut.Init(panProvider);
 
 				AddVoiceToMixer(mixer);
 			}
@@ -998,11 +875,8 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				}
 
 				Vec3 listenerPosition = GameNetwork.MyPeer.ControlledAgent != null ? GameNetwork.MyPeer.ControlledAgent.Position : Mission.Current.GetCameraFrame().origin;
-				//Mat3 listenerRotation = GameNetwork.MyPeer.ControlledAgent.LookRotation;
 
-				//float pan = CalculatePan(speakerPosition, listenerPosition, listenerRotation);
-
-				// prevent buffer overflow
+				// Prevent buffer overflow
 				if (waveProvider.BufferedBytes + byteArray.Length > waveProvider.BufferLength)
 				{
 					waveProvider.ClearBuffer();
@@ -1013,9 +887,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				// Apply panning to the left and right channels
 				float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f, pbVolume);
 
-				//PBChatHelper.PrintToClientChat(clampedVolume.ToString());
-				//_playerVoiceDataList[k].panProvider.Pan = pan;
-
 				panProvider.Pan = 0.0f;
 				volumeProvider.Volume = clampedVolume;
 
@@ -1023,7 +894,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				{
 					waveProvider.AddSamples(byteArray, 0, byteArray.Length);
 				}
-				//this.waveOut.Play();
 			}
 
 			public void AddVoiceToMixer(MixingSampleProvider audioMixer)
@@ -1043,7 +913,6 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 
 		private class MuffleFilter
 		{
-
 			private const float LowPassCutoffFrequency = 2000; // Adjust the cutoff frequency as needed
 			private readonly BiQuadFilter lowPassFilter;
 
