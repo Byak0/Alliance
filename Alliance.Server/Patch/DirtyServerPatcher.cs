@@ -1,6 +1,4 @@
-﻿using Alliance.Server.Patch.Behaviors;
-using Alliance.Server.Patch.HarmonyPatch;
-using TaleWorlds.MountAndBlade;
+﻿using Alliance.Server.Patch.HarmonyPatch;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Patch
@@ -34,11 +32,6 @@ namespace Alliance.Server.Patch
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;
-		}
-
-		public static void AddFixBehaviors(Mission mission)
-		{
-			mission.AddMissionBehavior(new NotAllPlayersJoinFixBehavior());
 		}
 	}
 }

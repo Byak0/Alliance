@@ -1,14 +1,11 @@
-using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Behaviors;
-using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
-using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.PvC
 {
@@ -24,37 +21,22 @@ namespace Alliance.Server.GameModes.PvC
 
 		private List<MissionBehavior> GetMissionBehaviors()
 		{
-			List<MissionBehavior> behaviors = new List<MissionBehavior>
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultServerBehaviors.GetDefaultBehaviors(new CaptainScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
 			{
-					new AllianceLobbyComponent(),
-					new FormationBehavior(),
-					new PvCGameModeBehavior(MultiplayerGameType.Captain),
-					new MultiplayerRoundController(),
-					new PvCGameModeClientBehavior(),
-					new MultiplayerTimerComponent(),
-					new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
-					new MissionLobbyEquipmentNetworkComponent(),
-					new MultiplayerTeamSelectComponent(),
-					new MissionHardBorderPlacer(),
-					new MissionBoundaryPlacer(),
-					new AgentVictoryLogic(),
-					new AgentHumanAILogic(),
-					new MissionAgentPanicHandler(),
-					new MissionBoundaryCrossingHandler(),
-					new MultiplayerPollComponent(),
-					new MultiplayerAdminComponent(),
-					new MultiplayerGameNotificationsComponent(),
-					new MissionOptionsComponent(),
-					new MissionScoreboardComponent(new CaptainScoreboardData()),
-					new EquipmentControllerLeaveLogic(),
-					new MultiplayerPreloadHelper()
-			};
+				// Custom behaviors
+				new FormationBehavior(),
+				new PvCGameModeBehavior(MultiplayerGameType.Captain),
+				new PvCGameModeClientBehavior(),
+				new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
 
-			if (Config.Instance.ActivateSAE)
-			{
-				behaviors.Add(new SaeBehavior());
-			}
-
+				// Native captain behaviors
+				new MultiplayerRoundController(),
+				new MultiplayerTeamSelectComponent(),
+				new MissionAgentPanicHandler(),
+				new AgentVictoryLogic()
+			});
 			return behaviors;
 		}
 	}

@@ -1,16 +1,13 @@
-using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
-using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.Story.Behaviors;
-using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.Story
 {
@@ -26,43 +23,23 @@ namespace Alliance.Server.GameModes.Story
 
 		private List<MissionBehavior> GetMissionBehaviors()
 		{
-			List<MissionBehavior> behaviors = new List<MissionBehavior>()
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultServerBehaviors.GetDefaultBehaviors(new PvCScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
 			{
-					new AllianceLobbyComponent(),
+				// Custom behaviors
+				new ScenarioBehavior(),
+				new ScenarioClientBehavior(),
+				new ScenarioRespawnBehavior(),
+				new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),
+				new FormationBehavior(),
+				new ObjectivesBehavior(ScenarioManagerServer.Instance),
+				new FlagTrackerBehavior(),
+				new CapturableZoneBehavior(),
 
-					// Custom components
-					new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),
-					new ScenarioBehavior(),
-					new ScenarioClientBehavior(),
-					new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with custom objectives ui
-					new ScenarioRespawnBehavior(),
-					//new PollBehavior(),
-					new FormationBehavior(),
-					new ObjectivesBehavior(ScenarioManagerServer.Instance),
-					new FlagTrackerBehavior(),
-					new CapturableZoneBehavior(),
-
-					// Native components
-					new MultiplayerTeamSelectComponent(),
-					new MultiplayerTimerComponent(),
-					new AgentHumanAILogic(),
-					new MissionLobbyEquipmentNetworkComponent(),
-					new MissionHardBorderPlacer(),
-					new MissionBoundaryPlacer(),
-					new MissionBoundaryCrossingHandler(),
-					new MultiplayerPollComponent(),
-					new MultiplayerAdminComponent(),
-					new MultiplayerGameNotificationsComponent(),
-					new MissionOptionsComponent(),
-					new EquipmentControllerLeaveLogic(),
-					new MultiplayerPreloadHelper()
-			};
-
-			if (Config.Instance.ActivateSAE)
-			{
-				behaviors.Add(new SaeBehavior());
-			}
-
+				// Native behaviors
+				new MultiplayerTeamSelectComponent()
+			});
 			return behaviors;
 		}
 	}

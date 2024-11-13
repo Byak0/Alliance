@@ -1,8 +1,8 @@
-﻿using Alliance.Server.Patch.Behaviors;
+﻿using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.BattleX
 {
@@ -13,32 +13,22 @@ namespace Alliance.Server.GameModes.BattleX
 		[MissionMethod]
 		public override void StartMultiplayerGame(string scene)
 		{
-			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), delegate (Mission missionController)
-			{
-				return new MissionBehavior[]
-				{
-					new AllianceLobbyComponent(),
+			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-					//MissionLobbyComponent.CreateBehavior(),
-					new MissionMultiplayerDuel(),
-					new MissionMultiplayerGameModeDuelClient(),
-					new MultiplayerTimerComponent(),
-					new SpawnComponent(new DuelSpawnFrameBehavior(), new DuelSpawningBehavior()),
-					new MissionLobbyEquipmentNetworkComponent(),
-					new MissionHardBorderPlacer(),
-					new MissionBoundaryPlacer(),
-					new MissionBoundaryCrossingHandler(),
-					new MultiplayerPollComponent(),
-					new MultiplayerAdminComponent(),
-					new MultiplayerGameNotificationsComponent(),
-					new MissionOptionsComponent(),
-					new MissionScoreboardComponent(new DuelScoreboardData()),
-					new MissionAgentPanicHandler(),
-					new AgentHumanAILogic(),
-					new EquipmentControllerLeaveLogic(),
-					new MultiplayerPreloadHelper()
-				};
-			}, true, true);
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultServerBehaviors.GetDefaultBehaviors(new DuelScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Native duel behaviors
+				new MissionMultiplayerDuel(),
+				new MissionMultiplayerGameModeDuelClient(),
+				new SpawnComponent(new DuelSpawnFrameBehavior(), new DuelSpawningBehavior()),
+				new MissionAgentPanicHandler()
+			});
+			return behaviors;
 		}
 	}
 }

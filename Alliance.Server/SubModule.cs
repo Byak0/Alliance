@@ -1,24 +1,11 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
-using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
-using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
-using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security;
-using Alliance.Server.Core.Security.Behaviors;
-using Alliance.Server.Extensions.AdminMenu.Behaviors;
-using Alliance.Server.Extensions.AIBehavior.Behaviors;
-using Alliance.Server.Extensions.Animals.Behaviors;
-using Alliance.Server.Extensions.ClassLimiter.Behaviors;
-using Alliance.Server.Extensions.DieUnderWater.Behaviors;
-using Alliance.Server.Extensions.FakeArmy.Behaviors;
-using Alliance.Server.Extensions.TroopSpawner.Behaviors;
-using Alliance.Server.Extensions.WargAttack.Behavior;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
@@ -66,11 +53,6 @@ namespace Alliance.Server
 			SceneList.Initialize();
 			ClassLimiterModel.Instance.Init();
 
-			AddCommonBehaviors(mission);
-
-			// Apply additional native fixes through MissionBehaviors
-			DirtyServerPatcher.AddFixBehaviors(mission);
-
 			Log("Alliance behaviors initialized.", LogLevel.Debug);
 		}
 
@@ -115,24 +97,6 @@ namespace Alliance.Server
 			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new DuelGameMode("DuelX"));
-		}
-
-		private void AddCommonBehaviors(Mission mission)
-		{
-			mission.AddMissionBehavior(new SyncRolesBehavior());
-			mission.AddMissionBehavior(new SyncConfigBehavior());
-			mission.AddMissionBehavior(new ServerAutoHandler());
-			mission.AddMissionBehavior(new UsableEntityBehavior());
-			mission.AddMissionBehavior(new TroopSpawnerBehavior());
-			mission.AddMissionBehavior(new ClassLimiterBehavior());
-			mission.AddMissionBehavior(new BattlePowerCalculationLogic());
-			mission.AddMissionBehavior(new ALGlobalAIBehavior());
-			mission.AddMissionBehavior(new DieUnderWaterBehavior());
-			mission.AddMissionBehavior(new FakeArmyBehavior());
-			mission.AddMissionBehavior(new RespawnBehavior());
-			mission.AddMissionBehavior(new WargBehavior());
-			mission.AddMissionBehavior(new AnimalBehavior());
-			mission.AddMissionBehavior(new ConditionsBehavior());
 		}
 	}
 }

@@ -1,61 +1,43 @@
-using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.CvC.Behaviors;
-using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.PvC.Behaviors;
-using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Server.GameModes.CvC
 {
-    public class CvCGameMode : MissionBasedMultiplayerGameMode
-    {
-        public CvCGameMode(string name) : base(name) { }
+	public class CvCGameMode : MissionBasedMultiplayerGameMode
+	{
+		public CvCGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
-        }
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
+		}
 
-        private List<MissionBehavior> GetMissionBehaviors()
-        {
-            List<MissionBehavior> behaviors = new List<MissionBehavior>
-            {
-                    new AllianceLobbyComponent(),
-                    new FormationBehavior(),
-                    new PvCGameModeBehavior(MultiplayerGameType.Captain),
-                    new MultiplayerRoundController(),
-                    new CvCGameModeClientBehavior(),
-                    new MultiplayerTimerComponent(),
-                    new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MultiplayerTeamSelectComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new AgentVictoryLogic(),
-                    new AgentHumanAILogic(),
-                    new MissionAgentPanicHandler(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerAdminComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent(),
-                    new MissionScoreboardComponent(new CaptainScoreboardData()),
-                    new EquipmentControllerLeaveLogic(),
-                    new MultiplayerPreloadHelper()
-            };
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultServerBehaviors.GetDefaultBehaviors(new CaptainScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new FormationBehavior(),
+				new PvCGameModeBehavior(MultiplayerGameType.Captain),
+				new CvCGameModeClientBehavior(),
+				new SpawnComponent(new PvCSpawnFrameBehavior(), new PvCSpawningBehavior()),
 
-            if (Config.Instance.ActivateSAE)
-            {
-                behaviors.Add(new SaeBehavior());
-            }
-
-            return behaviors;
-        }
-    }
+				// Native captain behaviors
+				new MultiplayerRoundController(),
+				new MultiplayerTeamSelectComponent(),
+				new AgentVictoryLogic(),
+				new MissionAgentPanicHandler()
+			});
+			return behaviors;
+		}
+	}
 }
