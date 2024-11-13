@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
@@ -12,26 +13,17 @@ namespace Alliance.Client.GameModes.Lobby
 		[ViewMethod("Lobby")]
 		public static MissionView[] OpenLobbyMission(Mission mission)
 		{
-			List<MissionView> missionViews = new List<MissionView>
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "Lobby");
+			views.AppendList(new List<MissionView>
 			{
-				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
-				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
-				MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
+				// Native views
 				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
-				MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
 				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
-				ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-				ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-				MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("Lobby"),
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-				MultiplayerViewCreator.CreatePollProgressUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-				ViewCreator.CreateOptionsUIHandler(),
-				ViewCreator.CreateMissionMainAgentEquipDropView(mission),
-				ViewCreator.CreateMissionBoundaryCrossingView(),
-				new MissionBoundaryWallView()
-			};
-			return missionViews.ToArray();
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
+			});
+			return views.ToArray();
 		}
 	}
 }

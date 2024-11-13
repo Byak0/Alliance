@@ -1,10 +1,10 @@
-using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.CvC.Behaviors;
+using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.CvC
 {
@@ -15,40 +15,24 @@ namespace Alliance.Client.GameModes.CvC
 		[MissionMethod]
 		public override void StartMultiplayerGame(string scene)
 		{
-			MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
+			MissionState.OpenNew("CvC", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
 		}
 
-		private MissionBehavior[] GetMissionBehaviors()
+		private List<MissionBehavior> GetMissionBehaviors()
 		{
-			MissionBehavior[] behaviors = new MissionBehavior[]
-				{
-					MissionLobbyComponent.CreateBehavior(),
-					new FormationBehavior(),
-					new AllianceAgentVisualSpawnComponent(),
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultClientBehaviors.GetDefaultBehaviors(new CaptainScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new FormationBehavior(),
+				new CvCGameModeClientBehavior(),
 
-					new MultiplayerAchievementComponent(),
-					new MultiplayerWarmupComponent(),
-					new CvCGameModeClientBehavior(),
-					new MultiplayerRoundComponent(),
-					new MultiplayerTimerComponent(),
-					new MultiplayerMissionAgentVisualSpawnComponent(),
-					new ConsoleMatchStartEndHandler(),
-					new MissionLobbyEquipmentNetworkComponent(),
-					new MultiplayerTeamSelectComponent(),
-					new MissionHardBorderPlacer(),
-					new MissionBoundaryPlacer(),
-					new MissionBoundaryCrossingHandler(),
-					new MultiplayerPollComponent(),
-					new MultiplayerAdminComponent(),
-					new MultiplayerGameNotificationsComponent(),
-					new MissionOptionsComponent(),
-					new MissionScoreboardComponent(new CaptainScoreboardData()),
-					MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
-					new EquipmentControllerLeaveLogic(),
-					new MissionRecentPlayersComponent(),
-					new MultiplayerPreloadHelper()
-				};
-
+				// Native captain behavior
+				new MultiplayerWarmupComponent(),
+				new MultiplayerRoundComponent(),
+				new MultiplayerTeamSelectComponent(),
+			});
 			return behaviors;
 		}
 	}

@@ -1,8 +1,8 @@
-﻿using Alliance.Client.Patch.Behaviors;
+﻿using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
-using TaleWorlds.MountAndBlade.Source.Missions;
 
 namespace Alliance.Client.GameModes.DuelX
 {
@@ -13,34 +13,19 @@ namespace Alliance.Client.GameModes.DuelX
 		[MissionMethod]
 		public override void StartMultiplayerGame(string scene)
 		{
-			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), delegate (Mission missionController)
-			{
-				return new MissionBehavior[]
-				{
-					MissionLobbyComponent.CreateBehavior(),
-					new AllianceAgentVisualSpawnComponent(),
+			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-					MissionLobbyComponent.CreateBehavior(),
-					new MissionMultiplayerGameModeDuelClient(),
-					new MultiplayerAchievementComponent(),
-					new MultiplayerTimerComponent(),
-					new MultiplayerMissionAgentVisualSpawnComponent(),
-					new ConsoleMatchStartEndHandler(),
-					new MissionLobbyEquipmentNetworkComponent(),
-					new MissionHardBorderPlacer(),
-					new MissionBoundaryPlacer(),
-					new MissionBoundaryCrossingHandler(),
-					new MultiplayerPollComponent(),
-					new MultiplayerAdminComponent(),
-					new MultiplayerGameNotificationsComponent(),
-					new MissionOptionsComponent(),
-					new MissionScoreboardComponent(new DuelScoreboardData()),
-					MissionMatchHistoryComponent.CreateIfConditionsAreMet(),
-					new EquipmentControllerLeaveLogic(),
-					new MissionRecentPlayersComponent(),
-					new MultiplayerPreloadHelper()
-				};
-			}, true, true);
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultClientBehaviors.GetDefaultBehaviors(new DuelScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Native duel behavior
+				new MissionMultiplayerGameModeDuelClient()
+			});
+			return behaviors;
 		}
 	}
 }
