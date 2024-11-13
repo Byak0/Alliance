@@ -4,28 +4,29 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.SAE.Handlers
 {
-    public class SaeServerHandler : IHandlerRegister
-    {
-        public SaeCreateMarkerHandler saeCreateHandler = new SaeCreateMarkerHandler();
-        SaeDeleteMarkerHandler saeDeleteHandler = new SaeDeleteMarkerHandler();
-        SaeGetMarkersHandler saeGetMarkersHandler = new SaeGetMarkersHandler();
-        SaeDebugHandler saeDebugHandler = new SaeDebugHandler();
-        SaeHandler saeHandler = new SaeHandler();
+	public class SaeServerHandler : IHandlerRegister
+	{
+		private SaeCreateMarkerHandler _saeCreateHandler;
+		private SaeDeleteMarkerHandler _saeDeleteHandler;
+		private SaeGetMarkersHandler _saeGetMarkersHandler;
+		private SaeDebugHandler _saeDebugHandler;
+		private SaeHandler _saeHandler;
 
-        public SaeServerHandler()
-        {
+		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
+		{
+			_saeCreateHandler ??= new SaeCreateMarkerHandler();
+			_saeDeleteHandler ??= new SaeDeleteMarkerHandler();
+			_saeGetMarkersHandler ??= new SaeGetMarkersHandler();
+			_saeDebugHandler ??= new SaeDebugHandler();
+			_saeHandler ??= new SaeHandler();
 
-        }
-
-        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
-        {
-            reg.Register<SaeCreateMarkerNetworkClientMessage>(saeCreateHandler.OnSaeCreateMarkerMessageReceived);
-            reg.Register<SaeCrouchNetworkClientMessage>(saeCreateHandler.OnCrouchMessageReceived);
-            reg.Register<SaeDeleteMarkerForAllNetworkClientMessage>(saeDeleteHandler.OnSaeDeleteForAllClientMessageReceived);
-            reg.Register<SaeDeleteAllMarkersForAllNetworkClientMessage>(saeDeleteHandler.OnSaeDeleteAllForAllClientMessageReceived);
-            reg.Register<SaeGetMarkersNetworkClientMessage>(saeGetMarkersHandler.OnSaeMessageReceived);
-            reg.Register<SaeDebugNetworkClientMessage>(saeDebugHandler.OnSaeMessageReceived);
-            reg.Register<SaeCreateDynamicMarkerNetworkClientMessage>(saeHandler.OnSaeCreateMarkerMessageReceived);
-        }
-    }
+			reg.Register<SaeCreateMarkerNetworkClientMessage>(_saeCreateHandler.OnSaeCreateMarkerMessageReceived);
+			reg.Register<SaeCrouchNetworkClientMessage>(_saeCreateHandler.OnCrouchMessageReceived);
+			reg.Register<SaeDeleteMarkerForAllNetworkClientMessage>(_saeDeleteHandler.OnSaeDeleteForAllClientMessageReceived);
+			reg.Register<SaeDeleteAllMarkersForAllNetworkClientMessage>(_saeDeleteHandler.OnSaeDeleteAllForAllClientMessageReceived);
+			reg.Register<SaeGetMarkersNetworkClientMessage>(_saeGetMarkersHandler.OnSaeMessageReceived);
+			reg.Register<SaeDebugNetworkClientMessage>(_saeDebugHandler.OnSaeMessageReceived);
+			reg.Register<SaeCreateDynamicMarkerNetworkClientMessage>(_saeHandler.OnSaeCreateMarkerMessageReceived);
+		}
+	}
 }
