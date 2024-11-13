@@ -196,18 +196,16 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			if (ShouldBeCareful(BE_CAREFUL_PROBABILITY, out Agent _threat))
 			{
 				ChangeThreat(_threat);
-				// If warg is scared of target, keep distance
+				// If warg is scared of threat, keep distance
 				if (_fearOfTarget > 0)
 				{
 					_currentState = MonsterState.Careful;
 					return;
 				}
-				// If warg is no longer scared, chase target
+				// If warg is no longer scared, target the threat
 				else
 				{
 					ChangeTarget(_threat);
-					_currentState = MonsterState.Chase;
-					return;
 				}
 			}
 
