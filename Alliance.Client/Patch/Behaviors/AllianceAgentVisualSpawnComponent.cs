@@ -191,7 +191,7 @@ namespace Alliance.Client.Patch.Behaviors
 			if (missionPeer.IsMine && buildData.AgentVisualsIndex == 0)
 			{
 				// Play random cheer for Uruk because why not
-				if (baseMonsterFromRace.StringId == "uruk")
+				if (baseMonsterFromRace.StringId == "uruk" || baseMonsterFromRace.StringId == "orc")
 				{
 					_lastUrukCheerIndex = (_lastUrukCheerIndex + 1) % _randomUrukCheers.Count;
 					AudioPlayer.Instance.Play(_randomUrukCheers[_lastUrukCheerIndex], 0.5f, soundOrigin: frame.origin);
