@@ -22,19 +22,32 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		{
 			try
 			{
-				if (_patched)
-					return false;
+				if (_patched) return false;
 				_patched = true;
 				Harmony.Patch(
-					typeof(MultiplayerOptionsDefault).GetMethod("OnRead",
-						BindingFlags.Instance | BindingFlags.NonPublic),
-					prefix: new HarmonyMethod(typeof(Patch_MultiplayerOptionsDefault).GetMethod(
-						nameof(Prefix_OnRead), BindingFlags.Static | BindingFlags.Public)));
+					typeof(MultiplayerOptionsDefault).GetMethod(
+						"OnRead",
+						BindingFlags.Instance | BindingFlags.NonPublic
+					),
+					prefix: new HarmonyMethod(
+						typeof(Patch_MultiplayerOptionsDefault).GetMethod(
+							nameof(Prefix_OnRead),
+							BindingFlags.Static | BindingFlags.Public
+						)
+					)
+				);
 				Harmony.Patch(
-					typeof(MultiplayerOptionsDefault).GetMethod("OnWrite",
-						BindingFlags.Instance | BindingFlags.NonPublic),
-					prefix: new HarmonyMethod(typeof(Patch_MultiplayerOptionsDefault).GetMethod(
-						nameof(Prefix_OnWrite), BindingFlags.Static | BindingFlags.Public)));
+					typeof(MultiplayerOptionsDefault).GetMethod(
+						"OnWrite",
+						BindingFlags.Instance | BindingFlags.NonPublic
+					),
+					prefix: new HarmonyMethod(
+						typeof(Patch_MultiplayerOptionsDefault).GetMethod(
+							nameof(Prefix_OnWrite),
+							BindingFlags.Static | BindingFlags.Public
+						)
+					)
+				);
 			}
 			catch (Exception e)
 			{
@@ -58,38 +71,36 @@ namespace Alliance.Common.Patch.HarmonyPatch
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
 
 				// Use the correct Compression Info for the options we edited
-				if (optionType == MultiplayerOptions.OptionType.MaxNumberOfPlayers)
+				switch (optionType)
 				{
-					optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MaxNumberOfPlayersCompressionInfo, ref flag));
-				}
-				else if (optionType == MultiplayerOptions.OptionType.RoundTimeLimit)
-				{
-					optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionMission.RoundTimeCompressionInfo, ref flag));
-				}
-				else if (optionType == MultiplayerOptions.OptionType.MapTimeLimit)
-				{
-					optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MapTimeLimitCompressionInfo, ref flag));
-				}
-				else if (optionType == MultiplayerOptions.OptionType.NumberOfBotsPerFormation)
-				{
-					optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.NumberOfBotsPerFormationCompressionInfo, ref flag));
-				}
-				// Native
-				else
-				{
-					switch (optionProperty.OptionValueType)
-					{
-						case MultiplayerOptions.OptionValueType.Bool:
-							optionType.SetValue(GameNetworkMessage.ReadBoolFromPacket(ref flag));
-							break;
-						case MultiplayerOptions.OptionValueType.Integer:
-						case MultiplayerOptions.OptionValueType.Enum:
-							optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true), ref flag));
-							break;
-						case MultiplayerOptions.OptionValueType.String:
-							optionType.SetValue(GameNetworkMessage.ReadStringFromPacket(ref flag));
-							break;
-					}
+					case MultiplayerOptions.OptionType.MaxNumberOfPlayers:
+						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MaxNumberOfPlayersCompressionInfo, ref flag));
+						break;
+					case MultiplayerOptions.OptionType.RoundTimeLimit:
+						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionMission.RoundTimeCompressionInfo, ref flag));
+						break;
+					case MultiplayerOptions.OptionType.MapTimeLimit:
+						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MapTimeLimitCompressionInfo, ref flag));
+						break;
+					case MultiplayerOptions.OptionType.NumberOfBotsPerFormation:
+						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.NumberOfBotsPerFormationCompressionInfo, ref flag));
+						break;
+					// Native
+					default:
+						switch (optionProperty.OptionValueType)
+						{
+							case MultiplayerOptions.OptionValueType.Bool:
+								optionType.SetValue(GameNetworkMessage.ReadBoolFromPacket(ref flag));
+								break;
+							case MultiplayerOptions.OptionValueType.Integer:
+							case MultiplayerOptions.OptionValueType.Enum:
+								optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true), ref flag));
+								break;
+							case MultiplayerOptions.OptionValueType.String:
+								optionType.SetValue(GameNetworkMessage.ReadStringFromPacket(ref flag));
+								break;
+						}
+						break;
 				}
 			}
 
@@ -108,38 +119,36 @@ namespace Alliance.Common.Patch.HarmonyPatch
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
 
 				// Use the correct Compression Info for the options we edited
-				if (optionType == MultiplayerOptions.OptionType.MaxNumberOfPlayers)
+				switch (optionType)
 				{
-					GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MaxNumberOfPlayersCompressionInfo);
-				}
-				else if (optionType == MultiplayerOptions.OptionType.RoundTimeLimit)
-				{
-					GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionMission.RoundTimeCompressionInfo);
-				}
-				else if (optionType == MultiplayerOptions.OptionType.MapTimeLimit)
-				{
-					GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MapTimeLimitCompressionInfo);
-				}
-				else if (optionType == MultiplayerOptions.OptionType.NumberOfBotsPerFormation)
-				{
-					GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.NumberOfBotsPerFormationCompressionInfo);
-				}
-				// Native
-				else
-				{
-					switch (optionProperty.OptionValueType)
-					{
-						case MultiplayerOptions.OptionValueType.Bool:
-							GameNetworkMessage.WriteBoolToPacket(optionType.GetBoolValue());
-							break;
-						case MultiplayerOptions.OptionValueType.Integer:
-						case MultiplayerOptions.OptionValueType.Enum:
-							GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true));
-							break;
-						case MultiplayerOptions.OptionValueType.String:
-							GameNetworkMessage.WriteStringToPacket(optionType.GetStrValue());
-							break;
-					}
+					case MultiplayerOptions.OptionType.MaxNumberOfPlayers:
+						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MaxNumberOfPlayersCompressionInfo);
+						break;
+					case MultiplayerOptions.OptionType.RoundTimeLimit:
+						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionMission.RoundTimeCompressionInfo);
+						break;
+					case MultiplayerOptions.OptionType.MapTimeLimit:
+						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MapTimeLimitCompressionInfo);
+						break;
+					case MultiplayerOptions.OptionType.NumberOfBotsPerFormation:
+						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.NumberOfBotsPerFormationCompressionInfo);
+						break;
+					// Native
+					default:
+						switch (optionProperty.OptionValueType)
+						{
+							case MultiplayerOptions.OptionValueType.Bool:
+								GameNetworkMessage.WriteBoolToPacket(optionType.GetBoolValue());
+								break;
+							case MultiplayerOptions.OptionValueType.Integer:
+							case MultiplayerOptions.OptionValueType.Enum:
+								GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true));
+								break;
+							case MultiplayerOptions.OptionValueType.String:
+								GameNetworkMessage.WriteStringToPacket(optionType.GetStrValue());
+								break;
+						}
+						break;
 				}
 			}
 
