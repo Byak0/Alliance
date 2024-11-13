@@ -73,8 +73,14 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 
 		private void SetPrefabGlobalFrame(Agent agent, sbyte boneType, GameEntity prefab)
 		{
+			Skeleton skeleton = agent.AgentVisuals?.GetSkeleton();
+			if (skeleton == null)
+			{
+				Log($"Failed to get agents visuals or skeleton for {agent.Name}", LogLevel.Error);
+				return;
+			}
 			MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
-			MatrixFrame localWeaponFrame = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(boneType);
+			MatrixFrame localWeaponFrame = skeleton.GetBoneEntitialFrameWithIndex(boneType);
 			Vec3 weaponGlobalPosition = agentGlobalFrame.TransformToParent(localWeaponFrame.origin);
 			Mat3 weaponGlobalRotation = agentGlobalFrame.rotation.TransformToParent(localWeaponFrame.rotation);
 			prefab.SetGlobalFrame(new MatrixFrame(weaponGlobalRotation, weaponGlobalPosition));
@@ -200,10 +206,20 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 		{
 			foreach (KeyValuePair<Agent, AttachedPrefab> item in _extendedOffHandtemsWithPrefab)
 			{
+				if (item.Key.AgentVisuals?.GetSkeleton() == null)
+				{
+					Log($"Failed to get agents visuals or skeleton for {item.Key.Name}", LogLevel.Error);
+					continue;
+				}
 				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
 			}
 			foreach (KeyValuePair<Agent, AttachedPrefab> item in _extendedMainItemsWithPrefab)
 			{
+				if (item.Key.AgentVisuals?.GetSkeleton() == null)
+				{
+					Log($"Failed to get agents visuals or skeleton for {item.Key.Name}", LogLevel.Error);
+					continue;
+				}
 				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
 			}
 
