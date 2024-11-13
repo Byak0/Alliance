@@ -624,8 +624,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					return false;
 				}
 
-				bool flag2 = Mission.AttackerTeam.ActiveAgents.Count > 0;
-				bool flag3 = Mission.DefenderTeam.ActiveAgents.Count > 0;
+				bool flag2 = Mission.AttackerTeam.ActiveAgents.Where(agent => agent.IsHuman).Count() > 0;
+				bool flag3 = Mission.DefenderTeam.ActiveAgents.Where(agent => agent.IsHuman).Count() > 0;
 				if (flag2 && flag3)
 				{
 					return false;
