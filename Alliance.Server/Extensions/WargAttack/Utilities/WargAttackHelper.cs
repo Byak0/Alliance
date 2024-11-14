@@ -46,18 +46,18 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 						startDelay,
 						attackDuration,
 						impactDistance,
-						(agent, target) => HandleCollision(target, warg),
-						(agent, target) => HandleParriedCollision(target, warg)
+						(agent, target) => HandleTargetHit(target, warg),
+						(agent, target) => HandleTargetParried(target, warg)
 					));
 				}
 			}
 		}
 
-		public static void HandleCollision(Agent target, Agent damager)
+		public static void HandleTargetHit(Agent target, Agent warg)
 		{
 			if (target == null || !target.IsActive())
 			{
-				Log("HandleCollision: attempt to target a null or dead agent.", LogLevel.Warning);
+				Log("HandleTargetHit: attempt to target a null or dead agent.", LogLevel.Warning);
 				return;
 			}
 
@@ -68,8 +68,22 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 					if (target.IsFadingOut())
 						return;
 
-					var damagerAgent = damager != null ? damager : target;
-					int damage = target.Monster.StringId == "warg" ? 25 : 50; // Wargs do less damage to each other
+					// Avoid friendly fire
+					if (target.Monster.StringId == "warg" && MBRandom.RandomFloat < 0.9f)
+						return;
+
+					int damage = 50;
+
+					// Check if damager is dead
+					Agent damagerAgent = warg;
+					if (damagerAgent == null || damagerAgent.Health <= 0)
+					{
+						// If damager is dead, use target as damager and reduce damage
+						damagerAgent = target;
+						damage = 20;
+					}
+
+					if (target.IsMount) damage *= 2; // todo use IsHorse here
 
 					// If target is AI controlled, chance of reverse damage to simulate target defending
 					if (target.IsAIControlled && target.IsHuman && MBRandom.RandomFloat < 0.5f)
@@ -91,16 +105,16 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			}
 			catch (Exception e)
 			{
-				Log($"Error in HandleCollision for the Warg: {e.Message}", LogLevel.Error);
+				Log($"Error in HandleTargetHit for the Warg: {e.Message}", LogLevel.Error);
 			}
 		}
 
 
-		public static void HandleParriedCollision(Agent target, Agent damager)
+		public static void HandleTargetParried(Agent target, Agent warg)
 		{
 			if (target == null || !target.IsActive())
 			{
-				Log("HandleParriedCollision: attempt to target a null or dead agent.", LogLevel.Warning);
+				Log("HandleTargetParried: attempt to target a null or dead agent.", LogLevel.Warning);
 				return;
 			}
 
@@ -112,13 +126,13 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 						return;
 
 					// TODO : if target parried with a shield, reduce shield durability, otherwise project target
-					var damagerAgent = damager != null ? damager : target;
+					var damagerAgent = warg != null ? warg : target;
 					CoreUtils.TakeDamage(target, damagerAgent, 0); // Application of the blow.
 				}
 			}
 			catch (Exception e)
 			{
-				Log($"Error in HandleParriedCollision for the Warg: {e.Message}", LogLevel.Error);
+				Log($"Error in HandleTargetParried for the Warg: {e.Message}", LogLevel.Error);
 			}
 		}
 

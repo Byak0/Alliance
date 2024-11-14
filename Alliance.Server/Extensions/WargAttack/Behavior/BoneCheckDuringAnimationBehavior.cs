@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -47,7 +48,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			this.startDelay = startDelay;
 			this.duration = duration;
 			isChecking = true;
-			OnBoneFoundCallback = onBoneFoundCallback; // register callback
+			OnBoneFoundCallback = onBoneFoundCallback;
 			OnBoneFoundParryCallback = onBoneFoundParryCallback;
 		}
 
@@ -103,7 +104,15 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 		/// <returns>-1 if no target bone in range else the first target bone id in range</returns>
 		private static sbyte SearchBoneInRange(Agent agent, Agent target, List<sbyte> boneType, float rangeSquared)
 		{
-			int targetBoneCount = target.AgentVisuals.GetSkeleton().GetBoneCount();
+			Skeleton skeleton = target.AgentVisuals?.GetSkeleton();
+			if (skeleton == null)
+			{
+				Log($"Failed to get target visuals or skeleton for {target.Name}", LogLevel.Error);
+				return -1;
+			}
+
+			// Can crash if AgentVisuals or GetSkeleton is null (happens in Duel when teleporting players to/from arenas ?)
+			int targetBoneCount = skeleton.GetBoneCount();
 
 			foreach (sbyte bone in boneType)
 			{

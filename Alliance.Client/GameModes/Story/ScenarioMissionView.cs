@@ -6,6 +6,7 @@ using Alliance.Client.Extensions.FlagsTracker.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using Alliance.Client.GameModes.Story.Views;
 using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
@@ -19,45 +20,29 @@ namespace Alliance.Client.GameModes.Story
 		[ViewMethod("Scenario")]
 		public static MissionView[] OpenPvCMission(Mission mission)
 		{
-			List<MissionView> missionViews = new List<MissionView>
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "Scenario");
+			views.AppendList(new List<MissionView>
 			{
-				// Custom views
+               // Custom views
 				new EquipmentSelectionView(),
 				new AgentStatusView(),
-				//new TeamSelectView(),
 				new FormationStatusView(),
-				//new MarkerUIHandlerView(),
 				new HUDExtensionUIHandlerView(),
 				new ScenarioView(),
 				new CaptureMarkerUIView(),
 				new SpectatorView(),
 
 				// Native views from Captain mode
-				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
-				MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
-				MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
-				ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-				ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-				MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("Scenario"),
 				MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
 				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
 				ViewCreator.CreateOrderTroopPlacerView(mission),
 				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
-				MultiplayerViewCreator.CreatePollProgressUIHandler(),
-				new MissionItemContourControllerView(),
-				new MissionAgentContourControllerView(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
-				ViewCreator.CreateOptionsUIHandler(),
-				ViewCreator.CreateMissionMainAgentEquipDropView(mission),
-				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
-				ViewCreator.CreateMissionBoundaryCrossingView(),
-				new MissionBoundaryWallView()
-				//new SpectatorCameraView()
-			};
-
-			return missionViews.ToArray();
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+			});
+			return views.ToArray();
 		}
 	}
 }

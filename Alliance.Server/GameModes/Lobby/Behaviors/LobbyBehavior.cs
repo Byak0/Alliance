@@ -28,8 +28,9 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			return MultiplayerGameType.Skirmish;
 		}
 
-		public override void AfterStart()
+		public override void OnBehaviorInitialize()
 		{
+			base.OnBehaviorInitialize();
 			BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
 			Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);

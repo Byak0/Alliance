@@ -1,5 +1,6 @@
 ﻿using Alliance.Client.Extensions.AgentsCount.Views;
 using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
@@ -7,33 +8,26 @@ using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.GameModes.BattleRoyale
 {
-    [ViewCreatorModule]
-    public class BRMissionView
-    {
-        [ViewMethod("BattleRoyale")]
-        public static MissionView[] OpenBRMission(Mission mission)
-        {
-            List<MissionView> missionViews = new List<MissionView>
-            {
-                new AgentsCountView(),
+	[ViewCreatorModule]
+	public class BRMissionView
+	{
+		[ViewMethod("BattleRoyale")]
+		public static MissionView[] OpenBRMission(Mission mission)
+		{
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "BattleRoyale");
+			views.AppendList(new List<MissionView>
+			{
+				// Custom views
+				new AgentsCountView(),
 
-                MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
-                MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
-                MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
-                MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
-                ViewCreator.CreateMissionAgentStatusUIHandler(mission),
-                ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-                ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu("BattleRoyale"),
-                MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, true),
-                MultiplayerViewCreator.CreatePollProgressUIHandler(),
-                MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-                ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission),
-                ViewCreator.CreateMissionBoundaryCrossingView(),
-                new MissionBoundaryWallView()
-            };
-            return missionViews.ToArray();
-        }
-    }
+				// Native FFA views
+				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
+				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
+				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, true),
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
+			});
+			return views.ToArray();
+		}
+	}
 }

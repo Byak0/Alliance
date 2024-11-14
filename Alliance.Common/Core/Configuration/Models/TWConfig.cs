@@ -94,7 +94,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int MinScoreToWinDuel;
 		[ScenarioEditor(label: "Minimum needed difference in poll results before it is accepted.")]
 		public int PollAcceptThreshold;
-		[ScenarioEditor(label: "Maximum player imbalance between team 1 and team 2. Selecting 0 will disable auto team balancing.")]
+		[ScenarioEditor(label: "Auto team balancing", tooltip: "Maximum player imbalance between team 1 and team 2. Selecting 0 will disable auto team balancing.")]
 		public int AutoTeamBalanceThreshold;
 		[ScenarioEditor(label: "Enables mission recording.")]
 		public bool EnableMissionRecording;
@@ -128,6 +128,24 @@ namespace Alliance.Common.Core.Configuration.Models
 				{
 					if (value is int val)
 					{
+						// Override max value for some options
+						switch (option)
+						{
+							case OptionType.MaxNumberOfPlayers:
+								max = CompressionBasic.MaxNumberOfPlayersCompressionInfo.GetMaximumValue();
+								break;
+							case OptionType.RoundTimeLimit:
+								max = CompressionMission.RoundTimeCompressionInfo.GetMaximumValue();
+								break;
+							case OptionType.MapTimeLimit:
+								max = CompressionBasic.MapTimeLimitCompressionInfo.GetMaximumValue();
+								break;
+							case OptionType.NumberOfBotsPerFormation:
+								max = CompressionBasic.NumberOfBotsPerFormationCompressionInfo.GetMaximumValue();
+								break;
+							default:
+								break;
+						}
 						if (val > max)
 						{
 							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);

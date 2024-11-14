@@ -37,7 +37,7 @@ namespace Alliance.Client.GameModes.Story.Actions
 				description = isWinner ? TextDefenderWin.LocalizedText : TextDefenderLost.LocalizedText;
 			}
 			Color color = isWinner ? new Color(0.4f, 0.7f, 0.1f) : new Color(0.7f, 0.1f, 0.1f);
-			sv.ShowResultScreen(title, description, color);
+			sv?.ShowResultScreen(title, description, color);
 		}
 	}
 }

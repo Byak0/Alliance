@@ -1,11 +1,9 @@
-﻿using Alliance.Client.Core;
-using Alliance.Client.Core.KeyBinder;
-using Alliance.Client.Extensions.FakeArmy.Behaviors;
-using Alliance.Client.Extensions.VOIP.Behaviors;
+﻿using Alliance.Client.Core.KeyBinder;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
 using Alliance.Client.GameModes.CvC;
+using Alliance.Client.GameModes.DuelX;
 using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
@@ -15,13 +13,11 @@ using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
-using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client
 {
@@ -34,9 +30,7 @@ namespace Alliance.Client
 			// Register and initialize Key Binder
 			KeyBinder.Initialize();
 
-			// Init for Scenario
 			Client_ActionFactory.Initialize();
-			ScenarioPlayer.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
@@ -58,10 +52,6 @@ namespace Alliance.Client
 		{
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
-
-			AddCommonBehaviors(mission);
-
-			Log("Alliance behaviors initialized.", LogLevel.Debug);
 		}
 
 		public override void OnGameInitializationFinished(Game game)
@@ -71,6 +61,7 @@ namespace Alliance.Client
 
 			ClassLimiterModel.Instance.Init();
 			SceneList.Initialize();
+			ScenarioPlayer.Initialize();
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
@@ -90,17 +81,7 @@ namespace Alliance.Client
 			Module.CurrentModule.AddMultiplayerGameMode(new CaptainGameMode("CaptainX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
-		}
-
-		/// <summary>
-		/// Add common behaviors from Alliance used by all GameModes.
-		/// </summary>
-		public void AddCommonBehaviors(Mission mission)
-		{
-			mission.AddMissionBehavior(new ClientAutoHandler());
-			mission.AddMissionBehavior(new UsableEntityBehavior());
-			mission.AddMissionBehavior(new PBVoiceChatHandlerClient());
-			mission.AddMissionBehavior(new FakeArmyBehavior());
+			Module.CurrentModule.AddMultiplayerGameMode(new DuelGameMode("DuelX"));
 		}
 	}
 }

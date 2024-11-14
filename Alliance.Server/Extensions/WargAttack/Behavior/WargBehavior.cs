@@ -34,7 +34,16 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 	/// </summary>
 	public class WargComponent : AgentComponent
 	{
+		// Behavior probabilities, from 0 (never) to 1 (always).
+		const float FLEE_WHEN_WOUNDED_PROBABILITY = 0.02f;
+		const float IDLE_RANDOM_ANIM_PROBABILITY = 0.3f;
+		const float IDLE_RANDOM_MOVE_PROBABILITY = 0.5f;
+		const float BE_CAREFUL_PROBABILITY = 0.98f;
+		const float ATTACK_WITH_RIDER_PROBABILITY = 0.8f;
+		const float ATTACK_PROBABILITY = 0.9f;
+		const float START_CHASE_PROBABILITY = 0.25f;
 		private Agent _target;
+		private Agent _threat;
 		private Agent _lastAttacker;
 		private float _refreshDelay;
 		private float _targetChangeDelay;
@@ -85,6 +94,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			if (affectorAgent != null)
 			{
 				_lastAttacker = affectorAgent;
+				ChangeTarget(_lastAttacker);
 			}
 		}
 
@@ -130,7 +140,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 						break;
 					case MonsterState.Chase:
 						ChaseTarget();
-						Log($"Warg {Agent.Index} is chasing {_target?.Name} ({_chaseTrajectory})", LogLevel.Debug);
+						Log($"Warg {Agent.Index} is chasing {_target?.Name}", LogLevel.Debug);
 						break;
 					case MonsterState.Attack:
 						AttackTarget();
@@ -141,8 +151,8 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 						Log($"Warg {Agent.Index} is fleeing", LogLevel.Debug);
 						break;
 					case MonsterState.Careful:
-						MaintainDistanceFromTarget();
-						Log($"Warg {Agent.Index} is keeping its distance from target {_target?.Name} (fear level : {_fearOfTarget})", LogLevel.Debug);
+						MaintainDistanceFromThreat();
+						Log($"Warg {Agent.Index} is keeping its distance from {_threat?.Name} (fear level : {_fearOfTarget})", LogLevel.Debug);
 						break;
 				}
 			}
@@ -164,7 +174,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 				return;
 			}
 
-			if (ShouldAttack(80))
+			if (ShouldAttack(ATTACK_WITH_RIDER_PROBABILITY))
 			{
 				_currentState = MonsterState.Attack;
 				return;
@@ -175,33 +185,39 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 		private void DetermineTargetAndState()
 		{
-			// 5 % chance to flee when wounded
-			if (ShouldFlee(0.05f))
+			// Chance to flee when wounded
+			if (ShouldFlee(FLEE_WHEN_WOUNDED_PROBABILITY))
 			{
 				_currentState = MonsterState.Flee;
 				return;
 			}
 
-			// 95% chance to be careful when nearby unit is dangerous/wield torch
-			if (ShouldBeCareful(0.95f, out Agent _threat))
+			// Be careful when nearby unit is dangerous/wield torch
+			if (ShouldBeCareful(BE_CAREFUL_PROBABILITY, out Agent _threat))
 			{
-				ChangeTarget(_threat);
+				ChangeThreat(_threat);
+				// If warg is scared of threat, keep distance
 				if (_fearOfTarget > 0)
 				{
 					_currentState = MonsterState.Careful;
 					return;
 				}
+				// If warg is no longer scared, target the threat
+				else
+				{
+					ChangeTarget(_threat);
+				}
 			}
 
-			// 50% chance of attacking target if possible
-			if (ShouldAttack(0.5f))
+			// Attack target if possible
+			if (ShouldAttack(ATTACK_PROBABILITY))
 			{
 				_currentState = MonsterState.Attack;
 				return;
 			}
 
-			// 25% chance of targetting someone if no current target
-			if (ShouldChaseSomeone(0.25f, out Agent _bestTarget))
+			// Target someone if no current target
+			if (ShouldChaseSomeone(START_CHASE_PROBABILITY, out Agent _bestTarget))
 			{
 				ChangeTarget(_bestTarget);
 				_currentState = MonsterState.Chase;
@@ -212,12 +228,20 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			_currentState = MonsterState.Idle;
 		}
 
-		private void ChangeTarget(Agent _threat)
+		private void ChangeTarget(Agent target)
 		{
-			if (_target != _threat && _threat != null)
+			if (_target != target && target != null)
 			{
-				_target = _threat;
+				_target = target;
 				_targetChangeDelay = 0;
+			}
+		}
+
+		private void ChangeThreat(Agent threat)
+		{
+			if (_threat != threat && threat != null)
+			{
+				_threat = threat;
 				// Random initial fear value between 0.25 and 1
 				_fearOfTarget = 0.25f + MBRandom.RandomFloat / 2 + (_isWounded ? 0.25f : 0);
 			}
@@ -228,10 +252,9 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			if (_target == null || _target.Health <= 0 || _lastAttackDelay < WargConstants.ATTACK_COOLDOWN) return false;
 
 			float distanceToTarget = (_target.Position - Agent.Position).Length;
-			float distanceForAttack = 1.5f + Agent.MovementVelocity.Y;
+			float distanceForAttack = 1.5f + (Agent.MovementVelocity.Y / 1.5f);
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
 			bool frontAttack = WargAttackHelper.IsInFrontCone(Agent, _target, 45);
-			//Log($"Close enough for attack ? {closeEnoughForAttack} ({distanceForAttack}/{distanceToTarget}) front ? {frontAttack}", LogLevel.Debug);
 
 			// Close enough to attack and target is in front
 			if (MBRandom.RandomFloat < probability && closeEnoughForAttack && frontAttack)
@@ -244,11 +267,18 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 		private bool ShouldChaseSomeone(float probability, out Agent _bestTarget)
 		{
 			_bestTarget = null;
-			if (_target == null || _target != null && TargetIsNoLongerRelevant())
+			if (_target != null && IsTargetNoLongerRelevant())
 			{
-				if (MBRandom.RandomFloat < probability)
+				_target = null;
+			}
+			if (_target == null)
+			{
+				if (MBRandom.RandomFloat > probability) return false;
+
+				_bestTarget = GetBestTarget(WargConstants.CHASE_RADIUS);
+				if (_bestTarget != null)
 				{
-					_bestTarget = GetBestTarget(WargConstants.CHASE_RADIUS);
+					_target = _bestTarget;
 					_targetChangeDelay = 0;
 					return true;
 				}
@@ -265,7 +295,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			}
 		}
 
-		private bool TargetIsNoLongerRelevant()
+		private bool IsTargetNoLongerRelevant()
 		{
 			return _target != null
 				&& (!_target.IsActive() // Target is no longer active
@@ -301,7 +331,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 			foreach (Agent potentialTarget in nearbyAgents)
 			{
-				if (potentialTarget == Agent || !potentialTarget.IsActive() || (potentialTarget.Monster.StringId == "warg" && MBRandom.RandomFloat < 0.9999f))
+				if (potentialTarget == Agent || !potentialTarget.IsActive() || ((potentialTarget.Monster.StringId == "warg" || potentialTarget.MountAgent?.Monster.StringId == "warg") && MBRandom.RandomFloat < 0.9999f))
 					continue;
 
 				float score = 0;
@@ -316,11 +346,11 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 				if (potentialTarget.Team != Agent.Team)
 					score += 40; // Prefer enemies
 
+				if (potentialTarget.IsMount && potentialTarget.RiderAgent == null) // TODO : replace IsMount by IsHorse when available
+					score += 80; // Prefer riderless horses
+
 				if (potentialTarget.Health / potentialTarget.HealthLimit < WargConstants.LOW_HEALTH_THRESHOLD)
 					score += 20; // Prefer wounded targets
-
-				if (potentialTarget.MountAgent?.Monster.StringId == "warg")
-					score -= 40; // Avoid warg riders
 
 				if (IsThreat(potentialTarget))
 					score -= 200; // Avoid dangerous targets
@@ -367,17 +397,16 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 		private void RandomIdleBehavior()
 		{
-			if (MBRandom.RandomFloat < 0.3f) // 30% chance to play a random animation while idling
+			if (MBRandom.RandomFloat < IDLE_RANDOM_ANIM_PROBABILITY) // 30% chance to play a random animation while idling
 			{
 				AnimationSystem.Instance.PlayAnimation(Agent, WargConstants.IdleAnimations.GetRandomElement(), false);
 			}
-			else
+			else if (MBRandom.RandomFloat < IDLE_RANDOM_MOVE_PROBABILITY) // 50% chance to move to a random position
 			{
 				Vec3 randomDirection = new Vec3(Agent.LookDirection);
 				randomDirection.RotateAboutZ(MBRandom.RandomFloat * 2 - 1f);
 				Vec3 destinationVec3 = Agent.Position + randomDirection * MBRandom.RandomFloat * 10;
 				WorldPosition destination = new WorldPosition(Mission.Current.Scene, destinationVec3);
-				//Log($"Warg moving from {Agent.Position.AsVec2} to {destination.AsVec2}", LogLevel.Debug);
 				Agent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.None);
 			}
 		}
@@ -387,16 +416,14 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			WorldPosition worldPosition = Agent.Mission.GetClosestFleePositionForAgent(Agent);
 			if (Agent.IsRetreating() && Agent.MovementVelocity.Y <= 0.5f)
 			{
-				//Log($"Fleeing warg is stuck", LogLevel.Debug);
 				Vec3 randomDirection = new Vec3(Agent.LookDirection);
 				randomDirection.RotateAboutZ(MBRandom.RandomFloat * 2 - 1f);
 				Vec3 destinationVec3 = Agent.Position + randomDirection * MBRandom.RandomFloat * 100;
 				WorldPosition destination = new WorldPosition(Mission.Current.Scene, destinationVec3);
-				//Log($"To unstuck, warg moving from {Agent.Position.AsVec2} to {destination.AsVec2}", LogLevel.Debug);
+				Log($"Possible missing flee points on map, warg is stuck. Forcing random move from {Agent.Position.AsVec2} to {destination.AsVec2}", LogLevel.Warning);
 				Agent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.None);
 			}
 			Agent.Retreat(worldPosition);
-			//Log($"Warg is fleeing from {Agent.Position.AsVec2} to {worldPosition.AsVec2}", LogLevel.Debug);
 		}
 
 		private void ChaseTarget()
@@ -405,112 +432,48 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 
 			float distanceToTarget = (_target.Position - Agent.Position).Length;
 
-			// Set speed depending on distance to target
-			if (distanceToTarget > WargConstants.CHASE_RADIUS / 2 || MBRandom.RandomFloat < 0.25f) // 25% chance to charge, or if far from target
+			Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 5f, false); // Charge speed
+
+			Vec3 estimatedTargetDestination = _target.Position + (_target.GetMovementDirection() * _target.MovementVelocity.Y * 1).ToVec3();
+			Vec3 directionToEstimatedTarget = (estimatedTargetDestination - Agent.Position).NormalizedCopy();
+			Vec3 positionToChase = estimatedTargetDestination + directionToEstimatedTarget * 5f;
+
+			WorldPosition destination = positionToChase.ToWorldPosition();
+
+			// If target is behind the warg, get some distance before turning around
+			bool isTargetInFront = WargAttackHelper.IsInFrontCone(Agent, _target, 180);
+			if (distanceToTarget < 8 && !isTargetInFront)
 			{
-				Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false); // Charge speed
-			}
-			else
-			{
-				Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit, false); // Slow closing in
+				// Just go straight to gain distance
+				destination = (Agent.Position + (Agent.LookDirection * 100f)).ToWorldPosition();
 			}
 
-			WorldPosition destination = _target.Position.ToWorldPosition();
-
-			// If close to target, go straight at it
-			if (distanceToTarget < 2)
-			{
-				// Add an offset to target "behind" the target (so that the warg charge and don't walk in slowly)
-				Vec3 offset = new(Agent.GetMovementDirection() * 10);
-				destination = (Agent.Position + offset).ToWorldPosition();
-			}
-			// If far from target, randomly make a detour
-			else if (distanceToTarget > 8)
-			{
-				Vec3 offset = new(_target.GetMovementDirection() * distanceToTarget);
-				offset.RotateAboutZ(MBRandom.RandomInt(-2, 2));
-				destination = (_target.Position + offset).ToWorldPosition();
-			}
-			//Log($"Warg chasing target to {targetPos.GetGroundVec3()} ({_chaseTrajectory})", LogLevel.Debug);
 			Agent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.None);
 			return;
-
-
-
-
-			// TODO remove below if above code is satisfying
-
-			// Set speed depending on distance to target
-			if (distanceToTarget > WargConstants.CHASE_RADIUS / 2 || MBRandom.RandomFloat < 0.25f) // 25% chance to charge, or if far from target
-			{
-				Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false); // Charge speed
-			}
-			else
-			{
-				Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit, false); // Slow closing in
-			}
-
-			// Adjust facing direction to keep track of the target
-			Vec3 directionToTarget = (_target.Position - Agent.Position).NormalizedCopy();
-			Vec3 curveOffset = Vec3.Zero;
-			Vec3 extensionBeyondTarget = Vec3.Zero; // Extend the position beyond the target
-
-			// Define curve offset and extension beyond target based on chosen trajectory
-			switch (_chaseTrajectory)
-			{
-				case ChaseTrajectory.CurveLeft:
-					curveOffset = new Vec3(-directionToTarget.y, directionToTarget.x, 0) * distanceToTarget / 5; // Modified to curve left correctly
-					break;
-				case ChaseTrajectory.CurveRight:
-					curveOffset = new Vec3(directionToTarget.y, -directionToTarget.x, 0) * distanceToTarget / 5; // Modified to curve right correctly
-					break;
-				case ChaseTrajectory.Straight:
-					break;
-			}
-
-			if (WargAttackHelper.IsInFrontCone(Agent, _target, 30))
-			{
-				extensionBeyondTarget = directionToTarget * (1 + distanceToTarget + Agent.MovementVelocity.Y);
-			}
-			else
-			{
-				extensionBeyondTarget = -directionToTarget;
-			}
-
-			WorldPosition targetPos = (_target.Position + curveOffset + extensionBeyondTarget).ToWorldPosition();
-			//Log($"Warg chasing target to {targetPos.GetGroundVec3()} ({_chaseTrajectory})", LogLevel.Debug);
-			Agent.SetScriptedPosition(ref targetPos, false, Agent.AIScriptedFrameFlags.None);
 		}
 
 		private void AttackTarget()
 		{
 			if (_target == null) return;
 
-			// Choose attack animation based on movement
-			if (Agent.MovementVelocity.Y >= 4)
-			{
-				// Move slightly beyond the target to make sure the running attack reaches
-				Vec3 directionToTarget = (_target.Position - Agent.Position).NormalizedCopy();
-				Vec3 overshootPosition = _target.Position + directionToTarget * 10f; // Move 2 meters past the target
-				WorldPosition overshootWorldPosition = overshootPosition.ToWorldPosition();
-				Agent.SetScriptedPosition(ref overshootWorldPosition, false, Agent.AIScriptedFrameFlags.None);
-			}
+			// Turn towards target
+			Agent.SetMovementDirection((_target.Position - Agent.Position).AsVec2);
 
 			Agent.WargAttack();
 
 			_lastAttackDelay = 0;
 		}
 
-		private void MaintainDistanceFromTarget()
+		private void MaintainDistanceFromThreat()
 		{
-			if (_target == null) return;
+			if (_threat == null) return;
 
-			float distanceToTarget = (_target.Position - Agent.Position).Length;
+			float distanceToTarget = (_threat.Position - Agent.Position).Length;
 			// Target should maintain distance towards target relative to its fear
 			float desiredRange = WargConstants.THREAT_RANGE * (0.5f + _fearOfTarget);
 
 			// Calculate the direction from the warg to the target
-			Vec3 directionToTarget = (_target.Position - Agent.Position).NormalizedCopy();
+			Vec3 directionToTarget = (_threat.Position - Agent.Position).NormalizedCopy();
 
 			// If target is too close, walkback or run away
 			if (distanceToTarget < desiredRange * 0.6f)
@@ -518,10 +481,10 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 				float dotProduct = Vec3.DotProduct(Agent.LookDirection, directionToTarget);
 				bool targetInFront = dotProduct > 0.7f;
 				// Target is walking, use TP to walkback
-				if (_target.MovementVelocity.Y < 3 && distanceToTarget > desiredRange * 0.4f && targetInFront)
+				if (_threat.MovementVelocity.Y < 3 && distanceToTarget > desiredRange * 0.4f && targetInFront)
 				{
 					float proportionalDistance = distanceToTarget + (desiredRange * 0.6f - distanceToTarget) * 0.25f;
-					Vec3 fallbackPosition = _target.Position - (directionToTarget * proportionalDistance);
+					Vec3 fallbackPosition = _threat.Position - (directionToTarget * proportionalDistance);
 					WorldPosition fallbackWorldPosition = fallbackPosition.ToWorldPosition();
 					// Check if path to destination exist before teleporting to avoid obstacles
 					if (Mission.Current.Scene.GetNavigationMeshForPosition(ref fallbackPosition))
@@ -529,7 +492,6 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 						Agent.SetScriptedPosition(ref fallbackWorldPosition, true, Agent.AIScriptedFrameFlags.None);
 						Agent.TeleportToPosition(fallbackPosition);
 						Agent.SetMovementDirection(directionToTarget.AsVec2);
-						//AnimationSystem.Instance.PlayAnimation(Agent, WargConstants.WalkBackAnimation, false);
 					}
 					else
 					{
@@ -539,7 +501,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 				// Target is running, run away
 				else
 				{
-					Vec3 fallbackPosition = _target.Position - (directionToTarget * WargConstants.THREAT_RANGE);
+					Vec3 fallbackPosition = _threat.Position - (directionToTarget * WargConstants.THREAT_RANGE);
 					WorldPosition fallbackWorldPosition = fallbackPosition.ToWorldPosition();
 					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
 					Agent.SetScriptedPosition(ref fallbackWorldPosition, false, Agent.AIScriptedFrameFlags.None);
@@ -548,7 +510,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			// If threat is too far, slowly close in
 			else if (distanceToTarget > desiredRange * 0.7f)
 			{
-				Vec3 desiredPosition = _target.Position - (directionToTarget * (desiredRange * 0.6f));
+				Vec3 desiredPosition = _threat.Position - (directionToTarget * (desiredRange * 0.6f));
 				WorldPosition desiredWorldPosition = desiredPosition.ToWorldPosition();
 				Agent.SetScriptedPosition(ref desiredWorldPosition, true, Agent.AIScriptedFrameFlags.DoNotRun);
 			}

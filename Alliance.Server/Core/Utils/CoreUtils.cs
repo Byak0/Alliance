@@ -45,8 +45,7 @@ namespace Alliance.Server.Core.Utils
 			Blow blow = new Blow(attacker.Index);
 			blow.DamageType = DamageTypes.Pierce;
 			blow.BoneIndex = victim.Monster.HeadLookDirectionBoneIndex;
-			blow.GlobalPosition = victim.Position;
-			blow.GlobalPosition.z = blow.GlobalPosition.z + victim.GetEyeGlobalHeight();
+			blow.GlobalPosition = victim.GetChestGlobalPosition();
 			blow.BaseMagnitude = magnitude;
 			blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
 			blow.InflictedDamage = damage;
