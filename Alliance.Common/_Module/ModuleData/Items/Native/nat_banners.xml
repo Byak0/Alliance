@@ -9,7 +9,7 @@
 			recalculate_body="true"
 			mesh="khuzait_tier_3_banner"
 			prefab="khuzait_tier_3_banner"
-			weight="10"
+			weight="20"
 			Type="Banner"
 			using_tableau="true"
 			item_holsters="abdomen_left">
@@ -44,7 +44,7 @@
 			recalculate_body="true"
 			mesh="sturgia_tier_3_banner"
 			prefab="sturgia_tier_3_banner"
-			weight="10"
+			weight="20"
 			Type="Banner"
 			using_tableau="true"
 			item_holsters="abdomen_left">
