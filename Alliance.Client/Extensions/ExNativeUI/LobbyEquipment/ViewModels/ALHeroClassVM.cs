@@ -379,6 +379,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.ViewModels
 
 		public void UpdateEnabled()
 		{
+			// TODO : it currently prevent changing perks when disabled, which happen if player pick the last available character...
 			// Check if character is available
 			IsEnabled = (!Config.Instance.UsePlayerLimit || ClassLimiterModel.Instance.CharactersAvailable[_character]) && _gameMode.IsClassAvailable(HeroClass) && (_gameMode.IsInWarmup || !_gameMode.IsGameModeUsingGold || _gameMode.GetGoldAmount() >= Gold);
 		}
