@@ -19,12 +19,12 @@ namespace Alliance.Common.Patch.HarmonyPatch
 			{
 				if (_patched)
 					return false;
+
 				_patched = true;
 
-				var getter = typeof(MissionPeer).GetProperty(nameof(MissionPeer.SelectedPerks), BindingFlags.Instance | BindingFlags.Public).GetGetMethod();
-				var prefix = typeof(Patch_MissionPeer).GetMethod(nameof(Prefix_SelectedPerks), BindingFlags.Static | BindingFlags.Public);
-
-				Harmony.Patch(getter, new HarmonyMethod(prefix));
+				MethodInfo original = typeof(MissionPeer).GetProperty(nameof(MissionPeer.SelectedPerks), BindingFlags.Instance | BindingFlags.Public).GetGetMethod();
+				MethodInfo prefix = typeof(Patch_MissionPeer).GetMethod(nameof(Prefix_SelectedPerks), BindingFlags.Static | BindingFlags.Public);
+				Harmony.Patch(original, new HarmonyMethod(prefix));
 			}
 			catch (Exception e)
 			{
