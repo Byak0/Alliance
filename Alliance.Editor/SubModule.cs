@@ -10,7 +10,6 @@ using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
 using Alliance.Editor.Patch;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
@@ -32,7 +31,6 @@ namespace Alliance.Editor
 
 			ActionFactory.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
-			ScenarioManager.Instance.RefreshAvailableScenarios();
 			SceneList.Initialize();
 
 			EditorToolsManager.EditorTools = new EditorTools();
@@ -94,8 +92,7 @@ namespace Alliance.Editor
 		private void OpenScenarioEditor()
 		{
 			// Create and show the editor window
-			Scenario scenario = ScenarioManager.Instance.AvailableScenario.FirstOrDefault();
-			scenario ??= new Scenario(new LocalizedString("New scenario"), new LocalizedString());
+			Scenario scenario = new Scenario(new LocalizedString("New scenario"), new LocalizedString());
 			if (_scenarioEditorWindow == null || !_scenarioEditorWindow.IsLoaded)
 			{
 				_scenarioEditorWindow = new ScenarioEditorWindow(scenario);
