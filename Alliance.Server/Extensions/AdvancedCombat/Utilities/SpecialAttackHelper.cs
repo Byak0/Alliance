@@ -1,7 +1,7 @@
 ﻿using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Server.Core.Utils;
-using Alliance.Server.Extensions.WargAttack.Behavior;
-using Alliance.Server.Extensions.WargAttack.Models;
+using Alliance.Server.Extensions.AdvancedCombat.Behavior;
+using Alliance.Server.Extensions.AdvancedCombat.Models;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -9,9 +9,9 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Server.Extensions.WargAttack.Utilities
+namespace Alliance.Server.Extensions.AdvancedCombat.Utilities
 {
-	public static class WargAttackHelper
+	public static class SpecialAttackHelper
 	{
 		public static void WargAttack(this Agent warg)
 		{
@@ -25,7 +25,7 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			if (warg.MovementVelocity.Y >= 4)
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackRunningAnimation, true);
-				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration - 0.2f;
+				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration - 0.4f;
 				startDelay = 0.2f;
 			}
 			else
@@ -109,7 +109,6 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			}
 		}
 
-
 		public static void HandleTargetParried(Agent target, Agent warg)
 		{
 			if (target == null || !target.IsActive())
@@ -172,20 +171,20 @@ namespace Alliance.Server.Extensions.WargAttack.Utilities
 			bool backAttack = false;
 
 			if (angleInDegrees < -(90 - stanceOffset) && angleInDegrees > -(180 - stanceOffset)
-				|| angleInDegrees > (180 + stanceOffset))
+				|| angleInDegrees > 180 + stanceOffset)
 			{
 				position = "Back Right";
 				backAttack = true;
 			}
-			else if (angleInDegrees < (0 + stanceOffset) && angleInDegrees > -(90 - stanceOffset))
+			else if (angleInDegrees < 0 + stanceOffset && angleInDegrees > -(90 - stanceOffset))
 			{
 				position = "Front Right";
 			}
-			else if (angleInDegrees < (90 + stanceOffset) && angleInDegrees > (0 + stanceOffset))
+			else if (angleInDegrees < 90 + stanceOffset && angleInDegrees > 0 + stanceOffset)
 			{
 				position = "Front Left";
 			}
-			else if (angleInDegrees > (90 + stanceOffset) || angleInDegrees < -(180 - stanceOffset))
+			else if (angleInDegrees > 90 + stanceOffset || angleInDegrees < -(180 - stanceOffset))
 			{
 				position = "Back Left";
 				backAttack = true;

@@ -6,7 +6,7 @@ using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
-namespace Alliance.Server.Extensions.WargAttack.Behavior
+namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
 {
 	/// <summary>
 	/// Temporary class checking for collision between an agent and its target. Removed after collision or timer.

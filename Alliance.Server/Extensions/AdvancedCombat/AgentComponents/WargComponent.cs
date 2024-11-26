@@ -1,8 +1,8 @@
 ﻿using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Server.Core.Utils;
-using Alliance.Server.Extensions.WargAttack.Models;
-using Alliance.Server.Extensions.WargAttack.Utilities;
+using Alliance.Server.Extensions.AdvancedCombat.Models;
+using Alliance.Server.Extensions.AdvancedCombat.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,23 +12,8 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Server.Extensions.WargAttack.Behavior
+namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 {
-	/// <summary>
-	/// Ties a WargComponent to wargs when they spawn.
-	/// </summary>
-	public class WargBehavior : MissionNetwork, IMissionBehavior
-	{
-		public override void OnAgentBuild(Agent agent, Banner banner)
-		{
-			if (agent.Monster.StringId == "warg")
-			{
-				agent.AddComponent(new WargComponent(agent));
-				Log("Added WargComponent to agent", LogLevel.Debug);
-			}
-		}
-	}
-
 	/// <summary>
 	/// Allow the warg to behave independently. Hunting, chilling, fleeing, etc.
 	/// </summary>
@@ -254,7 +239,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			float distanceToTarget = (_target.Position - Agent.Position).Length;
 			float distanceForAttack = 1.5f + (Agent.MovementVelocity.Y / 1.5f);
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
-			bool frontAttack = WargAttackHelper.IsInFrontCone(Agent, _target, 45);
+			bool frontAttack = SpecialAttackHelper.IsInFrontCone(Agent, _target, 45);
 
 			// Close enough to attack and target is in front
 			if (MBRandom.RandomFloat < probability && closeEnoughForAttack && frontAttack)
@@ -441,7 +426,7 @@ namespace Alliance.Server.Extensions.WargAttack.Behavior
 			WorldPosition destination = positionToChase.ToWorldPosition();
 
 			// If target is behind the warg, get some distance before turning around
-			bool isTargetInFront = WargAttackHelper.IsInFrontCone(Agent, _target, 180);
+			bool isTargetInFront = SpecialAttackHelper.IsInFrontCone(Agent, _target, 180);
 			if (distanceToTarget < 8 && !isTargetInFront)
 			{
 				// Just go straight to gain distance
