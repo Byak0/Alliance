@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.FormationEnforcer.Component;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using System;
 using TaleWorlds.Core;
@@ -12,7 +13,7 @@ namespace Alliance.Common.GameModels
 	/// GameModel calculating agents stats.
 	/// Apply different multiplier on stats depending on agents AI difficulty or player formation.    
 	/// </summary>
-	public class ExtendedAgentStatCalculateModel : AgentStatCalculateModel
+	public class ExtendedAgentStatCalculateModel : CustomBattleAgentStatCalculateModel
 	{
 		public override float GetDifficultyModifier()
 		{
@@ -42,7 +43,7 @@ namespace Alliance.Common.GameModels
 		public override float GetKnockDownResistance(Agent agent, StrikeType strikeType = StrikeType.Invalid)
 		{
 			float num = agent.Character.KnockdownResistance;
-			if (agent.Name.ToLower().Contains("troll"))
+			if (agent.IsTroll())
 			{
 				num += 10f;
 			}
@@ -95,10 +96,19 @@ namespace Alliance.Common.GameModels
 			if (!agent.IsHuman)
 			{
 				InitializeHorseAgentStats(agent, spawnEquipment, agentDrivenProperties);
+				return;
 			}
+
+			// Check if this character is setup for multiplayer
+			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+			if (mPHeroClassForCharacter != null)
+			{
+				InitializeHumanAgentStats(agent, agentDrivenProperties, agentBuildData, mPHeroClassForCharacter);
+			}
+			// Otherwise rely on CustomBattle implementation
 			else
 			{
-				InitializeHumanAgentStats(agent, agentDrivenProperties, agentBuildData);
+				base.InitializeAgentStats(agent, spawnEquipment, agentDrivenProperties, agentBuildData);
 			}
 		}
 
@@ -106,7 +116,17 @@ namespace Alliance.Common.GameModels
 		{
 			if (agent.IsHuman)
 			{
-				UpdateHumanAgentStats(agent, agentDrivenProperties);
+				// Check if this character is setup for multiplayer
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+				if (mPHeroClassForCharacter != null)
+				{
+					UpdateHumanAgentStats(agent, agentDrivenProperties, mPHeroClassForCharacter);
+				}
+				// Otherwise rely on CustomBattle implementation
+				else
+				{
+					base.UpdateAgentStats(agent, agentDrivenProperties);
+				}
 			}
 			else if (agent.IsMount)
 			{
@@ -114,6 +134,49 @@ namespace Alliance.Common.GameModels
 			}
 
 			UpdateAgentFormationStats(agent, agentDrivenProperties);
+
+			if (agent.IsTroll())
+			{
+				UpdateStatsForTroll(agent, agentDrivenProperties);
+			}
+			else if (agent.IsWarg())
+			{
+				UpdateStatsForWarg(agent, agentDrivenProperties);
+			}
+			else if (agent.IsDwarf())
+			{
+				UpdateStatsForDwarf(agent, agentDrivenProperties);
+			}
+		}
+
+		private void UpdateStatsForDwarf(Agent agent, AgentDrivenProperties agentDrivenProperties)
+		{
+			agentDrivenProperties.MaxSpeedMultiplier *= 0.9f;
+		}
+
+		private void UpdateStatsForWarg(Agent agent, AgentDrivenProperties agentDrivenProperties)
+		{
+			agentDrivenProperties.MountManeuver *= 0.8f;
+			agentDrivenProperties.TopSpeedReachDuration *= 2f;
+			agentDrivenProperties.MountDashAccelerationMultiplier *= 3f;
+		}
+
+		private void UpdateStatsForTroll(Agent agent, AgentDrivenProperties agentDrivenProperties)
+		{
+			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
+			agentDrivenProperties.MaxSpeedMultiplier *= 1.2f;
+			agentDrivenProperties.CombatMaxSpeedMultiplier *= 1.5f;
+			agentDrivenProperties.AIParryOnAttackAbility = 0f;
+			agentDrivenProperties.AIParryOnAttackingContinueAbility = 0f;
+			agentDrivenProperties.AIParryOnDecideAbility = 0f;
+			agentDrivenProperties.AiParryDecisionChangeValue = 0f;
+			agentDrivenProperties.AIAttackOnParryChance = 1f;
+			agentDrivenProperties.AIBlockOnDecideAbility = 0f;
+			agentDrivenProperties.AiDefendWithShieldDecisionChanceValue = 0f;
+			agentDrivenProperties.AiMovementDelayFactor = 0.5f;
+			agentDrivenProperties.AiDecideOnAttackContinueAction = 1f;
+			agentDrivenProperties.AISetNoDefendTimerAfterParryingAbility = 30f;
+			agentDrivenProperties.AiTryChamberAttackOnDecide = 0f;
 		}
 
 		/// <summary>
@@ -161,7 +224,7 @@ namespace Alliance.Common.GameModels
 			}
 		}
 
-		private void UpdateHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties)
+		private void UpdateHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties, MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter)
 		{
 			Equipment spawnEquipment = agent.SpawnEquipment;
 			agentDrivenProperties.ArmorHead = spawnEquipment.GetHeadArmorSum();
@@ -211,14 +274,8 @@ namespace Alliance.Common.GameModels
 
 			// Native speed value
 			float movespeedMultiplier = 1f;
-			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-			if (mPHeroClassForCharacter != null)
-			{
-				movespeedMultiplier = mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopMovementSpeedMultiplier : mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
-			}
+			movespeedMultiplier = mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopMovementSpeedMultiplier : mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
 			agentDrivenProperties.MaxSpeedMultiplier = 1.05f * (movespeedMultiplier * (100f / (100f + totalWeightOfWeapons)));
-
-			SetAgentSpeed(agent, agentDrivenProperties);
 
 			int ridingSkill = GetEffectiveSkill(agent, DefaultSkills.Riding);
 			bool weaponIsBow = false;
@@ -340,24 +397,11 @@ namespace Alliance.Common.GameModels
 		}
 
 
-		private AgentDrivenProperties InitializeHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties, AgentBuildData agentBuildData)
+		private AgentDrivenProperties InitializeHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties, AgentBuildData agentBuildData, MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter)
 		{
-			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-			if (mPHeroClassForCharacter != null)
-			{
-				FillAgentStatsFromData(ref agentDrivenProperties, agent, mPHeroClassForCharacter, agentBuildData?.AgentMissionPeer, agentBuildData?.OwningAgentMissionPeer);
-				agentDrivenProperties.SetStat(DrivenProperty.UseRealisticBlocking, MultiplayerOptions.OptionType.UseRealisticBlocking.GetBoolValue() ? 1f : 0f);
-			}
-
-			if (mPHeroClassForCharacter != null)
-			{
-				agent.BaseHealthLimit = mPHeroClassForCharacter.Health;
-			}
-			else
-			{
-				agent.BaseHealthLimit = 100f;
-			}
-
+			FillAgentStatsFromData(ref agentDrivenProperties, agent, mPHeroClassForCharacter, agentBuildData?.AgentMissionPeer, agentBuildData?.OwningAgentMissionPeer);
+			agentDrivenProperties.SetStat(DrivenProperty.UseRealisticBlocking, MultiplayerOptions.OptionType.UseRealisticBlocking.GetBoolValue() ? 1f : 0f);
+			agent.BaseHealthLimit = mPHeroClassForCharacter.Health;
 			agent.HealthLimit = agent.BaseHealthLimit;
 			agent.Health = agent.HealthLimit;
 			return agentDrivenProperties;
@@ -412,24 +456,6 @@ namespace Alliance.Common.GameModels
 			float managedParameter2 = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalCombatSpeedMaxMultiplier);
 			float num = (heroClass.IsTroopCharacter(agent.Character) ? heroClass.TroopCombatMovementSpeedMultiplier : heroClass.HeroCombatMovementSpeedMultiplier);
 			agentDrivenProperties.CombatMaxSpeedMultiplier = managedParameter + (managedParameter2 - managedParameter) * num;
-		}
-
-		/// <summary>
-		/// Adjust speed depending on race. MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
-		/// </summary>
-		private static void SetAgentSpeed(Agent agent, AgentDrivenProperties agentDrivenProperties)
-		{
-			// TODO : disabled for now. We'll probably need this again when working on new races.
-			//Log(agent.Name + " - previous speed limit : " + agentDrivenProperties.MaxSpeedMultiplier + " / " + agent.GetMaximumSpeedLimit(), LogLevel.Debug);
-			//if (agent.Character.Race != 0 && agent.Character.Race == FaceGen.GetRaceOrDefault("giant"))
-			//{
-			//    agentDrivenProperties.MaxSpeedMultiplier *= 5f;
-			//}
-			//else if (agent.Character.Race != 0 && agent.Character.Race == FaceGen.GetRaceOrDefault("dwarf"))
-			//{
-			//    agentDrivenProperties.MaxSpeedMultiplier *= 0.9f;
-			//}
-			//Log(agent.Name + " - new speed limit : " + agentDrivenProperties.MaxSpeedMultiplier + " / " + agent.GetMaximumSpeedLimit(), LogLevel.Debug);
 		}
 
 		protected new void SetAiRelatedProperties(Agent agent, AgentDrivenProperties agentDrivenProperties, WeaponComponentData equippedItem, WeaponComponentData secondaryItem)
