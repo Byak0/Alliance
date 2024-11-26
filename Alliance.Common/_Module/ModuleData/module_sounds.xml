@@ -367,5 +367,45 @@
 		<!--Sounds in Native/Ambient-->
 		<module_sound name="Native/Ambient/Fireworks 1.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 1.mp3" is_2d="true" />
 		<module_sound name="Native/Ambient/Fireworks 2.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 2.mp3" is_2d="true" />
+
+		<!-- TROLL -  TODO reorganize -->
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-01" sound_category="mission_voice" path="voice_lotr_troll-01.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-02" sound_category="mission_voice" path="voice_lotr_troll-02.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-03" sound_category="mission_voice_shout" path="voice_lotr_troll-03.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-04" sound_category="mission_voice" path="voice_lotr_troll-04.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-05" sound_category="mission_voice" path="voice_lotr_troll-05.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-06" sound_category="mission_voice" path="voice_lotr_troll-06.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-07" sound_category="mission_voice" path="voice_lotr_troll-07.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-08" sound_category="mission_voice" path="voice_lotr_troll-08.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-09" sound_category="mission_voice" path="voice_lotr_troll-09.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-10" sound_category="mission_voice" path="voice_lotr_troll-10.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-11" sound_category="mission_voice" path="voice_lotr_troll-11.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-12" sound_category="mission_voice" path="voice_lotr_troll-12.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-13" sound_category="mission_voice_shout" path="voice_lotr_troll-13.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-14" sound_category="mission_voice" path="voice_lotr_troll-14.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-15" sound_category="mission_voice" path="voice_lotr_troll-15.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-16" sound_category="mission_voice" path="voice_lotr_troll-16.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-17" sound_category="mission_voice" path="voice_lotr_troll-17.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-18" sound_category="mission_voice_shout" path="voice_lotr_troll-18.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-19" sound_category="mission_voice_shout" path="voice_lotr_troll-19.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-20" sound_category="mission_voice_shout" path="voice_lotr_troll-20.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-21" sound_category="mission_voice" path="voice_lotr_troll-21.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-22" sound_category="mission_voice" path="voice_lotr_troll-22.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-23" sound_category="mission_voice" path="voice_lotr_troll-23.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-24" sound_category="mission_voice_shout" path="voice_lotr_troll-24.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-25" sound_category="mission_voice_shout" path="voice_lotr_troll-25.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-26" sound_category="mission_voice_shout" path="voice_lotr_troll-26.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-27" sound_category="mission_voice" path="voice_lotr_troll-27.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-28" sound_category="mission_voice" path="voice_lotr_troll-28.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-29" sound_category="mission_voice_shout" path="voice_lotr_troll-29.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-30" sound_category="mission_voice_shout" path="voice_lotr_troll-30.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-31" sound_category="mission_voice" path="voice_lotr_troll-31.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-32" sound_category="mission_voice" path="voice_lotr_troll-32.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-33" sound_category="mission_voice_shout" path="voice_lotr_troll-33.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-34" sound_category="mission_voice_shout" path="voice_lotr_troll-34.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-35" sound_category="mission_voice" path="voice_lotr_troll-35.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-36" sound_category="mission_voice" path="voice_lotr_troll-36.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-37" sound_category="mission_voice_shout" path="voice_lotr_troll-37.mp3" />
+		<module_sound name="bfhd/voice/combat/troll/voice_lotr_troll-38" sound_category="mission_voice_shout" path="voice_lotr_troll-38.mp3" />
 	</module_sounds>
 </base>

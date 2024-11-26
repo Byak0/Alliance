@@ -1,0 +1,4 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.mp_monster_cavetroll_troop" troop_limit="10" player_select_limit="1" />
+	<CharacterExtended id="NPCCharacter.mp_monster_cavetroll_hero" troop_limit="1" player_select_limit="1" hard_limit="true"/>
+</CharactersExtended>

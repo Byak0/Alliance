@@ -15540,7 +15540,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="mp_spear_pommel_12"
+				id="spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15563,7 +15563,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="mp_spear_pommel_12"
+				id="spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15582,7 +15582,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15606,7 +15606,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15630,7 +15630,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15654,7 +15654,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece

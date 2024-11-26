@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<voice_definitions>
+
+	<voice_definition name="troll_01" sound_and_collision_info_class="human" only_for_npcs="false" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+
+		<voice type="Grunt" path="bfhd/voice/combat/troll/voice_lotr_troll-01" face_anim="grunt" />
+		<voice type="Jump" path="bfhd/voice/combat/troll/voice_lotr_troll-05" face_anim="scream" />
+		<voice type="Yell" path="bfhd/voice/combat/troll/voice_lotr_troll-20" face_anim="yell" />
+		<voice type="Pain" path="bfhd/voice/combat/troll/voice_lotr_troll-08" face_anim="hit" />
+		<voice type="Death" path="bfhd/voice/combat/troll/voice_lotr_troll-18" face_anim="death" />
+		<voice type="Stun" path="bfhd/voice/combat/troll/voice_lotr_troll-14" face_anim="yeah" />
+		<voice type="Fear" path="bfhd/voice/combat/troll/voice_lotr_troll-28" face_anim="terrified" />
+		<voice type="Climb" path="bfhd/voice/combat/troll/voice_lotr_troll-02" face_anim="terrified" />
+		<voice type="Focus" path="bfhd/voice/combat/troll/voice_lotr_troll-21" face_anim="terrified" />
+		<voice type="Debacle" path="bfhd/voice/combat/troll/voice_lotr_troll-12" face_anim="terrified" />
+		<voice type="Victory" path="bfhd/voice/combat/troll/voice_lotr_troll-29" face_anim="victory" />
+		<voice type="HorseRally" path="bfhd/voice/combat/troll/voice_lotr_troll-04" face_anim="yeah" />
+		<voice type="HorseStop" path="bfhd/voice/combat/troll/voice_lotr_troll-04" face_anim="wow" />
+		<voice type="Infantry" path="bfhd/voice/combat/troll/voice_lotr_troll-13" face_anim="infantry" />
+		<voice type="Cavalry" path="bfhd/voice/combat/troll/voice_lotr_troll-15" face_anim="cavalry" />
+		<voice type="Archers" path="bfhd/voice/combat/troll/voice_lotr_troll-12" face_anim="archers" />
+		<voice type="Everyone" path="bfhd/voice/combat/troll/voice_lotr_troll-22" face_anim="everyone" />
+		<voice type="HorseArchers" path="bfhd/voice/combat/troll/voice_lotr_troll-21" face_anim="attack" />
+		<voice type="Mixed" path="bfhd/voice/combat/troll/voice_lotr_troll-20" face_anim="everyone" />
+		<voice type="Charge" path="bfhd/voice/combat/troll/voice_lotr_troll-03" face_anim="attack" />
+		<voice type="Move" path="bfhd/voice/combat/troll/voice_lotr_troll-20" face_anim="move" />
+		<voice type="Retreat" path="bfhd/voice/combat/troll/voice_lotr_troll-26" face_anim="retreat" />
+		<voice type="Follow" path="bfhd/voice/combat/troll/voice_lotr_troll-22" face_anim="followme" />
+		<voice type="Advance" path="bfhd/voice/combat/troll/voice_lotr_troll-20" face_anim="attack" />
+		<voice type="Dismount" path="bfhd/voice/combat/troll/voice_lotr_troll-15" face_anim="attack" />
+		<voice type="Mount" path="bfhd/voice/combat/troll/voice_lotr_troll-15" face_anim="attack" />
+		<voice type="FallBack" path="bfhd/voice/combat/troll/voice_lotr_troll-14" face_anim="attack" />
+		<voice type="FireAtWill" path="bfhd/voice/combat/troll/voice_lotr_troll-24" face_anim="attack" />
+		<voice type="HoldFire" path="bfhd/voice/combat/troll/voice_lotr_troll-26" face_anim="attack" />
+		<voice type="Stop" path="bfhd/voice/combat/troll/voice_lotr_troll-26" face_anim="attack" />
+		<voice type="PickSpears" path="bfhd/voice/combat/troll/voice_lotr_troll-01" face_anim="attack" />
+		<voice type="PickDefault" path="bfhd/voice/combat/troll/voice_lotr_troll-01" face_anim="attack" />
+		<voice type="FaceEnemy" path="bfhd/voice/combat/troll/voice_lotr_troll-25" face_anim="attack" />
+		<voice type="FaceDirection" path="bfhd/voice/combat/troll/voice_lotr_troll-29" face_anim="attack" />
+		<voice type="AttackGate" path="bfhd/voice/combat/troll/voice_lotr_troll-03" face_anim="attack" />
+		<voice type="UseSiegeWeapon" path="bfhd/voice/combat/troll/voice_lotr_troll-20" face_anim="attack" />
+		<voice type="UseLadders" path="bfhd/voice/combat/troll/voice_lotr_troll-04" face_anim="attack" />
+		<voice type="CommandDelegate" path="bfhd/voice/combat/troll/voice_lotr_troll-13" face_anim="attack" />
+		<voice type="CommandUndelegate" path="bfhd/voice/combat/troll/voice_lotr_troll-12" face_anim="attack" />
+		<voice type="FormCircle" path="bfhd/voice/combat/troll/voice_lotr_troll-01" face_anim="attack" />
+		<voice type="FormColumn" path="bfhd/voice/combat/troll/voice_lotr_troll-02" face_anim="attack" />
+		<voice type="FormLine" path="bfhd/voice/combat/troll/voice_lotr_troll-04" face_anim="attack" />
+		<voice type="FormLoose" path="bfhd/voice/combat/troll/voice_lotr_troll-12" face_anim="attack" />
+		<voice type="FormScatter" path="bfhd/voice/combat/troll/voice_lotr_troll-13" face_anim="attack" />
+		<voice type="FormShieldWall" path="bfhd/voice/combat/troll/voice_lotr_troll-15" face_anim="attack" />
+		<voice type="FormSkein" path="bfhd/voice/combat/troll/voice_lotr_troll-05" face_anim="attack" />
+		<voice type="FormSquare" path="bfhd/voice/combat/troll/voice_lotr_troll-09" face_anim="attack" />
+		<voice type="MpHelp" path="bfhd/voice/combat/troll/voice_lotr_troll-17" face_anim="attack" />
+		<voice type="MpSpot" path="bfhd/voice/combat/troll/voice_lotr_troll-15" face_anim="attack" />
+		<voice type="MpThanks" path="bfhd/voice/combat/troll/voice_lotr_troll-30" face_anim="attack" />
+		<voice type="MpSorry" path="bfhd/voice/combat/troll/voice_lotr_troll-35" face_anim="attack" />
+		<voice type="MpAffirmative" path="bfhd/voice/combat/troll/voice_lotr_troll-21" face_anim="attack" />
+		<voice type="MpNegative" path="bfhd/voice/combat/troll/voice_lotr_troll-26" face_anim="attack" />
+		<voice type="MpRegroup" path="bfhd/voice/combat/troll/voice_lotr_troll-38" face_anim="attack" />
+		<voice type="MpDefend" path="bfhd/voice/combat/troll/voice_lotr_troll-14" face_anim="attack" />
+		<voice type="MpAttack" path="bfhd/voice/combat/troll/voice_lotr_troll-03" face_anim="attack" />
+
+	</voice_definition>
+
+</voice_definitions>
