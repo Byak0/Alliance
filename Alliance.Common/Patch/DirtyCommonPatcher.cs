@@ -58,6 +58,7 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_AddTeam.Patch();
 			patchSuccess &= Patch_GameNetworkMessage.Patch();
 			patchSuccess &= Patch_BodyGeneratorView.Patch();
+			patchSuccess &= Patch_Troll.Patch();
 			patchSuccess &= Patch_MissionPeer.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
