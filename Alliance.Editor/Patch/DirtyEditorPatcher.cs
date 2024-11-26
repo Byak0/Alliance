@@ -13,10 +13,10 @@ namespace Alliance.Editor.Patch
 		{
 			bool patchSuccess = true;
 
-
 			patchSuccess &= Patch_CustomBattleData.Patch();
 			patchSuccess &= Patch_BannerlordConfig.Patch();
 			patchSuccess &= Patch_BasicCultureObject.Patch();
+			patchSuccess &= Patch_LessUselessErrors.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;
