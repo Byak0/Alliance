@@ -31,4 +31,10 @@ Mod is under heavy development and still far from completion.
 Join us on [Discord](https://discord.gg/xCVdpQccfm).
 
 # License
-Alliance is released under the MIT License. Please read the license for more information about usage and redistribution.
+    Alliance - Multiplayer mod for Mount & Blade II: Bannerlord
+    Copyright (C) 2023-2024 La Forge des Combattants
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
