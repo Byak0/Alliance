@@ -14,7 +14,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 	/// Patch the BodyGeneratorView to make the created AgentVisuals use the correct action set and so skeleton when it is refreshed.
 	/// Credits to The Old Realm's team.
 	/// </summary>
-	class Patch_BodyGeneratorView
+	public class Patch_BodyGeneratorView
 	{
 		private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_BodyGeneratorView));
 

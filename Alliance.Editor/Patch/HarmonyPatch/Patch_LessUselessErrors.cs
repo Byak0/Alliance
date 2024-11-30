@@ -5,6 +5,7 @@ using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
 using static Alliance.Common.Utilities.Logger;
 
@@ -50,6 +51,12 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 					typeof(BannerVisual).GetMethod(nameof(BannerVisual.GetMeshMatrix), BindingFlags.Static | BindingFlags.Public),
 					prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
 						nameof(Prefix_BannerVisual_GetMeshMatrix), BindingFlags.Static | BindingFlags.Public)));
+
+				// Patch MissionWeapon constructor
+				Harmony.Patch(
+					typeof(MissionWeapon).GetConstructor(new[] { typeof(ItemObject), typeof(ItemModifier), typeof(Banner) }),
+					prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
+						nameof(Prefix_MissionWeaponConstructor), BindingFlags.Static | BindingFlags.Public)));
 			}
 			catch (Exception e)
 			{
@@ -139,6 +146,72 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 			//Debug.Assert(rotation >= 0f && rotation <= 6.2831855f, "rotation >= 0 && rotation <= 2 * MBMath.PI", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade.View\\BannerVisual.cs", "GetMeshMatrix", 78);
 
 			return false; // Skip original method
+		}
+
+		/// <summary>
+		/// Replace MissionWeapon constructor for easier debug.
+		/// /!\ Cause issues with ItemModifier, need to be fixed.
+		/// </summary>
+		public static bool Prefix_MissionWeaponConstructor(ItemObject item, ItemModifier itemModifier, Banner banner, ref MissionWeapon __instance, ref List<WeaponComponentData> ____weapons, ref short ____modifiedMaxDataValue, ref bool ____hasAnyConsumableUsage, ref short ____dataValue, ref object ____ammoWeapon, ref object ____attachedWeapons, ref object ____attachedWeaponFrames)
+		{
+			PropertyInfo propertyInfoItem = typeof(MissionWeapon).GetProperty(nameof(MissionWeapon.Item));
+			PropertyInfo propertyInfoItemModifier = typeof(MissionWeapon).GetProperty(nameof(MissionWeapon.ItemModifier));
+			PropertyInfo propertyInfoBanner = typeof(MissionWeapon).GetProperty(nameof(MissionWeapon.Banner));
+			PropertyInfo propertyInfoGlossMultiplier = typeof(MissionWeapon).GetProperty(nameof(MissionWeapon.GlossMultiplier));
+			object boxed = __instance;
+			propertyInfoItem.SetValue(boxed, item, null);
+			propertyInfoItemModifier.SetValue(boxed, itemModifier, null);
+			propertyInfoBanner.SetValue(boxed, banner, null);
+			propertyInfoGlossMultiplier.SetValue(boxed, 1f, null);
+			__instance = (MissionWeapon)boxed;
+
+			Debug.Assert(__instance.ItemModifier == null || !GameNetwork.IsServerOrRecorder, "ItemModifier == null || !GameNetwork.IsServerOrRecorder", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\MissionWeapon.cs", ".ctor", 201);
+			__instance.CurrentUsageIndex = 0;
+			____weapons = new List<WeaponComponentData>(1);
+			____modifiedMaxDataValue = 0;
+			____hasAnyConsumableUsage = false;
+
+			if (item != null)
+			{
+				Debug.Assert(item.WeaponComponent != null, "item.WeaponComponent != null", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\MissionWeapon.cs", ".ctor", 209);
+				if (item.WeaponComponent != null && item.Weapons != null)
+				{
+					foreach (WeaponComponentData weaponComponentData in item.Weapons)
+					{
+						____weapons.Add(weaponComponentData);
+						bool isConsumable = weaponComponentData.IsConsumable;
+						if (isConsumable || weaponComponentData.IsRangedWeapon || weaponComponentData.WeaponFlags.HasAnyFlag(WeaponFlags.HasHitPoints))
+						{
+							//Debug.Assert(____modifiedMaxDataValue == 0, $"_modifiedMaxDataValue == 0 for {weaponComponentData.WeaponDescriptionId} - {item.Name}", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\MissionWeapon.cs", ".ctor", 218);
+							//Debug.Assert(item.PrimaryWeapon == weaponComponentData || (!item.PrimaryWeapon.IsConsumable && !item.PrimaryWeapon.WeaponFlags.HasAnyFlag(WeaponFlags.HasHitPoints)), $"item.PrimaryWeapon == weapon|| (!item.PrimaryWeapon.IsConsumable && !item.PrimaryWeapon.WeaponFlags.HasAnyFlag(WeaponFlags.HasHitPoints)) for {weaponComponentData.WeaponDescriptionId} - {item.Name}", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade\\MissionWeapon.cs", ".ctor", 219);
+							____modifiedMaxDataValue = weaponComponentData.MaxDataValue;
+							if (itemModifier != null)
+							{
+								if (weaponComponentData.WeaponFlags.HasAnyFlag(WeaponFlags.HasHitPoints))
+								{
+									____modifiedMaxDataValue = weaponComponentData.GetModifiedMaximumHitPoints(itemModifier);
+								}
+								else if (isConsumable)
+								{
+									____modifiedMaxDataValue = weaponComponentData.GetModifiedStackCount(itemModifier);
+								}
+							}
+						}
+						if (isConsumable)
+						{
+							____hasAnyConsumableUsage = true;
+						}
+					}
+				}
+			}
+
+			____dataValue = ____modifiedMaxDataValue;
+			__instance.ReloadPhase = 0;
+			____ammoWeapon = null;
+			____attachedWeapons = null;
+			____attachedWeaponFrames = null;
+
+			return false; // Skip the original constructor
 		}
 	}
 }

@@ -51,6 +51,9 @@ namespace Alliance.Editor
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
 		{
+			// Late patching, patching earlier causes issues with Voice type
+			Patch_AdvancedCombat.LatePatch();
+
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());

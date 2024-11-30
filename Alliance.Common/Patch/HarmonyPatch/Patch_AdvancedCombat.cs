@@ -14,12 +14,12 @@ using static TaleWorlds.MountAndBlade.Mission;
 namespace Alliance.Common.Patch.HarmonyPatch
 {
 	/// <summary>
-	/// Combat related patches for the troll.
+	/// Combat related patches.
 	/// Credits to Xorberax for original Cut Through Everyone mod.
 	/// </summary>
-	public static class Patch_Troll
+	public static class Patch_AdvancedCombat
 	{
-		private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_Troll));
+		private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_AdvancedCombat));
 
 		private static bool _patched;
 
@@ -44,29 +44,29 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
 				Harmony.Patch(
 					AccessTools.Method(typeof(Mission), "DecideWeaponCollisionReaction"),
-					postfix: new HarmonyMethod(typeof(Patch_Troll), nameof(DecideWeaponCollisionReactionPostfix))
+					postfix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(DecideWeaponCollisionReactionPostfix))
 				);
 
 				Harmony.Patch(
 					AccessTools.Method(typeof(Mission), "MeleeHitCallback"),
-					postfix: new HarmonyMethod(typeof(Patch_Troll), nameof(MeleeHitCallbackPostfix))
+					postfix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(MeleeHitCallbackPostfix))
 				);
 
 				Harmony.Patch(
 					AccessTools.Method(typeof(Mission), "GetAttackCollisionResults"),
-					postfix: new HarmonyMethod(typeof(Patch_Troll), nameof(Postfix_GetAttackCollisionResults))
+					postfix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(Postfix_GetAttackCollisionResults))
 				);
 
 				Harmony.Patch(
 					AccessTools.Method(typeof(Mission), "HandleMissileCollisionReaction"),
-					prefix: new HarmonyMethod(typeof(Patch_Troll), nameof(Prefix_HandleMissileCollisionReaction))
+					prefix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(Prefix_HandleMissileCollisionReaction))
 				);
 
 				return true;
 			}
 			catch (Exception e)
 			{
-				Debug.Print("Error in TrollPatch: " + e.ToString(), 0, Debug.DebugColor.Red);
+				Debug.Print("Error in Patch_AdvancedCombat: " + e.ToString(), 0, Debug.DebugColor.Red);
 				return false;
 			}
 		}
@@ -75,14 +75,16 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		{
 			Harmony.Patch(
 				AccessTools.Method(typeof(Mission), "MissileHitCallback"),
-				prefix: new HarmonyMethod(typeof(Patch_Troll), nameof(Prefix_MissileHitCallback))
+				prefix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(Prefix_MissileHitCallback))
 			);
 		}
 
 		// Make arrow bounce
 		public static void Prefix_MissileHitCallback(ref int extraHitParticleIndex, ref AttackCollisionData collisionData, Vec3 missileStartingPosition, Vec3 missilePosition, Vec3 missileAngularVelocity, Vec3 movementVelocity, MatrixFrame attachGlobalFrame, MatrixFrame affectedShieldGlobalFrame, int numDamagedAgents, Agent attacker, Agent victim, GameEntity hitEntity)
 		{
-			if (victim != null && victim.IsTroll())
+			if (victim == null) return;
+
+			if (victim.IsTroll())
 			{
 				bool backAttack = IsBackAttack(attacker, victim);
 				bool attackBounced = false;
@@ -176,7 +178,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
 		public static void Postfix_GetAttackCollisionResults(ref CombatLogData __result, Agent attackerAgent, Agent victimAgent, GameEntity hitObject, float momentumRemaining, in MissionWeapon attackerWeapon, bool crushedThrough, bool cancelDamage, bool crushedThroughWithoutAgentCollision, ref AttackCollisionData attackCollisionData, ref WeaponComponentData shieldOnBack, ref CombatLogData combatLog)
 		{
-			if (victimAgent != null && victimAgent.IsTroll())
+			if (victimAgent != null && victimAgent.IsTroll() && !attackerAgent.IsEnt() && !attackerAgent.IsTroll())
 			{
 				bool backAttack = IsBackAttack(attackerAgent, victimAgent);
 				bool criticalHit = false;
