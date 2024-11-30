@@ -71,6 +71,114 @@
 				HasToBeHeldUp="true"
 				CanBePickedUpFromCorpse="false" />
 	</Item>
+
+	<Item
+	id="autochtone_banner"
+	name="{=al_auto_banner}Autochtone Banner"
+	is_merchandise="false"
+	body_name="bo_mace_a"
+	recalculate_body="true"
+	mesh="vlandia_tier_1_banner"
+	prefab="vlandia_tier_1_banner"
+	culture="Culture.autochtone"
+	weight="0.2"
+	Type="Banner"
+	using_tableau="true"
+	item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner
+					banner_level="1"
+					weapon_class="Banner"
+					effect="IncreasedMeleeDamageAgainstMountedTroops"
+					weapon_balance="100"
+					thrust_speed="78"
+					speed_rating="97"
+					missile_speed="0"
+					weapon_length="150"
+					swing_damage="6"
+					swing_damage_type="Blunt"
+					item_usage="banner"
+					physics_material="metal_weapon"
+					position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
+	</Item>
+
+	<Item
+		id="serain_banner"
+		name="{=al_serain_banner}Serain Banner"
+		is_merchandise="false"
+		body_name="bo_mace_a"
+		recalculate_body="true"
+		mesh="vlandia_tier_1_banner"
+		prefab="vlandia_tier_1_banner"
+		culture="Culture.serain"
+		weight="0.2"
+		Type="Banner"
+		using_tableau="true"
+		item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner
+					banner_level="1"
+					weapon_class="Banner"
+					effect="IncreasedMeleeDamageAgainstMountedTroops"
+					weapon_balance="100"
+					thrust_speed="78"
+					speed_rating="97"
+					missile_speed="0"
+					weapon_length="150"
+					swing_damage="6"
+					swing_damage_type="Blunt"
+					item_usage="banner"
+					physics_material="metal_weapon"
+					position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
+	</Item>
+
+	<Item
+			id="berricos_banner"
+			name="{=al_berricos_banner}Berricos Banner"
+			is_merchandise="false"
+			body_name="bo_mace_a"
+			recalculate_body="true"
+			mesh="vlandia_tier_1_banner"
+			prefab="vlandia_tier_1_banner"
+			culture="Culture.berricos"
+			weight="0.2"
+			Type="Banner"
+			using_tableau="true"
+			item_holsters="abdomen_left">
+		<ItemComponent>
+			<Banner
+					banner_level="1"
+					weapon_class="Banner"
+					effect="IncreasedMeleeDamageAgainstMountedTroops"
+					weapon_balance="100"
+					thrust_speed="78"
+					speed_rating="97"
+					missile_speed="0"
+					weapon_length="150"
+					swing_damage="6"
+					swing_damage_type="Blunt"
+					item_usage="banner"
+					physics_material="metal_weapon"
+					position="0.0, 0.0, -0.8"></Banner>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="true"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="true"
+					 CanBePickedUpFromCorpse="false" />
+	</Item>
 	
 	<!-- Native Banners -->
 	<Item
