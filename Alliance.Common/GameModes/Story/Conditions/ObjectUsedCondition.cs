@@ -58,8 +58,6 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public override bool Evaluate(ScenarioManager context)
 		{
-			if (!AllowMultipleUses && _used) return false;
-
 			// If the object has been used, return true and reset the used flag (unless AllowMultipleUses is false)
 			if (_used)
 			{
