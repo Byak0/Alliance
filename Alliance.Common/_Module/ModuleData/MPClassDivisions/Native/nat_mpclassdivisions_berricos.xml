@@ -7,11 +7,12 @@
 <!-- acceleration:          Goes from 0.0 to 1.0. This will be multiplied with 'bipedal_acceleration_multiplier'. Human only. -->
 <!-- hitpoints:             Goes from 1 to infinity. Default is 100. Human only. -->
 <MPClassDivisions>
-	<!-- Autochtone -->
-	<MPClassDivision
-			id="mp_light_infantry_auto"
-			hero="mp_light_infantry_auto_hero"
-			troop="mp_light_infantry_auto_troop"
+		<!-- Berricos -->
+		<MPClassDivision
+			id="mp_civilian_berricos"
+			hero="mp_light_infantry_berricos_hero"
+			troop="mp_civilian_berricos_troop"
+			banner_bearer="mp_light_infantry_berricos_banner_bearer"
 			hero_idle_anim="act_vlandia_mp_peasant_levy_idle"
 			troop_idle_anim="act_idle_unarmed_1"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
@@ -37,39 +38,10 @@
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
-			id="mp_light_ranged_auto"
-			hero="mp_light_ranged_auto_hero"
-			troop="mp_light_ranged_auto_troop"
-			hero_idle_anim="act_battania_mp_ranger_idle"
-			troop_idle_anim="act_idle_bow_1"
-			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
-			troop_mount_idle_anim="act_horse_idle_1"
-			multiplier="0.61"
-			cost="120"
-			icon="Archer_Light"
-			melee_ai="40"
-			ranged_ai="80"
-			armor="8"
-			movement_speed="0.75"
-			combat_movement_speed="0.7"
-			acceleration="3.0">
-		<Perks>
-			<Perk
-				game_mode="all"
-				name="{=*}Default"
-				description="{=*}Default."
-				icon="PerkToughness"
-				perk_list="1">
-			</Perk>
-		</Perks>
-	</MPClassDivision>
-
-	<!-- Explorators -->
-	<MPClassDivision
-			id="mp_light_infantry_explo"
-			hero="mp_light_infantry_explo_hero"
-			troop="mp_light_infantry_explo_troop"
-			banner_bearer="mp_light_infantry_explo_banner_bearer"
+			id="mp_light_infantry_berricos_troop"
+			hero="mp_light_infantry_berricos_hero"
+			troop="mp_light_infantry_berricos_troop"
+			banner_bearer="mp_light_infantry_berricos_banner_bearer"
 			hero_idle_anim="act_vlandia_mp_peasant_levy_idle"
 			troop_idle_anim="act_idle_unarmed_1"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
@@ -95,10 +67,10 @@
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
-			id="mp_mid_infantry_explo"
-			hero="mp_mid_infantry_explo_hero"
-			troop="mp_mid_infantry_explo_troop"
-			banner_bearer="mp_mid_infantry_explo_banner_bearer"
+			id="mp_mid_infantry_berricos"
+			hero="mp_mid_infantry_berricos_hero"
+			troop="mp_mid_infantry_berricos_troop"
+			banner_bearer="mp_mid_infantry_berricos_banner_bearer"
 			hero_idle_anim="act_vlandia_mp_voulgier_idle"
 			troop_idle_anim="act_idle_spear_1_left_stance"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
@@ -123,10 +95,10 @@
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
-			id="mp_heavy_inf_explo"
-			hero="mp_heavy_inf_explo_hero"
-			troop="mp_heavy_inf_explo_troop"
-			banner_bearer="mp_heavy_inf_explo_banner_bearer"
+			id="mp_heavy_inf_berricos"
+			hero="mp_heavy_inf_berricos_hero"
+			troop="mp_heavy_inf_berricos_troop"
+			banner_bearer="mp_heavy_inf_berricos_banner_bearer"
 			hero_idle_anim="act_battania_mp_wildling_idle"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
 			troop_idle_anim="act_idle_1h_with_shield_1"
@@ -151,9 +123,9 @@
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
-			id="mp_light_ranged_explo"
-			hero="mp_light_ranged_explo_hero"
-			troop="mp_light_ranged_explo_troop"
+			id="mp_light_ranged_berricos"
+			hero="mp_light_ranged_berricos_hero"
+			troop="mp_light_ranged_berricos_troop"
 			hero_idle_anim="act_battania_mp_ranger_idle"
 			troop_idle_anim="act_idle_bow_1"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
@@ -178,10 +150,10 @@
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
-			id="mp_heavy_ranged_explo"
-			hero="mp_heavy_ranged_explo_hero"
-			troop="mp_heavy_ranged_explo_troop"
-			banner_bearer="mp_heavy_ranged_explo_banner_bearer"
+			id="mp_heavy_ranged_berricos"
+			hero="mp_heavy_ranged_berricos_hero"
+			troop="mp_heavy_ranged_berricos_troop"
+			banner_bearer="mp_heavy_ranged_berricos_banner_bearer"
 			hero_idle_anim="act_battania_mp_fian_idle"
 			troop_idle_anim="act_idle_bow_1"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"
