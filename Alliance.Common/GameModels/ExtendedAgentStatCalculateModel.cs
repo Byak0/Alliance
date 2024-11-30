@@ -43,11 +43,7 @@ namespace Alliance.Common.GameModels
 		public override float GetKnockDownResistance(Agent agent, StrikeType strikeType = StrikeType.Invalid)
 		{
 			float num = agent.Character.KnockdownResistance;
-			if (agent.IsTroll())
-			{
-				num += 10f;
-			}
-			else if (agent.HasMount)
+			if (agent.HasMount)
 			{
 				num += 0.1f;
 			}
@@ -139,6 +135,10 @@ namespace Alliance.Common.GameModels
 			{
 				UpdateStatsForTroll(agent, agentDrivenProperties);
 			}
+			else if (agent.IsEnt())
+			{
+				UpdateStatsForEnt(agent, agentDrivenProperties);
+			}
 			else if (agent.IsWarg())
 			{
 				UpdateStatsForWarg(agent, agentDrivenProperties);
@@ -162,6 +162,24 @@ namespace Alliance.Common.GameModels
 		}
 
 		private void UpdateStatsForTroll(Agent agent, AgentDrivenProperties agentDrivenProperties)
+		{
+			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
+			agentDrivenProperties.MaxSpeedMultiplier *= 1.2f;
+			agentDrivenProperties.CombatMaxSpeedMultiplier *= 1.8f;
+			agentDrivenProperties.AIParryOnAttackAbility = 0f;
+			agentDrivenProperties.AIParryOnAttackingContinueAbility = 0f;
+			agentDrivenProperties.AIParryOnDecideAbility = 0f;
+			agentDrivenProperties.AiParryDecisionChangeValue = 0f;
+			agentDrivenProperties.AIAttackOnParryChance = 1f;
+			agentDrivenProperties.AIBlockOnDecideAbility = 0f;
+			agentDrivenProperties.AiDefendWithShieldDecisionChanceValue = 0f;
+			agentDrivenProperties.AiMovementDelayFactor = 0.5f;
+			agentDrivenProperties.AiDecideOnAttackContinueAction = 1f;
+			agentDrivenProperties.AISetNoDefendTimerAfterParryingAbility = 30f;
+			agentDrivenProperties.AiTryChamberAttackOnDecide = 0f;
+		}
+
+		private void UpdateStatsForEnt(Agent agent, AgentDrivenProperties agentDrivenProperties)
 		{
 			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
 			agentDrivenProperties.MaxSpeedMultiplier *= 1.2f;
