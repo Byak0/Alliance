@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Patch;
+using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;

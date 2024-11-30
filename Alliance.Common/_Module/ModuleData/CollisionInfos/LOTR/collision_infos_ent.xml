@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <base
-type="collision_infos">
+	type="collision_infos">
 	<collision_infos>
 		<material
-		id="wood_weapon">
+			id="wood_weapon">
 			<collision_info
 				second_material="wood_shield">
 				<collision_effect
@@ -713,79 +713,79 @@ type="collision_infos">
 		<!-- For humanoid: pace_1: Walk. pace_2: Run. -->
 		<!-- For horse: pace_1: Walk. pace_2: Walk. pace_3: Trot. pace_4: Canter. pace_5: Gallop. -->
 		<!-- pace_1, pace_2, pace_3, pace_4, pace_5, jump, land, bodyfall, sneak, slide -->
-		<monster sound_and_collision_info_class="warg">
+		<monster
+			sound_and_collision_info_class="ent">
 			<collision_info
 				second_material="default">
 				<collision_effect
 					effect_type="pace_1"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
+					particle="psys_game_infantry_default_col"
+					trail_particle=""
+					splash_atlas_start_index="12"
+					splash_atlas_end_index="15"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="pace_2"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
+					particle="psys_game_infantry_default_col"
+					trail_particle="psys_game_step_dust_on_default"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_3"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_4"
-					particle="psys_game_hoof_default_col"
-					trail_particle="psys_game_hoof_dust_on_default"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_5"
-					particle="psys_game_hoof_default_col"
-					trail_particle="psys_game_hoof_dust_on_default"
-					decal=""
-					sound="LOTR/Monsters/Warg/run_dirts"
-					one_shot="true" />
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
-					particle="psys_game_hoof_default_col_s"
+					particle="psys_game_infantry_default_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
-					particle="psys_game_hoof_default_col_s"
+					particle="psys_game_infantry_default_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
-					particle=""
+					particle="psys_game_infantry_default_col"
 					decal=""
-					sound="event:/physics/bodyfall/horse/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
-					effect_type="slide"
-					particle=""
+					effect_type="sneak"
+					particle="psys_game_infantry_default_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/dirt" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
 			<collision_info
-				second_material="wood"
-				fallback_material_for_effects="stone">
+				second_material="wood">
+				<collision_effect
+					effect_type="pace_1"
+					particle=""
+					trail_particle=""
+					decal=""
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
+				<collision_effect
+					effect_type="pace_2"
+					particle=""
+					trail_particle="psys_game_step_dust_on_default"
+					decal=""
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/wood" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/wood" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
 					particle=""
 					decal=""
-					sound="event:/physics/bodyfall/horse/wood" />
+					sound="LOTR/Monsters/Ent/ent_dies" />
+				<collision_effect
+					effect_type="sneak"
+					particle=""
+					decal=""
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
 			<collision_info
 				second_material="wood_nonstick"
@@ -800,163 +800,106 @@ type="collision_infos">
 				second_material="grass">
 				<collision_effect
 					effect_type="pace_1"
-					particle="psys_game_hoof_grass_col_s"
-					trail_particle="psys_game_hoof_dust_on_grass"
+					particle="psys_game_infantry_grass_col"
+					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footstep_grass" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="pace_2"
-					particle="psys_game_hoof_grass_col_s"
-					trail_particle="psys_game_hoof_dust_on_grass"
-					decal=""
-					sound="LOTR/Monsters/Warg/footstep_grass" />
-				<collision_effect
-					effect_type="pace_3"
-					particle="psys_game_hoof_grass_col_s"
-					trail_particle="psys_game_hoof_dust_on_grass"
-					decal=""
-					sound="LOTR/Monsters/Warg/footstep_grass" />
-				<collision_effect
-					effect_type="pace_4"
-					particle="psys_game_hoof_grass_col"
+					particle="psys_game_infantry_grass_col"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footstep_grass" />
-				<collision_effect
-					effect_type="pace_5"
-					particle="psys_game_hoof_grass_col"
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/run_grasss"
-					one_shot="true" />
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
-					particle="psys_game_hoof_grass_col_s"
+					particle="psys_game_infantry_grass_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
-					particle="psys_game_hoof_grass_col_s"
+					particle="psys_game_infantry_grass_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
-					particle=""
+					particle="psys_game_infantry_grass_col"
 					decal=""
-					sound="event:/physics/bodyfall/horse/default" />
+					sound="LOTR/Monsters/Ent/ent_dies" />
 				<collision_effect
-					effect_type="slide"
-					particle=""
+					effect_type="sneak"
+					particle="psys_game_infantry_grass_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/grass" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
 			<collision_info
 				second_material="stone">
 				<collision_effect
 					effect_type="pace_1"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
+					particle="psys_game_infantry_stone_col"
+					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_rock" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="pace_2"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
+					particle="psys_game_infantry_stone_col"
+					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_rock" />
-				<collision_effect
-					effect_type="pace_3"
-					particle="psys_game_hoof_default_col_s"
-					trail_particle="psys_game_hoof_dust_on_default"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_rock" />
-				<collision_effect
-					effect_type="pace_4"
-					particle="psys_game_hoof_stone_col"
-					trail_particle="psys_game_hoof_dust_on_stone"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_rock" />
-				<collision_effect
-					effect_type="pace_5"
-					particle="psys_game_hoof_stone_col"
-					trail_particle="psys_game_hoof_dust_on_stone"
-					decal=""
-					sound="LOTR/Monsters/Warg/run_rocks"
-					one_shot="true" />
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
-					particle="psys_game_hoof_stone_col"
+					particle="psys_game_infantry_stone_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
-					particle="psys_game_hoof_grass_col_s"
+					particle="psys_game_infantry_stone_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/default" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
-					particle=""
+					particle="psys_game_infantry_stone_col"
 					decal=""
-					sound="event:/physics/bodyfall/horse/default" />
+					sound="LOTR/Monsters/Ent/ent_dies" />
 				<collision_effect
-					effect_type="slide"
-					particle=""
+					effect_type="sneak"
+					particle="psys_game_infantry_stone_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
 			<collision_info
 				second_material="sand">
 				<collision_effect
 					effect_type="pace_1"
-					particle="psys_game_hoof_sand_col_s"
-					trail_particle="psys_game_hoof_dust"
+					particle="psys_game_infantry_sand_col"
+					trail_particle="psys_game_step_dust_on_sand"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_snow" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="pace_2"
-					particle="psys_game_hoof_sand_col_s"
-					trail_particle="psys_game_hoof_dust"
+					particle="psys_game_infantry_sand_col"
+					trail_particle="psys_game_step_dust_on_sand"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_snow" />
-				<collision_effect
-					effect_type="pace_3"
-					particle="psys_game_hoof_sand_col_s"
-					trail_particle="psys_game_hoof_dust"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_snow" />
-				<collision_effect
-					effect_type="pace_4"
-					particle="psys_game_hoof_sand_col"
-					trail_particle="psys_game_hoof_dust"
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_snow" />
-				<collision_effect
-					effect_type="pace_5"
-					particle="psys_game_hoof_sand_col"
-					trail_particle="psys_game_hoof_dust"
-					decal=""
-					sound="LOTR/Monsters/Warg/run_snows"
-					one_shot="true" />
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
-					particle="psys_game_hoof_sand_col_s"
+					particle="psys_game_infantry_sand_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/sand" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
-					particle="psys_game_hoof_sand_col_s"
+					particle="psys_game_infantry_sand_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/sand" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
-					particle=""
+					particle="psys_game_infantry_sand_col"
 					decal=""
-					sound="event:/physics/bodyfall/horse/default" />
+					sound="LOTR/Monsters/Ent/ent_dies" />
 				<collision_effect
-					effect_type="slide"
-					particle=""
+					effect_type="sneak"
+					particle="psys_game_infantry_sand_col"
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/sand" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
 			<collision_info
 				second_material="path"
@@ -968,74 +911,49 @@ type="collision_infos">
 				second_material="ice"
 				fallback_material_for_effects="snow" />
 			<collision_info
-				second_material="adobe"
-				fallback_material_for_effects="stone" />
-			<collision_info
-				second_material="straw"
-				fallback_material_for_effects="default">
-				<collision_effect
-					effect_type="slide"
-					particle=""
-					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/grass" />
-			</collision_info>
-			<collision_info
-				second_material="fabric"
-				fallback_material_for_effects="sand" />
-			<collision_info
-				second_material="metal">
+				second_material="adobe">
 				<collision_effect
 					effect_type="pace_1"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="pace_2"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_3"
-					particle=""
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_4"
-					particle=""
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps" />
-				<collision_effect
-					effect_type="pace_5"
-					particle=""
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/run_rocks"
-					one_shot="true" />
+					sound="LOTR/Monsters/Ent/ent_runs" />
 				<collision_effect
 					effect_type="jump"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/stone" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="land"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/sand" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 				<collision_effect
 					effect_type="bodyfall"
 					particle=""
 					decal=""
-					sound="event:/physics/bodyfall/horse/default" />
+					sound="LOTR/Monsters/Ent/ent_dies" />
 				<collision_effect
-					effect_type="slide"
+					effect_type="sneak"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/stone" />
+					sound="LOTR/Monsters/Ent/ent_footsteps" />
 			</collision_info>
+			<collision_info
+				second_material="straw"
+				fallback_material_for_effects="default" />
+			<collision_info
+				second_material="fabric"
+				fallback_material_for_effects="sand" />
+			<collision_info
+				second_material="metal"
+				fallback_material_for_effects="stone" />
 			<collision_info
 				second_material="mud"
 				fallback_material_for_effects="default" />
@@ -1046,60 +964,45 @@ type="collision_infos">
 				second_material="water">
 				<collision_effect
 					effect_type="pace_1"
-					particle="psys_game_hoof_water_col_s"
+					particle=""
 					trail_particle=""
+					splash_atlas_start_index="15"
+					splash_atlas_end_index="15"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_water" />
+					sound="event:/mission/movement/footsteps/human/walk/water" />
 				<collision_effect
 					effect_type="pace_2"
-					particle="psys_game_hoof_water_col_s"
+					particle=""
 					trail_particle=""
+					splash_atlas_start_index="15"
+					splash_atlas_end_index="15"
 					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_water" />
-				<collision_effect
-					effect_type="pace_3"
-					particle="psys_game_hoof_water_col_s"
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_water" />
-				<collision_effect
-					effect_type="pace_4"
-					particle="psys_game_hoof_water_coll"
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/footsteps_water" />
-				<collision_effect
-					effect_type="pace_5"
-					particle="psys_game_hoof_water_coll"
-					trail_particle=""
-					decal=""
-					sound="LOTR/Monsters/Warg/run_waters"
-					one_shot="true" />
+					sound="event:/mission/movement/footsteps/human/run/water" />
 				<collision_effect
 					effect_type="jump"
-					particle="psys_game_hoof_water_col_s"
+					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/jump/water" />
+					sound="event:/mission/movement/footsteps/human/jump/water" />
 				<collision_effect
 					effect_type="land"
-					particle="psys_game_hoof_water_col_s"
+					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/land/water" />
+					sound="event:/mission/movement/footsteps/human/land/water" />
 				<collision_effect
 					effect_type="bodyfall"
 					particle=""
 					decal=""
-					sound="event:/physics/bodyfall/horse/water" />
+					sound="" />
 				<collision_effect
-					effect_type="slide"
+					effect_type="sneak"
 					particle=""
 					decal=""
-					sound="event:/mission/movement/footsteps/horse/slide/water" />
+					sound="event:/mission/movement/footsteps/human/sneak/water" />
 				<collision_effect
 					effect_type="pass_through"
 					sound="event:/physics/water"
 					do_not_send_armor_parameter_to_sound="true"
-					upper_bound_of_size_parameter_for_sound="5000" />
+					upper_bound_of_size_parameter_for_sound="1000" />
 			</collision_info>
 		</monster>
 	</collision_infos>

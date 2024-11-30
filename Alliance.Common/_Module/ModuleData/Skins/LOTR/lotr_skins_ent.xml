@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <skins>
-	<race id="troll">
+	<race id="ent">
 		<skin gender="0"
 			  name="man"
 			  mesh_maturity_type ="adult"
 			  morph_key="0"
 			  uses_stitching="true"
 			  body_mesh_suffix=""
-			  min_scale="2.35"
-			  skeleton="troll_skeleton"
-			  body_meta_mesh="body_troll_a"
-			  body_meta_mesh_shoulders="body_troll_a"
+			  min_scale="5"
+			  skeleton="ent_skeleton"
+			  body_meta_mesh="body_ent_1"
+			  body_meta_mesh_shoulders="body_ent_1"
 			  body_meta_mesh_upperbody="box_a"
-			  legs_mesh="feet_troll_a"
-			  hands_mesh="hand_troll_a"
-			  face_meta_mesh="head_troll_a"
-			  underwear_bottom_mesh="troll_pants"
+			  legs_mesh="feet_ent_1"
+			  hands_mesh="hand_ent_1"
+			  face_meta_mesh="head_ent_1"
+			  underwear_bottom_mesh=""
 			  underwear_top_mesh="" >
 			<!-- DEFORM KEYS -->
 			<deform_keys>
@@ -1027,7 +1027,7 @@
 
 			<!-- VOICE TYPES -->
 			<voice_types>
-				<voice_type name="troll_01" />
+				<voice_type name="ent_01" />
 			</voice_types>
 
 			<!-- HAIR MESHES-->
@@ -1041,7 +1041,7 @@
 
 			<!-- EYEBROW MESHES-->
 			<eyebrow_meshes >
-				<eyebrow_mesh name="troll_eyebrow_bald" />
+				<eyebrow_mesh name="ent_1_eyebrow" />
 			</eyebrow_meshes>
 
 			<!-- BEARD MESHES -->
@@ -1089,8 +1089,8 @@
 
 			<!-- FACE TEXTURES -->
 			<face_textures group_id="1">
-				<face_texture name="cavetroll_body"
-											lod_material="cavetroll_body"
+				<face_texture name="lotr_ent_1_head"
+											lod_material="lotr_ent_1_head"
 											color="0xFFFFFFFF"
 											tags="face_texture1,face_texture2">
 				</face_texture>
@@ -1098,8 +1098,8 @@
 
 			<!-- MOUTH TEXTURES -->
 			<mouth_textures group_id="4">
-				<mouth_texture name="mouth_mat"
-											 lod_material="mouth_mat"
+				<mouth_texture name="lotr_ent_beech_leaves"
+											 lod_material="lotr_ent_beech_leaves"
 											 color="0xFFFFFFFF"
 											 tags="mouth_texture1,mouth_texture2">
 				</mouth_texture>

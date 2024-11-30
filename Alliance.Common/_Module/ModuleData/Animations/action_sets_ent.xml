@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <action_sets>
-	<action_set id="as_troll_warrior" movement_system="bipedal" skeleton="troll_skeleton">
+	<action_set id="as_ent_warrior" movement_system="bipedal" skeleton="ent_skeleton">
 		<action animation="pose_cavalry_sword" type="act_troop_cavalry_sword"/>
 		<action animation="inventory_idle_start" type="act_inventory_idle_start"/>
 		<action animation="inventory_idle" type="act_inventory_idle"/>
@@ -4194,7 +4194,7 @@
 		<action animation="camel_tableau_pose_rider_polearm" type="act_camel_tableau_pose_rider_polearm"/>
 		<action animation="camel_tableau_pose_rider_bow" type="act_camel_tableau_pose_rider_bow"/>
 	</action_set>
-	<action_set id="as_troll_female_warrior" base_set="as_troll_warrior">
+	<action_set id="as_ent_female_warrior" base_set="as_ent_warrior">
 		<action animation="female_stand_non_combat" type="act_run_idle_unarmed"/>
 		<action animation="female_run_forward_unarmed" type="act_run_forward_unarmed"/>
 		<action animation="female_run_right_unarmed" type="act_run_right_unarmed"/>
@@ -4746,7 +4746,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_hideout_bandit" base_set="as_troll_warrior">
+	<action_set id="as_ent_hideout_bandit" base_set="as_ent_warrior">
 		<action alternative_group="sit_idle_alt" animation="anim_sit_idle_1" type="act_sit_1"/>
 		<action alternative_group="sit_idle_alt" animation="anim_sit_idle_2" type="act_sit_2"/>
 		<action alternative_group="sit_idle_alt" animation="anim_sit_idle_3" type="act_sit_3"/>
@@ -4988,8 +4988,8 @@
 		<action alternative_group="beg_alt" animation="anim_beggar_standing_2hbegging" type="act_stand_beggar_1"/>
 		<action alternative_group="beg_alt" animation="anim_beggar_standing_1hbegging" type="act_stand_beggar_2"/>
 	</action_set>
-	<action_set id="as_troll_female_hideout_bandit" base_set="as_troll_hideout_bandit"/>
-	<action_set id="as_troll_villager" base_set="as_troll_hideout_bandit">
+	<action_set id="as_ent_female_hideout_bandit" base_set="as_ent_hideout_bandit"/>
+	<action_set id="as_ent_villager" base_set="as_ent_hideout_bandit">
 		<action animation="stand_2" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_unarmed" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_right_base" type="act_walk_right_unarmed"/>
@@ -5002,7 +5002,7 @@
 		<action animation="villager_walk_backwards_base" type="act_walk_backward_unarmed_left_stance"/>
 		<action animation="turn_villager" type="act_turn_unarmed"/>
 	</action_set>
-	<action_set id="as_troll_female_villager" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager" base_set="as_ent_villager">
 		<action alternative_group="stand_alt" animation="stand_1" type="act_stand_1"/>
 		<action alternative_group="stand_alt" animation="stand_2" type="act_stand_2"/>
 		<action alternative_group="stand_alt" animation="stand_3" type="act_stand_3"/>
@@ -5090,7 +5090,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_villager_in_tavern" base_set="as_troll_villager">
+	<action_set id="as_ent_villager_in_tavern" base_set="as_ent_villager">
 		<action alternative_group="sit_idle_alt" animation="tavern_sit_idle_male_a" type="act_sit_1"/>
 		<action alternative_group="sit_idle_alt" animation="anim_sit_idle_1" type="act_sit_2"/>
 		<action alternative_group="sit_idle_alt" animation="anim_sit_idle_2" type="act_sit_3"/>
@@ -5103,11 +5103,11 @@
 		<action animation="tavern_customer_conversation_c_right" type="act_sit_talk_to_barmaid_right"/>
 		<action animation="tavern_keeper_and_customer_customer_a" type="act_talk_to_tavern_keeper"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_in_tavern" base_set="as_troll_villager_in_tavern"/>
-	<action_set id="as_troll_warrior_in_tavern" base_set="as_troll_villager_in_tavern">
+	<action_set id="as_ent_female_villager_in_tavern" base_set="as_ent_villager_in_tavern"/>
+	<action_set id="as_ent_warrior_in_tavern" base_set="as_ent_villager_in_tavern">
 		<action animation="tavern_customer_conversation_b" type="act_sit_talk_to_barmaid_left_side"/>
 	</action_set>
-	<action_set id="as_troll_female_warrior_in_tavern" base_set="as_troll_warrior_in_tavern">
+	<action_set id="as_ent_female_warrior_in_tavern" base_set="as_ent_warrior_in_tavern">
 		<action animation="sit_down_from_front_female_a" type="act_sit_down_from_front"/>
 		<action animation="sit_to_bench_from_right_female" type="act_sit_down_from_right"/>
 		<action animation="sit_to_bench_from_left_female" type="act_sit_down_from_left"/>
@@ -5130,7 +5130,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_villager_in_aserai_tavern" base_set="as_troll_villager_in_tavern">
+	<action_set id="as_ent_villager_in_aserai_tavern" base_set="as_ent_villager_in_tavern">
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_male" type="act_sit_down_on_floor_1"/>
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_male" type="act_sit_down_on_floor_2"/>
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_male" type="act_sit_down_on_floor_3"/>
@@ -5141,7 +5141,7 @@
 		<action animation="anim_aserai_tavern_sit_male_idle" type="act_sit_idle_on_floor_2"/>
 		<action animation="anim_aserai_tavern_sit_male_idle" type="act_sit_idle_on_floor_3"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_in_aserai_tavern" base_set="as_troll_villager_in_aserai_tavern">
+	<action_set id="as_ent_female_villager_in_aserai_tavern" base_set="as_ent_villager_in_aserai_tavern">
 		<action animation="convo_start_normal_female1" type="act_conversation_normal_start"/>
 		<action animation="convo_stand_normal_female1" type="act_conversation_normal_loop"/>
 		<action animation="convo_start_normal_female2" type="act_conversation_normal2_start"/>
@@ -5157,8 +5157,8 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_warrior_in_aserai_tavern" base_set="as_troll_villager_in_aserai_tavern"/>
-	<action_set id="as_troll_female_warrior_in_aserai_tavern" base_set="as_troll_warrior_in_aserai_tavern">
+	<action_set id="as_ent_warrior_in_aserai_tavern" base_set="as_ent_villager_in_aserai_tavern"/>
+	<action_set id="as_ent_female_warrior_in_aserai_tavern" base_set="as_ent_warrior_in_aserai_tavern">
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_female" type="act_sit_down_on_floor_1"/>
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_female" type="act_sit_down_on_floor_2"/>
 		<action alternative_group="sit_down_on_floor_alternative_group" animation="anim_aserai_tavern_sit_female" type="act_sit_down_on_floor_3"/>
@@ -5183,7 +5183,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_child" base_set="as_troll_villager">
+	<action_set id="as_ent_child" base_set="as_ent_villager">
 		<action animation="child_idle_1" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_unarmed" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_unarmed" type="act_walk_left_unarmed"/>
@@ -5234,8 +5234,8 @@
 		<action animation="child_talk_1" type="act_inspect_and_talk_to_right"/>
 		<action animation="child_talk_1" type="act_inspect_and_talk_to_left"/>
 	</action_set>
-	<action_set id="as_troll_female_child" base_set="as_troll_child"/>
-	<action_set id="as_troll_facegen" base_set="as_troll_warrior">
+	<action_set id="as_ent_female_child" base_set="as_ent_child"/>
+	<action_set id="as_ent_facegen" base_set="as_ent_warrior">
 		<action animation="anim_male_custom" type="act_inventory_idle_start"/>
 		<action animation="_visual_test_morph_animation" type="act_visual_test_morph_animation"/>
 		<action animation="anim_male_custom" type="act_inventory_idle"/>
@@ -5336,7 +5336,7 @@
 		<action animation="anim_rider_story_background_5" type="act_horse_story_background_5"/>
 		<action animation="anim_rider_story_background_6" type="act_horse_story_background_6"/>
 	</action_set>
-	<action_set id="as_troll_female_facegen" base_set="as_troll_facegen">
+	<action_set id="as_ent_female_facegen" base_set="as_ent_facegen">
 		<action animation="anim_female_custom_start" type="act_inventory_idle_start"/>
 		<action animation="anim_female_custom" type="act_inventory_idle"/>
 		<action animation="anim_sit_caretaker" type="act_sit_1"/>
@@ -5362,7 +5362,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_map" base_set="as_troll_warrior">
+	<action_set id="as_ent_map" base_set="as_ent_warrior">
 		<action animation="map_attack_1h_without_banner" type="act_map_attack_1h"/>
 		<action animation="map_attack_2h" type="act_map_attack_2h"/>
 		<action animation="map_attack_2h_spear_without_banner" type="act_map_attack_spear_1h_or_2h"/>
@@ -5379,8 +5379,8 @@
 		<action animation="map_rider_camel_attack_2h_swing_without_banner" type="act_map_rider_camel_attack_2h_swing"/>
 		<action animation="map_rider_camel_attack_unarmed_without_banner" type="act_map_rider_camel_attack_unarmed"/>
 	</action_set>
-	<action_set id="as_troll_female_map" base_set="as_troll_map"/>
-	<action_set id="as_troll_map_with_banner" base_set="as_troll_map">
+	<action_set id="as_ent_female_map" base_set="as_ent_map"/>
+	<action_set id="as_ent_map_with_banner" base_set="as_ent_map">
 		<action animation="map_attack_1h" type="act_map_attack_1h"/>
 		<action animation="map_attack_1h" type="act_map_attack_2h"/>
 		<action animation="map_attack_1h_spear" type="act_map_attack_spear_1h_or_2h"/>
@@ -5495,8 +5495,8 @@
 		<action animation="camel_rider_gallop_mainmap" type="act_camel_forward_gallop_left_foot_strafe_right"/>
 		<action animation="camel_rider_gallop_mainmap" type="act_camel_forward_gallop_left_foot_strafe_left"/>
 	</action_set>
-	<action_set id="as_troll_female_map_with_banner" base_set="as_troll_map_with_banner"/>
-	<action_set id="as_troll_villain" base_set="as_troll_villager">
+	<action_set id="as_ent_female_map_with_banner" base_set="as_ent_map_with_banner"/>
+	<action_set id="as_ent_villain" base_set="as_ent_villager">
 		<action animation="gang_walk_forward_unarmed" type="act_walk_forward_unarmed"/>
 		<action animation="gang_walk_forward_unarmed" type="act_walk_right_unarmed"/>
 		<action animation="gang_walk_forward_unarmed" type="act_walk_left_unarmed"/>
@@ -5534,8 +5534,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_villain_hangout_2" type="act_talk_to_5"/>
 		<action animation="anim_bandit_thumbnail_pose" type="act_bandit_thumbnail_pose"/>
 	</action_set>
-	<action_set id="as_troll_female_villain" base_set="as_troll_villain"/>
-	<action_set id="as_troll_lord" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villain" base_set="as_ent_villain"/>
+	<action_set id="as_ent_lord" base_set="as_ent_villager">
 		<action animation="stand_non_combat" type="act_walk_idle_unarmed"/>
 		<action animation="lord_walk_unarmed" type="act_walk_forward_unarmed"/>
 		<action animation="lord_walk_unarmed" type="act_walk_right_unarmed"/>
@@ -5588,7 +5588,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_female_lord" base_set="as_troll_female_villager">
+	<action_set id="as_ent_female_lord" base_set="as_ent_female_villager">
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_left_unarmed"/>
@@ -5625,7 +5625,7 @@
 		<action alternative_group="talk_to_alt" animation="anim_noble_standing_talk_to_left_female_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_noble_standing_talk_to_left_female_1" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_seller" base_set="as_troll_villager">
+	<action_set id="as_ent_seller" base_set="as_ent_villager">
 		<action alternative_group="citizen_seller_alt" animation="npc_seller_idle_1" type="act_seller_idle_1"/>
 		<action alternative_group="citizen_seller_alt" animation="npc_seller_idle_2" type="act_seller_idle_2"/>
 		<action alternative_group="citizen_seller_alt" animation="npc_seller_idle_3" type="act_seller_idle_3"/>
@@ -5637,13 +5637,13 @@
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_seller" base_set="as_troll_seller"/>
-	<action_set id="as_troll_weaponsmith" base_set="as_troll_seller">
+	<action_set id="as_ent_female_seller" base_set="as_ent_seller"/>
+	<action_set id="as_ent_weaponsmith" base_set="as_ent_seller">
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_1" type="act_talk_to_1"/>
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_1" type="act_talk_to_2"/>
 	</action_set>
-	<action_set id="as_troll_female_weaponsmith" base_set="as_troll_weaponsmith"/>
-	<action_set id="as_troll_villager_artisan" base_set="as_troll_villager">
+	<action_set id="as_ent_female_weaponsmith" base_set="as_ent_weaponsmith"/>
+	<action_set id="as_ent_villager_artisan" base_set="as_ent_villager">
 		<action animation="anim_lord_idle_2" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_noble" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_noble" type="act_walk_right_unarmed"/>
@@ -5668,8 +5668,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_artisan" base_set="as_troll_villager_artisan"/>
-	<action_set id="as_troll_villager_merchant" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_artisan" base_set="as_ent_villager_artisan"/>
+	<action_set id="as_ent_villager_merchant" base_set="as_ent_villager">
 		<action animation="villager_walk_merchant_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_merchant" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_merchant" type="act_walk_right_unarmed"/>
@@ -5707,7 +5707,7 @@
 		<action alternative_group="talk_to_alt" animation="anim_merchant_male_talkto_notary" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_merchant_male_talkto_notary" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_merchant" base_set="as_troll_villager_merchant">
+	<action_set id="as_ent_female_villager_merchant" base_set="as_ent_villager_merchant">
 		<action alternative_group="stand_alt" animation="anim_merchant_lady_idle" type="act_stand_1"/>
 		<action alternative_group="stand_alt" animation="anim_merchant_lady_idle" type="act_stand_2"/>
 		<action alternative_group="stand_alt" animation="anim_merchant_lady_idle" type="act_stand_3"/>
@@ -5738,7 +5738,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_villager_preacher" base_set="as_troll_villager">
+	<action_set id="as_ent_villager_preacher" base_set="as_ent_villager">
 		<action animation="anim_lord_idle_2" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_forward_female" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_forward_female" type="act_walk_right_unarmed"/>
@@ -5763,8 +5763,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_preacher" base_set="as_troll_villager_preacher"/>
-	<action_set id="as_troll_villager_gangleader" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_preacher" base_set="as_ent_villager_preacher"/>
+	<action_set id="as_ent_villager_gangleader" base_set="as_ent_villager">
 		<action animation="anim_villain_idle_1" type="act_walk_idle_unarmed"/>
 		<action animation="gang_walk_forward" type="act_walk_forward_unarmed"/>
 		<action animation="gang_walk_forward" type="act_walk_right_unarmed"/>
@@ -5804,8 +5804,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_villain_hangout_1" type="act_talk_to_4"/>
 		<action animation="anim_lord_sit_talkto_notary" type="act_sit_talk_to_1"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_gangleader" base_set="as_troll_villager_gangleader"/>
-	<action_set id="as_troll_villager_ruralnotable" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_gangleader" base_set="as_ent_villager_gangleader"/>
+	<action_set id="as_ent_villager_ruralnotable" base_set="as_ent_villager">
 		<action animation="anim_lord_idle_1" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_noble_2" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_noble_2" type="act_walk_right_unarmed"/>
@@ -5840,8 +5840,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_npc_seller_talk_male_2" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_ruralnotable" base_set="as_troll_villager_ruralnotable"/>
-	<action_set id="as_troll_gangleader_bodyguard" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_ruralnotable" base_set="as_ent_villager_ruralnotable"/>
+	<action_set id="as_ent_gangleader_bodyguard" base_set="as_ent_villager">
 		<action animation="anim_villain_idle_1" type="act_walk_idle_unarmed"/>
 		<action animation="gang_walk_forward" type="act_walk_forward_unarmed"/>
 		<action animation="gang_walk_forward" type="act_walk_right_unarmed"/>
@@ -5876,16 +5876,16 @@
 		<action alternative_group="talk_to_alt" animation="anim_guard_talkto_lord" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_guard_talkto_lord" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_gangleader_bodyguard" base_set="as_troll_gangleader_bodyguard"/>
-	<action_set id="as_troll_merchant_notary" base_set="as_troll_villager">
+	<action_set id="as_ent_female_gangleader_bodyguard" base_set="as_ent_gangleader_bodyguard"/>
+	<action_set id="as_ent_merchant_notary" base_set="as_ent_villager">
 		<action alternative_group="talk_to_alt" animation="anim_notary_talkto_lady" type="act_talk_to_1"/>
 		<action alternative_group="talk_to_alt" animation="anim_notary_talkto_lady" type="act_talk_to_2"/>
 		<action alternative_group="talk_to_alt" animation="anim_notary_talkto_lady" type="act_talk_to_3"/>
 		<action alternative_group="talk_to_alt" animation="anim_notary_talkto_lady" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_notary_talkto_lady" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_merchant_notary" base_set="as_troll_merchant_notary"/>
-	<action_set id="as_troll_female_barmaid" base_set="as_troll_female_villager">
+	<action_set id="as_ent_female_merchant_notary" base_set="as_ent_merchant_notary"/>
+	<action_set id="as_ent_female_barmaid" base_set="as_ent_female_villager">
 		<action animation="anim_barmaid_idle2" type="act_walk_idle_unarmed"/>
 		<action animation="anim_barmaid_walk_forward" type="act_walk_forward_unarmed"/>
 		<action animation="anim_barmaid_walk_forward" type="act_walk_right_unarmed"/>
@@ -5954,8 +5954,8 @@
 		<action alternative_group="argue_alt" animation="anim_barmaid_hangout_2" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_barmaid_hangout_1" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_barmaid" base_set="as_troll_female_barmaid"/>
-	<action_set id="as_troll_tavern_keeper" base_set="as_troll_villager">
+	<action_set id="as_ent_barmaid" base_set="as_ent_female_barmaid"/>
+	<action_set id="as_ent_tavern_keeper" base_set="as_ent_villager">
 		<action alternative_group="stand_alt" animation="anim_alley_idle" type="act_stand_1"/>
 		<action alternative_group="stand_alt" animation="anim_citizen_npc_male_3" type="act_stand_2"/>
 		<action alternative_group="stand_alt" animation="anim_bartender_idle" type="act_stand_3"/>
@@ -5974,8 +5974,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_bartender_hangout_2" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_bartender_hangout_2" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_tavern_keeper" base_set="as_troll_tavern_keeper"/>
-	<action_set id="as_troll_musician" base_set="as_troll_villager">
+	<action_set id="as_ent_female_tavern_keeper" base_set="as_ent_tavern_keeper"/>
+	<action_set id="as_ent_musician" base_set="as_ent_villager">
 		<action animation="musician_idle_sitting_calm" type="act_sit_1"/>
 		<action animation="anim_musician_start" type="act_sitting_play_guitar_start"/>
 		<action animation="anim_musician_play" type="act_sitting_play_guitar_play"/>
@@ -6018,8 +6018,8 @@
 		<action animation="musician_vielle_stand_loop" type="act_play_vielle_stand"/>
 		<action animation="anim_tavern_dance_norse" type="act_dance_norse"/>
 	</action_set>
-	<action_set id="as_troll_female_musician" base_set="as_troll_musician"/>
-	<action_set id="as_troll_female_dancer" base_set="as_troll_female_villager">
+	<action_set id="as_ent_female_musician" base_set="as_ent_musician"/>
+	<action_set id="as_ent_female_dancer" base_set="as_ent_female_villager">
 		<action animation="boss_walk_forward" type="act_walk_forward_unarmed"/>
 		<action animation="boss_walk_forward" type="act_walk_right_unarmed"/>
 		<action animation="boss_walk_forward" type="act_walk_left_unarmed"/>
@@ -6046,8 +6046,8 @@
 		<action animation="musician_idle_stand_active" type="act_musician_idle_stand_active"/>
 		<action animation="musician_idle_stand_cheerful" type="act_musician_idle_stand_cheerful"/>
 	</action_set>
-	<action_set id="as_troll_dancer" base_set="as_troll_female_dancer"/>
-	<action_set id="as_troll_beggar" base_set="as_troll_villager">
+	<action_set id="as_ent_dancer" base_set="as_ent_female_dancer"/>
+	<action_set id="as_ent_beggar" base_set="as_ent_villager">
 		<action animation="anim_beggar_idle3" type="act_walk_idle_unarmed"/>
 		<action animation="beggar_walk_forward" type="act_walk_forward_unarmed"/>
 		<action animation="beggar_walk_forward" type="act_walk_right_unarmed"/>
@@ -6080,8 +6080,8 @@
 		<action animation="beggar_walk_forward" type="act_walk_right_to_left_unarmed_left_stance"/>
 		<action animation="beggar_walk_forward" type="act_walk_left_to_right_unarmed_left_stance"/>
 	</action_set>
-	<action_set id="as_troll_female_beggar" base_set="as_troll_beggar"/>
-	<action_set id="as_troll_guard" base_set="as_troll_villager">
+	<action_set id="as_ent_female_beggar" base_set="as_ent_beggar"/>
+	<action_set id="as_ent_guard" base_set="as_ent_villager">
 		<action animation="guard_idle_crossedarms" type="act_walk_idle_unarmed"/>
 		<action animation="guard_idle_crossedarms" type="act_walk_idle_unarmed_left_stance"/>
 		<action animation="guard_idle_spear_to_lord" type="act_guard_idle_spear_to_lord"/>
@@ -6105,8 +6105,8 @@
 		<action alternative_group="guard_idle_group" animation="guard_idle_8" type="act_guard_stand_8"/>
 		<action alternative_group="guard_idle_group" animation="guard_idle_9" type="act_guard_stand_9"/>
 	</action_set>
-	<action_set id="as_troll_female_guard" base_set="as_troll_guard"/>
-	<action_set id="as_troll_unarmed_guard" base_set="as_troll_guard">
+	<action_set id="as_ent_female_guard" base_set="as_ent_guard"/>
+	<action_set id="as_ent_unarmed_guard" base_set="as_ent_guard">
 		<action alternative_group="stand_alt" animation="stand_1" type="act_stand_1"/>
 		<action alternative_group="stand_alt" animation="stand_2" type="act_stand_2"/>
 		<action alternative_group="stand_alt" animation="stand_3" type="act_stand_3"/>
@@ -6123,8 +6123,8 @@
 		<action alternative_group="talk_to_alt" animation="anim_hangout_idle_8" type="act_talk_to_4"/>
 		<action alternative_group="talk_to_alt" animation="anim_hangout_idle_8" type="act_talk_to_5"/>
 	</action_set>
-	<action_set id="as_troll_female_unarmed_guard" base_set="as_troll_unarmed_guard"/>
-	<action_set id="as_troll_villager_with_backpack" base_set="as_troll_villager">
+	<action_set id="as_ent_female_unarmed_guard" base_set="as_ent_unarmed_guard"/>
+	<action_set id="as_ent_villager_with_backpack" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_backpack_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_backpack" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_backpack" type="act_walk_right_unarmed"/>
@@ -6212,8 +6212,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_back" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_back" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_with_backpack" base_set="as_troll_villager_with_backpack"/>
-	<action_set id="as_troll_villager_with_staff" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_with_backpack" base_set="as_ent_villager_with_backpack"/>
+	<action_set id="as_ent_villager_with_staff" base_set="as_ent_villager">
 		<action animation="villager_walk_with_staff_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_with_staff" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_with_staff" type="act_walk_right_unarmed"/>
@@ -6323,8 +6323,8 @@
 		<action animation="anim_inspect_hangout_left_staff" type="act_inspect_and_talk_to_right"/>
 		<action animation="anim_inspect_hangout_right_staff" type="act_inspect_and_talk_to_left"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_with_staff" base_set="as_troll_villager_with_staff"/>
-	<action_set id="as_troll_villager_carry_on_shoulder" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_with_staff" base_set="as_ent_villager_with_staff"/>
+	<action_set id="as_ent_villager_carry_on_shoulder" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_on_shoulder_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_on_shoulder" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_on_shoulder" type="act_walk_right_unarmed"/>
@@ -6412,8 +6412,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_man_axe" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_man_axe" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_on_shoulder" base_set="as_troll_villager_carry_on_shoulder"/>
-	<action_set id="as_troll_villager_carry_axe" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_on_shoulder" base_set="as_ent_villager_carry_on_shoulder"/>
+	<action_set id="as_ent_villager_carry_axe" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_axe_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_axe" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_axe" type="act_walk_right_unarmed"/>
@@ -6541,8 +6541,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_man_axe" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_man_axe" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_axe" base_set="as_troll_villager_carry_axe"/>
-	<action_set id="as_troll_villager_carry_right_side" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_axe" base_set="as_ent_villager_carry_axe"/>
+	<action_set id="as_ent_villager_carry_right_side" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_right_side_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_right_side" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_right_side" type="act_walk_right_unarmed"/>
@@ -6630,8 +6630,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_hand" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_hand" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_right_side" base_set="as_troll_villager_carry_right_side"/>
-	<action_set id="as_troll_villager_carry_front_v2" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_right_side" base_set="as_ent_villager_carry_right_side"/>
+	<action_set id="as_ent_villager_carry_front_v2" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_front_v2_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_front_v2" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_front_v2" type="act_walk_right_unarmed"/>
@@ -6719,8 +6719,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_front" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_front" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_front_v2" base_set="as_troll_villager_carry_front_v2"/>
-	<action_set id="as_troll_villager_carry_front" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_front_v2" base_set="as_ent_villager_carry_front_v2"/>
+	<action_set id="as_ent_villager_carry_front" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_front_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_front" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_front" type="act_walk_right_unarmed"/>
@@ -6808,8 +6808,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_front" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_front" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_front" base_set="as_troll_villager_carry_front"/>
-	<action_set id="as_troll_villager_carry_right_hand" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_front" base_set="as_ent_villager_carry_front"/>
+	<action_set id="as_ent_villager_carry_right_hand" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_right_hand_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_right_hand" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_right_hand" type="act_walk_right_unarmed"/>
@@ -6904,8 +6904,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_hand" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_hand" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_right_hand" base_set="as_troll_villager_carry_right_hand"/>
-	<action_set id="as_troll_villager_carry_right_arm" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_right_hand" base_set="as_ent_villager_carry_right_hand"/>
+	<action_set id="as_ent_villager_carry_right_arm" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_right_arm_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_right_arm" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_right_arm" type="act_walk_right_unarmed"/>
@@ -6993,8 +6993,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_arm" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_argue_woman_right_arm" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_right_arm" base_set="as_troll_villager_carry_right_arm"/>
-	<action_set id="as_troll_villager_carry_over_head" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_right_arm" base_set="as_ent_villager_carry_right_arm"/>
+	<action_set id="as_ent_villager_carry_over_head" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_over_head_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_over_head" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_over_head" type="act_walk_right_unarmed"/>
@@ -7082,8 +7082,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_head" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_head" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_over_head" base_set="as_troll_villager_carry_over_head"/>
-	<action_set id="as_troll_villager_carry_over_head_v2" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_over_head" base_set="as_ent_villager_carry_over_head"/>
+	<action_set id="as_ent_villager_carry_over_head_v2" base_set="as_ent_villager">
 		<action animation="villager_walk_carry_over_head_v2_idle" type="act_walk_idle_unarmed"/>
 		<action animation="villager_walk_carry_over_head_v2" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_carry_over_head_v2" type="act_walk_right_unarmed"/>
@@ -7171,8 +7171,8 @@
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_head" type="act_argue"/>
 		<action alternative_group="argue_alt" animation="anim_hangout_carry_head" type="act_argue_2"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_carry_over_head_v2" base_set="as_troll_villager_carry_over_head_v2"/>
-	<action_set id="as_troll_villager_2" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_carry_over_head_v2" base_set="as_ent_villager_carry_over_head_v2"/>
+	<action_set id="as_ent_villager_2" base_set="as_ent_villager">
 		<action animation="villager_walk_forward_female_b" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_forward_female_b" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_forward_female_b" type="act_walk_left_unarmed"/>
@@ -7190,7 +7190,7 @@
 		<action animation="villager_walk_forward_female_b" type="act_walk_right_to_left_unarmed_left_stance"/>
 		<action animation="villager_walk_forward_female_b" type="act_walk_left_to_right_unarmed_left_stance"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_2" base_set="as_troll_villager">
+	<action_set id="as_ent_female_villager_2" base_set="as_ent_villager">
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_female_unarmed_b" type="act_walk_left_unarmed"/>
@@ -7222,7 +7222,7 @@
 		<action animation="convo_start_hip_female1" type="act_conversation_hip_start"/>
 		<action animation="convo_stand_hip_female1" type="act_conversation_hip_loop"/>
 	</action_set>
-	<action_set id="as_troll_villager_3" base_set="as_troll_villager">
+	<action_set id="as_ent_villager_3" base_set="as_ent_villager">
 		<action animation="villager_walk_unarmed_a" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_unarmed_a" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_unarmed_a" type="act_walk_left_unarmed"/>
@@ -7240,7 +7240,7 @@
 		<action animation="villager_walk_unarmed_a" type="act_walk_right_to_left_unarmed_left_stance"/>
 		<action animation="villager_walk_unarmed_a" type="act_walk_left_to_right_unarmed_left_stance"/>
 	</action_set>
-	<action_set id="as_troll_villager_3" base_set="as_troll_villager">
+	<action_set id="as_ent_villager_3" base_set="as_ent_villager">
 		<action animation="villager_walk_merchant" type="act_walk_forward_unarmed"/>
 		<action animation="villager_walk_merchant" type="act_walk_right_unarmed"/>
 		<action animation="villager_walk_merchant" type="act_walk_left_unarmed"/>
@@ -7258,8 +7258,8 @@
 		<action animation="villager_walk_merchant" type="act_walk_right_to_left_unarmed_left_stance"/>
 		<action animation="villager_walk_merchant" type="act_walk_left_to_right_unarmed_left_stance"/>
 	</action_set>
-	<action_set id="as_troll_female_villager_3" base_set="as_troll_villager_3"/>
-	<action_set id="as_troll_poses" base_set="as_troll_warrior">
+	<action_set id="as_ent_female_villager_3" base_set="as_ent_villager_3"/>
+	<action_set id="as_ent_poses" base_set="as_ent_warrior">
 		<action animation="stand_1" type="act_stand_1"/>
 	</action_set>
 </action_sets>

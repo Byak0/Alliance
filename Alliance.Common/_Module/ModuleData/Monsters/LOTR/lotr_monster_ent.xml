@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Monsters>
-	<Monster id="troll"
-		action_set="as_troll_warrior"
+	<Monster id="ent"
+		action_set="as_ent_warrior"
 		female_action_set="as_human_female_warrior"
 		monster_usage="human"
 		weight="800"
@@ -10,7 +10,7 @@
 		walking_speed_limit="3"
 		crouch_walking_speed_limit="1.5"
 		jump_acceleration="4.0"
-		sound_and_collision_info_class="troll"
+		sound_and_collision_info_class="ent"
 		standing_chest_height="1.31"
 		standing_pelvis_height="0.91"
 		standing_eye_height="1.90"
