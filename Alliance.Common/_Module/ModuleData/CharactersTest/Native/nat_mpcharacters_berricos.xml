@@ -1,15 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<MPCharacters>
+<NPCCharacters>
 	<!-- ************************************************************************* -->
-	<!-- ****************************   ROHAN   ********************************** -->
+	<!-- ****************************   BERRICOS   ********************************** -->
 	<!-- ************************************************************************* -->
+
+	<!-- Civilian - TROOP -->
+ <NPCCharacter id="mp_civilian_berricos_troop"
+ 								default_group="Infantry"
+								level="5"
+								name="{=al_sop_berricos_civil}Civilian"
+								occupation="Soldier"
+								culture="Culture.berricos">
+		<face>
+			<BodyProperties version="4" age="18.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax version="4" age="58.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="10" />
+      <skill id="TwoHanded" value="5" />
+      <skill id="Polearm" value="10" />
+      <skill id="Throwing" value="10" />
+      <skill id="Athletics" value="20" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.leather_studdedhelm_over_headcloth" />
+        <equipment slot="Body" id="Item.sackcloth_tunic" />
+        <equipment slot="Leg" id="Item.empire_horseman_boots" />
+        <equipment slot="Cape" id="Item.hood" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.long_woolen_tunic" />
+        <equipment slot="Leg" id="Item.wrapped_shoes" />
+        <equipment slot="Gloves" id="Item.leather_gloves" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.leather_studdedhelm_over_thinhide" />
+        <equipment slot="Body" id="Item.stitched_leather_vest" />
+        <equipment slot="Leg" id="Item.wrapped_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.bandit_leather_water_flask" />
+        <equipment slot="Leg" id="Item.battania_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.padded_cap" />
+        <equipment slot="Body" id="Item.studded_leather_coat" />
+        <equipment slot="Leg" id="Item.highland_boots" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
 	<!-- LIGHT INFANTRY - TROOP -->
-	<NPCCharacter id="mp_light_infantry_explo_troop"
+	<NPCCharacter id="mp_light_infantry_berricos_troop"
 								default_group="Infantry"
 								level="10"
-								name="{=al_sop_explo_light_t}Light Infantry"
+								name="{=al_sop_berricos_light_t}Light Infantry"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -55,14 +108,14 @@
 		<Resistances dismount="25" />
 	</NPCCharacter>
 	<!-- LIGHT INFANTRY - HERO -->
-	<NPCCharacter id="mp_light_infantry_explo_hero"
+	<NPCCharacter id="mp_light_infantry_berricos_hero"
 								default_group="Infantry"
 								level="25"
 								voice="earnest"
 								is_female="false"
-								name="{=al_sop_explo_light_h}Light Infantry Leader"
+								name="{=al_sop_berricos_light_h}Light Infantry Leader"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -92,12 +145,12 @@
 		<Resistances dismount="85" />
 	</NPCCharacter>
 	<!-- LIGHT INFANTRY - BANNER BEARER -->
-	<NPCCharacter id="mp_light_infantry_explo_banner_bearer"
+	<NPCCharacter id="mp_light_infantry_berricos_banner_bearer"
 								default_group="Infantry"
 								level="10"
-								name="{=al_sop_explo_light_b}Light Infantry"
+								name="{=al_sop_berricos_light_b}Light Infantry"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -134,12 +187,12 @@
 	</NPCCharacter>
 
 	<!-- MEDIUM INFANTRY - TROOP -->
-	<NPCCharacter id="mp_mid_infantry_explo_troop"
+	<NPCCharacter id="mp_mid_infantry_berricos_troop"
 								default_group="Infantry"
 								level="15"
-								name="{=al_sop_explo_mid_inf_t}Medium Infantry"
+								name="{=al_sop_berricos_mid_inf_t}Medium Infantry"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -188,14 +241,14 @@
 		<Resistances dismount="35" />
 	</NPCCharacter>
 	<!-- MEDIUM INFANTRY - HERO -->
-	<NPCCharacter id="mp_mid_infantry_explo_hero"
+	<NPCCharacter id="mp_mid_infantry_berricos_hero"
 								default_group="Infantry"
 								level="27"
 								voice="earnest"
 								is_female="false"
-								name="{=al_sop_explo_mid_inf_h}Medium Infantry Leader"
+								name="{=al_sop_berricos_mid_inf_h}Medium Infantry Leader"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -225,12 +278,12 @@
 		<Resistances dismount="85" />
 	</NPCCharacter>
 	<!-- MEDIUM INFANTRY - BANNER BEARER -->
-	<NPCCharacter id="mp_mid_infantry_explo_banner_bearer"
+	<NPCCharacter id="mp_mid_infantry_berricos_banner_bearer"
 								default_group="Infantry"
 								level="15"
-								name="{=al_sop_explo_mid_inf_b}Lancier"
+								name="{=al_sop_berricos_mid_inf_b}Lancier"
 								occupation="Soldier"
-								culture="Culture.explorator">
+								culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -280,12 +333,12 @@
 	</NPCCharacter>
 
 	<!-- HEAVY INFANTRY - TROOP -->
-	<NPCCharacter id="mp_heavy_inf_explo_troop"
+	<NPCCharacter id="mp_heavy_inf_berricos_troop"
 									default_group="Infantry"
 									level="20"
-									name="{=al_sop_explo_heavy_inf_t}Heavy Infantry"
+									name="{=al_sop_berricos_heavy_inf_t}Heavy Infantry"
 									occupation="Soldier"
-									culture="Culture.explorator">
+									culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -334,14 +387,14 @@
 		<Resistances dismount="25" />
 	</NPCCharacter>
 	<!-- HEAVY INFANTRY - HERO -->
-	<NPCCharacter id="mp_heavy_inf_explo_hero"
+	<NPCCharacter id="mp_heavy_inf_berricos_hero"
 									default_group="Infantry"
 									level="20"
 									voice="earnest"
 									is_female="false"
-									name="{=al_sop_explo_heavy_inf_h}Heavy Infantry Leader"
+									name="{=al_sop_berricos_heavy_inf_h}Heavy Infantry Leader"
 									occupation="Soldier"
-									culture="Culture.explorator">
+									culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -358,25 +411,25 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Item0" id="Item.sturgia_axe_5_t5" />
+				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
 				<equipment slot="Item1" id="Item.tall_heater_shield" />
-				<equipment slot="Item2" id="Item.sturgia_2haxe_2_t5" />
-				<equipment slot="Head" id="Item.segmented_skullcap_over_mail_coif" />
-				<equipment slot="Body" id="Item.plated_leather_coat" />
+				<equipment slot="Item2" id="Item.vlandia_lance_2_t4" />
+				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
+				<equipment slot="Body" id="Item.imperial_mail_vest" />
 				<equipment slot="Leg" id="Item.plated_strip_boots" />
 				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
-				<equipment slot="Cape" id="Item.noble_pauldron_with_scarf" />
+				<equipment slot="Cape" id="Item.imperial_lamellar_shoulders" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances dismount="85" />
 	</NPCCharacter>
 	<!-- HEAVY INFANTRY - BANNER BEARER -->
-	<NPCCharacter id="mp_heavy_inf_explo_banner_bearer"
+	<NPCCharacter id="mp_heavy_inf_berricos_banner_bearer"
 									default_group="Infantry"
 									level="10"
-									name="{=al_sop_explo_heavy_inf_b}Heavy Infantry"
+									name="{=al_sop_berricos_heavy_inf_b}Heavy Infantry"
 									occupation="Soldier"
-									culture="Culture.explorator">
+									culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -416,12 +469,12 @@
 	</NPCCharacter>
 
 	<!-- LIGHT RANGED - TROOP -->
-	<NPCCharacter id="mp_light_ranged_explo_troop"
+	<NPCCharacter id="mp_light_ranged_berricos_troop"
 									default_group="Ranged"
 									level="10"
-									name="{=al_sop_explo_l_ranged_t}Light Crossbow"
+									name="{=al_sop_berricos_l_ranged_t}Light Crossbow"
 									occupation="Soldier"
-									culture="Culture.explorator">
+									culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -474,14 +527,14 @@
 		<Resistances dismount="25" />
 	</NPCCharacter>
 	<!-- LIGHT RANGED - HERO -->
-	<NPCCharacter id="mp_light_ranged_explo_hero"
+	<NPCCharacter id="mp_light_ranged_berricos_hero"
 		default_group="Ranged"
 		level="25"
 		voice="earnest"
 		is_female="false"
-		name="{=al_sop_explo_l_ranged_h}Light Crossbow Leader"
+		name="{=al_sop_berricos_l_ranged_h}Light Crossbow Leader"
 		occupation="Soldier"
-		culture="Culture.explorator">
+		culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -513,12 +566,12 @@
 	</NPCCharacter>
 
 	<!-- HEAVY RANGED - TROOP -->
-	<NPCCharacter id="mp_heavy_ranged_explo_troop"
+	<NPCCharacter id="mp_heavy_ranged_berricos_troop"
 		default_group="Ranged"
 		level="15"
-		name="{=al_sop_explo_h_ranged_t}Heavy Crossbow"
+		name="{=al_sop_berricos_h_ranged_t}Heavy Crossbow"
 		occupation="Soldier"
-		culture="Culture.explorator">
+		culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -560,14 +613,14 @@
 		<Resistances dismount="40" />
 	</NPCCharacter>
 	<!-- HEAVY RANGED - HERO -->
-	<NPCCharacter id="mp_heavy_ranged_explo_hero"
+	<NPCCharacter id="mp_heavy_ranged_berricos_hero"
 		default_group="Ranged"
 		level="26"
 		voice="earnest"
 		is_female="false"
-		name="{=al_sop_explo_h_ranged_h}Heavy Crossbow Leader"
+		name="{=al_sop_berricos_h_ranged_h}Heavy Crossbow Leader"
 		occupation="Soldier"
-		culture="Culture.explorator">
+		culture="Culture.berricos">
 		<face>
 			<BodyProperties version="4" age="34.12" weight="0.4" build="0.4568" key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
 			<BodyPropertiesMax version="4" age="48.79" weight="0.7253" build="0.6852" key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
@@ -598,4 +651,4 @@
 		<Resistances dismount="75" />
 	</NPCCharacter>
 
-</MPCharacters>
+</NPCCharacters>

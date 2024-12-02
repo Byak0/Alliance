@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance.Editor" />
   <Name value="Alliance.Editor" />
-  <Version value="v0.1.9.3" />
+  <Version value="v0.1.10.1" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />
@@ -29,10 +29,16 @@
       <XmlName id="SPCultures" path="CulturesTest/LOTR" />
     </XmlNode>
     <XmlNode>
+      <XmlName id="SPCultures" path="CulturesTest/Native" />
+    </XmlNode>
+    <XmlNode>
       <XmlName id="SPCultures" path="CulturesTest/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="BasicCultures" path="Cultures/LOTR" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="BasicCultures" path="Cultures/Native" />
     </XmlNode>
     <XmlNode>
       <XmlName id="BasicCultures" path="Cultures/SOP" />
