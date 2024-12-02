@@ -10,12 +10,14 @@ using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.SAE.Behaviors
 {
+    [DefaultView]
     public class SaeBehavior : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "sae_spawn_cat";
@@ -74,6 +76,13 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     Name = "Decrease SAE sphere",
                     DefaultInputKey = InputKey.NumpadMinus
                 },
+                new BindedKey
+                {
+                    Id = "key_crouch",
+                    Description = "Make selected formation crouch.",
+                    Name = "Crouch troops",
+                    DefaultInputKey = InputKey.M
+                },
             }
         };
 
@@ -84,6 +93,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private GameKey fastDeleteMarkerIK;
         private GameKey increaseSphereRadius;
         private GameKey decreaseSphereRadius;
+        private GameKey crouchIk;
 
 
         /// <summary>
@@ -162,6 +172,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fastDeleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_fast_delete_marker");
             increaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_increase_sphere");
             decreaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_decrease_sphere");
+            crouchIk = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_crouch");
         }
 
         private void InitDynamicMarkers()
@@ -169,7 +180,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
             fakeDynamicMarkers = new List<GameEntity>() { };
             List<GameEntity> gameEntities = new();
             Mission.Current.Scene.GetEntities(ref gameEntities);
-            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME)).ToList()
+            gameEntities.Where(entity => entity.HasTag(SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_TAG_NAME)).ToList()
                 .ForEach(entity =>
                 {
                     fakeDynamicMarkers.Add(entity);
@@ -219,10 +230,11 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                     OnSphereIncreasingOrDecreasingButtonPressed();
                     WhenCreateMarkerActionTriggered();
                     WhenDeleteMarkerActionTriggered();
-                    WhenCrouchActionTriggered();
                     WhenDebugActionTriggered();
                     WhenDynamicCreateMarkerActionTriggered();
                 }
+
+                WhenCrouchActionTriggered();
             }
         }
 
@@ -264,9 +276,9 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         private void WhenCrouchActionTriggered()
         {
             //Crouch troops
-            if (Input.IsKeyPressed(InputKey.M))
+            if (Input.IsKeyPressed(crouchIk.KeyboardKey.InputKey))
             {
-                Log("Crouch !");
+                Log("Crouch !", LogLevel.Information);
 
                 MBReadOnlyList<Formation> formations = Mission.Current.PlayerTeam?.PlayerOrderController?.SelectedFormations;
                 if (formations != null && formations.Count > 0)
@@ -484,7 +496,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
         public void RemoveMarkersFromList(List<int> markersToDelete)
         {
             //Remove all markers from the list of IDs
-            Log("Markers before suppression = " + visualMarkersList.Count);
+            Log("Markers before suppression = " + visualMarkersList.Count, LogLevel.Debug);
 
             visualMarkersList.FindAll(e => markersToDelete.Contains(e.Id)).ForEach(markerToDelete =>
             {
@@ -496,7 +508,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 visualMarkersList.Remove(markerToDelete);
             });
 
-            Log("Markers after suppression = " + visualMarkersList.Count);
+            Log("Markers after suppression = " + visualMarkersList.Count, LogLevel.Debug);
         }
 
         public MatrixFrame GetMousePosition()
@@ -607,11 +619,11 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 //Try to init cursorMarker
                 if (missionScreen != null && Mission.Current != null && Mission.Current.MainAgent != null)
                 {
-                    sphereEntity = CreateSphere("editor_sphere_centered");
+                    sphereEntity = CreateSphere(SaeConstants.VISUAL_SPHERE_PREFAB_NAME);
                 }
                 else
                 {
-                    Log("Can't init sphereEntity due to missing properties");
+                    Log("Can't init sphereEntity due to missing properties", LogLevel.Error);
                 }
             }
         }
@@ -797,7 +809,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
                 }
                 else
                 {
-                    Log("Can't init Marker due to missing properties");
+                    Log("Can't init Marker due to missing properties", LogLevel.Error);
                 }
             }
         }

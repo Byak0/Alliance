@@ -10,6 +10,7 @@ using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -21,6 +22,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
     /// View responsible for showing the Animation menu.
     /// Checks gamekeys inputs to show/hide menu and request animations.
     /// </summary>
+    [DefaultView]
     public class AnimationView : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "anim_sys";
@@ -156,7 +158,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
         public override void OnMissionScreenInitialize()
         {
             AnimationSystem.Instance.Init();
-            Log($"Alliance - Loaded {AnimationSystem.Instance.DefaultAnimations.Count} animations.", LogLevel.Information);
         }
 
         public override void OnMissionScreenFinalize()

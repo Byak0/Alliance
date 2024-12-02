@@ -22,15 +22,5 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
             if (marginRight != null) widget.MarginRight = (float)marginRight;
             if (brush != null) ((BrushWidget)widget).Brush = brush;
         }
-
-        public static void InitScrollableButton(this ScrollableButtonWidget widget, Brush brush = null, int id = 0, int troopCount = 0, int soldierIcons = 0, int minInt = 0, int maxInt = 9999)
-        {
-            widget.Init(width: SP.Fixed, height: SP.Fixed, 100, 50, hAlign: HAlign.Left, vAlign: VAlign.Center, brush: brush);
-            widget.ButtonId = id;
-            widget.SoldierIcons = soldierIcons;
-            widget.IntTextWidget.IntText = troopCount;
-            widget.IntTextWidget.MinInt = minInt;
-            widget.IntTextWidget.MaxInt = maxInt;
-        }
     }
 }

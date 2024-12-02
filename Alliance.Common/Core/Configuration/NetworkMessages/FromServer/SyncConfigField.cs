@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Configuration.Utilities;
+using System.Linq;
+using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
@@ -35,7 +37,8 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
                     WriteFloatToPacket(floatValue, CompressionHelper.DefaultFloatValueCompressionInfo);
                     break;
                 case string stringValue:
-                    WriteStringToPacket(stringValue);
+                    int index = DefaultConfig.GetAvailableValuesForOption((FieldInfo)FieldType).FindIndex(item => item == stringValue);
+                    WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
                     break;
                 case bool boolValue:
                     WriteBoolToPacket(boolValue);
@@ -59,7 +62,11 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
                     FieldValue = ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid);
                     break;
                 case string:
-                    FieldValue = ReadStringFromPacket(ref bufferReadValid);
+                    int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+                    if (index > -1)
+                    {
+                        FieldValue = DefaultConfig.GetAvailableValuesForOption((FieldInfo)FieldType).ElementAtOrDefault(index);
+                    }
                     break;
                 case bool:
                     FieldValue = ReadBoolFromPacket(ref bufferReadValid);

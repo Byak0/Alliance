@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******   ROHAN   ******** -->
+	<!-- ************************* -->
+	<!-- BANNER -->
+	<CraftingPiece id="rohan_banner_1_head"
+         name="{=CFbfhdrb1he}rohan banner blade"
+         tier="5"
+         piece_type="Blade"
+         mesh="rohan_spear_3_blade"
+         length="65.0"
+         weight="0.4"
+         excluded_item_usage_features="swing">
+		<BuildData piece_offset="8" />
+		<BladeData stack_amount="4"
+           physics_material="wood_weapon"
+           body_name="bo_spear_b"
+           holster_mesh="throwing_spear_quiver_5_1"
+           holster_body_name="bo_throwing_spear_quiver_5_1"
+           holster_mesh_length="96.7">
+			<Thrust damage_type="Pierce"
+          damage_factor="2.6" />
+		</BladeData>
+		<Materials>
+			<Material id="Iron5"
+            count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_banner_1_guard"
+         name="{=CFbfhdrb1g}rohan banner guard"
+         tier="5"
+         piece_type="Guard"
+         mesh="rohan_spear_3_guard"
+         culture="Culture.neutral_culture"
+         length="67"
+         weight="0">
+		<BuildData piece_offset="8" />
+		<Materials>
+			<Material id="Iron4"
+            count="0" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_banner_1_handle"
+                 name="{=CFbfhdrb1ha}rohan banner handle"
+                 tier="2"
+                 piece_type="Handle"
+                 mesh="rohan_spear_3_handle"
+                 length="140"
+                 weight="1.35"
+                 CraftingCost="110">
+		<BuildData piece_offset="8" />
+		<Materials>
+			<Material id="Wood"
+            count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_banner_1_bottom"
+         name="{=CFbfhdrb1b}Rohan banner pommel"
+         tier="4"
+         piece_type="Pommel"
+         mesh="rohan_spear_3_bottom"
+         culture="Culture.empire"
+         length="52"
+         weight="0">
+		<BuildData piece_offset="0" />
+		<Materials>
+			<Material id="Iron4"
+            count="1" />
+		</Materials>
+	</CraftingPiece>
+	<!-- SPEAR -->
+	<CraftingPiece id="rohan_spear_1_head"
+                 name="{=S75vUGzK}Rohan spear blade"
+                 tier="5"
+                 piece_type="Blade"
+                 mesh="rohan_spear_1_head"
+                 length="55.0"
+                 weight="0.4"
+                 excluded_item_usage_features="swing">
+		<BuildData piece_offset="-7" />
+		<BladeData stack_amount="4"
+               physics_material="wood_weapon"
+               body_name="bo_spear_b"
+               holster_mesh="throwing_spear_quiver_5_1"
+               holster_body_name="bo_throwing_spear_quiver_5_1"
+               holster_mesh_length="96.7">
+			<Thrust damage_type="Pierce"
+              damage_factor="2.6" />
+		</BladeData>
+		<Materials>
+			<Material id="Iron5"
+                count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_spear_2_head"
+							 name="{=S75vUGzK}Rohan spear blade"
+							 tier="5"
+							 piece_type="Blade"
+							 mesh="rohan_spear_1_head"
+							 length="55.0"
+							 weight="0.4"
+							 excluded_item_usage_features="swing">
+		<BuildData piece_offset="-13" />
+		<BladeData stack_amount="4"
+               physics_material="wood_weapon"
+               body_name="bo_spear_b"
+               holster_mesh="throwing_spear_quiver_5_1"
+               holster_body_name="bo_throwing_spear_quiver_5_1"
+               holster_mesh_length="96.7">
+			<Thrust damage_type="Pierce"
+              damage_factor="2.6" />
+		</BladeData>
+		<Materials>
+			<Material id="Iron5"
+                count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_spear_1_handle"
+                 name="{=FURnbmjc}Rohan spear handle"
+                 tier="2"
+                 piece_type="Handle"
+                 mesh="rohan_spear_1_handle"
+                 length="232"
+                 weight="1.35"
+                 CraftingCost="110">
+		<BuildData piece_offset="22.9" />
+		<Materials>
+			<Material id="Wood"
+                count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="rohan_spear_1_bottom"
+                 name="{=hWTFaw0E}Rohan spear pommel"
+                 tier="4"
+                 piece_type="Pommel"
+                 mesh="rohan_spear_1_bottom"
+                 culture="Culture.empire"
+                 length="12"
+                 weight="0">
+		<Materials>
+			<Material id="Iron4"
+                count="1" />
+		</Materials>
+	</CraftingPiece>
+	<!-- SPEAR BANNER -->
+	<CraftingPiece id="spear_banner_r"
+                 name="{=CYVjEcPQ}rohan banner spear"
+                 tier="5"
+                 piece_type="Guard"
+                 mesh="spear_banner_r"
+                 culture="Culture.neutral_culture"
+                 length="5"
+                 weight="0">
+		<Materials>
+			<Material id="Iron4"
+                count="0" />
+		</Materials>
+	</CraftingPiece>
+	<!-- SWORD (HERUGRIM)-->
+	<CraftingPiece id="rohan_blade_1" name="Herugrim Blade" tier="4" piece_type="Blade" mesh="rohan_sword_1_blade" culture="Culture.rohan" length="64" weight="1.00" CraftingCost="75">
+		<BuildData previous_piece_offset="-0.4" />
+		<BladeData stack_amount="3" physics_material="metal_weapon" body_name="bo_sword_one_handed" holster_mesh="rohan_sword_1_holster" >
+			<Thrust damage_type="Pierce" damage_factor="2.3" />
+			<Swing damage_type="Cut" damage_factor="4.0" />
+		</BladeData>
+		<Flags>
+			<Flag name="Civilian" type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+
+	<CraftingPiece id="rohan_handle_1" name="Herugrim Handle" tier="4" piece_type="Handle" mesh="rohan_sword_1_handle" culture="Culture.rohan" length="14" weight="0.1">
+		<BuildData piece_offset="-3.5" previous_piece_offset="0.1" next_piece_offset="0.1" />
+	</CraftingPiece>
+
+	<CraftingPiece id="rohan_guard_1" name="Herugrim Guard" tier="1" piece_type="Guard" mesh="rohan_sword_1_guard" culture="Culture.rohan" length="0.8" weight="0.2" is_default="true">
+		<BuildData next_piece_offset="0.2" />
+		<StatContributions armor_bonus="2" />
+	</CraftingPiece>
+
+<!-- axe-->
+	<CraftingPiece
+		id="rohan_axe_1_handle"
+		name="rohan axe handle regular"
+		tier="2"
+		piece_type="Handle"
+		mesh="rohan_axe_1_handle"
+		length="75.0"
+		weight="0.329">
+		<BuildData
+			piece_offset="22"
+			next_piece_offset="3" />
+		<Materials>
+			<Material
+				id="Wood"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="rohan_axe_1_head"
+		name="rohan axe head regular"
+		tier="2"
+		piece_type="Blade"
+		mesh="rohan_axe_1_head"
+		distance_to_next_piece="2.6"
+		distance_to_previous_piece="2.3"
+		weight="0.788">
+		<BuildData
+			piece_offset="-0.5" />
+		<BladeData
+			stack_amount="3"
+			blade_length="20.0"
+			blade_width="21.13"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.1" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+		<Materials>
+			<Material
+				id="Iron2"
+				count="4" />
+		</Materials>
+	</CraftingPiece>
+</CraftingPieces>

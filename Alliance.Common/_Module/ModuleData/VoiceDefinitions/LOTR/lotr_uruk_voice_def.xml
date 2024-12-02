@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<voice_definitions>
+	<voice_definition
+		name="uruk_01"
+		sound_and_collision_info_class="human"
+		only_for_npcs="false"
+		min_pitch_multiplier="0.8"
+		max_pitch_multiplier="1.1">
+		<!--Warband-->
+		<voice
+			type="Grunt"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
+			face_anim="grunt" />
+		<voice
+			type="Jump"
+			path="LOTR/Isengard/Voice/Uruk/Yells"
+			face_anim="scream" />
+		<voice
+			type="Yell"
+			path="LOTR/Isengard/Voice/Uruk/Yells"
+			face_anim="yell" />
+		<voice
+			type="Pain"
+			path="LOTR/Isengard/Voice/Uruk/Pains"
+			face_anim="hit" />
+		<voice
+			type="Death"
+			path="LOTR/Isengard/Voice/Uruk/Deaths"
+			face_anim="death" />
+		<voice
+			type="Stun"
+			path="LOTR/Isengard/Voice/Uruk/Stun.wav"
+			face_anim="yeah" />
+		<voice
+			type="Fear"
+			path="LOTR/Isengard/Voice/Uruk/no"
+			face_anim="terrified" />
+		<voice
+			type="Climb"
+			path="LOTR/Isengard/Voice/Uruk/AAAh.wav"
+			face_anim="terrified" />
+		<voice
+			type="Focus"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
+			face_anim="terrified" />
+		<voice
+			type="Debacle"
+			path="LOTR/Isengard/Voice/Uruk/no"
+			face_anim="terrified" />
+		<voice
+			type="Victory"
+			path="LOTR/Isengard/Voice/Uruk/Victories"
+			face_anim="victory" />
+		<voice
+			type="HorseRally"
+			path="LOTR/Isengard/Voice/Uruk/go"
+			face_anim="yeah" />
+		<voice
+			type="HorseStop"
+			path="LOTR/Isengard/Voice/Uruk/stay_right_there"
+			face_anim="wow" />
+		<!--TEMP-->
+		<voice
+			type="Infantry"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
+			face_anim="infantry" />
+		<voice
+			type="Cavalry"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
+			face_anim="cavalry" />
+		<voice
+			type="Archers"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
+			face_anim="archers" />
+		<voice
+			type="Everyone"
+			path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav"
+			face_anim="everyone" />
+		<voice
+			type="HorseArchers"
+			path="LOTR/Isengard/Voice/Uruk/select_uruks"
+			face_anim="attack" />
+		<voice
+			type="Mixed"
+			path="LOTR/Isengard/Voice/Uruk/Are you all dead.wav"
+			face_anim="everyone" />
+		<voice
+			type="Charge"
+			path="LOTR/Isengard/Voice/Uruk/Attack 2.wav"
+			face_anim="attack" />
+		<voice
+			type="Move"
+			path="LOTR/Isengard/Voice/Uruk/go"
+			face_anim="move" />
+		<voice
+			type="Retreat"
+			path="LOTR/Isengard/Voice/Uruk/retreat_get_back_you_scrum"
+			face_anim="retreat" />
+		<voice
+			type="Follow"
+			path="LOTR/Isengard/Voice/Uruk/get_over_here"
+			face_anim="followme" />
+		<voice
+			type="Advance"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
+			face_anim="attack" />
+		<voice
+			type="Dismount"
+			path="LOTR/Isengard/Voice/Uruk/let_them_be"
+			face_anim="attack" />
+		<voice
+			type="Mount"
+			path="LOTR/Isengard/Voice/Uruk/faster"
+			face_anim="attack" />
+		<voice
+			type="FallBack"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
+			face_anim="attack" />
+		<voice
+			type="FireAtWill"
+			path="LOTR/Isengard/Voice/Uruk/kill_them"
+			face_anim="attack" />
+		<voice
+			type="HoldFire"
+			path="LOTR/Isengard/Voice/Uruk/ready_weapons"
+			face_anim="attack" />
+		<voice
+			type="Stop"
+			path="LOTR/Isengard/Voice/Uruk/stay_right_there"
+			face_anim="attack" />
+		<voice
+			type="PickSpears"
+			path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav"
+			face_anim="attack" />
+		<voice
+			type="PickDefault"
+			path="LOTR/Isengard/Voice/Uruk/Draw your weapons.wav"
+			face_anim="attack" />
+		<voice
+			type="FaceEnemy"
+			path="LOTR/Isengard/Voice/Uruk/get_ready_to_fight"
+			face_anim="attack" />
+		<voice
+			type="FaceDirection"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
+			face_anim="attack" />
+		<voice
+			type="AttackGate"
+			path="LOTR/Isengard/Voice/Uruk/Burn it to the ground.wav"
+			face_anim="attack" />
+		<voice
+			type="UseSiegeWeapon"
+			path="LOTR/Isengard/Voice/Uruk/ready_weapons"
+			face_anim="attack" />
+		<voice
+			type="UseLadders"
+			path="event:/voice/combat/male/04/commands/use_ladders"
+			face_anim="attack" />
+		<voice
+			type="CommandDelegate"
+			path="LOTR/Isengard/Voice/Uruk/you_know_where_to_go"
+			face_anim="attack" />
+		<voice
+			type="CommandUndelegate"
+			path="LOTR/Isengard/Voice/Uruk/Come here you.wav"
+			face_anim="attack" />
+		<voice
+			type="FormCircle"
+			path="LOTR/Isengard/Voice/Uruk/Come on.wav"
+			face_anim="attack" />
+		<voice
+			type="FormColumn"
+			path="LOTR/Isengard/Voice/Uruk/Come on.wav"
+			face_anim="attack" />
+		<voice
+			type="FormLine"
+			path="LOTR/Isengard/Voice/Uruk/get_in_line"
+			face_anim="attack" />
+		<voice
+			type="FormLoose"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
+			face_anim="attack" />
+		<voice
+			type="FormScatter"
+			path="LOTR/Isengard/Voice/Uruk/run_for_cover"
+			face_anim="attack" />
+		<voice
+			type="FormShieldWall"
+			path="LOTR/Isengard/Voice/Uruk/stay_together"
+			face_anim="attack" />
+		<voice
+			type="FormSkein"
+			path="LOTR/Isengard/Voice/Uruk/get_ready_to_fight"
+			face_anim="attack" />
+		<voice
+			type="FormSquare"
+			path="LOTR/Isengard/Voice/Uruk/stay_together"
+			face_anim="attack" />
+		<voice
+			type="MpHelp"
+			path="LOTR/Isengard/Voice/Uruk/Grunts"
+			face_anim="attack" />
+		<voice
+			type="MpSpot"
+			path="LOTR/Isengard/Voice/Uruk/there_there"
+			face_anim="attack" />
+		<voice
+			type="MpThanks"
+			path="LOTR/Isengard/Voice/Uruk/Laughs"
+			face_anim="attack" />
+		<voice
+			type="MpSorry"
+			path="LOTR/Isengard/Voice/Uruk/Laughs"
+			face_anim="attack" />
+		<voice
+			type="MpAffirmative"
+			path="LOTR/Isengard/Voice/Uruk/laugh_4"
+			face_anim="attack" />
+		<voice
+			type="MpNegative"
+			path="LOTR/Isengard/Voice/Uruk/no"
+			face_anim="attack" />
+		<voice
+			type="MpRegroup"
+			path="LOTR/Isengard/Voice/Uruk/regroup"
+			face_anim="attack" />
+		<voice
+			type="MpDefend"
+			path="LOTR/Isengard/Voice/Uruk/stand_back_uruks"
+			face_anim="attack" />
+		<voice
+			type="MpAttack"
+			path="LOTR/Isengard/Voice/Uruk/Attack 1.wav"
+			face_anim="attack" />
+	</voice_definition>
+</voice_definitions>

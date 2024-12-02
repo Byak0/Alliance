@@ -1,45 +1,39 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Behavior;
+using Alliance.Common.GameModes.Captain.Behaviors;
+using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Source.Missions;
+using TaleWorlds.MountAndBlade.Multiplayer;
 
 namespace Alliance.Client.GameModes.BattleX
 {
-    public class BattleGameMode : MissionBasedMultiplayerGameMode
-    {
-        public BattleGameMode(string name) : base(name) { }
+	public class BattleGameMode : MissionBasedMultiplayerGameMode
+	{
+		public BattleGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("BattleX", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                return new MissionBehavior[]
-                {
-                    MissionLobbyComponent.CreateBehavior(),
-                    new FormationBehavior(),
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("BattleX", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-                    new MultiplayerRoundComponent(),
-                    new MultiplayerWarmupComponent(),
-                    new MissionMultiplayerGameModeFlagDominationClient(),
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new ConsoleMatchStartEndHandler(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MultiplayerTeamSelectComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new AgentVictoryLogic(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent(),
-                    new MissionScoreboardComponent(new BattleScoreboardData()),
-                    new MissionMatchHistoryComponent(),
-                    new EquipmentControllerLeaveLogic(),
-                    new MultiplayerPreloadHelper()
-                };
-            }, true, true);
-        }
-    }
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultClientBehaviors.GetDefaultBehaviors(new BattleScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new FormationBehavior(),
+				new ALMissionMultiplayerFlagDominationClient(),
+
+				// Native battle behaviors
+				new MultiplayerRoundComponent(),
+				new MultiplayerWarmupComponent(),
+				new MultiplayerTeamSelectComponent()
+			});
+			return behaviors;
+		}
+	}
 }

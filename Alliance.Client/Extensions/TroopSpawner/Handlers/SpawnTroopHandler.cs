@@ -1,15 +1,21 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
-using Alliance.Common.Core.ExtendedCharacter.Extension;
+using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
+using NetworkMessages.FromServer;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 {
-    public class SpawnTroopHandler
+    public class SpawnTroopHandler : IHandlerRegister
     {
-        public SpawnTroopHandler()
+        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
         {
+            reg.Register<SpawnInfoMessage>(HandleSpawnInfoMessage);
+            reg.Register<FormationControlMessage>(HandleFormationControlMessage);
+            reg.Register<BotsControlledChange>(HandleServerEventBotsControlledChangeEvent);
         }
 
         public void HandleSpawnInfoMessage(SpawnInfoMessage message)
@@ -30,6 +36,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
             {
                 FormationControlModel.Instance.AssignControlToPlayer(target, message.Formation);
             }
+        }
+
+        public void HandleServerEventBotsControlledChangeEvent(BotsControlledChange message)
+        {
+            MissionPeer component = message.Peer.GetComponent<MissionPeer>();
+            MissionMultiplayerGameModeBaseClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+            if (gameModeClient is IBotControllerBehavior) ((IBotControllerBehavior)gameModeClient)?.OnBotsControlledChanged(component, message.AliveCount, message.TotalCount);
         }
     }
 }

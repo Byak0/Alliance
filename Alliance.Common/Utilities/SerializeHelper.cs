@@ -100,7 +100,7 @@ namespace Alliance.Common.Utilities
             public override Encoding Encoding => Encoding.UTF8;
         }
 
-        public static void CreateFileWatcher(string path, FileSystemEventHandler OnChanged)
+        public static FileSystemWatcher CreateFileWatcher(string path, FileSystemEventHandler OnChanged)
         {
             string dir = Path.GetDirectoryName(path);
             string fileName = Path.GetFileName(path);
@@ -116,6 +116,8 @@ namespace Alliance.Common.Utilities
 
             // Begin watching
             watcher.EnableRaisingEvents = true;
+
+            return watcher;
         }
 
         private static XmlDocument LoadAndMergeXML(List<string> xmlList, string nodesName)

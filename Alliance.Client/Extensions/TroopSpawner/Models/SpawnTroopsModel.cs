@@ -1,120 +1,208 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Models
 {
-    public sealed class SpawnTroopsModel
-    {
-        public int TroopCount = 1;
-        public int CustomTroopCount = 0;
-        public int TroopCountButtonSelected = 0;
-        public int FormationSelected = 1;
-        public bool SpawnTroopOnCursor = true;
-        public float Difficulty
-        {
-            get
-            {
-                return _difficulty;
-            }
-            set
-            {
-                if (_difficulty != value)
-                {
-                    _difficulty = value;
-                    OnDifficultyUpdated?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
-        public BasicCultureObject SelectedFaction
-        {
-            get
-            {
-                return _selectedFaction;
-            }
-            set
-            {
-                if (_selectedFaction != value)
-                {
-                    _selectedFaction = value;
-                    SelectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
-                    OnFactionSelected?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
+	/// <summary>
+	/// Singleton class to store current choice of troop to spawn (character, number, difficulty, formation, etc.).
+	/// Changes to a property send events to its corresponding listeners.
+	/// </summary>
+	public sealed class SpawnTroopsModel
+	{
+		public event Action OnFactionSelected;
+		public event Action OnFormationSelected;
+		public event Action OnTroopSelected;
+		public event Action OnPerkSelected;
+		public event Action OnTroopCountUpdated;
+		public event Action OnCustomTroopCountUpdated;
+		public event Action OnFormationUpdated;
+		public event Action OnDifficultyUpdated;
+		public event Action<TroopSpawnedEventArgs> OnTroopSpawned;
 
-        public BasicCharacterObject SelectedTroop
-        {
-            get
-            {
-                return _selectedTroop;
-            }
-            set
-            {
-                if (_selectedTroop != value)
-                {
-                    _selectedTroop = value;
-                    OnTroopSelected?.Invoke(this, EventArgs.Empty);
-                }
-            }
-        }
+		private int _customTroopCount = 100;
+		private int _troopCount = 1;
+		private int _formationSelected = 1;
+		private BasicCultureObject _selectedFaction;
+		private BasicCharacterObject _selectedTroop;
+		private float _difficulty;
+		private int _difficultyLevel;
+		private List<int> _selectedPerks = new List<int>();
+		private Team _selectedTeam;
 
-        private BasicCultureObject _selectedFaction;
-        private BasicCharacterObject _selectedTroop;
-        private float _difficulty;
+		public int CustomTroopCount
+		{
+			get
+			{
+				return _customTroopCount;
+			}
+			set
+			{
+				if (_customTroopCount != value)
+				{
+					_customTroopCount = value;
+					OnCustomTroopCountUpdated?.Invoke();
+				}
+			}
+		}
 
-        public event EventHandler OnFactionSelected;
-        public event EventHandler OnTroopSelected;
-        public event EventHandler OnFormationUpdated;
-        public event EventHandler OnDifficultyUpdated;
-        public event EventHandler<TroopSpawnedEventArgs> OnTroopSpawned;
+		public int TroopCount
+		{
+			get
+			{
+				return _troopCount;
+			}
+			set
+			{
+				if (_troopCount != value)
+				{
+					_troopCount = value;
+					OnTroopCountUpdated?.Invoke();
+				}
+			}
+		}
 
-        public void RefreshFormations()
-        {
-            if (OnFormationUpdated != null) OnFormationUpdated.Invoke(this, EventArgs.Empty);
-        }
+		public int FormationSelected
+		{
+			get
+			{
+				return _formationSelected;
+			}
+			set
+			{
+				if (_formationSelected != value)
+				{
+					_formationSelected = value;
+					OnFormationSelected?.Invoke();
+				}
+			}
+		}
 
-        public void RefreshTroopSpawn()
-        {
-            if (OnTroopSpawned == null) return;
+		public int DifficultyLevel
+		{
+			get
+			{
+				return _difficultyLevel;
+			}
+			set
+			{
+				if (_difficultyLevel != value)
+				{
+					_difficultyLevel = value;
+					OnDifficultyUpdated?.Invoke();
+				}
+			}
+		}
 
-            MBReadOnlyList<BasicCharacterObject> troops = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
-            foreach (BasicCharacterObject troop in troops)
-            {
-                OnTroopSpawned.Invoke(this, new TroopSpawnedEventArgs(troop, 0));
-            }
-        }
+		public BasicCultureObject SelectedFaction
+		{
+			get
+			{
+				return _selectedFaction;
+			}
+			set
+			{
+				if (_selectedFaction != value)
+				{
+					_selectedFaction = value;
+					BasicCharacterObject factionDefaultCharacter = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).FirstOrDefault()?.TroopCharacter;
+					factionDefaultCharacter ??= MultiplayerClassDivisions.GetMPHeroClasses().First().TroopCharacter;
+					SelectedTroop = factionDefaultCharacter;
+					OnFactionSelected?.Invoke();
+					Log($"Selected faction = {value.Name}", LogLevel.Debug);
+				}
+			}
+		}
 
-        public void RefreshTroopSpawn(BasicCharacterObject troop, int troopCount)
-        {
-            if (OnTroopSpawned != null) OnTroopSpawned.Invoke(this, new TroopSpawnedEventArgs(troop, troopCount));
-        }
+		public Team SelectedTeam
+		{
+			get
+			{
+				return _selectedTeam;
+			}
+			set
+			{
+				if (_selectedTeam != value)
+				{
+					_selectedTeam = value;
+					BannerCode = BannerCode.CreateFrom(value.Banner);
+					OnFactionSelected?.Invoke();
+				}
+			}
+		}
 
-        // Singleton
-        private static readonly SpawnTroopsModel instance = new();
-        public static SpawnTroopsModel Instance { get { return instance; } }
+		public BannerCode BannerCode;
 
-        static SpawnTroopsModel()
-        {
-            BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-            BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-            instance._selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
-            instance._selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(instance._selectedFaction).First().TroopCharacter;
-        }
-    }
+		public BasicCharacterObject SelectedTroop
+		{
+			get
+			{
+				return _selectedTroop;
+			}
+			set
+			{
+				if (_selectedTroop != value)
+				{
+					_selectedTroop = value;
+					OnTroopSelected?.Invoke();
+				}
+			}
+		}
 
-    public class TroopSpawnedEventArgs : EventArgs
-    {
-        public BasicCharacterObject Troop { get; }
-        public int TroopCount { get; }
+		public List<int> SelectedPerks
+		{
+			get
+			{
+				return _selectedPerks;
+			}
+			set
+			{
+				if (_selectedPerks != value)
+				{
+					_selectedPerks = value;
+					OnPerkSelected?.Invoke();
+				}
+			}
+		}
 
-        public TroopSpawnedEventArgs(BasicCharacterObject troop, int troopCount)
-        {
-            Troop = troop;
-            TroopCount = troopCount;
-        }
-    }
+		private static readonly SpawnTroopsModel instance = new();
+		public static SpawnTroopsModel Instance { get { return instance; } }
+
+
+		private SpawnTroopsModel()
+		{
+			BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			_selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
+			_selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
+			_selectedTeam = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team;
+			DifficultyLevel = 1;
+		}
+
+		public void RefreshFormations()
+		{
+			OnFormationUpdated?.Invoke();
+		}
+
+		public void RefreshTroopSpawn(BasicCharacterObject troop, int troopCount)
+		{
+			OnTroopSpawned?.Invoke(new TroopSpawnedEventArgs(troop, troopCount));
+		}
+	}
+
+	public class TroopSpawnedEventArgs : EventArgs
+	{
+		public BasicCharacterObject Troop { get; }
+		public int TroopCount { get; }
+
+		public TroopSpawnedEventArgs(BasicCharacterObject troop, int troopCount)
+		{
+			Troop = troop;
+			TroopCount = troopCount;
+		}
+	}
 }

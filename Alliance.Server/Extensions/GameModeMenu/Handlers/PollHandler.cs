@@ -1,119 +1,120 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.GameModeMenu.Models;
 using Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
 using Alliance.Common.GameModes.Captain;
+using Alliance.Common.GameModes.CvC;
+using Alliance.Common.GameModes.Duel;
 using Alliance.Common.GameModes.Lobby;
 using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Utilities;
 using Alliance.Server.Core;
-using Alliance.Server.GameModes.Story;
-using Alliance.Server.GameModes.Story.Scenarios;
-using NetworkMessages.FromServer;
-using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.GameModeMenu.Handlers
 {
-    public class PollHandler : IHandlerRegister
-    {
-        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
-        {
-            reg.Register<GameModePollRequestMessage>(HandleGameModePollRequest);
-            reg.Register<ScenarioPollRequestMessage>(HandleScenarioPollRequest);
-        }
+	public class PollHandler : IHandlerRegister
+	{
+		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
+		{
+			reg.Register<GameModePollRequestMessage>(HandleGameModePollRequest);
+			reg.Register<ScenarioPollRequestMessage>(HandleScenarioPollRequest);
+		}
 
-        /// <summary>
-        /// Handle game mode poll request
-        /// </summary>
+		/// <summary>
+		/// Handle game mode poll request
+		/// </summary>
 		public bool HandleGameModePollRequest(NetworkCommunicator peer, GameModePollRequestMessage message)
-        {
-            // TODO : make use of PollRequest content to start a poll
+		{
+			// TODO : make use of PollRequest content to start a poll
+			bool isInLobby = MultiplayerOptions.OptionType.GameType.GetStrValue() == "Lobby";
+			string gameType = message.NativeOptions[MultiplayerOptions.OptionType.GameType].ToString();
 
-            if (message.SkipPoll && peer.IsAdmin())
-            {
-                message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
-                message.GetOption(MultiplayerOptions.OptionType.Map).GetValue(out string map);
-                message.GetOption(MultiplayerOptions.OptionType.CultureTeam1).GetValue(out string cultureTeam1);
-                message.GetOption(MultiplayerOptions.OptionType.CultureTeam2).GetValue(out string cultureTeam2);
+			// Check whether the request comes from an admin, or is an authorized game mode launch from Lobby
+			if (message.SkipPoll && peer.IsAdmin() || isInLobby && Config.Instance.AuthorizePoll && GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameType))
+			{
+				string map = message.NativeOptions[MultiplayerOptions.OptionType.Map].ToString();
 
-                GameModeSettings gameModeSettings = CreateSettingsFromMessage(message);
-                GameModeStarter.Instance.StartMission(gameModeSettings);
+				// Check if the scene exist on server side
+				if (!SceneList.Scenes.Exists(sceneInfo => sceneInfo.Name == map))
+				{
+					SendMessageToPeer($"The scene \"{map}\" isn't available on this server", peer);
+					return false;
+				}
 
-                string log = $"Starting {gameType} on {map} ({cultureTeam1} VS {cultureTeam2})...";
+				string cultureTeam1 = message.NativeOptions[MultiplayerOptions.OptionType.CultureTeam1].ToString();
+				string cultureTeam2 = message.NativeOptions[MultiplayerOptions.OptionType.CultureTeam2].ToString();
 
-                Log(log, LogLevel.Information);
+				GameModeSettings gameModeSettings = CreateSettingsFromMessage(message);
+				GameModeStarter.Instance.StartMission(gameModeSettings);
 
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new ServerMessage(log));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				string log = $"Starting {gameType} on {map} ({cultureTeam1} VS {cultureTeam2})...";
 
-                return true;
-            }
-            return false;
-        }
+				Log(log, LogLevel.Information);
+				SendMessageToAll(log);
 
-        private GameModeSettings CreateSettingsFromMessage(GameModePollRequestMessage message)
-        {
-            GameModeSettings gameModeSettings;
+				return true;
+			}
+			return false;
+		}
 
-            message.GetOption(MultiplayerOptions.OptionType.GameType).GetValue(out string gameType);
+		private GameModeSettings CreateSettingsFromMessage(GameModePollRequestMessage message)
+		{
+			GameModeSettings gameModeSettings;
 
-            switch (gameType)
-            {
-                case "CaptainX": gameModeSettings = new CaptainGameModeSettings(); break;
-                case "BattleX": gameModeSettings = new BattleGameModeSettings(); break;
-                case "SiegeX": gameModeSettings = new SiegeGameModeSettings(); break;
-                case "Scenario": gameModeSettings = new ScenarioGameModeSettings(); break;
-                case "PvC": gameModeSettings = new PvCGameModeSettings(); break;
-                case "BattleRoyale": gameModeSettings = new BRGameModeSettings(); break;
-                case "Lobby": gameModeSettings = new LobbyGameModeSettings(); break;
-                default: return null;
-            }
+			string gameType = message.NativeOptions[MultiplayerOptions.OptionType.GameType].ToString();
 
-            gameModeSettings.NativeOptions = message.NativeOptions;
-            gameModeSettings.ModOptions = message.ModOptions;
+			switch (gameType)
+			{
+				case "CaptainX": gameModeSettings = new CaptainGameModeSettings(); break;
+				case "BattleX": gameModeSettings = new BattleGameModeSettings(); break;
+				case "SiegeX": gameModeSettings = new SiegeGameModeSettings(); break;
+				case "DuelX": gameModeSettings = new DuelGameModeSettings(); break;
+				case "Scenario": gameModeSettings = new ScenarioGameModeSettings(); break;
+				case "PvC": gameModeSettings = new PvCGameModeSettings(); break;
+				case "CvC": gameModeSettings = new CvCGameModeSettings(); break;
+				case "BattleRoyale": gameModeSettings = new BRGameModeSettings(); break;
+				case "Lobby": gameModeSettings = new LobbyGameModeSettings(); break;
+				default:
+					Log("Error in PollHandler.CreateSettingsFromMessage : the requested game mode is not handled by the method!", LogLevel.Error);
+					return null;
+			}
 
-            return gameModeSettings;
-        }
+			gameModeSettings.TWOptions = message.NativeOptions;
+			gameModeSettings.ModOptions = message.ModOptions;
 
-        public bool HandleScenarioPollRequest(NetworkCommunicator peer, ScenarioPollRequestMessage message)
-        {
-            // TODO : make use of PollRequest content to start a poll
+			return gameModeSettings;
+		}
 
-            if (message.SkipPoll && peer.IsAdmin())
-            {
-                Scenario currentScenario;
-                Act currentAct;
-                MethodInfo scenarioMethod = typeof(ServerScenarios).GetMethod(message.Scenario);
+		public bool HandleScenarioPollRequest(NetworkCommunicator peer, ScenarioPollRequestMessage message)
+		{
+			// TODO : make use of PollRequest content to start a poll
 
-                if (scenarioMethod == null)
-                {
-                    currentScenario = null;
-                }
-                else
-                {
-                    currentScenario = scenarioMethod.Invoke(null, null) as Scenario;
-                }
+			if (message.SkipPoll && peer.IsAdmin())
+			{
+				Scenario currentScenario = ScenarioManager.Instance.AvailableScenario.Find(scenario => scenario.Id == message.Scenario);
 
-                if (currentScenario != null && currentScenario.Acts.Count > message.Act)
-                {
-                    currentAct = currentScenario.Acts[message.Act];
-                    ScenarioManagerServer.Instance.StartScenario(currentScenario, currentAct);
-                }
-                else
-                {
-                    Log($"Failed to start scenario \"{currentScenario?.Name}\" at act {message.Act}", LogLevel.Error);
-                }
+				if (currentScenario != null && currentScenario.Acts.Count > message.Act)
+				{
+					Act currentAct = currentScenario.Acts[message.Act];
+					ScenarioManager.Instance.StartScenario(currentScenario, currentAct);
+				}
+				else
+				{
+					Log($"Failed to start scenario \"{currentScenario?.Name.LocalizedText}\" at act {message.Act}", LogLevel.Error);
+				}
 
-                return true;
-            }
-            return false;
-        }
-    }
+				return true;
+			}
+			return false;
+		}
+	}
 }

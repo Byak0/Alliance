@@ -6,12 +6,12 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class CS_VehicleRequestTurnLeft : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
         public bool Turn { get; private set; }
 
-        public CS_VehicleRequestTurnLeft(MissionObject missionObject, bool turn)
+        public CS_VehicleRequestTurnLeft(MissionObjectId missionObjectId, bool turn)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             Turn = turn;
         }
 
@@ -22,14 +22,14 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             Turn = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteBoolToPacket(Turn);
         }
 
@@ -40,7 +40,7 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
 
         protected override string OnGetLogFormat()
         {
-            return $"Requesting Entity with id: {MissionObject.Id} and name: {MissionObject.GameEntity.Name} to turn left ({Turn})";
+            return $"Requesting vehicle with id: {MissionObjectId.Id} to turn left ({Turn})";
         }
     }
 }

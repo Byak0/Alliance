@@ -260,6 +260,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.ViewModels
 
             // Initialize Animation preview
             AnimationPreview = new CharacterViewModel();
+            AnimationPreview.ShouldLoopCustomAnimation = true;
             BasicCharacterObject bco = Mission.Current.MainAgent != null ? Mission.Current.MainAgent.Character : MBObjectManager.Instance.GetFirstObject<BasicCharacterObject>();
             AnimationPreview.FillFrom(bco);
 
@@ -339,7 +340,11 @@ namespace Alliance.Client.Extensions.AnimationPlayer.ViewModels
         /// </summary>
         public void PlayAnimationPreview(string animationName)
         {
+            // TODO : Check if it causes issues
+            // Using ExecuteStartCustomAnimation instead of IdleAction as it allow to loop more animations.
+            // However it may be less stable
             AnimationPreview.IdleAction = animationName;
+            //AnimationPreview.ExecuteStartCustomAnimation(animationName, true, 0);
         }
 
         private void OnAnimationSetSelected(AnimationSetCardVM animSetCardVM)

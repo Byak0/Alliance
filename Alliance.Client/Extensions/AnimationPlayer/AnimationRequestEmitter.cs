@@ -27,7 +27,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             }
         }
 
-        public AnimationRequestEmitter() { }
+        private AnimationRequestEmitter() { }
 
         public async void RequestAnimationSequenceForTarget(AnimationSequence animationSequence, Agent target)
         {
@@ -38,7 +38,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             {
                 foreach (Animation animation in animationSequence.Animations)
                 {
-                    Log($"Playing {animation.Name}", LogLevel.Information);
+                    Log($"Playing {animation.Name}", LogLevel.Debug);
                     GameNetwork.BeginModuleEventAsClient();
                     GameNetwork.WriteMessage(new RequestAnimation(target, animation.Index, animation.Speed));
                     GameNetwork.EndModuleEventAsClient();
@@ -61,7 +61,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             {
                 foreach (Animation animation in animationSequence.Animations)
                 {
-                    Log($"Playing {animation.Name}", LogLevel.Information);
+                    Log($"Playing {animation.Name}", LogLevel.Debug);
                     GameNetwork.BeginModuleEventAsClient();
                     GameNetwork.WriteMessage(new RequestAnimationFormation(target, animation.Index, animation.Speed));
                     GameNetwork.EndModuleEventAsClient();
@@ -70,7 +70,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer
             }
             catch (Exception ex)
             {
-                Log($"Failure in sequence {animationSequence.Name} on formation {target.PrimaryClass}", LogLevel.Error);
+                Log($"Failure in sequence {animationSequence.Name} on formation {target.FormationIndex}", LogLevel.Error);
                 Log(ex.Message, LogLevel.Error);
             }
         }

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="utf-8"?>
 <AnimationDefaultStore xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DefaultDurations>
     <float>1.3</float>
@@ -1531,35 +1531,35 @@
     <float>1</float>
     <float>2</float>
     <float>1</float>
-    <float>0.65</float>
-    <float>1.05</float>
+    <float>0.8</float>
+    <float>1.2</float>
     <float>1.2</float>
     <float>4.5</float>
-    <float>0.65</float>
-    <float>1.05</float>
-    <float>4.5</float>
-    <float>0.65</float>
-    <float>1.05</float>
-    <float>4.5</float>
-    <float>0.5</float>
+    <float>0.8</float>
     <float>1.2</float>
+    <float>4.5</float>
+    <float>0.8</float>
     <float>1.2</float>
     <float>4.5</float>
     <float>0.5</float>
+    <float>1.2</float>
     <float>1.2</float>
     <float>4.5</float>
     <float>0.5</float>
     <float>1.2</float>
     <float>4.5</float>
-    <float>0.65</float>
-    <float>1</float>
+    <float>0.5</float>
     <float>1.2</float>
     <float>4.5</float>
-    <float>0.65</float>
-    <float>1</float>
+    <float>0.75</float>
+    <float>1.2</float>
+    <float>1.2</float>
     <float>4.5</float>
-    <float>0.65</float>
-    <float>1</float>
+    <float>0.75</float>
+    <float>1.2</float>
+    <float>4.5</float>
+    <float>0.75</float>
+    <float>1.2</float>
     <float>4.5</float>
     <float>0.3</float>
     <float>1</float>
@@ -3250,7 +3250,7 @@
     <float>1.6</float>
     <float>1.6</float>
     <float>1.3</float>
-    <float>0.5</float>
+    <float>1</float>
     <float>0.2</float>
     <float>0.55</float>
     <float>2.3</float>
@@ -3269,12 +3269,12 @@
     <float>0.8</float>
     <float>0.2</float>
     <float>0.5</float>
-    <float>1.7</float>
+    <float>1.5</float>
     <float>0.8</float>
     <float>0.7</float>
     <float>0.2</float>
     <float>0.5</float>
-    <float>1.7</float>
+    <float>1.5</float>
     <float>0.8</float>
     <float>0.7</float>
     <float>0.3</float>
@@ -3322,7 +3322,7 @@
     <float>2.7</float>
     <float>1.3</float>
     <float>3</float>
-    <float>0.3</float>
+    <float>0.8</float>
     <float>2.3</float>
     <float>3</float>
     <float>2.3</float>
@@ -3502,7 +3502,7 @@
     <float>0.5</float>
     <float>1</float>
     <float>0.5</float>
-    <float>1</float>
+    <float>4.7</float>
     <float>10</float>
     <float>10</float>
     <float>4.6</float>
@@ -3517,11 +3517,19 @@
     <float>1.45</float>
     <float>2.82</float>
     <float>3.18</float>
-    <float>10</float>
+    <float>6</float>
     <float>1.1</float>
     <float>0.56</float>
     <float>0.5</float>
     <float>4</float>
+    <float>5</float>
+    <float>4</float>
+    <float>6</float>
+    <float>7.5</float>
+    <float>5.5</float>
+    <float>4</float>
+    <float>5.3</float>
+    <float>4.7</float>
     <float>5</float>
     <float>4</float>
     <float>6</float>
@@ -3714,13 +3722,13 @@
     <float>0.63</float>
     <float>0.6</float>
     <float>0.53</float>
-    <float>2.55</float>
-    <float>2.55</float>
     <float>2</float>
-    <float>0.3</float>
-    <float>3.2</float>
-    <float>1.7</float>
-    <float>0.7</float>
+    <float>2</float>
+    <float>2</float>
+    <float>0.8</float>
+    <float>2.8</float>
+    <float>1.3</float>
+    <float>0.9</float>
     <float>2.15</float>
     <float>0.7</float>
     <float>2.15</float>
@@ -3981,6 +3989,85 @@
     <float>1</float>
     <float>1</float>
     <float>1</float>
+    <float>4</float>
+    <float>3.8</float>
+    <float>2</float>
+    <float>4.5</float>
+    <float>4</float>
+    <float>6</float>
+    <float>8</float>
+    <float>5</float>
+    <float>4.5</float>
+    <float>6</float>
+    <float>2</float>
+    <float>1.5</float>
+    <float>2</float>
+    <float>4</float>
+    <float>3</float>
+    <float>5</float>
+    <float>1.8</float>
+    <float>2</float>
+    <float>2.4</float>
+    <float>3.5</float>
+    <float>3</float>
+    <float>3.5</float>
+    <float>8</float>
+    <float>4</float>
+    <float>2</float>
+    <float>3</float>
+    <float>5</float>
+    <float>5</float>
+    <float>3.5</float>
+    <float>3.5</float>
+    <float>6</float>
+    <float>4</float>
+    <float>4</float>
+    <float>3.8</float>
+    <float>2</float>
+    <float>4.5</float>
+    <float>4</float>
+    <float>6</float>
+    <float>8</float>
+    <float>4</float>
+    <float>4.4</float>
+    <float>6</float>
+    <float>2</float>
+    <float>1.5</float>
+    <float>1.5</float>
+    <float>4</float>
+    <float>3</float>
+    <float>5</float>
+    <float>1.8</float>
+    <float>2</float>
+    <float>2.8</float>
+    <float>3.5</float>
+    <float>3</float>
+    <float>3.5</float>
+    <float>7</float>
+    <float>5</float>
+    <float>2</float>
+    <float>3</float>
+    <float>5.5</float>
+    <float>5</float>
+    <float>3.5</float>
+    <float>4.5</float>
+    <float>5</float>
+    <float>4.5</float>
+    <float>4</float>
+    <float>3.8</float>
+    <float>4</float>
+    <float>6</float>
+    <float>2</float>
+    <float>3</float>
+    <float>1.8</float>
+    <float>2</float>
+    <float>3.5</float>
+    <float>3</float>
+    <float>8</float>
+    <float>2</float>
+    <float>3</float>
+    <float>5</float>
+    <float>3.5</float>
     <float>1</float>
     <float>2</float>
     <float>1</float>
@@ -4333,6 +4420,8 @@
     <float>13.3</float>
     <float>13.3</float>
     <float>13.3</float>
+    <float>15</float>
+    <float>13.3</float>
     <float>18.3</float>
     <float>14</float>
     <float>18.3</float>
@@ -4341,8 +4430,11 @@
     <float>13.5</float>
     <float>13.5</float>
     <float>13.5</float>
+    <float>13.5</float>
+    <float>13.5</float>
     <float>13</float>
     <float>13</float>
+    <float>12.6</float>
     <float>14.5</float>
     <float>14.5</float>
     <float>14.5</float>
@@ -4368,6 +4460,7 @@
     <float>13</float>
     <float>14.5</float>
     <float>14.5</float>
+    <float>15</float>
     <float>15</float>
     <float>15</float>
     <float>15</float>
@@ -4634,6 +4727,86 @@
     <float>6</float>
     <float>1.333</float>
     <float>1.333</float>
+    <float>2</float>
+    <float>1.35</float>
+    <float>1.833</float>
+    <float>4.2</float>
+    <float>13.3</float>
+    <float>3.329</float>
+    <float>10</float>
+    <float>3.329</float>
+    <float>4.2</float>
+    <float>1.3</float>
+    <float>0.53</float>
+    <float>1.3</float>
+    <float>1</float>
+    <float>0.4662</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.667</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>1.7</float>
+    <float>2</float>
+    <float>0.933</float>
+    <float>0.933</float>
+    <float>0.94</float>
+    <float>0.94</float>
+    <float>0.7</float>
+    <float>0.8</float>
+    <float>0.63</float>
+    <float>0.6</float>
+    <float>0.53</float>
+    <float>0.7</float>
+    <float>0.8</float>
+    <float>0.63</float>
+    <float>0.6</float>
+    <float>0.53</float>
+    <float>2.5</float>
+    <float>2.4</float>
+    <float>1.013</float>
+    <float>0.8</float>
+    <float>1.013</float>
+    <float>0.37</float>
+    <float>0.6</float>
+    <float>0.6</float>
+    <float>1.75</float>
+    <float>0.37</float>
+    <float>0.7</float>
+    <float>0.7</float>
+    <float>2</float>
+    <float>2</float>
+    <float>2</float>
+    <float>0.8</float>
+    <float>1.3</float>
+    <float>0.9</float>
+    <float>2.8</float>
+    <float>2</float>
+    <float>2.15</float>
+    <float>0.5</float>
+    <float>2.15</float>
+    <float>0.5</float>
     <float>1.3</float>
   </DefaultDurations>
 </AnimationDefaultStore>

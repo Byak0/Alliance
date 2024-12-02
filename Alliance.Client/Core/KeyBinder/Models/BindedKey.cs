@@ -8,7 +8,7 @@ namespace Alliance.Client.Core.KeyBinder.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public InputKey DefaultInputKey { get; set; }
+        public InputKey DefaultControllerKey { get; set; }
         internal int KeyId { get; set; }
-
     }
 }

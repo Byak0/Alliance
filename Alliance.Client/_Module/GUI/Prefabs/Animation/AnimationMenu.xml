@@ -36,14 +36,14 @@
 						<!-- Preview of the animation -->
 						<AnimationPreview WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Top" />
 
-						<!-- List of shortcuts binded to animations -->
-						<AnimationShortcuts WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
-
 						<!-- Animations options -->
 						<AnimationOptions WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy ="Fixed" SuggestedHeight="250" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="150" />
 
 						<!-- Current selection of animation(s) -->
 						<AnimationSelection WidthSizePolicy="Fixed" SuggestedWidth="400" HeightSizePolicy ="Fixed" SuggestedHeight="750" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+						<!-- List of shortcuts binded to animations -->
+						<AnimationShortcuts WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-5" />
 
 					</Children>
 				</BrushWidget>

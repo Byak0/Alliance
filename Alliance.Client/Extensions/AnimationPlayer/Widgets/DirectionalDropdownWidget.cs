@@ -373,14 +373,14 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
         {
             if (_navigationScope != null)
             {
-                EventManager.RemoveNavigationScope(_navigationScope);
+                GamepadNavigationContext.RemoveNavigationScope(_navigationScope);
             }
 
             _scopeCollection = new GamepadNavigationForcedScopeCollection();
             _scopeCollection.ParentWidget = ParentWidget ?? this;
             _scopeCollection.CollectionOrder = 999;
             _navigationScope = BuildGamepadNavigationScopeData();
-            EventManager.AddNavigationScope(_navigationScope, initialize: true);
+            GamepadNavigationContext.AddNavigationScope(_navigationScope, initialize: true);
             _button.GamepadNavigationIndex = 0;
             _navigationScope.AddWidgetAtIndex(_button, 0);
             ButtonWidget button = _button;
@@ -393,7 +393,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
                 widget.OnGamepadNavigationFocusGained = (Action<Widget>)Delegate.Combine(widget.OnGamepadNavigationFocusGained, new Action<Widget>(OnWidgetGainedNavigationFocus));
             }
 
-            EventManager.AddForcedScopeCollection(_scopeCollection);
+            GamepadNavigationContext.AddForcedScopeCollection(_scopeCollection);
         }
 
         private void OnWidgetGainedNavigationFocus(Widget widget)
@@ -432,7 +432,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
         {
             if (_navigationScope != null)
             {
-                EventManager.RemoveNavigationScope(_navigationScope);
+                GamepadNavigationContext.RemoveNavigationScope(_navigationScope);
                 for (int i = 0; i < ListPanel.Children.Count; i++)
                 {
                     ListPanel.Children[i].GamepadNavigationIndex = -1;
@@ -448,7 +448,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 
             if (_scopeCollection != null)
             {
-                EventManager.RemoveForcedScopeCollection(_scopeCollection);
+                GamepadNavigationContext.RemoveForcedScopeCollection(_scopeCollection);
             }
         }
 

@@ -1,19 +1,20 @@
-ServerName Alliance - Test Server
+ServerName Alliance - Test Server 1
 GameType Lobby
-Map captain_battlefield_032
-CultureTeam1 vlandia
-CultureTeam2 battania
+AdminPassword test123
+Map mp_beefbacon_craglowe
+CultureTeam1 isengard
+CultureTeam2 rohan
 MaxNumberOfPlayers 500
 MinNumberOfPlayersForMatchStart 0
 NumberOfBotsPerFormation 150
-NumberOfBotsTeam1 7
-NumberOfBotsTeam2 7
-FriendlyFireDamageMeleeFriendPercent 100
+NumberOfBotsTeam1 0
+NumberOfBotsTeam2 0
+FriendlyFireDamageMeleeFriendPercent 75
 FriendlyFireDamageMeleeSelfPercent 0
-FriendlyFireDamageRangedFriendPercent 25
-FriendlyFireDamageRangedSelfPercent 75
-RoundPreparationTimeLimit 10
-RoundTimeLimit 60
+FriendlyFireDamageRangedFriendPercent 75
+FriendlyFireDamageRangedSelfPercent 0
+RoundPreparationTimeLimit 20
+RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360
 WarmupTimeLimit 1

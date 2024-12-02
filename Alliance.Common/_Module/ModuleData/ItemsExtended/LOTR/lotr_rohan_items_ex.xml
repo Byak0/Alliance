@@ -1,0 +1,84 @@
+<ItemsExtended>
+
+	<ItemExtended
+		id="item.rohan_horn_1"
+		usable="true"
+		sound_on_use="LOTR/Rohan/Alert/horn_1.wav"
+		sound_volume="0.7"
+		sound_distance="300"
+		animation_on_use="act_blow_horn"
+		cooldown="1">
+	</ItemExtended>
+
+	<ItemExtended
+		id="item.isengard_pavise"
+		usable="true"
+		prefab=""
+		particle_name=""
+		sound_on_use="event:/mission/combat/missile/foley/passby"
+		sound_volume="0.5"
+		sound_distance="2"
+		animation_on_use="act_drop_pavise"
+		use_limit="1">
+		<Effects>
+			<Effect
+				type="DropPrefab"
+				value="script_isengard_pavise"
+				position="0.0, 0.0, 0.0"/>
+		</Effects>
+	</ItemExtended>
+
+	<ItemExtended
+			id="item.isengard_trap"
+			usable="true"
+			prefab=""
+			particle_name=""
+			sound_on_use="event:/mission/combat/missile/foley/passby"
+			sound_volume="0.4"
+			sound_distance="2"
+			animation_on_use="act_drop_trap"
+			use_limit="3">
+		<Effects>
+			<Effect
+				type="DropPrefab"
+				value="script_isengard_trap"
+				position="0.0, 0.0, 0.0"/>
+		</Effects>
+	</ItemExtended>
+
+	<ItemExtended
+		id="item.spyglass"
+		usable="true"
+		sound_on_use="event:/mission/combat/missile/foley/passby"
+		sound_volume="0.4"
+		sound_distance="1"
+		animation_on_use="act_look"
+		cooldown="2">
+		<Effects>
+			<Effect
+				type="Spyglass"
+				value="4"/>
+		</Effects>
+	</ItemExtended>
+
+	<ItemExtended
+		id="item.imperium_spacemarine_helmet"
+		usable="true"
+		sound_on_use="unequip"
+		sound_volume="0.4"
+		animation_on_use="act_drop_trap"
+		cooldown="2">
+		<Effects>
+			<Effect
+				type="SwitchMesh"
+				value=""/>
+		</Effects>
+	</ItemExtended>
+
+	<ItemExtended
+		id="item.imperium_spacemarine_reactor"
+		usable="false"
+		prefab="misc_spacemarine_reactor_effects">
+	</ItemExtended>
+
+</ItemsExtended>

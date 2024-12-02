@@ -1,111 +1,53 @@
-﻿using TaleWorlds.Library;
+﻿using Alliance.Common.Core.Configuration.Utilities;
+using System.Collections.Generic;
+using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
 {
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class RequestSpawnTroop : GameNetworkMessage
     {
-        private MatrixFrame spawnPosition;
-        private bool spawnAtExactPosition;
-        private string characterToSpawn;
-        private int formation;
-        private int troopCount;
-        private float difficulty;
+        public MatrixFrame SpawnPosition { get; private set; }
+        public bool SpawnAtExactPosition { get; private set; }
+        public BasicCharacterObject CharacterToSpawn { get; private set; }
+        public int Formation { get; private set; }
+        public int TroopCount { get; private set; }
+        public int DifficultyLevel { get; private set; }
+        public List<int> SelectedPerks { get; private set; }
+        public int NbPerks { get; private set; }
+
 
         public RequestSpawnTroop() { }
 
-        public RequestSpawnTroop(MatrixFrame spawnPosition, bool spawnAtExactPosition, string characterToSpawn, int formation, int troopCount, float difficulty)
+        public RequestSpawnTroop(MatrixFrame spawnPosition, bool spawnAtExactPosition, BasicCharacterObject characterToSpawn, int formation, int troopCount, int difficulty, List<int> selectedPerks)
         {
-            this.spawnPosition = spawnPosition;
-            this.spawnAtExactPosition = spawnAtExactPosition;
-            this.characterToSpawn = characterToSpawn;
-            this.formation = formation;
-            this.troopCount = troopCount;
-            this.difficulty = difficulty;
-        }
-
-        public MatrixFrame SpawnPosition
-        {
-            get
-            {
-                return spawnPosition;
-            }
-            private set
-            {
-                spawnPosition = value;
-            }
-        }
-
-        public bool SpawnAtExactPosition
-        {
-            get
-            {
-                return spawnAtExactPosition;
-            }
-            private set
-            {
-                spawnAtExactPosition = value;
-            }
-        }
-
-        public string CharacterToSpawn
-        {
-            get
-            {
-                return characterToSpawn;
-            }
-            private set
-            {
-                characterToSpawn = value;
-            }
-        }
-
-        public int Formation
-        {
-            get
-            {
-                return formation;
-            }
-            private set
-            {
-                formation = value;
-            }
-        }
-
-        public int TroopCount
-        {
-            get
-            {
-                return troopCount;
-            }
-            private set
-            {
-                troopCount = value;
-            }
-        }
-
-        public float Difficulty
-        {
-            get
-            {
-                return difficulty;
-            }
-            private set
-            {
-                difficulty = value;
-            }
+            SpawnPosition = spawnPosition;
+            SpawnAtExactPosition = spawnAtExactPosition;
+            CharacterToSpawn = characterToSpawn;
+            Formation = formation;
+            TroopCount = troopCount;
+            DifficultyLevel = difficulty;
+            SelectedPerks = selectedPerks;
+            NbPerks = SelectedPerks.Count;
         }
 
         protected override void OnWrite()
         {
             WriteMatrixFrameToPacket(SpawnPosition);
             WriteBoolToPacket(SpawnAtExactPosition);
-            WriteStringToPacket(CharacterToSpawn);
-            WriteIntToPacket(Formation, CompressionOrder.FormationClassCompressionInfo);
-            WriteIntToPacket(TroopCount, new CompressionInfo.Integer(0, 9999, true));
-            WriteFloatToPacket(Difficulty, new CompressionInfo.Float(0f, 5, 0.1f));
+            WriteObjectReferenceToPacket(CharacterToSpawn, CompressionBasic.GUIDCompressionInfo);
+            WriteIntToPacket(Formation, CompressionMission.FormationClassCompressionInfo);
+            WriteIntToPacket(TroopCount, CompressionHelper.DefaultIntValueCompressionInfo);
+            WriteIntToPacket(DifficultyLevel, CompressionHelper.DefaultIntValueCompressionInfo);
+            WriteIntToPacket(NbPerks, CompressionMission.PerkIndexCompressionInfo);
+            foreach (int selectedPerk in SelectedPerks)
+            {
+                WriteIntToPacket(selectedPerk, CompressionMission.PerkIndexCompressionInfo);
+            }
         }
 
         protected override bool OnRead()
@@ -113,11 +55,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
             bool bufferReadValid = true;
             SpawnPosition = ReadMatrixFrameFromPacket(ref bufferReadValid);
             SpawnAtExactPosition = ReadBoolFromPacket(ref bufferReadValid);
-            CharacterToSpawn = ReadStringFromPacket(ref bufferReadValid);
-            Formation = ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
-            TroopCount = ReadIntFromPacket(new CompressionInfo.Integer(0, 9999, true), ref bufferReadValid);
-            Difficulty = ReadFloatFromPacket(new CompressionInfo.Float(0f, 5, 0.1f), ref bufferReadValid);
-
+            CharacterToSpawn = (BasicCharacterObject)ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid);
+            Formation = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
+            TroopCount = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+            DifficultyLevel = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+            NbPerks = ReadIntFromPacket(CompressionMission.PerkIndexCompressionInfo, ref bufferReadValid);
+            SelectedPerks = new List<int>();
+            for (int i = 0; i < NbPerks; i++)
+            {
+                SelectedPerks.Add(ReadIntFromPacket(CompressionMission.PerkIndexCompressionInfo, ref bufferReadValid));
+            }
             return bufferReadValid;
         }
 

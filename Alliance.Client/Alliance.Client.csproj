@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
 	<PropertyGroup>
-		<Version>0.0.1</Version>
+		<Version>$(AllianceVersion)</Version>
 		<TargetFramework>net472</TargetFramework>
 		<Platforms>x64</Platforms>
 		<LangVersion>10.0</LangVersion>
@@ -9,6 +10,7 @@
 		<ModuleName>Alliance</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<UseWPF>false</UseWPF>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -18,6 +20,9 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+    <Reference Include="$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\*.dll">
+      <HintPath>%(Identity)</HintPath>
+    </Reference>
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
 		</Reference>
@@ -36,6 +41,9 @@
 	</Target>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
+    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
+    
 		<!-- Prepare the Module folder in \obj first -->
 		<!-- Common assets -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module&quot; &quot;$(ProjectDir)\obj\$(ModuleName)&quot; /E /C /I /Y /F" />
@@ -46,11 +54,19 @@
 		<!-- Add required dll -->
 		<Exec Command="xcopy &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Alliance.Common.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Asio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Core.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Midi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinMM.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinForms.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client\&quot; /C /I /Y /F" />
 		<!-- Copy Win64_Shipping_Client in Gaming.Desktop.x64_Shipping_Client for gamepass version -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Client&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Gaming.Desktop.x64_Shipping_Client\&quot; /C /I /Y /F" />
 
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
-	</Target>
+  </Target>
 
 </Project>

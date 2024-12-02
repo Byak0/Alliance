@@ -1,54 +1,40 @@
-﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.GameModes.SiegeX
 {
-    [ViewCreatorModule]
-    public class SiegeMissionView
-    {
-        [ViewMethod("SiegeX")]
-        public static MissionView[] OpenSiegeMission(Mission mission)
-        {
-            List<MissionView> list = new List<MissionView>
-            {
-                new SpawnTroopsView(),
-                new GameModeMenuView(),
-                new FormationStatusView(),
+	[ViewCreatorModule]
+	public class SiegeMissionView
+	{
+		[ViewMethod("SiegeX")]
+		public static MissionView[] OpenSiegeMission(Mission mission)
+		{
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "Siege");
+			views.AppendList(new List<MissionView>
+			{
+                // Custom views
+                new EquipmentSelectionView(),
+				new FormationStatusView(),
 
-                ViewCreator.CreateMissionServerStatusUIHandler(),
-                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
-                ViewCreator.CreateMissionKillNotificationUIHandler(),
-                ViewCreator.CreateMissionAgentStatusUIHandler(mission),
-                ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-                ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                ViewCreator.CreateMissionMultiplayerEscapeMenu("Siege"),
-                ViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
-                ViewCreator.CreateMissionAgentLabelUIHandler(mission),
-                ViewCreator.CreateMultiplayerTeamSelectUIHandler(),
-                ViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-                ViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                ViewCreator.CreateLobbyEquipmentUIHandler(),
-                ViewCreator.CreatePollProgressUIHandler(),
-                ViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
-                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-                new MissionItemContourControllerView(),
-                new MissionAgentContourControllerView(),
-                ViewCreator.CreateMissionFlagMarkerUIHandler(),
-                ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission)
-            };
-            if (!GameNetwork.IsClient)
-            {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
-            return list.ToArray();
-        }
-    }
+				// Native views
+				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
+				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
+				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
+				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
+				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
+				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+			});
+			return views.ToArray();
+		}
+	}
 }

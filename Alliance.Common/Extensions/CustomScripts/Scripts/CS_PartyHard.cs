@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.Audio.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
-using Alliance.Common.Extensions.SoundPlayer.NetworkMessages.FromServer;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -83,7 +83,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             int soundIndex = SoundEvent.GetEventIdFromString(_sounds[randomIndex]);
             int soundDuration = _soundsDurations[randomIndex];
             GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new SyncSound(soundIndex, soundDuration));
+            GameNetwork.WriteMessage(new SyncNativeSound(soundIndex, soundDuration));
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 
@@ -105,7 +105,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
             {
                 Log(log, LogLevel.Information);
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncParticleObject(this, emitterIndex, particleIndex));
+                GameNetwork.WriteMessage(new SyncParticleObject(Id, emitterIndex, particleIndex));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord);
             }
         }

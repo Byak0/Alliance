@@ -6,11 +6,11 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncSoundDestructible : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
-        public SyncSoundDestructible(MissionObject missionObject)
+        public SyncSoundDestructible(MissionObjectId missionObjectId)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
         }
 
         public SyncSoundDestructible()
@@ -20,13 +20,13 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
         }
 
         protected override MultiplayerMessageFilter OnGetLogFilter()
@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize sound of Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Synchronize sound of Id: ", MissionObjectId.Id);
         }
     }
 }

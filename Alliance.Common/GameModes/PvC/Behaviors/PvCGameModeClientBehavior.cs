@@ -1,39 +1,80 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.ExtendedXML.Models;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.GameModes.Captain.Behaviors;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.PvC.Behaviors
 {
-    public class PvCGameModeClientBehavior : MissionMultiplayerGameModeFlagDominationClient, IBotControllerBehavior
+    public class PvCGameModeClientBehavior : ALMissionMultiplayerFlagDominationClient, IBotControllerBehavior
     {
-        private bool _informedAboutFlagRemoval;
-
         public PvCGameModeClientBehavior() : base()
         {
         }
 
-        public override bool IsGameModeUsingGold => true;
+        public override bool IsGameModeUsingGold => false;
 
         public override void OnBehaviorInitialize()
         {
             base.OnBehaviorInitialize();
+
+            RoundComponent.OnPostRoundEnded += OnPostRoundEnd;
+            MissionPeer.OnTeamChanged += OnTeamChanged;
 
             // Fix to allow more then 3 flags. Use Reflection to init private variable of parent class with correct amount of flags.
             FieldInfo capturePointOwners = typeof(MissionMultiplayerGameModeFlagDominationClient).GetField("_capturePointOwners", BindingFlags.Instance | BindingFlags.NonPublic);
             capturePointOwners.SetValue(this, new Team[AllCapturePoints.Count()]);
         }
 
-        public override void AfterStart()
+        public override void OnRemoveBehavior()
         {
-            base.AfterStart();
-            RoundComponent.OnPostRoundEnded += OnPostRoundEnd;
+            base.OnRemoveBehavior();
+
+            RoundComponent.OnPostRoundEnded -= OnPostRoundEnd;
+            MissionPeer.OnTeamChanged -= OnTeamChanged;
+        }
+
+        public override SpectatorCameraTypes GetMissionCameraLockMode(bool lockedToMainPlayer)
+        {
+            SpectatorCameraTypes result = SpectatorCameraTypes.Invalid;
+            MissionPeer missionPeer = (GameNetwork.IsMyPeerReady ? GameNetwork.MyPeer.GetComponent<MissionPeer>() : null);
+            if (!lockedToMainPlayer && missionPeer != null)
+            {
+                if (missionPeer.Team != Mission.SpectatorTeam)
+                {
+                    if (IsRoundInProgress)
+                    {
+                        Formation controlledFormation = missionPeer.ControlledFormation;
+                        if (controlledFormation != null && controlledFormation.HasUnitsWithCondition((Agent agent) => !agent.IsPlayerControlled && agent.IsActive()))
+                        {
+                            result = SpectatorCameraTypes.LockToPlayerFormation;
+                        }
+                        else
+                        {
+                            result = SpectatorCameraTypes.LockToTeamMembers;
+                        }
+                    }
+                }
+                else
+                {
+                    result = SpectatorCameraTypes.Free;
+                }
+            }
+
+            return result;
+        }
+
+        private void OnTeamChanged(NetworkCommunicator peer, Team oldTeam, Team newTeam)
+        {
+            bool isCommanderSide = newTeam.Side == (BattleSideEnum)Config.Instance.CommanderSide;
+            Log($"{peer.UserName} joined the {(isCommanderSide ? "commander" : "player")}s' side.", LogLevel.Debug);
         }
 
         private void OnPostRoundEnd()
@@ -41,21 +82,11 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
             FormationControlModel.Instance.Clear();
 
             // Reset TroopLeft count after round
-            MBReadOnlyList<ExtendedCharacterObject> extCharacterObjects = MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacterObject>();
-            foreach (ExtendedCharacterObject extCharacterObject in extCharacterObjects)
+            MBReadOnlyList<ExtendedCharacter> extCharacterObjects = MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>();
+            foreach (ExtendedCharacter extCharacterObject in extCharacterObjects)
             {
                 extCharacterObject.TroopLeft = extCharacterObject.TroopLimit;
             }
-        }
-
-        public override void OnMissionTick(float dt)
-        {
-            base.OnMissionTick(dt);
-        }
-
-        protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        {
-            networkPeer.AddComponent<PvCRepresentative>();
         }
 
         public override void OnGoldAmountChangedForRepresentative(MissionRepresentativeBase representative, int goldAmount)
@@ -69,81 +100,6 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
         protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
         {
             // Moved to GameModeHandler
-        }
-
-        public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow blow)
-        {
-            // Prevent native code from running. It's doing stupid.
-        }
-
-        protected override int GetWarningTimer()
-        {
-            int num = 0;
-            if (IsRoundInProgress)
-            {
-                float num3 = MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions) - Config.Instance.TimeBeforeFlagRemoval;
-                float num4 = num3 + 30f;
-                if (RoundComponent.RemainingRoundTime <= num4 && RoundComponent.RemainingRoundTime > num3)
-                {
-                    num = MathF.Ceiling(30f - (num4 - RoundComponent.RemainingRoundTime));
-                    if (!_informedAboutFlagRemoval)
-                    {
-                        _informedAboutFlagRemoval = true;
-                        NotificationsComponent.FlagsWillBeRemovedInXSeconds(30);
-                    }
-                }
-            }
-            return num;
-        }
-
-        public override SpectatorCameraTypes GetMissionCameraLockMode(bool lockedToMainPlayer)
-        {
-            SpectatorCameraTypes spectatorCameraTypes = SpectatorCameraTypes.Invalid;
-            MissionPeer missionPeer = GameNetwork.IsMyPeerReady ? GameNetwork.MyPeer.GetComponent<MissionPeer>() : null;
-            if (!lockedToMainPlayer && missionPeer != null)
-            {
-                if (missionPeer.Team != Mission.SpectatorTeam)
-                {
-                    if (GameType == MissionLobbyComponent.MultiplayerGameType.Captain && IsRoundInProgress)
-                    {
-                        spectatorCameraTypes = SpectatorCameraTypes.Free;
-                        //Formation controlledFormation = missionPeer.ControlledFormation;
-                        //if (controlledFormation != null && controlledFormation.HasUnitsWithCondition((Agent agent) => !agent.IsPlayerControlled && agent.IsActive()))
-                        //{
-                        //    spectatorCameraTypes = SpectatorCameraTypes.LockToTeamMembers;
-                        //}
-                    }
-                }
-                else
-                {
-                    spectatorCameraTypes = SpectatorCameraTypes.Free;
-                }
-
-                //            if (missionPeer.Team != Mission.SpectatorTeam)
-                //{
-                //                spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                if (GameType == MissionLobbyComponent.MultiplayerGameType.Captain && IsRoundInProgress)
-                //                {
-                //                    if (GameNetwork.MyPeer.IsCommander())
-                //                    {
-                //                        spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                    }
-                //                    else
-                //                    {
-                //                        spectatorCameraTypes = SpectatorCameraTypes.LockToTeamMembers;
-                //                    }
-                //                }
-                //                else
-                //                {
-                //                    spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //                }
-                //            }
-                //else
-                //{
-                //	spectatorCameraTypes = SpectatorCameraTypes.Free;
-                //}
-            }
-            return spectatorCameraTypes;
         }
     }
 }

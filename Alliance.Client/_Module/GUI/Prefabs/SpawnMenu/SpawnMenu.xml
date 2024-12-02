@@ -4,12 +4,43 @@
 	<VisualDefinitions>
 	</VisualDefinitions>
 	<Window>
+
 		<!-- Transparent background covering all the screen. If user clicks on it, close the menu -->
 		<ButtonWidget IsVisible="@IsVisible" Command.Click="CloseMenu" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.TransparentBrush">
 			<Children>
 
-				<!-- See SpawnTroopWidget.cs for details -->
-				<SpawnTroopsWidget IsVisible="@IsVisible"/>
+				<!-- Main window -->
+				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.MainFrame" Brush.AlphaFactor="1.2">
+					<Children>
+
+						<!-- List of available troops -->
+						<TroopList DataSource="{TroopList}" WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="550" HorizontalAlignment="Left" VerticalAlignment="Top" />
+
+						<!-- Preview of the troop -->
+						<TroopPreview WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="25" />
+
+						<!-- Difficulty slider -->
+						<DifficultySliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="300" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" DifficultyValue="@Difficulty" MarginLeft="30" IsVisible="@ShowDifficultySlider" />
+
+						<!-- Number of troops to recruit -->
+						<RecruitmentOptions WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="75" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="125" MarginLeft="51" />
+
+						<!-- Selected troop infos -->
+						<TroopInfos WidthSizePolicy="Fixed" SuggestedWidth="500" HeightSizePolicy ="Fixed" SuggestedHeight="550" HorizontalAlignment="Right" VerticalAlignment="Top" />
+
+						<!-- Formation selection -->
+						<FormationList WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="150" />
+
+						<!-- Gold infos and Recruit button -->
+						<Footer WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
+
+						<!-- Selected perks -->
+						<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\FirstPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-220"/>
+						<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\SecondPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-220"/>
+						<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\ThirdPerk\CandidatePerks}"  MarginTop="-90" MarginLeft="-220"/>
+
+					</Children>
+				</BrushWidget>
 
 			</Children>
 		</ButtonWidget>

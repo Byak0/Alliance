@@ -145,8 +145,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
             if (!ValidState) return;
 
             base.OnTick(dt);
-
-            if (!MBNetwork.IsClient) return;
         }
 
         public override void ServerMoveForward(bool move)

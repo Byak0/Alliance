@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<item_usage_sets>
+	<item_usage_set
+		id="al_horn"
+		equip_sound="event:/mission/combat/equip/small_equip"
+			unequip_sound="event:/mission/combat/equip/small_unequip">
+		<idles>
+			<idle
+				action="act_idle_1h_without_shield_1"
+				is_left_stance="False"
+				require_free_left_hand="False"
+				require_left_hand_usage_root_set="al_horn" />
+			<idle
+				action="act_idle_1h_without_shield_1_left_stance"
+				is_left_stance="True"
+				require_free_left_hand="False"
+				require_left_hand_usage_root_set="al_horn" />
+		</idles>
+		<movement_sets>
+			<movement_set
+				id="torch" />
+		</movement_sets>
+	</item_usage_set>
+	
+	<item_usage_set
+		id="al_torch"
+		equip_sound="event:/mission/combat/equip/small_equip"
+		unequip_sound="event:/mission/combat/equip/small_unequip">
+		<idles>
+			<idle
+				action="act_idle_1h_without_shield_1"
+				is_left_stance="False"
+				require_free_left_hand="False"
+				require_left_hand_usage_root_set="al_torch" />
+			<idle
+				action="act_idle_1h_without_shield_1_left_stance"
+				is_left_stance="True"
+				require_free_left_hand="False"
+				require_left_hand_usage_root_set="al_torch" />
+		</idles>
+		<movement_sets>
+			<movement_set
+				id="torch" />
+		</movement_sets>
+	</item_usage_set>
+</item_usage_sets>

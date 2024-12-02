@@ -6,15 +6,15 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
     public sealed class SyncAbilityOfNavmesh : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
 
         public bool Navmesh1 { get; private set; }
 
         public bool Navmesh2 { get; private set; }
 
-        public SyncAbilityOfNavmesh(MissionObject missionObject, bool navmesh1, bool navmesh2)
+        public SyncAbilityOfNavmesh(MissionObjectId missionObjectId, bool navmesh1, bool navmesh2)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             Navmesh1 = navmesh1;
             Navmesh2 = navmesh2;
         }
@@ -26,7 +26,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             Navmesh1 = ReadBoolFromPacket(ref bufferReadValid);
             Navmesh2 = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
@@ -34,7 +34,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteBoolToPacket(Navmesh1);
             WriteBoolToPacket(Navmesh2);
         }
@@ -46,7 +46,7 @@ namespace Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer
 
         protected override string OnGetLogFormat()
         {
-            return string.Concat("Synchronize Navmesh1: ", Navmesh1, " | Navmesh2 : ", Navmesh2, " of MissionObject with Id: ", MissionObject.Id, " and name: ", MissionObject.GameEntity.Name);
+            return string.Concat("Synchronize Navmesh1: ", Navmesh1, " | Navmesh2 : ", Navmesh2, " of MissionObject with Id: ", MissionObjectId.Id);
         }
     }
 }

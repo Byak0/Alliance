@@ -9,6 +9,9 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Patch.HarmonyPatch
 {
+    /// <summary>
+    /// NOT USED. This patch is a test for assigning a different team to each captain.
+    /// </summary>
     public class Patch_MultiplayerTeamSelectComponent
     {
         private static readonly Harmony Harmony = new Harmony(nameof(Patch_MultiplayerTeamSelectComponent));
@@ -52,7 +55,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
                 Blow b = new Blow(component.ControlledAgent.Index);
                 b.DamageType = DamageTypes.Invalid;
                 b.BaseMagnitude = 10000f;
-                b.Position = component.ControlledAgent.Position;
+                b.GlobalPosition = component.ControlledAgent.Position;
                 b.DamagedPercentage = 1f;
                 component.ControlledAgent.Die(b, Agent.KillInfo.TeamSwitch);
             }

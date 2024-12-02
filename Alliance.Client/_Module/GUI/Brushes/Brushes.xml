@@ -195,6 +195,36 @@
 		</Styles>
 	</Brush>
 
+	<Brush Name="Alliance.Button">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="switcher_9" />
+			<BrushLayer Name="Selected" AlphaFactor="0" Sprite="StdAssets\arrow_pointing_left" HorizontalFlip="true" ExtendLeft="30" ExtendRight="-220" ExtendTop="-20" ExtendBottom="-20" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" ColorFactor="1" />
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default" ColorFactor="1.6" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="1" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" ColorFactor="0.7" AlphaFactor="0.5" />
+			</Style>
+		</Styles>
+		<SoundProperties>
+			<EventSounds>
+				<EventSound EventName="Click" Audio="choice" />
+			</EventSounds>
+		</SoundProperties>
+	</Brush>
+
 	<Brush Name="WideButton.Flat">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="StdAssets\button_wide_flat" />
@@ -253,13 +283,42 @@
 		</Styles>
 	</Brush>
 
+	<Brush Name="Alliance.Button.Checkbox" BaseBrush="Item.Type.Icon.BaseBrush">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="StdAssets\checkbox_empty" />
+			<BrushLayer Name="Selected" Sprite="StdAssets\checkbox_full" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" IsHidden="true" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="0.4" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="1" />
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+				<BrushLayer Name="Selected" AlphaFactor="0.8" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" AlphaFactor="0.5" />
+				<BrushLayer Name="Selected" IsHidden="true" />
+			</Style>
+		</Styles>
+	</Brush>
+
 	<Brush Name="Alliance.ListFrame">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="switcher_9" ExtendTop="2" ExtendLeft="2" ExtendRight="2" ExtendBottom="2" />
 		</Layers>
 		<Styles>
 			<Style Name="Default">
-				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
 			</Style>
 			<Style Name="Hovered">
 				<BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
@@ -271,7 +330,7 @@
 				<BrushLayer Name="Default" ColorFactor="1.2" />
 			</Style>
 			<Style Name="Disabled">
-				<BrushLayer Name="Default" AlphaFactor="0.5" />
+				<BrushLayer Name="Default" AlphaFactor="0.8" />
 			</Style>
 		</Styles>
 		<SoundProperties>
@@ -333,5 +392,23 @@
 				<BrushLayer Name="Default" AlphaFactor="1" />
 			</Style>
 		</Styles>
+	</Brush>
+
+	<Brush Name="Alliance.WhiteSquareBrush">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="BlankWhiteSquare" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.5" />
+		</Layers>
+	</Brush>
+
+	<Brush Name="Alliance.BannerBackgroundLeft">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_left" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+		</Layers>
+	</Brush>
+
+	<Brush Name="Alliance.BannerBackgroundRight">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+		</Layers>
 	</Brush>
 </Brushes>

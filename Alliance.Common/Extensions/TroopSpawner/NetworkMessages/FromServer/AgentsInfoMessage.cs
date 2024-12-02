@@ -11,16 +11,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
     public sealed class AgentsInfoMessage : GameNetworkMessage
     {
         public DataType DataType { get; private set; }
-        public Agent Agent { get; private set; }
+        public int AgentIndex { get; private set; }
         public float Difficulty { get; private set; }
         public int Experience { get; private set; }
         public int Lives { get; private set; }
 
         public AgentsInfoMessage() { }
 
-        public AgentsInfoMessage(Agent agent, DataType dataType, float difficulty = 1f, int experience = 0, int lives = 0)
+        public AgentsInfoMessage(int agentIndex, DataType dataType, float difficulty = 1f, int experience = 0, int lives = 0)
         {
-            Agent = agent;
+            AgentIndex = agentIndex;
             DataType = dataType;
             Difficulty = difficulty;
             Experience = experience;
@@ -29,7 +29,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
 
         protected override void OnWrite()
         {
-            WriteAgentReferenceToPacket(Agent);
+            WriteAgentIndexToPacket(AgentIndex);
             WriteIntToPacket((int)DataType, new CompressionInfo.Integer(0, 4));
             switch (DataType)
             {
@@ -53,7 +53,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            Agent = ReadAgentReferenceFromPacket(ref bufferReadValid);
+            AgentIndex = ReadAgentIndexFromPacket(ref bufferReadValid);
             DataType = (DataType)ReadIntFromPacket(new CompressionInfo.Integer(0, 4), ref bufferReadValid);
             switch (DataType)
             {

@@ -8,6 +8,7 @@ using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -15,6 +16,7 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.AdminMenu.Views
 {
+    [DefaultView]
     public class AdminSystem : MissionView, IUseKeyBinder
     {
         private static string adminKeyCategoryId = "admin_sys";
@@ -65,9 +67,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
         private void OpenAdminPanel(AdminVM adminVM)
         {
-            if (_layerLoaded != null)
-                MissionScreen.RemoveLayer(_layerLoaded);
-
             _layerLoaded = new GauntletLayer(2);
             IGauntletMovie movie = _layerLoaded.LoadMovie("AdminPanel", adminVM);
             SpriteData spriteData = UIResourceManager.SpriteData;
@@ -91,8 +90,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
         public override void OnMissionScreenTick(float dt)
         {
-            base.OnMissionScreenTick(dt);
-
             if (_isMenuOpen)
             {
                 if (_layerLoaded.Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton) || _layerLoaded.Input.IsKeyPressed(InputKey.Escape) || Input.IsKeyPressed(InputKey.LeftMouseButton))
@@ -121,11 +118,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
             }
         }
 
-        public override void OnMissionScreenInitialize()
-        {
-            base.OnMissionScreenFinalize();
-        }
-
         private void TeleportToMouse()
         {
             MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
@@ -135,11 +127,11 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
                 GameNetwork.BeginModuleEventAsClient();
                 GameNetwork.WriteMessage(new TeleportRequest(groundPosition));
                 GameNetwork.EndModuleEventAsClient();
-                Log($"Requesting teleport to {groundPosition}", LogLevel.Information);
+                Log($"Requesting teleport to {groundPosition}", LogLevel.Debug);
             }
             else
             {
-                Log($"Invalid target position", LogLevel.Information);
+                Log($"Invalid teleport position", LogLevel.Information);
             }
         }
 
@@ -171,6 +163,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
             };
             adminVM.SelectTarget(agent);
             OpenAdminPanel(adminVM);
-        }
+        }        
     }
 }

@@ -3,6 +3,7 @@ using System;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
@@ -15,6 +16,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.Views
     /// Player can request for a game mode to be played, and it will be submitted to vote.
     /// Admins can launch a game mode without the need to vote for it.
     /// </summary>
+    [DefaultView]
     public class GameModeMenuView : MissionView
     {
         private GauntletLayer _layer;

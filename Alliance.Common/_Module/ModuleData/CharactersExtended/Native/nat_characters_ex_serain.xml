@@ -1,0 +1,30 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.serain_merchant" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.serain_light_warrior" troop_limit="100" player_select_limit="3" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_light_warrior_hero" troop_limit="100" player_select_limit="3" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_light_warrior_banner_bearer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.serain_light_archer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.serain_light_archer_banner_bearer" troop_limit="100" player_select_limit="3" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_light_archer_hero" troop_limit="100" player_select_limit="3" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_medium_warrior" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.serain_medium_warrior_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_medium_warrior_hero" troop_limit="100" player_select_limit="2" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_heavy_warrior" troop_limit="100" player_select_limit="2" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_heavy_warrior_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_heavy_warrior_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_light_mameluk" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.serain_light_mameluk_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_light_mameluk_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_heavy_archer" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.serain_heavy_archer_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_heavy_archer_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_civilian" troop_limit="100" player_select_limit="100"/>
+	<CharacterExtended id="NPCCharacter.serain_noble_merchant" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.serain_heavy_mameluk" troop_limit="100" player_select_limit="20" />
+	<CharacterExtended id="NPCCharacter.serain_heavy_mameluk_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_heavy_mameluk_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_royal_guard" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_royal_guard_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.serain_royal_guard_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.serain_slave" troop_limit="100" player_select_limit="100" />
+</CharactersExtended>
