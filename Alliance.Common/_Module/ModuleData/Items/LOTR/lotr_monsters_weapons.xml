@@ -1,0 +1,17 @@
+<Items>	
+
+	<CraftedItem id="cave_troll_hammer_d"
+			 name="{=ArSp1}Cave Troll hammer"
+			 crafting_template="lotr_Mace"
+			 culture="Culture.monsters">
+		<Pieces>
+			<Piece id="cavetroll_hammer_head_d"
+				   Type="Blade"
+				   scale_factor="80" />
+			<Piece id="cavetroll_hammer_handle_d"
+				   Type="Handle"
+				   scale_factor="95" />
+		</Pieces>
+	</CraftedItem>
+	
+</Items>

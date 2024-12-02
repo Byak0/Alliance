@@ -24,7 +24,7 @@ namespace Alliance.Common.Utilities
             }
 #endif
 
-			if (GameNetwork.IsClient)
+			if (!GameNetwork.IsServer)
 			{
 				// Print to in-game chat
 				InformationManager.DisplayMessage(new InformationMessage(message, GetColorForLogLevel(level)));

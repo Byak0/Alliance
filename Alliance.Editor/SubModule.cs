@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Patch;
+using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
@@ -51,6 +52,9 @@ namespace Alliance.Editor
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
 		{
+			// Late patching, patching earlier causes issues with Voice type
+			Patch_AdvancedCombat.LatePatch();
+
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());

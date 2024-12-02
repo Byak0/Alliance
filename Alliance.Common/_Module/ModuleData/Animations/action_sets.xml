@@ -155,6 +155,7 @@
 		<action type="act_warg_forward_trot_strafe_left" animation="warg_trot_strafe" />
 		<action type="act_warg_forward_trot_stand" animation="warg_trot_stand" />
 		<action type="act_warg_forward_canter" animation="warg_canter" />
+		<action type="act_horse_forward_canter" animation="warg_canter" />
 		<action type="act_warg_forward_canter_strafe_right" animation="warg_canter_strafe" />
 		<action type="act_warg_forward_canter_strafe_left" animation="warg_canter_strafe" />
 		<action type="act_warg_forward_canter_stand" animation="warg_canter_stand" />

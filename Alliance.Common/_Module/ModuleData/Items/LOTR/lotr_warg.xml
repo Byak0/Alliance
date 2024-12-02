@@ -142,6 +142,11 @@
 				<Materials>
 					<Material
 						name="warg_skin_3">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFffffff"
+								percentage="1" />
+						</MeshMultipliers>
 					</Material>
 				</Materials>
 			</Horse>
