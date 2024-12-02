@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<!-- HORNS -->
+	<Item id="rohan_horn_1"
+					name="Rohan Horn"
+					is_merchandise="false"
+					body_name="bo_mace_a"
+					recalculate_body="true"
+					mesh="rohan_horn"
+					culture="Culture.rohan"
+					value="4"
+					weight="0.2"
+					Type="OneHandedWeapon"
+					item_holsters="throwing_stone_2">
+		<ItemComponent>
+			<Weapon weapon_class="OneHandedAxe"
+							weapon_balance="100"
+							thrust_speed="78"
+							speed_rating="97"
+							missile_speed="0"
+							weapon_length="65"
+							swing_damage="6"
+							swing_damage_type="Blunt"
+							item_usage="al_horn"
+							rotation="0.0,-5.0,91.2"
+							physics_material="wood_weapon">
+				<WeaponFlags MeleeWeapon="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags DropOnWeaponChange="false"
+					 ForceAttachOffHandPrimaryItemBone="true"
+					 HeldInOffHand="true"
+					 HasToBeHeldUp="false" />
+	</Item>
+
+	<!-- HORSES -->
+	<Item
+			multiplayer_item="true"
+			id="rohan_horse"
+			name="{=AIu3kKvz}Saddle Horse"
+			mesh="horse_brown"
+			subtype="horse"
+			item_category="sumpter_horse"
+			value="1"
+			is_merchandise="false"
+			weight="400"
+			difficulty="30"
+			Type="Horse">
+		<ItemComponent>
+			<Horse
+				monster="Monster.horse"
+				maneuver="61"
+				speed="41"
+				charge_damage="4"
+				body_length="104"
+				is_mountable="true"
+				extra_health="15"
+				skeleton_scale="vlandia_horse">
+				<AdditionalMeshes>
+					<Mesh
+						name="horse_mane_2"
+						affected_by_cover="true" />
+				</AdditionalMeshes>
+				<Materials>
+					<Material
+						name="horse_grey_mat">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FF303030"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FF909090"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+					<Material
+						name="horse_white_mat">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FF303030"
+								percentage="1.0" />
+						</MeshMultipliers>
+					</Material>
+					<Material
+						name="horse_grey_mat">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FF010101"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FF909090"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+				</Materials>
+			</Horse>
+		</ItemComponent>
+	</Item>
+</Items>

@@ -1,66 +1,47 @@
-﻿using Alliance.Client.Extensions.AgentsCount.Views;
-using Alliance.Client.Extensions.ExNativeUI.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
+using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
 using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.GameModes.PvC
 {
-    [ViewCreatorModule]
-    public class PvCMissionView
-    {
-        [ViewMethod("PvC")]
-        public static MissionView[] OpenPvCMission(Mission mission)
-        {
-            List<MissionView> list = new List<MissionView>
-            {
+	[ViewCreatorModule]
+	public class PvCMissionView
+	{
+		[ViewMethod("PvC")]
+		public static MissionView[] OpenPvCMission(Mission mission)
+		{
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "PvC");
+			views.AppendList(new List<MissionView>
+			{
                 // Custom views
-                new SpawnTroopsView(),
-                new KillNotificationView(),
-                new LobbyEquipmentView(),
-                new AgentStatusView(),
-                new TeamSelectView(),
-                new FormationStatusView(),
-                new AgentsCountView(),
-                new MarkerUIHandlerView(),
-                new HUDExtensionUIHandlerView(),
-                new HideWeaponTrail(),
-                new GameModeMenuView(),
+                new EquipmentSelectionView(),
+				new AgentStatusView(),
+				new FormationStatusView(),
+				new HUDExtensionUIHandlerView(),
+				new SpectatorView(),
 
-                // Native views from Captain mode
-                ViewCreator.CreateMissionServerStatusUIHandler(),
-                ViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
-                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
-                ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-                ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                ViewCreator.CreateMissionMultiplayerEscapeMenu("PvC"),
-                ViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
-                ViewCreator.CreateMissionAgentLabelUIHandler(mission),
-                ViewCreator.CreateOrderTroopPlacerView(mission),
-                ViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-                ViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                //list.Add(ViewCreator.CreateMultiplayerEndOfBattleUIHandler());
-                ViewCreator.CreatePollProgressUIHandler(),
-                new MissionItemContourControllerView(),
-                new MissionAgentContourControllerView(),
-                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-                ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission)
-            };
-            if (!GameNetwork.IsClient)
-            {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
-            //list.Add(new SpectatorCameraView());
-            list.Add(new SpectatorView());
-
-            return list.ToArray();
-        }
-    }
+				// Native views
+				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
+				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
+				ViewCreator.CreateOrderTroopPlacerView(mission),
+				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
+				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
+				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+			});
+			return views.ToArray();
+		}
+	}
 }

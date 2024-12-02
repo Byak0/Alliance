@@ -107,7 +107,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
                                     {
                                         MatrixFrame frame = ____ownerGameEntity.GetFrame();
                                         GameNetwork.BeginBroadcastModuleEvent();
-                                        GameNetwork.WriteMessage(new SetMissionObjectFrame(__instance, ref frame));
+                                        GameNetwork.WriteMessage(new SetMissionObjectFrame(__instance.Id, ref frame));
                                         GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
                                     }
                                 }
@@ -170,7 +170,8 @@ namespace Alliance.Server.Patch.HarmonyPatch
                                     GameNetwork.BeginBroadcastModuleEvent();
                                     MissionObjectId id = __instance.Id;
                                     GameEntity groundEntityWhenDisabled = ____groundEntityWhenDisabled;
-                                    GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, groundEntityWhenDisabled != null ? groundEntityWhenDisabled.GetFirstScriptOfType<MissionObject>() : null, ____ownerGameEntity.GetFrame()));
+                                    MissionObjectId idParent = groundEntityWhenDisabled != null ? groundEntityWhenDisabled.GetFirstScriptOfType<MissionObject>().Id : MissionObjectId.Invalid;
+                                    GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, idParent, ____ownerGameEntity.GetFrame()));
                                     GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
                                 }
                             }

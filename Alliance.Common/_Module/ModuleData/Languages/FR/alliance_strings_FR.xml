@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<base xmlns:xsi="http://www.w3.org/20...Schema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" type="string">
+	<tags>
+		<tag language="Français" />
+	</tags>
+
+	<strings>
+		<!-- Game modes -->
+		<string id="str_alliance_game_type_name_alliance" text="Players VS Commanders" />
+		<string id="str_alliance_game_type_explainer_alliance" text="Joueurs : Choisissez votre classe et combattez aux côtés de vos camarades !              Commandants : Recrutez une armée et menez-la au combat contre les joueurs !" />
+		<string id="str_alliance_game_type_alliance" text="Alliance" />
+		<string id="str_alliance_game_type_lobby" text="Lobby" />
+		<string id="str_alliance_game_type_explainer_lobby" text="" />
+		<string id="str_alliance_game_type_lobby" text="Lobby" />
+		<string id="str_alliance_game_type_name_scenario" text="Scenario" />
+		<string id="str_alliance_game_type_explainer_scenario" text="" />
+		<string id="str_alliance_game_type_scenario" text="Scenario" />
+		<string id="str_alliance_game_type_name_captainx" text="Captain" />
+		<string id="str_alliance_game_type_explainer_captainx" text="Lead your own detachment of troops into battle in this team-based PvP game mode. Control the battlefield to demoralize the enemy team or annihilate their forces to emerge victorious." />
+		<string id="str_alliance_game_type_captainx" text="Captain Battle" />
+		<string id="str_alliance_game_type_name_battlex" text="Battle" />
+		<string id="str_alliance_game_type_explainer_battlex" text="·   Buy one spawn using gold{newline}·   Hold control points on the map to deplete enemy morale{newline}·   Kill the entire enemy team or exhaust their morale to win" />
+		<string id="str_alliance_game_type_battlex" text="Battle" />
+
+		<!-- Scene names -->
+		<string id="str_alliance_scene_oasis" text="Oasis par LeDruide" />
+		<string id="str_alliance_scene_bre_mornebreuil" text="[BRE] Mornebreuil" />
+		<string id="str_alliance_scene_battlefield_032" text="Plaines" />
+		<string id="str_alliance_scene_captain_battlefield_O" text="Vallée" />
+		<string id="str_alliance_scene_captain_battlefield_v" text="Forêt" />
+		<string id="str_alliance_scene_captain_battlefield_008" text="Chemin du désert" />
+		<string id="str_alliance_scene_comb_alliance_scn_01_a" text="Ruines désertiques par LeProfyteur" />
+		<string id="str_alliance_scene_scn_lobby_v01" text="Lobby island" />
+		<string id="str_alliance_scene_Alliance_test" text="Script test" />
+		<string id="str_alliance_scene_rangefire_distance_test" text="Range fire test" />
+		<string id="str_alliance_scene_mp_meteoraterra_yurek" text="Meteoraterra par Yurek" />
+		<string id="str_alliance_scene_mp_longisland_bullero" text="Long Island par Bullero" />
+		<string id="str_alliance_scene_mp_beefbacon_craglowe" text="Craglowe par beefbacon" />
+		<string id="str_alliance_scene_bfhd_helms_deep_act_I" text="Gouffre de Helm - Acte 1" />
+		<string id="str_alliance_scene_bfhd_helms_deep_act_II" text="Gouffre de Helm - Acte 2" />
+		<string id="str_alliance_scene_bfhd_helms_deep_lobby" text="Gouffre de Helm" />
+		<string id="str_alliance_scene_bfhd_helms_deep_v2" text="En mémoire de Bernard Hill" />
+		<string id="str_alliance_scene_bfhd_helms_deep_gdc" text="Final GdC - Gouffre de Helm" />
+		<string id="str_alliance_scene_scn_bilbo2" text="???" />
+		<string id="str_alliance_scene_captain_french_castle" text="Château Français par Path" />
+		<string id="str_alliance_scene_FrenchCastlePathEdC" text="L'Aigle captif" />
+		<string id="str_alliance_scene_commencement" text="Commencement..." />
+		<string id="str_alliance_scene_battle_phenixCaslte" text="Phenix" />
+		<string id="str_alliance_scene_anduin_shore" text="Les Rivages de l'Anduin par Esperanza" />
+		<string id="str_alliance_scene_les_plaines_eastemnet" text="Les Plaines de l'Eastemnet par Adwennor" />
+		<string id="str_alliance_scene_les_plaines_eastemnet_uruk" text="Les Plaines de l'Eastemnet par Adwennor (Isengard)" />
+		<string id="str_alliance_scene_lotr_westfold_village" text="Village de l'Ouestfolde par Esperanza" />
+		<string id="str_alliance_scene_lotr_westfold_village_lobby" text="Village de l'Ouestfolde par Esperanza (Lobby)" />
+		<string id="str_alliance_scene_westfold_burned" text="Village de l'Ouestfolde par Esperanza (Isengard)" />
+		<string id="str_alliance_scene_gues_isen" text="Le Gués de l'Isen par Adwennor" />
+		<string id="str_alliance_scene_lotr_the_wold" text="Le Plateau de l'Eastemnet par Esperanza" />
+		<string id="str_alliance_scene_warg3" text="Embuscade par Adwennor" />
+		<string id="str_alliance_scene_lisiere2" text="Lisière de Fangorn par Adwennor" />
+		<string id="str_alliance_scene_amazonia" text="Amazonia par Esperanza" />
+		<string id="str_alliance_scene_elira_del_mar" text="Elira Del Mar par Esperanza" />
+		
+		<!-- Unit names -->
+		<string id="al_lotr_isen_scout_t" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_scout_h" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_scout_b" text="Scout Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_t" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_h" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_pikeman_b" text="Piquier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_t" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_h" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_warrior_b" text="Guerrier Uruk-hai" />
+		<string id="al_lotr_isen_heavy_t" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_heavy_h" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_heavy_b" text="Uruk-hai Lourd" />
+		<string id="al_lotr_isen_berserk_t" text="Berserker Uruk-hai" />
+		<string id="al_lotr_isen_berserk_h" text="Berserker Uruk-hai" />
+		<string id="al_lotr_isen_archer_t" text="Archer Uruk-hai" />
+		<string id="al_lotr_isen_archer_h" text="Archer Uruk-hai" />
+		<string id="al_lotr_isen_arbalest_t" text="Arbalétrier Uruk-hai" />
+		<string id="al_lotr_isen_arbalest_h" text="Arbalétrier Uruk-hai" />
+
+		<!-- Scenario text for BFHD -->
+		<string id="str_alliance_scenario_name_BFHD" text="La Bataille pour le Gouffre de Helm" />
+		<string id="str_alliance_scenario_description_BFHD" text="Défendez le Gouffre de Helm contre les armées d'Isengard" />
+		<!-- Acte 1 -->
+		<string id="str_alliance_act_name_BFHD_1" text="Acte 1 - Ainsi commence..." />
+		<string id="str_alliance_act_description_BFHD_1" text="L'armée des Uruk-hai, forte de dix mille hommes, approche. Ne leur montrez aucune pitié ! Car vous n'en recevrez aucune !" />
+		<string id="str_alliance_act_lose_defender_BFHD_1" text="La bataille du Gouffre de Helm est terminée. La forteresse est tombée entre les mains du perfide Saroumane." />
+		<string id="str_alliance_act_lose_attacker_BFHD_1" text="Un soleil rouge se lève, ce soir, du sang a été versé." />
+		<string id="str_alliance_act_victory_attacker_BFHD_1" text="La bataille du Gouffre de Helm est terminée. La forteresse est tombée entre les mains du perfide Saroumane." />
+		<string id="str_alliance_act_victory_defender_BFHD_1" text="Un soleil rouge se lève, ce soir, du sang a été versé." />
+		<!-- Acte 1 - Objectifs -->
+		<string id="str_alliance_obj_name_BFHD_1_1" text="Survivre" />
+		<string id="str_alliance_obj_description_BFHD_1_1" text="Au moins un joueur doit rester en vie." />
+		<string id="str_alliance_obj_name_BFHD_1_2" text="Vaincre les forces de Saroumane" />
+		<string id="str_alliance_obj_description_BFHD_1_2" text="Tuez tous les ennemis." />
+		<string id="str_alliance_obj_name_BFHD_1_3" text="Vaincre les ennemis restants" />
+		<string id="str_alliance_obj_description_BFHD_1_3" text="Tuez tous les ennemis." />
+		<!-- Acte 2 -->
+		<string id="str_alliance_act_name_BFHD_2" text="Acte 2 - Il y a toujours de l'espoir" />
+		<string id="str_alliance_act_description_BFHD_2" text="Voici venue l'heure de tirer l'épée ensemble. Cruauté réveilles-toi. Qu'importe le courroux ! Qu'importe la ruine ! Et que l'aube soit rouge ! Pour Eorlingas !" />
+		<string id="str_alliance_act_lose_defender_BFHD_2" text="La bataille du Gouffre de Helm est terminée. L'armée du Rohan a été vaincue par le perfide Saroumane." />
+		<string id="str_alliance_act_lose_attacker_BFHD_2" text="La bataille du Gouffre de Helm est terminée, mais celle pour la Terre du Milieu ne fait que commencer..." />
+		<string id="str_alliance_act_victory_attacker_BFHD_2" text="La bataille du Gouffre de Helm est terminée. L'armée du Rohan a été vaincue par le perfide Saroumane." />
+		<string id="str_alliance_act_victory_defender_BFHD_2" text="La bataille du Gouffre de Helm est terminée, mais celle pour la Terre du Milieu ne fait que commencer..." />
+		<!-- Acte 2 - Objectifs -->
+		<string id="str_alliance_obj_name_BFHD_2_1" text="Vaincre les ennemis restants" />
+		<string id="str_alliance_obj_description_BFHD_2_1" text="Tuez tous les ennemis." />
+		<string id="str_alliance_obj_name_BFHD_2_2" text="Vaincre les ennemis restants" />
+		<string id="str_alliance_obj_description_BFHD_2_2" text="Tuez tous les ennemis." />
+
+		<!-- Scenario text for GP -->
+		<string id="str_alliance_scenario_name_GP" text="Napoléon : L'Aigle Captif" />
+		<string id="str_alliance_scenario_description_GP" text="Les Anglais ont lancé un assaut surprise pour capturer l'Empereur… Le sauverez-vous ?" />
+		<!-- Acte 1 -->
+		<string id="str_alliance_act_name_GP_1" text="Acte I : Une ferme… Anglaise ?" />
+		<string id="str_alliance_act_description_GP_1" text="Un paysan vient de vous informer que toute la région est aux mains des Anglais. Libérez-la !" />
+		<string id="str_alliance_act_lose_defender_GP_1" text="L'ennemi a pris cette position. Battez en retraite et regroupez-vous au camp dans la forêt." />
+		<string id="str_alliance_act_lose_attacker_GP_1" text="Les Combattants se sont battus jusqu'au bout, mais n'ont pas sauvé l'Empereur…" />
+		<string id="str_alliance_act_victory_attacker_GP_1" text="La ferme est désormais sous votre contrôle !" />
+		<string id="str_alliance_act_victory_defender_GP_1" text="Victoire ! Votre mission est accomplie !" />
+		<!-- Acte 1 - Objectifs -->
+		<string id="str_alliance_obj_name_GP_1_1" text="Vaincre le régiment Français." />
+		<string id="str_alliance_obj_description_GP_1_1" text="Défendez la ferme et ne laissez aucun ennemi en vie." />
+		<string id="str_alliance_obj_name_GP_1_2" text="Libérez la ferme." />
+		<string id="str_alliance_obj_description_GP_1_2" text="Trouvez la ferme aux mains des Anglais et capturez la." />
+		<!-- Acte 2 -->
+		<string id="str_alliance_act_name_GP_2" text="Acte II : Le camp dans la forêt…" />
+		<string id="str_alliance_act_description_GP_2" text="Un blessé Anglais révèle que leur base arrière se trouve dans la forêt." />
+		<string id="str_alliance_act_lose_defender_GP_2" text="Votre camp a été capturé… Consolidez vos forces au château !" />
+		<string id="str_alliance_act_lose_attacker_GP_2" text="Les Combattants se sont battus jusqu'au bout, mais n'ont pas sauvé l'Empereur…" />
+		<string id="str_alliance_act_victory_attacker_GP_2" text="Le camp ennemi a été capturé !" />
+		<string id="str_alliance_act_victory_defender_GP_2" text="Victoire ! Votre mission est accomplie !" />
+		<!-- Acte 2 - Objectifs -->
+		<string id="str_alliance_obj_name_GP_2_1" text="Vaincre le régiment Français." />
+		<string id="str_alliance_obj_description_GP_2_1" text="Défendez votre camp et ne laissez aucun ennemi en vie." />
+		<string id="str_alliance_obj_name_GP_2_2" text="Pacifiez la forêt." />
+		<string id="str_alliance_obj_description_GP_2_2" text="Trouvez le camp Anglais et capturez-le." />
+		<!-- Acte 3 -->
+		<string id="str_alliance_act_name_GP_3" text="Acte III : Le sauvetage de l'Empereur." />
+		<string id="str_alliance_act_description_GP_3" text="Le gros des troupes anglaises n'étaient pas au camp… Vite ! Tous au château !!" />
+		<string id="str_alliance_act_lose_defender_GP_3" text="Le château est tombé sous la puissance française… Ils apprendront bientôt leur erreur…" />
+		<string id="str_alliance_act_lose_attacker_GP_3" text="Vaincu lors de l'affrontement décisif, l'espoir de sauver Napoléon s'envole…" />
+		<string id="str_alliance_act_victory_attacker_GP_3" text="Les forces anglaises sont vaincues ! Napoléon est en sécurité, pour l'instant…" />
+		<string id="str_alliance_act_victory_defender_GP_3" text="L'assaut français a été stoppé ! L'ogre reste captif !" />
+		<!-- Acte 3 - Objectifs -->
+		<string id="str_alliance_obj_name_GP_3_1" text="Vaincre le régiment Français." />
+		<string id="str_alliance_obj_description_GP_3_1" text="Défendez le château et ne laissez aucun ennemi survivant." />
+		<string id="str_alliance_obj_name_GP_3_2" text="Que se passe-t-il au château ?" />
+		<string id="str_alliance_obj_description_GP_3_2" text="Prenez possession du château et aider les rescapés." />
+		<!-- Acte 4 -->
+		<string id="str_alliance_act_name_GP_4" text="Acte IV : Résistance" />
+		<string id="str_alliance_act_description_GP_4" text="Alors que la puissante armée anglaise se rapproche, le dernier combat du bataillon français les attend." />
+		<string id="str_alliance_act_lose_defender_GP_4" text="Vous êtes tombé sur le champ de bataille." />
+		<string id="str_alliance_act_lose_attacker_GP_4" text="Vaincu lors de l'affrontement décisif, l'espoir de sauver Napoléon s'envole…" />
+		<string id="str_alliance_act_victory_attacker_GP_4" text="Les forces anglaises sont vaincues ! Vous avez réussi à sauver l'Empereur !" />
+		<string id="str_alliance_act_victory_defender_GP_4" text="Le bataillon français a été décimé ! L'ogre est à nous !" />
+		<!-- Acte 4 - Objectifs -->
+		<string id="str_alliance_obj_name_GP_4_1" text="Reprendre le château" />
+		<string id="str_alliance_obj_description_GP_4_1" text="Ne laissez aucun ennemi en vie." />
+		<string id="str_alliance_obj_name_GP_4_2" text="Protégez l'Empereur" />
+		<string id="str_alliance_obj_description_GP_4_2" text="Repoussez tous les ennemis. Au moins un joueur doit survivre." />
+
+	</strings>
+
+</base>

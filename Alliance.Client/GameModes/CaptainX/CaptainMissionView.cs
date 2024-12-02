@@ -1,59 +1,44 @@
-﻿using Alliance.Client.Extensions.FormationEnforcer.Views;
-using Alliance.Client.Extensions.GameModeMenu.Views;
-using Alliance.Client.Extensions.TroopSpawner.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.GameModes.CaptainX
 {
-    [ViewCreatorModule]
-    public class CaptainMissionView
-    {
-        [ViewMethod("CaptainX")]
-        public static MissionView[] OpenCaptainMission(Mission mission)
-        {
-            List<MissionView> list = new List<MissionView>
-            {
-                new SpawnTroopsView(),
-                new GameModeMenuView(),
-                new FormationStatusView(),
+	[ViewCreatorModule]
+	public class CaptainMissionView
+	{
+		[ViewMethod("CaptainX")]
+		public static MissionView[] OpenCaptainMission(Mission mission)
+		{
+			// Default views
+			List<MissionView> views = DefaultViews.GetDefaultViews(mission, "Captain");
+			views.AppendList(new List<MissionView>
+			{
+				// Custom views
+				new EquipmentSelectionView(),
+				new FormationStatusView(),
 
-                ViewCreator.CreateLobbyEquipmentUIHandler(),
-                ViewCreator.CreateMissionServerStatusUIHandler(),
-                ViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
-                ViewCreator.CreateMissionMultiplayerPreloadView(mission),
-                ViewCreator.CreateMissionKillNotificationUIHandler(),
-                ViewCreator.CreateMissionAgentStatusUIHandler(mission),
-                ViewCreator.CreateMissionMainAgentEquipmentController(mission),
-                ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
-                ViewCreator.CreateMissionMultiplayerEscapeMenu("Captain"),
-                ViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
-                ViewCreator.CreateMissionAgentLabelUIHandler(mission),
-                ViewCreator.CreateOrderTroopPlacerView(mission),
-                ViewCreator.CreateMultiplayerTeamSelectUIHandler(),
-                ViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
-                ViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
-                ViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
-                ViewCreator.CreatePollProgressUIHandler(),
-                new MissionItemContourControllerView(),
-                new MissionAgentContourControllerView(),
-                ViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
-                ViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-                ViewCreator.CreateMissionFlagMarkerUIHandler(),
-                ViewCreator.CreateOptionsUIHandler(),
-                ViewCreator.CreateMissionMainAgentEquipDropView(mission)
-            };
-            if (!GameNetwork.IsClient)
-            {
-                list.Add(ViewCreator.CreateMultiplayerAdminPanelUIHandler());
-            }
-            list.Add(ViewCreator.CreateMissionBoundaryCrossingView());
-            list.Add(new MissionBoundaryWallView());
-            list.Add(new SpectatorCameraView());
-
-            return list.ToArray();
-        }
-    }
+				// Native captain views
+				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
+				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
+				MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
+				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
+				ViewCreator.CreateOrderTroopPlacerView(mission),
+				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
+				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
+				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
+				new SpectatorCameraView()
+			});
+			return views.ToArray();
+		}
+	}
 }

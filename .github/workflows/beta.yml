@@ -1,0 +1,212 @@
+name: Build & Release (BETA)
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+    branches: [ beta ]
+    tags: [ release-b* ]
+  pull_request:
+    branches: [ beta ]
+    # will be triggered when undrafting or requesting review
+    types: [review_requested, ready_for_review]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Disable the .NET logo in the console output.
+  DOTNET_NOLOGO: true
+  # Disable the .NET first time experience to skip caching NuGet packages and speed up the build.
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  # Disable sending .NET CLI telemetry to Microsoft.
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  Build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+    
+    # Grant write permission to create release
+    permissions:
+      contents: write
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repositiory
+        uses: actions/checkout@v4
+
+      - name: Read tag name
+        uses: olegtarasov/get-tag@v2.1.2
+        id: tagName
+     
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.1.3
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.1.1
+
+      - name: Download DepotDownloader_2.5.0
+        uses: i3h/download-release-asset@v1.3.3
+        with:
+          owner: SteamRE
+          repo: DepotDownloader
+          tag: DepotDownloader_2.5.0
+          file: depotdownloader-2.5.0.zip
+          
+      - name: Extract DepotDownloader_2.5.0
+        uses: ihiroky/extract-action@v1
+        with:
+          file_path: depotdownloader-2.5.0.zip
+          extract_dir: depotdownloader
+          
+      - name: Download Bannerlord binaries
+        run: dotnet depotdownloader/DepotDownloader.dll -app 261550 -depot 261551 -beta v1.2.0 -username ${{secrets.STEAM_LOGIN}} -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir BannerlordClient;
+
+      - name: Download Bannerlord Dedicated Server binaries
+        run: dotnet depotdownloader/DepotDownloader.dll -app 1863440 -depot 1863441 -beta beta -username ${{secrets.STEAM_LOGIN}} -password ${{secrets.STEAM_PASSWORD}} -filelist ./.github/resources/FileFilters.regexp -dir BannerlordServer;
+      
+      # Build Alliance Common
+      - name: Restore NuGet packages for Alliance Common
+        run: nuget restore ./Alliance.Common/Alliance.Common.csproj
+
+      - name: Build Alliance Common
+        run: MSBuild.exe ./Alliance.Common/Alliance.Common.csproj /p:Configuration=Release /p:Platform=x64 /p:BANNERLORD_GAME_DIR="$PWD\BannerlordClient\"
+      
+      # Build Alliance Client
+      - name: Restore NuGet packages for Alliance Client
+        run: nuget restore ./Alliance.Client/Alliance.Client.csproj
+        
+      - name: Build Alliance Client
+        run: MSBuild.exe ./Alliance.Client/Alliance.Client.csproj /p:Configuration=Release /p:Platform=x64 /p:BANNERLORD_GAME_DIR="$PWD\BannerlordClient\" /p:BuildProjectReferences=false
+        
+      # Build Alliance Editor
+      - name: Restore NuGet packages for Alliance Editor
+        run: nuget restore ./Alliance.Editor/Alliance.Editor.csproj
+        
+      - name: Build Alliance Editor
+        run: MSBuild.exe ./Alliance.Editor/Alliance.Editor.csproj /p:Configuration=Release /p:Platform=x64 /p:BANNERLORD_GAME_DIR="$PWD\BannerlordClient\" /p:BuildProjectReferences=false
+        
+      # Build Alliance Server
+      - name: Restore NuGet packages for Alliance Server
+        run: nuget restore ./Alliance.Server/Alliance.Server.csproj
+        
+      - name: Build Alliance Server
+        run: MSBuild.exe ./Alliance.Server/Alliance.Server.csproj /p:Configuration=Release /p:Platform=x64 /p:BANNERLORD_SERVER_DIR="$PWD\BannerlordServer\" /p:BuildProjectReferences=false
+
+      # Retrieve additional files from Alliance Assets
+      - name: Checkout specific files from Alliance Assets Repository
+        uses: actions/checkout@v4
+        if: contains(github.ref, 'refs/tags/release-')
+        with:
+          repository: Byak0/Alliance-Assets
+          token: ${{ secrets.ALLIANCE_ASSETS_ACCESS_TOKEN }}
+          ref: beta
+          path: Alliance-Assets
+          lfs: true
+          sparse-checkout: |
+            Alliance.Editor/AssetPackages
+            Alliance.Editor/DsAssetPackages
+            Alliance.Editor/EmAssetPackages
+            Alliance.Editor/Prefabs
+            Alliance.Editor/ModuleSounds
+            Alliance.Editor/SceneObj
+            Alliance.Editor/Shaders
+
+      # Copy additional files to Alliance Client
+      - name: Copy AssetPackages to Alliance Client
+        run: Copy-Item Alliance-Assets/Alliance.Editor/AssetPackages BannerlordClient\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy Prefabs to Alliance Client
+        run: Copy-Item Alliance-Assets/Alliance.Editor/Prefabs BannerlordClient\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy ModuleSounds to Alliance Client
+        run: Copy-Item Alliance-Assets/Alliance.Editor/ModuleSounds BannerlordClient\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy SceneObj to Alliance Client
+        run: Copy-Item Alliance-Assets/Alliance.Editor/SceneObj BannerlordClient\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy Shaders to Alliance Client
+        run: Copy-Item Alliance-Assets/Alliance.Editor/Shaders BannerlordClient\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+        
+      # Copy additional files to Alliance Editor
+      - name: Copy EmAssetPackages to Alliance Editor
+        run: Copy-Item Alliance-Assets/Alliance.Editor/EmAssetPackages -Destination BannerlordClient\Modules\Alliance.Editor -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy Prefabs to Alliance Editor
+        run: Copy-Item Alliance-Assets/Alliance.Editor/Prefabs -Destination BannerlordClient\Modules\Alliance.Editor -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy ModuleSounds to Alliance Editor
+        run: Copy-Item Alliance-Assets/Alliance.Editor/ModuleSounds -Destination BannerlordClient\Modules\Alliance.Editor -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy SceneObj to Alliance Editor
+        run: Copy-Item Alliance-Assets/Alliance.Editor/SceneObj -Destination BannerlordClient\Modules\Alliance.Editor -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy Shaders to Alliance Editor
+        run: Copy-Item Alliance-Assets/Alliance.Editor/Shaders -Destination BannerlordClient\Modules\Alliance.Editor -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+        
+      # Copy additional files to Alliance Server
+      - name: Copy DsAssetPackages to Alliance Server
+        run: Copy-Item Alliance-Assets/Alliance.Editor/DsAssetPackages -Destination BannerlordServer\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy Prefabs to Alliance Server
+        run: Copy-Item Alliance-Assets/Alliance.Editor/Prefabs -Destination BannerlordServer\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy ModuleSounds to Alliance Server
+        run: Copy-Item Alliance-Assets/Alliance.Editor/ModuleSounds -Destination BannerlordServer\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Copy SceneObj to Alliance Server
+        run: Copy-Item Alliance-Assets/Alliance.Editor/SceneObj -Destination BannerlordServer\Modules\Alliance -Recurse
+        if: contains(github.ref, 'refs/tags/release-')
+        
+      - name: Copy Config to Alliance Server
+        run: Copy-Item Alliance.Server/_Launcher/* -Destination BannerlordServer\Modules\Alliance\
+        if: contains(github.ref, 'refs/tags/release-')
+
+      # Zip the Modules for Release
+      - name: Zip Alliance Client
+        run: Compress-Archive -Path "$PWD\BannerlordClient\Modules\Alliance" -DestinationPath "Alliance.zip"
+        if: contains(github.ref, 'refs/tags/release-')
+
+      - name: Zip Alliance Editor
+        run: Compress-Archive -Path "$PWD\BannerlordClient\Modules\Alliance.Editor" -DestinationPath "Alliance.Editor.zip"
+        if: contains(github.ref, 'refs/tags/release-')        
+
+      - name: Zip Alliance Server
+        run: Compress-Archive -Path "$PWD\BannerlordServer\Modules\Alliance" -DestinationPath "Alliance.Server.zip"
+        if: contains(github.ref, 'refs/tags/release-')
+
+      # Set Release Name 
+      - name: Set Release Name
+        id: set_release_name
+        run: |
+          $tagName = "${{ steps.tagName.outputs.tag }}"
+          $releaseName = "${{ steps.tagName.outputs.tag }}" -replace 'release-', ''
+          echo "RELEASE_NAME=$releaseName" >> $env:GITHUB_ENV
+
+      # Create new Release
+      - name: Create a Release
+        uses: ncipollo/release-action@v1.13.0
+        if: contains(github.ref, 'refs/tags/release-')
+        with:
+          artifacts: Alliance.zip, Alliance.Editor.zip, Alliance.Server.zip
+          name: "Alliance ${{ env.RELEASE_NAME }}"
+          tag: ${{ steps.tagName.outputs.tag }}
+          artifactContentType: application/zip

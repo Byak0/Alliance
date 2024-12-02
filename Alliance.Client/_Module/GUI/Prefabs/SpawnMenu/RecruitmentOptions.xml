@@ -1,0 +1,18 @@
+<Prefab>
+	<Variables>
+	</Variables>
+	<VisualDefinitions>
+	</VisualDefinitions>
+	<Window>
+		<!-- Buttons to choose number of troops -->
+		<BasicContainer>
+			<Children>
+				<ScrollableButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="FaceGen.Extension.Button" MarginLeft="10" IntText="1"  NotifyParentForSelection="true" IsSelected="true" Command.Click="Select1" />
+				<ScrollableButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="FaceGen.Extension.Button" MarginLeft="120" IntText="10"  NotifyParentForSelection="true" Command.Click="Select10" />
+				<ScrollableButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="105" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="FaceGen.Extension.Button" MarginLeft="230" IntText="50"  NotifyParentForSelection="true" Command.Click="Select50" />
+				<!-- Last button is set as editable to allow custom values -->
+				<ScrollableButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="50" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="FaceGen.Extension.Button" MarginLeft="345" IntText="@CustomTroopCount" EditableText="true" NotifyParentForSelection="true" Command.Click="SelectCustom" />
+			</Children>
+		</BasicContainer>
+	</Window>
+</Prefab>

@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BasicCultures>
+	<Culture 
+		id="autochtone" 
+		name="{=al_nat_autochtone}Autochtones" 
+		is_main_culture="true" 
+		default_face_key="000fa92e90004202aced5d976886573d5d679585a376fdd605877a7764b8987c00000000000007520000037f0000000f00000037049140010000000000000000"
+		color="FF006400"
+		color2="FFf8faf6"
+		cloth_alternative_color1="FF006400"
+		cloth_alternative_color2="FFf8faf6"
+		banner_background_color1="FF006400"
+		banner_foreground_color1="FFf8faf6"
+		banner_background_color2="FF006400"
+		banner_foreground_color2="FFf8faf6"
+		faction_banner_key="11.96.40.1836.1836.768.788.1.0.0.222.156.116.1291.1291.764.764.1.1.315.416.149.116.662.662.764.764.1.1.315" />
+	<Culture 
+		id="berricos" 
+		name="{=al_nat_berricos}Berricos" 
+		is_main_culture="true" 
+		default_face_key="000fa92e90004202aced5d976886573d5d679585a376fdd605877a7764b8987c00000000000007520000037f0000000f00000037049140010000000000000000"
+		color="FFCC8324"
+		color2="FF4E1A13"
+		cloth_alternative_color1="FFCC8324"
+		cloth_alternative_color2="FF4E1A13"
+		banner_background_color1="FFCC8324"
+		banner_foreground_color1="FF4E1A13"
+		banner_background_color2="FFCC8324"
+		banner_foreground_color2="FF4E1A13"
+		faction_banner_key="11.128.116.1836.1836.768.788.1.0.0.505.127.116.1925.1566.765.762.1.0.0.522.148.40.1969.1969.764.764.1.0.0.316.131.116.760.760.764.764.1.0.0.423.148.116.511.511.764.764.1.0.0.326.148.116.240.240.764.764.1.0.0" />
+	<Culture 
+		id="serain" 
+		name="{=serain}Seraïn" 
+		is_main_culture="true" 
+		default_face_key="000fa92e90004202aced5d976886573d5d679585a376fdd605877a7764b8987c00000000000007520000037f0000000f00000037049140010000000000000000"
+		color="FF39991C"
+		color2="FFCF9716"
+		cloth_alternative_color1="FF39991C"
+		cloth_alternative_color2="FFCF9716"
+		banner_background_color1="FF39991C"
+		banner_foreground_color1="FFCF9716"
+		banner_background_color2="FF39991C"
+		banner_foreground_color2="FFCF9716"
+		faction_banner_key="34.129.0.2000.2000.764.764.1.0.0.404.143.116.1217.1217.764.764.1.0.0.430.143.116.506.506.764.764.1.0.0" />
+</BasicCultures>

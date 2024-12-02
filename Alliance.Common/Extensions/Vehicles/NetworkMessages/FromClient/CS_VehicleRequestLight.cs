@@ -6,12 +6,12 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class CS_VehicleRequestLight : GameNetworkMessage
     {
-        public MissionObject MissionObject { get; private set; }
+        public MissionObjectId MissionObjectId { get; private set; }
         public bool LightOn { get; private set; }
 
-        public CS_VehicleRequestLight(MissionObject missionObject, bool lightOn)
+        public CS_VehicleRequestLight(MissionObjectId missionObjectId, bool lightOn)
         {
-            MissionObject = missionObject;
+            MissionObjectId = missionObjectId;
             LightOn = lightOn;
         }
 
@@ -22,14 +22,14 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            MissionObject = ReadMissionObjectReferenceFromPacket(ref bufferReadValid);
+            MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
             LightOn = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteMissionObjectReferenceToPacket(MissionObject);
+            WriteMissionObjectIdToPacket(MissionObjectId);
             WriteBoolToPacket(LightOn);
         }
 
@@ -40,7 +40,7 @@ namespace Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient
 
         protected override string OnGetLogFormat()
         {
-            return $"Requesting Entity with id: {MissionObject.Id} and name: {MissionObject.GameEntity.Name} to turn the lights ({LightOn})";
+            return $"Requesting vehicle with id: {MissionObjectId.Id} to turn the lights ({LightOn})";
         }
     }
 }

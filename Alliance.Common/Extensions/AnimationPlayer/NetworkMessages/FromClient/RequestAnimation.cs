@@ -26,7 +26,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            UserAgent = ReadAgentReferenceFromPacket(ref bufferReadValid);
+            int agentIndex = ReadAgentIndexFromPacket(ref bufferReadValid);
+            UserAgent = Mission.MissionNetworkHelper.GetAgentFromIndex(agentIndex, true);
             ActionIndex = ReadIntFromPacket(new CompressionInfo.Integer(-1, 5000, true), ref bufferReadValid);
             Speed = ReadFloatFromPacket(new CompressionInfo.Float(0f, 5, 0.1f), ref bufferReadValid);
             return bufferReadValid;
@@ -34,7 +35,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromClient
 
         protected override void OnWrite()
         {
-            WriteAgentReferenceToPacket(UserAgent);
+            WriteAgentIndexToPacket(UserAgent.Index);
             WriteIntToPacket(ActionIndex, new CompressionInfo.Integer(-1, 5000, true));
             WriteFloatToPacket(Speed, new CompressionInfo.Float(0f, 5, 0.1f));
         }

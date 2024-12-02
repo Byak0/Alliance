@@ -1,71 +1,46 @@
-using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
-using Alliance.Server.Extensions.GameModeMenu.Behaviors;
-using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.GameModes.Story.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Source.Missions;
+using TaleWorlds.MountAndBlade.Multiplayer;
 
 namespace Alliance.Server.GameModes.Story
 {
-    public class ScenarioGameMode : MissionBasedMultiplayerGameMode
-    {
-        public ScenarioGameMode(string name) : base(name) { }
+	public class ScenarioGameMode : MissionBasedMultiplayerGameMode
+	{
+		public ScenarioGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("Scenario", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                return getMissionBehaviors();
-            }, true, true);
-        }
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("Scenario", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-        private List<MissionBehavior> getMissionBehaviors()
-        {
-            List<MissionBehavior> behaviors = new List<MissionBehavior>()
-            {
-                    MissionLobbyComponent.CreateBehavior(),
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultServerBehaviors.GetDefaultBehaviors(new PvCScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new ScenarioBehavior(),
+				new ScenarioClientBehavior(),
+				new ScenarioRespawnBehavior(),
+				new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),
+				new FormationBehavior(),
+				new ObjectivesBehavior(ScenarioManagerServer.Instance),
+				new FlagTrackerBehavior(),
+				new CapturableZoneBehavior(),
 
-                    // Custom components
-                    new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),
-                    new ScenarioBehavior(),
-                    new ScenarioClientBehavior(),
-                    new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with custom objectives ui
-                    new PvCTeamSelectBehavior(),
-                    new ScenarioRespawnBehavior(),
-                    new PollBehavior(),
-                    new FormationBehavior(),
-                    new ObjectivesBehavior(ScenarioManagerServer.Instance),
-                    new FlagTrackerBehavior(),
-                    new CapturableZoneBehavior(),
-
-                    // Native components
-                    //new MultiplayerRoundController(), // todo : remove (replace with scenario system)
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new AgentHumanAILogic(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent()
-            };
-
-            if (Config.Instance.ActivateSAE)
-            {
-                behaviors.Add(new SaeBehavior());
-            }
-
-            return behaviors;
-        }
-    }
+				// Native behaviors
+				new MultiplayerTeamSelectComponent()
+			});
+			return behaviors;
+		}
+	}
 }

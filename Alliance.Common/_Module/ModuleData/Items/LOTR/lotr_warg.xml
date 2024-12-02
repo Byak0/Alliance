@@ -1,0 +1,172 @@
+<Items>
+	<Item id="warg_brown"
+		name="Warg"
+		mesh="warg_low"
+		subtype="horse"
+		item_category="war_horse"
+		value="1"
+		is_merchandise="false"
+		weight="500"
+		difficulty="90"
+		appearance="0"
+		Type="Horse">
+		<ItemComponent>
+			<Horse
+				monster="Monster.warg"
+				maneuver="70"
+				speed="48"
+				charge_damage="6"
+				body_length="110"
+				is_mountable="true" >
+				<AdditionalMeshes>
+					<Mesh
+						name="warg_low_fur_with_saddle"
+						affected_by_cover="true" />
+				</AdditionalMeshes>
+				<Materials>
+					<Material
+						name="warg_skin">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFffffff"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FFb3b3b3"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+					<Material
+						name="warg_skin2">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFbaae9a"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FFffefd3"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+					<Material
+						name="warg_skin3">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFadb8ac"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FFf1ffef"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+					<Material
+						name="warg_skin4">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFabb9ce"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FFd4e6ff"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+				</Materials>
+			</Horse>
+		</ItemComponent>
+	</Item>
+
+	<Item id="warg_dark"
+		name="Warg"
+		mesh="warg_low"
+		subtype="horse"
+		item_category="war_horse"
+		value="1"
+		is_merchandise="false"
+		weight="500"
+		difficulty="90"
+		appearance="0"
+		Type="Horse">
+		<ItemComponent>
+			<Horse
+				monster="Monster.warg"
+				maneuver="70"
+				speed="48"
+				charge_damage="6"
+				body_length="110"
+				is_mountable="true" >
+				<AdditionalMeshes>
+					<Mesh
+						name="warg_low_fur_with_saddle_2"
+						affected_by_cover="true" />
+				</AdditionalMeshes>
+				<Materials>
+					<Material
+						name="warg_skin_2">
+						<MeshMultipliers>
+							<MeshMultiplier
+								mesh_multiplier="FFffffff"
+								percentage="0.75" />
+							<MeshMultiplier
+								mesh_multiplier="FFb3b3b3"
+								percentage="0.25" />
+						</MeshMultipliers>
+					</Material>
+				</Materials>
+			</Horse>
+		</ItemComponent>
+	</Item>
+
+	<Item id="warg_albino"
+	name="Warg"
+	mesh="warg_low"
+	subtype="horse"
+	item_category="war_horse"
+	value="1"
+	is_merchandise="false"
+	weight="600"
+	difficulty="100"
+	appearance="0"
+	Type="Horse">
+		<ItemComponent>
+			<Horse
+				monster="Monster.warg"
+				maneuver="70"
+				speed="48"
+				charge_damage="8"
+				body_length="115"
+				extra_health="100"
+				is_mountable="true" >
+				<AdditionalMeshes>
+					<Mesh
+						name="warg_low_fur_with_saddle_3"
+						affected_by_cover="true" />
+				</AdditionalMeshes>
+				<Materials>
+					<Material
+						name="warg_skin_3">
+					</Material>
+				</Materials>
+			</Horse>
+		</ItemComponent>
+	</Item>
+
+	<Item
+        id="warg_saddle"
+        name="Warg Saddle"
+        mesh="orc_rider_saddle"
+        is_merchandise="true"
+        weight="16"
+        appearance="0.5"
+        Type="HorseHarness">
+		<ItemComponent>
+			<Armor
+                body_armor="12"
+                mane_cover_type="none"
+                maneuver_bonus="0"
+                speed_bonus="0"
+                charge_bonus="0"
+                family_type="1"
+                material_type="Leather" />
+		</ItemComponent>
+		<Flags
+            Civilian="true" />
+	</Item>
+</Items>

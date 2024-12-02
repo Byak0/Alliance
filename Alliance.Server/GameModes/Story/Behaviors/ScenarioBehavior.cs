@@ -1,11 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.TroopSpawner.Models;
-using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
-using Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -20,416 +17,413 @@ using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Server.GameModes.Story.Behaviors
 {
-    /// <summary>
-    /// Server-side base behavior for scenario game mode.
-    /// Responsible for updating scenario state.
-    /// </summary>
-    public class ScenarioBehavior : MissionMultiplayerGameModeBase, IMissionBehavior
-    {
-        public Scenario Scenario => ScenarioManagerServer.Instance.CurrentScenario;
-        public Act Act => ScenarioManagerServer.Instance.CurrentAct;
-        public ActState State => ScenarioManagerServer.Instance.ActState;
+	/// <summary>
+	/// Server-side base behavior for scenario game mode.
+	/// Responsible for updating scenario state.
+	/// </summary>
+	public class ScenarioBehavior : MissionMultiplayerGameModeBase, IMissionBehavior
+	{
+		public Scenario Scenario => ScenarioManagerServer.Instance.CurrentScenario;
+		public Act Act => ScenarioManagerServer.Instance.CurrentAct;
+		public ActState State => ScenarioManagerServer.Instance.ActState;
 
-        public override bool IsGameModeHidingAllAgentVisuals => true;
-        public override bool IsGameModeUsingOpposingTeams => true;
+		public override bool IsGameModeHidingAllAgentVisuals => true;
+		public override bool IsGameModeUsingOpposingTeams => true;
 
-        public ScenarioSpawningBehavior SpawningBehavior { get; set; }
-        public ObjectivesBehavior ObjectivesBehavior { get; set; }
-        public ScenarioClientBehavior ClientBehavior { get; set; }
+		public ScenarioSpawningBehavior SpawningBehavior { get; set; }
+		public ObjectivesBehavior ObjectivesBehavior { get; set; }
+		public ScenarioClientBehavior ClientBehavior { get; set; }
 
-        private float _minimumStateDuration = 5f;
-        private float _stateDuration;
-        private float _checkStateDelay = 1f;
+		private float _minimumStateDuration = 5f;
+		private float _stateDuration;
+		private float _checkStateDelay = 1f;
 
-        public bool EnableStateChange { get; private set; }
+		public bool EnableStateChange { get; private set; }
 
-        private float _checkStateDt;
+		private float _checkStateDt;
 
-        public ScenarioBehavior()
-        {
-        }
+		public ScenarioBehavior()
+		{
+		}
 
-        public override void AfterStart()
-        {
-            BasicCultureObject attacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
-            BasicCultureObject defender = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
-            Banner banner = new Banner(attacker.BannerKey, attacker.BackgroundColor1, attacker.ForegroundColor1);
-            Banner banner2 = new Banner(defender.BannerKey, defender.BackgroundColor1, defender.ForegroundColor1);
-            Mission.Teams.Add(BattleSideEnum.Attacker, attacker.BackgroundColor1, attacker.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
-            Mission.Teams.Add(BattleSideEnum.Defender, defender.BackgroundColor1, defender.ForegroundColor1, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
-            SpawningBehavior = (ScenarioSpawningBehavior)SpawnComponent.SpawningBehavior;
-            ObjectivesBehavior = Mission.Current.GetMissionBehavior<ObjectivesBehavior>();
-            ClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
+		public override void OnBehaviorInitialize()
+		{
+			base.OnBehaviorInitialize();
+			BasicCultureObject attacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+			BasicCultureObject defender = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+			Banner banner = new Banner(attacker.BannerKey, attacker.BackgroundColor1, attacker.ForegroundColor1);
+			Banner banner2 = new Banner(defender.BannerKey, defender.BackgroundColor1, defender.ForegroundColor1);
+			Mission.Teams.Add(BattleSideEnum.Attacker, attacker.BackgroundColor1, attacker.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
+			Mission.Teams.Add(BattleSideEnum.Defender, defender.BackgroundColor1, defender.ForegroundColor1, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
+		}
 
-            ChangeState(ActState.AwaitingPlayerJoin);
-            EnableStateChange = true;
-        }
+		public override void AfterStart()
+		{
+			SpawningBehavior = (ScenarioSpawningBehavior)SpawnComponent.SpawningBehavior;
+			ObjectivesBehavior = Mission.Current.GetMissionBehavior<ObjectivesBehavior>();
+			ClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
 
-        protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        {
-            string scenarioId = Scenario.Id;
-            int actId = Scenario.Acts.IndexOf(Act);
+			ChangeState(ActState.AwaitingPlayerJoin);
+			EnableStateChange = true;
+		}
 
-            GameNetwork.BeginModuleEventAsServer(networkPeer);
-            GameNetwork.WriteMessage(new InitScenarioMessage(scenarioId, actId));
-            GameNetwork.EndModuleEventAsServer();
+		protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
+		{
+			if (Scenario == null || Act == null) return;
 
-            float stateRemainingTime = TimerComponent.GetRemainingTime(false);
-            GameNetwork.BeginModuleEventAsServer(networkPeer);
-            GameNetwork.WriteMessage(new UpdateScenarioMessage(State, MissionTime.Now.NumberOfTicks, MathF.Ceiling(stateRemainingTime)));
-            GameNetwork.EndModuleEventAsServer();
+			string scenarioId = Scenario.Id;
+			int actId = Scenario.Acts.IndexOf(Act);
 
-            long timerStart = 0;
-            int timerDuration = 0;
-            if (State == ActState.InProgress && ObjectivesBehavior.MissionTimer != null)
-            {
-                timerStart = ObjectivesBehavior.MissionTimer.GetStartTime().NumberOfTicks;
-                timerDuration = (int)ObjectivesBehavior.MissionTimer.GetTimerDuration();
-            }
-            GameNetwork.BeginModuleEventAsServer(networkPeer);
-            GameNetwork.WriteMessage(new ObjectivesProgressMessage(
-                ObjectivesBehavior.TotalAttackerDead,
-                ObjectivesBehavior.TotalDefenderDead,
-                timerStart,
-                timerDuration));
-            GameNetwork.EndModuleEventAsServer();
-        }
+			GameNetwork.BeginModuleEventAsServer(networkPeer);
+			GameNetwork.WriteMessage(new InitScenarioMessage(scenarioId, actId));
+			GameNetwork.EndModuleEventAsServer();
 
-        public override void OnMissionTick(float dt)
-        {
-            base.OnMissionTick(dt);
-            if (EnableStateChange)
-            {
-                CheckScenarioState(dt);
-            }
-        }
+			float stateRemainingTime = TimerComponent.GetRemainingTime(false);
+			GameNetwork.BeginModuleEventAsServer(networkPeer);
+			GameNetwork.WriteMessage(new UpdateScenarioMessage(State, MissionTime.Now.NumberOfTicks, MathF.Ceiling(stateRemainingTime)));
+			GameNetwork.EndModuleEventAsServer();
 
-        private void CheckScenarioState(float dt)
-        {
-            _checkStateDt += dt;
-            _stateDuration += dt;
-            if (_checkStateDt < _checkStateDelay) return;
-            _checkStateDt = 0;
-            if (_stateDuration < _minimumStateDuration) return;
-            switch (State)
-            {
-                case ActState.Invalid:
-                    ChangeState(ActState.AwaitingPlayerJoin);
-                    break;
-                case ActState.AwaitingPlayerJoin:
-                    if (EnoughPlayersJoined())
-                    {
-                        ChangeState(ActState.SpawningParticipants);
-                        StartSpawn();
-                    }
-                    break;
-                case ActState.SpawningParticipants:
-                    if (InitialSpawnFinished())
-                    {
-                        ChangeState(ActState.InProgress);
-                        StartAct();
-                        SyncObjectives();
-                    }
-                    break;
-                case ActState.InProgress:
-                    if (CheckObjectives())
-                    {
-                        ChangeState(ActState.DisplayingResults);
-                        DisplayResults();
-                    }
-                    break;
-                case ActState.DisplayingResults:
-                    if (CanEndAct())
-                    {
-                        ChangeState(ActState.Completed);
-                        EndAct();
-                    }
-                    break;
-                case ActState.Completed:
-                    EnableStateChange = false;
-                    break;
-            }
-        }
+			long timerStart = 0;
+			int timerDuration = 0;
+			if (State == ActState.InProgress && ObjectivesBehavior.MissionTimer != null)
+			{
+				timerStart = ObjectivesBehavior.MissionTimer.GetStartTime().NumberOfTicks;
+				timerDuration = (int)ObjectivesBehavior.MissionTimer.GetTimerDuration();
+			}
+			GameNetwork.BeginModuleEventAsServer(networkPeer);
+			GameNetwork.WriteMessage(new ObjectivesProgressMessage(
+				ObjectivesBehavior.TotalAttackerDead,
+				ObjectivesBehavior.TotalDefenderDead,
+				timerStart,
+				timerDuration));
+			GameNetwork.EndModuleEventAsServer();
+		}
 
-        private bool CanEndAct()
-        {
-            return _stateDuration > 15f;
-        }
+		public override void OnMissionTick(float dt)
+		{
+			if (Scenario == null || Act == null) return;
+			base.OnMissionTick(dt);
+			if (EnableStateChange)
+			{
+				CheckScenarioState(dt);
+			}
+		}
 
-        private void ChangeState(ActState newState)
-        {
-            ScenarioManagerServer.Instance.SetActState(newState);
-            _stateDuration = 0;
-        }
+		private void CheckScenarioState(float dt)
+		{
+			_checkStateDt += dt;
+			_stateDuration += dt;
+			if (_checkStateDt < _checkStateDelay) return;
+			_checkStateDt = 0;
+			if (_stateDuration < _minimumStateDuration) return;
+			switch (State)
+			{
+				case ActState.Invalid:
+					ChangeState(ActState.AwaitingPlayerJoin);
+					break;
+				case ActState.AwaitingPlayerJoin:
+					if (EnoughPlayersJoined())
+					{
+						ChangeState(ActState.SpawningParticipants);
+						StartSpawn();
+					}
+					break;
+				case ActState.SpawningParticipants:
+					if (InitialSpawnFinished())
+					{
+						ChangeState(ActState.InProgress);
+						StartAct();
+						SyncObjectives();
+					}
+					break;
+				case ActState.InProgress:
+					if (CheckObjectives())
+					{
+						ChangeState(ActState.DisplayingResults);
+						DisplayResults();
+					}
+					break;
+				case ActState.DisplayingResults:
+					if (CanEndAct())
+					{
+						ChangeState(ActState.Completed);
+						EndAct();
+					}
+					break;
+				case ActState.Completed:
+					EnableStateChange = false;
+					break;
+			}
+		}
 
-        private void SyncObjectives()
-        {
-            long timerStart = 0;
-            int timerDuration = 0;
-            if (State == ActState.InProgress && ObjectivesBehavior.MissionTimer != null)
-            {
-                timerStart = ObjectivesBehavior.MissionTimer.GetStartTime().NumberOfTicks;
-                timerDuration = (int)ObjectivesBehavior.MissionTimer.GetTimerDuration();
-            }
-            GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new ObjectivesProgressMessage(
-                ObjectivesBehavior.TotalAttackerDead,
-                ObjectivesBehavior.TotalDefenderDead,
-                timerStart,
-                timerDuration));
-            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-        }
+		private bool CanEndAct()
+		{
+			return _stateDuration > 15f;
+		}
 
-        private bool EnoughPlayersJoined()
-        {
-            int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(MBNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(MBNetwork.NetworkPeers.Count - 1, 1));
-            int playersReady = 0;
-            foreach (ICommunicator peer in MBNetwork.NetworkPeers)
-            {
-                if (peer.IsSynchronized) playersReady++;
-            }
-            string log = "Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")";
-            Log(log);
-            GameNetwork.BeginBroadcastModuleEvent();
-            GameNetwork.WriteMessage(new ServerMessage(log));
-            GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            return playersReady >= minPlayersForStart;
-        }
+		private void ChangeState(ActState newState)
+		{
+			ScenarioManagerServer.Instance.SetActState(newState);
+			_stateDuration = 0;
+		}
 
-        private bool InitialSpawnFinished()
-        {
-            //return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-            // TODO check if this fix the act starting before spawn ended
-            return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-        }
+		private void SyncObjectives()
+		{
+			long timerStart = 0;
+			int timerDuration = 0;
+			if (State == ActState.InProgress && ObjectivesBehavior.MissionTimer != null)
+			{
+				timerStart = ObjectivesBehavior.MissionTimer.GetStartTime().NumberOfTicks;
+				timerDuration = (int)ObjectivesBehavior.MissionTimer.GetTimerDuration();
+			}
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new ObjectivesProgressMessage(
+				ObjectivesBehavior.TotalAttackerDead,
+				ObjectivesBehavior.TotalDefenderDead,
+				timerStart,
+				timerDuration));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
 
-        private bool CheckObjectives()
-        {
-            return ObjectivesBehavior.ObjectiveIsOver;
-        }
+		private bool EnoughPlayersJoined()
+		{
+			int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
+			int playersReady = 0;
+			foreach (ICommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (peer.IsSynchronized) playersReady++;
+			}
+			string log = "Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")";
+			Log(log);
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new ServerMessage(log));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			return playersReady >= minPlayersForStart;
+		}
 
-        private void StartSpawn()
-        {
-            Log("Alliance - Starting spawn...", LogLevel.Debug);
-            TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-        }
+		private bool InitialSpawnFinished()
+		{
+			//return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
+			// TODO check if this fix the act starting before spawn ended
+			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue();
+		}
 
-        private void StartAct()
-        {
-            Log("Alliance - Starting act...", LogLevel.Debug);
-            TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-        }
+		private bool CheckObjectives()
+		{
+			return ObjectivesBehavior.ObjectiveIsOver;
+		}
 
-        private void DisplayResults()
-        {
-            Log("Alliance - Displaying results...", LogLevel.Debug);
-        }
+		private void StartSpawn()
+		{
+			Log("Alliance - Starting spawn...", LogLevel.Debug);
+			TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+		}
 
-        private void EndAct()
-        {
-            Log("Alliance - Ended act.", LogLevel.Debug);
-        }
+		private void StartAct()
+		{
+			Log("Alliance - Starting act...", LogLevel.Debug);
+			TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+		}
 
-        public void ResetState()
-        {
-            EnableStateChange = true;
-            _checkStateDt = 0;
-            ObjectivesBehavior.Reset();
-            //SpawningBehavior.SetSpawningStrategy(new SpawningStrategyBase()); // Todo : define strategy in act ?
-        }
+		private void DisplayResults()
+		{
+			Log("Alliance - Displaying results...", LogLevel.Debug);
+		}
 
-        public override void OnRemoveBehavior()
-        {
-            ScenarioManagerServer.Instance.CurrentAct.UnregisterObjectives();
-            // Reset all spawn slots
-            for (int i = 0; i < AgentsInfoModel.Instance.Agents.Count; i++)
-            {
-                AgentsInfoModel.Instance.RemoveAgentInfo(i);
-            }
-            GameNetwork.RemoveNetworkHandler(this);
-        }
+		private void EndAct()
+		{
+			Log("Alliance - Ended act.", LogLevel.Debug);
+		}
 
-        public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
-        {
-            ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
-        }
+		public void ResetState()
+		{
+			EnableStateChange = true;
+			_checkStateDt = 0;
+			ObjectivesBehavior.Reset();
+			//SpawningBehavior.SetSpawningStrategy(new SpawningStrategyBase()); // Todo : define strategy in act ?
+		}
 
-        public override void OnAgentBuild(Agent agent, Banner banner)
-        {
-            agent.UpdateSyncHealthToAllClients(value: true);
+		public override void OnRemoveBehavior()
+		{
+			ScenarioManagerServer.Instance.CurrentAct?.UnregisterObjectives();
+			GameNetwork.RemoveNetworkHandler(this);
+		}
 
-            // Set ammo of players to 0 when respawning
-            if (SpawningBehavior.SpawningStrategy is SpawningStrategyBase baseSpawningStrategy && agent?.MissionPeer != null)
-            {
-                // Check if player is respawning
-                if (baseSpawningStrategy.PlayerUsedLives.ContainsKey(agent.MissionPeer) && baseSpawningStrategy.PlayerUsedLives[agent.MissionPeer] > 1)
-                {
-                    SetAmmoOfAgent(agent, 0);
-                }
-            }
-        }
+		public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
+		{
+			ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+		}
 
-        public void SetAmmoOfAgent(Agent agent, short ammoCount)
-        {
-            if (agent == null || agent.Equipment == null) return;
+		public override void OnAgentBuild(Agent agent, Banner banner)
+		{
+			agent.UpdateSyncHealthToAllClients(value: true);
 
-            for (EquipmentIndex equipmentIndex = EquipmentIndex.WeaponItemBeginSlot; equipmentIndex < EquipmentIndex.NumAllWeaponSlots; equipmentIndex++)
-            {
-                if (!agent.Equipment[equipmentIndex].IsEmpty)
-                {
-                    if (Enum.IsDefined(typeof(AmmoClass), (int)agent.Equipment[equipmentIndex].CurrentUsageItem.WeaponClass) && agent.Equipment[equipmentIndex].CurrentUsageItem.WeaponClass != (WeaponClass)AmmoClass.All)
-                    {
-                        if (agent.Equipment[equipmentIndex].Amount > ammoCount)
-                        {
-                            agent.SetWeaponAmountInSlot(equipmentIndex, ammoCount, true);
-                        }
-                    }
-                }
-            }
-        }
+			// Set ammo of players to 0 when respawning
+			//if (SpawningBehavior.SpawningStrategy is SpawningStrategyBase baseSpawningStrategy && agent?.MissionPeer != null)
+			//{
+			//	// Check if player is respawning
+			//	if (baseSpawningStrategy.PlayerUsedLives.ContainsKey(agent.MissionPeer) && baseSpawningStrategy.PlayerUsedLives[agent.MissionPeer] > 1)
+			//	{
+			//		SetAmmoOfAgent(agent, 0);
+			//	}
+			//}
+		}
 
-        public override void OnAgentDeleted(Agent affectedAgent)
-        {
-            // Free spawn slot of victim
-            SpawnHelper.RemoveBot(affectedAgent);
-        }
+		public void SetAmmoOfAgent(Agent agent, short ammoCount)
+		{
+			if (agent == null || agent.Equipment == null) return;
 
-        public override void OnAgentRemoved(Agent victim, Agent killer, AgentState agentState, KillingBlow blow)
-        {
-            float goldMultiplier = 1f;
+			for (EquipmentIndex equipmentIndex = EquipmentIndex.WeaponItemBeginSlot; equipmentIndex < EquipmentIndex.NumAllWeaponSlots; equipmentIndex++)
+			{
+				if (!agent.Equipment[equipmentIndex].IsEmpty)
+				{
+					if (Enum.IsDefined(typeof(AmmoClass), (int)agent.Equipment[equipmentIndex].CurrentUsageItem.WeaponClass) && agent.Equipment[equipmentIndex].CurrentUsageItem.WeaponClass != (WeaponClass)AmmoClass.All)
+					{
+						if (agent.Equipment[equipmentIndex].Amount > ammoCount)
+						{
+							agent.SetWeaponAmountInSlot(equipmentIndex, ammoCount, true);
+						}
+					}
+				}
+			}
+		}
 
-            // Adjust gold multiplier based on victim formation state
-            if (victim?.Team != null)
-            {
-                if (FormationCalculateModel.IsInFormation(victim))
-                {
-                    goldMultiplier = 1f;
-                }
-                else if (FormationCalculateModel.IsInSkirmish(victim))
-                {
-                    goldMultiplier = 4f;
-                }
-                else
-                {
-                    goldMultiplier = 10f;
-                }
-            }
+		public override void OnAgentRemoved(Agent victim, Agent killer, AgentState agentState, KillingBlow blow)
+		{
+			float goldMultiplier = 1f;
 
-            if (UseGold() && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
-            {
-                if (!victim.IsHuman || !RoundController.IsRoundInProgress || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
-                {
-                    return;
-                }
+			// Adjust gold multiplier based on victim formation state
+			if (victim?.Team != null)
+			{
+				if (FormationCalculateModel.IsInFormation(victim))
+				{
+					goldMultiplier = 1f;
+				}
+				else if (FormationCalculateModel.IsInSkirmish(victim))
+				{
+					goldMultiplier = 4f;
+				}
+				else
+				{
+					goldMultiplier = 10f;
+				}
+			}
 
-                bool teamKill = killer.Team != null && victim.Team != null && killer.Team.Side == victim.Team.Side;
+			if (UseGold() && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
+			{
+				if (!victim.IsHuman || !RoundController.IsRoundInProgress || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
+				{
+					return;
+				}
 
-                if (victim.MissionPeer?.Team != null && !teamKill)
-                {
-                    // Gold gain for ally death
-                    IEnumerable<(MissionPeer, int)> enumerable = MPPerkObject.GetPerkHandler(victim.MissionPeer)?.GetTeamGoldRewardsOnDeath();
-                    if (enumerable != null)
-                    {
-                        foreach (var (missionPeer, num) in enumerable)
-                        {
-                            ScenarioRepresentative ScenarioRepresentative3;
-                            if (num > 0 && (ScenarioRepresentative3 = missionPeer?.Representative as ScenarioRepresentative) != null)
-                            {
-                                int goldGainsFromAllyDeathReward = Config.Instance.GoldPerAllyDead;
-                                if (goldGainsFromAllyDeathReward > 0)
-                                {
-                                    AddGoldForPeer(missionPeer, goldGainsFromAllyDeathReward);
-                                }
-                            }
-                        }
-                    }
-                }
-                MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter2 = MultiplayerClassDivisions.GetMPHeroClassForCharacter(victim.Character);
-                if (killer?.MissionPeer != null && killer.Team != victim.Team)
-                {
-                    // Gold gain for a kill
-                    ScenarioRepresentative player = killer.MissionPeer.Representative as ScenarioRepresentative;
-                    int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-                    AddGoldForPeer(killer.MissionPeer, goldGainFromKillDataAndUpdateFlags);
+				bool teamKill = killer.Team != null && victim.Team != null && killer.Team.Side == victim.Team.Side;
 
-                    // Send report to commander if bonus gold obtained
-                    if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.IsCommander)
-                    {
-                        ReportBonusGoldFromKill(victim, player, goldGainFromKillDataAndUpdateFlags);
-                    }
-                }
-                else if (killer.Team != victim.Team)
-                {
-                    // Gold gain for the commander when a bot kill an enemy
-                    ScenarioRepresentative commander = (ScenarioRepresentative)(killer.Formation?.PlayerOwner?.MissionPeer?.Representative);
-                    if (commander != null)
-                    {
-                        int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-                        AddGoldForPeer(commander.MissionPeer, goldGainFromKillDataAndUpdateFlags);
+				if (victim.MissionPeer?.Team != null && !teamKill)
+				{
+					// Gold gain for ally death
+					IEnumerable<(MissionPeer, int)> enumerable = MPPerkObject.GetPerkHandler(victim.MissionPeer)?.GetTeamGoldRewardsOnDeath();
+					if (enumerable != null)
+					{
+						foreach (var (missionPeer, num) in enumerable)
+						{
+							ScenarioRepresentative ScenarioRepresentative3;
+							if (num > 0 && (ScenarioRepresentative3 = missionPeer?.Representative as ScenarioRepresentative) != null)
+							{
+								int goldGainsFromAllyDeathReward = Config.Instance.GoldPerAllyDead;
+								if (goldGainsFromAllyDeathReward > 0)
+								{
+									AddGoldForPeer(missionPeer, goldGainsFromAllyDeathReward);
+								}
+							}
+						}
+					}
+				}
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter2 = MultiplayerClassDivisions.GetMPHeroClassForCharacter(victim.Character);
+				if (killer?.MissionPeer != null && killer.Team != victim.Team)
+				{
+					// Gold gain for a kill
+					ScenarioRepresentative player = killer.MissionPeer.Representative as ScenarioRepresentative;
+					int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
+					AddGoldForPeer(killer.MissionPeer, goldGainFromKillDataAndUpdateFlags);
 
-                        // Send report to commander if bonus gold obtained
-                        if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1)
-                        {
-                            ReportBonusGoldFromKill(victim, commander, goldGainFromKillDataAndUpdateFlags);
-                        }
-                    }
-                }
+					// Send report to commander if bonus gold obtained
+					if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.IsCommander)
+					{
+						ReportBonusGoldFromKill(victim, player, goldGainFromKillDataAndUpdateFlags);
+					}
+				}
+				else if (killer.Team != victim.Team)
+				{
+					// Gold gain for the commander when a bot kill an enemy
+					ScenarioRepresentative commander = (ScenarioRepresentative)(killer.Formation?.PlayerOwner?.MissionPeer?.Representative);
+					if (commander != null)
+					{
+						int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
+						AddGoldForPeer(commander.MissionPeer, goldGainFromKillDataAndUpdateFlags);
 
-                List<Agent.Hitter> list = victim.HitterList.Where((hitter) => hitter.HitterPeer != killer.MissionPeer).ToList();
-                if (list.Count > 0)
-                {
-                    Agent.Hitter hitter2 = TaleWorlds.Core.Extensions.MaxBy(list, (hitter) => hitter.Damage);
-                    if (hitter2.Damage >= 35f)
-                    {
-                        // Gold gain for an assist if damage >= 35                        
-                        int goldGainFromKillDataAndUpdateFlags2 = (int)(goldMultiplier * Config.Instance.GoldPerAssist);
-                        AddGoldForPeer(hitter2.HitterPeer, goldGainFromKillDataAndUpdateFlags2);
-                    }
-                }
-            }
-        }
+						// Send report to commander if bonus gold obtained
+						if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1)
+						{
+							ReportBonusGoldFromKill(victim, commander, goldGainFromKillDataAndUpdateFlags);
+						}
+					}
+				}
 
-        private void ReportBonusGoldFromKill(Agent victim, ScenarioRepresentative commander, int goldGainFromKillDataAndUpdateFlags)
-        {
-            string victimName = victim.MissionPeer?.DisplayedName != null ? victim.MissionPeer.DisplayedName : victim.Name;
-            string report = "You killed " + victimName + " for " + goldGainFromKillDataAndUpdateFlags + " golds ("
-                + (goldGainFromKillDataAndUpdateFlags - Config.Instance.GoldPerKill) + " bonus) !";
-            GameNetwork.BeginModuleEventAsServer(commander.MissionPeer.GetNetworkPeer());
-            GameNetwork.WriteMessage(new ServerMessage(report, false));
-            GameNetwork.EndModuleEventAsServer();
-        }
+				List<Agent.Hitter> list = victim.HitterList.Where((hitter) => hitter.HitterPeer != killer.MissionPeer).ToList();
+				if (list.Count > 0)
+				{
+					Agent.Hitter hitter2 = TaleWorlds.Core.Extensions.MaxBy(list, (hitter) => hitter.Damage);
+					if (hitter2.Damage >= 35f)
+					{
+						// Gold gain for an assist if damage >= 35                        
+						int goldGainFromKillDataAndUpdateFlags2 = (int)(goldMultiplier * Config.Instance.GoldPerAssist);
+						AddGoldForPeer(hitter2.HitterPeer, goldGainFromKillDataAndUpdateFlags2);
+					}
+				}
+			}
+		}
 
-        public void AddGoldForPeer(MissionPeer peer, int amount)
-        {
-            ChangeCurrentGoldForPeer(peer, peer.Representative.Gold + amount);
-        }
+		private void ReportBonusGoldFromKill(Agent victim, ScenarioRepresentative commander, int goldGainFromKillDataAndUpdateFlags)
+		{
+			string victimName = victim.MissionPeer?.DisplayedName != null ? victim.MissionPeer.DisplayedName : victim.Name;
+			string report = "You killed " + victimName + " for " + goldGainFromKillDataAndUpdateFlags + " golds ("
+				+ (goldGainFromKillDataAndUpdateFlags - Config.Instance.GoldPerKill) + " bonus) !";
+			GameNetwork.BeginModuleEventAsServer(commander.MissionPeer.GetNetworkPeer());
+			GameNetwork.WriteMessage(new ServerMessage(report, false));
+			GameNetwork.EndModuleEventAsServer();
+		}
 
-        // Mask parent method and remove gold limit
-        public new void ChangeCurrentGoldForPeer(MissionPeer peer, int newAmount)
-        {
-            newAmount = MBMath.ClampInt(newAmount, 0, CompressionBasic.RoundGoldAmountCompressionInfo.GetMaximumValue());
+		public void AddGoldForPeer(MissionPeer peer, int amount)
+		{
+			ChangeCurrentGoldForPeer(peer, peer.Representative.Gold + amount);
+		}
 
-            if (peer.Peer.Communicator.IsConnectionActive)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            }
+		// Mask parent method and remove gold limit
+		public new void ChangeCurrentGoldForPeer(MissionPeer peer, int newAmount)
+		{
+			newAmount = MBMath.ClampInt(newAmount, 0, CompressionBasic.RoundGoldAmountCompressionInfo.GetMaximumValue());
 
-            if (GameModeBaseClient != null)
-            {
-                GameModeBaseClient.OnGoldAmountChangedForRepresentative(peer.Representative, newAmount);
-            }
-        }
+			if (peer.Peer.Communicator.IsConnectionActive)
+			{
+				GameNetwork.BeginBroadcastModuleEvent();
+				GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			}
 
-        public bool UseGold()
-        {
-            return Config.Instance.UseTroopCost;
-        }
+			if (GameModeBaseClient != null)
+			{
+				GameModeBaseClient.OnGoldAmountChangedForRepresentative(peer.Representative, newAmount);
+			}
+		}
 
-        public override MissionLobbyComponent.MultiplayerGameType GetMissionType()
-        {
-            return MissionLobbyComponent.MultiplayerGameType.Captain;
-        }
-    }
+		public bool UseGold()
+		{
+			return Config.Instance.UseTroopCost;
+		}
+
+		public override MultiplayerGameType GetMissionType()
+		{
+			return MultiplayerGameType.Captain;
+		}
+	}
 }

@@ -1,53 +1,39 @@
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
 using Alliance.Common.GameModes.PvC.Behaviors;
-using Alliance.Common.GameModes.PvC.Models;
+using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Source.Missions;
+using TaleWorlds.MountAndBlade.Multiplayer;
 
 namespace Alliance.Client.GameModes.PvC
 {
-    public class PvCGameMode : MissionBasedMultiplayerGameMode
-    {
-        public PvCGameMode(string name) : base(name) { }
+	public class PvCGameMode : MissionBasedMultiplayerGameMode
+	{
+		public PvCGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                return GetMissionBehaviors();
-            }, true, true);
-        }
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("PvC", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-        private MissionBehavior[] GetMissionBehaviors()
-        {
-            MissionBehavior[] behaviors = new MissionBehavior[]
-                {
-                    MissionLobbyComponent.CreateBehavior(),
-                    
-                    // Custom components
-                    new PvCGameModeClientBehavior(),
-                    new MissionScoreboardComponent(new PvCScoreboardData()),
-                    new PvCTeamSelectBehavior(),
-                    new FormationBehavior(),
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultClientBehaviors.GetDefaultBehaviors(new CaptainScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new FormationBehavior(),
+				new PvCGameModeClientBehavior(),
 
-                    // Native components from Captain mode
-                    new MultiplayerAchievementComponent(),
-                    new MultiplayerRoundComponent(),
-                    new AgentVictoryLogic(),
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent()
-                };
-
-            return behaviors;
-        }
-    }
+				// Native behaviors
+				new MultiplayerWarmupComponent(),
+				new MultiplayerRoundComponent(),
+				new MultiplayerTeamSelectComponent()
+			});
+			return behaviors;
+		}
+	}
 }

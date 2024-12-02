@@ -1,5 +1,4 @@
-﻿using Alliance.Common.GameModes.PvC.Behaviors;
-using TaleWorlds.Library;
+﻿using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond.MultiplayerBadges;
@@ -19,7 +18,7 @@ namespace Alliance.Common.GameModes.PvC.Models
                 new MissionScoreboardComponent.ScoreboardHeader("kill", (missionPeer) => missionPeer.KillCount.ToString(), (bot) => bot.KillCount.ToString()),
                 new MissionScoreboardComponent.ScoreboardHeader("death", (missionPeer) => missionPeer.DeathCount.ToString(), (bot) => bot.DeathCount.ToString()),
                 new MissionScoreboardComponent.ScoreboardHeader("assist", (missionPeer) => missionPeer.AssistCount.ToString(), (bot) => bot.AssistCount.ToString()),
-                new MissionScoreboardComponent.ScoreboardHeader("gold", (missionPeer) => missionPeer.GetComponent<PvCRepresentative>().Gold.ToString(), (bot) => ""),
+                new MissionScoreboardComponent.ScoreboardHeader("gold", (missionPeer) => missionPeer.GetComponent<MissionRepresentativeBase>().Gold.ToString(), (bot) => ""),
                 new MissionScoreboardComponent.ScoreboardHeader("score", (missionPeer) => missionPeer.Score.ToString(), (bot) => "".ToString())
             };
         }

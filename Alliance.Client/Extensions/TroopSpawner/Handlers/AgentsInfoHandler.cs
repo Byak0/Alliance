@@ -1,32 +1,36 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Models;
+﻿using Alliance.Common.Extensions;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 {
-    public class AgentsInfoHandler
+    public class AgentsInfoHandler : IHandlerRegister
     {
-        public AgentsInfoHandler()
+        public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
         {
+            reg.Register<AgentsInfoMessage>(HandleServerEventAgentsInfoMessage);
         }
 
         public void HandleServerEventAgentsInfoMessage(AgentsInfoMessage message)
         {
+            Agent agent = Mission.MissionNetworkHelper.GetAgentFromIndex(message.AgentIndex);
             switch (message.DataType)
             {
                 case DataType.All:
-                    AgentsInfoModel.Instance.AddAgentInfo(message.Agent, message.Difficulty, message.Experience, message.Lives);
+                    AgentsInfoModel.Instance.AddAgentInfo(agent, message.Difficulty, message.Experience, message.Lives);
                     break;
                 case DataType.Difficulty:
-                    AgentsInfoModel.Instance.UpdateAgentDifficulty(message.Agent, message.Difficulty);
+                    AgentsInfoModel.Instance.UpdateAgentDifficulty(agent, message.Difficulty);
                     break;
                 case DataType.Experience:
-                    AgentsInfoModel.Instance.UpdateAgentExperience(message.Agent, message.Experience);
+                    AgentsInfoModel.Instance.UpdateAgentExperience(agent, message.Experience);
                     break;
                 case DataType.Lives:
-                    AgentsInfoModel.Instance.UpdateAgentLives(message.Agent, message.Lives);
+                    AgentsInfoModel.Instance.UpdateAgentLives(agent, message.Lives);
                     break;
             }
-            message.Agent.UpdateAgentProperties();
+            agent.UpdateAgentProperties();
         }
     }
 }

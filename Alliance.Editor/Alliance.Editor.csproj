@@ -1,13 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="$(MSBuildProjectDirectory)\..\Alliance.Common\CommonProps.props" />
 
 	<PropertyGroup>
-		<Version>0.0.1</Version>
+    <Version>$(AllianceVersion)</Version>
 		<TargetFramework>net472</TargetFramework>
 		<Platforms>x64</Platforms>
 		<LangVersion>10.0</LangVersion>
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Editor</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<UseWPF>true</UseWPF>
+		<OutputType>Library</OutputType>
+		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -17,11 +21,19 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+		<Reference Include="$(GameFolder)\Modules\CustomBattle\bin\Win64_Shipping_wEditor\*.dll">
+			<HintPath>%(Identity)</HintPath>
+		</Reference>
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
+		<Reference Include="System.Windows.Forms" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
+	</ItemGroup>
+	
 	<ItemGroup>
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
@@ -32,7 +44,10 @@
 	</Target>
 
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<!-- Prepare the Module folder in \obj first -->
+    <!-- Replace SubModule.xml version with $(AllianceVersion) version -->
+    <Exec Command="powershell -Command &quot; $env:AllianceVersion = '$(AllianceVersion)'; $env:ProjectDir = '$(ProjectDir)'; $xml = [xml](Get-Content ($env:ProjectDir + '_Module\SubModule.xml')); $xml.SelectSingleNode('//Version').SetAttribute('value', 'v' + $env:AllianceVersion); $xml.Save($env:ProjectDir + '_Module\SubModule.xml')&quot;" />
+
+    <!-- Prepare the Module folder in \obj first -->
 		<!-- Common assets -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module&quot; &quot;$(ProjectDir)\obj\$(ModuleName)&quot; /E /C /I /Y /F" />
 		<!-- Client assets -->
@@ -42,7 +57,16 @@
 		<!-- Add required dll -->
 		<Exec Command="xcopy &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Alliance.Common.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
-
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Asio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Core.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Midi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinMM.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinForms.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignThemes.Wpf.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignColors.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
 	</Target>

@@ -1,0 +1,191 @@
+<Items>	
+	<!-- Uruk Shields -->
+	<Item multiplayer_item="true" id="uruk_shield_1" name="Uruk-Hai White Hand Shield" body_name="bo_cap_uruk_shield_1" shield_body_name="bo_uruk_shield_1" recalculate_body="false" mesh="uruk_shield_1" using_tableau="true" weight="2.1" appearance="0.7" Type="Shield" item_holsters="shield_oval:shield_4:shield_3:shield_2" has_lower_holster_priority="true" holster_position_shift="-0.00,-0.0,0">
+		<ItemComponent>
+			<Weapon weapon_class="LargeShield" body_armor="1" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="metal_shield" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="250" modifier_group="shield_metal">
+				<WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+	</Item>
+	<Item multiplayer_item="true" id="uruk_shield_1_v1" name="Uruk-Hai Shield" body_name="bo_cap_uruk_shield_1_v1" shield_body_name="bo_uruk_shield_1_v1" recalculate_body="false" mesh="uruk_shield_1_v1" using_tableau="true" weight="2.1" appearance="0.7" Type="Shield" item_holsters="shield_oval:shield_4:shield_3:shield_2" has_lower_holster_priority="true" holster_position_shift="-0.00,-0.0,0">
+		<ItemComponent>
+			<Weapon weapon_class="LargeShield" body_armor="1" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="metal_shield" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="250" modifier_group="shield_metal">
+				<WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+  </Item>
+	<Item id="uruk_large_shield_1a" name="Uruk-Hai Large Shield" body_name="bo_cap_uruk_shield_2" shield_body_name="bo_uruk_shield_2" recalculate_body="false" mesh="uruk_shield_2a" using_tableau="true" weight="6.5" appearance="0.7" Type="Shield" item_holsters="shield:shield_2:shield_3:shield_4" has_lower_holster_priority="true" holster_position_shift="-0.1,-0.1,-0.025">
+    <ItemComponent>
+      <Weapon weapon_class="LargeShield" body_armor="3" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="al_metal_shield_nostick" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="650" modifier_group="shield_metal">
+        <WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+      </Weapon>
+    </ItemComponent>
+    <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+  </Item>
+  <Item id="uruk_large_shield_1b" name="Uruk-Hai Wite Hand Large Shield" body_name="bo_cap_uruk_shield_2" shield_body_name="bo_uruk_shield_2" recalculate_body="false" mesh="uruk_shield_2b" using_tableau="true" weight="6.5" appearance="0.7" Type="Shield" item_holsters="shield:shield_2:shield_3:shield_4" has_lower_holster_priority="true" holster_position_shift="-0.1,-0.1,-0.025">
+    <ItemComponent>
+      <Weapon weapon_class="LargeShield" body_armor="3" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="al_metal_shield_nostick" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="650" modifier_group="shield_metal">
+        <WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+      </Weapon>
+    </ItemComponent>
+    <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+  </Item>
+  <Item id="uruk_large_shield_1c" name="Uruk-Hai Wite Hand Large Shield" body_name="bo_cap_uruk_shield_2" shield_body_name="bo_uruk_shield_2" recalculate_body="false" mesh="uruk_shield_2c" using_tableau="true" weight="6.5" appearance="0.7" Type="Shield" item_holsters="shield:shield_2:shield_3:shield_4" has_lower_holster_priority="true" holster_position_shift="-0.1,-0.1,-0.025">
+    <ItemComponent>
+      <Weapon weapon_class="LargeShield" body_armor="3" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="al_metal_shield_nostick" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="650" modifier_group="shield_metal">
+        <WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+      </Weapon>
+    </ItemComponent>
+    <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+  </Item>
+  <Item id="uruk_large_shield_1d" name="Uruk-Hai Wite Hand Large Shield" body_name="bo_cap_uruk_shield_2" shield_body_name="bo_uruk_shield_2" recalculate_body="false" mesh="uruk_shield_2d" using_tableau="true" weight="6.5" appearance="0.7" Type="Shield" item_holsters="shield:shield_2:shield_3:shield_4" has_lower_holster_priority="true" holster_position_shift="-0.1,-0.1,-0.025">
+    <ItemComponent>
+      <Weapon weapon_class="LargeShield" body_armor="3" thrust_speed="82" thrust_damage_type="Blunt" speed_rating="82" physics_material="al_metal_shield_nostick" item_usage="shield" position="0.0, 0.00, 0.00" rotation="0.0,0.0,0.00" weapon_length="70" center_of_mass="0, 0.1, 0.1" hit_points="650" modifier_group="shield_metal">
+        <WeaponFlags CanBlockRanged="true" HasHitPoints="true" />
+      </Weapon>
+    </ItemComponent>
+    <Flags WoodenParry="true" HeldInOffHand="true" ForceAttachOffHandSecondaryItemBone="true" />
+  </Item>
+	
+	<!-- Uruk Swords -->
+	<CraftedItem multiplayer_item="true" id="uruk_sword_1" name="Uruk-Hai Cleaver" crafting_template="uruk_one_handed" has_modifier="false">
+		<Pieces>
+			<Piece id="uruk_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="uruk_handle_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="uruk_berserker_cleaver" name="Uruk-Hai Berserker Cleaver" crafting_template="uruk_two_handed" has_modifier="false">
+		<Pieces>
+			<Piece id="uruk_blade_2" Type="Blade" scale_factor="110" />
+			<Piece id="uruk_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="uruk_handle_2" Type="Handle" scale_factor="130" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="uruk_sword_3" name="Uruk-Hai Cleaver fined" crafting_template="uruk_one_handed" has_modifier="false">
+		<Pieces>
+			<Piece id="uruk_blade_4" Type="Blade" scale_factor="100" />
+			<Piece id="uruk_handle_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	
+	<!-- Uruk Polearms -->
+	<CraftedItem multiplayer_item="true" id="uruk_pike_1" name="Uruk-Hai Pike" crafting_template="uruk_Pike" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="uruk_blade_3" Type="Blade" scale_factor="100" />
+			<Piece id="uruk_handle_3" Type="Handle" scale_factor="80" />
+			<Piece id="uruk_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	
+	<!-- Uruk Ranged -->
+	<Item multiplayer_item="true" id="uruk_crossbow_1" name="Uruk-Hai Heavy Crossbow" body_name="bo_cross_bow_heavy" mesh="uruk_crossbow_1" culture="Culture.isengard" weight="2.7" appearance="0.7" difficulty="20" Type="Crossbow" AmmoOffset="0.0, 0.02131, 0.24975" item_holsters="crossbow_back:bow_hip:mace_right_hip:bow_hip_2" holster_position_shift="0.02,0,-0.4">
+		<ItemComponent>
+			<Weapon weapon_class="Crossbow" ammo_class="Bolt" missile_speed="100" accuracy="95" thrust_damage="84" thrust_speed="50" speed_rating="57" weapon_length="100" ammo_limit="1" thrust_damage_type="Pierce" item_usage="crossbow" physics_material="wood_weapon" center_of_mass="0,0,0.4" modifier_group="crossbow">
+				<WeaponFlags RangedWeapon="true" HasString="true" CantReloadOnHorseback="true" CanPenetrateShield="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" />
+			</Weapon>
+		</ItemComponent>
+	</Item>
+	<Item multiplayer_item="true" id="uruk_bow_1" name="Uruk-Hai Short Bow" body_name="bo_composite_shotbow_c" mesh="uruk_bow_1" culture="Culture.isengard" weight="0.3" difficulty="30" appearance="0.6" Type="Bow" item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		<ItemComponent>
+			<Weapon weapon_class="Bow" ammo_class="Arrow" ammo_limit="1" missile_speed="80" accuracy="90" thrust_damage="48" thrust_speed="80" speed_rating="89" weapon_length="95" thrust_damage_type="Pierce" item_usage="bow" physics_material="wood_weapon" center_of_mass="0.1,0,-0.15" modifier_group="bow">
+				<WeaponFlags RangedWeapon="true" HasString="true" StringHeldByHand="true" NotUsableWithOneHand="true" TwoHandIdleOnMount="true" AutoReload="true" UnloadWhenSheathed="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+	<Item id="uruk_bolt_1" name="Uruk Bolt" body_name="bo_capsule_arrow" holster_body_name="bo_axe_short" mesh="bolt_bl_c" value="1" is_merchandise="false" holster_mesh="bolt_bl_c_quiver" holster_mesh_with_weapon="bolt_bl_c_quiver" flying_mesh="bolt_bl_flying" weight="0.05" appearance="1" Type="Bolts" item_holsters="quiver_bolts:quiver_bolts_2:quiver_back_middle:quiver_back_top">
+		<ItemComponent>
+			<Weapon weapon_class="Bolt" stack_amount="35" thrust_speed="0" thrust_damage_type="Pierce" thrust_damage="0" speed_rating="0" missile_speed="10" weapon_length="37" item_usage="" passby_sound_code="event:/mission/combat/missile/passby" rotation="180, 0, 0" physics_material="missile" sticking_position="0,-0.37,0" sticking_rotation="90,0,0" center_of_mass="0,0,-0.1" modifier_group="bolt">
+				<WeaponFlags AttachAmmoToVisual="true" Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags ForceAttachOffHandPrimaryItemBone="true" />
+	</Item>
+	<Item id="uruk_arrows_1" name="Uruk Arrow" body_name="bo_capsule_arrow" holster_body_name="bo_axe_short" mesh="arrow_bl_g" value="1" is_merchandise="false" weight="0.05" appearance="1" flying_mesh="arrow_bl_flying" holster_mesh="arrow_bl_h_quiver" holster_mesh_with_weapon="arrow_bl_h_quiver" Type="Arrows" item_holsters="quiver_back_middle:quiver_bolts_2:quiver_bolts" holster_position_shift="0.0,0.0,0.15">
+		<ItemComponent>
+			<Weapon weapon_class="Arrow" stack_amount="35" thrust_speed="0" speed_rating="0" physics_material="missile" missile_speed="10" weapon_length="97" thrust_damage="0" thrust_damage_type="Pierce" item_usage="arrow_right" passby_sound_code="event:/mission/combat/missile/passby" rotation="0, -80, 25" sticking_position="0,-0.97,0" sticking_rotation="90,0,0" center_of_mass="0,0,-0.13" modifier_group="arrow">
+				<WeaponFlags Consumable="true" AmmoSticksWhenShot="true" AmmoBreaksOnBounceBack="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags />
+	</Item>
+
+	<!-- Orc Rider Swords -->
+	<CraftedItem multiplayer_item="true" id="orc_rider_saber_1" name="Orc Rider Saber" crafting_template="lotr_BastardSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_saber_blade_1" Type="Blade" scale_factor="110" />
+			<Piece id="orc_rider_saber_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_saber_handle_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_saber_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_longsword_1" name="Orc Rider Longsword" crafting_template="lotr_TwoHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_longsword_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_longsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_longsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_longsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_shortsword_1" name="Orc Rider Shortsword" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_shortsword_blade_1" Type="Blade" scale_factor="120" />
+			<Piece id="orc_rider_shortsword_guard_1" Type="Guard" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_grip_1" Type="Handle" scale_factor="100" />
+			<Piece id="orc_rider_shortsword_pommel_1" Type="Pommel" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true" id="orc_rider_knife_1" name="Orc Rider Knife" crafting_template="lotr_OneHandedSword" culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_knife_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_knife_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Orc Rider Polearms -->
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_2haxe"
+				 name="Orc Rider Heavy Axe"
+				 crafting_template="lotr_orc_TwoHandedAxe"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_axe_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_axe_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<!-- Orc Rider Scythe/Spear -->
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_spear"
+				 name="Orc Rider Spear"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_spear_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_spear_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_gladius"
+				 name="Orc Rider Gladius"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_gladius_blade_1" Type="Blade" scale_factor="100" />
+			<Piece id="orc_rider_gladius_grip_1" Type="Handle" scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem multiplayer_item="true"
+				 id="orc_rider_sickle"
+				 name="Orc Rider Sickle"
+				 crafting_template="lotr_orc_TwoHandedPolearm"
+				 culture="Culture.isengard">
+		<Pieces>
+			<Piece id="orc_rider_sickle_blade_1" Type="Blade" scale_factor="110" />
+			<Piece id="orc_rider_sickle_grip_1" Type="Handle" scale_factor="120" />
+		</Pieces>
+	</CraftedItem>
+	
+</Items>

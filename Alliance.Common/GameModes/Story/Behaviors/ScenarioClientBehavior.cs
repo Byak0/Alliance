@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core;
-using Alliance.Common.Core.ExtendedCharacter.Models;
+﻿using Alliance.Common.Core.ExtendedXML.Models;
+using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using System;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.MissionRepresentatives;
@@ -8,107 +8,112 @@ using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.GameModes.Story.Behaviors
 {
-    public class ScenarioClientBehavior : MissionMultiplayerGameModeBaseClient, IBotControllerBehavior
-    {
-        public event Action<NetworkCommunicator> OnBotsControlledChangedEvent;
+	public class ScenarioClientBehavior : MissionMultiplayerGameModeBaseClient, IBotControllerBehavior
+	{
+		public event Action<NetworkCommunicator> OnBotsControlledChangedEvent;
 
-        public override bool IsGameModeUsingGold => true;
-        public override bool IsGameModeTactical => true;
-        public override bool IsGameModeUsingRoundCountdown => false;
-        public override MissionLobbyComponent.MultiplayerGameType GameType => MissionLobbyComponent.MultiplayerGameType.Captain;
+		public override bool IsGameModeUsingGold => false;
+		public override bool IsGameModeTactical => true;
+		public override bool IsGameModeUsingRoundCountdown => false;
+		public override MultiplayerGameType GameType => MultiplayerGameType.Battle;
 
-        private MissionRepresentativeBase _myRepresentative;
+		private MissionRepresentativeBase _myRepresentative;
 
-        public ScenarioClientBehavior() : base()
-        {
-        }
+		public ScenarioClientBehavior() : base()
+		{
+		}
 
-        public override void OnBehaviorInitialize()
-        {
-            base.OnBehaviorInitialize();
-            MissionNetworkComponent.OnMyClientSynchronized += OnMyClientSynchronized;
-        }
+		public override void OnBehaviorInitialize()
+		{
+			base.OnBehaviorInitialize();
+			MissionNetworkComponent.OnMyClientSynchronized += OnMyClientSynchronized;
+		}
 
-        public override void OnRemoveBehavior()
-        {
-            base.OnRemoveBehavior();
-            MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
+		public override void OnRemoveBehavior()
+		{
+			base.OnRemoveBehavior();
+			MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
 
-            // Reset troop spawn limit
-            foreach (ExtendedCharacterObject pvcChar in MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacterObject>())
-            {
-                pvcChar.TroopLeft = pvcChar.TroopLimit;
-            }
-        }
+			// Reset troop spawn limit
+			foreach (ExtendedCharacter extChar in MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>())
+			{
+				extChar.TroopLeft = extChar.TroopLimit;
+			}
+		}
 
-        private void OnMyClientSynchronized()
-        {
-            _myRepresentative = GameNetwork.MyPeer.GetComponent<FlagDominationMissionRepresentative>();
-        }
+		public override void OnMissionTick(float dt)
+		{
+			ScenarioManager.Instance.OnMissionTick(dt);
+		}
 
-        protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
-        {
-            networkPeer.AddComponent<ScenarioRepresentative>();
-        }
+		private void OnMyClientSynchronized()
+		{
+			_myRepresentative = GameNetwork.MyPeer.GetComponent<FlagDominationMissionRepresentative>();
+		}
 
-        public new bool CheckTimer(out int remainingTime, out int remainingWarningTime, bool forceUpdate = false)
-        {
-            bool flag = false;
-            float f = 0f;
-            if (WarmupComponent != null && MissionLobbyComponent.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.WaitingFirstPlayers)
-            {
-                flag = !WarmupComponent.IsInWarmup;
-            }
-            else if (RoundComponent != null)
-            {
-                flag = !RoundComponent.CurrentRoundState.StateHasVisualTimer();
-                f = RoundComponent.LastRoundEndRemainingTime;
-            }
+		protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
+		{
+			networkPeer.AddComponent<ScenarioRepresentative>();
+		}
 
-            if (forceUpdate || !flag)
-            {
-                if (flag)
-                {
-                    remainingTime = MathF.Ceiling(f);
-                }
-                else
-                {
-                    remainingTime = MathF.Ceiling(RemainingTime);
-                }
+		public new bool CheckTimer(out int remainingTime, out int remainingWarningTime, bool forceUpdate = false)
+		{
+			bool flag = false;
+			float f = 0f;
+			if (WarmupComponent != null && MissionLobbyComponent.CurrentMultiplayerState == MissionLobbyComponent.MultiplayerGameState.WaitingFirstPlayers)
+			{
+				flag = !WarmupComponent.IsInWarmup;
+			}
+			else if (RoundComponent != null)
+			{
+				flag = !RoundComponent.CurrentRoundState.StateHasVisualTimer();
+				f = RoundComponent.LastRoundEndRemainingTime;
+			}
 
-                remainingWarningTime = GetWarningTimer();
-                return true;
-            }
+			if (forceUpdate || !flag)
+			{
+				if (flag)
+				{
+					remainingTime = MathF.Ceiling(f);
+				}
+				else
+				{
+					remainingTime = MathF.Ceiling(RemainingTime);
+				}
 
-            remainingTime = 0;
-            remainingWarningTime = 0;
-            return false;
-        }
+				remainingWarningTime = GetWarningTimer();
+				return true;
+			}
 
-        public override void OnGoldAmountChangedForRepresentative(MissionRepresentativeBase representative, int goldAmount)
-        {
-            if (representative != null)
-            {
-                representative.UpdateGold(goldAmount);
-            }
-        }
+			remainingTime = 0;
+			remainingWarningTime = 0;
+			return false;
+		}
 
-        public override int GetGoldAmount()
-        {
-            if (_myRepresentative != null)
-            {
-                return _myRepresentative.Gold;
-            }
+		public override void OnGoldAmountChangedForRepresentative(MissionRepresentativeBase representative, int goldAmount)
+		{
+			if (representative != null)
+			{
+				representative.UpdateGold(goldAmount);
+			}
+		}
 
-            return 0;
-        }
+		public override int GetGoldAmount()
+		{
+			if (_myRepresentative != null)
+			{
+				return _myRepresentative.Gold;
+			}
 
-        public void OnBotsControlledChanged(MissionPeer missionPeer, int botAliveCount, int botTotalCount)
-        {
-            missionPeer.BotsUnderControlAlive = botAliveCount;
-            // Reflection cause internal setter -_-
-            missionPeer.GetType().GetProperty(nameof(missionPeer.BotsUnderControlTotal)).SetValue(missionPeer, botTotalCount);
-            OnBotsControlledChangedEvent?.Invoke(missionPeer.GetNetworkPeer());
-        }
-    }
+			return 0;
+		}
+
+		public void OnBotsControlledChanged(MissionPeer missionPeer, int botAliveCount, int botTotalCount)
+		{
+			missionPeer.BotsUnderControlAlive = botAliveCount;
+			// Reflection cause internal setter -_-
+			missionPeer.GetType().GetProperty(nameof(missionPeer.BotsUnderControlTotal)).SetValue(missionPeer, botTotalCount);
+			OnBotsControlledChangedEvent?.Invoke(missionPeer.GetNetworkPeer());
+		}
+	}
 }

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MPCharacters>
+	<!-- ************************************************************************* -->
+	<!-- *************************   AUTOCHTONE   ******************************** -->
+	<!-- ************************************************************************* -->
+	<!-- LIGHT INFANTRY - TROOP -->
+	<NPCCharacter id="mp_light_infantry_auto_troop"
+								default_group="Infantry"
+								level="15"
+								name="{=al_sop_auto_light_t}Autochtone Inf"
+								occupation="Soldier"
+								culture="Culture.autochtone">
+		<face>
+			<BodyProperties version="4" age="26.1" weight="0.2667" build="0.1944" key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax version="4" age="33.1" weight="0.4" build="0.5333" key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="150" />
+			<skill id="Riding" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="TwoHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Bow" value="150" />
+			<skill id="Crossbow" value="150" />
+			<skill id="Throwing" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.falchion_sword_t2" />
+				<equipment slot="Item2" id="Item.khuzait_lance_1_t3" />
+				<equipment slot="Body" id="Item.fur_skirt" />
+				<equipment slot="Leg" id="Item.battania_woodland_boots" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.simple_sparth_axe_t2" />
+				<equipment slot="Head" id="Item.wolfhead" />
+				<equipment slot="Body" id="Item.vlandia_bandit_c" />
+				<equipment slot="Leg" id="Item.battania_fur_boots" />
+				<equipment slot="Cape" id="Item.wolf_shoulder" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.southern_small_axe_t2" />
+				<equipment slot="Body" id="Item.bandit_fur_b" />
+				<equipment slot="Leg" id="Item.strapped_leather_boots" />
+				<equipment slot="Gloves" id="Item.rough_tied_bracers" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.eastern_wicker_shield" />
+				<equipment slot="Head" id="Item.bearhead" />
+				<equipment slot="Body" id="Item.tattered_rags" />
+				<equipment slot="Leg" id="Item.battania_woodland_boots" />
+				<equipment slot="Gloves" id="Item.ragged_armwraps" />
+				<equipment slot="Cape" id="Item.rough_bearskin" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT INFANTRY - HERO -->
+	<NPCCharacter id="mp_light_infantry_auto_hero"
+								default_group="Infantry"
+								level="25"
+								voice="earnest"
+								is_female="false"
+								name="{=al_sop_auto_light_h}Autochtone Inf Leader"
+								occupation="Soldier"
+								culture="Culture.autochtone">
+		<face>
+			<BodyProperties version="4" age="26.1" weight="0.2667" build="0.1944" key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax version="4" age="33.1" weight="0.4" build="0.5333" key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.eastern_wicker_shield" />
+				<equipment slot="Head" id="Item.bearhead" />
+				<equipment slot="Body" id="Item.tattered_rags" />
+				<equipment slot="Leg" id="Item.battania_woodland_boots" />
+				<equipment slot="Gloves" id="Item.ragged_armwraps" />
+				<equipment slot="Cape" id="Item.rough_bearskin" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="85" />
+	</NPCCharacter>
+
+	<!-- LIGHT RANGED - TROOP -->
+	<NPCCharacter id="mp_light_ranged_auto_troop"
+									default_group="Ranged"
+									level="15"
+									name="{=al_sop_auto_l_ranged_t}Autochtone Arc"
+									occupation="Soldier"
+									culture="Culture.autochtone">
+		<face>
+			<BodyProperties version="4" age="26.1" weight="0.2667" build="0.1944" key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax version="4" age="33.1" weight="0.4" build="0.5333" key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="150" />
+			<skill id="Riding" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="TwoHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Bow" value="150" />
+			<skill id="Crossbow" value="150" />
+			<skill id="Throwing" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.mountain_hunting_bow" />
+				<equipment slot="Item2" id="Item.default_arrows" />
+				<equipment slot="Item3" id="Item.default_arrows" />
+				<equipment slot="Body" id="Item.sleeveless_fur_coat" />
+				<equipment slot="Leg" id="Item.battania_fur_boots" />
+			</EquipmentRoster>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.hunting_bow" />
+				<equipment slot="Item2" id="Item.adarga" />
+				<equipment slot="Item3" id="Item.default_arrows" />
+				<equipment slot="Body" id="Item.fur_skirt" />
+				<equipment slot="Leg" id="Item.battania_woodland_boots" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="25" />
+	</NPCCharacter>
+	<!-- LIGHT RANGED - HERO -->
+	<NPCCharacter id="mp_light_ranged_auto_hero"
+		default_group="Ranged"
+		level="20"
+		voice="earnest"
+		is_female="false"
+		name="{=al_sop_auto_l_ranged_h}Autochtone Arc Leader"
+		occupation="Soldier"
+		culture="Culture.autochtone">
+		<face>
+			<BodyProperties version="4" age="26.1" weight="0.2667" build="0.1944" key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax version="4" age="33.1" weight="0.4" build="0.5333" key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+		<skills>
+			<skill id="Athletics" value="250" />
+			<skill id="Riding" value="250" />
+			<skill id="OneHanded" value="250" />
+			<skill id="TwoHanded" value="250" />
+			<skill id="Polearm" value="250" />
+			<skill id="Bow" value="250" />
+			<skill id="Crossbow" value="250" />
+			<skill id="Throwing" value="250" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster>
+				<equipment slot="Item0" id="Item.sturgia_sword_1_t2" />
+				<equipment slot="Item1" id="Item.adarga" />
+				<equipment slot="Item2" id="Item.hunting_bow" />
+				<equipment slot="Item3" id="Item.default_arrows" />
+				<equipment slot="Body" id="Item.fur_skirt" />
+				<equipment slot="Leg" id="Item.battania_woodland_boots" />
+			</EquipmentRoster>
+		</Equipments>
+		<Resistances dismount="65" />
+	</NPCCharacter>
+
+</MPCharacters>

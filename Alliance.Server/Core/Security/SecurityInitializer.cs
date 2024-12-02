@@ -13,6 +13,7 @@ namespace Alliance.Server.Core.Security
     public class SecurityInitializer
     {
         public static DateTime lastRead = DateTime.MinValue;
+        private static FileSystemWatcher _rolesWatcher;
 
         /// <summary>
         /// Initialize the players roles and start watching the roles file.
@@ -23,7 +24,7 @@ namespace Alliance.Server.Core.Security
             Roles.Instance = SerializeHelper.LoadClassFromFile(SubModule.RolesFilePath, Roles.Instance);
 
             // Watch changes to the roles file
-            SerializeHelper.CreateFileWatcher(SubModule.RolesFilePath, OnRolesFileChanged);
+            _rolesWatcher = SerializeHelper.CreateFileWatcher(SubModule.RolesFilePath, OnRolesFileChanged);
         }
 
         /// <summary>

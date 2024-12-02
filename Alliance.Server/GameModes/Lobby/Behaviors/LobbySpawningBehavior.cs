@@ -26,10 +26,10 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             EquipmentElement horse = new EquipmentElement(MBObjectManager.Instance.GetObject<ItemObject>("mp_vlandia_horse"), null, null, false);
             EquipmentElement harness = new EquipmentElement(MBObjectManager.Instance.GetObject<ItemObject>("mp_stripped_leather_harness"), null, null, false);
             _altEquipment = new List<(EquipmentIndex, EquipmentElement)>
-                        {
-                            (EquipmentIndex.Horse, horse),
-                            (EquipmentIndex.HorseHarness, harness)
-                        };
+            {
+                //(EquipmentIndex.Horse, horse),
+                //(EquipmentIndex.HorseHarness, harness)
+            };
         }
 
         public override void OnTick(float dt)
@@ -49,7 +49,8 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 
         protected override void SpawnAgents()
         {
-            BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            BasicCultureObject cultureAtt = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+            BasicCultureObject cultureDef = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 
             // Spawn max 20 players at once
             int playersSpawn = 0;
@@ -63,6 +64,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
                 }
                 if (peer.IsSynchronized && (missionPeer.Team == Mission.AttackerTeam || missionPeer.Team == Mission.DefenderTeam))
                 {
+                    BasicCultureObject culture = missionPeer.Team == Mission.AttackerTeam ? cultureAtt : cultureDef;
                     BasicCharacterObject basicCharacterObject;
                     MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer;
 
@@ -89,15 +91,25 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
             }
 
             // Spawn bots
-            int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions) + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
-            while (Mission.AttackerTeam.ActiveAgents.Count() < nbBotsToSpawnAtt)
+            int nbBotsToSpawnAtt = MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue();
+            for (int i = Mission.AttackerTeam.ActiveAgents.Count; i < nbBotsToSpawnAtt; i++)
             {
                 BasicCharacterObject troopCharacter;
-                troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(culture).ToList().GetRandomElement().TroopCharacter;
+                troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(cultureAtt).ToList().GetRandomElement().TroopCharacter;
 
                 // Random difficulty between 0.5 and 2.5f
                 float difficulty = _values[_random.Next(_values.Count)];
-                SpawnHelper.SpawnBot(Mission.AttackerTeam, culture, troopCharacter, botDifficulty: difficulty);
+                SpawnHelper.SpawnBot(Mission.AttackerTeam, cultureAtt, troopCharacter, botDifficulty: difficulty);
+            }
+            int nbBotsToSpawnDef = MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+            for (int i = Mission.DefenderTeam.ActiveAgents.Count; i < nbBotsToSpawnDef; i++)
+            {
+                BasicCharacterObject troopCharacter;
+                troopCharacter = MultiplayerClassDivisions.GetMPHeroClasses(cultureDef).ToList().GetRandomElement().TroopCharacter;
+
+                // Random difficulty between 0.5 and 2.5f
+                float difficulty = _values[_random.Next(_values.Count)];
+                SpawnHelper.SpawnBot(Mission.DefenderTeam, cultureDef, troopCharacter, botDifficulty: difficulty);
             }
         }
 

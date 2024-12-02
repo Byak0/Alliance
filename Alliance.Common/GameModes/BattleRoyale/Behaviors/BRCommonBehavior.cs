@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core;
+﻿using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -30,11 +30,11 @@ namespace Alliance.Common.GameModes.BattleRoyale.Behaviors
             }
         }
 
-        public override MissionLobbyComponent.MultiplayerGameType GameType
+        public override MultiplayerGameType GameType
         {
             get
             {
-                return MissionLobbyComponent.MultiplayerGameType.FreeForAll;
+                return MultiplayerGameType.FreeForAll;
             }
         }
 

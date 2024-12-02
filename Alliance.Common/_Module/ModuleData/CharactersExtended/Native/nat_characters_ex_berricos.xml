@@ -1,0 +1,16 @@
+<CharactersExtended>
+	<CharacterExtended id="NPCCharacter.mp_civilian_berricos_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_berricos_troop" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_berricos_hero" troop_limit="100" player_select_limit="3" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.mp_light_infantry_berricos_banner_bearer" troop_limit="100" player_select_limit="100" />
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_berricos_troop" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_berricos_hero" troop_limit="100" player_select_limit="2" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.mp_mid_infantry_berricos_banner_bearer" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_berricos_troop" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_berricos_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.mp_heavy_inf_berricos_banner_bearer" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_berricos_troop" troop_limit="100" player_select_limit="50" />
+	<CharacterExtended id="NPCCharacter.mp_light_ranged_berricos_hero" troop_limit="100" player_select_limit="2" hard_limit="true"/>
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_berricos_troop" troop_limit="100" player_select_limit="30" />
+	<CharacterExtended id="NPCCharacter.mp_heavy_ranged_berricos_hero" troop_limit="100" player_select_limit="1" hard_limit="true"/>
+</CharactersExtended>

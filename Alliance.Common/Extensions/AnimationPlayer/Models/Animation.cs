@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;

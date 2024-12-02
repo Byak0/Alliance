@@ -1,0 +1,1472 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<MPCharacters>
+	<!-- ************************************************************************* -->
+	<!-- ****************************   SERAÏN   ********************************** -->
+	<!-- ************************************************************************* -->
+  <!-- Merchant -->
+  <NPCCharacter id="serain_merchant" default_group="Infantry" name="Seraïn Merchant" level="6" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="26.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="45.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="20" />
+      <skill id="TwoHanded" value="10" />
+      <skill id="Polearm" value="20" />
+      <skill id="Throwing" value="10" />
+      <skill id="Athletics" value="20" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.hooked_cleaver" />
+        <equipment slot="Head" id="Item.desert_cap" />
+        <equipment slot="Body" id="Item.tassled_southern_robes" />
+        <equipment slot="Leg" id="Item.khuzait_curved_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.seax_blunt" />
+        <equipment slot="Head" id="Item.tuareg" />
+        <equipment slot="Body" id="Item.aserai_civil_a" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.horse_whip" />
+        <equipment slot="Head" id="Item.aserai_civil_c_head" />
+        <equipment slot="Body" id="Item.aserai_civil_c" />
+        <equipment slot="Leg" id="Item.sturgia_boots_b" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.hooked_cleaver" />
+        <equipment slot="Head" id="Item.aserai_civil_d_hscarf" />
+        <equipment slot="Body" id="Item.leather_coat_over_cloth" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.hooked_cleaver" />
+        <equipment slot="Head" id="Item.aserai_civil_e_hscarf" />
+        <equipment slot="Body" id="Item.light_tunic" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- light warrior -->
+
+  <NPCCharacter id="serain_light_warrior" default_group="Infantry" level="11" name="Seraïn light warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="20" />
+      <skill id="Polearm" value="40" />
+      <skill id="Throwing" value="20" />
+      <skill id="Riding" value="10" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_sabre_sword_t2" />
+        <equipment slot="Item1" id="Item.bound_adarga" />
+        <equipment slot="Item2" id="Item.imperial_spear_t2" />
+        <equipment slot="Head" id="Item.desert_helmet" />
+        <equipment slot="Body" id="Item.aserai_horseman_armor" />
+        <equipment slot="Leg" id="Item.leather_boots" />
+        <equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_1_t2" />
+        <equipment slot="Item1" id="Item.oval_shield" />
+        <equipment slot="Item2" id="Item.eastern_spear_1_t2_blunt" />
+        <equipment slot="Head" id="Item.tight_head_scarf" />
+        <equipment slot="Body" id="Item.studded_leather_coat" />
+        <equipment slot="Leg" id="Item.sturgia_boots_d" />
+        <equipment slot="Gloves" id="Item.padded_vambrace" />
+        <equipment slot="Cape" id="Item.scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.bound_desert_round_shield" />
+        <equipment slot="Item2" id="Item.eastern_spear_3_t3" />
+        <equipment slot="Head" id="Item.trailed_desert_helmet" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+        <equipment slot="Gloves" id="Item.woven_leather_bracers" />
+        <equipment slot="Cape" id="Item.desert_fabric_shoulderpad" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_back_sword_t2" />
+        <equipment slot="Item1" id="Item.curved_round_shield" />
+        <equipment slot="Item2" id="Item.northern_spear_1_t2_blunt" />
+        <equipment slot="Head" id="Item.wrapped_desert_cap" />
+        <equipment slot="Body" id="Item.reinforced_suede_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.reinforced_suede_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.small_spurred_axe_t2" />
+        <equipment slot="Item1" id="Item.eastern_wicker_sparring_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_1_t3" />
+        <equipment slot="Head" id="Item.open_desert_helmet" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.sturgia_boots_c" />
+        <equipment slot="Gloves" id="Item.strapped_leather_bracers" />
+        <equipment slot="Cape" id="Item.battania_scarf_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_mace_1_t2" />
+        <equipment slot="Item1" id="Item.bound_desert_round_shield" />
+        <equipment slot="Item2" id="Item.southern_spear_3_t3" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.long_padded_robe" />
+        <equipment slot="Leg" id="Item.sturgia_boots_b" />
+        <equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+        <equipment slot="Cape" id="Item.a_khuzait_leather_shoulder_b_b" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.imperial_axe_t3" />
+        <equipment slot="Item1" id="Item.studded_adarga" />
+        <equipment slot="Item2" id="Item.southern_spear_4_t3" />
+        <equipment slot="Head" id="Item.tight_head_scarf" />
+        <equipment slot="Body" id="Item.short_padded_robe" />
+        <equipment slot="Leg" id="Item.sturgia_boots_a" />
+        <equipment slot="Gloves" id="Item.northern_brass_bracers" />
+        <equipment slot="Cape" id="Item.battanian_leather_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+   <NPCCharacter id="serain_light_warrior_hero" default_group="Infantry" level="11" name="Seraïn light warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="20" />
+      <skill id="Polearm" value="40" />
+      <skill id="Throwing" value="20" />
+      <skill id="Riding" value="10" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_sabre_sword_t2" />
+        <equipment slot="Item1" id="Item.bound_adarga" />
+        <equipment slot="Item2" id="Item.imperial_spear_t2" />
+        <equipment slot="Head" id="Item.desert_helmet" />
+        <equipment slot="Body" id="Item.aserai_horseman_armor" />
+        <equipment slot="Leg" id="Item.leather_boots" />
+        <equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_1_t2" />
+        <equipment slot="Item1" id="Item.oval_shield" />
+        <equipment slot="Item2" id="Item.eastern_spear_1_t2_blunt" />
+        <equipment slot="Head" id="Item.tight_head_scarf" />
+        <equipment slot="Body" id="Item.studded_leather_coat" />
+        <equipment slot="Leg" id="Item.sturgia_boots_d" />
+        <equipment slot="Gloves" id="Item.padded_vambrace" />
+        <equipment slot="Cape" id="Item.scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.bound_desert_round_shield" />
+        <equipment slot="Item2" id="Item.eastern_spear_3_t3" />
+        <equipment slot="Head" id="Item.trailed_desert_helmet" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+        <equipment slot="Gloves" id="Item.woven_leather_bracers" />
+        <equipment slot="Cape" id="Item.desert_fabric_shoulderpad" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_back_sword_t2" />
+        <equipment slot="Item1" id="Item.curved_round_shield" />
+        <equipment slot="Item2" id="Item.northern_spear_1_t2_blunt" />
+        <equipment slot="Head" id="Item.wrapped_desert_cap" />
+        <equipment slot="Body" id="Item.reinforced_suede_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.reinforced_suede_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.small_spurred_axe_t2" />
+        <equipment slot="Item1" id="Item.eastern_wicker_sparring_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_1_t3" />
+        <equipment slot="Head" id="Item.open_desert_helmet" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.sturgia_boots_c" />
+        <equipment slot="Gloves" id="Item.strapped_leather_bracers" />
+        <equipment slot="Cape" id="Item.battania_scarf_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_mace_1_t2" />
+        <equipment slot="Item1" id="Item.bound_desert_round_shield" />
+        <equipment slot="Item2" id="Item.southern_spear_3_t3" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.long_padded_robe" />
+        <equipment slot="Leg" id="Item.sturgia_boots_b" />
+        <equipment slot="Gloves" id="Item.buttoned_leather_bracers" />
+        <equipment slot="Cape" id="Item.a_khuzait_leather_shoulder_b_b" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.imperial_axe_t3" />
+        <equipment slot="Item1" id="Item.studded_adarga" />
+        <equipment slot="Item2" id="Item.southern_spear_4_t3" />
+        <equipment slot="Head" id="Item.tight_head_scarf" />
+        <equipment slot="Body" id="Item.short_padded_robe" />
+        <equipment slot="Leg" id="Item.sturgia_boots_a" />
+        <equipment slot="Gloves" id="Item.northern_brass_bracers" />
+        <equipment slot="Cape" id="Item.battanian_leather_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- light warrior banner -->
+
+  <NPCCharacter id="serain_light_warrior_banner_bearer" default_group="Infantry" level="11" name="Seraïn light warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="20" />
+      <skill id="Polearm" value="40" />
+      <skill id="Throwing" value="20" />
+      <skill id="Riding" value="10" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_sabre_sword_t2" />
+        <equipment slot="Item1" id="Item.bound_adarga" />
+        <equipment slot="Item2" id="Item.banner_of_desert_winds_t1" />
+        <equipment slot="Head" id="Item.desert_helmet" />
+        <equipment slot="Body" id="Item.aserai_horseman_armor" />
+        <equipment slot="Leg" id="Item.leather_boots" />
+        <equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- light archer -->
+
+  <NPCCharacter id="serain_light_archer" default_group="Ranged" level="11" name="Seraïn light archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="15" />
+      <skill id="Polearm" value="20" />
+      <skill id="Bow" value="40" />
+      <skill id="Crossbow" value="20" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.training_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Head" id="Item.wrapped_desert_cap" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+        <equipment slot="Gloves" id="Item.roughtied_leather_bracers" />
+        <equipment slot="Cape" id="Item.desert_leather_shoulderpad" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_back_sword_t2" />
+        <equipment slot="Item1" id="Item.steppe_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Item3" id="Item.studded_adarga" />
+        <equipment slot="Head" id="Item.desert_cap" />
+        <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
+        <equipment slot="Leg" id="Item.khuzait_curved_boots" />
+        <equipment slot="Gloves" id="Item.strapped_leather_bracers" />
+        <equipment slot="Cape" id="Item.battanian_leather_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.simple_sabre_sword_t2" />
+        <equipment slot="Item1" id="Item.composite_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Item3" id="Item.steppe_arrows" />
+        <equipment slot="Head" id="Item.trailed_desert_helmet" />
+        <equipment slot="Body" id="Item.reinforced_suede_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.reinforced_suede_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.composite_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Item3" id="Item.adarga" />
+        <equipment slot="Head" id="Item.tied_head_wrapping" />
+        <equipment slot="Body" id="Item.studded_steppe_leather" />
+        <equipment slot="Leg" id="Item.leather_boots" />
+        <equipment slot="Gloves" id="Item.studded_vambraces" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+    <NPCCharacter id="serain_light_archer_hero" default_group="Ranged" level="11" name="Seraïn light archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="15" />
+      <skill id="Polearm" value="20" />
+      <skill id="Bow" value="40" />
+      <skill id="Crossbow" value="20" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.training_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Head" id="Item.wrapped_desert_cap" />
+        <equipment slot="Body" id="Item.khuzait_fortified_armor" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+        <equipment slot="Gloves" id="Item.roughtied_leather_bracers" />
+        <equipment slot="Cape" id="Item.desert_leather_shoulderpad" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+
+  <!-- light archer banner -->
+
+  <NPCCharacter id="serain_light_archer_banner_bearer" default_group="Ranged" level="11" name="Seraïn light archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="28.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="15" />
+      <skill id="Polearm" value="20" />
+      <skill id="Bow" value="40" />
+      <skill id="Crossbow" value="20" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
+        <equipment slot="Item1" id="Item.composite_bow" />
+        <equipment slot="Item2" id="Item.steppe_arrows" />
+        <equipment slot="Item3" id="Item.banner_of_desert_winds_t1" />
+        <equipment slot="Head" id="Item.tied_head_wrapping" />
+        <equipment slot="Body" id="Item.studded_steppe_leather" />
+        <equipment slot="Leg" id="Item.leather_boots" />
+        <equipment slot="Gloves" id="Item.studded_vambraces" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Medium warrior -->
+
+  <NPCCharacter id="serain_medium_warrior" default_group="Infantry" level="16" name="Seraïn medium warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="24.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="80" />
+      <skill id="TwoHanded" value="40" />
+      <skill id="Polearm" value="80" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_2_t2_blunt" />
+        <equipment slot="Item1" id="Item.footmans_wicker_shield" />
+        <equipment slot="Item2" id="Item.triangluar_spear_t3" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.studded_leather_over_aketon" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.eastern_plated_leather_vambraces" />
+        <equipment slot="Cape" id="Item.eastern_studded_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_mace_2_t4" />
+        <equipment slot="Item1" id="Item.southern_oval_shield" />
+        <equipment slot="Item2" id="Item.battania_2haxe_1_t2_blunt" />
+        <equipment slot="Head" id="Item.open_desert_helmet" />
+        <equipment slot="Body" id="Item.ringed_desert_armor" />
+        <equipment slot="Leg" id="Item.rough_tied_boots" />
+        <equipment slot="Gloves" id="Item.rough_tied_bracers" />
+        <equipment slot="Cape" id="Item.aserai_horseman_shoulder" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.tzkurion_axe_t3" />
+        <equipment slot="Item1" id="Item.desert_oval_shield" />
+        <equipment slot="Item2" id="Item.triangluar_spear_t3" />
+        <equipment slot="Head" id="Item.closed_desert_helmet" />
+        <equipment slot="Body" id="Item.eastern_plated_leather_vest" />
+        <equipment slot="Leg" id="Item.plated_strip_boots" />
+        <equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+        <equipment slot="Cape" id="Item.imperial_studded_strip_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <NPCCharacter id="serain_medium_warrior_hero" default_group="Infantry" level="16" name="Seraïn medium warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="24.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="80" />
+      <skill id="TwoHanded" value="40" />
+      <skill id="Polearm" value="80" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_2_t2_blunt" />
+        <equipment slot="Item1" id="Item.footmans_wicker_shield" />
+        <equipment slot="Item2" id="Item.triangluar_spear_t3" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.studded_leather_over_aketon" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.eastern_plated_leather_vambraces" />
+        <equipment slot="Cape" id="Item.eastern_studded_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Medium warrior banner -->
+
+  <NPCCharacter id="serain_medium_warrior_banner_bearer" default_group="Infantry" level="16" name="Seraïn medium warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="24.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="80" />
+      <skill id="TwoHanded" value="40" />
+      <skill id="Polearm" value="80" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_2_t2_blunt" />
+        <equipment slot="Item1" id="Item.footmans_wicker_shield" />
+        <equipment slot="Item2" id="Item.banner_of_dust_devils_t3" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.studded_leather_over_aketon" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.eastern_plated_leather_vambraces" />
+        <equipment slot="Cape" id="Item.eastern_studded_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Heavy warrior -->
+
+  <NPCCharacter id="serain_heavy_warrior" default_group="Infantry" level="26" name="Seraïn heavy warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="30.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="58.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="140" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="140" />
+      <skill id="Throwing" value="80" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="140" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_3_t3" />
+        <equipment slot="Item1" id="Item.emirs_oval_shield" />
+        <equipment slot="Item2" id="Item.southern_spear_3_t4" />
+        <equipment slot="Head" id="Item.desert_helmet_with_mail" />
+        <equipment slot="Body" id="Item.aserai_armor_02" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.desert_long_sword_t4" />
+        <equipment slot="Item1" id="Item.emirs_oval_shield" />
+        <equipment slot="Item2" id="Item.aserai_2haxe_2_t4" />
+        <equipment slot="Head" id="Item.emirs_helmet" />
+        <equipment slot="Body" id="Item.aserai_robe_c_chain" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_4_t4" />
+        <equipment slot="Item1" id="Item.emirs_oval_shield" />
+        <equipment slot="Item2" id="Item.billhook_polearm_t2" />
+        <equipment slot="Head" id="Item.desert_mail_coif" />
+        <equipment slot="Body" id="Item.desert_robe_over_mail" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+    <NPCCharacter id="serain_heavy_warrior_hero" default_group="Infantry" level="26" name="Seraïn heavy warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="30.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="58.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="140" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="140" />
+      <skill id="Throwing" value="80" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="140" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_3_t3" />
+        <equipment slot="Item1" id="Item.emirs_oval_shield" />
+        <equipment slot="Item2" id="Item.southern_spear_3_t4" />
+        <equipment slot="Head" id="Item.desert_helmet_with_mail" />
+        <equipment slot="Body" id="Item.aserai_armor_02" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+ <!-- Heavy warrior banner -->
+
+  <NPCCharacter id="serain_heavy_warrior_banner_bearer" default_group="Infantry" level="26" name="Seraïn heavy warrior" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="30.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="58.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="140" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="140" />
+      <skill id="Throwing" value="80" />
+      <skill id="Riding" value="20" />
+      <skill id="Athletics" value="140" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_3_t3" />
+        <equipment slot="Item1" id="Item.emirs_oval_shield" />
+        <equipment slot="Item2" id="Item.banner_of_faris_falcon_t1" />
+        <equipment slot="Head" id="Item.desert_helmet_with_mail" />
+        <equipment slot="Body" id="Item.aserai_armor_02" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+<!-- Seraïn light mameluk -->
+
+  <NPCCharacter id="serain_light_mameluk" default_group="Cavalry" level="21" name="Seraïn light mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="60" />
+      <skill id="TwoHanded" value="60" />
+      <skill id="Polearm" value="100" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="100" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_2_t3" />
+        <equipment slot="Item1" id="Item.decorated_steppe_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_2_t4" />
+        <equipment slot="Head" id="Item.nomad_helmet" />
+        <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.stitched_leather_shoulders" />
+        <equipment slot="Horse" id="Item.war_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_mace_1_t2" />
+        <equipment slot="Item1" id="Item.decorated_steppe_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_2_t4" />
+        <equipment slot="Head" id="Item.plumed_nomad_helmet" />
+        <equipment slot="Body" id="Item.eastern_plated_leather_vest" />
+        <equipment slot="Leg" id="Item.highland_leg_wrappings" />
+        <equipment slot="Gloves" id="Item.studded_vambraces" />
+        <equipment slot="Cape" id="Item.desert_leather_shoulderpad" />
+        <equipment slot="Horse" id="Item.war_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+    <NPCCharacter id="serain_light_mameluk_hero" default_group="Cavalry" level="21" name="Seraïn light mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="60" />
+      <skill id="TwoHanded" value="60" />
+      <skill id="Polearm" value="100" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="100" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_2_t3" />
+        <equipment slot="Item1" id="Item.decorated_steppe_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_2_t4" />
+        <equipment slot="Head" id="Item.nomad_helmet" />
+        <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.stitched_leather_shoulders" />
+        <equipment slot="Horse" id="Item.war_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+  
+<!-- Seraïn light mameluk banner -->
+
+  <NPCCharacter id="serain_light_mameluk_banner_bearer" default_group="Cavalry" level="21" name="Seraïn light mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="42.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="60" />
+      <skill id="TwoHanded" value="60" />
+      <skill id="Polearm" value="100" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="100" />
+      <skill id="Athletics" value="80" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.khuzait_sword_2_t3" />
+        <equipment slot="Item1" id="Item.decorated_steppe_shield" />
+        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Head" id="Item.nomad_helmet" />
+        <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
+        <equipment slot="Leg" id="Item.reinforced_suede_boots" />
+        <equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
+        <equipment slot="Cape" id="Item.stitched_leather_shoulders" />
+        <equipment slot="Horse" id="Item.war_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+<!-- Heavy archer -->
+
+  <NPCCharacter id="serain_heavy_archer" default_group="Ranged" level="26" name="Seraïn heavy archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="28.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="100" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="40" />
+      <skill id="Bow" value="160" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.longbow_recurve_desert_bow" />
+        <equipment slot="Item1" id="Item.aserai_sword_5_t4" />
+        <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Item3" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.leather_strips_over_padded_robe" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.khuzait_heavy_armor_bracer" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_c" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.longbow_recurve_desert_bow" />
+        <equipment slot="Item1" id="Item.ridged_sabre_sword_t4" />
+        <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Item3" id="Item.noyans_shield" />
+        <equipment slot="Head" id="Item.open_desert_helmet" />
+        <equipment slot="Body" id="Item.eastern_plated_leather_vest" />
+        <equipment slot="Leg" id="Item.plated_strip_boots" />
+        <equipment slot="Gloves" id="Item.reinforced_leather_vambraces" />
+        <equipment slot="Cape" id="Item.aserai_scale_shoulder_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.woodland_longbow" />
+        <equipment slot="Item1" id="Item.khuzait_sword_5_t4" />
+        <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Item3" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Head" id="Item.trailed_desert_helmet" />
+        <equipment slot="Body" id="Item.aserai_chain_plate_armor_c" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.aserai_scale_shoulder_c" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+   </NPCCharacter>
+
+  <NPCCharacter id="serain_heavy_archer_hero" default_group="Ranged" level="26" name="Seraïn heavy archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="28.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="100" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="40" />
+      <skill id="Bow" value="160" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.longbow_recurve_desert_bow" />
+        <equipment slot="Item1" id="Item.aserai_sword_5_t4" />
+        <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Item3" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.leather_strips_over_padded_robe" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.khuzait_heavy_armor_bracer" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_c" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+<!-- Heavy archer banner -->
+
+    <NPCCharacter id="serain_heavy_archer_banner_bearer" default_group="Ranged" level="26" name="Seraïn heavy archer" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="28.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="100" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="40" />
+      <skill id="Bow" value="160" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.longbow_recurve_desert_bow" />
+        <equipment slot="Item1" id="Item.aserai_sword_5_t4" />
+        <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
+        <equipment slot="Item3" id="Item.banner_of_emirs_hawk_t2" />
+        <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
+        <equipment slot="Body" id="Item.leather_strips_over_padded_robe" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.khuzait_heavy_armor_bracer" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_c" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Civilian -->
+  
+  <NPCCharacter id="serain_civilian" default_group="Cavalry" level="11" name="Seraïn civilian" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="18.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="75.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="40" />
+      <skill id="TwoHanded" value="20" />
+      <skill id="Polearm" value="40" />
+      <skill id="Throwing" value="10" />
+      <skill id="Riding" value="40" />
+      <skill id="Athletics" value="40" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.turban" />
+        <equipment slot="Body" id="Item.thick_sleeved_robe" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.wrapped_headcloth" />
+        <equipment slot="Body" id="Item.layered_robe" />
+        <equipment slot="Leg" id="Item.khuzait_curved_boots" />
+        <equipment slot="Cape" id="Item.wrapped_scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.woven_turban" />
+        <equipment slot="Body" id="Item.aserai_civil_f" />
+        <equipment slot="Leg" id="Item.steppe_leather_boots" />
+        <equipment slot="Cape" id="Item.scarf" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Head" id="Item.aserai_civil_hscarf_b" />
+        <equipment slot="Body" id="Item.long_desert_robe" />
+        <equipment slot="Leg" id="Item.eastern_leather_boots" />
+        <equipment slot="Cape" id="Item.battania_scarf_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Merchant -->
+
+  <NPCCharacter id="serain_noble_merchant" default_group="Cavalry" level="16" name="Seraïn noble merchant" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="24.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="68.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="60" />
+      <skill id="TwoHanded" value="40" />
+      <skill id="Polearm" value="60" />
+      <skill id="Throwing" value="40" />
+      <skill id="Riding" value="60" />
+      <skill id="Athletics" value="60" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_2_t2" />
+        <equipment slot="Head" id="Item.aserai_civil_hscarf_a" />
+        <equipment slot="Body" id="Item.short_padded_robe" />
+        <equipment slot="Leg" id="Item.sturgia_boots_b" />
+        <equipment slot="Horse" id="Item.camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle_b" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_sword_3_t3" />
+        <equipment slot="Head" id="Item.woven_turban" />
+        <equipment slot="Body" id="Item.eastern_silk_clothing" />
+        <equipment slot="Leg" id="Item.sturgia_boots_a" />
+        <equipment slot="Horse" id="Item.camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle_a" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Seraïn heavy mameluk -->
+
+  <NPCCharacter id="serain_heavy_mameluk" default_group="Cavalry" level="36" name="Seraïn heavy mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="26.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="54.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="200" />
+      <skill id="TwoHanded" value="160" />
+      <skill id="Polearm" value="240" />
+      <skill id="Throwing" value="100" />
+      <skill id="Riding" value="200" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.ridged_sabre_sword_t4" />
+        <equipment slot="Item1" id="Item.noyans_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_3_t5" />
+        <equipment slot="Head" id="Item.plumed_lamellar_helmet" />
+        <equipment slot="Body" id="Item.imperial_scale_armor" />
+        <equipment slot="Leg" id="Item.plated_strip_boots" />
+        <equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+        <equipment slot="Horse" id="Item.special_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.empire_mace_5_t5" />
+        <equipment slot="Item1" id="Item.steppe_guardian_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_3_t5" />
+        <equipment slot="Head" id="Item.steppe_helmet" />
+        <equipment slot="Body" id="Item.northern_coat_of_plates" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+        <equipment slot="Horse" id="Item.special_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.battania_axe_3_t5" />
+        <equipment slot="Item1" id="Item.tribal_steppe_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_3_t5" />
+        <equipment slot="Head" id="Item.plumed_nomad_helmet" />
+        <equipment slot="Body" id="Item.eastern_lamellar_armor" />
+        <equipment slot="Leg" id="Item.northern_plated_boots" />
+        <equipment slot="Gloves" id="Item.northern_plated_gloves" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+        <equipment slot="Horse" id="Item.special_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+    <NPCCharacter id="serain_heavy_mameluk_hero" default_group="Cavalry" level="36" name="Seraïn heavy mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="26.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="54.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="200" />
+      <skill id="TwoHanded" value="160" />
+      <skill id="Polearm" value="240" />
+      <skill id="Throwing" value="100" />
+      <skill id="Riding" value="200" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.ridged_sabre_sword_t4" />
+        <equipment slot="Item1" id="Item.noyans_shield" />
+        <equipment slot="Item2" id="Item.khuzait_lance_3_t5" />
+        <equipment slot="Head" id="Item.plumed_lamellar_helmet" />
+        <equipment slot="Body" id="Item.imperial_scale_armor" />
+        <equipment slot="Leg" id="Item.plated_strip_boots" />
+        <equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+        <equipment slot="Horse" id="Item.special_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Seraïn heavy mameluk banner -->
+
+    <NPCCharacter id="serain_heavy_mameluk_banner_bearer" default_group="Cavalry" level="36" name="Seraïn heavy mameluk" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="26.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="54.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="200" />
+      <skill id="TwoHanded" value="160" />
+      <skill id="Polearm" value="240" />
+      <skill id="Throwing" value="100" />
+      <skill id="Riding" value="200" />
+      <skill id="Athletics" value="120" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.ridged_sabre_sword_t4" />
+        <equipment slot="Item1" id="Item.noyans_shield" />
+        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Head" id="Item.plumed_lamellar_helmet" />
+        <equipment slot="Body" id="Item.imperial_scale_armor" />
+        <equipment slot="Leg" id="Item.plated_strip_boots" />
+        <equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+        <equipment slot="Cape" id="Item.desert_scale_shoulders" />
+        <equipment slot="Horse" id="Item.special_camel" />
+        <equipment slot="HorseHarness" id="Item.camel_saddle" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Seraïn Royal guard -->
+
+  <NPCCharacter id="serain_royal_guard" default_group="Infantry" level="36" name="Seraïn Royal guard" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="32.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="160" />
+      <skill id="TwoHanded" value="200" />
+      <skill id="Polearm" value="200" />
+      <skill id="Throwing" value="120" />
+      <skill id="Riding" value="120" />
+      <skill id="Athletics" value="200" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_noble_sword_2_t5" />
+        <equipment slot="Item1" id="Item.steel_round_shield" />
+        <equipment slot="Item2" id="Item.eastern_throwing_spear_2_t4" />
+        <equipment slot="Head" id="Item.aserai_lord_helmet_a" />
+        <equipment slot="Body" id="Item.aserai_scale_armor_on_chain" />
+        <equipment slot="Leg" id="Item.lamellar_plate_boots" />
+        <equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_e" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.empire_mace_4_t5" />
+        <equipment slot="Item1" id="Item.steel_round_shield" />
+        <equipment slot="Item2" id="Item.aserai_2haxe_3_t5" />
+        <equipment slot="Head" id="Item.brass_aserai_helmet_b_closed" />
+        <equipment slot="Body" id="Item.aserai_brass_plate_a" />
+        <equipment slot="Leg" id="Item.lamellar_plate_boots" />
+        <equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+        <equipment slot="Cape" id="Item.aserai_scale_shoulder_e" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.sturgia_axe_5_t5" />
+        <equipment slot="Item1" id="Item.steel_round_shield" />
+        <equipment slot="Item2" id="Item.eastern_throwing_spear_2_t4" />
+        <equipment slot="Item3" id="Item.southern_broad_2hsword_t4" />
+        <equipment slot="Head" id="Item.brass_aserai_helmet_b_open" />
+        <equipment slot="Body" id="Item.aserai_chain_plate_armor_b" />
+        <equipment slot="Leg" id="Item.lamellar_plate_boots" />
+        <equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_e" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+    <NPCCharacter id="serain_royal_guard_hero" default_group="Infantry" level="36" name="Seraïn Royal guard" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="32.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="160" />
+      <skill id="TwoHanded" value="200" />
+      <skill id="Polearm" value="200" />
+      <skill id="Throwing" value="120" />
+      <skill id="Riding" value="120" />
+      <skill id="Athletics" value="200" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_noble_sword_2_t5" />
+        <equipment slot="Item1" id="Item.steel_round_shield" />
+        <equipment slot="Item2" id="Item.eastern_throwing_spear_2_t4" />
+        <equipment slot="Head" id="Item.aserai_lord_helmet_a" />
+        <equipment slot="Body" id="Item.aserai_scale_armor_on_chain" />
+        <equipment slot="Leg" id="Item.lamellar_plate_boots" />
+        <equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_e" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Seraïn Royal guard banner -->
+
+   <NPCCharacter id="serain_royal_guard_banner_bearer" default_group="Infantry" level="36" name="Seraïn Royal guard" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="32.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="55.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="160" />
+      <skill id="TwoHanded" value="200" />
+      <skill id="Polearm" value="200" />
+      <skill id="Throwing" value="120" />
+      <skill id="Riding" value="120" />
+      <skill id="Athletics" value="200" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Item0" id="Item.aserai_noble_sword_2_t5" />
+        <equipment slot="Item1" id="Item.steel_round_shield" />
+        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Head" id="Item.aserai_lord_helmet_a" />
+        <equipment slot="Body" id="Item.aserai_scale_armor_on_chain" />
+        <equipment slot="Leg" id="Item.lamellar_plate_boots" />
+        <equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+        <equipment slot="Cape" id="Item.a_aserai_scale_b_shoulder_e" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+
+  <!-- Serain Slave -->
+
+  <NPCCharacter id="serain_slave" default_group="Infantry" level="11" name="Seraïn Slave" occupation="Soldier" culture="Culture.serain" is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="16.1"
+				weight="0.2667"
+				build="0.1944"
+				key="001DC40E400000000100000000040000000000000000000000000000066500030003400303000000000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="40.1"
+				weight="0.4"
+				build="0.5333"
+				key="002DFC0FC000374FFFFFFFFFAE76FFFFFFF1FFFFFFD7FFFFFFFFEFEFFFFFFFFF00086FF408FFFEFF000000000000000000000000000000000000000000C89184" />
+		</face>
+    <skills>
+      <skill id="OneHanded" value="90" />
+      <skill id="TwoHanded" value="80" />
+      <skill id="Polearm" value="90" />
+      <skill id="Throwing" value="60" />
+      <skill id="Athletics" value="90" />
+    </skills>
+    <Equipments>
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.vlandia_bandit_c" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.burlap_sack_dress" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.bandit_envelope_dress_v2" />
+        <equipment slot="Leg" id="Item.battania_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+      <EquipmentRoster civilian="false">
+        <equipment slot="Body" id="Item.tattered_rags" />
+        <equipment slot="Leg" id="Item.belted_leather_boots" />
+      </EquipmentRoster>
+      <EquipmentRoster civilian="true" />
+    </Equipments>
+  </NPCCharacter>
+</MPCharacters>

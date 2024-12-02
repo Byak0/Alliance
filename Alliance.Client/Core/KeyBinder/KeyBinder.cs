@@ -13,7 +13,8 @@ using Module = TaleWorlds.MountAndBlade.Module;
 namespace Alliance.Client.Core.KeyBinder
 {
     /// <summary>
-    /// Static class to help to register new keys in the system
+    /// Static class to help register new keys in the system.
+    /// Requires Patch_KeyBinder to work.
     /// </summary>
     public static class KeyBinder
     {
@@ -22,9 +23,9 @@ namespace Alliance.Client.Core.KeyBinder
         /// </summary>
         public static bool DontUseKeyBinder = false;
 
-        internal static readonly ICollection<BindedKeyCategory> KeysCategories = new List<BindedKeyCategory>();
+        public static readonly ICollection<BindedKeyCategory> KeysCategories = new List<BindedKeyCategory>();
 
-        private static readonly IDictionary<string, GameKeyBinderContext> keyContexts = new Dictionary<string, GameKeyBinderContext>();
+        public static readonly IDictionary<string, GameKeyBinderContext> KeyContexts = new Dictionary<string, GameKeyBinderContext>();
 
         /// <summary>
         /// Register a new category of keys
@@ -45,16 +46,16 @@ namespace Alliance.Client.Core.KeyBinder
 
             AutoRegister();
 
-            foreach (var cat in KeysCategories)
+            foreach (BindedKeyCategory cat in KeysCategories)
             {
                 // Create the games context for each category
-                keyContexts[cat.CategoryId] = new GameKeyBinderContext(cat.CategoryId, cat.Keys);
+                KeyContexts[cat.CategoryId] = new GameKeyBinderContext(cat.CategoryId, cat.Keys);
 
                 // Set up category name in the menu
                 GameText gameText = Module.CurrentModule.GlobalTextManager.GetGameText("str_key_category_name");
                 gameText.AddVariationWithId(cat.CategoryId, new TextObject(cat.Category, null), new List<GameTextManager.ChoiceTag>());
 
-                foreach (var key in cat.Keys)
+                foreach (BindedKey key in cat.Keys)
                 {
                     // Set up key name in the menu
                     string text = cat.CategoryId;
@@ -68,9 +69,6 @@ namespace Alliance.Client.Core.KeyBinder
                     gameText3.AddVariationWithId(variationId, new TextObject(key.Description, null), new List<GameTextManager.ChoiceTag>());
                 }
             }
-
-            // Register all GameKeyContext
-            HotKeyManager.RegisterInitialContexts(keyContexts.Values, true);
         }
 
         /// <summary>
@@ -93,13 +91,34 @@ namespace Alliance.Client.Core.KeyBinder
                     }
                 }
 
-                Log($"Alliance - Successfully registered {KeysCategories.Count} key binding categories", LogLevel.Information);
+                Log($"Alliance - Successfully registered {KeysCategories.Count} key binding categories", LogLevel.Debug);
             }
             catch (Exception ex)
             {
                 Log($"Alliance - Error while registering KeyBinder categories", LogLevel.Error);
                 Log(ex.ToString(), LogLevel.Error);
             }
+        }
+
+        /// <summary>
+        /// Register GameKeyContexts in the HotKeyManager.
+        /// </summary>
+        public static void RegisterContexts()
+        {
+            // Retrieve native contexts
+            var list = HotKeyManager.GetAllCategories();
+            List<GameKeyContext> keyList = new List<GameKeyContext>();
+            foreach (var item in list)
+            {
+                keyList.Add(item);
+            }
+            // Add our own contexts
+            foreach (GameKeyContext context in KeyContexts.Values)
+            {
+                if (!keyList.Contains(context)) keyList.Add(context);
+            }
+            // Register all contexts
+            HotKeyManager.RegisterInitialContexts(keyList, true);
         }
     }
 }

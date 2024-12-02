@@ -1,12 +1,12 @@
-﻿using TaleWorlds.MountAndBlade.Network.Messages;
-using TaleWorlds.MountAndBlade;
+﻿using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace Alliance.Common.Extensions.SAE.NetworkMessages.FromClient
 {
     [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
     public sealed class SaeCrouchNetworkClientMessage : GameNetworkMessage
     {
-        public Team Team { get; private set; }
+        public int TeamIndex { get; private set; }
         public int FormationIndex { get; private set; }
         public bool CrouchMode { get; private set; }
 
@@ -14,7 +14,7 @@ namespace Alliance.Common.Extensions.SAE.NetworkMessages.FromClient
 
         public SaeCrouchNetworkClientMessage(Formation formation, bool crouchMode)
         {
-            Team = formation.Team;
+            TeamIndex = formation.Team.TeamIndex;
             FormationIndex = formation.Index;
             CrouchMode = crouchMode;
         }
@@ -22,16 +22,16 @@ namespace Alliance.Common.Extensions.SAE.NetworkMessages.FromClient
         protected override bool OnRead()
         {
             bool bufferReadValid = true;
-            Team = ReadTeamReferenceFromPacket(ref bufferReadValid);
-            FormationIndex = ReadIntFromPacket(CompressionOrder.FormationClassCompressionInfo, ref bufferReadValid);
+            TeamIndex = ReadTeamIndexFromPacket(ref bufferReadValid);
+            FormationIndex = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             CrouchMode = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }
 
         protected override void OnWrite()
         {
-            WriteTeamReferenceToPacket(Team);
-            WriteIntToPacket(FormationIndex, CompressionOrder.FormationClassCompressionInfo);
+            WriteTeamIndexToPacket(TeamIndex);
+            WriteIntToPacket(FormationIndex, CompressionMission.FormationClassCompressionInfo);
             WriteBoolToPacket(CrouchMode);
         }
 

@@ -1,48 +1,41 @@
 using Alliance.Common.Extensions.FormationEnforcer.Behavior;
-using Alliance.Common.GameModes.PvC.Behaviors;
 using Alliance.Common.GameModes.PvC.Models;
 using Alliance.Common.GameModes.Story.Behaviors;
+using System.Collections.Generic;
 using TaleWorlds.Core;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Source.Missions;
+using TaleWorlds.MountAndBlade.Multiplayer;
 
 namespace Alliance.Client.GameModes.Story
 {
-    public class ScenarioGameMode : MissionBasedMultiplayerGameMode
-    {
-        public ScenarioGameMode(string name) : base(name) { }
+	public class ScenarioGameMode : MissionBasedMultiplayerGameMode
+	{
+		public ScenarioGameMode(string name) : base(name) { }
 
-        [MissionMethod]
-        public override void StartMultiplayerGame(string scene)
-        {
-            MissionState.OpenNew("Scenario", new MissionInitializerRecord(scene), delegate (Mission missionController)
-            {
-                return new MissionBehavior[]
-                {
-                    MissionLobbyComponent.CreateBehavior(),
-                    
-                    // Custom components
-                    new ScenarioClientBehavior(),
-                    new MissionScoreboardComponent(new PvCScoreboardData()), // todo : replace with scenario infos
-                    new PvCTeamSelectBehavior(),
-                    new FormationBehavior(),
-                    new ObjectivesBehavior(ScenarioPlayer.Instance),
+		[MissionMethod]
+		public override void StartMultiplayerGame(string scene)
+		{
+			MissionState.OpenNew("Scenario", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+		}
 
-                    // Native components from Captain mode
-                    new MultiplayerAchievementComponent(),
-                    //new MultiplayerRoundComponent(), // todo : remove (replace with the scenario system)
-                    new AgentVictoryLogic(),
-                    new MultiplayerTimerComponent(),
-                    new MultiplayerMissionAgentVisualSpawnComponent(),
-                    new MissionLobbyEquipmentNetworkComponent(),
-                    new MissionHardBorderPlacer(),
-                    new MissionBoundaryPlacer(),
-                    new MissionBoundaryCrossingHandler(),
-                    new MultiplayerPollComponent(),
-                    new MultiplayerGameNotificationsComponent(),
-                    new MissionOptionsComponent()
-                };
-            }, true, true);
-        }
-    }
+		private List<MissionBehavior> GetMissionBehaviors()
+		{
+			// Default behaviors
+			List<MissionBehavior> behaviors = DefaultClientBehaviors.GetDefaultBehaviors(new PvCScoreboardData());
+			behaviors.AppendList(new List<MissionBehavior>
+			{
+				// Custom behaviors
+				new ScenarioClientBehavior(),
+				new FormationBehavior(),
+				new ObjectivesBehavior(ScenarioPlayer.Instance),
+
+				// Native behaviors from Captain mode
+				new MultiplayerAchievementComponent(),
+				new AgentVictoryLogic(),
+				new MultiplayerTeamSelectComponent(),
+			});
+			return behaviors;
+		}
+	}
 }

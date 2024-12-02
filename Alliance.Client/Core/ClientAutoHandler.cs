@@ -55,7 +55,7 @@ namespace Alliance.Client.Core
                     }
                 }
 
-                Log($"Alliance - Successfully registered {handlerCount} client handlers", LogLevel.Information);
+                Log($"Alliance - Successfully registered {handlerCount} client handlers", LogLevel.Debug);
             }
             catch (Exception ex)
             {

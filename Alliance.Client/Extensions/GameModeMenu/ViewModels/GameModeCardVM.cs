@@ -1,8 +1,11 @@
-﻿using Alliance.Common.GameModes;
+﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.GameModeMenu.Models;
+using Alliance.Common.GameModes;
 using System;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 {
@@ -16,6 +19,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             _onSelect = onSelect;
             Name = gameModeSettings.GameModeName;
             Hint = new HintViewModel(new TextObject(gameModeSettings.GameModeDescription) ?? TextObject.Empty, null);
+            IsDisabled = !GameNetwork.MyPeer.IsAdmin() && !GameModeMenuConstants.AVAILABLE_GAME_MODES.Contains(gameModeSettings.GameMode);
         }
 
         public void Select()
@@ -74,10 +78,28 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
             }
         }
 
+        [DataSourceProperty]
+        public bool IsDisabled
+        {
+            get
+            {
+                return _isDisabled;
+            }
+            set
+            {
+                if (value != _isDisabled)
+                {
+                    _isDisabled = value;
+                    OnPropertyChangedWithValue(value, "IsDisabled");
+                }
+            }
+        }
+
         protected Action<GameModeCardVM> _onSelect;
 
         private string _name;
         private HintViewModel _hint;
         private bool _isSelected;
+        private bool _isDisabled;
     }
 }
