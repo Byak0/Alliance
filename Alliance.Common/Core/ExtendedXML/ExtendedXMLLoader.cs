@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML.Models;
 using System.Collections.Generic;
-using System.IO;
 using System.Xml;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
@@ -18,24 +17,11 @@ namespace Alliance.Common.Core.ExtendedXML
 		/// </summary>
 		public static void Init()
 		{
-			CopyXSDs();
-
 			MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
 			MBObjectManager.Instance.LoadXML("CharactersExtended", false);
 
 			MBObjectManager.Instance.RegisterType<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, true, false);
 			MBObjectManager.Instance.LoadXML("ItemsExtended", false);
-		}
-
-		// Game requires the XSD to be in Mount & Blade II Bannerlord\XmlSchemas to load custom schemas
-		public static void CopyXSDs()
-		{
-			string moduleFullPath = ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName);
-			string[] files = Directory.GetFiles(moduleFullPath + "/XmlSchemas");
-			foreach (string file in files)
-			{
-				File.Copy(file, Path.Combine(moduleFullPath, "..\\..\\XmlSchemas/" + Path.GetFileName(file)), true);
-			}
 		}
 
 		// Test to auto generate XML
