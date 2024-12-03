@@ -164,7 +164,7 @@ namespace Alliance.Common.GameModels
 		private void UpdateStatsForTroll(Agent agent, AgentDrivenProperties agentDrivenProperties)
 		{
 			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
-			agentDrivenProperties.MaxSpeedMultiplier *= 1.2f;
+			agentDrivenProperties.MaxSpeedMultiplier *= 1.5f;
 			agentDrivenProperties.CombatMaxSpeedMultiplier *= 1.8f;
 			agentDrivenProperties.AIParryOnAttackAbility = 0f;
 			agentDrivenProperties.AIParryOnAttackingContinueAbility = 0f;
@@ -182,7 +182,7 @@ namespace Alliance.Common.GameModels
 		private void UpdateStatsForEnt(Agent agent, AgentDrivenProperties agentDrivenProperties)
 		{
 			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
-			agentDrivenProperties.MaxSpeedMultiplier *= 1.2f;
+			agentDrivenProperties.MaxSpeedMultiplier *= 2f;
 			agentDrivenProperties.CombatMaxSpeedMultiplier *= 1.5f;
 			agentDrivenProperties.AIParryOnAttackAbility = 0f;
 			agentDrivenProperties.AIParryOnAttackingContinueAbility = 0f;

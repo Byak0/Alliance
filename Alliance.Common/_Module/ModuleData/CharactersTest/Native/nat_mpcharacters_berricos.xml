@@ -168,7 +168,7 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_1_t2" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Body" id="Item.layered_leather_tunic" />
 				<equipment slot="Leg" id="Item.reinforced_suede_boots" />
 				<equipment slot="Gloves" id="Item.steppe_leather_vambraces" />
@@ -176,7 +176,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.woodland_axe_t3" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Body" id="Item.padded_leather_shirt" />
 				<equipment slot="Leg" id="Item.wrapped_leather_boots" />
 				<equipment slot="Gloves" id="Item.guarded_padded_vambrace" />
@@ -301,7 +301,7 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Item2" id="Item.empire_polearm_1_t4" />
 				<equipment slot="Head" id="Item.peaked_helmet_over_laced_coif" />
 				<equipment slot="Body" id="Item.khuzait_leather_stitched" />
@@ -311,7 +311,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Head" id="Item.segmented_skullcap_over_laced_coif" />
 				<equipment slot="Body" id="Item.banded_leather_over_mail" />
 				<equipment slot="Leg" id="Item.empire_horseman_boots" />
@@ -320,7 +320,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Item2" id="Item.aserai_2haxe_3_t5" />
 				<equipment slot="Head" id="Item.nasal_cervelliere_over_laced_coif" />
 				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
@@ -447,7 +447,7 @@
 		<Equipments>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
 				<equipment slot="Body" id="Item.nordic_sloven_over_mail" />
 				<equipment slot="Leg" id="Item.lamellar_plate_boots" />
@@ -456,7 +456,7 @@
 			</EquipmentRoster>
 			<EquipmentRoster>
 				<equipment slot="Item0" id="Item.vlandia_sword_3_t4" />
-				<equipment slot="ExtraWeaponSlot" id="Item.explorator_banner" />
+				<equipment slot="ExtraWeaponSlot" id="Item.berricos_banner" />
 				<equipment slot="Item2" id="Item.vlandia_lance_2_t4" />
 				<equipment slot="Head" id="Item.battania_earmuff_helmet_d" />
 				<equipment slot="Body" id="Item.imperial_mail_vest" />
