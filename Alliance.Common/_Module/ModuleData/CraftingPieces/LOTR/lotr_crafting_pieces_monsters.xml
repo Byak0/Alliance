@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******  Monsters  ******* -->
+	<!-- ************************* -->
+	<!-- Cave troll hammer -->
+	<CraftingPiece id="cavetroll_hammer_head_d"
+							 name="{=hda0TrHaHe4}Troll hammer head"
+							 tier="5"
+							 piece_type="Blade"
+							 mesh="troll_hammer_head_d"
+							 length="65"
+							 weight="1.8"
+							 excluded_item_usage_features="thrust"
+							 is_default="true">
+		<BladeData stack_amount="3"
+               blade_length="25"
+               blade_width="25"
+               physics_material="metal_weapon"
+               body_name="bo_troll_hammer_d">
+			<Swing damage_type="Blunt"
+             damage_factor="5" />
+		</BladeData>
+		<Flags>
+			<Flag name="CanCrushThrough" />
+			<Flag name="CanKnockDown" />
+			<Flag name="BonusAgainstShield" />
+			<Flag name="CanDismount" />
+		</Flags>
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="cavetroll_hammer_handle_d"
+                 name="{=hda0TrHaHa4}Spiked Troll Handle"
+                 tier="5"
+                 piece_type="Handle"
+                 mesh="troll_handle_d"
+                 length="155"
+                 weight="0.5">
+		<BuildData next_piece_offset="5" />
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+</CraftingPieces>

@@ -144,8 +144,7 @@
 				   damage_factor="4.2" />
 		</BladeData>
 		<Flags>
-			<Flag name="CanBePickedUpFromCorpse"
-				  type="ItemFlags" />
+			<Flag name="CanBePickedUpFromCorpse" type="ItemFlags" />
 			<Flag name="BonusAgainstShield" />
 		</Flags>
 	</CraftingPiece>

@@ -5,6 +5,7 @@ using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
+using Alliance.Server.Extensions.AdvancedCombat.Behavior;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.Animals.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
@@ -12,7 +13,6 @@ using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
-using Alliance.Server.Extensions.WargAttack.Behavior;
 using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -57,7 +57,7 @@ namespace Alliance.Server.GameModes
 				new DieUnderWaterBehavior(),
 				new FakeArmyBehavior(),
 				new RespawnBehavior(),
-				new WargBehavior(),
+				new AdvancedCombatBehavior(),
 				new AnimalBehavior(),
 				new ConditionsBehavior(),
 

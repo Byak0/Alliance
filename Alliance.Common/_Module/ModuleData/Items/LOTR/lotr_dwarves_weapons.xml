@@ -3,7 +3,7 @@
 	<CraftedItem multiplayer_item="true"
                id="gimli_d_axe"
                name="Gimli Double Axe"
-               crafting_template="rohan_TwoHandedAxe"
+               crafting_template="lotr_TwoHandedAxe"
                culture="Culture.rohan">
 		<Pieces>
 			<Piece id="gimli_d_axe_blade"
@@ -19,7 +19,7 @@
 	multiplayer_item="true"
 		id="gimli_throwing_axe"
 		name="Gimli Throwing Axe"
-		crafting_template="gimli_ThrowingAxe"
+		crafting_template="lotr_ThrowingAxe"
 		culture="Culture.rohan">
 		<Pieces>
 			<Piece
@@ -37,7 +37,7 @@
 		multiplayer_item="true"
 		id="gimli_onehanded_axe"
 		name="Gimli One handed axe"
-		crafting_template="RohanOneHandedAxe"
+		crafting_template="lotr_OneHandedAxe"
 		culture="Culture.rohan">
 		<Pieces>
 			<Piece

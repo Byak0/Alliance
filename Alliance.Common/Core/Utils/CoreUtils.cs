@@ -2,6 +2,7 @@
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
 namespace Alliance.Common.Core.Utils
@@ -17,7 +18,7 @@ namespace Alliance.Common.Core.Utils
 		{
 			if (victim == null || attacker == null)
 			{
-				Utilities.Logger.Log("Victim and/or attacker is null. Damage skipped", Utilities.Logger.LogLevel.Warning);
+				Log("Victim and/or attacker is null. Damage skipped", LogLevel.Warning);
 				return;
 			};
 

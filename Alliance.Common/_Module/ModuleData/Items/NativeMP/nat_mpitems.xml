@@ -1,39 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-	<Item
-		id="mp_torch"
-		name="{=ErOLa263}Torch"
-		is_merchandise="false"
-		body_name="bo_mace_a"
-		recalculate_body="true"
-		mesh="torch_g"
-		culture="Culture.empire"
-		value="4"
-		weight="0.2"
-		Type="OneHandedWeapon"
-		item_holsters="throwing_stone_2">
-		<ItemComponent>
-			<Weapon
-				weapon_class="OneHandedAxe"
-				weapon_balance="100"
-				thrust_speed="78"
-				speed_rating="97"
-				missile_speed="0"
-				weapon_length="65"
-				swing_damage="6"
-				swing_damage_type="Blunt"
-				item_usage="al_torch"
-				physics_material="metal_weapon">
-				<WeaponFlags MeleeWeapon="true" />
-			</Weapon>
-		</ItemComponent>
-		<Flags
-			DropOnWeaponChange="false"
-			ForceAttachOffHandPrimaryItemBone="true"
-			HeldInOffHand="true"
-			HasToBeHeldUp="true" />
-	</Item>
-	
+<Items>	
 	<!-- #region Armors -->
 	<!-- #region Aserai Armors -->
 	<!-- #region Aserai Head Armors -->
@@ -15540,7 +15506,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="mp_spear_pommel_12"
+				id="spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15563,7 +15529,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="mp_spear_pommel_12"
+				id="spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15582,7 +15548,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15606,7 +15572,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15630,7 +15596,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15654,7 +15620,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="mp_battania_javelin_handle"
+				id="spear_handle_11"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece

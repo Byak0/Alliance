@@ -15,5 +15,7 @@
 	</physics_materials>
 	<sound_and_collision_info_class_definitions>
 		<sound_and_collision_info_class_definition name="warg" />
+		<sound_and_collision_info_class_definition name="troll" />
+		<sound_and_collision_info_class_definition name="ent" />
 	</sound_and_collision_info_class_definitions>
 </base>

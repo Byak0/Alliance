@@ -875,7 +875,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.khuzait_sword_2_t3" />
         <equipment slot="Item1" id="Item.decorated_steppe_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Item2" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.nomad_helmet" />
         <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
         <equipment slot="Leg" id="Item.reinforced_suede_boots" />
@@ -1270,7 +1270,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.ridged_sabre_sword_t4" />
         <equipment slot="Item1" id="Item.noyans_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Item2" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.plumed_lamellar_helmet" />
         <equipment slot="Body" id="Item.imperial_scale_armor" />
         <equipment slot="Leg" id="Item.plated_strip_boots" />
@@ -1413,7 +1413,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.aserai_noble_sword_2_t5" />
         <equipment slot="Item1" id="Item.steel_round_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="Item2" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.aserai_lord_helmet_a" />
         <equipment slot="Body" id="Item.aserai_scale_armor_on_chain" />
         <equipment slot="Leg" id="Item.lamellar_plate_boots" />
