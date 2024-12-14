@@ -321,7 +321,7 @@
 	<WeaponDescription
 		id="lotr_Mace"
 		weapon_class="Mace"
-		item_usage_features="onehanded:block:shield:tipdraw:swing:thrust">
+		item_usage_features="onehanded:swing:thrust">
 		<WeaponFlags>
 			<WeaponFlag value="MeleeWeapon"/>
 		</WeaponFlags>
