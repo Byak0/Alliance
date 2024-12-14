@@ -114,6 +114,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponKnockDown(Agent attackerAgent, Agent victimAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
+			if (victimAgent.IsTroll() || victimAgent.IsEnt()) return false;
 			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
 
 			if (attackerWeapon.WeaponClass == WeaponClass.Boulder)
