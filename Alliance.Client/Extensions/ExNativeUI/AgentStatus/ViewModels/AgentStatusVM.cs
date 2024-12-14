@@ -10,19 +10,24 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection;
 using TaleWorlds.MountAndBlade.ViewModelCollection.HUD;
 using TaleWorlds.MountAndBlade.ViewModelCollection.HUD.DamageFeed;
+using static TaleWorlds.MountAndBlade.Mission;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 {
-    public class AgentStatusVM : ViewModel
+    //replace ViewCreator.CreateMissionAgentStatusUIHandler(mission)
+	public class AgentStatusVM : ViewModel
     {
         public bool IsInDeployement { get; set; }
 
-        public AgentStatusVM(Mission mission, Camera missionCamera, Func<float> getCameraToggleProgress)
+        bool _IsRaceConditionRespected;
+
+		public AgentStatusVM(Mission mission, Camera missionCamera, Func<float> getCameraToggleProgress)
         {
             _missionPeer = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-            InteractionInterface = new AgentInteractionInterfaceVM(mission);
-            _mission = mission;
+            InteractionInterface = new AgentInteractionInterfaceVMCustom(mission);
+
+		   _mission = mission;
             _missionCamera = missionCamera;
             _getCameraToggleProgress = getCameraToggleProgress;
             PrimaryWeapon = new ImageIdentifierVM(ImageIdentifierType.Item);
@@ -79,8 +84,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
             {
                 ShowAgentHealthBar = true;
 
-                //InteractionInterface.Tick();
-                InteractionInterface.GetType().GetMethod("Tick", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, null);
+                InteractionInterface.Tick();
 
                 if (_mission.Mode == MissionMode.Battle && !_mission.IsFriendlyMission && _missionPeer != null)
                 {
@@ -249,14 +253,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
         public void OnAgentRemoved(Agent agent)
         {
-            //InteractionInterface.CheckAndClearFocusedAgent(agent);
-            InteractionInterface.GetType().GetMethod("CheckAndClearFocusedAgent", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, new object[] { agent });
+            InteractionInterface.CheckAndClearFocusedAgent(agent);
         }
 
         public void OnAgentDeleted(Agent agent)
         {
-            //InteractionInterface.CheckAndClearFocusedAgent(agent);
-            InteractionInterface.GetType().GetMethod("CheckAndClearFocusedAgent", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, new object[] { agent });
+            InteractionInterface.CheckAndClearFocusedAgent(agent);
         }
 
         public void OnMainAgentHit(int damage, float distance)
@@ -267,14 +269,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
         public void OnFocusGained(Agent mainAgent, IFocusable focusableObject, bool isInteractable)
         {
-            //InteractionInterface.OnFocusGained(mainAgent, focusableObject, isInteractable);
-            InteractionInterface.GetType().GetMethod("OnFocusGained", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, new object[] { mainAgent, focusableObject, isInteractable });
-        }
+			InteractionInterface.OnFocusGained(mainAgent, focusableObject, isInteractable);
+		}
 
-        public void OnFocusLost(Agent agent, IFocusable focusableObject)
+			public void OnFocusLost(Agent agent, IFocusable focusableObject)
         {
-            //InteractionInterface.OnFocusLost(agent, focusableObject);
-            InteractionInterface.GetType().GetMethod("OnFocusLost", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, new object[] { agent, focusableObject });
+            InteractionInterface.OnFocusLost(agent, focusableObject);
         }
 
         public void OnSecondaryFocusGained(Agent agent, IFocusable focusableObject, bool isInteractable)
@@ -287,8 +287,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
         public void OnAgentInteraction(Agent userAgent, Agent agent)
         {
-            //InteractionInterface.OnAgentInteraction(userAgent, agent);
-            InteractionInterface.GetType().GetMethod("OnAgentInteraction", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(InteractionInterface, new object[] { userAgent, agent });
+            InteractionInterface.OnAgentInteraction(userAgent, agent);
         }
 
         private void GetMaxAndCurrentAmmoOfAgent(Agent agent, out int currentAmmo, out int maxAmmo)
@@ -415,7 +414,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
         }
 
         [DataSourceProperty]
-        public AgentInteractionInterfaceVM InteractionInterface
+        public AgentInteractionInterfaceVMCustom InteractionInterface
         {
             get
             {
@@ -991,7 +990,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
         private bool _isGoldActive;
 
-        private AgentInteractionInterfaceVM _interactionInterface;
+        private AgentInteractionInterfaceVMCustom _interactionInterface;
 
         private ImageIdentifierVM _offhandWeapon;
 
@@ -1022,5 +1021,5 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
             Possible,
             Active
         }
-    }
+}
 }

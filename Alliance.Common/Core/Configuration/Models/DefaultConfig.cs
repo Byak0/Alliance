@@ -78,6 +78,9 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty("Randomize bot appearance", "Randomize bots appearance. If false, all bots will have the same appearance.", ConfigValueType.Bool)]
 		public bool RandomizeAppearance = true;
 
+		[ConfigProperty("Enable Race Restriction On Stuff", "Stuff belonging to a race cannot be pickup by other race.", ConfigValueType.Bool)]
+		public bool EnableRaceRestrictionOnStuff = true;
+
 		[ConfigProperty("Show flag markers", "Show flags markers when pressing alt.", ConfigValueType.Bool)]
 		public bool ShowFlagMarkers = true;
 		[ConfigProperty("Show score", "Enable score UI on top of the screen.", ConfigValueType.Bool)]
