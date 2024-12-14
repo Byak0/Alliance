@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
+using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Security;
@@ -10,6 +11,7 @@ using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
 using Alliance.Server.GameModes.CaptainX;
 using Alliance.Server.GameModes.CvC;
+using Alliance.Server.GameModes.DuelX;
 using Alliance.Server.GameModes.Lobby;
 using Alliance.Server.GameModes.PvC;
 using Alliance.Server.GameModes.SiegeX;
@@ -76,6 +78,9 @@ namespace Alliance.Server
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
 		{
+			// Late patching, patching earlier causes issues with Voice type
+			Patch_AdvancedCombat.LatePatch();
+
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
