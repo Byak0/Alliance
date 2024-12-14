@@ -159,7 +159,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
-				agent.HealthLimit += bonusHealth;
+				agent.HealthLimit = character.MaxHitPoints() + bonusHealth;
 				agent.Health = agent.HealthLimit;
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -277,12 +277,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
+				agent.HealthLimit = character.MaxHitPoints() + bonusHealth;
 				// Additional health for officers
 				if (networkPeer.IsOfficer())
 				{
 					agent.HealthLimit *= Config.Instance.OfficerHPMultip;
 				}
-				agent.HealthLimit += bonusHealth;
 				agent.Health = agent.HealthLimit;
 
 				agent.WieldInitialWeapons();
