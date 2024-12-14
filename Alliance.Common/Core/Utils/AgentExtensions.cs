@@ -8,9 +8,9 @@ namespace Alliance.Common.Core.Utils
 		private static readonly int _entRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("ent");
 		private static readonly int _dwarfRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("dwarf");
 
-		public static void DealDamage(this Agent agent, Agent victim, int damage, float magnitude = 50f)
+		public static void DealDamage(this Agent agent, Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{
-			CoreUtils.TakeDamage(victim, agent, damage, magnitude);
+			CoreUtils.TakeDamage(victim, agent, damage, magnitude, knockDown);
 		}
 
 		public static bool IsTroll(this Agent agent)

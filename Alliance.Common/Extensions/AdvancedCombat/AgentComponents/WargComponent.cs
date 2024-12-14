@@ -1,8 +1,8 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Models;
+using Alliance.Common.Extensions.AdvancedCombat.Utilities;
+using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
-using Alliance.Server.Core.Utils;
-using Alliance.Server.Extensions.AdvancedCombat.Models;
-using Alliance.Server.Extensions.AdvancedCombat.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
+namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 {
 	/// <summary>
 	/// Allow the warg to behave independently. Hunting, chilling, fleeing, etc.
@@ -58,20 +58,20 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 		public WargComponent(Agent agent) : base(agent)
 		{
 			// Make sure warg has a team assigned. If not, assign him a random team.
-			if (Agent.Team == null)
-			{
-				if (Agent.RiderAgent?.Team != null)
-				{
-					Agent.SetTeam(Agent.RiderAgent.Team, true);
-				}
-				else
-				{
-					Team randomTeam = MBRandom.RandomInt(0, 2) == 0 ? Mission.Current.AttackerTeam : Mission.Current.DefenderTeam;
-					Agent.SetTeam(randomTeam, true);
-				}
-				Log($"In WargComponent, agent.Team was null ({Agent.Team})", LogLevel.Debug);
-				return;
-			}
+			//if (Agent.Team == null)
+			//{
+			//	if (Agent.RiderAgent?.Team != null)
+			//	{
+			//		Agent.SetTeam(Agent.RiderAgent.Team, true);
+			//	}
+			//	else
+			//	{
+			//		Team randomTeam = MBRandom.RandomInt(0, 2) == 0 ? Mission.Current.AttackerTeam : Mission.Current.DefenderTeam;
+			//		Agent.SetTeam(randomTeam, true);
+			//	}
+			//	Log($"In WargComponent, agent.Team was null ({Agent.Team})", LogLevel.Debug);
+			//	return;
+			//}
 		}
 
 		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon)
@@ -91,7 +91,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 				_refreshDelay += dt;
 				_targetChangeDelay += dt;
 				_lastAttackDelay += dt;
-				_fearOfTarget = Math.Max(0, _fearOfTarget - (0.01f * dt));
+				_fearOfTarget = Math.Max(0, _fearOfTarget - 0.01f * dt);
 				if (_currentState == MonsterState.Attack || (_currentState == MonsterState.Chase || _currentState == MonsterState.Careful) && _target != null && (_target.Position - Agent.Position).Length < WargConstants.THREAT_RANGE)
 				{
 					if (_refreshDelay <= WargConstants.CLOSE_RANGE_AI_REFRESH_TIME) return;
@@ -151,7 +151,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 		{
 			// Check if there is enemy close by
 			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(5f, Agent);
-			_target = nearbyAgents.FirstOrDefault(agt => agt != Agent.RiderAgent && agt.Team != Agent.RiderAgent.Team);
+			_target = nearbyAgents.FirstOrDefault(agt => agt != Agent.RiderAgent && agt.Team != Agent.RiderAgent.Team && !agt.IsWarg());
 
 			if (_target == null)
 			{
@@ -219,6 +219,12 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			{
 				_target = target;
 				_targetChangeDelay = 0;
+				// Target should focus warg to defend itself
+				// not working on mount ??
+				//if (_target.IsHuman)
+				//{
+				//	_target.SetTargetAgent(Agent);
+				//}
 			}
 		}
 
@@ -237,9 +243,9 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			if (_target == null || _target.Health <= 0 || _lastAttackDelay < WargConstants.ATTACK_COOLDOWN) return false;
 
 			float distanceToTarget = (_target.Position - Agent.Position).Length;
-			float distanceForAttack = 1.5f + (Agent.MovementVelocity.Y / 1.5f);
+			float distanceForAttack = 1.5f + Agent.MovementVelocity.Y / 1.5f;
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
-			bool frontAttack = SpecialAttackHelper.IsInFrontCone(Agent, _target, 45);
+			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(Agent, _target, 45);
 
 			// Close enough to attack and target is in front
 			if (MBRandom.RandomFloat < probability && closeEnoughForAttack && frontAttack)
@@ -304,7 +310,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 
 		private bool ShouldFlee(float probability)
 		{
-			return (_currentState == MonsterState.Flee && MBRandom.RandomFloat < 0.99f) || _isWounded && MBRandom.RandomFloat < probability;
+			return _currentState == MonsterState.Flee && MBRandom.RandomFloat < 0.99f || _isWounded && MBRandom.RandomFloat < probability;
 		}
 
 		private Agent GetBestTarget(float range)
@@ -316,7 +322,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 
 			foreach (Agent potentialTarget in nearbyAgents)
 			{
-				if (potentialTarget == Agent || !potentialTarget.IsActive() || ((potentialTarget.Monster.StringId == "warg" || potentialTarget.MountAgent?.Monster.StringId == "warg") && MBRandom.RandomFloat < 0.9999f))
+				if (potentialTarget == Agent || !potentialTarget.IsActive() || (potentialTarget.IsWarg() || potentialTarget.HasMount && potentialTarget.MountAgent.IsWarg()) && MBRandom.RandomFloat < 0.9999f)
 					continue;
 
 				float score = 0;
@@ -328,8 +334,8 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 				if (formationComponent != null && formationComponent.State == FormationState.Rambo)
 					score += 40; // Prefer rambos
 
-				if (potentialTarget.Team != Agent.Team)
-					score += 40; // Prefer enemies
+				//if (potentialTarget.Team != Agent.Team)
+				//	score += 40; // Prefer enemies
 
 				if (potentialTarget.IsMount && potentialTarget.RiderAgent == null) // TODO : replace IsMount by IsHorse when available
 					score += 80; // Prefer riderless horses
@@ -388,7 +394,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			}
 			else if (MBRandom.RandomFloat < IDLE_RANDOM_MOVE_PROBABILITY) // 50% chance to move to a random position
 			{
-				Vec3 randomDirection = new Vec3(Agent.LookDirection);
+				Vec3 randomDirection = new Vec3(Agent.LookDirection, -1f);
 				randomDirection.RotateAboutZ(MBRandom.RandomFloat * 2 - 1f);
 				Vec3 destinationVec3 = Agent.Position + randomDirection * MBRandom.RandomFloat * 10;
 				WorldPosition destination = new WorldPosition(Mission.Current.Scene, destinationVec3);
@@ -401,7 +407,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			WorldPosition worldPosition = Agent.Mission.GetClosestFleePositionForAgent(Agent);
 			if (Agent.IsRetreating() && Agent.MovementVelocity.Y <= 0.5f)
 			{
-				Vec3 randomDirection = new Vec3(Agent.LookDirection);
+				Vec3 randomDirection = new Vec3(Agent.LookDirection, -1f);
 				randomDirection.RotateAboutZ(MBRandom.RandomFloat * 2 - 1f);
 				Vec3 destinationVec3 = Agent.Position + randomDirection * MBRandom.RandomFloat * 100;
 				WorldPosition destination = new WorldPosition(Mission.Current.Scene, destinationVec3);
@@ -426,11 +432,11 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			WorldPosition destination = positionToChase.ToWorldPosition();
 
 			// If target is behind the warg, get some distance before turning around
-			bool isTargetInFront = SpecialAttackHelper.IsInFrontCone(Agent, _target, 180);
+			bool isTargetInFront = AdvancedCombatHelper.IsInFrontCone(Agent, _target, 180);
 			if (distanceToTarget < 8 && !isTargetInFront)
 			{
 				// Just go straight to gain distance
-				destination = (Agent.Position + (Agent.LookDirection * 100f)).ToWorldPosition();
+				destination = (Agent.Position + Agent.LookDirection * 100f).ToWorldPosition();
 			}
 
 			Agent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.None);
@@ -469,7 +475,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 				if (_threat.MovementVelocity.Y < 3 && distanceToTarget > desiredRange * 0.4f && targetInFront)
 				{
 					float proportionalDistance = distanceToTarget + (desiredRange * 0.6f - distanceToTarget) * 0.25f;
-					Vec3 fallbackPosition = _threat.Position - (directionToTarget * proportionalDistance);
+					Vec3 fallbackPosition = _threat.Position - directionToTarget * proportionalDistance;
 					WorldPosition fallbackWorldPosition = fallbackPosition.ToWorldPosition();
 					// Check if path to destination exist before teleporting to avoid obstacles
 					if (Mission.Current.Scene.GetNavigationMeshForPosition(ref fallbackPosition))
@@ -486,7 +492,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 				// Target is running, run away
 				else
 				{
-					Vec3 fallbackPosition = _threat.Position - (directionToTarget * WargConstants.THREAT_RANGE);
+					Vec3 fallbackPosition = _threat.Position - directionToTarget * WargConstants.THREAT_RANGE;
 					WorldPosition fallbackWorldPosition = fallbackPosition.ToWorldPosition();
 					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
 					Agent.SetScriptedPosition(ref fallbackWorldPosition, false, Agent.AIScriptedFrameFlags.None);
@@ -495,7 +501,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.AgentComponents
 			// If threat is too far, slowly close in
 			else if (distanceToTarget > desiredRange * 0.7f)
 			{
-				Vec3 desiredPosition = _threat.Position - (directionToTarget * (desiredRange * 0.6f));
+				Vec3 desiredPosition = _threat.Position - directionToTarget * (desiredRange * 0.6f);
 				WorldPosition desiredWorldPosition = desiredPosition.ToWorldPosition();
 				Agent.SetScriptedPosition(ref desiredWorldPosition, true, Agent.AIScriptedFrameFlags.DoNotRun);
 			}

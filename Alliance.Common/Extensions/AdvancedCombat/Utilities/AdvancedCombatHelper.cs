@@ -1,7 +1,8 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Server.Core.Utils;
-using Alliance.Server.Extensions.AdvancedCombat.Behavior;
-using Alliance.Server.Extensions.AdvancedCombat.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.Extensions.AdvancedCombat.Models;
+using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -9,18 +10,24 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Server.Extensions.AdvancedCombat.Utilities
+namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 {
-	public static class SpecialAttackHelper
+	public static class AdvancedCombatHelper
 	{
+		public enum BlowDirection
+		{
+			Front,
+			Back,
+			Left,
+			Right
+		}
+
 		public static void WargAttack(this Agent warg)
 		{
 			float radius = 10f;
 			float impactDistance = 0.1f;
 			float attackDuration = 0f;
 			float startDelay = 0f;
-
-			List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, warg);
 
 			if (warg.MovementVelocity.Y >= 4)
 			{
@@ -35,11 +42,14 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Utilities
 				startDelay = 0.1f;
 			}
 
+			List<Agent> nearbyAllAgents = CoreUtils.GetNearAliveAgentsInRange(radius, warg);
+
+			AdvancedCombatBehavior advancedCombat = Mission.Current.GetMissionBehavior<AdvancedCombatBehavior>();
 			foreach (Agent agent in nearbyAllAgents)
 			{
 				if (agent != null && agent != warg && agent.IsActive() && agent != warg.RiderAgent)
 				{
-					Mission.Current.AddMissionBehavior(new BoneCheckDuringAnimationBehavior(
+					advancedCombat.AddBoneCheckComponent(new BoneCheckDuringAnimationBehavior(
 						warg,
 						agent,
 						WargConstants.WargBoneIds,
@@ -69,7 +79,7 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Utilities
 						return;
 
 					// Avoid friendly fire
-					if (target.Monster.StringId == "warg" && MBRandom.RandomFloat < 0.9f)
+					if (target.IsWarg() && MBRandom.RandomFloat < 0.9f)
 						return;
 
 					int damage = 50;
@@ -132,6 +142,79 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Utilities
 			catch (Exception e)
 			{
 				Log($"Error in HandleTargetParried for the Warg: {e.Message}", LogLevel.Error);
+			}
+		}
+
+		// Project an agent using position as starting point
+		public static void ProjectAgent(Agent nearbyAgent, Vec3 position, float force = 1f)
+		{
+			// TODO handle horses (and wargs ?) well everything without human skeleton
+			if (!nearbyAgent.IsHuman) return;
+
+			// TODO LOCK agents positions during projections (duplicate animation clips and enforce position?)
+
+			// Calculate the direction of the projection
+			BlowDirection blowDirection = GetDirectionOfBlow(nearbyAgent, position);
+
+			// Select the animation to play based on the direction and force
+			Animation projectionAnimation;
+			switch (blowDirection)
+			{
+				case BlowDirection.Back:
+					int animationIndex = MathF.Min(AdvancedCombatConstants.FrontProjectionAnimations.Count - 1, (int)(force * AdvancedCombatConstants.FrontProjectionAnimations.Count));
+					projectionAnimation = AdvancedCombatConstants.FrontProjectionAnimations[animationIndex];
+					break;
+				case BlowDirection.Front:
+					animationIndex = MathF.Min(AdvancedCombatConstants.BackProjectionAnimations.Count - 1, (int)(force * AdvancedCombatConstants.BackProjectionAnimations.Count));
+					projectionAnimation = AdvancedCombatConstants.BackProjectionAnimations[animationIndex];
+					break;
+				case BlowDirection.Right:
+					animationIndex = MathF.Min(AdvancedCombatConstants.LeftProjectionAnimations.Count - 1, (int)(force * AdvancedCombatConstants.LeftProjectionAnimations.Count));
+					projectionAnimation = AdvancedCombatConstants.LeftProjectionAnimations[animationIndex];
+					break;
+				case BlowDirection.Left:
+				default:
+					animationIndex = MathF.Min(AdvancedCombatConstants.RightProjectionAnimations.Count - 1, (int)(force * AdvancedCombatConstants.RightProjectionAnimations.Count));
+					projectionAnimation = AdvancedCombatConstants.RightProjectionAnimations[animationIndex];
+					break;
+			}
+
+			AnimationSystem.Instance.PlayAnimation(nearbyAgent, projectionAnimation, true);
+			Log($"{blowDirection} - Playing {projectionAnimation.Name}");
+		}
+
+		public static BlowDirection GetDirectionOfBlow(Agent victim, Vec3 blowOrigin)
+		{
+			Vec3 victimLookDirection = victim.GetMovementDirection().ToVec3();
+			// Calculate the vector from the victim to the attacker
+			Vec3 victimToBlowOrigin = (blowOrigin - victim.Position).NormalizedCopy();
+			float angleInRadians = (float)Math.Atan2(victimLookDirection.x * victimToBlowOrigin.y - victimLookDirection.y * victimToBlowOrigin.x, victimLookDirection.x * victimToBlowOrigin.x + victimLookDirection.y * victimToBlowOrigin.y);
+			float angleInDegrees = (float)(angleInRadians * (180f / Math.PI));
+			string position = string.Empty;
+			if (angleInDegrees < -135 && angleInDegrees > -180)
+			{
+				position = "Back Right";
+				return BlowDirection.Back;
+			}
+			else if (angleInDegrees < -45 && angleInDegrees > -135)
+			{
+				position = "Front Right";
+				return BlowDirection.Right;
+			}
+			else if (angleInDegrees < 45 && angleInDegrees > -45)
+			{
+				position = "Front Left";
+				return BlowDirection.Front;
+			}
+			else if (angleInDegrees > 45 && angleInDegrees < 135)
+			{
+				position = "Back Left";
+				return BlowDirection.Left;
+			}
+			else
+			{
+				position = "error ? back left ?";
+				return BlowDirection.Back;
 			}
 		}
 

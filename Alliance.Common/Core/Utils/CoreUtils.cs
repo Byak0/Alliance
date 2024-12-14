@@ -9,12 +9,12 @@ namespace Alliance.Common.Core.Utils
 {
 	static class CoreUtils
 	{
-		public static void TakeDamage(Agent victim, int damage, float magnitude = 50f)
+		public static void TakeDamage(Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{
-			TakeDamage(victim, victim, damage, magnitude);
+			TakeDamage(victim, victim, damage, magnitude, knockDown);
 		}
 
-		public static void TakeDamage(Agent victim, Agent attacker, int damage, float magnitude = 50f)
+		public static void TakeDamage(Agent victim, Agent attacker, int damage, float magnitude = 50f, bool knockDown = false)
 		{
 			if (victim == null || attacker == null)
 			{
@@ -27,7 +27,8 @@ namespace Alliance.Common.Core.Utils
 			Blow blow = new Blow(attacker.Index);
 			blow.DamageType = DamageTypes.Pierce;
 			blow.BoneIndex = victim.Monster.HeadLookDirectionBoneIndex;
-			blow.GlobalPosition = victim.Position;
+			// Calculate blow position as the center of victim and attacker
+			blow.GlobalPosition = (attacker.Position + victim.Position) * 0.5f;
 			blow.GlobalPosition.z = blow.GlobalPosition.z + victim.GetEyeGlobalHeight();
 			blow.BaseMagnitude = magnitude;
 			blow.WeaponRecord.FillAsMeleeBlow(null, null, -1, -1);
@@ -38,6 +39,11 @@ namespace Alliance.Common.Core.Utils
 			blow.SwingDirection.Normalize();
 			blow.Direction = blow.SwingDirection;
 			blow.DamageCalculated = true;
+			if (knockDown)
+			{
+				if (victim.HasMount) blow.BlowFlag |= BlowFlags.CanDismount;
+				else blow.BlowFlag |= BlowFlags.KnockDown;
+			}
 			sbyte mainHandItemBoneIndex = attacker.Monster.MainHandItemBoneIndex;
 			AttackCollisionData attackCollisionDataForDebugPurpose = AttackCollisionData.GetAttackCollisionDataForDebugPurpose(
 				false,
@@ -85,9 +91,6 @@ namespace Alliance.Common.Core.Utils
 		/// Return the list of all agents alives that are near the target.
 		/// IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED
 		/// </summary>
-		/// <param name="range"></param>
-		/// <param name="target"></param>
-		/// <returns></returns>
 		public static List<Agent> GetNearAliveAgentsInRange(float range, Agent target)
 		{
 			//Contain all agent (Players/Bots/Ridings)
@@ -102,6 +105,36 @@ namespace Alliance.Common.Core.Utils
 				if (agent == target.MountAgent || agent == target) continue;
 
 				float distance = agent.Position.Distance(target.Position);
+
+				//Add offset in case of mount since mount are large
+				if (agent.IsMount)
+				{
+					distance -= 0.5f;
+				}
+
+				if (distance < range)
+				{
+					agentsInRange.Add(agent);
+				}
+			}
+
+			return agentsInRange;
+		}
+
+		/// <summary>
+		/// Return the list of all agents alives that are near the position.
+		/// </summary>
+		public static List<Agent> GetNearAliveAgentsInRange(float range, Vec3 target)
+		{
+			//Contain all agent (Players/Bots/Ridings)
+			List<Agent> allAgents = Mission.Current.AllAgents;
+			List<Agent> agentsInRange = new List<Agent>();
+
+			foreach (Agent agent in allAgents)
+			{
+				if (!agent.IsActive()) continue;
+
+				float distance = agent.Position.Distance(target);
 
 				//Add offset in case of mount since mount are large
 				if (agent.IsMount)

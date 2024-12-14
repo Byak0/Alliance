@@ -1,11 +1,11 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration.Behaviors;
 using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
-using Alliance.Server.Extensions.AdvancedCombat.Behavior;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.Animals.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;

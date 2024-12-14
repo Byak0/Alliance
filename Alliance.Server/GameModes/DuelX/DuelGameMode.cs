@@ -4,7 +4,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer;
 
-namespace Alliance.Server.GameModes.BattleX
+namespace Alliance.Server.GameModes.DuelX
 {
 	public class DuelGameMode : MissionBasedMultiplayerGameMode
 	{
@@ -13,7 +13,7 @@ namespace Alliance.Server.GameModes.BattleX
 		[MissionMethod]
 		public override void StartMultiplayerGame(string scene)
 		{
-			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), (Mission missionController) => GetMissionBehaviors(), true, true);
+			MissionState.OpenNew("DuelX", new MissionInitializerRecord(scene), (missionController) => GetMissionBehaviors(), true, true);
 		}
 
 		private List<MissionBehavior> GetMissionBehaviors()

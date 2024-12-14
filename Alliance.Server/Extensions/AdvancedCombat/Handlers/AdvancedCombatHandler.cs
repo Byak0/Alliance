@@ -1,7 +1,7 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdvancedCombat.NetworkMessages.FromClient;
-using Alliance.Server.Extensions.AdvancedCombat.Utilities;
+using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.AdvancedCombat.Handlers

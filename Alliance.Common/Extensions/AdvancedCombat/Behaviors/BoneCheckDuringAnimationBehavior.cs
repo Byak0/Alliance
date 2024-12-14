@@ -6,12 +6,12 @@ using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
-namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
+namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 {
 	/// <summary>
 	/// Temporary class checking for collision between an agent and its target. Removed after collision or timer.
 	/// </summary>
-	public class BoneCheckDuringAnimationBehavior : MissionBehavior
+	public class BoneCheckDuringAnimationBehavior
 	{
 		private readonly List<sbyte> Parry1HBoneIds = new List<sbyte>() { 24, 25, 26, 27 };
 		private readonly List<sbyte> Parry2HBoneIds = new List<sbyte>() { 17, 18, 19, 20, 24, 25, 26, 27 };
@@ -52,20 +52,17 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
 			OnBoneFoundParryCallback = onBoneFoundParryCallback;
 		}
 
-		public override void OnMissionTick(float dt)
+		public bool Tick(float dt)
 		{
-			base.OnMissionTick(dt);
-
 			time += dt;
 
 			if (!isChecking || time >= duration)
 			{
 				isChecking = false;
-				Mission.Current.RemoveMissionBehavior(this);
-				return;
+				return false;
 			}
 
-			if (time < startDelay) return;
+			if (time < startDelay) return true;
 
 			sbyte boneInRange = SearchBoneInRange(agent, target, boneIds, minDistanceSquared);
 
@@ -89,9 +86,10 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
 					OnBoneFoundCallback?.Invoke(agent, target); // Execute standard callback
 				}
 				isChecking = false; // Stop the check after executing the action.
-				Mission.Current.RemoveMissionBehavior(this);
-				return;
+				return false;
 			}
+
+			return true;
 		}
 
 		/// <summary>
@@ -104,22 +102,22 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
 		/// <returns>-1 if no target bone in range else the first target bone id in range</returns>
 		private static sbyte SearchBoneInRange(Agent agent, Agent target, List<sbyte> boneType, float rangeSquared)
 		{
-			Skeleton skeleton = target.AgentVisuals?.GetSkeleton();
-			if (skeleton == null)
+			Skeleton targetSkeleton = target.AgentVisuals?.GetSkeleton();
+			if (targetSkeleton == null)
 			{
 				Log($"Failed to get target visuals or skeleton for {target.Name}", LogLevel.Error);
 				return -1;
 			}
 
 			// Can crash if AgentVisuals or GetSkeleton is null (happens in Duel when teleporting players to/from arenas ?)
-			int targetBoneCount = skeleton.GetBoneCount();
+			int targetBoneCount = targetSkeleton.GetBoneCount();
 
 			foreach (sbyte bone in boneType)
 			{
 				MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
 				MatrixFrame targetGlobalFrame = target.AgentVisuals.GetGlobalFrame();
-				MatrixFrame agentBone = agent.AgentVisuals.GetSkeleton().GetBoneEntitialFrameWithIndex(bone);
-
+				Skeleton agentSkeleton = agent.AgentVisuals.GetSkeleton();
+				MatrixFrame agentBone = agentSkeleton.GetBoneEntitialFrameWithIndex(bone);
 				Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
 
 				sbyte closestBone = -1;
@@ -140,8 +138,6 @@ namespace Alliance.Server.Extensions.AdvancedCombat.Behavior
 			}
 			return -1; // no target found in range
 		}
-
-		public override MissionBehaviorType BehaviorType => MissionBehaviorType.Other;
 	}
 }
 

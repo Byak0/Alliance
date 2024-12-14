@@ -2,7 +2,7 @@
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System.Collections.Generic;
 
-namespace Alliance.Server.Extensions.AdvancedCombat.Models
+namespace Alliance.Common.Extensions.AdvancedCombat.Models
 {
 	public static class WargConstants
 	{
