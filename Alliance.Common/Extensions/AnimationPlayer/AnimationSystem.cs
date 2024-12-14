@@ -55,7 +55,20 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			// Initialize all Actions and their respective ActionSet
 			int totalActions = MBAnimation.GetNumActionCodes();
 			int uniqueAnimationIndex = 0;
-			for (int i = -1; i <= totalActions; i++)
+
+			// Add the default act_none to all action_sets
+			ActionIndexCache defaultActionIndex = ActionIndexCache.act_none;
+			List<MBActionSet> allActionSets = new List<MBActionSet>();
+			for (int j = 0; j < MBActionSet.GetNumberOfActionSets(); j++)
+			{
+				allActionSets.Add(MBActionSet.GetActionSetWithIndex(j));
+			}
+			IndexToActionDictionary.Add(uniqueAnimationIndex, defaultActionIndex);
+			IndexToActionSetDictionary.Add(uniqueAnimationIndex, allActionSets);
+			uniqueAnimationIndex++;
+
+			// Add other actions and their compatible action_sets
+			for (int i = 0; i < totalActions; i++)
 			{
 				string actionName = MBAnimation.GetActionNameWithCode(i);
 				ActionIndexCache actionIndex = ActionIndexCache.Create(actionName);
@@ -119,7 +132,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 
 			bool correctActionSet = true;
 			// If animation requires a different ActionSet, apply the correct one to agent
-			if (GameNetwork.IsServerOrRecorder && !animation.ActionSets.Contains(agent.ActionSet) && agent.ActionSet.IsValid)
+			if (GameNetwork.IsServer && !animation.ActionSets.Contains(agent.ActionSet) && agent.ActionSet.IsValid)
 			{
 				try
 				{
@@ -160,7 +173,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				try
 				{
 					agent.SetActionChannel(0, animation.Action, true, 0UL, 0f, animation.Speed, -0.2f, 0.4f, 0f, false, -0.2f, 0, true);
-					if (synchronize)
+					if (GameNetwork.IsServer && synchronize)
 					{
 						GameNetwork.BeginBroadcastModuleEvent();
 						GameNetwork.WriteMessage(new SyncAnimation(agent, animation.Index, animation.Speed));
@@ -185,7 +198,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			{
 				PlayAnimationAsync(agent, animation, false);
 			}
-			if (synchronize)
+			if (GameNetwork.IsServer && synchronize)
 			{
 				GameNetwork.BeginBroadcastModuleEvent();
 				GameNetwork.WriteMessage(new SyncAnimationFormation(formation, animation.Index, animation.Speed));
