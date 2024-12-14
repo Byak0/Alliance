@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 			}
 			catch (Exception e)
 			{
-				Debug.Print("Error in Patch_AdvancedCombat: " + e.ToString(), 0, Debug.DebugColor.Red);
+				Log("Error in Patch_AdvancedCombat: " + e.ToString(), LogLevel.Error);
 				return false;
 			}
 		}
@@ -113,12 +114,21 @@ namespace Alliance.Common.Patch.HarmonyPatch
 					//Current.MakeSound(CombatSoundContainer.SoundCodeMissionCombatThrowingStoneMed, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index, ref soundEventParam);
 					Current.MakeSound(CombatSoundContainer.SoundCodeMissionCombatThrowingStoneMed, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index);
 					//AudioPlayer.Instance.Play("voice_lotr_troll-01.mp3", 1f);
-					//Current.MakeSoundOnlyOnRelatedPeer(CombatSoundContainer.SoundCodeMissionCombatThrowingStoneMed, collisionData.CollisionGlobalPosition, attacker.Index);
+					//Current.MakeSoundOnlyOnRelatedPeer(CombatSoundContainer.SoundCodeMissionCombatThrowingStoneMed, attacker.Position, attacker.Index);
 					SoundEventParameter soundEventParameter = new SoundEventParameter("Force", 1f);
 					Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsArrowlikeDefault, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index, ref soundEventParameter);
 					//SoundEventParameter soundEventParameter = new SoundEventParameter("Force", 1f);
 					//Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsArrowlikeDefault, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index, ref soundEventParameter);
 				}
+			}
+			else if (victim.IsEnt())
+			{
+				int physicsMaterialIndex = PhysicsMaterial.GetFromName("siege_engines").Index;
+				collisionData = SetAttackCollisionData(collisionData, false, false, false, true, physicsMaterialIndex, true, CombatCollisionResult.None);
+
+				Current.MakeSound(CombatSoundContainer.SoundCodeMissionCombatWoodShieldBash, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index);
+				SoundEventParameter soundEventParameter = new SoundEventParameter("Force", 1f);
+				Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsArrowlikeDefault, collisionData.CollisionGlobalPosition, false, false, attacker.Index, victim.Index, ref soundEventParameter);
 			}
 		}
 
@@ -339,6 +349,10 @@ namespace Alliance.Common.Patch.HarmonyPatch
 					//Logger.Log("Front attack -> stuck", color: ConsoleColor.Magenta);
 				}
 			}
+			else if (defender?.IsEnt() ?? false)
+			{
+				colReaction = MeleeCollisionReaction.Bounced;
+			}
 		}
 
 		public static void MeleeHitCallbackPostfix(ref AttackCollisionData collisionData, Agent attacker, Agent victim, GameEntity realHitEntity, ref float inOutMomentumRemaining, ref MeleeCollisionReaction colReaction, CrushThroughState crushThroughState, Vec3 blowDir, Vec3 swingDir, ref HitParticleResultData hitParticleResultData, bool crushedThroughWithoutAgentCollision)
@@ -364,7 +378,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
 				if (CanProject(attacker))
 				{
-					ProjectVictim(victim, pushVector, projectionDuration);
+					ProjectVictim(attacker, victim, victim.Position - swingDir, projectionDuration);
 
 					// Update the last projection time for the attacker
 					UpdateLastProjectionTime(attacker);
@@ -403,7 +417,89 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		/// Project a victim on a vector by simulating a plane entity physically pushing it. 
 		/// Agents hit on the victim traject will also suffect a blow.
 		/// </summary>
-		public static async Task ProjectVictim(Agent victim, Vec3 projectionVector, float projectionDuration)
+		public static async Task ProjectVictim(Agent attacker, Agent victim, Vec3 projectionOrigin, float projectionDuration)
+		{
+			float startTime = Current.CurrentTime;
+
+			// test à base de impulse 
+			//GameEntity victimEntity = victim.AgentVisuals.GetEntity();
+			//victimEntity.AddPhysics(60, Vec3.One, PhysicsShape.GetFromResource("bo_axe_short", false), Vec3.One, Vec3.One, PhysicsMaterial.GetFromName("adobe"), false, 1000);
+			//if (victimEntity.HasPhysicsBody())
+			//{
+			//	victimEntity.ApplyLocalImpulseToDynamicBody(victim.GetChestGlobalPosition(), projectionVector * 100f);
+			//}
+
+			// List of all agents already hit by the projecting plane or the victim
+			List<Agent> collidedAgents = new List<Agent> { victim };
+
+			//Vec3 normalizedProjVector = projectionVector.NormalizedCopy();
+			//GameEntity projectingPlane = GameEntity.Instantiate(Current.Scene, "script_hit_plane", false);
+
+			// Calculate plane original position, based on victim position and offsets defined
+			//Vec3 originalPosition = victim.Position + Vec3.Up * 0f/*planeHeightOffset*/ + normalizedProjVector * PLANE_VECTOR_OFFSET;
+			// Calculate the rotation to align the carpet with the push vector
+			//MatrixFrame originalFrame = CalculateAlignedFrame(originalPosition, projectionVector);
+			//originalFrame.Scale(new Vec3(2f, 2f, 2f));
+
+			// Set the frame (position and orientation) of the projecting plane
+			//projectingPlane.SetGlobalFrame(originalFrame);
+
+			float projectionForce = 2f - (victim.Position.Distance(projectionOrigin) / 10f);
+			AdvancedCombatHelper.ProjectAgent(victim, projectionOrigin, projectionForce);
+
+			while (Current.CurrentTime - startTime < projectionDuration)
+			{
+				List<Agent> collidingAgents = Current.GetNearbyAgents(
+					victim.Position.AsVec2,
+					2f,
+					new MBList<Agent>()
+				).FindAll(agent => !collidedAgents.Contains(agent) && !agent.IsTroll() && victim.Position.Z - agent.Position.Z < 2f);
+
+				// Add agents hit to collided list to ignore them next time
+				collidedAgents.AddRange(collidingAgents);
+
+				// Do a blow to every colliding agents
+				foreach (Agent agent in collidingAgents)
+				{
+					//victim.DealDamage(agent, 5);	
+					projectionForce = 2f - (agent.Position.Distance(projectionOrigin) / 10f);
+					AdvancedCombatHelper.ProjectAgent(agent, projectionOrigin, projectionForce);
+					attacker.DealDamage(agent, (int)(projectionForce * 20));
+				}
+
+				//float elapsedSeconds = Current.CurrentTime - startTime;
+				//float t = elapsedSeconds / projectionDuration;
+				//float lerpT = SmoothStep(0f, 1f, t);
+				//float currentDistance = projectionVector.Length * lerpT;
+
+				// Calculate the new position without gravity
+				//Vec3 newPosition = originalPosition + normalizedProjVector * currentDistance;
+
+				// Apply gravity to the newPosition
+				//float gravityOffset = 0f;// 0.5f * gravityMagnitude * elapsedSeconds * elapsedSeconds;
+				//newPosition += -Vec3.Up * gravityOffset;
+
+				// Move the projecting plane entity to the new position
+				//projectingPlane.SetLocalPosition(newPosition + Vec3.Up * PLANE_HEIGHT_OFFSET);
+
+				// Add a delay to refresh around 50 times per second
+				await Task.Delay(20);
+			}
+
+
+			//victim.SetActionChannel(0, fallbackAction, true, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+
+			Log("Projection ended after hitting " + collidedAgents.Count + " agents. Original pos : " + projectionOrigin, LogLevel.Debug);
+
+			// Remove the plane entity
+			//projectingPlane.Remove(0);
+		}
+
+		/// <summary>
+		/// Project a victim on a vector by simulating a plane entity physically pushing it. 
+		/// Agents hit on the victim traject will also suffect a blow.
+		/// </summary>
+		public static async Task OldProjectVictim(Agent victim, Vec3 projectionVector, float projectionDuration)
 		{
 			float startTime = Current.CurrentTime;
 
@@ -435,7 +531,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 			{
 				List<Agent> collidingAgents = Current.GetNearbyAgents(
 					victim.Position.AsVec2,
-					1f,
+					3f,
 					new MBList<Agent>()
 				).FindAll(agent => !collidedAgents.Contains(agent) && victim.Position.Z - agent.Position.Z < 2f);
 

@@ -1,4 +1,6 @@
-﻿using Alliance.Common.GameModels;
+﻿using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
@@ -48,6 +50,13 @@ namespace Alliance.Editor
 			DirtyEditorPatcher.Patch();
 
 			Log("Alliance.Editor initialized", LogLevel.Debug);
+		}
+
+		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
+		{
+			// Initialize animation system and all the game animations
+			AnimationSystem.Instance.Init();
+			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
