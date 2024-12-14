@@ -4,7 +4,7 @@
 		action_set="as_troll_warrior"
 		female_action_set="as_human_female_warrior"
 		monster_usage="human"
-		weight="800"
+		weight="1200"
 		hit_points="1000"
 		absorbed_damage_ratio="1.0"
 		walking_speed_limit="3"
@@ -18,7 +18,7 @@
 		mounted_eye_height="0.75"
 		eye_offset_wrt_head="0.13, 0.1, 0.0"
 		first_person_camera_offset_wrt_head="0.136, 0.1, 0.0"
-		arm_length="1.6"
+		arm_length="0.9"
 		arm_weight="50.0"
 		jump_speed_limit="0"
 		family_type="0"
@@ -90,11 +90,11 @@
 		foot_num_bones_for_ik="3">
 		<Capsules>
 			<body_capsule
-				radius="0.50"
+				radius="0.74"
 				pos1="0.0, 0.0, 1.55"
 				pos2="0.0, 0, 0.8" />
 			<crouched_body_capsule
-				radius="0.50"
+				radius="0.74"
 				pos1="0.0, 0.0, 1.55"
 				pos2="0.0, 0, 0.6" />
 		</Capsules>

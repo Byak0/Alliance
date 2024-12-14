@@ -86,12 +86,6 @@
       <XmlName id="Items" path="Items/NativeMP" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="Items" path="Items/NativeSP" />
-      <IncludedGameTypes>
-        <GameType value="MultiplayerGame" />
-      </IncludedGameTypes>
-    </XmlNode>
-    <XmlNode>
       <XmlName id="Items" path="Items/SOP" />
     </XmlNode>
     <XmlNode>

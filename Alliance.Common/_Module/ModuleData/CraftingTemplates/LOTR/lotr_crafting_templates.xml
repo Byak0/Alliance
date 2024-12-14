@@ -339,7 +339,7 @@
 	</CraftingTemplate>
 
 	<!-- Mace -->
-	<CraftingTemplate id="lotr_Mace"
+	<CraftingTemplate id="lotr_troll_hammer"
 										item_type="OneHandedWeapon"
 										modifier_group="mace"
 										item_holsters="mace_right_hip:axe_right_hip_2:axe_right_hip:axe_back"

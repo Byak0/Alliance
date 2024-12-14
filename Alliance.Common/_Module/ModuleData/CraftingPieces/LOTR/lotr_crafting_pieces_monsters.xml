@@ -36,7 +36,7 @@
                  tier="5"
                  piece_type="Handle"
                  mesh="troll_handle_d"
-                 length="155"
+                 length="145"
                  weight="0.5">
 		<BuildData next_piece_offset="5" />
 		<Materials>

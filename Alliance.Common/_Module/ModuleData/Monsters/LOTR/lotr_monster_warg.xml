@@ -50,7 +50,6 @@
 				pos2="0, -0.57, 1.15" />
 		</Capsules>
 		<Flags
-			CanDefend="true"
 			Mountable="true"
 			CanRear="true"
 			RunsAwayWhenHit="true"

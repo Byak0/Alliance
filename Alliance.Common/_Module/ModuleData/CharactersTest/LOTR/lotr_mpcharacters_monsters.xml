@@ -23,7 +23,7 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="500" />
+						 value="250" />
 			<skill id="TwoHanded"
 						 value="250" />
 			<skill id="Polearm"
@@ -41,7 +41,9 @@
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
-			dismount="200" />
+			knockback="100"
+			knockdown="100"	 
+			dismount="100" />
 	</NPCCharacter>
 	<!-- Cave troll - HERO -->
 	<NPCCharacter id="mp_monster_cavetroll_hero"
@@ -63,7 +65,7 @@
 			<skill id="Riding"
 						 value="0" />
 			<skill id="OneHanded"
-						 value="500" />
+						 value="250" />
 			<skill id="TwoHanded"
 						 value="250" />
 			<skill id="Polearm"
@@ -81,7 +83,9 @@
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
-			dismount="200" />
+			knockback="100"
+			knockdown="100"
+			dismount="100" />
 	</NPCCharacter>
 
 	<!-- Ent - TROOP -->
@@ -118,11 +122,14 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Head" id="Item.leaves_head_ent_1" />
+				<equipment slot="Item0" id="Item.fire_pot" />
+				<equipment slot="Body" id="Item.leaves_head_ent_1" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
-			dismount="200" />
+			knockback="100"
+			knockdown="100"
+			dismount="100" />
 	</NPCCharacter>
 	<!-- Ent - HERO -->
 	<NPCCharacter id="mp_monster_ent1_hero"
@@ -158,10 +165,13 @@
 		</skills>
 		<Equipments>
 			<EquipmentRoster>
-				<equipment slot="Head" id="Item.leaves_head_ent_1" />
+				<equipment slot="Item0" id="Item.fire_pot" />
+				<equipment slot="Body" id="Item.leaves_head_ent_1" />
 			</EquipmentRoster>
 		</Equipments>
 		<Resistances
-			dismount="200" />
+			knockback="100"
+			knockdown="100"
+			dismount="100" />
 	</NPCCharacter>
 </NPCCharacters>

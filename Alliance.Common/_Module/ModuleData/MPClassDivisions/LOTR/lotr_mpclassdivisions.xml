@@ -452,9 +452,9 @@
 
 	<!-- Monsters -->
 	<MPClassDivision
-		id="mp_monster_troll"
-		hero="mp_monster_troll_hero"
-		troop="mp_monster_troll_troop"
+		id="mp_monster_cavetroll"
+		hero="mp_monster_cavetroll_hero"
+		troop="mp_monster_cavetroll_troop"
 		hero_idle_anim="act_taunt_08"
 		troop_idle_anim="act_taunt_08"
 		multiplier="0.50"

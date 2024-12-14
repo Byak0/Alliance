@@ -1,8 +1,8 @@
 <Items>
 
-	<Item multiplayer_item="true" id="leaves_head_ent_1" name="Ent head" mesh="leaves_head_ent_1" culture="Culture.monsters" subtype="head_armor" weight="1.5" difficulty="0" appearance="1" Type="headArmor">
+	<Item multiplayer_item="true" id="leaves_head_ent_1" name="Ent head" mesh="leaves_head_ent_1" culture="Culture.monsters" Type="BodyArmor" weight="1.5" appearance="1" >
 		<ItemComponent>
-			<Armor body_armor="50" leg_armor="50" arm_armor="50" head_armor="50" has_gender_variations="false" hair_cover_type="type3" beard_cover_type="all" modifier_group="plate" material_type="Plate" />
+			<Armor body_armor="50" leg_armor="50" arm_armor="50" head_armor="50" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
 		</ItemComponent>
 		<Flags />
 	</Item>
