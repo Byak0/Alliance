@@ -1,4 +1,6 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -22,9 +24,9 @@ namespace Alliance.Client.GameModes.SiegeX
                 // Custom views
                 new EquipmentSelectionView(),
 				new FormationStatusView(),
+				new AgentStatusView(),
 
 				// Native views
-				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
 				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
 				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
 				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
