@@ -339,7 +339,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 					IsRaceConditionRespected(main, itemEx);
 					if (!_IsRaceConditionRespected && itemEx != null && itemEx.Race_condition != null && itemEx.Race_condition != "" && Config.Instance.EnableRaceRestrictionOnStuff)
 					{
-						PrimaryInteractionMessage = ($"This item can only be used by {itemEx.Race_condition}").ToString();
+						PrimaryInteractionMessage = ($"This item can only be used by {itemEx.Race_condition}");
 						
 					}
 					else {
