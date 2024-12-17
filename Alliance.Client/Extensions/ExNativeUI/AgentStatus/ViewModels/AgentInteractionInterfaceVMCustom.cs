@@ -22,6 +22,7 @@ using Alliance.Common.Core.Configuration.Models;
 
 namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 {
+	//replace AgentInteractionInterfaceVM
 	public class AgentInteractionInterfaceVMCustom : ViewModel
 	{
 		private readonly Mission _mission;
@@ -332,15 +333,15 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 				MBTextManager.SetTextVariable("USE_KEY", HyperlinkTexts.GetKeyHyperlinkText(HotKeyManager.GetHotKeyId("CombatHotKeyCategory", 13)));
 				if (canQuickPickup)
 				{
-					// Check if Item have a race restriction and display a message if needed
 					Agent main = Agent.Main;
+					// Check if Item have a race restriction and display a message if needed (Custom)
 					ItemObject objecttampon = item.WeaponCopy.Item;
 					ExtendedItem itemEx = objecttampon.GetExtendedItem();
 					IsRaceConditionRespected(main, itemEx);
 					if (!_IsRaceConditionRespected && itemEx != null && itemEx.Race_condition != null && itemEx.Race_condition != "" && Config.Instance.EnableRaceRestrictionOnStuff)
 					{
 						PrimaryInteractionMessage = ($"This item can only be used by {itemEx.Race_condition}");
-						
+						// End of Custom Code 
 					}
 					else {
 						if (main != null && main.CanInteractableWeaponBePickedUp(item))
@@ -593,6 +594,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 
 		}
+
+		// Custom new fonction
 		private void IsRaceConditionRespected(Agent main, ExtendedItem itemEx)
 		{
 			if (itemEx == null || itemEx.Race_condition == "" )
