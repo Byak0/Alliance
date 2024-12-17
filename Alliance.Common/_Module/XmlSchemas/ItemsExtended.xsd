@@ -30,6 +30,7 @@
 						<xs:attribute name="animation_on_use" type="xs:string" use="optional"/>
 						<xs:attribute name="use_limit" type="xs:int" use="optional" />
 						<xs:attribute name="cooldown" type="xs:float" use="optional" />
+						<xs:attribute name="race_condition" type="xs:string" use="optional" />
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
