@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -23,6 +24,14 @@ namespace Alliance.Common.Core.Utils
 			};
 
 			if (victim.Health <= 0) return;
+
+			if (GameNetwork.IsServer && attacker.MissionPeer != null)
+			{
+				//Communication des dégats aux client afin d'afficher le PersonalKillFeed
+				GameNetwork.BeginModuleEventAsServer(attacker.MissionPeer.GetNetworkPeer());
+				GameNetwork.WriteMessage(new SyncPersonalKillFeedNotification(attacker, victim, false, false, false, victim.Health <= damage, false, false, damage));
+				GameNetwork.EndModuleEventAsServer();
+			}
 
 			Blow blow = new Blow(attacker.Index);
 			blow.DamageType = DamageTypes.Pierce;
