@@ -32,8 +32,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 			if (warg.MovementVelocity.Y >= 4)
 			{
 				AnimationSystem.Instance.PlayAnimation(warg, WargConstants.AttackRunningAnimation, true);
-				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration - 0.4f;
-				startDelay = 0.2f;
+				attackDuration = WargConstants.AttackRunningAnimation.MaxDuration - 0.7f;
+				startDelay = 0.1f;
 			}
 			else
 			{
@@ -82,10 +82,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 					if (target.IsWarg() && MBRandom.RandomFloat < 0.9f)
 						return;
 
-					int damage = 50;
+					float damageAbsorption = (100 - target.GetBaseArmorEffectivenessForBodyPart(BoneBodyPartType.Chest)) / 100;
+					int damage = (int)(60 * MathF.Clamp(damageAbsorption, 0, 1));
 
 					// Check if damager is dead
-					Agent damagerAgent = warg;
+					Agent damagerAgent = warg?.RiderAgent ?? warg;
 					if (damagerAgent == null || damagerAgent.Health <= 0)
 					{
 						// If damager is dead, use target as damager and reduce damage
@@ -95,22 +96,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 
 					if (target.IsMount) damage *= 2; // todo use IsHorse here
 
-					// If target is AI controlled, chance of reverse damage to simulate target defending
-					if (target.IsAIControlled && target.IsHuman && MBRandom.RandomFloat < 0.5f)
+					if (!target.HasMount)
 					{
-						// Target deals damage to warg
-						if (!target.HasMount)
-						{
-							target.SetMovementDirection((damagerAgent.Position - target.Position).AsVec2);
-							AnimationSystem.Instance.PlayAnimation(target, WargConstants.DefendAnimation, true);
-						}
-						CoreUtils.TakeDamage(damagerAgent, target, damage);
+						float force = warg.MovementVelocity.Y >= 4 ? 1f : 0f;
+						ProjectAgent(target, damagerAgent.Position, force);
 					}
-					else
-					{
-						// Warg deals damage to target
-						CoreUtils.TakeDamage(target, damagerAgent, damage);
-					}
+					CoreUtils.TakeDamage(target, damagerAgent, damage);
 				}
 			}
 			catch (Exception e)

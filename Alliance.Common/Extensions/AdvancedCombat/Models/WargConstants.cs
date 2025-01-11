@@ -25,7 +25,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 
 		public const int CHASE_RADIUS = 40; // Max range to consider when chasing a target
 		public const int THREAT_RANGE = 15; // Max range to consider when looking for threats
-		public const float AI_REFRESH_TIME = 3f; // Default refresh time
+		public const float AI_REFRESH_TIME = 2f; // Default refresh time
 		public const float CLOSE_RANGE_AI_REFRESH_TIME = 0.25f; // Refresh time when at close range, for better precision
 		public const float LOW_HEALTH_THRESHOLD = 0.3f; // Threshold to consider warg as wounded
 		public const float MAINTAIN_DISTANCE = 5f; // Distance to keep when being careful of target

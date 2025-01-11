@@ -167,10 +167,6 @@ namespace Alliance.Common.GameModels
 			agentDrivenProperties.MaxSpeedMultiplier *= 1.7f;
 			agentDrivenProperties.TopSpeedReachDuration *= 2f;
 			agentDrivenProperties.CombatMaxSpeedMultiplier *= 0.5f;
-			agentDrivenProperties.AIDecideOnAttackChance = 1f;
-			agentDrivenProperties.AiDecideOnAttackContinueAction = 1f;
-			agentDrivenProperties.AiDecideOnAttackingContinue = 1f;
-			agentDrivenProperties.AiDecideOnAttackWhenReceiveHitTiming = 1f;
 		}
 
 		private void UpdateStatsForEnt(Agent agent, AgentDrivenProperties agentDrivenProperties)

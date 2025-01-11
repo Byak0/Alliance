@@ -13,8 +13,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// </summary>
 	public class TrollComponent : AdvancedCombatComponent
 	{
-		float _refreshTimer = 0f;
-		float _kickCD = 0f;
+		private float _refreshTimer = 0f;
+		private float _kickCD = 0f;
+
+		public float KickCD => _kickCD;
 
 		public TrollComponent(Agent agent) : base(agent)
 		{
@@ -50,7 +52,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			// todo move this to a constant and change animation to custom one
 			Animation kickAnimation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_kick_right_leg"); // +
 
-			AnimationSystem.Instance.PlayAnimation(Agent, kickAnimation);
+			AnimationSystem.Instance.PlayAnimation(Agent, kickAnimation, true);
 
 			foreach (Agent victim in nearbyAgents)
 			{

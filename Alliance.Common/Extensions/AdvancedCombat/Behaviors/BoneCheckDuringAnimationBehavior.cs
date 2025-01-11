@@ -103,9 +103,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		private static sbyte SearchBoneInRange(Agent agent, Agent target, List<sbyte> boneType, float rangeSquared)
 		{
 			Skeleton targetSkeleton = target.AgentVisuals?.GetSkeleton();
-			if (targetSkeleton == null)
+			Skeleton agentSkeleton = agent.AgentVisuals?.GetSkeleton();
+			if (targetSkeleton == null || agentSkeleton == null)
 			{
-				Log($"Failed to get target visuals or skeleton for {target.Name}", LogLevel.Error);
+				Log($"Failed to get target visuals or skeleton for {target.Name} or {agent.Name}", LogLevel.Error);
 				return -1;
 			}
 
@@ -116,7 +117,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			{
 				MatrixFrame agentGlobalFrame = agent.AgentVisuals.GetGlobalFrame();
 				MatrixFrame targetGlobalFrame = target.AgentVisuals.GetGlobalFrame();
-				Skeleton agentSkeleton = agent.AgentVisuals.GetSkeleton();
 				MatrixFrame agentBone = agentSkeleton.GetBoneEntitialFrameWithIndex(bone);
 				Vec3 agentBoneGlobalPosition = agentGlobalFrame.TransformToParent(agentBone.origin);
 

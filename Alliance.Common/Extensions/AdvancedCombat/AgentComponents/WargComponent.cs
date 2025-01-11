@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// Allow the warg to behave independently. Hunting, chilling, fleeing, etc.
 	/// </summary>
-	public class WargComponent : AgentComponent
+	public class WargComponent : AdvancedCombatComponent
 	{
 		// Behavior probabilities, from 0 (never) to 1 (always).
 		const float FLEE_WHEN_WOUNDED_PROBABILITY = 0.02f;
@@ -36,7 +36,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		private MonsterState _currentState;
 		private bool _isWounded;
 		private ChaseTrajectory _chaseTrajectory;
-		private float _fearOfTarget;
+		private float _fearOfThreat;
+
+		public MonsterState CurrentState => _currentState;
+		public Agent Target => _target;
+		public Agent Threat => _threat;
+		public float FearOfThreat => _fearOfThreat;
+		public Agent LastAttacker => _lastAttacker;
+		public bool IsWounded => _isWounded;
 
 		public enum ChaseTrajectory
 		{
@@ -76,14 +83,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon)
 		{
-			if (affectorAgent != null)
+			if (affectorAgent != null && affectorAgent != Agent.RiderAgent)
 			{
 				_lastAttacker = affectorAgent;
 				ChangeTarget(_lastAttacker);
 			}
 		}
 
-		public override void OnTickAsAI(float dt)
+		public override void OnTick(float dt)
 		{
 			try
 			{
@@ -91,7 +98,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				_refreshDelay += dt;
 				_targetChangeDelay += dt;
 				_lastAttackDelay += dt;
-				_fearOfTarget = Math.Max(0, _fearOfTarget - 0.01f * dt);
+				_fearOfThreat = Math.Max(0, _fearOfThreat - 0.01f * dt);
 				if (_currentState == MonsterState.Attack || (_currentState == MonsterState.Chase || _currentState == MonsterState.Careful) && _target != null && (_target.Position - Agent.Position).Length < WargConstants.THREAT_RANGE)
 				{
 					if (_refreshDelay <= WargConstants.CLOSE_RANGE_AI_REFRESH_TIME) return;
@@ -121,23 +128,18 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 					case MonsterState.None: break;
 					case MonsterState.Idle:
 						RandomIdleBehavior();
-						Log($"Warg {Agent.Index} is idling", LogLevel.Debug);
 						break;
 					case MonsterState.Chase:
 						ChaseTarget();
-						Log($"Warg {Agent.Index} is chasing {_target?.Name}", LogLevel.Debug);
 						break;
 					case MonsterState.Attack:
 						AttackTarget();
-						Log($"Warg {Agent.Index} is attacking", LogLevel.Debug);
 						break;
 					case MonsterState.Flee:
 						FleeBehavior();
-						Log($"Warg {Agent.Index} is fleeing", LogLevel.Debug);
 						break;
 					case MonsterState.Careful:
 						MaintainDistanceFromThreat();
-						Log($"Warg {Agent.Index} is keeping its distance from {_threat?.Name} (fear level : {_fearOfTarget})", LogLevel.Debug);
 						break;
 				}
 			}
@@ -150,8 +152,13 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		private void DetermineTargetAndStateWithAIRider()
 		{
 			// Check if there is enemy close by
-			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(5f, Agent);
-			_target = nearbyAgents.FirstOrDefault(agt => agt != Agent.RiderAgent && agt.Team != Agent.RiderAgent.Team && !agt.IsWarg());
+			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(7f, Agent);
+			_target = nearbyAgents.FirstOrDefault(agt =>
+				agt != Agent.RiderAgent
+				&& !agt.IsWarg()
+				&& (agt.Team == null || agt.Team.IsEnemyOf(Agent.RiderAgent.Team)
+				&& CloseEnoughForAttack(agt))
+			);
 
 			if (_target == null)
 			{
@@ -182,7 +189,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			{
 				ChangeThreat(_threat);
 				// If warg is scared of threat, keep distance
-				if (_fearOfTarget > 0)
+				if (_fearOfThreat > 0)
 				{
 					_currentState = MonsterState.Careful;
 					return;
@@ -219,12 +226,17 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			{
 				_target = target;
 				_targetChangeDelay = 0;
-				// Target should focus warg to defend itself
-				// not working on mount ??
-				//if (_target.IsHuman)
-				//{
-				//	_target.SetTargetAgent(Agent);
-				//}
+				// Tell the target that he is threatened
+				if (_target.IsHuman)
+				{
+					MBList<Agent> targetAllies = new MBList<Agent> { };
+					Mission.Current.GetNearbyAllyAgents(_target.Position.AsVec2, 10, _target.Team, targetAllies);
+					for (int i = 0; i < targetAllies.Count && i < 3; i++)
+					{
+						targetAllies[i].GetComponent<DefaultHumanoidComponent>()?.SetThreat(Agent);
+					}
+					_target.GetComponent<DefaultHumanoidComponent>()?.SetThreat(Agent);
+				}
 			}
 		}
 
@@ -233,22 +245,38 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (_threat != threat && threat != null)
 			{
 				_threat = threat;
-				// Random initial fear value between 0.25 and 1
-				_fearOfTarget = 0.25f + MBRandom.RandomFloat / 2 + (_isWounded ? 0.25f : 0);
+				float woundedBonus = (_isWounded ? 0.25f : 0) +
+									 (_threat.Health < _threat.HealthLimit * 0.25f ? 0 : 0.25f);
+				float raceBonus = 0;
+				if (_threat.IsTroll() || _threat.IsEnt()) raceBonus = 5f;
+				if (_threat.IsDwarf()) raceBonus = -0.25f;
+
+				// Random initial fear value between 0 and 6
+				_fearOfThreat = (0.25f + MBRandom.RandomFloat / 2) + woundedBonus + raceBonus;
 			}
+		}
+
+		private bool CloseEnoughForAttack(Agent target)
+		{
+			float distanceToTarget = (target.Position - Agent.Position).Length;
+			float distanceForAttack = 1.5f + Agent.MovementVelocity.Y;
+			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
+			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(Agent, target, 45);
+
+			// Close enough to attack and target is in front
+			if (closeEnoughForAttack && frontAttack)
+			{
+				return true;
+			}
+			return false;
 		}
 
 		private bool ShouldAttack(float probability)
 		{
 			if (_target == null || _target.Health <= 0 || _lastAttackDelay < WargConstants.ATTACK_COOLDOWN) return false;
 
-			float distanceToTarget = (_target.Position - Agent.Position).Length;
-			float distanceForAttack = 1.5f + Agent.MovementVelocity.Y / 1.5f;
-			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
-			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(Agent, _target, 45);
-
 			// Close enough to attack and target is in front
-			if (MBRandom.RandomFloat < probability && closeEnoughForAttack && frontAttack)
+			if (MBRandom.RandomFloat < probability && CloseEnoughForAttack(_target))
 			{
 				return true;
 			}
@@ -269,7 +297,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				_bestTarget = GetBestTarget(WargConstants.CHASE_RADIUS);
 				if (_bestTarget != null)
 				{
-					_target = _bestTarget;
+					ChangeTarget(_bestTarget);
 					_targetChangeDelay = 0;
 					return true;
 				}
@@ -383,7 +411,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 		private bool IsThreat(Agent agent)
 		{
-			return agent != Agent && agent.IsActive() && IsWieldingTorch(agent);
+			return agent != Agent && agent.IsActive() && (IsWieldingTorch(agent) || agent.IsTroll() || agent.IsEnt());
 		}
 
 		private void RandomIdleBehavior()
@@ -461,7 +489,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 			float distanceToTarget = (_threat.Position - Agent.Position).Length;
 			// Target should maintain distance towards target relative to its fear
-			float desiredRange = WargConstants.THREAT_RANGE * (0.5f + _fearOfTarget);
+			float desiredRange = WargConstants.THREAT_RANGE * (0.5f + _fearOfThreat);
 
 			// Calculate the direction from the warg to the target
 			Vec3 directionToTarget = (_threat.Position - Agent.Position).NormalizedCopy();
