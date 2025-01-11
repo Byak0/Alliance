@@ -104,13 +104,19 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 		}
 
 		/// <summary>
-		/// Return more logical action set. IE don't return as_uruk_villager if uruk use as_human_warrior as base...
+		/// Return more logical action set.
+		/// IE don't return as_uruk_villager if uruk use as_human_warrior as base
+		/// or as_olog_villager if olog use as_troll_warrior as base...
 		/// </summary>
 		public static bool Prefix_ActionSetCode_GenerateActionSetNameWithSuffix(Monster monster, bool isFemale, string suffix, ref string __result)
 		{
-			if (monster == null || monster.ActionSetCode == "as_human_warrior")
+			if (monster == null)
 			{
 				__result = "as_human" + (isFemale ? "_female" : "") + suffix;
+			}
+			else if (monster.ActionSetCode.EndsWith("_warrior"))
+			{
+				__result = monster.ActionSetCode.Replace("_warrior", "") + (isFemale ? "_female" : "") + suffix;
 			}
 			else
 			{

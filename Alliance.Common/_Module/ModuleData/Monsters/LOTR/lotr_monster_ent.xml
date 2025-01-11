@@ -13,7 +13,7 @@
 		sound_and_collision_info_class="ent"
 		standing_chest_height="1.31"
 		standing_pelvis_height="0.91"
-		standing_eye_height="1.90"
+		standing_eye_height="1.80"
 		crouch_eye_height="1.10"
 		mounted_eye_height="0.75"
 		eye_offset_wrt_head="0.13, 0.1, 0.0"
