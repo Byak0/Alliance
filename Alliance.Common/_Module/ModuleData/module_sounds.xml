@@ -108,6 +108,18 @@
 		<module_sound name="LOTR/Isengard/Voice/Uruk/get_over_here" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get over here.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/get_ready_to_fight" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get ready to fight.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Go.wav" />
+		<module_sound
+			name="LOTR/Isengard/Voice/Uruk/gos"
+			sound_category="mission_voice_shout"
+			min_pitch_multiplier="0.9"
+			max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Uruk/Go.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Faster.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Get over here.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Come on.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Grunt.wav" weight="1" />
+		</module_sound>
 		<module_sound name="LOTR/Isengard/Voice/Uruk/grunt" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Grunt.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/hurry_up" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/in_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/In there.wav" />

@@ -362,8 +362,10 @@
 			<StatData stat_type="Handling" max_value="200"/>
 		</StatsData>
 		<UsablePieces>
-			<UsablePiece piece_id="cavetroll_hammer_head_d"/>
-			<UsablePiece piece_id="cavetroll_hammer_handle_d"/>
+			<UsablePiece piece_id="cavetroll_hammer_head"/>
+			<UsablePiece piece_id="cavetroll_hammer_handle"/>
+			<UsablePiece piece_id="olog_hammer_head"/>
+			<UsablePiece piece_id="olog_hammer_handle"/>
 		</UsablePieces>
 	</CraftingTemplate>
 </CraftingTemplates>

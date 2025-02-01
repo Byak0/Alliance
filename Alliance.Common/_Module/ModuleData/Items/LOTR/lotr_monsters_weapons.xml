@@ -1,16 +1,30 @@
 <Items>	
 
-	<CraftedItem id="cave_troll_hammer_d"
+	<CraftedItem id="cave_troll_hammer"
 			 name="{=ArSp1}Cave Troll hammer"
 			 crafting_template="lotr_troll_hammer"
 			 culture="Culture.monsters">
 		<Pieces>
-			<Piece id="cavetroll_hammer_head_d"
+			<Piece id="cavetroll_hammer_head"
 				   Type="Blade"
-				   scale_factor="80" />
-			<Piece id="cavetroll_hammer_handle_d"
+				   scale_factor="100" />
+			<Piece id="cavetroll_hammer_handle"
 				   Type="Handle"
-				   scale_factor="85" />
+				   scale_factor="100" />
+		</Pieces>
+	</CraftedItem>
+
+	<CraftedItem id="olog_hammer"
+		 name="{=ArSp1}Olog hammer"
+		 crafting_template="lotr_troll_hammer"
+		 culture="Culture.monsters">
+		<Pieces>
+			<Piece id="olog_hammer_head"
+				   Type="Blade"
+				   scale_factor="100" />
+			<Piece id="olog_hammer_handle"
+				   Type="Handle"
+				   scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
 

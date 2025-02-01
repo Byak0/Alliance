@@ -326,8 +326,10 @@
 			<WeaponFlag value="MeleeWeapon"/>
 		</WeaponFlags>
 		<AvailablePieces>
-			<AvailablePiece id="cavetroll_hammer_head_d"/>
-			<AvailablePiece id="cavetroll_hammer_handle_d"/>
+			<AvailablePiece id="cavetroll_hammer_head"/>
+			<AvailablePiece id="cavetroll_hammer_handle"/>
+			<AvailablePiece id="olog_hammer_head"/>
+			<AvailablePiece id="olog_hammer_handle"/>
 		</AvailablePieces>
 	</WeaponDescription>
 
