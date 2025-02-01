@@ -35,7 +35,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		private float _lastAttackDelay;
 		private MonsterState _currentState;
 		private bool _isWounded;
-		private ChaseTrajectory _chaseTrajectory;
 		private float _fearOfThreat;
 
 		public MonsterState CurrentState => _currentState;
@@ -44,13 +43,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		public float FearOfThreat => _fearOfThreat;
 		public Agent LastAttacker => _lastAttacker;
 		public bool IsWounded => _isWounded;
-
-		public enum ChaseTrajectory
-		{
-			Straight,
-			CurveLeft,
-			CurveRight
-		}
 
 		public enum MonsterState
 		{

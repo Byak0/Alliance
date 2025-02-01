@@ -8,6 +8,7 @@
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Common</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 	</PropertyGroup>
 
 	<!-- Reference TaleWorlds dll -->
@@ -19,12 +20,16 @@
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
 	</ItemGroup>
+	<ItemGroup>
+	  <None Include="_Module\ModuleData\project.mbproj" />
+	</ItemGroup>
 	
 	<ItemGroup>
 		<PackageReference Include="Concentus" Version="1.1.7" />
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
 
 	<ItemGroup>

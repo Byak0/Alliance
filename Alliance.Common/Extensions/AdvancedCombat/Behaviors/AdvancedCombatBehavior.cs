@@ -50,6 +50,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 					MatrixFrame position = agent.AgentVisuals.GetFrame();
 					position.Elevate(offset_Z);
 					string debugMessage = component.GetType().Name + " | " + agent.Health;
+					debugMessage += "\nChannel 0: " + agent.GetCurrentAction(0)?.Name;
+					debugMessage += "\nChannel 1: " + agent.GetCurrentAction(1)?.Name;
+
 					uint color = Color.White.ToUnsignedInteger();
 					if (component is DefaultHumanoidComponent defaultHumanoidComponent)
 					{
