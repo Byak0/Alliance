@@ -160,7 +160,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
+				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
+				agent.HealthLimit = Math.Max(classHealth, character.MaxHitPoints());
 				agent.HealthLimit += bonusHealth;
 				agent.Health = agent.HealthLimit;
 

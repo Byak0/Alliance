@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.AgentComponents;
+using Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees;
+using BehaviorTreeWrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,13 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 	{
 		// List of temporary components for bone collision checks
 		private List<BoneCheckDuringAnimationBehavior> boneCheckComponents = new List<BoneCheckDuringAnimationBehavior>();
+
+		public override void OnBehaviorInitialize()
+		{
+			base.OnBehaviorInitialize();
+
+			BehaviorTrees.BTRegister.RegisterClass("TrollTree", objects => TrollBehaviorTree.BuildTree(objects));
+		}
 
 		public override void OnMissionTick(float dt)
 		{
@@ -50,8 +59,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 					MatrixFrame position = agent.AgentVisuals.GetFrame();
 					position.Elevate(offset_Z);
 					string debugMessage = component.GetType().Name + " | " + agent.Health;
-					debugMessage += "\nChannel 0: " + agent.GetCurrentAction(0)?.Name;
-					debugMessage += "\nChannel 1: " + agent.GetCurrentAction(1)?.Name;
+					//debugMessage += "\nChannel 0: " + agent.GetCurrentAction(0)?.Name;
+					//debugMessage += "\nChannel 1: " + agent.GetCurrentAction(1)?.Name;
 
 					uint color = Color.White.ToUnsignedInteger();
 					if (component is DefaultHumanoidComponent defaultHumanoidComponent)
@@ -100,6 +109,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 		}
 
+		public override void OnAgentCreated(Agent agent)
+		{
+			agent.AddComponent(new DefaultAgentComponent(agent));
+		}
+
 		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
 			if (agent.IsWarg())
@@ -109,7 +123,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 			else if (agent.IsTroll())
 			{
-				agent.AddComponent(new TrollComponent(agent));
+				agent.AddComponent(new BehaviorTreeAgentComponent(agent, "TrollTree"));
+				//agent.AddComponent(new TrollComponent(agent));
 				//Log("Added TrollComponent to agent", LogLevel.Debug);
 			}
 			else if (agent.IsEnt())

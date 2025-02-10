@@ -56,6 +56,8 @@
 		<Exec Command="xcopy &quot;$(TargetPath)&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<!-- Add required dll -->
 		<Exec Command="xcopy &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)BehaviorTrees.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		<Exec Command="xcopy &quot;$(TargetDir)BehaviorTreeWrapper.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Alliance.Common.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Asio.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
@@ -67,6 +69,7 @@
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignThemes.Wpf.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignColors.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
+		
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
 	</Target>

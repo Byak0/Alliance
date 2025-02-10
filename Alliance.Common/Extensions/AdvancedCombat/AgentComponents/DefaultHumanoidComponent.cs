@@ -71,8 +71,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			_target = target;
 			if (target.IsMount)
 			{
-				Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), Agent.GetWorldPosition(), Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 				WorldPosition pos = Agent.GetWorldPosition();
+				Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 				if (Agent.HasRangedWeapon())
 				{
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);

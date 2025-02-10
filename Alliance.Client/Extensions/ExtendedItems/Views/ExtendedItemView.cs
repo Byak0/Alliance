@@ -123,6 +123,9 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 			(ItemObject item, ExtendedItem itemEx, sbyte boneType) = GetWieldedItemAndExtendedInfo(agent, false);
 			if (itemEx != null && !string.IsNullOrEmpty(itemEx.Prefab))
 			{
+				// TODO TEST 
+				//agent.AddSynchedPrefabComponentToBone(itemEx.Prefab, boneType);
+
 				GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
 				SetPrefabGlobalFrame(agent, boneType, prefab);
 

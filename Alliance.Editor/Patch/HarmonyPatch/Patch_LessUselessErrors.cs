@@ -40,12 +40,6 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 					prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
 						nameof(Prefix_Banner_GetBannerDataFromBannerCode), BindingFlags.Static | BindingFlags.Public)));
 
-				// Patch GenerateActionSetNameWithSuffix method for more logical action sets
-				Harmony.Patch(
-					typeof(ActionSetCode).GetMethod(nameof(ActionSetCode.GenerateActionSetNameWithSuffix), BindingFlags.Static | BindingFlags.Public),
-					prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
-						nameof(Prefix_ActionSetCode_GenerateActionSetNameWithSuffix), BindingFlags.Static | BindingFlags.Public)));
-
 				// Patch BannerVisual.GetMeshMatrix method to remove useless rotation check
 				Harmony.Patch(
 					typeof(BannerVisual).GetMethod(nameof(BannerVisual.GetMeshMatrix), BindingFlags.Static | BindingFlags.Public),
@@ -99,29 +93,6 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 
 			// Remove icon limit check
 			//Debug.Assert(list.Count < 33, "[DEBUG]maximum icon count is exceeded!", "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.Core\\Banner.cs", "GetBannerDataFromBannerCode", 555);			
-
-			return false; // Skip original method
-		}
-
-		/// <summary>
-		/// Return more logical action set.
-		/// IE don't return as_uruk_villager if uruk use as_human_warrior as base
-		/// or as_olog_villager if olog use as_troll_warrior as base...
-		/// </summary>
-		public static bool Prefix_ActionSetCode_GenerateActionSetNameWithSuffix(Monster monster, bool isFemale, string suffix, ref string __result)
-		{
-			if (monster == null)
-			{
-				__result = "as_human" + (isFemale ? "_female" : "") + suffix;
-			}
-			else if (monster.ActionSetCode.EndsWith("_warrior"))
-			{
-				__result = monster.ActionSetCode.Replace("_warrior", "") + (isFemale ? "_female" : "") + suffix;
-			}
-			else
-			{
-				__result = "as_" + (string.IsNullOrEmpty(monster.BaseMonster) ? monster.StringId : monster.BaseMonster) + (isFemale ? "_female" : "") + suffix;
-			}
 
 			return false; // Skip original method
 		}

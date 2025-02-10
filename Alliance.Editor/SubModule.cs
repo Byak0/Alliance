@@ -56,6 +56,7 @@ namespace Alliance.Editor
 		{
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
+
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 
