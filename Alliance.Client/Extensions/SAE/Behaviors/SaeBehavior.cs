@@ -81,7 +81,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 					Id = "key_crouch",
 					Description = "Make selected formation crouch.",
 					Name = "Crouch troops",
-					DefaultInputKey = InputKey.M
+					DefaultInputKey = InputKey.SemiColon
 				},
 			}
 		};
