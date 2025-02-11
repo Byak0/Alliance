@@ -350,31 +350,37 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 
 		private void WhenCreateMarkerActionTriggered()
 		{
-			if (!Input.IsKeyDown(InputKey.LeftAlt) && !Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(createMarkerIK.KeyboardKey.InputKey))
+			if (!Input.IsKeyDown(InputKey.LeftAlt) && !Input.IsKeyDown(InputKey.LeftControl))
 			{
-				lastTimeMakerPosed = DateTime.Now;
-				SendToServerToCreateMarker();
-			}
+				if (Input.IsKeyPressed(createMarkerIK.KeyboardKey.InputKey))
+				{
+					lastTimeMakerPosed = DateTime.Now;
+					SendToServerToCreateMarker();
+				}
 
-			if (!Input.IsKeyDown(InputKey.LeftAlt) && !Input.IsKeyDown(InputKey.LeftControl) && DateTime.Now.Ticks - lastTimeMakerPosed.Ticks >= 1500000 && Input.IsKeyDown(createMarkerIK.KeyboardKey.InputKey))
-			{
-				lastTimeMakerPosed = DateTime.Now;
-				SendToServerToCreateMarker();
+				if (!Input.IsKeyDown(InputKey.LeftAlt) && !Input.IsKeyDown(InputKey.LeftControl) && DateTime.Now.Ticks - lastTimeMakerPosed.Ticks >= 1500000 && Input.IsKeyDown(createMarkerIK.KeyboardKey.InputKey))
+				{
+					lastTimeMakerPosed = DateTime.Now;
+					SendToServerToCreateMarker();
+				}
 			}
 		}
 
 		private void WhenDeleteMarkerActionTriggered()
 		{
-			if (Input.IsKeyDown(InputKey.LeftControl) && !Input.IsKeyDown(InputKey.LeftAlt) && Input.IsKeyPressed(deleteMarkerIK.KeyboardKey.InputKey))
+			if (Input.IsKeyDown(InputKey.LeftControl) && !Input.IsKeyDown(InputKey.LeftAlt))
 			{
-				lastTimeMakerPosed = DateTime.Now;
-				GetNearestMarkerAndAskToDeleteIfNeeded();
-			}
+				if (Input.IsKeyPressed(deleteMarkerIK.KeyboardKey.InputKey))
+				{
+					lastTimeMakerPosed = DateTime.Now;
+					GetNearestMarkerAndAskToDeleteIfNeeded();
+				}
 
-			if (Input.IsKeyDown(InputKey.LeftControl) && !Input.IsKeyDown(InputKey.LeftAlt) && DateTime.Now.Ticks - lastTimeMakerPosed.Ticks >= 1500000 && Input.IsKeyDown(deleteMarkerIK.KeyboardKey.InputKey))
-			{
-				lastTimeMakerPosed = DateTime.Now;
-				GetNearestMarkerAndAskToDeleteIfNeeded();
+				if (DateTime.Now.Ticks - lastTimeMakerPosed.Ticks >= 1500000 && Input.IsKeyDown(deleteMarkerIK.KeyboardKey.InputKey))
+				{
+					lastTimeMakerPosed = DateTime.Now;
+					GetNearestMarkerAndAskToDeleteIfNeeded();
+				}
 			}
 
 			if (Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(deleteAllMarkerIK.KeyboardKey.InputKey))
