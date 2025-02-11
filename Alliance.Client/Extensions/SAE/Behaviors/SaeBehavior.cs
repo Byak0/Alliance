@@ -30,9 +30,9 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 				new BindedKey
 				{
 					Id = "key_delete_all_markers",
-					Description = "Delete all placed markers.",
+					Description = "Delete all placed markers. TRIGGERED USING ALT_GR",
 					Name = "Delete all markers",
-					DefaultInputKey = InputKey.Numpad5
+					DefaultInputKey = InputKey.X
 				},
 				new BindedKey
 				{
@@ -44,21 +44,21 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 				new BindedKey
 				{
 					Id = "key_delete_marker",
-					Description = "Delete nearest marker from mouse position.",
+					Description = "Delete nearest marker from mouse position. TRIGGERED USING LEFT CTRL",
 					Name = "Delete marker",
 					DefaultInputKey = InputKey.X
 				},
 				new BindedKey
 				{
 					Id = "key_fast_create_marker",
-					Description = "Create multiple markers around cursor.",
+					Description = "Create multiple markers around cursor. TRIGGERED USING LEFT ALT",
 					Name = "Create multiple",
 					DefaultInputKey = InputKey.X
 				},
 				new BindedKey
 				{
 					Id = "key_fast_delete_marker",
-					Description = "Delete multiple markers around cursor.",
+					Description = "Delete multiple markers around cursor. TRIGGERED USING LEFT CRTL + LEFT ALT",
 					Name = "Delete multiple",
 					DefaultInputKey = InputKey.X
 				},
@@ -383,8 +383,9 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 				}
 			}
 
-			if (Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(deleteAllMarkerIK.KeyboardKey.InputKey))
+			if (Input.IsKeyDown(InputKey.RightAlt) && Input.IsKeyPressed(deleteAllMarkerIK.KeyboardKey.InputKey))
 			{
+				Log("Deleting all markers on the map...", LogLevel.Information);
 				SendServerToDeleteAllMarkers();
 			}
 		}
