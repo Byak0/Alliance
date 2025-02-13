@@ -139,6 +139,15 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty("Minimum alive troops for formation", "Minimum number of troops alive for the formation system to be enabled.", ConfigValueType.Integer, 0, 200)]
 		public int MinPlayerForm = 15;
 
+		[ConfigProperty("Cavalry formation radius multiplier", "Radius of cavalry formation will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float CavFormationRadiusMultiplier = 2f;
+		[ConfigProperty("Archer formation radius multiplier", "Radius of archer formation will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float RangedFormationRadiusMultiplier = 1.7f;
+		[ConfigProperty("Cavalry skirmish radius multiplier", "Radius of cavalry skirmish will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float CavSkirmishRadiusMultiplier = 1.5f;
+		[ConfigProperty("Archer skirmish radius multiplier", "Radius of archer skirmish will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float RangedSkirmishRadiusMultiplier = 1.2f;
+
 		[ConfigProperty("Melee debuff for rambo", "Melee debuff for people in rambo state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
 		public float MeleeDebuffRambo = 0.6f;
 		[ConfigProperty("Distance debuff for rambo", "Distance debuff for people in rambo state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
