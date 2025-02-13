@@ -50,7 +50,8 @@ namespace Alliance.Common.GameModes.BattleRoyale
 				nameof(Config.ShowOfficers),
 				nameof(Config.ShowWeaponTrail),
 				nameof(Config.KillFeedEnabled),
-				nameof(Config.OfficerHPMultip)
+				nameof(Config.OfficerHPMultip),
+				nameof(Config.EnableRaceRestrictionOnStuff)
 			};
 		}
 	}

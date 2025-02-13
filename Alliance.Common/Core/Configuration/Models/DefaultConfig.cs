@@ -78,6 +78,9 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty("Randomize bot appearance", "Randomize bots appearance. If false, all bots will have the same appearance.", ConfigValueType.Bool)]
 		public bool RandomizeAppearance = true;
 
+		[ConfigProperty("Enable Race Restriction On Stuff", "Stuff belonging to a race cannot be pickup by other race.", ConfigValueType.Bool)]
+		public bool EnableRaceRestrictionOnStuff = true;
+
 		[ConfigProperty("Show flag markers", "Show flags markers when pressing alt.", ConfigValueType.Bool)]
 		public bool ShowFlagMarkers = true;
 		[ConfigProperty("Show score", "Enable score UI on top of the screen.", ConfigValueType.Bool)]
@@ -135,6 +138,15 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int NbSkirmMax = 4;
 		[ConfigProperty("Minimum alive troops for formation", "Minimum number of troops alive for the formation system to be enabled.", ConfigValueType.Integer, 0, 200)]
 		public int MinPlayerForm = 15;
+
+		[ConfigProperty("Cavalry formation radius multiplier", "Radius of cavalry formation will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float CavFormationRadiusMultiplier = 2f;
+		[ConfigProperty("Archer formation radius multiplier", "Radius of archer formation will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float RangedFormationRadiusMultiplier = 1.7f;
+		[ConfigProperty("Cavalry skirmish radius multiplier", "Radius of cavalry skirmish will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float CavSkirmishRadiusMultiplier = 1.5f;
+		[ConfigProperty("Archer skirmish radius multiplier", "Radius of archer skirmish will be increase by this multiplicator (Base on infantry radius).", ConfigValueType.Float, 0.1f, 5)]
+		public float RangedSkirmishRadiusMultiplier = 1.2f;
 
 		[ConfigProperty("Melee debuff for rambo", "Melee debuff for people in rambo state. Range from 0 (hardest) to 1 (no effect).", ConfigValueType.Float, 0f, 1f)]
 		public float MeleeDebuffRambo = 0.6f;

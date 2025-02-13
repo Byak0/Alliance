@@ -19,7 +19,8 @@ namespace Alliance.Common.Core.ExtendedXML.Models
         public int SoundDistance { get; private set; }
         public float Cooldown { get; private set; }
         public int UseLimit { get; private set; }
-        public List<ItemEffect> Effects { get; private set; }
+		public string Race_condition { get; private set; }
+		public List<ItemEffect> Effects { get; private set; }
 
         public ExtendedItem()
         {
@@ -37,7 +38,9 @@ namespace Alliance.Common.Core.ExtendedXML.Models
             Cooldown = XmlHelper.ReadFloat(node, "cooldown");
             SoundDistance = XmlHelper.ReadInt(node, "sound_distance");
             UseLimit = XmlHelper.ReadInt(node, "use_limit");
-            Effects = new List<ItemEffect>();
+			Race_condition = XmlHelper.ReadString(node, "race_condition");
+			Effects = new List<ItemEffect>();
+
             if (node.FirstChild?.Name == "Effects")
             {
                 foreach (XmlNode child in node.FirstChild.ChildNodes)

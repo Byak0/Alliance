@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.AgentsCount.Views;
+using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -20,10 +21,10 @@ namespace Alliance.Client.GameModes.BattleRoyale
 			{
 				// Custom views
 				new AgentsCountView(),
+				new AgentStatusView(),
 
 				// Native FFA views
 				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
-				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, true),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});

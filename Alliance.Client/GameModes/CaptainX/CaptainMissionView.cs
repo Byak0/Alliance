@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
+using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -22,10 +23,10 @@ namespace Alliance.Client.GameModes.CaptainX
 				// Custom views
 				new EquipmentSelectionView(),
 				new FormationStatusView(),
+				new AgentStatusView(),
 
 				// Native captain views
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
-				ViewCreator.CreateMissionAgentStatusUIHandler(mission),
 				MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
 				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
 				ViewCreator.CreateOrderTroopPlacerView(mission),

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
+
 
 namespace Alliance.Client.GameModes
 {
@@ -16,12 +18,14 @@ namespace Alliance.Client.GameModes
 		{
 			return new List<MissionView>()
 			{
+				// Custom views
+				new MissionGauntletMainAgentEquipmentControllerViewCustom(),
+				
 				// Default views from native
 				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
 				MultiplayerViewCreator.CreateMissionMultiplayerPreloadView(mission),
 				MultiplayerViewCreator.CreateMissionKillNotificationUIHandler(),
-				ViewCreator.CreateMissionMainAgentEquipmentController(mission),
 				ViewCreator.CreateMissionMainAgentCheerBarkControllerView(mission),
 				MultiplayerViewCreator.CreateMissionMultiplayerEscapeMenu(gameMode),
 				MultiplayerViewCreator.CreatePollProgressUIHandler(),
