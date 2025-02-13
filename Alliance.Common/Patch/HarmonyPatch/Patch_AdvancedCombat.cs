@@ -190,6 +190,13 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		{
 			if (victimAgent != null && victimAgent.IsTroll() && !attackerAgent.IsEnt() && !attackerAgent.IsTroll())
 			{
+				// Prevent "knockback" on charge by ignoring low damage
+				if (attackerAgent.IsMount && attackCollisionData.InflictedDamage < 25)
+				{
+					attackCollisionData.InflictedDamage = 0;
+					return;
+				}
+
 				bool backAttack = IsBackAttack(attackerAgent, victimAgent);
 				bool criticalHit = false;
 				List<BoneBodyPartType> strongParts = new List<BoneBodyPartType>() {
