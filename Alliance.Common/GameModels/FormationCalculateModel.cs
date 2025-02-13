@@ -49,7 +49,7 @@ namespace Alliance.Common.GameModels
 
 		private static bool IsCavalryInFormation(Agent player, bool ownFormationOnly = true)
 		{
-			return IsInFormation(player, ownFormationOnly, 2f);
+			return IsInFormation(player, ownFormationOnly, Config.Instance.CavFormationRadiusMultiplier);
 		}
 
 		private static bool IsInfantryInFormation(Agent player, bool ownFormationOnly = true)
@@ -59,13 +59,13 @@ namespace Alliance.Common.GameModels
 
 		private static bool IsRangedInFormation(Agent player, bool ownFormationOnly = true)
 		{
-			return IsInFormation(player, ownFormationOnly, 1.7f);
+			return IsInFormation(player, ownFormationOnly, Config.Instance.RangedFormationRadiusMultiplier);
 		}
 
 
 		private static bool IsCavalryInSkirmish(Agent player, bool ownFormationOnly = true)
 		{
-			return IsInSkirmish(player, ownFormationOnly, 1.5f);
+			return IsInSkirmish(player, ownFormationOnly, Config.Instance.CavSkirmishRadiusMultiplier);
 		}
 
 		private static bool IsInfantryInSkirmish(Agent player, bool ownFormationOnly = true)
@@ -75,7 +75,7 @@ namespace Alliance.Common.GameModels
 
 		private static bool IsRangedInSkirmish(Agent player, bool ownFormationOnly = true)
 		{
-			return IsInSkirmish(player, ownFormationOnly, 1.2f);
+			return IsInSkirmish(player, ownFormationOnly, Config.Instance.RangedSkirmishRadiusMultiplier);
 		}
 
 		private static bool IsInFormation(Agent player, bool ownFormationOnly, float radiusMultiplier)
