@@ -34,6 +34,10 @@ namespace Alliance.Common.GameModels
 			}
 			else if (attackInformation.AttackerAgent.IsTroll() || attackInformation.AttackerAgent.IsEnt())
 			{
+				if (attackInformation.VictimAgent.IsMount) // Make  sure to one shot mounts
+				{
+					return Math.Max(baseDamage, attackInformation.VictimAgent.Health);
+				}
 				if (weapon.IsEmpty) // Fist damage
 				{
 					return baseDamage * 40;
