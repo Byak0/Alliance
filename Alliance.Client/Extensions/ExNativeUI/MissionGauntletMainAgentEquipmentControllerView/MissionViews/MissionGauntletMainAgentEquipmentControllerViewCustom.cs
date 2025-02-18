@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -124,8 +124,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 				this._isCurrentFocusedItemInteractable = isInteractable;
 				if (!spawnedItemEntity.WeaponCopy.IsEmpty)
 				{
-					// Check if Item have a race restriction and prevent picking up objet if needed
 					Agent main = Agent.Main;
+					// Check if Item have a race restriction and prevent picking up objet if needed (Custom)
 					ItemObject objecttampon = spawnedItemEntity.WeaponCopy.Item;
 					ExtendedItem itemEx = objecttampon.GetExtendedItem();
 					IsRaceConditionRespected(main, itemEx);
@@ -137,6 +137,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 					{
 						this._isFocusedOnEquipment = true;
 					}
+					// End of custom code, native end always end with his._isFocusedOnEquipment = true
 					this._focusedWeaponItem = spawnedItemEntity;
 					this._dataSource.SetCurrentFocusedWeaponEntity(this._focusedWeaponItem);
 				}
@@ -398,6 +399,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 			this._gauntletLayer.UIContext.ContextAlpha = 1f;
 		}
 
+		// Custom new fonction
 		private void IsRaceConditionRespected(Agent main, ExtendedItem itemEx)
 		{
 			if (itemEx == null || itemEx.Race_condition == "" )
