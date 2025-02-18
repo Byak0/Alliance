@@ -721,31 +721,31 @@ type="collision_infos">
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_2"
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_3"
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_4"
 					particle="psys_game_hoof_default_col"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_5"
 					particle="psys_game_hoof_default_col"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_dirts"
+					sound="LOTR/Monsters/Warg/run_dirts"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"
@@ -803,31 +803,31 @@ type="collision_infos">
 					particle="psys_game_hoof_grass_col_s"
 					trail_particle="psys_game_hoof_dust_on_grass"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+					sound="LOTR/Monsters/Warg/footstep_grass" />
 				<collision_effect
 					effect_type="pace_2"
 					particle="psys_game_hoof_grass_col_s"
 					trail_particle="psys_game_hoof_dust_on_grass"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+					sound="LOTR/Monsters/Warg/footstep_grass" />
 				<collision_effect
 					effect_type="pace_3"
 					particle="psys_game_hoof_grass_col_s"
 					trail_particle="psys_game_hoof_dust_on_grass"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+					sound="LOTR/Monsters/Warg/footstep_grass" />
 				<collision_effect
 					effect_type="pace_4"
 					particle="psys_game_hoof_grass_col"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footstep_grass" />
+					sound="LOTR/Monsters/Warg/footstep_grass" />
 				<collision_effect
 					effect_type="pace_5"
 					particle="psys_game_hoof_grass_col"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_grasss"
+					sound="LOTR/Monsters/Warg/run_grasss"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"
@@ -857,31 +857,31 @@ type="collision_infos">
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+					sound="LOTR/Monsters/Warg/footsteps_rock" />
 				<collision_effect
 					effect_type="pace_2"
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+					sound="LOTR/Monsters/Warg/footsteps_rock" />
 				<collision_effect
 					effect_type="pace_3"
 					particle="psys_game_hoof_default_col_s"
 					trail_particle="psys_game_hoof_dust_on_default"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+					sound="LOTR/Monsters/Warg/footsteps_rock" />
 				<collision_effect
 					effect_type="pace_4"
 					particle="psys_game_hoof_stone_col"
 					trail_particle="psys_game_hoof_dust_on_stone"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_rock" />
+					sound="LOTR/Monsters/Warg/footsteps_rock" />
 				<collision_effect
 					effect_type="pace_5"
 					particle="psys_game_hoof_stone_col"
 					trail_particle="psys_game_hoof_dust_on_stone"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_rocks"
+					sound="LOTR/Monsters/Warg/run_rocks"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"
@@ -911,31 +911,31 @@ type="collision_infos">
 					particle="psys_game_hoof_sand_col_s"
 					trail_particle="psys_game_hoof_dust"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+					sound="LOTR/Monsters/Warg/footsteps_snow" />
 				<collision_effect
 					effect_type="pace_2"
 					particle="psys_game_hoof_sand_col_s"
 					trail_particle="psys_game_hoof_dust"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+					sound="LOTR/Monsters/Warg/footsteps_snow" />
 				<collision_effect
 					effect_type="pace_3"
 					particle="psys_game_hoof_sand_col_s"
 					trail_particle="psys_game_hoof_dust"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+					sound="LOTR/Monsters/Warg/footsteps_snow" />
 				<collision_effect
 					effect_type="pace_4"
 					particle="psys_game_hoof_sand_col"
 					trail_particle="psys_game_hoof_dust"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_snow" />
+					sound="LOTR/Monsters/Warg/footsteps_snow" />
 				<collision_effect
 					effect_type="pace_5"
 					particle="psys_game_hoof_sand_col"
 					trail_particle="psys_game_hoof_dust"
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_snows"
+					sound="LOTR/Monsters/Warg/run_snows"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"
@@ -989,31 +989,31 @@ type="collision_infos">
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_2"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_3"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_4"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps" />
+					sound="LOTR/Monsters/Warg/footsteps" />
 				<collision_effect
 					effect_type="pace_5"
 					particle=""
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_rocks"
+					sound="LOTR/Monsters/Warg/run_rocks"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"
@@ -1049,31 +1049,31 @@ type="collision_infos">
 					particle="psys_game_hoof_water_col_s"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+					sound="LOTR/Monsters/Warg/footsteps_water" />
 				<collision_effect
 					effect_type="pace_2"
 					particle="psys_game_hoof_water_col_s"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+					sound="LOTR/Monsters/Warg/footsteps_water" />
 				<collision_effect
 					effect_type="pace_3"
 					particle="psys_game_hoof_water_col_s"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+					sound="LOTR/Monsters/Warg/footsteps_water" />
 				<collision_effect
 					effect_type="pace_4"
 					particle="psys_game_hoof_water_coll"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/footsteps_water" />
+					sound="LOTR/Monsters/Warg/footsteps_water" />
 				<collision_effect
 					effect_type="pace_5"
 					particle="psys_game_hoof_water_coll"
 					trail_particle=""
 					decal=""
-					sound="LOTR/Isengard/Voice/Warg/run_waters"
+					sound="LOTR/Monsters/Warg/run_waters"
 					one_shot="true" />
 				<collision_effect
 					effect_type="jump"

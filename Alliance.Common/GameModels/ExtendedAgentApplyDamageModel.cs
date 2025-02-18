@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alliance.Common.Core.Utils;
+using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -31,13 +32,23 @@ namespace Alliance.Common.GameModels
 				// Ensure baseDamage does not exceed thrustDamage
 				baseDamage = Math.Min(baseDamage, thrustDamage);
 			}
+			else if (attackInformation.AttackerAgent.IsTroll() || attackInformation.AttackerAgent.IsEnt())
+			{
+				if (attackInformation.VictimAgent.IsMount) // Make  sure to one shot mounts
+				{
+					return Math.Max(baseDamage, attackInformation.VictimAgent.Health);
+				}
+				if (weapon.IsEmpty) // Fist damage
+				{
+					return baseDamage * 40;
+				}
+				if (collisionData.AttackBlockedWithShield) // Make sure to one shot shields
+				{
+					return Math.Max(baseDamage, attackInformation.VictimShield.ModifiedMaxHitPoints);
+				}
+				return Math.Max(attackCollisionData.BaseMagnitude * 8, baseDamage);
+			}
 			return baseDamage;
-
-			//if (weapon.IsEmpty && (attackInformation.AttackerAgentCharacter?.Name.ToString().ToLower().Contains("troll") ?? false))
-			//{
-			//    return baseDamage * 100;
-			//}
-			//return baseDamage;
 		}
 
 		public override float CalculateAlternativeAttackDamage(BasicCharacterObject attackerCharacter, WeaponComponentData weapon)
@@ -51,7 +62,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool DecideCrushedThrough(Agent attackerAgent, Agent defenderAgent, float totalAttackEnergy, Agent.UsageDirection attackDirection, StrikeType strikeType, WeaponComponentData defendItem, bool isPassiveUsage)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll")) return true;
+			if ((attackerAgent.IsTroll() || attackerAgent.IsEnt()) && !defenderAgent.HasShieldCached) return true;
 
 			EquipmentIndex equipmentIndex = attackerAgent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
 			if (equipmentIndex == EquipmentIndex.None)
@@ -73,19 +84,19 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponDismount(Agent attackerAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll")) return true;
+			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
 
 			return MBMath.IsBetween((int)blow.VictimBodyPart, 0, 6) && (blow.StrikeType == StrikeType.Swing && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanHook) || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanDismount));
 		}
 
 		public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
 		{
-			if (defenderAgent.Name.ToLower().Contains("troll"))
+			if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
 			{
 				attackerStunMultiplier = 1f;
 				defenderStunMultiplier = 0f;
 			}
-			else if (attackerAgent.Name.ToLower().Contains("troll"))
+			else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
 			{
 				attackerStunMultiplier = 0f;
 				defenderStunMultiplier = 1f;
@@ -99,7 +110,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponKnockback(Agent attackerAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll")) return true;
+			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
 
 			AttackCollisionData attackCollisionData = collisionData;
 			return MBMath.IsBetween((int)attackCollisionData.VictimHitBodyPart, 0, 6) && !attackerWeapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanKnockDown) && (attackerWeapon.IsConsumable || (blow.BlowFlag & BlowFlags.CrushThrough) != BlowFlags.None || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.WideGrip));
@@ -107,7 +118,8 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponKnockDown(Agent attackerAgent, Agent victimAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll")) return true;
+			if (victimAgent.IsTroll() || victimAgent.IsEnt()) return false;
+			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
 
 			if (attackerWeapon.WeaponClass == WeaponClass.Boulder)
 			{
@@ -190,6 +202,10 @@ namespace Alliance.Common.GameModels
 			{
 				managedParametersEnum = ManagedParametersEnum.DamageInterruptAttackThresholdBlunt;
 			}
+			if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
+			{
+				return 100f;
+			}
 			return ManagedParameters.Instance.GetManagedParameter(managedParametersEnum);
 		}
 
@@ -205,11 +221,9 @@ namespace Alliance.Common.GameModels
 
 		public override float CalculateShieldDamage(in AttackInformation attackInformation, float baseDamage)
 		{
-			baseDamage *= 1.25f;
-			MissionMultiplayerFlagDomination missionBehavior = Mission.Current.GetMissionBehavior<MissionMultiplayerFlagDomination>();
-			if (missionBehavior != null && missionBehavior.GetMissionType() == MultiplayerGameType.Captain)
+			if (attackInformation.AttackerAgent.IsTroll() || attackInformation.AttackerAgent.IsEnt())
 			{
-				return baseDamage * 0.5f;
+				return Math.Min(baseDamage * 50, attackInformation.VictimShield.ModifiedMaxHitPoints);
 			}
 			return baseDamage;
 		}
@@ -294,12 +308,12 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponIgnoreFriendlyFireChecks(WeaponComponentData weapon)
 		{
-			return weapon != null && weapon.IsConsumable && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanPenetrateShield) && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.MultiplePenetration);
+			return weapon != null && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanPenetrateShield) && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.MultiplePenetration);
 		}
 
 		public override bool DecideAgentShrugOffBlow(Agent victimAgent, AttackCollisionData collisionData, in Blow blow)
 		{
-			if (victimAgent.Name.ToLower().Contains("troll"))
+			if (victimAgent.IsTroll() || victimAgent.IsEnt())
 			{
 				return true;
 			}
@@ -309,7 +323,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool DecideAgentDismountedByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll"))
+			if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
 			{
 				return true;
 			}
@@ -319,7 +333,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool DecideAgentKnockedBackByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (victimAgent.Name.ToLower().Contains("troll"))
+			if (victimAgent.IsTroll() || victimAgent.IsEnt())
 			{
 				return false;
 			}
@@ -329,11 +343,11 @@ namespace Alliance.Common.GameModels
 
 		public override bool DecideAgentKnockedDownByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (victimAgent.Name.ToLower().Contains("troll"))
+			if (victimAgent.IsTroll() || victimAgent.IsTroll())
 			{
 				return false;
 			}
-			else if (attackerAgent.Name.ToLower().Contains("troll"))
+			else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
 			{
 				return true;
 			}
@@ -343,7 +357,7 @@ namespace Alliance.Common.GameModels
 
 		public override bool DecideMountRearedByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (attackerAgent.Name.ToLower().Contains("troll"))
+			if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
 			{
 				return true;
 			}

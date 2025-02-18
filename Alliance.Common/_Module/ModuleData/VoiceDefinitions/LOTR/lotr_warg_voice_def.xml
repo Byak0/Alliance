@@ -7,27 +7,27 @@
 		max_pitch_multiplier="1.05">
 		<voice
 			type="Grunt"
-			path="LOTR/Isengard/Voice/Warg/grunts" />
+			path="LOTR/Monsters/Warg/grunts" />
 		<voice
 			type="Jump"
-			path="LOTR/Isengard/Voice/Warg/attacks" />
+			path="LOTR/Monsters/Warg/attacks" />
 		<voice
 			type="Yell"
-			path="LOTR/Isengard/Voice/Warg/howlss" />
+			path="LOTR/Monsters/Warg/howlss" />
 		<voice
 			type="Neigh"
-			path="LOTR/Isengard/Voice/Warg/barks" />
+			path="LOTR/Monsters/Warg/barks" />
 		<voice
 			type="Idle"
-			path="LOTR/Isengard/Voice/Warg/grunts" />
+			path="LOTR/Monsters/Warg/grunts" />
 		<voice
 			type="Pain"
-			path="LOTR/Isengard/Voice/Warg/hits" />
+			path="LOTR/Monsters/Warg/hits" />
 		<voice
 			type="Death"
-			path="LOTR/Isengard/Voice/Warg/dies" />
+			path="LOTR/Monsters/Warg/dies" />
 		<voice
 			type="Collide"
-			path="LOTR/Isengard/Voice/Warg/hits" />
+			path="LOTR/Monsters/Warg/hits" />
 	</voice_definition>
 </voice_definitions>

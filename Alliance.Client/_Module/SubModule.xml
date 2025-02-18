@@ -33,16 +33,10 @@
       <XmlName id="BasicCultures" path="Cultures/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="BasicCultures" path="Cultures/SOP" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="CharactersExtended" path="CharactersExtended/LOTR" />
     </XmlNode>
     <XmlNode>
       <XmlName id="CharactersExtended" path="CharactersExtended/Native" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="CharactersExtended" path="CharactersExtended/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="Monsters" path="Monsters/LOTR" />
@@ -54,16 +48,10 @@
       <XmlName id="MPCharacters" path="Characters/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="MPCharacters" path="Characters/SOP" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="MPClassDivisions" path="MPClassDivisions/LOTR" />
     </XmlNode>
     <XmlNode>
       <XmlName id="MPClassDivisions" path="MPClassDivisions/Native" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="MPClassDivisions" path="MPClassDivisions/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="CraftingPieces" path="CraftingPieces/LOTR" />
@@ -72,16 +60,10 @@
       <XmlName id="CraftingPieces" path="CraftingPieces/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="CraftingPieces" path="CraftingPieces/SOP" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="WeaponDescriptions" path="WeaponDescriptions/LOTR" />
     </XmlNode>
     <XmlNode>
       <XmlName id="WeaponDescriptions" path="WeaponDescriptions/Native" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="WeaponDescriptions" path="WeaponDescriptions/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="CraftingTemplates" path="CraftingTemplates/LOTR" />
@@ -90,13 +72,13 @@
       <XmlName id="CraftingTemplates" path="CraftingTemplates/Native" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="CraftingTemplates" path="CraftingTemplates/SOP" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="Items" path="Items/LOTR" />
     </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items/Native" />
+    </XmlNode>
+    <XmlNode>
+      <XmlName id="Items" path="Items/NativeSP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items/SOP" />
@@ -106,9 +88,6 @@
     </XmlNode>
     <XmlNode>
       <XmlName id="ItemsExtended" path="ItemsExtended/Native" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="ItemsExtended" path="ItemsExtended/SOP" />
     </XmlNode>
   </Xmls>
 </Module>

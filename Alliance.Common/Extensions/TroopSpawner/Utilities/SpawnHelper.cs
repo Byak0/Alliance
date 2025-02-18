@@ -159,6 +159,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
+				agent.HealthLimit = Math.Max(classHealth, character.MaxHitPoints());
 				agent.HealthLimit += bonusHealth;
 				agent.Health = agent.HealthLimit;
 
@@ -277,12 +280,14 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
+				agent.HealthLimit += bonusHealth;
 				// Additional health for officers
 				if (networkPeer.IsOfficer())
 				{
 					agent.HealthLimit *= Config.Instance.OfficerHPMultip;
 				}
-				agent.HealthLimit += bonusHealth;
 				agent.Health = agent.HealthLimit;
 
 				agent.WieldInitialWeapons();

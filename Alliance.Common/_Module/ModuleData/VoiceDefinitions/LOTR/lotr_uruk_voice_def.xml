@@ -53,7 +53,7 @@
 			face_anim="victory" />
 		<voice
 			type="HorseRally"
-			path="LOTR/Isengard/Voice/Uruk/go"
+			path="LOTR/Isengard/Voice/Uruk/gos"
 			face_anim="yeah" />
 		<voice
 			type="HorseStop"
@@ -90,7 +90,7 @@
 			face_anim="attack" />
 		<voice
 			type="Move"
-			path="LOTR/Isengard/Voice/Uruk/go"
+			path="LOTR/Isengard/Voice/Uruk/gos"
 			face_anim="move" />
 		<voice
 			type="Retreat"

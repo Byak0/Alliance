@@ -99,6 +99,9 @@
       <XmlName id="Items" path="Items/Native" />
     </XmlNode>
     <XmlNode>
+      <XmlName id="Items" path="Items/NativeSP" />
+    </XmlNode>
+    <XmlNode>
       <XmlName id="Items" path="Items/SOP" />
     </XmlNode>
     <XmlNode>

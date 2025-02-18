@@ -118,7 +118,7 @@
 		multiplayer_item="true"
 		id="rohan_axe_1"
 		name="Rohan regular axe"
-		crafting_template="RohanOneHandedAxe"
+		crafting_template="lotr_OneHandedAxe"
 		culture="Culture.vlandia"
 		modifier_group="axe">
 		<Pieces>
@@ -214,7 +214,7 @@
 	<CraftedItem multiplayer_item="true"
 									 id="rohan_spear_1"
 									 name="{=WQksMqMR}Rohan banner spear"
-									 crafting_template="RohanTwoHandedPolearm"
+									 crafting_template="lotr_TwoHandedPolearm"
 									 culture="Culture.rohan">
 		<Pieces>
 			<Piece id="rohan_spear_1_head"
@@ -234,7 +234,7 @@
 	<CraftedItem multiplayer_item="true"
 						 id="rohan_spear_2"
 						 name="{=WQksMqMR}Rohan spear"
-						 crafting_template="RohanTwoHandedPolearm"
+						 crafting_template="lotr_TwoHandedPolearm"
 						 culture="Culture.rohan">
 		<Pieces>
 			<Piece id="rohan_spear_2_head"
@@ -250,19 +250,19 @@
 	</CraftedItem>
 
 	<!-- Rohan Swords -->
-	<CraftedItem multiplayer_item="true" id="rohan_sword_1" name="Herugrim" crafting_template="rohan_one_handed" culture="Culture.neutral_culture">
+	<CraftedItem multiplayer_item="true" id="rohan_sword_1" name="Herugrim" crafting_template="lotr_OneHandedSword" culture="Culture.neutral_culture">
 		<Pieces>
 			<Piece id="rohan_blade_1" Type="Blade" scale_factor="140" />
 			<Piece id="rohan_guard_1" Type="Guard" scale_factor="110" />
 			<Piece id="rohan_handle_1" Type="Handle" scale_factor="180" />
 		</Pieces>
 	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="rohan_sword_2" name="Rohirrim sword" crafting_template="rohan_one_handed_2" culture="Culture.neutral_culture">
+	<CraftedItem multiplayer_item="true" id="rohan_sword_2" name="Rohirrim sword" crafting_template="lotr_OneHandedSword" culture="Culture.neutral_culture">
 		<Pieces>
-			<Piece id="mp_empire_paramerion_blade" Type="Blade" scale_factor="91" />
-			<Piece id="mp_sturgia_northern_sword_guard" Type="Guard" scale_factor="80" />
-			<Piece id="mp_empire_pugio_grip" Type="Handle" scale_factor="90" />
-			<Piece id="mp_sturgia_northern_sword_pommel" Type="Pommel" scale_factor="80"  />
+			<Piece id="empire_blade_5" Type="Blade" scale_factor="91" />
+			<Piece id="sturgian_guard_1" Type="Guard" scale_factor="80" />
+			<Piece id="sturgian_grip_4" Type="Handle" scale_factor="90" />
+			<Piece id="sturgian_pommel_3" Type="Pommel" scale_factor="80"  />
 		</Pieces>
 	</CraftedItem>
 
@@ -276,33 +276,10 @@
 			<Piece id="spear_blade_16"
 						 Type="Blade"
 						 scale_factor="100" />
-			<Piece id="default_polearm_guard"
-						 Type="Guard"
-						 scale_factor="100" />
 			<Piece id="spear_handle_11"
 						 Type="Handle"
 						 scale_factor="100" />
 			<Piece id="spear_pommel_5"
-						 Type="Pommel"
-						 scale_factor="100" />
-		</Pieces>
-	</CraftedItem>
-	<CraftedItem multiplayer_item="true" id="rohan_javlin"
-								 name="Rohirrim javlin"
-								 crafting_template="Javelin"
-								 culture="Culture.rohan"
-								 modifier_group="spear_dart_throwing">
-		<Pieces>
-			<Piece id="mp_javelin_blade"
-						 Type="Blade"
-						 scale_factor="100" />
-			<Piece id="mp_default_polearm_guard"
-						 Type="Guard"
-						 scale_factor="100" />
-			<Piece id="mp_battania_javelin_handle"
-						 Type="Handle"
-						 scale_factor="100" />
-			<Piece id="mp_spear_pommel_12"
 						 Type="Pommel"
 						 scale_factor="100" />
 		</Pieces>
@@ -418,7 +395,8 @@
 							swing_damage_type="Blunt"
 							item_usage="banner"
 							physics_material="metal_weapon"
-							position="0.0, 0.0, -0.8"></Banner>
+							position="0.0, 0.0, -0.8">
+			</Banner>
 		</ItemComponent>
 		<Flags DropOnWeaponChange="true"
 					 ForceAttachOffHandPrimaryItemBone="true"
@@ -451,7 +429,8 @@
 							swing_damage_type="Blunt"
 							item_usage="banner"
 							physics_material="metal_weapon"
-							position="0.0, 0.0, -0.8"></Banner>
+							position="0.0, 0.0, -0.8">
+			</Banner>
 		</ItemComponent>
 		<Flags DropOnWeaponChange="true"
 					 ForceAttachOffHandPrimaryItemBone="true"
@@ -462,7 +441,7 @@
 	<CraftedItem multiplayer_item="true"
 				 id="rohan_banner"
 				 name="{=ArSpSu5}Rohan banner"
-				 crafting_template="foa_TwoHandedPolearm"
+				 crafting_template="lotr_TwoHandedPolearm"
 				 culture="Culture.rohan"
 				 modifier_group="polearm">
 		<Pieces>

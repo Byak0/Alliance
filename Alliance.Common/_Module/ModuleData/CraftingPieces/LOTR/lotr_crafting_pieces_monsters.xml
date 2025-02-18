@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- ************************* -->
+	<!-- ******  Monsters  ******* -->
+	<!-- ************************* -->
+	<!-- Cave troll hammer -->
+	<CraftingPiece id="cavetroll_hammer_head"
+							 name="{=hda0TrHaHe4}Troll hammer head"
+							 tier="5"
+							 piece_type="Blade"
+							 mesh="troll_hammer_head"
+							 length="73"
+							 weight="1.3"
+							 excluded_item_usage_features="thrust"
+							 is_default="true">
+		<BladeData stack_amount="3"
+               blade_length="25"
+               blade_width="25"
+               physics_material="metal_weapon"
+               body_name="bo_troll_hammer">
+			<Swing damage_type="Blunt"
+             damage_factor="5" />
+		</BladeData>
+		<Flags>
+			<Flag name="CanCrushThrough" />
+			<Flag name="CanKnockDown" />
+			<Flag name="BonusAgainstShield" />
+			<Flag name="CanDismount" />
+		</Flags>
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="cavetroll_hammer_handle"
+                 name="{=hda0TrHaHa4}Spiked Troll Handle"
+                 tier="5"
+                 piece_type="Handle"
+                 mesh="troll_hammer_handle"
+                 length="125"
+                 weight="0.5">
+		<BuildData piece_offset="10"
+							 next_piece_offset="5" />
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+
+	<!-- Olog hammer -->
+	<CraftingPiece id="olog_hammer_head"
+							 name="{=hda0TrHaHe4}Olog hammer head"
+							 tier="5"
+							 piece_type="Blade"
+							 mesh="olog_hammer_head"
+							 length="53"
+							 weight="0.7"
+							 excluded_item_usage_features="thrust"
+							 is_default="true">
+		<BladeData stack_amount="3"
+               blade_length="25"
+               blade_width="25"
+               physics_material="metal_weapon"
+               body_name="bo_olog_hammer">
+			<Swing damage_type="Blunt"
+             damage_factor="5" />
+		</BladeData>
+		<Flags>
+			<Flag name="CanCrushThrough" />
+			<Flag name="CanKnockDown" />
+			<Flag name="BonusAgainstShield" />
+			<Flag name="CanDismount" />
+		</Flags>
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece id="olog_hammer_handle"
+                 name="{=hda0TrHaHa4}Olog hammer handle"
+                 tier="5"
+                 piece_type="Handle"
+                 mesh="olog_hammer_handle"
+                 length="230"
+                 weight="0.25">
+		<BuildData piece_offset="10" 
+							 next_piece_offset="42" />
+		<Materials>
+			<Material id="Iron3" count="2" />
+		</Materials>
+	</CraftingPiece>
+</CraftingPieces>

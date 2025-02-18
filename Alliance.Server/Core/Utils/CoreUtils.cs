@@ -30,7 +30,7 @@ namespace Alliance.Server.Core.Utils
 				return;
 			};
 
-			if (victim.Health <= 0) return;
+			if (victim.Health <= 0 || victim.IsFadingOut()) return;
 
 			// Retrieve peer from either agent or rider agent
 			MissionPeer peer = attacker?.MissionPeer != null ? attacker.MissionPeer : attacker.RiderAgent?.MissionPeer != null ? attacker.RiderAgent.MissionPeer : null;

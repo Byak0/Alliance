@@ -57,7 +57,9 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
 			patchSuccess &= Patch_AddTeam.Patch();
 			patchSuccess &= Patch_GameNetworkMessage.Patch();
+			patchSuccess &= Patch_AdvancedCombat.Patch();
 			patchSuccess &= Patch_MissionPeer.Patch();
+			patchSuccess &= Patch_ActionSetCode.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

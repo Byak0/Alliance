@@ -1,0 +1,13 @@
+<ItemsExtended>
+
+	<ItemExtended
+		id="item.cave_troll_hammer"
+		race_condition="troll,olog,olog2">
+	</ItemExtended>
+	
+	<ItemExtended
+		id="item.olog_hammer"
+		race_condition="troll,olog,olog2">
+	</ItemExtended>
+
+</ItemsExtended>

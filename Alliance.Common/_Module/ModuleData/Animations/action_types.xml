@@ -3,6 +3,9 @@
 	<action name="act_car_pilot" />
 	<action name="act_coche_chariot" />
 	<action name="act_blow_horn" />
+	<action name="act_taunt_rage_1" />
+	<action name="act_taunt_rage_2" />
+	<action name="act_taunt_rage_3" />
 
 	<!-- Warg -->
 	<action name="act_warg_attack_stand" type="actt_mount_strike" />
