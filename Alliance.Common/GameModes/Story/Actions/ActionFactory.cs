@@ -31,6 +31,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new ConditionalAction();
 		}
 
+		public virtual ShowMessageAction ShowMessageAction()
+		{
+			return new ShowMessageAction();
+		}
+
 		public virtual ShowResultScreenAction ShowResultScreenAction()
 		{
 			return new ShowResultScreenAction();
