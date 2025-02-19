@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -103,6 +104,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			if (Scenario == null || Act == null) return;
 			base.OnMissionTick(dt);
+			CheckForPlayersSpawningAsBots();
 			if (EnableStateChange)
 			{
 				CheckScenarioState(dt);
@@ -424,6 +426,87 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public override MultiplayerGameType GetMissionType()
 		{
 			return MultiplayerGameType.Captain;
+		}
+
+		public static bool CheckForPlayersSpawningAsBots()
+		{
+			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
+			{
+				if (networkCommunicator.IsSynchronized)
+				{
+					MissionPeer component = networkCommunicator.GetComponent<MissionPeer>();
+
+					if (component != null && component.ControlledAgent == null && component.Team != null && component.SpawnCountThisRound > 0)
+					{
+						if (!component.HasSpawnTimerExpired && component.SpawnTimer.Check(Mission.Current.CurrentTime))
+						{
+							component.HasSpawnTimerExpired = true;
+						}
+						if (component.HasSpawnTimerExpired && component.WantsToSpawnAsBot)
+						{
+							Agent followedAgent = component.FollowedAgent;
+
+							// Check if the followed agent is in a formation controlled by the player
+							if (followedAgent != null && followedAgent.IsActive() && followedAgent.IsAIControlled && followedAgent.Formation != null && followedAgent.Health > 0
+								&& FormationControlModel.Instance.GetControlledFormations(component).Contains(followedAgent.Formation.FormationIndex))
+							{
+								// Update player controlled formation to target
+								component.ControlledFormation = followedAgent.Formation;
+								ReplaceBotWithPlayer(followedAgent, component);
+								component.WantsToSpawnAsBot = false;
+								component.HasSpawnTimerExpired = false;
+							}
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+		public static Agent ReplaceBotWithPlayer(Agent botAgent, MissionPeer missionPeer)
+		{
+			if (!GameNetwork.IsClientOrReplay && botAgent != null)
+			{
+				if (GameNetwork.IsServer)
+				{
+					NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
+					if (!networkPeer.IsServerPeer)
+					{
+						GameNetwork.BeginModuleEventAsServer(networkPeer);
+						GameNetwork.WriteMessage(new ReplaceBotWithPlayer(networkPeer, botAgent.Index, botAgent.Health, botAgent.MountAgent?.Health ?? (-1f)));
+						GameNetwork.EndModuleEventAsServer();
+					}
+				}
+
+				if (botAgent.Formation != null)
+				{
+					botAgent.Formation.PlayerOwner = botAgent;
+				}
+
+				botAgent.OwningAgentMissionPeer = null;
+				botAgent.MissionPeer = missionPeer;
+				botAgent.Formation = missionPeer.ControlledFormation;
+				AgentFlag agentFlags = botAgent.GetAgentFlags();
+				if (!agentFlags.HasAnyFlag(AgentFlag.CanRide))
+				{
+					botAgent.SetAgentFlags(agentFlags | AgentFlag.CanRide);
+				}
+
+				// Prevent BotsUnderControlAlive from going under 0 and causing crash
+				missionPeer.BotsUnderControlAlive = Math.Max(0, missionPeer.BotsUnderControlAlive - 1);
+				GameNetwork.BeginBroadcastModuleEvent();
+				GameNetwork.WriteMessage(new BotsControlledChange(missionPeer.GetNetworkPeer(), missionPeer.BotsUnderControlAlive, missionPeer.BotsUnderControlTotal));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				if (botAgent.Formation != null)
+				{
+					missionPeer.Team.AssignPlayerAsSergeantOfFormation(missionPeer, missionPeer.ControlledFormation.FormationIndex);
+				}
+
+				return botAgent;
+			}
+
+			return null;
 		}
 	}
 }
