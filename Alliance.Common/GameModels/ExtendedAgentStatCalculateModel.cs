@@ -284,6 +284,12 @@ namespace Alliance.Common.GameModels
 			float movespeedMultiplier = 1f;
 			movespeedMultiplier = mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopMovementSpeedMultiplier : mPHeroClassForCharacter.HeroMovementSpeedMultiplier;
 			agentDrivenProperties.MaxSpeedMultiplier = 1.05f * (movespeedMultiplier * (100f / (100f + totalWeightOfWeapons)));
+			float topSpeedReachDuration = (mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopTopSpeedReachDuration : mPHeroClassForCharacter.HeroTopSpeedReachDuration);
+			agentDrivenProperties.TopSpeedReachDuration = topSpeedReachDuration;
+			float managedParameter = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalCombatSpeedMinMultiplier);
+			float managedParameter2 = ManagedParameters.Instance.GetManagedParameter(ManagedParametersEnum.BipedalCombatSpeedMaxMultiplier);
+			float combatMoveSpeedMultiplier = (mPHeroClassForCharacter.IsTroopCharacter(agent.Character) ? mPHeroClassForCharacter.TroopCombatMovementSpeedMultiplier : mPHeroClassForCharacter.HeroCombatMovementSpeedMultiplier);
+			agentDrivenProperties.CombatMaxSpeedMultiplier = managedParameter + (managedParameter2 - managedParameter) * combatMoveSpeedMultiplier;
 
 			int ridingSkill = GetEffectiveSkill(agent, DefaultSkills.Riding);
 			bool weaponIsBow = false;
