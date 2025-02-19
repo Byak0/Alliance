@@ -29,6 +29,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			return new Server_SpawnAgentAction();
 		}
 
+		public override SpawnFormationAction SpawnFormationAction()
+		{
+			return new Server_SpawnFormationAction();
+		}
+
 		public override DamageAgentInZoneAction DamageAgentInZoneAction()
 		{
 			return new Server_DamageAgentInZoneAction();

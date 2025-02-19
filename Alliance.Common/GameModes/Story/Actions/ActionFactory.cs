@@ -56,6 +56,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new SpawnAgentAction();
 		}
 
+		public virtual SpawnFormationAction SpawnFormationAction()
+		{
+			return new SpawnFormationAction();
+		}
+
 		public virtual DamageAgentInZoneAction DamageAgentInZoneAction()
 		{
 			return new DamageAgentInZoneAction();
