@@ -73,7 +73,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 				else
 				{
-					spawnRequest.CompletionSource.SetException(new Exception("Failed to spawn bot."));
+					spawnRequest.CompletionSource.SetCanceled();
 				}
 			}
 		}

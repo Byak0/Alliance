@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Server.Core.Utils;
 using System;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -21,10 +22,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override void Execute()
 		{
-			Spawn();
+			SpawnAsync();
 		}
 
-		private async void Spawn()
+		private async Task SpawnAsync()
 		{
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
@@ -44,24 +45,32 @@ namespace Alliance.Server.GameModes.Story.Actions
 						// Calculate random position in the SpawnZone
 						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.Position, SpawnZone.Radius);
 						MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
-						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position, selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
-						formation = agent.Formation;
+						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position,
+							selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
+						if (agent != null)
+						{
+							formation = agent.Formation;
+						}
+					}
+					catch (OperationCanceledException)
+					{
+						Log("Spawn operation was canceled.", LogLevel.Warning);
+						return;
 					}
 					catch (Exception ex)
 					{
 						Log($"Failed to spawn agent: {ex.Message}", LogLevel.Error);
-						continue;
+						return;
 					}
 				}
 			}
 
-			// Set formation order and disposition
+			// Only update formation if spawn succeeded and formation is not null.
 			if (formation != null)
 			{
 				switch (MoveOrder)
 				{
 					case MoveOrderType.Move:
-						// Calculate random position in the target zone
 						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.Position, Direction.Radius);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 						formation.SetMovementOrder(MovementOrder.MovementOrderMove(target));
