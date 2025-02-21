@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -8,6 +8,7 @@ using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -104,7 +105,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			if (Scenario == null || Act == null) return;
 			base.OnMissionTick(dt);
-			CheckForPlayersSpawningAsBots();
 			if (EnableStateChange)
 			{
 				CheckScenarioState(dt);
@@ -135,6 +135,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					{
 						ChangeState(ActState.InProgress);
 						StartAct();
+						SetStartingGold();
 						SyncObjectives();
 					}
 					break;
@@ -311,9 +312,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				}
 			}
 
-			if (UseGold() && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
+			if (Config.Instance.UseTroopCost && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
 			{
-				if (!victim.IsHuman || !RoundController.IsRoundInProgress || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
+				if (!victim.IsHuman || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
 				{
 					return;
 				}
@@ -418,95 +419,73 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			}
 		}
 
-		public bool UseGold()
+		private async void SetStartingGold()
 		{
-			return Config.Instance.UseTroopCost;
+			await Task.Delay(5000);
+
+			int goldToGive = Config.Instance.StartingGold;
+			List<MissionPeer> commandersAttack = new List<MissionPeer>();
+			List<MissionPeer> commandersDefend = new List<MissionPeer>();
+			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
+			{
+				MissionPeer peer = networkCommunicator?.GetComponent<MissionPeer>();
+				if (peer?.Team == Mission.Current.AttackerTeam)
+				{
+					commandersAttack.Add(peer);
+				}
+				else if (peer?.Team == Mission.Current.DefenderTeam)
+				{
+					commandersDefend.Add(peer);
+				}
+			}
+			SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Defender), commandersAttack);
+			SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Attacker), commandersDefend);
+		}
+
+		private void SplitGoldBetweenPlayers(int goldToGive, List<MissionPeer> players)
+		{
+			if (players.Count < 1) return;
+
+			int amountPerPlayer = goldToGive / players.Count;
+			foreach (MissionPeer peer in players)
+			{
+				Log($"Giving {amountPerPlayer}g to {peer.Name}", LogLevel.Debug);
+				ChangeCurrentGoldForPeer(peer, amountPerPlayer);
+			}
+		}
+
+		public int GetTeamArmyValue(BattleSideEnum side)
+		{
+			int value = 0;
+			int agentsCount;
+
+			if (side == Mission.Current.AttackerTeam.Side)
+			{
+				agentsCount = Mission.Current.AttackerTeam.ActiveAgents.Count;
+				foreach (Agent agent in Mission.Current.AttackerTeam.ActiveAgents)
+				{
+					value += SpawnHelper.GetTroopCost(agent.Character);
+				}
+			}
+			else
+			{
+				agentsCount = Mission.Current.DefenderTeam.ActiveAgents.Count;
+				foreach (Agent agent in Mission.Current.DefenderTeam.ActiveAgents)
+				{
+					value += SpawnHelper.GetTroopCost(agent.Character);
+				}
+			}
+
+			Log($"Value of {side}'s army : {value} * {Config.Instance.GoldMultiplier} ({agentsCount} agents)", LogLevel.Debug);
+
+			value = (int)(value * Config.Instance.GoldMultiplier);
+
+			return value;
 		}
 
 		public override MultiplayerGameType GetMissionType()
 		{
 			return MultiplayerGameType.Captain;
-		}
-
-		public static bool CheckForPlayersSpawningAsBots()
-		{
-			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
-			{
-				if (networkCommunicator.IsSynchronized)
-				{
-					MissionPeer component = networkCommunicator.GetComponent<MissionPeer>();
-
-					if (component != null && component.ControlledAgent == null && component.Team != null && component.SpawnCountThisRound > 0)
-					{
-						if (!component.HasSpawnTimerExpired && component.SpawnTimer.Check(Mission.Current.CurrentTime))
-						{
-							component.HasSpawnTimerExpired = true;
-						}
-						if (component.HasSpawnTimerExpired && component.WantsToSpawnAsBot)
-						{
-							Agent followedAgent = component.FollowedAgent;
-
-							// Check if the followed agent is in a formation controlled by the player
-							if (followedAgent != null && followedAgent.IsActive() && followedAgent.IsAIControlled && followedAgent.Formation != null && followedAgent.Health > 0
-								&& FormationControlModel.Instance.GetControlledFormations(component).Contains(followedAgent.Formation.FormationIndex))
-							{
-								// Update player controlled formation to target
-								component.ControlledFormation = followedAgent.Formation;
-								ReplaceBotWithPlayer(followedAgent, component);
-								component.WantsToSpawnAsBot = false;
-								component.HasSpawnTimerExpired = false;
-							}
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-		public static Agent ReplaceBotWithPlayer(Agent botAgent, MissionPeer missionPeer)
-		{
-			if (!GameNetwork.IsClientOrReplay && botAgent != null)
-			{
-				if (GameNetwork.IsServer)
-				{
-					NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
-					if (!networkPeer.IsServerPeer)
-					{
-						GameNetwork.BeginModuleEventAsServer(networkPeer);
-						GameNetwork.WriteMessage(new ReplaceBotWithPlayer(networkPeer, botAgent.Index, botAgent.Health, botAgent.MountAgent?.Health ?? (-1f)));
-						GameNetwork.EndModuleEventAsServer();
-					}
-				}
-
-				if (botAgent.Formation != null)
-				{
-					botAgent.Formation.PlayerOwner = botAgent;
-				}
-
-				botAgent.OwningAgentMissionPeer = null;
-				botAgent.MissionPeer = missionPeer;
-				botAgent.Formation = missionPeer.ControlledFormation;
-				AgentFlag agentFlags = botAgent.GetAgentFlags();
-				if (!agentFlags.HasAnyFlag(AgentFlag.CanRide))
-				{
-					botAgent.SetAgentFlags(agentFlags | AgentFlag.CanRide);
-				}
-
-				// Prevent BotsUnderControlAlive from going under 0 and causing crash
-				missionPeer.BotsUnderControlAlive = Math.Max(0, missionPeer.BotsUnderControlAlive - 1);
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new BotsControlledChange(missionPeer.GetNetworkPeer(), missionPeer.BotsUnderControlAlive, missionPeer.BotsUnderControlTotal));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-				if (botAgent.Formation != null)
-				{
-					missionPeer.Team.AssignPlayerAsSergeantOfFormation(missionPeer, missionPeer.ControlledFormation.FormationIndex);
-				}
-
-				return botAgent;
-			}
-
-			return null;
 		}
 	}
 }
