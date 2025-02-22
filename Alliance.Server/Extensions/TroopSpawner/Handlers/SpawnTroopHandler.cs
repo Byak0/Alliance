@@ -229,6 +229,8 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 				newAmount = MBMath.ClampInt(newAmount, 0, CompressionBasic.RoundGoldAmountCompressionInfo.GetMaximumValue());
 			}
 
+			peer.Representative.UpdateGold(newAmount);
+
 			if (peer.Peer.Communicator.IsConnectionActive)
 			{
 				GameNetwork.BeginBroadcastModuleEvent();
