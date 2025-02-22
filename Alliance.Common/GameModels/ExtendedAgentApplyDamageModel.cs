@@ -15,6 +15,8 @@ namespace Alliance.Common.GameModels
 
 		public override float CalculateDamage(in AttackInformation attackInformation, in AttackCollisionData collisionData, in MissionWeapon weapon, float baseDamage)
 		{
+			if (attackInformation.VictimAgent == null) return baseDamage;
+
 			MissionWeapon missionWeapon = weapon;
 			WeaponComponentData currentUsageItem = missionWeapon.CurrentUsageItem;
 			AttackCollisionData attackCollisionData = collisionData;
