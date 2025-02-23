@@ -22,6 +22,17 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			Defender = BattleSideEnum.Defender,
 			Attacker = BattleSideEnum.Attacker
 		}
+
+		public enum MoveOrderType
+		{
+			Charge,
+			Move,
+			Retreat,
+			Stop,
+			Advance,
+			FallBack
+		}
+
 		public abstract bool Evaluate(ScenarioManager context);
 		public virtual void Register() { }
 		public virtual void Unregister() { }

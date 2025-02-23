@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<voice_definitions>
+
+	<voice_definition name="ent_01" sound_and_collision_info_class="ent" only_for_npcs="false" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<voice type="Grunt" path="LOTR/Monsters/Ent/ent_voices" face_anim="grunt" />
+			<voice type="Jump" path="LOTR/Monsters/Ent/ent_voices" face_anim="scream" />
+			<voice type="Yell" path="LOTR/Monsters/Ent/ent_voices" face_anim="yell" />
+			<voice type="Pain" path="LOTR/Monsters/Ent/ent_punchs" face_anim="hit" />
+			<voice type="Death" path="LOTR/Monsters/Ent/ent_dies" face_anim="death" />
+			<voice type="Stun" path="LOTR/Monsters/Ent/ent_punchs" face_anim="yeah" />
+			<voice type="Fear" path="LOTR/Monsters/Ent/ent_voices" face_anim="terrified" />
+			<voice type="Climb" path="LOTR/Monsters/Ent/ent_voices" face_anim="terrified" />
+			<voice type="Focus" path="LOTR/Monsters/Ent/ent_voices" face_anim="terrified" />
+			<voice type="Debacle" path="LOTR/Monsters/Ent/ent_voices" face_anim="terrified" />
+			<voice type="Victory" path="LOTR/Monsters/Ent/ent_voices" face_anim="victory" />
+			<voice type="HorseRally" path="LOTR/Monsters/Ent/ent_voices" face_anim="yeah" />
+			<voice type="HorseStop" path="LOTR/Monsters/Ent/ent_voices" face_anim="wow" />
+			<voice type="Infantry" path="LOTR/Monsters/Ent/ent_voices" face_anim="infantry" />
+			<voice type="Cavalry" path="LOTR/Monsters/Ent/ent_voices" face_anim="cavalry" />
+			<voice type="Archers" path="LOTR/Monsters/Ent/ent_voices" face_anim="archers" />
+			<voice type="Everyone" path="LOTR/Monsters/Ent/ent_voices" face_anim="everyone" />
+			<voice type="HorseArchers" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="Mixed" path="LOTR/Monsters/Ent/ent_voices" face_anim="everyone" />
+			<voice type="Charge" path="LOTR/Monsters/Ent/ent_summon_1.wav" face_anim="attack" />
+			<voice type="Move" path="LOTR/Monsters/Ent/ent_voices" face_anim="move" />
+			<voice type="Retreat" path="LOTR/Monsters/Ent/ent_voices" face_anim="retreat" />
+			<voice type="Follow" path="LOTR/Monsters/Ent/ent_voices" face_anim="followme" />
+			<voice type="Advance" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="Dismount" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="Mount" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FallBack" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FireAtWill" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="HoldFire" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="Stop" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="PickSpears" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="PickDefault" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FaceEnemy" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FaceDirection" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="AttackGate" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="UseSiegeWeapon" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="UseLadders" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="CommandDelegate" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="CommandUndelegate" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormCircle" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormColumn" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormLine" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormLoose" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormScatter" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormShieldWall" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormSkein" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="FormSquare" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpHelp" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpSpot" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpThanks" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpSorry" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpAffirmative" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpNegative" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpRegroup" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpDefend" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+			<voice type="MpAttack" path="LOTR/Monsters/Ent/ent_voices" face_anim="attack" />
+		</voice_definition>
+
+</voice_definitions>

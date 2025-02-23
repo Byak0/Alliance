@@ -1,4 +1,5 @@
-﻿using Alliance.Editor.Patch.HarmonyPatch;
+﻿using Alliance.Common.Patch.HarmonyPatch;
+using Alliance.Editor.Patch.HarmonyPatch;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Editor.Patch
@@ -13,10 +14,11 @@ namespace Alliance.Editor.Patch
 		{
 			bool patchSuccess = true;
 
-
 			patchSuccess &= Patch_CustomBattleData.Patch();
 			patchSuccess &= Patch_BannerlordConfig.Patch();
 			patchSuccess &= Patch_BasicCultureObject.Patch();
+			patchSuccess &= Patch_LessUselessErrors.Patch();
+			patchSuccess &= Patch_BodyGeneratorView.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

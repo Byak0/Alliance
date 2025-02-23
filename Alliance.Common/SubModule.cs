@@ -1,4 +1,6 @@
-﻿using TaleWorlds.Core;
+﻿using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using BehaviorTreeWrapper;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -20,6 +22,12 @@ namespace Alliance.Common
 
 		public override void OnGameInitializationFinished(Game game)
 		{
+		}
+
+		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
+		{
+			mission.AddMissionBehavior(new BehaviorTreeMissionLogic());
+			mission.AddMissionBehavior(new AL_MissionAgentHandler());
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -7,6 +8,7 @@ using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -133,6 +135,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					{
 						ChangeState(ActState.InProgress);
 						StartAct();
+						SetStartingGold();
 						SyncObjectives();
 					}
 					break;
@@ -309,9 +312,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				}
 			}
 
-			if (UseGold() && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
+			if (Config.Instance.UseTroopCost && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
 			{
-				if (!victim.IsHuman || !RoundController.IsRoundInProgress || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
+				if (!victim.IsHuman || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
 				{
 					return;
 				}
@@ -416,9 +419,68 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			}
 		}
 
-		public bool UseGold()
+		private async void SetStartingGold()
 		{
-			return Config.Instance.UseTroopCost;
+			await Task.Delay(5000);
+
+			int goldToGive = Config.Instance.StartingGold;
+			List<MissionPeer> commandersAttack = new List<MissionPeer>();
+			List<MissionPeer> commandersDefend = new List<MissionPeer>();
+			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
+			{
+				MissionPeer peer = networkCommunicator?.GetComponent<MissionPeer>();
+				if (peer?.Team == Mission.Current.AttackerTeam)
+				{
+					commandersAttack.Add(peer);
+				}
+				else if (peer?.Team == Mission.Current.DefenderTeam)
+				{
+					commandersDefend.Add(peer);
+				}
+			}
+			SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Defender), commandersAttack);
+			SplitGoldBetweenPlayers(goldToGive + GetTeamArmyValue(BattleSideEnum.Attacker), commandersDefend);
+		}
+
+		private void SplitGoldBetweenPlayers(int goldToGive, List<MissionPeer> players)
+		{
+			if (players.Count < 1) return;
+
+			int amountPerPlayer = goldToGive / players.Count;
+			foreach (MissionPeer peer in players)
+			{
+				Log($"Giving {amountPerPlayer}g to {peer.Name}", LogLevel.Debug);
+				ChangeCurrentGoldForPeer(peer, amountPerPlayer);
+			}
+		}
+
+		public int GetTeamArmyValue(BattleSideEnum side)
+		{
+			int value = 0;
+			int agentsCount;
+
+			if (side == Mission.Current.AttackerTeam.Side)
+			{
+				agentsCount = Mission.Current.AttackerTeam.ActiveAgents.Count;
+				foreach (Agent agent in Mission.Current.AttackerTeam.ActiveAgents)
+				{
+					value += SpawnHelper.GetTroopCost(agent.Character);
+				}
+			}
+			else
+			{
+				agentsCount = Mission.Current.DefenderTeam.ActiveAgents.Count;
+				foreach (Agent agent in Mission.Current.DefenderTeam.ActiveAgents)
+				{
+					value += SpawnHelper.GetTroopCost(agent.Character);
+				}
+			}
+
+			Log($"Value of {side}'s army : {value} * {Config.Instance.GoldMultiplier} ({agentsCount} agents)", LogLevel.Debug);
+
+			value = (int)(value * Config.Instance.GoldMultiplier);
+
+			return value;
 		}
 
 		public override MultiplayerGameType GetMissionType()

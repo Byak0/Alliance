@@ -33,6 +33,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Behaviors
 		public override void OnRemoveBehavior()
 		{
 			base.OnRemoveBehavior();
+			ClearAgentAfterRound();
 			if (_roundController != null)
 			{
 				_roundController.OnRoundEnding -= ClearAgentAfterRound;
