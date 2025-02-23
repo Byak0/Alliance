@@ -1,13 +1,11 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -289,116 +287,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					}
 				}
 			}
-		}
-
-		public override void OnAgentRemoved(Agent victim, Agent killer, AgentState agentState, KillingBlow blow)
-		{
-			float goldMultiplier = 1f;
-
-			// Adjust gold multiplier based on victim formation state
-			if (victim?.Team != null)
-			{
-				if (FormationCalculateModel.IsInFormation(victim))
-				{
-					goldMultiplier = 1f;
-				}
-				else if (FormationCalculateModel.IsInSkirmish(victim))
-				{
-					goldMultiplier = 4f;
-				}
-				else
-				{
-					goldMultiplier = 10f;
-				}
-			}
-
-			if (Config.Instance.UseTroopCost && killer != null && victim != null && victim.IsHuman && blow.DamageType != DamageTypes.Invalid && (agentState == AgentState.Unconscious || agentState == AgentState.Killed))
-			{
-				if (!victim.IsHuman || blow.DamageType == DamageTypes.Invalid || agentState != AgentState.Unconscious && agentState != AgentState.Killed)
-				{
-					return;
-				}
-
-				bool teamKill = killer.Team != null && victim.Team != null && killer.Team.Side == victim.Team.Side;
-
-				if (victim.MissionPeer?.Team != null && !teamKill)
-				{
-					// Gold gain for ally death
-					IEnumerable<(MissionPeer, int)> enumerable = MPPerkObject.GetPerkHandler(victim.MissionPeer)?.GetTeamGoldRewardsOnDeath();
-					if (enumerable != null)
-					{
-						foreach (var (missionPeer, num) in enumerable)
-						{
-							ScenarioRepresentative ScenarioRepresentative3;
-							if (num > 0 && (ScenarioRepresentative3 = missionPeer?.Representative as ScenarioRepresentative) != null)
-							{
-								int goldGainsFromAllyDeathReward = Config.Instance.GoldPerAllyDead;
-								if (goldGainsFromAllyDeathReward > 0)
-								{
-									AddGoldForPeer(missionPeer, goldGainsFromAllyDeathReward);
-								}
-							}
-						}
-					}
-				}
-				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter2 = MultiplayerClassDivisions.GetMPHeroClassForCharacter(victim.Character);
-				if (killer?.MissionPeer != null && killer.Team != victim.Team)
-				{
-					// Gold gain for a kill
-					ScenarioRepresentative player = killer.MissionPeer.Representative as ScenarioRepresentative;
-					int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-					AddGoldForPeer(killer.MissionPeer, goldGainFromKillDataAndUpdateFlags);
-
-					// Send report to commander if bonus gold obtained
-					if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1 && player.IsCommander)
-					{
-						ReportBonusGoldFromKill(victim, player, goldGainFromKillDataAndUpdateFlags);
-					}
-				}
-				else if (killer.Team != victim.Team)
-				{
-					// Gold gain for the commander when a bot kill an enemy
-					ScenarioRepresentative commander = (ScenarioRepresentative)(killer.Formation?.PlayerOwner?.MissionPeer?.Representative);
-					if (commander != null)
-					{
-						int goldGainFromKillDataAndUpdateFlags = (int)(goldMultiplier * Config.Instance.GoldPerKill);
-						AddGoldForPeer(commander.MissionPeer, goldGainFromKillDataAndUpdateFlags);
-
-						// Send report to commander if bonus gold obtained
-						if (goldGainFromKillDataAndUpdateFlags > 0 && goldMultiplier > 1)
-						{
-							ReportBonusGoldFromKill(victim, commander, goldGainFromKillDataAndUpdateFlags);
-						}
-					}
-				}
-
-				List<Agent.Hitter> list = victim.HitterList.Where((hitter) => hitter.HitterPeer != killer.MissionPeer).ToList();
-				if (list.Count > 0)
-				{
-					Agent.Hitter hitter2 = TaleWorlds.Core.Extensions.MaxBy(list, (hitter) => hitter.Damage);
-					if (hitter2.Damage >= 35f)
-					{
-						// Gold gain for an assist if damage >= 35                        
-						int goldGainFromKillDataAndUpdateFlags2 = (int)(goldMultiplier * Config.Instance.GoldPerAssist);
-						AddGoldForPeer(hitter2.HitterPeer, goldGainFromKillDataAndUpdateFlags2);
-					}
-				}
-			}
-		}
-
-		private void ReportBonusGoldFromKill(Agent victim, ScenarioRepresentative commander, int goldGainFromKillDataAndUpdateFlags)
-		{
-			string victimName = victim.MissionPeer?.DisplayedName != null ? victim.MissionPeer.DisplayedName : victim.Name;
-			string report = "You killed " + victimName + " for " + goldGainFromKillDataAndUpdateFlags + " golds ("
-				+ (goldGainFromKillDataAndUpdateFlags - Config.Instance.GoldPerKill) + " bonus) !";
-			GameNetwork.BeginModuleEventAsServer(commander.MissionPeer.GetNetworkPeer());
-			GameNetwork.WriteMessage(new ServerMessage(report, false));
-			GameNetwork.EndModuleEventAsServer();
-		}
-
-		public void AddGoldForPeer(MissionPeer peer, int amount)
-		{
-			ChangeCurrentGoldForPeer(peer, peer.Representative.Gold + amount);
 		}
 
 		// Mask parent method and remove gold limit
