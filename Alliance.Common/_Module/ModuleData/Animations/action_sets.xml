@@ -4,6 +4,9 @@
 		<action type="act_car_pilot" animation="act_car_pilot" />
 		<action type="act_coche_chariot" animation="act_car_pilot" />
 		<action type="act_blow_horn" animation="anim_blow_horn" />
+		<action type="act_taunt_rage_1" animation="taunt_rage_1" />
+		<action type="act_taunt_rage_2" animation="taunt_rage_2" />
+		<action type="act_taunt_rage_3" animation="taunt_rage_3" />
 
 		<!-- Warg rider - Basic actions -->
 		<action type="act_warg_rear" animation="rider_warg_taunt" />
@@ -155,6 +158,7 @@
 		<action type="act_warg_forward_trot_strafe_left" animation="warg_trot_strafe" />
 		<action type="act_warg_forward_trot_stand" animation="warg_trot_stand" />
 		<action type="act_warg_forward_canter" animation="warg_canter" />
+		<action type="act_horse_forward_canter" animation="warg_canter" />
 		<action type="act_warg_forward_canter_strafe_right" animation="warg_canter_strafe" />
 		<action type="act_warg_forward_canter_strafe_left" animation="warg_canter_strafe" />
 		<action type="act_warg_forward_canter_stand" animation="warg_canter_stand" />

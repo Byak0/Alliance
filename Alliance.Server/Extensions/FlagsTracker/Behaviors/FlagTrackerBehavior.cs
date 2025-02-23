@@ -41,8 +41,8 @@ namespace Alliance.Server.Extensions.FlagsTracker.Behaviors
 
 		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
-			// If an agent spawns with a banner, track it
-			if (agent.Equipment != null)
+			// If a player spawns with a banner, track it
+			if (agent.Equipment != null && agent.MissionPeer != null)
 			{
 				MissionWeapon flag = agent.Equipment[EquipmentIndex.ExtraWeaponSlot];
 				if (flag.IsBanner())

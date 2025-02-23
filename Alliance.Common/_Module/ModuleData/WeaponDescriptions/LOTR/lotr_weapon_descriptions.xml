@@ -19,9 +19,23 @@
 			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
 			<AvailablePiece id="orc_rider_knife_blade_1" />
 			<AvailablePiece id="orc_rider_knife_grip_1" />
+			<AvailablePiece id="uruk_blade_1" />
+			<AvailablePiece id="uruk_blade_4" />
+			<AvailablePiece id="uruk_handle_1" />
+			<AvailablePiece id="elf_blade_1" />
+			<AvailablePiece id="elf_blade_2" />
+			<AvailablePiece id="elf_handle_1" />
+			<AvailablePiece id="elf_handle_2" />
+			<AvailablePiece id="rohan_blade_1" />
+			<AvailablePiece id="rohan_handle_1" />
+			<AvailablePiece id="rohan_guard_1" />
+			<AvailablePiece id="empire_blade_5" />
+			<AvailablePiece id="sturgian_guard_1" />
+			<AvailablePiece id="sturgian_grip_4" />
+			<AvailablePiece id="sturgian_pommel_3" />
 		</AvailablePieces>
 	</WeaponDescription>
-	
+
 	<WeaponDescription
 		id="lotr_BastardSword"
 		weapon_class="OneHandedSword"
@@ -35,6 +49,22 @@
 			<AvailablePiece id="orc_rider_saber_guard_1" />
 			<AvailablePiece id="orc_rider_saber_handle_1" />
 			<AvailablePiece id="orc_rider_saber_pommel_1" />
+			<AvailablePiece id="orc_rider_shortsword_blade_1" />
+			<AvailablePiece id="orc_rider_shortsword_guard_1" />
+			<AvailablePiece id="orc_rider_shortsword_grip_1" />
+			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
+			<AvailablePiece id="orc_rider_knife_blade_1" />
+			<AvailablePiece id="orc_rider_knife_grip_1" />
+			<AvailablePiece id="uruk_blade_1" />
+			<AvailablePiece id="uruk_blade_4" />
+			<AvailablePiece id="uruk_handle_1" />
+			<AvailablePiece id="elf_blade_1" />
+			<AvailablePiece id="elf_blade_2" />
+			<AvailablePiece id="elf_handle_1" />
+			<AvailablePiece id="elf_handle_2" />
+			<AvailablePiece id="rohan_blade_1" />
+			<AvailablePiece id="rohan_handle_1" />
+			<AvailablePiece id="rohan_guard_1" />
 		</AvailablePieces>
 	</WeaponDescription>
 
@@ -49,117 +79,164 @@
 				value="NotUsableWithOneHand" />
 		</WeaponFlags>
 		<AvailablePieces>
-			<AvailablePiece id="orc_rider_saber_blade_1" />
-			<AvailablePiece id="orc_rider_saber_guard_1" />
-			<AvailablePiece id="orc_rider_saber_handle_1" />
-			<AvailablePiece id="orc_rider_saber_pommel_1" />
 			<AvailablePiece id="orc_rider_longsword_blade_1" />
 			<AvailablePiece id="orc_rider_longsword_guard_1" />
 			<AvailablePiece id="orc_rider_longsword_grip_1" />
 			<AvailablePiece id="orc_rider_longsword_pommel_1" />
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription
-		id="lotr_BastardSwordAlternative"
-		weapon_class="OneHandedSword"
-		item_usage_features="onehanded:block:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag
-				value="MeleeWeapon" />
-		</WeaponFlags>
-		<AvailablePieces>
 			<AvailablePiece id="orc_rider_saber_blade_1" />
 			<AvailablePiece id="orc_rider_saber_guard_1" />
 			<AvailablePiece id="orc_rider_saber_handle_1" />
 			<AvailablePiece id="orc_rider_saber_pommel_1" />
-		</AvailablePieces>
-	</WeaponDescription>
-	
-	<WeaponDescription id="foa_OneHandedPolearm"
-                     weapon_class="OneHandedPolearm"
-                     item_usage_features="onehanded_polearm:block:long:rshield:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="WideGrip"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<!-- Pièces disponibles, Arme d'hast à UNE (1) main -->
-			<!-- Mettre ici lammes, pommeau, Hampe, gardes etc -->
-			<AvailablePiece id="rohan_banner_1_head" />
-			<AvailablePiece id="rohan_banner_1_guard" />
-			<AvailablePiece id="rohan_banner_1_handle" />
-			<AvailablePiece id="rohan_banner_1_bottom" />
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="foa_TwoHandedPolearm"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:block:long:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<!-- Pièces disponibles, Arme d'hast à DEUX (2) mains -->
-			<!-- Mettre ici lammes, pommeau, Hampe, gardes etc -->
-			<AvailablePiece id="rohan_banner_1_head" />
-			<AvailablePiece id="rohan_banner_1_guard" />
-			<AvailablePiece id="rohan_banner_1_handle" />
-			<AvailablePiece id="rohan_banner_1_bottom" />
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="foa_TwoHandedPolearm_Couchable"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:couch">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="WideGrip"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<!-- Pièces disponibles, Arme d'hast à deux mains COUCHABLE -->
-			<!-- Mettre ici lammes, pommeau, Hampe, gardes etc -->
-			<AvailablePiece id="rohan_banner_1_head" />
-			<AvailablePiece id="rohan_banner_1_guard" />
-			<AvailablePiece id="rohan_banner_1_handle" />
-			<AvailablePiece id="rohan_banner_1_bottom" />
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="foa_TwoHandedPolearm_Bracing"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:bracing">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<!-- Pièces disponibles, Arme d'hast à deux mains ?ENTRETOISEMENT? -->
-			<!-- Mettre ici lammes, pommeau, Hampe, gardes etc -->
-			<AvailablePiece id="rohan_banner_1_head" />
-			<AvailablePiece id="rohan_banner_1_guard" />
-			<AvailablePiece id="rohan_banner_1_handle" />
-			<AvailablePiece id="rohan_banner_1_bottom" />
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="uruk_two_handed"
-                     weapon_class="TwoHandedSword"
-                     item_usage_features="twohanded:block:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="uruk_blade_2"/>
-			<AvailablePiece id="uruk_handle_2"/>
-			<AvailablePiece id="uruk_guard_1"/>
+			<AvailablePiece id="orc_rider_shortsword_blade_1" />
+			<AvailablePiece id="orc_rider_shortsword_guard_1" />
+			<AvailablePiece id="orc_rider_shortsword_grip_1" />
+			<AvailablePiece id="orc_rider_shortsword_pommel_1" />
+			<AvailablePiece id="orc_rider_knife_blade_1" />
+			<AvailablePiece id="orc_rider_knife_grip_1" />
+			<AvailablePiece id="uruk_blade_1" />
+			<AvailablePiece id="uruk_blade_2" />
+			<AvailablePiece id="uruk_blade_4" />
+			<AvailablePiece id="uruk_guard_1" />
+			<AvailablePiece id="uruk_handle_1" />
+			<AvailablePiece id="uruk_handle_2" />
+			<AvailablePiece id="elf_blade_1" />
+			<AvailablePiece id="elf_blade_2" />
+			<AvailablePiece id="elf_handle_1" />
+			<AvailablePiece id="elf_handle_2" />
+			<AvailablePiece id="rohan_blade_1" />
+			<AvailablePiece id="rohan_handle_1" />
+			<AvailablePiece id="rohan_guard_1" />
 		</AvailablePieces>
 	</WeaponDescription>
 
-	<WeaponDescription id="lotr_orc_TwoHandedAxe"
-					   weapon_class="TwoHandedAxe"
-					   item_usage_features="twohanded:widegrip:axe">
+	<WeaponDescription
+		id="lotr_OneHandedPolearm"
+		weapon_class="OneHandedPolearm"
+		item_usage_features="onehanded_polearm:block:long:rshield:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="WideGrip"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="rohan_banner_1_head" />
+			<AvailablePiece id="rohan_banner_1_guard" />
+			<AvailablePiece id="rohan_banner_1_handle" />
+			<AvailablePiece id="rohan_banner_1_bottom" />
+			<AvailablePiece id="rohan_spear_1_head"/>
+			<AvailablePiece id="rohan_spear_2_head"/>
+			<AvailablePiece id="rohan_spear_1_handle"/>
+			<AvailablePiece id="rohan_spear_1_bottom"/>
+			<AvailablePiece id="spear_banner_r"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_TwoHandedPolearm"
+		weapon_class="TwoHandedPolearm"
+		item_usage_features="polearm:block:long:shield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="NotUsableWithOneHand"/>
+			<WeaponFlag value="WideGrip"/>
+			<WeaponFlag value="TwoHandIdleOnMount"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="rohan_spear_1_head"/>
+			<AvailablePiece id="rohan_spear_2_head"/>
+			<AvailablePiece id="rohan_spear_1_handle"/>
+			<AvailablePiece id="spear_banner_r"/>
+			<AvailablePiece id="rohan_spear_1_bottom"/>
+			<AvailablePiece id="rohan_banner_1_head" />
+			<AvailablePiece id="rohan_banner_1_guard" />
+			<AvailablePiece id="rohan_banner_1_handle" />
+			<AvailablePiece id="rohan_banner_1_bottom" />
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="orc_rider_sickle_blade_1"/>
+			<AvailablePiece id="orc_rider_sickle_grip_1"/>
+			<AvailablePiece id="uruk_blade_3"/>
+			<AvailablePiece id="uruk_handle_3"/>
+			<AvailablePiece id="uruk_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_TwoHandedPolearm_Couchable"
+		weapon_class="TwoHandedPolearm"
+		item_usage_features="polearm:couch">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="WideGrip"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="rohan_banner_1_head" />
+			<AvailablePiece id="rohan_banner_1_guard" />
+			<AvailablePiece id="rohan_banner_1_handle" />
+			<AvailablePiece id="rohan_banner_1_bottom" />
+			<AvailablePiece id="rohan_spear_1_head"/>
+			<AvailablePiece id="rohan_spear_2_head"/>
+			<AvailablePiece id="rohan_spear_1_handle"/>
+			<AvailablePiece id="spear_banner_r"/>
+			<AvailablePiece id="rohan_spear_1_bottom"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_TwoHandedPolearm_Bracing"
+		weapon_class="TwoHandedPolearm"
+		item_usage_features="polearm:bracing">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+			<WeaponFlag value="NotUsableWithOneHand"/>
+			<WeaponFlag value="WideGrip"/>
+			<WeaponFlag value="TwoHandIdleOnMount"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="rohan_banner_1_head" />
+			<AvailablePiece id="rohan_banner_1_guard" />
+			<AvailablePiece id="rohan_banner_1_handle" />
+			<AvailablePiece id="rohan_banner_1_bottom" />
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+			<AvailablePiece id="uruk_blade_3"/>
+			<AvailablePiece id="uruk_handle_3"/>
+			<AvailablePiece id="uruk_pommel_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_TwoHandedPolearm_Thrown"
+		weapon_class="Javelin"
+		item_usage_features="polearm:thrown"
+		rotated_in_hand="true"
+		use_center_of_mass_as_hand_base="true">
+		<WeaponFlags>
+			<WeaponFlag value="RangedWeapon" />
+			<WeaponFlag value="Consumable" />
+			<WeaponFlag value="AmmoSticksWhenShot" />
+			<WeaponFlag value="UseHandAsThrowBase" />
+			<WeaponFlag value="AutoReload" />
+			<WeaponFlag value="UnloadWhenSheathed" />
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="rohan_spear_2_head"/>
+			<AvailablePiece id="rohan_spear_1_handle"/>
+			<AvailablePiece id="rohan_spear_1_bottom"/>
+			<AvailablePiece id="orc_rider_spear_blade_1" />
+			<AvailablePiece id="orc_rider_spear_grip_1" />
+			<AvailablePiece id="orc_rider_gladius_blade_1"/>
+			<AvailablePiece id="orc_rider_gladius_grip_1"/>
+		</AvailablePieces>
+	</WeaponDescription>
+	
+	<WeaponDescription
+		id="lotr_TwoHandedAxe"
+		weapon_class="TwoHandedAxe"
+		item_usage_features="twohanded:widegrip:axe">
 		<WeaponFlags>
 			<WeaponFlag value="MeleeWeapon" />
 			<WeaponFlag value="NotUsableWithOneHand" />
@@ -169,389 +246,91 @@
 		<AvailablePieces>
 			<AvailablePiece id="orc_rider_axe_blade_1" />
 			<AvailablePiece id="orc_rider_axe_grip_1" />
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="lotr_orc_TwoHandedPolearm"
-        weapon_class="TwoHandedPolearm"
-        item_usage_features="polearm:block:long:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="orc_rider_spear_blade_1" />
-			<AvailablePiece id="orc_rider_spear_grip_1" />
-			<AvailablePiece id="orc_rider_gladius_blade_1"/>
-			<AvailablePiece id="orc_rider_gladius_guard_1"/>
-			<AvailablePiece id="orc_rider_gladius_grip_1"/>
-			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
-			<AvailablePiece id="orc_rider_sickle_blade_1"/>
-			<AvailablePiece id="orc_rider_sickle_guard_1"/>
-			<AvailablePiece id="orc_rider_sickle_grip_1"/>
-			<AvailablePiece id="orc_rider_sickle_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Bracing"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:bracing">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="orc_rider_spear_blade_1" />
-			<AvailablePiece id="orc_rider_spear_grip_1" />
-			<AvailablePiece id="orc_rider_gladius_blade_1"/>
-			<AvailablePiece id="orc_rider_gladius_guard_1"/>
-			<AvailablePiece id="orc_rider_gladius_grip_1"/>
-			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Couchable"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:couch">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="WideGrip"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="orc_rider_spear_blade_1" />
-			<AvailablePiece id="orc_rider_spear_grip_1" />
-			<AvailablePiece id="orc_rider_gladius_blade_1"/>
-			<AvailablePiece id="orc_rider_gladius_guard_1"/>
-			<AvailablePiece id="orc_rider_gladius_grip_1"/>
-			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="lotr_orc_TwoHandedPolearm_Thrown"
-                     weapon_class="Javelin"
-                     item_usage_features="throwing:javelin"
-                     rotated_in_hand="true"
-                     use_center_of_mass_as_hand_base="true">
-		<WeaponFlags>
-			<WeaponFlag value="RangedWeapon"/>
-			<WeaponFlag value="Consumable"/>
-			<WeaponFlag value="AmmoSticksWhenShot"/>
-			<WeaponFlag value="UseHandAsThrowBase"/>
-			<WeaponFlag value="AutoReload"/>
-			<WeaponFlag value="UnloadWhenSheathed"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="orc_rider_spear_blade_1" />
-			<AvailablePiece id="orc_rider_spear_grip_1" />
-			<AvailablePiece id="orc_rider_gladius_blade_1"/>
-			<AvailablePiece id="orc_rider_gladius_guard_1"/>
-			<AvailablePiece id="orc_rider_gladius_grip_1"/>
-			<AvailablePiece id="orc_rider_gladius_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="uruk_twoHandedPolearm_Pike"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:pike">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="uruk_blade_3"/>
-			<AvailablePiece id="uruk_handle_3"/>
-			<AvailablePiece id="uruk_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="uruk_twoHandedPolearm_Bracing"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:bracing">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="uruk_blade_3"/>
-			<AvailablePiece id="uruk_handle_3"/>
-			<AvailablePiece id="uruk_pommel_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="uruk_one_handed"
-					weapon_class="OneHandedSword"
-					item_usage_features="onehanded:block:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="uruk_blade_1"/>
-			<AvailablePiece id="uruk_blade_4"/>
-			<AvailablePiece id="uruk_handle_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="elf_two_handed"
-                     weapon_class="TwoHandedSword"
-                     item_usage_features="twohanded:block:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="elf_blade_1"/>
-			<AvailablePiece id="elf_blade_2"/>
-			<AvailablePiece id="elf_handle_1"/>
-			<AvailablePiece id="elf_handle_2"/>
-			<AvailablePiece id="rohan_blade_1"/>
-			<AvailablePiece id="rohan_handle_1"/>
-			<AvailablePiece id="rohan_guard_1"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="elf_one_handed"
-                     weapon_class="OneHandedSword"
-                     item_usage_features="onehanded:block:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="elf_blade_1"/>
-			<AvailablePiece id="elf_blade_2"/>
-			<AvailablePiece id="elf_handle_1" />
-			<AvailablePiece id="elf_handle_2" />
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="rohan_one_handed"
-                     weapon_class="OneHandedSword"
-                     item_usage_features="onehanded:block:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="rohan_blade_1"/>
-			<AvailablePiece id="rohan_handle_1"/>
-			<AvailablePiece id="rohan_guard_1"/>
-			<AvailablePiece id="elf_blade_1"/>
-			<AvailablePiece id="elf_blade_2"/>
-			<AvailablePiece id="elf_handle_1"/>
-			<AvailablePiece id="elf_handle_2"/>
+			<AvailablePiece id="gimli_d_axe_handle"/>
+			<AvailablePiece id="gimli_d_axe_blade"/>
 		</AvailablePieces>
 	</WeaponDescription>
 
 	<WeaponDescription
-		id="RohanOneHandedAxe"
+		id="lotr_OneHandedAxe"
 		weapon_class="OneHandedAxe"
 		item_usage_features="onehanded:shield:axe">
 		<WeaponFlags>
-			<WeaponFlag
-				value="MeleeWeapon" />
-			<WeaponFlag
-				value="BonusAgainstShield" />
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece
-				id="rohan_axe_1_handle" />
-			<AvailablePiece
-				id="rohan_axe_1_head" />
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="rohan_OneHandedBastardAxe"
-                     weapon_class="OneHandedAxe"
-                     item_usage_features="onehanded:rshield:axe">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="BonusAgainstShield"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="gimli_d_axe_handle"/>
-			<AvailablePiece id="gimli_d_axe_blade"/>
-			<!-- AvailablePieces,OneHandedBastardAxe -->
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="rohan_OneHandedBastardAxeAlternative"
-                     weapon_class="OneHandedAxe"
-                     item_usage_features="onehanded:axe">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="BonusAgainstShield"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="gimli_d_axe_handle"/>
-			<AvailablePiece id="gimli_d_axe_blade"/>
-			<!-- AvailablePieces,OneHandedBastardAxeAlternative -->
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="rohan_TwoHandedAxe"
-                     weapon_class="TwoHandedAxe"
-                     item_usage_features="twohanded:widegrip:axe">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="BonusAgainstShield"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="gimli_d_axe_handle"/>
-			<AvailablePiece id="gimli_d_axe_blade"/>
-
-			<!-- AvailablePieces,TwoHandedAxe -->
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="RohanOneHandedPolearm"
-                     weapon_class="OneHandedPolearm"
-                     item_usage_features="onehanded_polearm:block:long:rshield:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="WideGrip"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="rohan_spear_1_head"/>
-			<AvailablePiece id="rohan_spear_2_head"/>
-			<AvailablePiece id="rohan_spear_1_handle"/>
-			<AvailablePiece id="spear_banner_r"/>
-			<AvailablePiece id="rohan_spear_1_bottom"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="RohanTwoHandedPolearm"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:block:long:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="NotUsableWithOneHand"/>
-			<WeaponFlag value="WideGrip"/>
-			<WeaponFlag value="TwoHandIdleOnMount"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="rohan_spear_1_head"/>
-			<AvailablePiece id="rohan_spear_1_handle"/>
-			<AvailablePiece id="rohan_spear_2_head"/>
-			<AvailablePiece id="spear_banner_r"/>
-			<AvailablePiece id="rohan_spear_1_bottom"/>
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="RohanTwoHandedPolearm_Thrown"
-                     weapon_class="Javelin"
-                     item_usage_features="polearm:thrown"
-                     rotated_in_hand="true"
-                     use_center_of_mass_as_hand_base="true">
-		<WeaponFlags>
-			<WeaponFlag value="RangedWeapon"/>
-			<WeaponFlag value="Consumable"/>
-			<WeaponFlag value="AmmoSticksWhenShot"/>
-			<WeaponFlag value="UseHandAsThrowBase"/>
-			<WeaponFlag value="AutoReload"/>
-			<WeaponFlag value="UnloadWhenSheathed"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="rohan_spear_1_head"/>
-			<AvailablePiece id="rohan_spear_2_head"/>
-			<AvailablePiece id="rohan_spear_1_handle"/>
-			<AvailablePiece id="spear_banner_r"/>
-			<AvailablePiece id="rohan_spear_1_bottom"/>
-			<!-- AvailablePieces,TwoHandedPolearm_Thrown -->
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="legolas_dagger"
-                     weapon_class="Dagger"
-                     item_usage_features="onehanded:block:shield:swing:thrust">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="mp_legolas_dagger_grip"/>
-			<AvailablePiece id="legolas_dagger_blade"/>
-			<!-- AvailablePieces,Dagger -->
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription id="legolas_throwing_knife"
-                     weapon_class="ThrowingKnife"
-                     item_usage_features="throwing:knife">
-		<WeaponFlags>
-			<WeaponFlag value="RangedWeapon"/>
-			<WeaponFlag value="Consumable"/>
-			<WeaponFlag value="AmmoSticksWhenShot"/>
-			<WeaponFlag value="UseHandAsThrowBase"/>
-			<WeaponFlag value="AutoReload"/>
-			<WeaponFlag value="UnloadWhenSheathed"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="legolas_dagger_blade"/>
-			<AvailablePiece id="mp_legolas_dagger_grip"/>
-			<!-- AvailablePieces,ThrowingKnife -->
-		</AvailablePieces>
-	</WeaponDescription>
-	<WeaponDescription id="RohanTwoHandedPolearm_Couchable"
-                     weapon_class="TwoHandedPolearm"
-                     item_usage_features="polearm:couch">
-		<WeaponFlags>
-			<WeaponFlag value="MeleeWeapon"/>
-			<WeaponFlag value="WideGrip"/>
-		</WeaponFlags>
-		<AvailablePieces>
-			<AvailablePiece id="rohan_spear_1_head"/>
-			<AvailablePiece id="rohan_spear_2_head"/>
-			<AvailablePiece id="rohan_spear_1_handle"/>
-			<AvailablePiece id="spear_banner_r"/>
-			<AvailablePiece id="rohan_spear_1_bottom"/>
-			<!-- AvailablePieces,TwoHandedPolearm_Couchable -->
-		</AvailablePieces>
-	</WeaponDescription>
-
-	<WeaponDescription
-		id="gimli_OneHandedAxe"
-		weapon_class="OneHandedAxe"
-		item_usage_features="onehanded:shield:axe">
-		<WeaponFlags>
-			<WeaponFlag
-				value="MeleeWeapon" />
-			<WeaponFlag
-				value="BonusAgainstShield" />
+			<WeaponFlag value="MeleeWeapon" />
+			<WeaponFlag value="BonusAgainstShield" />
 		</WeaponFlags>
 		<AvailablePieces>
 			<AvailablePiece id="gimli_one_handed_axe_handle" />
 			<AvailablePiece id="gimli_one_handed_axe_head" />
 			<AvailablePiece id="gimli_throwing_axe_head" />
 			<AvailablePiece id="gimli_throwing_axe_handle" />
+			<AvailablePiece id="rohan_axe_1_handle" />
+			<AvailablePiece id="rohan_axe_1_head" />
 		</AvailablePieces>
 	</WeaponDescription>
 
 	<WeaponDescription
-		id="gimli_ThrowingAxe"
+		id="lotr_ThrowingAxe"
 		weapon_class="ThrowingAxe"
 		item_usage_features="throwing:axe">
 		<WeaponFlags>
-			<WeaponFlag
-				value="RangedWeapon" />
-			<WeaponFlag
-				value="Consumable" />
-			<WeaponFlag
-				value="AmmoSticksWhenShot" />
-			<WeaponFlag
-				value="UseHandAsThrowBase" />
-			<WeaponFlag
-				value="AutoReload" />
-			<WeaponFlag
-				value="UnloadWhenSheathed" />
+			<WeaponFlag value="RangedWeapon" />
+			<WeaponFlag value="Consumable" />
+			<WeaponFlag value="AmmoSticksWhenShot" />
+			<WeaponFlag value="UseHandAsThrowBase" />
+			<WeaponFlag value="AutoReload" />
+			<WeaponFlag value="UnloadWhenSheathed" />
 		</WeaponFlags>
 		<AvailablePieces>
 			<AvailablePiece id="gimli_throwing_axe_head" />
 			<AvailablePiece id="gimli_throwing_axe_handle" />
 		</AvailablePieces>
 	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_Dagger"
+		weapon_class="Dagger"
+		item_usage_features="onehanded:block:shield:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="mp_legolas_dagger_grip"/>
+			<AvailablePiece id="legolas_dagger_blade"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_ThrowingKnife"
+		weapon_class="ThrowingKnife"
+		item_usage_features="throwing:knife">
+		<WeaponFlags>
+			<WeaponFlag value="RangedWeapon"/>
+			<WeaponFlag value="Consumable"/>
+			<WeaponFlag value="AmmoSticksWhenShot"/>
+			<WeaponFlag value="UseHandAsThrowBase"/>
+			<WeaponFlag value="AutoReload"/>
+			<WeaponFlag value="UnloadWhenSheathed"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="legolas_dagger_blade"/>
+			<AvailablePiece id="mp_legolas_dagger_grip"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
+	<WeaponDescription
+		id="lotr_Mace"
+		weapon_class="Mace"
+		item_usage_features="onehanded:swing:thrust">
+		<WeaponFlags>
+			<WeaponFlag value="MeleeWeapon"/>
+		</WeaponFlags>
+		<AvailablePieces>
+			<AvailablePiece id="cavetroll_hammer_head"/>
+			<AvailablePiece id="cavetroll_hammer_handle"/>
+			<AvailablePiece id="olog_hammer_head"/>
+			<AvailablePiece id="olog_hammer_handle"/>
+		</AvailablePieces>
+	</WeaponDescription>
+
 </WeaponDescriptions>

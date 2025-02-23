@@ -108,6 +108,18 @@
 		<module_sound name="LOTR/Isengard/Voice/Uruk/get_over_here" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get over here.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/get_ready_to_fight" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Get ready to fight.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Go.wav" />
+		<module_sound
+			name="LOTR/Isengard/Voice/Uruk/gos"
+			sound_category="mission_voice_shout"
+			min_pitch_multiplier="0.9"
+			max_pitch_multiplier="1.1">
+			<variation path="LOTR/Isengard/Voice/Uruk/Go.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Faster.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Get over here.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Come on.wav" weight="1" />
+			<variation path="LOTR/Isengard/Voice/Uruk/Grunt.wav" weight="1" />
+		</module_sound>
 		<module_sound name="LOTR/Isengard/Voice/Uruk/grunt" sound_category="mission_voice" path="LOTR/Isengard/Voice/Uruk/Grunt.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/hurry_up" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Hurry up.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/in_there" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/In there.wav" />
@@ -138,136 +150,277 @@
 		<module_sound name="LOTR/Isengard/Voice/Uruk/yell_3" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/Yell 3.wav" />
 		<module_sound name="LOTR/Isengard/Voice/Uruk/you_know_where_to_go" sound_category="mission_voice_shout" path="LOTR/Isengard/Voice/Uruk/You know where to go.wav" />
 		<!--Sounds in LOTR/Isengard/Voice/Warg-->
-		<module_sound name="LOTR/Isengard/Voice/Warg/attacks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/attack_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/attack_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/attack_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/attack_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/attack_5.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/attacks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/attack_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/attack_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/attack_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/attack_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/attack_5.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/barks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/bark_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/bark_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/bark_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/bark_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/bark_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/bark_6.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/barks" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/bark_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/bark_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/bark_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/bark_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/bark_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/bark_6.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/die_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_10.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_11.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_6.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_7.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_8.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/die_9.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/die_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_11.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/die_9.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/grunts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_6.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_7.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/grunt_8.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/grunts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/grunt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/grunt_8.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/hits" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/hit_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/hit_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/hit_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/hit_4.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/hits" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/hit_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/hit_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/hit_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/hit_4.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/howlss" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/howls_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_6.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/howls_7.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/howlss" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/howls_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/howls_7.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/saddles" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/saddle_6.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/saddles" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/saddle_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/saddle_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/saddle_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/saddle_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/saddle_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/saddle_6.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/footsteps" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_9.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_rock" sound_category="mission_voice" min_pitch_multiplier="1" max_pitch_multiplier="1.2">
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_10.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_11.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_12.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_13.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_6.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_7.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_8.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_9.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/footsteps_rock" sound_category="mission_horse_gallop" min_pitch_multiplier="1" max_pitch_multiplier="1.2">
+			<variation path="LOTR/Monsters/Warg/footstep_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_11.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_12.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_13.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_9.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/footstep_grass" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="1.2" path="LOTR/Isengard/Voice/Warg/footstep_grass_1.wav" />
-		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_snow" sound_category="mission_voice" min_pitch_multiplier="0.8" max_pitch_multiplier="0.9">
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_4.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/footstep_grass" sound_category="mission_horse_gallop" min_pitch_multiplier="0.8" max_pitch_multiplier="1.2" path="LOTR/Monsters/Warg/footstep_grass_1.wav" />
+		<module_sound name="LOTR/Monsters/Warg/footsteps_snow" sound_category="mission_horse_gallop" min_pitch_multiplier="0.8" max_pitch_multiplier="0.9">
+			<variation path="LOTR/Monsters/Warg/footstep_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_4.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/footsteps_water" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_1.wav" weight="0.1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/footstep_water_3.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/footsteps_water" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/footstep_water_1.wav" weight="0.1" />
+			<variation path="LOTR/Monsters/Warg/footstep_water_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/footstep_water_3.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/run_dirts" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_dirt_5.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/run_dirts" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/run_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_dirt_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_dirt_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_dirt_5.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/run_grasss" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/run_grass_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_grass_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_grass_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_grass_4.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/run_grasss" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/run_grass_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_grass_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_grass_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_grass_4.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/run_rocks" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_4.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_5.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_rock_6.wav" weight="0.1" />
+		<module_sound name="LOTR/Monsters/Warg/run_rocks" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/run_rock_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_rock_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_rock_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_rock_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_rock_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_rock_6.wav" weight="0.1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/run_snows" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/run_snow_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_snow_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_snow_3.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_snow_4.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/run_snows" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/run_snow_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_snow_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_snow_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_snow_4.wav" weight="1" />
 		</module_sound>
-		<module_sound name="LOTR/Isengard/Voice/Warg/run_waters" sound_category="mission_voice" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
-			<variation path="LOTR/Isengard/Voice/Warg/run_water_1.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_water_2.wav" weight="1" />
-			<variation path="LOTR/Isengard/Voice/Warg/run_water_3.wav" weight="1" />
+		<module_sound name="LOTR/Monsters/Warg/run_waters" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Warg/run_water_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_water_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Warg/run_water_3.wav" weight="1" />
+		</module_sound>
+		<!--Sounds in LOTR/Monsters/Troll-->
+		<module_sound name="LOTR/Monsters/Troll/troll_footstep_dirts" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.0">
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_footstep_grass.wav" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_footstep_sand.wav" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_footstep_stone.wav" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_dirt_3.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_footstep_woods" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_footstep_wood_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_footstep_wood_2.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_die_1.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_die_2.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_die_3.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_die_4.mp3" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_grunts" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_grunt_1.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_2.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_3.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_4.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_5.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_6.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_7.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_8.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_9.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_11.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_12.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_13.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_14.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_15.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_16.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_17.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_grunt_18.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_jumps" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_jump_1.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_jump_2.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_jump_3.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_jump_4.mp3" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_pains" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_pain_1.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_pain_2.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_pain_3.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_pain_4.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_pain_5.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_pain_6.mp3" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_yells" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_yell_1.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_10.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_11.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_12.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_13.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_2.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_3.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_4.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_5.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_6.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_7.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_8.mp3" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_yell_9.mp3" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Troll/troll_phrases" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Troll/troll_phrase_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Troll/troll_phrase_2.wav" weight="1" />
+		</module_sound>
+		<!--Sounds in LOTR/Monsters/Ent-->
+		<module_sound name="LOTR/Monsters/Ent/ent_dies" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Ent/ent_die_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_die_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_die_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_die_4.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Ent/ent_footsteps" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Ent/ent_footstep_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_footstep_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Ent/ent_runs" sound_category="mission_horse_gallop" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Ent/ent_run_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_run_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Ent/ent_punchs" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Ent/ent_punch_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_punch_9.wav" weight="1" />
+		</module_sound>
+		<module_sound name="LOTR/Monsters/Ent/ent_summon_1.wav" sound_category="mission_voice_shout" path="LOTR/Monsters/Ent/ent_summon_1.wav" />
+		<module_sound name="LOTR/Monsters/Ent/ent_voices" sound_category="mission_voice_shout" min_pitch_multiplier="0.9" max_pitch_multiplier="1.1">
+			<variation path="LOTR/Monsters/Ent/ent_voice_1.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_10.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_11.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_12.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_2.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_3.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_4.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_5.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_6.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_7.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_8.wav" weight="1" />
+			<variation path="LOTR/Monsters/Ent/ent_voice_9.wav" weight="1" />
 		</module_sound>
 		<!--Sounds in LOTR/OST-->
 		<module_sound name="LOTR/OST/Flaming Red Hair.wav" sound_category="mission_ambient_3d_medium" path="LOTR/OST/Flaming Red Hair.wav" />
@@ -367,5 +520,7 @@
 		<!--Sounds in Native/Ambient-->
 		<module_sound name="Native/Ambient/Fireworks 1.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 1.mp3" is_2d="true" />
 		<module_sound name="Native/Ambient/Fireworks 2.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 2.mp3" is_2d="true" />
+
+		
 	</module_sounds>
 </base>

@@ -15,6 +15,7 @@ using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
+using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -66,6 +67,9 @@ namespace Alliance.Client
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)
 		{
+			// Late patching, patching earlier causes issues with Voice type
+			Patch_AdvancedCombat.LatePatch();
+
 			// Add our custom GameModels 
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());

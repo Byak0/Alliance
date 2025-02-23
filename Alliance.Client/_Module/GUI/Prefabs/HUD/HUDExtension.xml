@@ -81,7 +81,7 @@
 				</Widget>
 
 				<!-- Left/Right side: Team avatars + class info -->
-				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="75">
+				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="75" IsVisible="@ShowTeamAvatars" >
 					<Children>
 
 						<!--Left Side-->

@@ -31,6 +31,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new ConditionalAction();
 		}
 
+		public virtual ShowMessageAction ShowMessageAction()
+		{
+			return new ShowMessageAction();
+		}
+
 		public virtual ShowResultScreenAction ShowResultScreenAction()
 		{
 			return new ShowResultScreenAction();
@@ -49,6 +54,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public virtual SpawnAgentAction SpawnAgentAction()
 		{
 			return new SpawnAgentAction();
+		}
+
+		public virtual SpawnFormationAction SpawnFormationAction()
+		{
+			return new SpawnFormationAction();
 		}
 
 		public virtual DamageAgentInZoneAction DamageAgentInZoneAction()

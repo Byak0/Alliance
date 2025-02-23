@@ -304,7 +304,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.simple_sabre_sword_t2" />
         <equipment slot="Item1" id="Item.bound_adarga" />
-        <equipment slot="Item2" id="Item.banner_of_desert_winds_t1" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_desert_winds_t1" />
         <equipment slot="Head" id="Item.desert_helmet" />
         <equipment slot="Body" id="Item.aserai_horseman_armor" />
         <equipment slot="Leg" id="Item.leather_boots" />
@@ -460,7 +460,7 @@
         <equipment slot="Item0" id="Item.khuzait_sword_1_t2" />
         <equipment slot="Item1" id="Item.composite_bow" />
         <equipment slot="Item2" id="Item.steppe_arrows" />
-        <equipment slot="Item3" id="Item.banner_of_desert_winds_t1" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_desert_winds_t1" />
         <equipment slot="Head" id="Item.tied_head_wrapping" />
         <equipment slot="Body" id="Item.studded_steppe_leather" />
         <equipment slot="Leg" id="Item.leather_boots" />
@@ -600,7 +600,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.aserai_sword_2_t2_blunt" />
         <equipment slot="Item1" id="Item.footmans_wicker_shield" />
-        <equipment slot="Item2" id="Item.banner_of_dust_devils_t3" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_dust_devils_t3" />
         <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
         <equipment slot="Body" id="Item.studded_leather_over_aketon" />
         <equipment slot="Leg" id="Item.reinforced_suede_boots" />
@@ -740,7 +740,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.aserai_sword_3_t3" />
         <equipment slot="Item1" id="Item.emirs_oval_shield" />
-        <equipment slot="Item2" id="Item.banner_of_faris_falcon_t1" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_faris_falcon_t1" />
         <equipment slot="Head" id="Item.desert_helmet_with_mail" />
         <equipment slot="Body" id="Item.aserai_armor_02" />
         <equipment slot="Leg" id="Item.northern_plated_boots" />
@@ -875,7 +875,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.khuzait_sword_2_t3" />
         <equipment slot="Item1" id="Item.decorated_steppe_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.nomad_helmet" />
         <equipment slot="Body" id="Item.khuzait_sturdy_armor" />
         <equipment slot="Leg" id="Item.reinforced_suede_boots" />
@@ -1019,7 +1019,7 @@
         <equipment slot="Item0" id="Item.longbow_recurve_desert_bow" />
         <equipment slot="Item1" id="Item.aserai_sword_5_t4" />
         <equipment slot="Item2" id="Item.heavy_steppe_arrows" />
-        <equipment slot="Item3" id="Item.banner_of_emirs_hawk_t2" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_emirs_hawk_t2" />
         <equipment slot="Head" id="Item.loose_wrapped_desert_helmet" />
         <equipment slot="Body" id="Item.leather_strips_over_padded_robe" />
         <equipment slot="Leg" id="Item.northern_plated_boots" />
@@ -1270,7 +1270,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.ridged_sabre_sword_t4" />
         <equipment slot="Item1" id="Item.noyans_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.plumed_lamellar_helmet" />
         <equipment slot="Body" id="Item.imperial_scale_armor" />
         <equipment slot="Leg" id="Item.plated_strip_boots" />
@@ -1413,7 +1413,7 @@
       <EquipmentRoster civilian="false">
         <equipment slot="Item0" id="Item.aserai_noble_sword_2_t5" />
         <equipment slot="Item1" id="Item.steel_round_shield" />
-        <equipment slot="Item2" id="Item.sultans_eagle_t3" />
+        <equipment slot="ExtraWeaponSlot" id="Item.banner_of_sultans_eagle_t3" />
         <equipment slot="Head" id="Item.aserai_lord_helmet_a" />
         <equipment slot="Body" id="Item.aserai_scale_armor_on_chain" />
         <equipment slot="Leg" id="Item.lamellar_plate_boots" />

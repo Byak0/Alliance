@@ -34,6 +34,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 		private bool _warnRemainingTime;
 		private bool _isRoundCountdownAvailable;
 		private bool _isRoundCountdownSuspended;
+		private bool _showTeamAvatars;
 		private bool _showTeamScores;
 		private string _remainingRoundTime;
 		private string _allyTeamColor;
@@ -268,6 +269,23 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 				{
 					_isRoundCountdownSuspended = value;
 					OnPropertyChangedWithValue(value, "IsRoundCountdownSuspended");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool ShowTeamAvatars
+		{
+			get
+			{
+				return _showTeamAvatars;
+			}
+			set
+			{
+				if (value != _showTeamAvatars)
+				{
+					_showTeamAvatars = value;
+					OnPropertyChangedWithValue(value, "ShowTeamAvatars");
 				}
 			}
 		}
@@ -570,7 +588,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 			MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
 			_isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
 			_missionLobbyEquipmentNetworkComponent = mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
+			// Hide round countdown and team avatars for scenarios
 			IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown && _gameMode is not ScenarioClientBehavior;
+			ShowTeamAvatars = _gameMode is not ScenarioClientBehavior;
 			IsRoundCountdownSuspended = false;
 			// Disable Score depending on config
 			_isTeamScoresEnabled = _isTeamsEnabled && Config.Instance.ShowScore;
@@ -580,7 +600,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 			Enemies = new MBBindingList<MPPlayerVM>();
 			_teammateDictionary = new Dictionary<MissionPeer, MPPlayerVM>();
 			_enemyDictionary = new Dictionary<MissionPeer, MPPlayerVM>();
-			ShowHud = _gameMode is not ScenarioClientBehavior;
 			RefreshValues();
 		}
 

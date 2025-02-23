@@ -56,7 +56,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 			{
 				_filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Mount and Blade II Bannerlord", "Configs", SubModule.CurrentModuleName, "MyAnimations.xml");
 				// Only loads user config for admins for now
-				if (File.Exists(_filePath) && GameNetwork.MyPeer.IsAdmin())
+				if (File.Exists(_filePath) && GameNetwork.MyPeer != null && GameNetwork.MyPeer.IsAdmin())
 				{
 					Deserialize(_filePath);
 					string log = "Alliance - Favorites : " + FavoriteAnimations.Count +

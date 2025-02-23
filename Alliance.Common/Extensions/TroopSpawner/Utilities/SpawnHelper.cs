@@ -40,7 +40,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// <summary>
 		/// Use this method if you want to spawn a bot from multi-threaded/async code.
 		/// </summary>
-		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			var spawnRequest = new SpawnRequest
 			{
@@ -52,6 +52,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				SelectedFormation = selectedFormation,
 				BotDifficulty = botDifficulty,
 				MortalityState = mortalityState,
+				HealthMultiplier = healthMultiplier,
 				CompletionSource = new TaskCompletionSource<Agent>()
 			};
 
@@ -64,7 +65,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			while (_spawnQueue.TryDequeue(out var spawnRequest))
 			{
 				Agent agent;
-				bool success = SpawnHelper.SpawnBot(out agent, spawnRequest.Team, spawnRequest.Culture, spawnRequest.Character, spawnRequest.Position, spawnRequest.OnSpawnPerkHandler, spawnRequest.SelectedFormation, spawnRequest.BotDifficulty, spawnRequest.MortalityState);
+				bool success = SpawnHelper.SpawnBot(out agent, spawnRequest.Team, spawnRequest.Culture, spawnRequest.Character, spawnRequest.Position, spawnRequest.OnSpawnPerkHandler, spawnRequest.SelectedFormation, spawnRequest.BotDifficulty, spawnRequest.MortalityState, spawnRequest.HealthMultiplier);
 
 				if (success && agent != null)
 				{
@@ -72,14 +73,14 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 				else
 				{
-					spawnRequest.CompletionSource.SetException(new Exception("Failed to spawn bot."));
+					spawnRequest.CompletionSource.SetCanceled();
 				}
 			}
 		}
 
-		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
-			return SpawnBot(out _, team, culture, character, position, onSpawnPerkHandler, selectedFormation, botDifficulty, mortalityState);
+			return SpawnBot(out _, team, culture, character, position, onSpawnPerkHandler, selectedFormation, botDifficulty, mortalityState, healthMultiplier);
 		}
 
 		/// <summary>
@@ -87,7 +88,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		/// <param name="agent">Return the agent instance after spawn.</param>
 		/// <returns>True if spawn successful, false otherwise.</returns>
-		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal)
+		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			agent = null;
 			try
@@ -159,7 +160,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
+				agent.HealthLimit = Math.Max(classHealth, character.MaxHitPoints());
 				agent.HealthLimit += bonusHealth;
+				agent.HealthLimit *= healthMultiplier;
 				agent.Health = agent.HealthLimit;
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -277,12 +282,14 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
+				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
+				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
+				agent.HealthLimit += bonusHealth;
 				// Additional health for officers
 				if (networkPeer.IsOfficer())
 				{
 					agent.HealthLimit *= Config.Instance.OfficerHPMultip;
 				}
-				agent.HealthLimit += bonusHealth;
 				agent.Health = agent.HealthLimit;
 
 				agent.WieldInitialWeapons();
@@ -557,6 +564,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public int SelectedFormation { get; set; }
 		public float BotDifficulty { get; set; }
 		public Agent.MortalityState MortalityState { get; set; }
+		public float HealthMultiplier { get; set; }
 		public TaskCompletionSource<Agent> CompletionSource { get; set; }
 	}
 }

@@ -11,142 +11,144 @@ using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.Extensions.ExNativeUI.KillNotification.Views
 {
-    [OverrideView(typeof(MissionMultiplayerKillNotificationUIHandler))]
-    public class KillNotificationView : MissionView
-    {
-        public override void OnMissionScreenInitialize()
-        {
-            base.OnMissionScreenInitialize();
-            ViewOrderPriority = 2;
-            _isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
-            _isPersonalFeedEnabled = BannerlordConfig.ReportPersonalDamage;
-            _dataSource = new MPKillFeedVM();
-            _gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
-            _gauntletLayer.LoadMovie("MultiplayerKillFeed", _dataSource);
-            MissionScreen.AddLayer(_gauntletLayer);
-            CombatLogManager.OnGenerateCombatLog += OnCombatLogManagerOnPrintCombatLog;
-            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnOptionChange));
-        }
+	[OverrideView(typeof(MissionMultiplayerKillNotificationUIHandler))]
+	public class KillNotificationView : MissionView
+	{
+		public override void OnMissionScreenInitialize()
+		{
+			base.OnMissionScreenInitialize();
+			ViewOrderPriority = 2;
+			_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
+			_isPersonalFeedEnabled = BannerlordConfig.ReportPersonalDamage;
+			_dataSource = new MPKillFeedVM();
+			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer.LoadMovie("MultiplayerKillFeed", _dataSource);
+			MissionScreen.AddLayer(_gauntletLayer);
+			CombatLogManager.OnGenerateCombatLog += OnCombatLogManagerOnPrintCombatLog;
+			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnOptionChange));
+		}
 
-        private void OnOptionChange(ManagedOptions.ManagedOptionsType changedManagedOptionsType)
-        {
-            if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportCasualtiesType)
-            {
-                _isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
-                return;
-            }
-            if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportPersonalDamage)
-            {
-                _isPersonalFeedEnabled = BannerlordConfig.ReportPersonalDamage;
-            }
-        }
+		private void OnOptionChange(ManagedOptions.ManagedOptionsType changedManagedOptionsType)
+		{
+			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportCasualtiesType)
+			{
+				_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
+				return;
+			}
+			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportPersonalDamage)
+			{
+				_isPersonalFeedEnabled = BannerlordConfig.ReportPersonalDamage;
+			}
+		}
 
-        public override void AfterStart()
-        {
-            base.AfterStart();
-            //_tdmClient = Mission.GetMissionBehavior<MissionMultiplayerTeamDeathmatchClient>();
-            //if (_tdmClient != null)
-            //{
-            //    _tdmClient.OnGoldGainEvent += OnGoldGain;
-            //}
-            //_siegeClient = Mission.GetMissionBehavior<MissionMultiplayerSiegeClient>();
-            //if (_siegeClient != null)
-            //{
-            //    _siegeClient.OnGoldGainEvent += OnGoldGain;
-            //}
-            //_flagDominationClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
-            //if (_flagDominationClient != null)
-            //{
-            //    _flagDominationClient.OnGoldGainEvent += OnGoldGain;
-            //}
-            _duelClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeDuelClient>();
-            if (_duelClient != null)
-            {
-                _doesGameModeAllowGeneralFeed = false;
-            }
-        }
+		public override void AfterStart()
+		{
+			base.AfterStart();
+			//_tdmClient = Mission.GetMissionBehavior<MissionMultiplayerTeamDeathmatchClient>();
+			//if (_tdmClient != null)
+			//{
+			//    _tdmClient.OnGoldGainEvent += OnGoldGain;
+			//}
+			//_siegeClient = Mission.GetMissionBehavior<MissionMultiplayerSiegeClient>();
+			//if (_siegeClient != null)
+			//{
+			//    _siegeClient.OnGoldGainEvent += OnGoldGain;
+			//}
+			//_flagDominationClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeFlagDominationClient>();
+			//if (_flagDominationClient != null)
+			//{
+			//    _flagDominationClient.OnGoldGainEvent += OnGoldGain;
+			//}
+			_duelClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeDuelClient>();
+			if (_duelClient != null)
+			{
+				_doesGameModeAllowGeneralFeed = false;
+			}
+		}
 
-        public override void OnMissionScreenFinalize()
-        {
-            base.OnMissionScreenFinalize();
-            CombatLogManager.OnGenerateCombatLog -= OnCombatLogManagerOnPrintCombatLog;
-            ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnOptionChange));
-            //if (_tdmClient != null)
-            //{
-            //    _tdmClient.OnGoldGainEvent -= OnGoldGain;
-            //}
-            //if (_siegeClient != null)
-            //{
-            //    _siegeClient.OnGoldGainEvent -= OnGoldGain;
-            //}
-            //if (_flagDominationClient != null)
-            //{
-            //    _flagDominationClient.OnGoldGainEvent -= OnGoldGain;
-            //}
-            MissionScreen.RemoveLayer(_gauntletLayer);
-            _gauntletLayer = null;
-            _dataSource.OnFinalize();
-            _dataSource = null;
-        }
+		public override void OnMissionScreenFinalize()
+		{
+			base.OnMissionScreenFinalize();
+			CombatLogManager.OnGenerateCombatLog -= OnCombatLogManagerOnPrintCombatLog;
+			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnOptionChange));
+			//if (_tdmClient != null)
+			//{
+			//    _tdmClient.OnGoldGainEvent -= OnGoldGain;
+			//}
+			//if (_siegeClient != null)
+			//{
+			//    _siegeClient.OnGoldGainEvent -= OnGoldGain;
+			//}
+			//if (_flagDominationClient != null)
+			//{
+			//    _flagDominationClient.OnGoldGainEvent -= OnGoldGain;
+			//}
+			MissionScreen.RemoveLayer(_gauntletLayer);
+			_gauntletLayer = null;
+			_dataSource.OnFinalize();
+			_dataSource = null;
+		}
 
-        //private void OnGoldGain(GoldGain goldGainMessage)
-        //{
-        //    if (_isPersonalFeedEnabled)
-        //    {
-        //        foreach (KeyValuePair<ushort, int> keyValuePair in goldGainMessage.GoldChangeEventList)
-        //        {
-        //            _dataSource.PersonalCasualty.OnGoldChange(keyValuePair.Value, (GoldGainFlags)keyValuePair.Key);
-        //        }
-        //    }
-        //}
+		//private void OnGoldGain(GoldGain goldGainMessage)
+		//{
+		//    if (_isPersonalFeedEnabled)
+		//    {
+		//        foreach (KeyValuePair<ushort, int> keyValuePair in goldGainMessage.GoldChangeEventList)
+		//        {
+		//            _dataSource.PersonalCasualty.OnGoldChange(keyValuePair.Value, (GoldGainFlags)keyValuePair.Key);
+		//        }
+		//    }
+		//}
 
-        private void OnCombatLogManagerOnPrintCombatLog(CombatLogData logData)
-        {
-            if (_isPersonalFeedEnabled && (logData.IsAttackerAgentMine || logData.IsAttackerAgentRiderAgentMine) && logData.TotalDamage > 0 && !logData.IsVictimAgentSameAsAttackerAgent)
-            {
-                _dataSource.OnPersonalDamage(logData.TotalDamage, logData.IsFatalDamage, logData.IsVictimAgentMount, logData.IsFriendlyFire, logData.BodyPartHit == BoneBodyPartType.Head, logData.VictimAgentName);
-            }
-        }
+		private void OnCombatLogManagerOnPrintCombatLog(CombatLogData logData)
+		{
+			if (_isPersonalFeedEnabled && (logData.IsAttackerAgentMine || logData.IsAttackerAgentRiderAgentMine) && logData.TotalDamage > 0 && !logData.IsVictimAgentSameAsAttackerAgent)
+			{
+				_dataSource.OnPersonalDamage(logData.TotalDamage, logData.IsFatalDamage, logData.IsVictimAgentMount, logData.IsFriendlyFire, logData.BodyPartHit == BoneBodyPartType.Head, logData.VictimAgentName);
+			}
+		}
 
-        public void DisplayPersonalDamage(SyncPersonalKillFeedNotification message)
-        {
-            if (_isPersonalFeedEnabled && (message.CasterAgent == Agent.Main || message.CasterAgent == Agent.Main.MountAgent) && message.HealthDifference > 0 && message.CasterAgent != message.TargetAgent)
-            {
-                _dataSource.OnPersonalDamage(message.HealthDifference, message.IsFatal, message.IsTargetMount, message.IsFriendlyFireDamage, message.IsHeadshot, message.TargetAgent.Name);
-            }
-        }
+		public void DisplayPersonalDamage(SyncPersonalKillFeedNotification message)
+		{
+			if (Agent.Main == null) return;
 
-        public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow killingBlow)
-        {
-            base.OnAgentRemoved(affectedAgent, affectorAgent, agentState, killingBlow);
-            // Check if kill feed is enabled
-            if (!Config.Instance.KillFeedEnabled || !_isGeneralFeedEnabled || GameNetwork.IsDedicatedServer || affectorAgent == null || !affectedAgent.IsHuman || agentState != AgentState.Killed && agentState != AgentState.Unconscious)
-            {
-                return;
-            }
-            _dataSource.OnAgentRemoved(affectedAgent, affectorAgent, _isPersonalFeedEnabled);
-        }
+			if (_isPersonalFeedEnabled && (message.CasterAgent == Agent.Main || message.CasterAgent == Agent.Main.MountAgent) && message.HealthDifference > 0 && message.CasterAgent != message.TargetAgent)
+			{
+				_dataSource.OnPersonalDamage(message.HealthDifference, message.IsFatal, message.IsTargetMount, message.IsFriendlyFireDamage, message.IsHeadshot, message.TargetAgent.Name);
+			}
+		}
 
-        public KillNotificationView()
-        {
-        }
+		public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow killingBlow)
+		{
+			base.OnAgentRemoved(affectedAgent, affectorAgent, agentState, killingBlow);
+			// Check if kill feed is enabled
+			if (!Config.Instance.KillFeedEnabled || !_isGeneralFeedEnabled || GameNetwork.IsDedicatedServer || affectorAgent == null || !affectedAgent.IsHuman || agentState != AgentState.Killed && agentState != AgentState.Unconscious)
+			{
+				return;
+			}
+			_dataSource.OnAgentRemoved(affectedAgent, affectorAgent, _isPersonalFeedEnabled);
+		}
 
-        private MPKillFeedVM _dataSource;
+		public KillNotificationView()
+		{
+		}
 
-        private GauntletLayer _gauntletLayer;
+		private MPKillFeedVM _dataSource;
 
-        private MissionMultiplayerTeamDeathmatchClient _tdmClient;
+		private GauntletLayer _gauntletLayer;
 
-        private MissionMultiplayerSiegeClient _siegeClient;
+		private MissionMultiplayerTeamDeathmatchClient _tdmClient;
 
-        private MissionMultiplayerGameModeDuelClient _duelClient;
+		private MissionMultiplayerSiegeClient _siegeClient;
 
-        private MissionMultiplayerGameModeFlagDominationClient _flagDominationClient;
+		private MissionMultiplayerGameModeDuelClient _duelClient;
 
-        private bool _isGeneralFeedEnabled;
+		private MissionMultiplayerGameModeFlagDominationClient _flagDominationClient;
 
-        private bool _doesGameModeAllowGeneralFeed = true;
+		private bool _isGeneralFeedEnabled;
 
-        private bool _isPersonalFeedEnabled;
-    }
+		private bool _doesGameModeAllowGeneralFeed = true;
+
+		private bool _isPersonalFeedEnabled;
+	}
 }

@@ -1,0 +1,38 @@
+<Items>
+
+	<Item multiplayer_item="true" id="leaves_head_ent_1" name="Ent head" mesh="leaves_head_ent_1" culture="Culture.monsters" Type="BodyArmor" weight="1.5" appearance="1" >
+		<ItemComponent>
+			<Armor body_armor="50" leg_armor="50" arm_armor="50" head_armor="50" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+
+	<Item multiplayer_item="true" id="troll_olog_sotp_body_armor" name="Olog armor" mesh="troll_olog_sotp_body_armor" culture="Culture.monsters" Type="BodyArmor" weight="15" appearance="1" >
+		<ItemComponent>
+			<Armor body_armor="50" arm_armor="25" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+
+	<Item multiplayer_item="true" id="troll_olog_sotp_head_armor" name="Olog helmet" mesh="troll_olog_sotp_head_armor" culture="Culture.monsters" Type="HeadArmor" weight="5" appearance="1" >
+		<ItemComponent>
+			<Armor head_armor="50" has_gender_variations="false" covers_body="false" modifier_group="plate" material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+
+	<Item multiplayer_item="true" 
+				id="troll_olog_sotp_hands_armor" 
+				name="Olog gauntlets" 
+				mesh="troll_olog_sotp_hands_armor" 
+				culture="Culture.monsters" 
+				Type="HandArmor" weight="5" appearance="1" >
+		<ItemComponent>
+			<Armor arm_armor="25" 
+             covers_hands="false"
+						 modifier_group="plate" 
+						 material_type="Plate" />
+		</ItemComponent>
+		<Flags Civilian="true" />
+	</Item>
+</Items>
