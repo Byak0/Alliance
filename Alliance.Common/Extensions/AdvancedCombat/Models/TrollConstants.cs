@@ -10,6 +10,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 		public static readonly List<Animation> RageAnimations;
 		public static readonly List<Animation> SearchAnimations;
 		public static readonly Animation StompAnimation;
+		public static readonly List<sbyte> CollisionBones = new List<sbyte>
+			{
+				19, // ID left hand bone
+				26, // ID right hand bone
+			};
 
 		public const int CHASE_RADIUS = 30; // Max range to consider when chasing a target
 		public const int THREAT_RANGE = 15; // Max range to consider when looking for threats
