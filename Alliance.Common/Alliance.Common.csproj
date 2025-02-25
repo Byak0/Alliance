@@ -34,12 +34,9 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <Reference Include="BehaviorTrees">
-	    <HintPath>..\..\BehaviorTrees\BehaviorTrees.dll</HintPath>
-	  </Reference>
-	  <Reference Include="BehaviorTreeWrapper">
-	    <HintPath>..\..\BehaviorTrees\BehaviorTreeWrapper.dll</HintPath>
-	  </Reference>
+		<Reference Include=".\Resources\BehaviorTrees\*.dll">
+			<HintPath>%(Identity)</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>
