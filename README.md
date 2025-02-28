@@ -1,7 +1,10 @@
-# Alliance
+![Alliance - header](https://github.com/user-attachments/assets/cce6f4fb-7eae-404b-afa5-14f84742ab3b)
+    
 Welcome to the official GitHub repository of Alliance, a multiplayer mod for Mount & Blade II: Bannerlord.
 
 Alliance aims to enhance the multiplayer experience by introducing new features, gameplay mechanics, game modes, and high-quality content, all designed to create a more engaging and entertaining experience.
+
+Through our new Scenario game mode and customized scripts, we also wish to provide powerful tools to map makers and communities to help them create their own experiences.
 
 Mod is under heavy development and still far from completion.
 
@@ -12,23 +15,30 @@ Mod is under heavy development and still far from completion.
 - Game Mode Launcher : Launch any game mode with plenty of customizable options, directly in-game
 - Animation Player : Play any animation on any agent, with customizable access for players
 - [Scatter Around Expanded](https://www.nexusmods.com/mountandblade2bannerlord/mods/4134/?tab=description&jump_to_comment=116945223) : Easily place your archers precisely where you want them !
+- VOIP : Speak directly in-game through your character with a localized voice chat
 - Custom Scripts : Drive a car, a chariot, heal yourself, release fireworks, refill any type of ammo...
 - Custom Maps
 - Custom Models
+- Custom Creatures and AI
 - and much more !
 
+# New Tools for Creators
+- Scenario creation menu : Make your own Scenario, with custom objectives, events and rules
+- Powerful and highly customizable scripts for map makers : Freely combine our custom triggers and actions to create unique behavior. Trigger a trap when entering a zone, toggle a light when using an object, spawn creatures once in a while...
+
 # New Game Modes
-- Players VS Commanders : One team of players face off against one or multiple commanders who can spawn an army of bots and command them.
-- Battle Royale : Face off against hundreds of other players and a deadly shrinking zone. Be the last alive to win.
-- Scenario : Join other players in a custom scenario, with predefined objectives, events, and engage in a unique experience.
+- Players VS Commanders : One team of players face off against one or multiple commanders who can spawn an army of bots and command them
+- Commanders VS Commanders : Two team of commanders face off with the army composition they want
+- Battle Royale : Fight against other players and escape a deadly shrinking zone. Be the last alive to win
+- Scenario : Join other players in a custom scenario, with predefined objectives, events, and engage in a unique experience
 
 # Installation
-- Download the latest version from the [Releases page](https://github.com/Lkoinw/Alliance/releases).
-- Extract the downloaded files to your Mount & Blade II Bannerlord/Modules directory.
-- Enable Alliance in the Bannerlord launcher.
+- Download the latest version from the [Releases page](https://github.com/Byak0/Alliance/releases)
+- Extract the downloaded files to your Mount & Blade II Bannerlord/Modules directory
+- Enable Alliance in the Bannerlord launcher
 
 # Contributing
-Join us on [Discord](https://discord.gg/xCVdpQccfm).
+You can join us on [Discord](https://discord.gg/xCVdpQccfm). The dev team is speaking mostly French.
 
 # License
     Alliance - Multiplayer mod for Mount & Blade II: Bannerlord
