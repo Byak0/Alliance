@@ -42,7 +42,7 @@ You can join us on [Discord](https://discord.gg/xCVdpQccfm). The dev team is spe
 
 # License
     Alliance - Multiplayer mod for Mount & Blade II: Bannerlord
-    Copyright (C) 2023-2024 La Forge des Combattants
+    Copyright (C) 2023-2025 La Forge des Combattants
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
