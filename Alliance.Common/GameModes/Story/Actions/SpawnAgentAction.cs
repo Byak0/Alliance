@@ -16,6 +16,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public string Character = "mp_heavy_infantry_vlandia_troop";
 		[ScenarioEditor(label: "Number", tooltip: "Number of characters to spawn.")]
 		public int Number = 1;
+		[ScenarioEditor(label: "IsPercentage", tooltip: "If true, Number will be treated as percentage of the current number of players.")]
+		public bool IsPercentage = false;
 		[ScenarioEditor(label: "Side", tooltip: "Which side the characters belongs to.")]
 		public BattleSideEnum Side = BattleSideEnum.Defender;
 		[ScenarioEditor(label: "Formation", tooltip: "Formation to spawn the characters.")]
