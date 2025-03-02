@@ -1,6 +1,6 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Server.Core.Utils;
 using System;
 using System.Threading.Tasks;
 using TaleWorlds.Core;

@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Server.Core.Utils;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
