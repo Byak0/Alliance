@@ -218,7 +218,7 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 					RemoveExistingPrefabs(item.Key);
 					continue;
 				}
-				SetPrefabGlobalFrame(item.Key, _extendedOffHandtemsWithPrefab.ElementAt(i).Value.BoneType, item.Value.Prefab);
+				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
 			}
 
 			for (int i = 0; i < _extendedMainItemsWithPrefab.Count; i++)
@@ -229,7 +229,7 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 					RemoveExistingPrefabs(item.Key);
 					continue;
 				}
-				SetPrefabGlobalFrame(item.Key, _extendedMainItemsWithPrefab.ElementAt(i).Value.BoneType, item.Value.Prefab);
+				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
 			}
 
 			if (_usableItemInHand && Input.IsKeyReleased(InputKey.Q))
