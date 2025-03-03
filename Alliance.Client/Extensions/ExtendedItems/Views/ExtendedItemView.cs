@@ -121,14 +121,14 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 		// Triggered by Patch_MissionNetworkComponent.Prefix_HandleServerEventSetWieldedItemIndex
 		public void OnAgentWieldedItemChange(Agent agent)
 		{
+			// Clear existing prefabs before adding new ones
 			RemoveExistingPrefabs(agent);
 
+			// Note : agent.AddSynchedPrefabComponentToBone is not used here because it doesn't work properly with all prefabs (notably light sources)
+			// Instead, we create the prefab and update its global frame manually to match target bone.
 			(ItemObject item, ExtendedItem itemEx, sbyte boneType) = GetWieldedItemAndExtendedInfo(agent, false);
 			if (itemEx != null && !string.IsNullOrEmpty(itemEx.Prefab))
 			{
-				// TODO TEST 
-				//agent.AddSynchedPrefabComponentToBone(itemEx.Prefab, boneType);
-
 				GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
 				SetPrefabGlobalFrame(agent, boneType, prefab);
 
