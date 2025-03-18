@@ -7,7 +7,7 @@
 			  morph_key="0"
 			  uses_stitching="true"
 			  body_mesh_suffix=""
-			  min_scale ="1.07"
+			  min_scale ="1.05"
 			  skeleton="human_skeleton"
 			  body_meta_mesh="body_uruk_a"
 			  body_meta_mesh_shoulders="body_male_a_sh"
@@ -916,7 +916,7 @@
 									key_min="1"
 									key_max="1.2" />
 
-						<bone_scale bone_type="biped_upperarm_l"
+						<!--<bone_scale bone_type="biped_upperarm_l"
 									axis="x"
 									key_min="0.8"
 									key_max="1.18" />
@@ -927,9 +927,21 @@
 						<bone_scale bone_type="biped_upperarm_l"
 									axis="z"
 									key_min="0.8"
-									key_max="1.18" />
+									key_max="1.18" />-->
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="x"
+									key_min="1.1"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="y"
+									key_min="1.1"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="z"
+									key_min="1.1"
+									key_max="1.2" />
 
-						<bone_scale bone_type="biped_forearm_l"
+						<!--<bone_scale bone_type="biped_forearm_l"
 									axis="x"
 									key_min="0.85"
 									key_max="1.12" />
@@ -940,9 +952,21 @@
 						<bone_scale bone_type="biped_forearm_l"
 									axis="z"
 									key_min="0.85"
-									key_max="1.12" />
+									key_max="1.12" />-->
+						<bone_scale bone_type="biped_forearm_l"
+									axis="x"
+									key_min="1.1"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_forearm_l"
+									axis="y"
+									key_min="1.1"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_forearm_l"
+									axis="z"
+									key_min="1.1"
+									key_max="1.2" />
 
-						<bone_scale bone_type="biped_hand_l"
+						<!--<bone_scale bone_type="biped_hand_l"
 									axis="x"
 									key_min="1"
 									key_max="1" />
@@ -953,7 +977,20 @@
 						<bone_scale bone_type="biped_hand_l"
 									axis="z"
 									key_min="1"
-									key_max="1" />
+									key_max="1" />-->
+						
+						<bone_scale bone_type="biped_hand_l"
+									axis="x"
+									key_min="1.2"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_hand_l"
+									axis="y"
+									key_min="1.2"
+									key_max="1.2" />
+						<bone_scale bone_type="biped_hand_l"
+									axis="z"
+									key_min="1.2"
+									key_max="1.2" />
 
 						<bone_scale bone_type="biped_shoulder_r"
 									axis="x"
