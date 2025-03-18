@@ -19,7 +19,7 @@ namespace Alliance.Common.GameModels
 
 			if (collisionData.IsFallDamage && attackInformation.VictimAgent.IsWarg())
 			{
-				return baseDamage * 0.5f;
+				return baseDamage * 0.1f;
 			}
 
 			MissionWeapon missionWeapon = weapon;

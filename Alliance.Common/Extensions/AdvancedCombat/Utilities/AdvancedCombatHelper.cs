@@ -101,7 +101,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 						float force = warg.MovementVelocity.Y >= 4 ? 1f : 0f;
 						ProjectAgent(target, damagerAgent.Position, force);
 					}
-					CoreUtils.TakeDamage(target, damagerAgent, damage);
+					if (damagerAgent.RiderAgent != null)
+					{
+						CoreUtils.TakeDamage(target, damagerAgent.RiderAgent, damage);
+					}
+					else
+					{
+						CoreUtils.TakeDamage(target, damagerAgent, damage);
+					}
 				}
 			}
 			catch (Exception e)
@@ -127,7 +134,15 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 
 					// TODO : if target parried with a shield, reduce shield durability, otherwise project target
 					var damagerAgent = warg != null ? warg : target;
-					CoreUtils.TakeDamage(target, damagerAgent, 0); // Application of the blow.
+
+					if (damagerAgent.RiderAgent != null)
+					{
+						CoreUtils.TakeDamage(target, damagerAgent.RiderAgent, 0);
+					}
+					else
+					{
+						CoreUtils.TakeDamage(target, damagerAgent, 0);
+					}
 				}
 			}
 			catch (Exception e)
@@ -171,7 +186,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 			}
 
 			AnimationSystem.Instance.PlayAnimation(nearbyAgent, projectionAnimation, true);
-			Log($"{blowDirection} - Playing {projectionAnimation.Name}");
+			//Log($"{blowDirection} - Playing {projectionAnimation.Name}");
 		}
 
 		public static BlowDirection GetDirectionOfBlow(Agent victim, Vec3 blowOrigin)
