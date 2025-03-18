@@ -1,6 +1,9 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.AgentComponents;
 using Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees;
+using Alliance.Common.Extensions.AdvancedCombat.Models;
+using Alliance.Common.Extensions.AdvancedCombat.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using BehaviorTreeWrapper;
 using System;
 using System.Collections.Generic;
@@ -10,37 +13,61 @@ using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View.MissionViews;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 {
 	/// <summary>
-	/// Ties a dedicated component to some creatures when they spawn, to unlock advanced and unique behaviors.
+	/// Handle unique combat behaviors. Ties a dedicated component to some creatures when they spawn.
 	/// </summary>
 	public class AdvancedCombatBehavior : MissionLogic
 	{
+		private DateTime _wargLastAttackTime = DateTime.MinValue;
+		private bool _ridingWarg;
+
 		// List of temporary components for bone collision checks
-		private List<BoneCheckDuringAnimationBehavior> boneCheckComponents = new List<BoneCheckDuringAnimationBehavior>();
+		private List<BoneCheckDuringAnimationBehavior> _boneCheckComponents = new List<BoneCheckDuringAnimationBehavior>();
+
 
 		public override void OnBehaviorInitialize()
 		{
 			base.OnBehaviorInitialize();
 
+			// Register Behavior Trees
 			BehaviorTrees.BTRegister.RegisterClass("TrollTree", objects => TrollBehaviorTree.BuildTree(objects));
 		}
 
 		public override void OnMissionTick(float dt)
 		{
-			// Iterate through the list of components and tick each one.
-			for (int i = boneCheckComponents.Count - 1; i >= 0; i--)
+			// Only on client or singleplayer
+			if (!GameNetwork.IsServer)
 			{
-				bool isAlive = boneCheckComponents[i].Tick(dt);
+				TickWargRider();
+			}
+			// Only on server or singeplayer
+			if (!GameNetwork.IsClientOrReplay)
+			{
+				BoneCollisionChecks(dt);
+				TickAgentComponents(dt);
+			}
+		}
+
+		private void BoneCollisionChecks(float dt)
+		{
+			// Iterate through the list of components and tick each one.
+			for (int i = _boneCheckComponents.Count - 1; i >= 0; i--)
+			{
+				bool isAlive = _boneCheckComponents[i].Tick(dt);
 				if (!isAlive)
 				{
-					boneCheckComponents.RemoveAt(i);
+					_boneCheckComponents.RemoveAt(i);
 				}
 			}
+		}
 
-			// TODO Rework iteration to prevent crash when list gets modified
+		private void TickAgentComponents(float dt)
+		{
 			for (int i = 0; i < Mission.AllAgents.Count; i++)
 			{
 				Agent agent = Mission.AllAgents.ElementAt(i);
@@ -48,9 +75,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 				{
 					continue;
 				}
-				List<AdvancedCombatComponent> components = agent.Components.Where(component => component is AdvancedCombatComponent).Select(component => component as AdvancedCombatComponent).ToList();
+				List<AL_DefaultAgentComponent> components = agent.Components.Where(component => component is AL_DefaultAgentComponent).Select(component => component as AL_DefaultAgentComponent).ToList();
 				float offset_Z = agent.HasMount ? 1f : 0f;
-				foreach (AdvancedCombatComponent component in components)
+				foreach (AL_DefaultAgentComponent component in components)
 				{
 					component.OnTick(dt);
 
@@ -63,7 +90,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 					//debugMessage += "\nChannel 1: " + agent.GetCurrentAction(1)?.Name;
 
 					uint color = Color.White.ToUnsignedInteger();
-					if (component is DefaultHumanoidComponent defaultHumanoidComponent)
+					if (component is HumanoidComponent defaultHumanoidComponent)
 					{
 						if (defaultHumanoidComponent.Threat != null)
 						{
@@ -109,20 +136,92 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 		}
 
+		private void TickWargRider()
+		{
+			if (Agent.Main != null && Agent.Main.HasMount && Agent.Main.MountAgent.IsWarg())
+			{
+				CheckForWargAttack();
+				UpdateWargRiderHandle();
+			}
+			else if (_ridingWarg)
+			{
+				_ridingWarg = false;
+				ClearCustomLookDirection();
+			}
+		}
+
+		private static void ClearCustomLookDirection()
+		{
+			MissionMainAgentController missionMainAgentController = Mission.Current.GetMissionBehavior<MissionMainAgentController>();
+			missionMainAgentController.CustomLookDir = Vec3.Zero;
+		}
+
+		private void UpdateWargRiderHandle()
+		{
+			_ridingWarg = true;
+			MissionMainAgentController missionMainAgentController = Mission.Current.GetMissionBehavior<MissionMainAgentController>();
+
+			// Force rider to look in front of him to prevent bad hands positions. Only when in movement and not in first person.
+			if (Agent.Main.GetCurrentAction(0) == ActionIndexCache.act_none && Agent.Main.GetCurrentAction(1) == ActionIndexCache.act_none && !Agent.Main.HeadCameraMode)
+			{
+				Vec3 newLookDir = Agent.Main.GetMovementDirection().ToVec3();
+				missionMainAgentController.CustomLookDir = newLookDir;
+				return;
+			}
+			// Reset look direction when not in riding animation (attack, block, etc.)
+			else
+			{
+				ClearCustomLookDirection();
+			}
+		}
+
+		private void CheckForWargAttack()
+		{
+			// Check for user input
+			if (Input.IsKeyPressed(InputKey.Q))
+			{
+				// Check if cooldown has passed
+				if (DateTime.UtcNow - _wargLastAttackTime >= TimeSpan.FromSeconds(WargConstants.ATTACK_COOLDOWN))
+				{
+					Log($"Using Warg attack !", LogLevel.Information);
+
+					if (GameNetwork.IsClient)
+					{
+						// Request server to perform attack
+						GameNetwork.BeginModuleEventAsClient();
+						GameNetwork.WriteMessage(new RequestSpecialAttack());
+						GameNetwork.EndModuleEventAsClient();
+					}
+					else
+					{
+						// Perform attack locally if not in multiplayer
+						Agent.Main.MountAgent.WargAttack();
+					}
+
+					_wargLastAttackTime = DateTime.UtcNow;
+				}
+				else
+				{
+					Log($"Warg attack on cooldown! {(TimeSpan.FromSeconds(WargConstants.ATTACK_COOLDOWN) - (DateTime.UtcNow - _wargLastAttackTime)).Seconds + 1} seconds remaining", LogLevel.Information);
+				}
+			}
+		}
+
 		public override void OnAgentCreated(Agent agent)
 		{
-			agent.AddComponent(new DefaultAgentComponent(agent));
 		}
 
 		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
+			if (GameNetwork.IsClientOrReplay) return;
+
 			if (agent.IsWarg())
 			{
 				agent.AddComponent(new WargComponent(agent));
-				//Log("Added WargComponent to agent", LogLevel.Debug);
 			}
 			else if (agent.IsTroll())
 			{
+				agent.AddComponent(new HumanoidComponent(agent));
 				agent.AddComponent(new BehaviorTreeAgentComponent(agent, "TrollTree"));
 				//agent.AddComponent(new TrollComponent(agent));
 				//Log("Added TrollComponent to agent", LogLevel.Debug);
@@ -133,13 +232,26 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 			else if (agent.IsHuman)
 			{
-				agent.AddComponent(new DefaultHumanoidComponent(agent));
+				agent.AddComponent(new HumanoidComponent(agent));
+			}
+		}
+
+		public override void OnMissionResultReady(MissionResult missionResult)
+		{
+			for (int i = 0; i < Mission.AllAgents.Count; i++)
+			{
+				Agent agent = Mission.AllAgents.ElementAt(i);
+				if (agent == null)
+				{
+					continue;
+				}
+				agent.GetComponent<AL_DefaultAgentComponent>()?.OnMissionResultReady(missionResult);
 			}
 		}
 
 		public void AddBoneCheckComponent(BoneCheckDuringAnimationBehavior component)
 		{
-			boneCheckComponents.Add(component);
+			_boneCheckComponents.Add(component);
 		}
 	}
 }

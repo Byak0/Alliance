@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// Allow the warg to behave independently. Hunting, chilling, fleeing, etc.
 	/// </summary>
-	public class WargComponent : AdvancedCombatComponent
+	public class WargComponent : AL_DefaultAgentComponent
 	{
 		// Behavior probabilities, from 0 (never) to 1 (always).
 		const float FLEE_WHEN_WOUNDED_PROBABILITY = 0.02f;
