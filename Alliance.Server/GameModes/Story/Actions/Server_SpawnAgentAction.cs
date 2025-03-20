@@ -1,6 +1,6 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Server.Core.Utils;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -26,10 +26,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
-			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(Character);
+			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(CharacterId);
 			float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Difficulty);
+			int numbertoSpawn = IsPercentage ? (int)((SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : SpawnCount;
 
-			for (int i = 0; i < Number; i++)
+			for (int i = 0; i < numbertoSpawn; i++)
 			{
 				// Calculate random position in the SpawnZone
 				Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.Position, SpawnZone.Radius);

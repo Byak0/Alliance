@@ -8,7 +8,7 @@ using static TaleWorlds.MountAndBlade.Agent;
 
 namespace Alliance.Common.Core.Utils
 {
-	static class CoreUtils
+	public static class CoreUtils
 	{
 		public static void TakeDamage(Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{
@@ -161,11 +161,39 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
+		/// Returns a random position within the given center and radius.
+		/// </summary>
+		public static Vec3 GetRandomPositionWithinRadius(Vec3 center, float radius)
+		{
+			// Generate random angle and distance within the radius
+			float angle = MBRandom.RandomFloat * MathF.PI * 2; // Random angle between 0 and 360 degrees
+			float distance = MBRandom.RandomFloat * radius; // Random distance within the radius
+
+			// Calculate X and Y coordinates
+			float x = center.x + MathF.Cos(angle) * distance;
+			float y = center.y + MathF.Sin(angle) * distance;
+
+			// Return the new position (Z remains unchanged)
+			return new Vec3(x, y, center.z);
+		}
+
+		/// <summary>
 		/// Return the number of seconds since the mission started.
 		/// </summary>
 		public static float GetMissionTimeInSeconds(this Mission mission)
 		{
 			return mission.MissionTimeTracker.NumberOfTicks / 10000000f;
+		}
+
+		/// <summary>
+		/// Return the current number of players in the game (including bots from server settings).
+		/// </summary>
+		public static int CurrentPlayerCount
+		{
+			get
+			{
+				return GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+			}
 		}
 	}
 }

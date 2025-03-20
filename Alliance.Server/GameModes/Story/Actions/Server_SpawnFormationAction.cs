@@ -1,6 +1,6 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Server.Core.Utils;
 using System;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
@@ -35,10 +35,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			// Spawn the various characters
 			foreach (CharacterToSpawn characterToSpawn in Characters)
 			{
-				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.Character);
+				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
+				int numberToSpawn = characterToSpawn.IsPercentage ? (int)((characterToSpawn.SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : characterToSpawn.SpawnCount;
 
-				for (int i = 0; i < characterToSpawn.Number; i++)
+				for (int i = 0; i < numberToSpawn; i++)
 				{
 					try
 					{
