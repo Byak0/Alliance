@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
@@ -94,6 +95,7 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 				{
 					attachedPrefabMH.Prefab.Remove(0);
 					_extendedMainItemsWithPrefab.Remove(agent);
+					Log($"Removed prefab {attachedPrefabMH.Prefab}", LogLevel.Debug);
 				}
 				catch (Exception e)
 				{
@@ -107,6 +109,7 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 				{
 					attachedPrefabOH.Prefab.Remove(0);
 					_extendedOffHandtemsWithPrefab.Remove(agent);
+					Log($"Removed prefab {attachedPrefabMH.Prefab}", LogLevel.Debug);
 				}
 				catch (Exception e)
 				{
@@ -118,14 +121,14 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 		// Triggered by Patch_MissionNetworkComponent.Prefix_HandleServerEventSetWieldedItemIndex
 		public void OnAgentWieldedItemChange(Agent agent)
 		{
+			// Clear existing prefabs before adding new ones
 			RemoveExistingPrefabs(agent);
 
+			// Note : agent.AddSynchedPrefabComponentToBone is not used here because it doesn't work properly with all prefabs (notably light sources)
+			// Instead, we create the prefab and update its global frame manually to match target bone.
 			(ItemObject item, ExtendedItem itemEx, sbyte boneType) = GetWieldedItemAndExtendedInfo(agent, false);
 			if (itemEx != null && !string.IsNullOrEmpty(itemEx.Prefab))
 			{
-				// TODO TEST 
-				//agent.AddSynchedPrefabComponentToBone(itemEx.Prefab, boneType);
-
 				GameEntity prefab = GameEntity.Instantiate(Mission.Current.Scene, itemEx.Prefab, agent.Frame);
 				SetPrefabGlobalFrame(agent, boneType, prefab);
 
@@ -207,20 +210,23 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 
 		public override void OnMissionScreenTick(float dt)
 		{
-			foreach (KeyValuePair<Agent, AttachedPrefab> item in _extendedOffHandtemsWithPrefab)
+			for (int i = 0; i < _extendedOffHandtemsWithPrefab.Count; i++)
 			{
+				KeyValuePair<Agent, AttachedPrefab> item = _extendedOffHandtemsWithPrefab.ElementAt(i);
 				if (item.Key.AgentVisuals?.GetSkeleton() == null)
 				{
-					Log($"Failed to get agents visuals or skeleton for {item.Key.Name}", LogLevel.Error);
+					RemoveExistingPrefabs(item.Key);
 					continue;
 				}
 				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
 			}
-			foreach (KeyValuePair<Agent, AttachedPrefab> item in _extendedMainItemsWithPrefab)
+
+			for (int i = 0; i < _extendedMainItemsWithPrefab.Count; i++)
 			{
+				KeyValuePair<Agent, AttachedPrefab> item = _extendedMainItemsWithPrefab.ElementAt(i);
 				if (item.Key.AgentVisuals?.GetSkeleton() == null)
 				{
-					Log($"Failed to get agents visuals or skeleton for {item.Key.Name}", LogLevel.Error);
+					RemoveExistingPrefabs(item.Key);
 					continue;
 				}
 				SetPrefabGlobalFrame(item.Key, item.Value.BoneType, item.Value.Prefab);
