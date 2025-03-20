@@ -26,9 +26,9 @@ namespace Alliance.Server.GameModes.Story.Actions
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
-			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(Character);
+			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(CharacterId);
 			float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Difficulty);
-			int numbertoSpawn = IsPercentage ? (int)((Number / 100f) * CoreUtils.CurrentPlayerCount) : Number;
+			int numbertoSpawn = IsPercentage ? (int)((SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : SpawnCount;
 
 			for (int i = 0; i < numbertoSpawn; i++)
 			{

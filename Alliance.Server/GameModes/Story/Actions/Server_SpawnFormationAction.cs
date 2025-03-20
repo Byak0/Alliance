@@ -35,9 +35,9 @@ namespace Alliance.Server.GameModes.Story.Actions
 			// Spawn the various characters
 			foreach (CharacterToSpawn characterToSpawn in Characters)
 			{
-				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.Character);
+				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
-				int numberToSpawn = characterToSpawn.IsPercentage ? (int)((characterToSpawn.Number / 100f) * CoreUtils.CurrentPlayerCount) : characterToSpawn.Number;
+				int numberToSpawn = characterToSpawn.IsPercentage ? (int)((characterToSpawn.SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : characterToSpawn.SpawnCount;
 
 				for (int i = 0; i < numberToSpawn; i++)
 				{
