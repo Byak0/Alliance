@@ -1,7 +1,9 @@
 ﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -22,7 +24,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override void Execute()
 		{
-			SpawnAsync();
+			_ = SpawnAsync();
 		}
 
 		private async Task SpawnAsync()
@@ -31,6 +33,15 @@ namespace Alliance.Server.GameModes.Story.Actions
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			Formation formation = null;
+
+			// Check if a player control this formation
+			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
+			if (playerInCharge?.ControlledAgent == null)
+			{
+				// If no player is controlling this formation, try to assign the first player in the team
+				playerInCharge = GameNetwork.NetworkPeers.FirstOrDefault(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team == team)?.GetComponent<MissionPeer>();
+				if (playerInCharge != null) FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+			}
 
 			// Spawn the various characters
 			foreach (CharacterToSpawn characterToSpawn in Characters)
