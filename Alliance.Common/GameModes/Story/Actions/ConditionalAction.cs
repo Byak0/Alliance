@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
@@ -17,15 +18,24 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public List<ActionBase> ActionIfTrue;
 		[ScenarioEditor(label: "Actions if false", tooltip: "Actions to execute if any condition is not met.")]
 		public List<ActionBase> ActionIfFalse;
+		[ScenarioEditor(label: "Delay", tooltip: "Delay in seconds before executing the \"Actions if true\".")]
+		public float Delay = 0f;
 
-		public ConditionalAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse)
+		public ConditionalAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse, float delay = 0f)
 		{
 			Condition = new List<Condition> { condition };
 			ActionIfTrue = new List<ActionBase> { actionIfTrue };
 			ActionIfFalse = new List<ActionBase> { actionIfFalse };
+			Delay = delay;
 		}
 
-		public ConditionalAction() { }
+		public ConditionalAction()
+		{
+			Condition = new List<Condition>();
+			ActionIfTrue = new List<ActionBase>();
+			ActionIfFalse = new List<ActionBase>();
+			Delay = 0f;
+		}
 
 		public override void Execute()
 		{
@@ -36,12 +46,25 @@ namespace Alliance.Common.GameModes.Story.Actions
 			// Execute actions based on result
 			if (result)
 			{
-				ActionIfTrue.ForEach(a => a.Execute());
+				if (Delay > 0f)
+				{
+					DelayedExecute();
+				}
+				else
+				{
+					ActionIfTrue.ForEach(a => a.Execute());
+				}
 			}
 			else
 			{
 				ActionIfFalse.ForEach(a => a.Execute());
 			}
+		}
+
+		private async void DelayedExecute()
+		{
+			await Task.Delay((int)(Delay * 1000));
+			ActionIfTrue.ForEach(a => a.Execute());
 		}
 	}
 }
