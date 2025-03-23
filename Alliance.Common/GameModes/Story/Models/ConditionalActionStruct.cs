@@ -2,6 +2,8 @@
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
+using System.Xml.Serialization;
+using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -21,17 +23,44 @@ namespace Alliance.Common.GameModes.Story.Models
 		public bool OneTimeOnly = false;
 		[ScenarioEditor(label: "Refresh Delay", tooltip: "Delay between condition checks in seconds. Longer delays are preferable for performance.")]
 		public float RefreshDelay = 1f;
+
 		[ScenarioEditor(isEditable: false)]
+		[XmlIgnore]
 		internal float _refreshTimer = 0f;
+		[ScenarioEditor(isEditable: false)]
+		[XmlIgnore]
+		internal bool _enabled = false;
+
+		[ScenarioEditor(isEditable: false)]
+		[XmlIgnore]
+		public GameEntity ParentEntity = null;
 
 		public ConditionalActionStruct() { }
+
+		public void Register(GameEntity entity = null)
+		{
+			_enabled = Enabled;
+
+			if (entity != null)
+			{
+				ParentEntity = entity;
+			}
+			foreach (Condition condition in Conditions)
+			{
+				condition.Register(entity);
+			}
+			foreach (ActionBase action in Actions)
+			{
+				action.Register(entity);
+			}
+		}
 
 		/// <summary>
 		/// Check if the conditions are met and execute the actions if they are.
 		/// </summary>
 		public void Tick(float dt)
 		{
-			if (Enabled)
+			if (_enabled)
 			{
 				_refreshTimer += dt;
 				if (_refreshTimer < RefreshDelay) return;
@@ -56,7 +85,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 					if (OneTimeOnly)
 					{
-						Enabled = false;
+						_enabled = false;
 					}
 				}
 			}

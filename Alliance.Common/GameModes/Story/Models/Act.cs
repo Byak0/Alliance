@@ -59,10 +59,7 @@ namespace Alliance.Common.GameModes.Story.Models
 			}
 			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
 			{
-				foreach (Condition condition in conditionalAction.Conditions)
-				{
-					condition.Register();
-				}
+				conditionalAction.Register();
 			}
 		}
 
