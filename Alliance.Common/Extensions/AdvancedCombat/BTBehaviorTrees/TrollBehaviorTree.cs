@@ -98,7 +98,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 
 		public TrollBehaviorTree(Agent agent) : base()
 		{
-			Navigator = new BTBlackboardValue<AL_AgentNavigator>(agent.GetComponent<DefaultAgentComponent>().CreateAgentNavigator());
+			Navigator = new BTBlackboardValue<AL_AgentNavigator>(agent.GetComponent<AL_DefaultAgentComponent>().AgentNavigator);
 			Agent = new BTBlackboardValue<Agent>(agent);
 			Target = new BTBlackboardValue<Agent>(null);
 			State = new BTBlackboardValue<BTState>(BTState.Idle);

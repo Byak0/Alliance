@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Utilities;
-using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Conditions
@@ -19,9 +19,9 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		[ScenarioEditor(label: "Repeat", tooltip: "If true, it will reset Death quota each time is it reached.")]
 		public bool ConditionMayRepeat;
 
-		private int _deathCount = 0 ;
+		private int _deathCount = 0;
 
-		public override void Register()
+		public override void Register(GameEntity gameEntity = null)
 		{
 			ConditionsBehavior cdtBehavior = Mission.Current.GetMissionBehavior<ConditionsBehavior>();
 			if (cdtBehavior == null) return;
@@ -48,7 +48,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		{
 			_deathCount = 0;
 		}
-		
+
 		// Check if number of specific agent  is reached to trigger condition
 		public override bool Evaluate(ScenarioManager context)
 		{

@@ -19,6 +19,8 @@
 	<action name="act_warg_rear"/>
 	<action name="act_warg_rear_damaged"/>
 	<action name="act_warg_kick"/>
+
+	<action name="act_warg_rider_walk_forward_adder" />
 	
 	<action name="act_warg_hit_object" type="actt_hit_object" />
 	<action name="act_warg_hit_object_while_falling" type="actt_hit_object" />

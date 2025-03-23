@@ -12,7 +12,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// Advanced combat mechanics for the Ent.
 	/// </summary>
-	public class EntComponent : AdvancedCombatComponent
+	public class EntComponent : AL_DefaultAgentComponent
 	{
 		private Vec3[] _previousBonePositions;
 		private bool[] _isBoneStomping;

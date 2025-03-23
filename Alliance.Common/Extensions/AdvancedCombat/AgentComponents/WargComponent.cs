@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// Allow the warg to behave independently. Hunting, chilling, fleeing, etc.
 	/// </summary>
-	public class WargComponent : AdvancedCombatComponent
+	public class WargComponent : AL_DefaultAgentComponent
 	{
 		// Behavior probabilities, from 0 (never) to 1 (always).
 		const float FLEE_WHEN_WOUNDED_PROBABILITY = 0.02f;
@@ -36,6 +36,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		private MonsterState _currentState;
 		private bool _isWounded;
 		private float _fearOfThreat;
+		private bool _forcePassiveBehavior;
 
 		public MonsterState CurrentState => _currentState;
 		public Agent Target => _target;
@@ -101,7 +102,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				}
 				_refreshDelay = 0;
 
-				if (Agent.RiderAgent != null)
+				if (_forcePassiveBehavior && (Agent.RiderAgent == null || Agent.RiderAgent.IsAIControlled))
+				{
+					RandomIdleBehavior();
+				}
+				else if (Agent.RiderAgent != null)
 				{
 					if (Agent.RiderAgent.IsAIControlled)
 					{
@@ -115,30 +120,40 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 					DetermineTargetAndState();
 				}
 
-				switch (_currentState)
+				if (Agent.RiderAgent == null || Agent.RiderAgent.IsAIControlled)
 				{
-					case MonsterState.None: break;
-					case MonsterState.Idle:
-						RandomIdleBehavior();
-						break;
-					case MonsterState.Chase:
-						ChaseTarget();
-						break;
-					case MonsterState.Attack:
-						AttackTarget();
-						break;
-					case MonsterState.Flee:
-						FleeBehavior();
-						break;
-					case MonsterState.Careful:
-						MaintainDistanceFromThreat();
-						break;
+					switch (_currentState)
+					{
+						case MonsterState.None: break;
+						case MonsterState.Idle:
+							RandomIdleBehavior();
+							break;
+						case MonsterState.Chase:
+							ChaseTarget();
+							break;
+						case MonsterState.Attack:
+							AttackTarget();
+							break;
+						case MonsterState.Flee:
+							FleeBehavior();
+							break;
+						case MonsterState.Careful:
+							MaintainDistanceFromThreat();
+							break;
+					}
 				}
+
 			}
 			catch (Exception e)
 			{
 				Log("Exception in WargBehavior : " + e.Message, LogLevel.Error);
 			}
+		}
+
+		public override void OnMissionResultReady(MissionResult missionResult)
+		{
+			_currentState = MonsterState.Idle;
+			_forcePassiveBehavior = true;
 		}
 
 		private void DetermineTargetAndStateWithAIRider()
@@ -225,9 +240,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 					Mission.Current.GetNearbyAllyAgents(_target.Position.AsVec2, 10, _target.Team, targetAllies);
 					for (int i = 0; i < targetAllies.Count && i < 3; i++)
 					{
-						targetAllies[i].GetComponent<DefaultHumanoidComponent>()?.SetThreat(Agent);
+						targetAllies[i].GetComponent<HumanoidComponent>()?.SetThreat(Agent);
 					}
-					_target.GetComponent<DefaultHumanoidComponent>()?.SetThreat(Agent);
+					_target.GetComponent<HumanoidComponent>()?.SetThreat(Agent);
 				}
 			}
 		}
@@ -251,7 +266,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		private bool CloseEnoughForAttack(Agent target)
 		{
 			float distanceToTarget = (target.Position - Agent.Position).Length;
-			float distanceForAttack = 1.5f + Agent.MovementVelocity.Y;
+			float distanceForAttack = 2f + Agent.MovementVelocity.Y;
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
 			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(Agent, target, 45);
 
@@ -268,7 +283,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (_target == null || _target.Health <= 0 || _lastAttackDelay < WargConstants.ATTACK_COOLDOWN) return false;
 
 			// Close enough to attack and target is in front
-			if (MBRandom.RandomFloat < probability && CloseEnoughForAttack(_target))
+			if (MBRandom.RandomFloat < probability && (CloseEnoughForAttack(_target) || _target.MountAgent != null && CloseEnoughForAttack(_target.MountAgent)))
 			{
 				return true;
 			}

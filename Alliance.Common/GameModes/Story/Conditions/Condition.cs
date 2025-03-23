@@ -1,4 +1,5 @@
 ﻿using TaleWorlds.Core;
+using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Conditions
 {
@@ -34,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		}
 
 		public abstract bool Evaluate(ScenarioManager context);
-		public virtual void Register() { }
+		public virtual void Register(GameEntity entity = null) { }
 		public virtual void Unregister() { }
 	}
 }

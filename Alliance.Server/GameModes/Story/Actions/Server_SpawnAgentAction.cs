@@ -33,11 +33,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			for (int i = 0; i < numbertoSpawn; i++)
 			{
 				// Calculate random position in the SpawnZone
-				Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.Position, SpawnZone.Radius);
+				Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.GlobalPosition, SpawnZone.Radius);
 				MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
 
 				// Calculate random position in the target zone
-				Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.Position, Direction.Radius);
+				Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.GlobalPosition, Direction.Radius);
 				WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 
 				Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position, selectedFormation: (int)Formation, botDifficulty: difficulty);

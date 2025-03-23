@@ -71,11 +71,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 			if (IsNativeSound(SoundName))
 			{
-				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.Position, synchronize: true);
+				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.GlobalPosition, synchronize: true);
 			}
 			else
 			{
-				AudioPlayer.Instance.PlayLocalizedMusic(SoundName, Volume, SoundZone.Position, (int)SoundZone.Radius, Mission.Current.GetMissionTimeInSeconds(), PauseMainMusicWhilePlaying, synchronize: true);
+				AudioPlayer.Instance.PlayLocalizedMusic(SoundName, Volume, SoundZone.GlobalPosition, (int)SoundZone.Radius, Mission.Current.GetMissionTimeInSeconds(), PauseMainMusicWhilePlaying, synchronize: true);
 			}
 		}
 
@@ -85,11 +85,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 			if (IsNativeSound(SoundName))
 			{
-				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.Position, synchronize: true);
+				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.GlobalPosition, synchronize: true);
 			}
 			else
 			{
-				AudioPlayer.Instance.Play(SoundName, Volume, true, (int)SoundZone.Radius, SoundZone.Position, synchronize: true);
+				AudioPlayer.Instance.Play(SoundName, Volume, true, (int)SoundZone.Radius, SoundZone.GlobalPosition, synchronize: true);
 			}
 		}
 

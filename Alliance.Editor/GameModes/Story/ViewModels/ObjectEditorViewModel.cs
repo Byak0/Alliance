@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows;
+using TaleWorlds.Engine;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -19,10 +20,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public string Title { get; set; }
 		public string SelectedLanguage => parentViewModel?.SelectedLanguage ?? "English";
+		public GameEntity GameEntity { get; set; }
 
-		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title)
+		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title, GameEntity gameEntity = null)
 		{
-			InitVM(obj, parentViewModel, title);
+			InitVM(obj, parentViewModel, title, gameEntity);
 		}
 
 		public ObjectEditorViewModel()
@@ -38,17 +40,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				string title = "Alliance - Scenario Editor";
 				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
 
-				InitVM(obj, parentViewModel, title);
+				InitVM(obj, parentViewModel, title, null);
 			}
 		}
 
-		private void InitVM(object obj, ScenarioEditorViewModel parentViewModel, string title)
+		private void InitVM(object obj, ScenarioEditorViewModel parentViewModel, string title, GameEntity gameEntity)
 		{
+			GameEntity = gameEntity;
+
 			FieldInfo[] fieldInfos = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
 
+			// If obj holds a ParentEntity reference, use it
+			if (obj is ConditionalActionStruct conditionalActionStruct && conditionalActionStruct.ParentEntity != null)
+			{
+				GameEntity = conditionalActionStruct.ParentEntity;
+			}
 			// If there is only one non-abstract field of type object, directly open its UI
 			// (example: if the object has only one field of type TWConfig, open the TWConfig directly)
-			if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
+			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);
