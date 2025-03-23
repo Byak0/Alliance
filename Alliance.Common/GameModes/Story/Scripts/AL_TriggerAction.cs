@@ -5,13 +5,14 @@ using System;
 using System.Collections.Generic;
 using TaleWorlds.DotNet;
 using TaleWorlds.Engine;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Scripts
 {
 	/// <summary>
 	/// Script component allowing map makers to use conditions and actions outside of scenario.
 	/// </summary>
-	public class AL_TriggerAction : ScriptComponentBehavior
+	public class AL_TriggerAction : MissionObject
 	{
 		// Button to open the editor
 		[EditableScriptComponentVariable(true)]
@@ -39,16 +40,14 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		public void Init()
 		{
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
-			foreach (Condition condition in _conditionalActionStruct.Conditions)
-			{
-				condition.Register();
-			}
+			_conditionalActionStruct.Register(GameEntity);
 		}
 
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+			_conditionalActionStruct.Register(GameEntity);
 		}
 
 		protected override void OnRemoved(int removeReason)
@@ -121,6 +120,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		private void OpenEditor()
 		{
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+			_conditionalActionStruct.Register(GameEntity);
 			EditorToolsManager.OpenEditor(_conditionalActionStruct, modifiedObject =>
 			{
 				if (modifiedObject != null)

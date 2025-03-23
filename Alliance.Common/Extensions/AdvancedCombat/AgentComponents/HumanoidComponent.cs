@@ -6,7 +6,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// Advanced combat mechanics for standard humanoid races (human/elves/uruks etc.).
 	/// </summary>
-	public class DefaultHumanoidComponent : AdvancedCombatComponent
+	public class HumanoidComponent : AL_DefaultAgentComponent
 	{
 		private Agent _threat;
 		private Agent _target;
@@ -16,11 +16,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		public Agent Target => _target;
 		public float ForgetThreatTimer => _forgetThreatTimer;
 
-		public DefaultHumanoidComponent(Agent agent) : base(agent)
-		{
-		}
-
-		public override void OnTick(float dt)
+		public HumanoidComponent(Agent agent) : base(agent)
 		{
 		}
 
@@ -31,7 +27,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				return;
 			}
 
-			if (_threat.Health <= 0 || _threat.IsFadingOut())
+			if (_threat.Health <= 0 || _threat.IsFadingOut() || _threat.RiderAgent?.Team == Agent.Team)
 			{
 				ClearThreat();
 				ClearTarget();

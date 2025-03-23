@@ -1,9 +1,10 @@
 ﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
 using Alliance.Server.Core.Security;
-using Alliance.Server.Core.Utils;
+using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,6 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.DedicatedCustomServer;
-using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
 
@@ -180,7 +180,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-		public  bool Respawn(NetworkCommunicator peer, AdminClient admin)
+		public bool Respawn(NetworkCommunicator peer, AdminClient admin)
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 			MissionPeer missionPeer = playerSelected.GetComponent<MissionPeer>();
@@ -190,8 +190,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				Mission.Current.GetMissionBehavior<RespawnBehavior>().RespawnPlayer(playerSelected);
 				Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été respawn par l'administrateur {peer.UserName}", LogLevel.Information);
 				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est respawn par {peer.UserName}", AdminServerLog.ColorList.Success, true);
-				return true; 
-				
+				return true;
+
 			}
 			else
 			{
@@ -268,10 +268,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			// Check si joueur existe
 			if (playerSelected == null) return false;
-            admin.WarningMessageToPlayer = string.IsNullOrEmpty(admin.WarningMessageToPlayer) ? "Vous avez reçu un avertissement d'un Admin" : admin.WarningMessageToPlayer;
+			admin.WarningMessageToPlayer = string.IsNullOrEmpty(admin.WarningMessageToPlayer) ? "Vous avez reçu un avertissement d'un Admin" : admin.WarningMessageToPlayer;
 
 
-            GameNetwork.BeginModuleEventAsServer(playerSelected);
+			GameNetwork.BeginModuleEventAsServer(playerSelected);
 			GameNetwork.WriteMessage(new SendNotification($"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !", 0));
 			GameNetwork.EndModuleEventAsServer();
 

@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Utilities;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Conditions
@@ -19,7 +20,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public TimerCondition() { }
 
-		public override void Register()
+		public override void Register(GameEntity gameEntity = null)
 		{
 			_triggered = false;
 			_lastTriggerTime = Mission.Current.GetMissionTimeInSeconds();

@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System.ComponentModel;
 using System.Reflection;
 using System.Windows.Input;
+using TaleWorlds.Engine;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -13,6 +14,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	{
 		private SerializableZone _zone;
 		private FieldViewModel _fieldViewModel;
+		private GameEntity _gameEntity => _fieldViewModel?.parentViewModel?.GameEntity;
 
 		public ICommand EditZoneCommand { get; }
 
@@ -36,6 +38,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				OnPropertyChanged(nameof(Y));
 				OnPropertyChanged(nameof(Z));
 				OnPropertyChanged(nameof(Radius));
+				OnPropertyChanged(nameof(UseLocalSpace));
 			});
 		}
 
@@ -65,6 +68,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			get => _zone.Y;
 			set
 			{
+
 				if (_zone.Y != value)
 				{
 					_zone.Y = value;
@@ -95,6 +99,27 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				{
 					_zone.Radius = value;
 					OnPropertyChanged(nameof(Radius));
+				}
+			}
+		}
+
+		public bool UseLocalSpace
+		{
+			get => _zone.UseLocalSpace;
+			set
+			{
+				if (_zone.UseLocalSpace != value)
+				{
+					_zone.UseLocalSpace = value;
+					if (_zone.UseLocalSpace)
+					{
+						_zone.LocalEntity = _gameEntity;
+					}
+					else
+					{
+						_zone.LocalEntity = null;
+					}
+					OnPropertyChanged(nameof(UseLocalSpace));
 				}
 			}
 		}

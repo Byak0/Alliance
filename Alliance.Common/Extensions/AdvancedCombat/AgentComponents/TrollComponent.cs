@@ -11,7 +11,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 	/// <summary>
 	/// TODO - Allow the troll to behave independently.
 	/// </summary>
-	public class TrollComponent : AdvancedCombatComponent
+	public class TrollComponent : AL_DefaultAgentComponent
 	{
 		private float _refreshTimer = 0f;
 		private float _kickCD = 0f;

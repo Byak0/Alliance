@@ -217,6 +217,14 @@
 						VerticalAlignment="Center"
 						Margin="8,0,0,0"/>
 				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="4" >
+					<TextBlock Text="Local" VerticalAlignment="Center" Width="40" />
+					<CheckBox IsChecked="{Binding ZoneVM.UseLocalSpace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="8,0,0,0">
+						<CheckBox.LayoutTransform>
+							<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+						</CheckBox.LayoutTransform>
+					</CheckBox>
+				</StackPanel>
 			</StackPanel>
 
 			<Button

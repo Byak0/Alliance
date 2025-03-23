@@ -77,7 +77,17 @@ namespace Alliance.Editor.GameModes.Story.Views
 				SerializableZone zone = entry.Key;
 				bool isEditable = zone == _editableZone;
 
-				Vec3 position = new Vec3(zone.X, zone.Y, zone.Z);
+				Vec3 position;
+				if (zone.UseLocalSpace && zone.LocalEntity != null)
+				{
+					Vec3 entityPosition = zone.LocalEntity.GlobalPosition;
+					Vec3 zoneLocalPosition = new Vec3(zone.X, zone.Y, zone.Z);
+					position = entityPosition + zoneLocalPosition;
+				}
+				else
+				{
+					position = zone.Position;
+				}
 				uint color = isEditable ? _editableColor : _colorList[colorIndex % _colorList.Count];
 
 				// Render the zone sphere and the associated name
@@ -143,6 +153,11 @@ namespace Alliance.Editor.GameModes.Story.Views
 
 		private static void UpdateZonePosition(Vec3 groundPosition, SerializableZone zone)
 		{
+			if (zone.UseLocalSpace && zone.LocalEntity != null)
+			{
+				// Transform the ground position to the local space of the entity
+				groundPosition -= zone.LocalEntity.GlobalPosition;
+			}
 			zone.Position = groundPosition;
 			zone.X = groundPosition.x;
 			zone.Y = groundPosition.y;

@@ -1,7 +1,10 @@
-﻿using Alliance.Common.Extensions.TroopSpawner.Utilities;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Server.Core.Utils;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -22,7 +25,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override void Execute()
 		{
-			SpawnAsync();
+			_ = SpawnAsync();
 		}
 
 		private async Task SpawnAsync()
@@ -32,18 +35,33 @@ namespace Alliance.Server.GameModes.Story.Actions
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			Formation formation = null;
 
+			// Check if a player control this formation
+			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
+			if (playerInCharge?.ControlledAgent == null)
+			{
+				// If no player is controlling this formation, try to assign the closest player in the team
+				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team == team).ToList();
+				if (candidates.Count > 0)
+				{
+					Agent closestAgent = candidates.OrderBy(peer => peer.ControlledAgent.Position.DistanceSquared(SpawnZone.GlobalPosition)).First().ControlledAgent;
+					playerInCharge = closestAgent.MissionPeer;
+					FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+				}
+			}
+
 			// Spawn the various characters
 			foreach (CharacterToSpawn characterToSpawn in Characters)
 			{
-				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.Character);
+				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
+				int numberToSpawn = characterToSpawn.IsPercentage ? (int)((characterToSpawn.SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : characterToSpawn.SpawnCount;
 
-				for (int i = 0; i < characterToSpawn.Number; i++)
+				for (int i = 0; i < numberToSpawn; i++)
 				{
 					try
 					{
 						// Calculate random position in the SpawnZone
-						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.Position, SpawnZone.Radius);
+						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.GlobalPosition, SpawnZone.Radius);
 						MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
 						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position,
 							selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
@@ -71,7 +89,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 				switch (MoveOrder)
 				{
 					case MoveOrderType.Move:
-						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.Position, Direction.Radius);
+						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.GlobalPosition, Direction.Radius);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 						formation.SetMovementOrder(MovementOrder.MovementOrderMove(target));
 						break;

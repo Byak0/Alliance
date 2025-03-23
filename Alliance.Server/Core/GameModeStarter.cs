@@ -83,7 +83,6 @@ namespace Alliance.Server.Core
 				Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity?.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
 			}
 
-
 			MissionListener missionListener = new MissionListener();
 			Mission.Current.AddListener(missionListener);
 			MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;

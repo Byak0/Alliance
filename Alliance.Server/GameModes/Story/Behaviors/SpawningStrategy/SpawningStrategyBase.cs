@@ -4,6 +4,7 @@ using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
+using Alliance.Server.GameModes.Story.Models;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -26,16 +27,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 	{
 		public float SpawningTimer => _spawningTimer;
 
-		public Dictionary<MissionPeer, int> PlayerUsedLives { get; set; }
-		public Dictionary<MissionPeer, int> PlayerRemainingLives { get; set; }
-
 		protected SpawnComponent SpawnComponent { get; set; }
 		protected ScenarioSpawningBehavior SpawnBehavior { get; set; }
 		protected SpawnFrameBehaviorBase DefaultSpawnFrameBehavior { get; set; }
 		protected FlagTrackerBehavior FlagTrackerBehavior { get; set; }
 		protected bool SpawnEnabled { get; set; }
-		protected Dictionary<MissionPeer, SpawnLocation> SelectedLocations { get; set; }
-		protected Dictionary<Team, int> TeamRemainingLives { get; set; }
 		protected bool ShowRespawnPreview { get; set; }
 
 		protected BasicCultureObject[] _cultures;
@@ -49,10 +45,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public SpawningStrategyBase()
 		{
-			SelectedLocations = new Dictionary<MissionPeer, SpawnLocation>();
-			PlayerUsedLives = new Dictionary<MissionPeer, int>();
-			PlayerRemainingLives = new Dictionary<MissionPeer, int>();
-			TeamRemainingLives = new Dictionary<Team, int>();
 			ShowRespawnPreview = true;
 		}
 
@@ -84,7 +76,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					MissionPeer peer = player.GetComponent<MissionPeer>();
 					if (peer?.Team != null && CanPlayerSpawn(player, peer))
 					{
-						bool ignoreVisual = !ShowRespawnPreview && PlayerUsedLives.ContainsKey(peer) && PlayerUsedLives[peer] > 1;
+						bool ignoreVisual = !ShowRespawnPreview && ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player) && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 1;
 						if (SpawnBehavior.CheckIfEnforcedSpawnTimerExpiredForPeer(player.GetComponent<MissionPeer>(), ignoreVisual))
 						{
 							SpawnPlayer(player, peer);
@@ -214,9 +206,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		/// <returns>Number of tickets of selected side. <b>/!\ Should only be use for ATTACKER and DEFENDER sides /!\</b></returns>
 		public int GetRemainingLives(BattleSideEnum battleSide)
 		{
-			return TeamRemainingLives.Where(e => e.Key.Side == battleSide)
+			return ScenarioPersistentData.Instance.TeamRemainingLives.Where(e => e.Key == battleSide)
 				.ToList()
-				.FirstOrDefault(new KeyValuePair<Team, int>(null, 0))
+				.FirstOrDefault(new KeyValuePair<BattleSideEnum, int>(BattleSideEnum.Defender, 0))
 				.Value;
 		}
 
@@ -237,7 +229,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			if (player.IsOfficer())
 			{
 				basicCharacterObject = mPHeroClassForPeer.HeroCharacter;
-				spawnLocation = GetPlayerSpawnLocation(peer, basicCharacterObject.HasMount());
+				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
 				// Give banner to officer if none are present for team
 				if (FlagTrackerBehavior != null && !FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty)
 				{
@@ -256,7 +248,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			else
 			{
 				basicCharacterObject = mPHeroClassForPeer.TroopCharacter;
-				spawnLocation = GetPlayerSpawnLocation(peer, basicCharacterObject.HasMount());
+				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
 				SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation);
 			}
 
@@ -272,7 +264,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			peer.HasSpawnedAgentVisuals = false;
 
 			GetPerkHandler(peer)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
-			UpdatePlayerLives(peer);
+			UpdatePlayerLives(player, peer);
 		}
 
 		public static EquipmentElement GetBannerItem(BasicCultureObject culture)
@@ -283,35 +275,38 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			return new EquipmentElement(banner, null, null, false);
 		}
 
-		public virtual void InitPlayerLives(MissionPeer peer)
+		public virtual void InitPlayerLives(NetworkCommunicator player, MissionPeer peer)
 		{
-			if (!PlayerUsedLives.ContainsKey(peer))
+			if (!ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player))
 			{
-				PlayerUsedLives.Add(peer, 0);
+				ScenarioPersistentData.Instance.PlayerUsedLives.Add(player, 0);
 			}
 
-			if (!PlayerRemainingLives.ContainsKey(peer))
+			if (!ScenarioPersistentData.Instance.PlayerRemainingLives.ContainsKey(player))
 			{
-				PlayerRemainingLives.Add(peer, SpawnLogic.MaxLives[(int)peer.Team.Side]);
+				ScenarioPersistentData.Instance.PlayerRemainingLives.Add(player, SpawnLogic.MaxLives[(int)peer.Team.Side]);
 			}
 		}
 
-		public virtual void UpdatePlayerLives(MissionPeer peer)
+		public virtual void UpdatePlayerLives(NetworkCommunicator player, MissionPeer peer)
 		{
 			RespawnStrategy respawnStrategy = SpawnLogic.RespawnStrategies[(int)peer.Team.Side];
 
-			PlayerUsedLives[peer]++;
+			ScenarioPersistentData.Instance.PlayerUsedLives[player]++;
+
+			if (ScenarioPersistentData.Instance.PlayerUsedLives[player] <= 1) return;
 
 			if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
 			{
-				TeamRemainingLives[peer.Team]--;
-				string log = $"{TeamRemainingLives[peer.Team]} lives remaining for {_cultures[(int)peer.Team.Side].Name}.";
-				Log(log, LogLevel.Debug);
-				// TODO send info to clients
+				ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]--;
+				// TODO replace this with a proper UI indicator
+				string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]} lives remaining for {_cultures[(int)peer.Team.Side].Name}.";
+				Log(log, LogLevel.Information);
+				SendMessageToAll(log);
 			}
 			else if (respawnStrategy == RespawnStrategy.MaxLivesPerPlayer)
 			{
-				PlayerRemainingLives[peer]--;
+				ScenarioPersistentData.Instance.PlayerRemainingLives[player]--;
 			}
 		}
 
@@ -327,7 +322,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			}
 
 			// TODO : rework assignation of spawned formations to prevent going over 10
-			if (PlayerUsedLives.ContainsKey(player) && PlayerUsedLives[player] > 0) return;
+			if (ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(networkPeer) && ScenarioPersistentData.Instance.PlayerUsedLives[networkPeer] > 0) return;
 
 			if (player.Team == Mission.Current.AttackerTeam && Mission.Current.NumOfFormationsSpawnedTeamOne < 10)
 			{
@@ -350,9 +345,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				OptionType.NumberOfBotsTeam1.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions) :
 				OptionType.NumberOfBotsTeam2.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions);
 			nbBotsToSpawn -= currentBots;
-			if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
+			if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam && _haveBotsBeenSpawned[(int)team.Side])
 			{
-				nbBotsToSpawn = Math.Min(nbBotsToSpawn, TeamRemainingLives[team]);
+				nbBotsToSpawn = Math.Min(nbBotsToSpawn, ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]);
 			}
 			if (nbBotsToSpawn > 0)
 			{
@@ -364,12 +359,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				}
 				if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
 				{
-					TeamRemainingLives[team] -= nbBotsToSpawn;
-					Log($"{TeamRemainingLives[team]} lives remaining for {_cultures[(int)team.Side].Name}.", LogLevel.Debug);
-					// TODO : send info to clients
+					ScenarioPersistentData.Instance.TeamRemainingLives[team.Side] -= nbBotsToSpawn;
+					// TODO replace this with a proper UI indicator
+					string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for {_cultures[(int)team.Side].Name}.";
+					Log(log, LogLevel.Information);
+					SendMessageToAll(log);
 
 				}
-				Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {TeamRemainingLives[team]} lives remaining for team.", LogLevel.Debug);
+				Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for team.", LogLevel.Debug);
 			}
 
 			_haveBotsBeenSpawned[(int)team.Side] = true;
@@ -385,7 +382,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					if (_haveBotsBeenSpawned[(int)team.Side]) return false;
 					break;
 				case RespawnStrategy.MaxLivesPerTeam:
-					if (TeamRemainingLives[team] <= 0) return false;
+					if (_haveBotsBeenSpawned[(int)team.Side] && ScenarioPersistentData.Instance.TeamRemainingLives[team.Side] <= 0) return false;
 					break;
 			}
 
@@ -399,21 +396,21 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				return false;
 			}
 
-			if (!PlayerUsedLives.ContainsKey(peer) || !PlayerRemainingLives.ContainsKey(peer))
+			if (!ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player) || !ScenarioPersistentData.Instance.PlayerRemainingLives.ContainsKey(player))
 			{
-				InitPlayerLives(peer);
+				InitPlayerLives(player, peer);
 			}
 
 			switch (SpawnLogic.RespawnStrategies[(int)peer.Team.Side])
 			{
 				case RespawnStrategy.NoRespawn:
-					if (PlayerUsedLives[peer] > 0) return false;
+					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0) return false;
 					break;
 				case RespawnStrategy.MaxLivesPerTeam:
-					if (TeamRemainingLives[peer.Team] <= 0) return false;
+					if (ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side] <= 0 && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0) return false;
 					break;
 				case RespawnStrategy.MaxLivesPerPlayer:
-					if (PlayerRemainingLives[peer] <= 0) return false;
+					if (ScenarioPersistentData.Instance.PlayerRemainingLives[player] <= 0) return false;
 					break;
 			}
 
@@ -423,7 +420,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					if (!FlagUsableForTeam(peer.Team)) return false;
 					break;
 				case LocationStrategy.TagsThenFlags:
-					if (PlayerUsedLives[peer] > 0 && !FlagUsableForTeam(peer.Team)) return false;
+					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0 && !FlagUsableForTeam(peer.Team)) return false;
 					break;
 			}
 
@@ -454,24 +451,27 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			return true;
 		}
 
-		public virtual MatrixFrame? GetPlayerSpawnLocation(MissionPeer player, bool hasMount = false)
+		public virtual MatrixFrame? GetPlayerSpawnLocation(NetworkCommunicator player, bool hasMount = false)
 		{
 			MatrixFrame? position = null;
-			bool firstSpawn = PlayerUsedLives[player] == 0;
+			bool firstSpawn = ScenarioPersistentData.Instance.PlayerUsedLives[player] == 0;
+			MissionPeer peer = player.GetComponent<MissionPeer>();
+			Team playerTeam = peer?.Team;
+			BattleSideEnum playerSide = playerTeam?.Side ?? BattleSideEnum.None;
 
-			switch (SpawnLogic.LocationStrategies[(int)player.Team.Side])
+			switch (SpawnLogic.LocationStrategies[(int)playerSide])
 			{
 				case LocationStrategy.OnlyTags:
-					position = GetTagLocation(player.Team, hasMount, firstSpawn);
+					position = GetTagLocation(playerTeam, hasMount, firstSpawn);
 					break;
 				case LocationStrategy.OnlyFlags:
-					position = GetFlagLocation(player.Team);
+					position = GetFlagLocation(playerTeam);
 					break;
 				case LocationStrategy.TagsThenFlags:
-					position = firstSpawn ? GetTagLocation(player.Team, hasMount) : GetFlagLocation(player.Team);
+					position = firstSpawn ? GetTagLocation(playerTeam, hasMount) : GetFlagLocation(playerTeam);
 					break;
 				case LocationStrategy.PlayerChoice:
-					position = GetPlayerSelectedLocation(player);
+					position = GetPlayerSelectedLocation(peer);
 					break;
 			}
 
@@ -519,12 +519,12 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public virtual MatrixFrame? GetPlayerSelectedLocation(MissionPeer player)
 		{
-			return SelectedLocations[player]?.Position ?? GetFlagLocation(player.Team) ?? GetTagLocation(player.Team);
+			return ScenarioPersistentData.Instance.SelectedLocations[player.GetNetworkPeer()]?.Position ?? GetFlagLocation(player.Team) ?? GetTagLocation(player.Team);
 		}
 
 		public virtual void SetPlayerSelectedLocation(MissionPeer player, SpawnLocation spawnLocation)
 		{
-			SelectedLocations[player] = spawnLocation;
+			ScenarioPersistentData.Instance.SelectedLocations[player.GetNetworkPeer()] = spawnLocation;
 		}
 
 		public virtual bool AllowExternalSpawn()
@@ -549,42 +549,44 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			_haveBotsBeenSpawned = new bool[2] { false, false };
 
 			// Reset selected locations
-			SelectedLocations = new Dictionary<MissionPeer, SpawnLocation>();
+			ScenarioPersistentData.Instance.SelectedLocations = new Dictionary<NetworkCommunicator, SpawnLocation>();
 
 			// Reset player used lives
-			PlayerUsedLives = new Dictionary<MissionPeer, int>();
+			ScenarioPersistentData.Instance.PlayerUsedLives = new Dictionary<NetworkCommunicator, int>();
 
 			// Reset or add lives to Players/Teams
 			if (SpawnLogic.KeepLivesFromPreviousAct)
 			{
-				List<MissionPeer> peers = PlayerRemainingLives.Keys.ToList();
-				foreach (MissionPeer peer in peers)
+				List<NetworkCommunicator> players = ScenarioPersistentData.Instance.PlayerRemainingLives.Keys.ToList();
+				foreach (NetworkCommunicator player in players)
 				{
-					PlayerRemainingLives[peer] += SpawnLogic.MaxLives[(int)peer.Team.Side];
+					BattleSideEnum side = player.GetComponent<MissionPeer>()?.Team?.Side ?? BattleSideEnum.None;
+					int livesToAdd = side == BattleSideEnum.None ? 0 : SpawnLogic.MaxLives[(int)side];
+					ScenarioPersistentData.Instance.PlayerRemainingLives[player] += livesToAdd;
 				}
-				if (TeamRemainingLives.ContainsKey(Mission.Current.DefenderTeam))
+				if (ScenarioPersistentData.Instance.TeamRemainingLives.ContainsKey(Mission.Current.DefenderTeam.Side))
 				{
-					TeamRemainingLives[Mission.Current.DefenderTeam] += SpawnLogic.MaxLives[(int)BattleSideEnum.Defender];
-				}
-				else
-				{
-					TeamRemainingLives.Add(Mission.Current.DefenderTeam, SpawnLogic.MaxLives[(int)BattleSideEnum.Defender]);
-				}
-				if (TeamRemainingLives.ContainsKey(Mission.Current.AttackerTeam))
-				{
-					TeamRemainingLives[Mission.Current.AttackerTeam] += SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker];
+					ScenarioPersistentData.Instance.TeamRemainingLives[Mission.Current.DefenderTeam.Side] += SpawnLogic.MaxLives[(int)BattleSideEnum.Defender];
 				}
 				else
 				{
-					TeamRemainingLives.Add(Mission.Current.AttackerTeam, SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker]);
+					ScenarioPersistentData.Instance.TeamRemainingLives.Add(Mission.Current.DefenderTeam.Side, SpawnLogic.MaxLives[(int)BattleSideEnum.Defender]);
+				}
+				if (ScenarioPersistentData.Instance.TeamRemainingLives.ContainsKey(Mission.Current.AttackerTeam.Side))
+				{
+					ScenarioPersistentData.Instance.TeamRemainingLives[Mission.Current.AttackerTeam.Side] += SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker];
+				}
+				else
+				{
+					ScenarioPersistentData.Instance.TeamRemainingLives.Add(Mission.Current.AttackerTeam.Side, SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker]);
 				}
 			}
 			else
 			{
-				PlayerRemainingLives = new Dictionary<MissionPeer, int>();
-				TeamRemainingLives = new Dictionary<Team, int> {
-					{ Mission.Current.DefenderTeam, SpawnLogic.MaxLives[(int)BattleSideEnum.Defender] },
-					{ Mission.Current.AttackerTeam, SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker] }
+				ScenarioPersistentData.Instance.PlayerRemainingLives = new Dictionary<NetworkCommunicator, int>();
+				ScenarioPersistentData.Instance.TeamRemainingLives = new Dictionary<BattleSideEnum, int> {
+					{ BattleSideEnum.Defender, SpawnLogic.MaxLives[(int)BattleSideEnum.Defender] },
+					{ BattleSideEnum.Attacker, SpawnLogic.MaxLives[(int)BattleSideEnum.Attacker] }
 				};
 			}
 

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Alliance.Common.GameModes.Story.Models;
+using System;
+using System.Collections.Generic;
+using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
@@ -11,5 +14,35 @@ namespace Alliance.Common.GameModes.Story.Actions
 	public abstract class ActionBase
 	{
 		public virtual void Execute() { }
+
+		public virtual void Register(GameEntity entity = null)
+		{
+			RegisterZones(entity);
+		}
+
+		protected void RegisterZones(GameEntity entity)
+		{
+			var properties = GetType().GetFields();
+
+			foreach (var property in properties)
+			{
+				if (property.FieldType == typeof(SerializableZone))
+				{
+					var zone = property.GetValue(this) as SerializableZone;
+					zone?.Register(entity);
+				}
+				else if (typeof(IEnumerable<SerializableZone>).IsAssignableFrom(property.FieldType))
+				{
+					var zones = property.GetValue(this) as IEnumerable<SerializableZone>;
+					if (zones != null)
+					{
+						foreach (var zone in zones)
+						{
+							zone.Register(entity);
+						}
+					}
+				}
+			}
+		}
 	}
 }

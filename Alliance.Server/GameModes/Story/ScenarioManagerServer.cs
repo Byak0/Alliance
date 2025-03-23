@@ -43,26 +43,33 @@ namespace Alliance.Server.GameModes.Story
 		{
 			base.StartScenario(scenario, act, state);
 
-			// Sync scenario
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new InitScenarioMessage(scenario.Id, scenario.Acts.IndexOf(act)));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
+			if (act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
+			{
+				// If currently in a Scenario, prevent it from changing state
+				Mission.Current.GetMissionBehavior<ScenarioBehavior>()?.StopScenario();
+
+				// Log the start
+				string log2 = $"Starting scenario \"{scenario.Name.LocalizedText}\" - Act \"{act.Name.LocalizedText}\" on map {act.MapID}...";
+				Log(log2, LogLevel.Information);
+				SendMessageToAll(log2);
+				GameModeStarter.Instance.StartMission(act.ActSettings);
+				return;
+			}
 
 			// Log the start
 			string log = $"Starting scenario \"{scenario.Name.LocalizedText}\" - Act \"{act.Name.LocalizedText}\"...";
 			Log(log, LogLevel.Information);
+			SendMessageToAll(log);
 
-			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
-			if (act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
-			{
-				GameModeStarter.Instance.StartMission(act.ActSettings);
-			}
 			// Else, just apply new act settings to the current mission
-			else
-			{
-				GameModeStarter.Instance.ApplyGameModeSettings(act.ActSettings);
-				Mission.Current.GetMissionBehavior<ScenarioBehavior>().ResetState();
-			}
+			GameModeStarter.Instance.ApplyGameModeSettings(act.ActSettings);
+			Mission.Current.GetMissionBehavior<ScenarioBehavior>().ResetState();
+
+			// Sync scenario
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new InitScenarioMessage(scenario.Id, scenario.Acts.IndexOf(act)));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
 		public override void StopScenario()

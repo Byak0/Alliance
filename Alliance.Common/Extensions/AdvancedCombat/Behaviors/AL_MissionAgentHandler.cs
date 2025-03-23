@@ -45,7 +45,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		{
 			foreach (Agent agent in Mission.Agents)
 			{
-				DefaultAgentComponent component = agent.GetComponent<DefaultAgentComponent>();
+				AL_DefaultAgentComponent component = agent.GetComponent<AL_DefaultAgentComponent>();
 				if (component != null)
 				{
 					component.OnAgentRemoved(affectedAgent);
@@ -101,7 +101,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		{
 			if (agent.IsHuman)
 			{
-				AL_AgentNavigator agentNavigator = agent.GetComponent<DefaultAgentComponent>().AgentNavigator;
+				AL_AgentNavigator agentNavigator = agent.GetComponent<AL_DefaultAgentComponent>().AgentNavigator;
 				int num = MBRandom.RandomInt(35, 50);
 				agent.PreloadForRendering();
 				for (int i = 0; i < num; i++)
