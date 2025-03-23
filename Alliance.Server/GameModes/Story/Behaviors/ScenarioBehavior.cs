@@ -375,5 +375,10 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			return MultiplayerGameType.Captain;
 		}
+
+		public void StopScenario()
+		{
+			EnableStateChange = false;
+		}
 	}
 }
