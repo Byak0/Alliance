@@ -2,6 +2,7 @@
 using Alliance.Client.Extensions.FakeArmy.Behaviors;
 using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -44,6 +45,7 @@ namespace Alliance.Client.GameModes
 				new PBVoiceChatHandlerClient(),
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
+				new AdvancedCombatBehavior(),
 			};
 		}
 	}
