@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
@@ -35,6 +36,13 @@ namespace Alliance.Common.GameModes.Story.Actions
 			ActionIfTrue = new List<ActionBase>();
 			ActionIfFalse = new List<ActionBase>();
 			Delay = 0f;
+		}
+
+		public override void Register(GameEntity entity = null)
+		{
+			Condition.ForEach(c => c.Register(entity));
+			ActionIfTrue.ForEach(a => a.Register(entity));
+			ActionIfFalse.ForEach(a => a.Register(entity));
 		}
 
 		public override void Execute()

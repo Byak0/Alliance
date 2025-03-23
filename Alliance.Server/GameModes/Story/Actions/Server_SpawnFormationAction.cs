@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
@@ -38,9 +39,14 @@ namespace Alliance.Server.GameModes.Story.Actions
 			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
 			if (playerInCharge?.ControlledAgent == null)
 			{
-				// If no player is controlling this formation, try to assign the first player in the team
-				playerInCharge = GameNetwork.NetworkPeers.FirstOrDefault(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team == team)?.GetComponent<MissionPeer>();
-				if (playerInCharge != null) FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+				// If no player is controlling this formation, try to assign the closest player in the team
+				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team == team).ToList();
+				if (candidates.Count > 0)
+				{
+					Agent closestAgent = candidates.OrderBy(peer => peer.ControlledAgent.Position.DistanceSquared(SpawnZone.GlobalPosition)).First().ControlledAgent;
+					playerInCharge = closestAgent.MissionPeer;
+					FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+				}
 			}
 
 			// Spawn the various characters
@@ -55,7 +61,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 					try
 					{
 						// Calculate random position in the SpawnZone
-						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.Position, SpawnZone.Radius);
+						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.GlobalPosition, SpawnZone.Radius);
 						MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
 						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position,
 							selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
@@ -83,7 +89,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 				switch (MoveOrder)
 				{
 					case MoveOrderType.Move:
-						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.Position, Direction.Radius);
+						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.GlobalPosition, Direction.Radius);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 						formation.SetMovementOrder(MovementOrder.MovementOrderMove(target));
 						break;
