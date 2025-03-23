@@ -4,18 +4,20 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer
 {
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public sealed class SyncToggleEntities : GameNetworkMessage
+	public sealed class SyncToggleEntitiesLocal : GameNetworkMessage
 	{
 		public string EntitiesTag { get; private set; }
 		public bool Show { get; private set; }
+		public MissionObjectId MissionObjectId { get; private set; }
 
-		public SyncToggleEntities(string entitiesTag, bool show)
+		public SyncToggleEntitiesLocal(string entitiesTag, bool show, MissionObjectId missionObjectId)
 		{
 			EntitiesTag = entitiesTag;
 			Show = show;
+			MissionObjectId = missionObjectId;
 		}
 
-		public SyncToggleEntities()
+		public SyncToggleEntitiesLocal()
 		{
 		}
 
@@ -24,6 +26,7 @@ namespace Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer
 			bool bufferReadValid = true;
 			EntitiesTag = ReadStringFromPacket(ref bufferReadValid);
 			Show = ReadBoolFromPacket(ref bufferReadValid);
+			MissionObjectId = ReadMissionObjectIdFromPacket(ref bufferReadValid);
 			return bufferReadValid;
 		}
 
@@ -31,6 +34,7 @@ namespace Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer
 		{
 			WriteStringToPacket(EntitiesTag);
 			WriteBoolToPacket(Show);
+			WriteMissionObjectIdToPacket(MissionObjectId);
 		}
 
 		protected override MultiplayerMessageFilter OnGetLogFilter()
@@ -40,7 +44,7 @@ namespace Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer
 
 		protected override string OnGetLogFormat()
 		{
-			return string.Concat(Show ? "Show" : "Hide", " entities with tag ", EntitiesTag);
+			return string.Concat(Show ? "Show" : "Hide", " entities with tag ", EntitiesTag, " on entity ", MissionObjectId);
 		}
 	}
 }
