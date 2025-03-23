@@ -3,17 +3,18 @@ using System;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using TaleWorlds.Engine;
 
 namespace Alliance.Editor.GameModes.Story.Views
 {
 	public partial class ObjectEditorWindow : Window
 	{
-		public ObjectEditorWindow(object obj, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
+		public ObjectEditorWindow(object obj, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor", GameEntity gameEntity = null)
 		{
 			InitializeComponent();
 
 			// Pass the object to the ObjectEditorViewModel
-			DataContext = new ObjectEditorViewModel(obj, parentViewModel, title);
+			DataContext = new ObjectEditorViewModel(obj, parentViewModel, title, gameEntity);
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
