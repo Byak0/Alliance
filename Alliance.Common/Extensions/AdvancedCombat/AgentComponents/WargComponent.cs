@@ -79,7 +79,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (affectorAgent != null && affectorAgent != Agent.RiderAgent)
 			{
 				_lastAttacker = affectorAgent;
-				ChangeTarget(_lastAttacker);
+				if (Agent.RiderAgent == null)
+				{
+					ChangeTarget(_lastAttacker);
+				}
 			}
 		}
 
