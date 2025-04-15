@@ -1,5 +1,7 @@
-﻿using TaleWorlds.Engine;
+﻿using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 {
@@ -27,14 +29,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				return;
 			}
 
-			if (_threat.Health <= 0 || _threat.IsFadingOut() || _threat.RiderAgent?.Team == Agent.Team)
+			if (!Agent.IsActive() || Agent.IsRunningAway || _threat.Health <= 0 || _threat.IsFadingOut() || _threat.RiderAgent?.Team == Agent.Team)
 			{
 				ClearThreat();
 				ClearTarget();
 				return;
 			}
 
-			if (_threat.Position.Distance(Agent.Position) > 30)
+			if (_threat.Position.Distance(Agent.Position) > 30f)
 			{
 				_forgetThreatTimer += dt;
 				if (_forgetThreatTimer >= 10)
@@ -68,15 +70,23 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (target.IsMount)
 			{
 				WorldPosition pos = Agent.GetWorldPosition();
-				Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
-				if (Agent.HasRangedWeapon())
+				if (Agent.HasRangedWeapon(true))
 				{
+					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
+					Log($"(Ranged) {Agent.Name} targetting {target.Name}", LogLevel.Debug);
+				}
+				else
+				{
+					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
+					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
+					Log($"(Melee) {Agent.Name} targetting {target.Name}", LogLevel.Debug);
 				}
 			}
 			else
 			{
 				Agent.SetTargetAgent(target);
+				Log($"{Agent.Name} targetting {target.Name}", LogLevel.Debug);
 			}
 		}
 
@@ -85,6 +95,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			_target = null;
 			Agent.DisableScriptedCombatMovement();
 			Agent.DisableScriptedMovement();
+		}
+
+		public override void OnMissionResultReady(MissionResult missionResult)
+		{
+			ClearTarget();
 		}
 	}
 }
