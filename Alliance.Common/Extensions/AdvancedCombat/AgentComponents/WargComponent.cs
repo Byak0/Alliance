@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
 using Alliance.Common.Extensions.AdvancedCombat.Utilities;
-using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
 using System;
 using System.Collections.Generic;
@@ -428,7 +427,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		{
 			if (MBRandom.RandomFloat < IDLE_RANDOM_ANIM_PROBABILITY) // 30% chance to play a random animation while idling
 			{
-				AnimationSystem.Instance.PlayAnimation(Agent, WargConstants.IdleAnimations.GetRandomElement(), false);
+				Agent.SetActionChannel(0, WargConstants.IdleAnimations.GetRandomElement());
 			}
 			else if (MBRandom.RandomFloat < IDLE_RANDOM_MOVE_PROBABILITY) // 50% chance to move to a random position
 			{
@@ -547,7 +546,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			else if (MBRandom.RandomFloat < 0.05f)
 			{
 				Agent.SetMovementDirection(directionToTarget.AsVec2);
-				AnimationSystem.Instance.PlayAnimation(Agent, WargConstants.CarefulAnimations.GetRandomElement(), false);
+				Agent.SetActionChannel(0, WargConstants.CarefulAnimations.GetRandomElement());
 			}
 		}
 	}
