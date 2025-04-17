@@ -27,8 +27,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		private bool _ridingWarg;
 
 		// List of temporary components for bone collision checks
-		private List<BoneCheckDuringAnimationBehavior> _boneCheckComponents = new List<BoneCheckDuringAnimationBehavior>();
-
+		private List<BoneCheckDuringAnimation> _boneCheckComponents = new List<BoneCheckDuringAnimation>();
 
 		public override void OnBehaviorInitialize()
 		{
@@ -82,12 +81,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 					component.OnTick(dt);
 
 #if DEBUG
+					// Show debug information for each agent
 					if (!Input.IsKeyDown(InputKey.LeftAlt)) continue;
 					MatrixFrame position = agent.AgentVisuals.GetFrame();
 					position.Elevate(offset_Z);
 					string debugMessage = component.GetType().Name + " | " + agent.Health;
-					//debugMessage += "\nChannel 0: " + agent.GetCurrentAction(0)?.Name;
-					//debugMessage += "\nChannel 1: " + agent.GetCurrentAction(1)?.Name;
 
 					uint color = Color.White.ToUnsignedInteger();
 					if (component is HumanoidComponent defaultHumanoidComponent)
@@ -249,7 +247,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 		}
 
-		public void AddBoneCheckComponent(BoneCheckDuringAnimationBehavior component)
+		public void AddBoneCheckComponent(BoneCheckDuringAnimation component)
 		{
 			_boneCheckComponents.Add(component);
 		}
