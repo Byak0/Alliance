@@ -25,7 +25,7 @@ namespace Alliance.Common.Utilities
 										  where x.IsMainCulture
 										  select x).ToDictionary(x => x.StringId);
 			// Remove monsters from available cultures for everyone except devs
-			if (!GameNetwork.IsServer && !GameNetwork.MyPeer.IsDev())
+			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsDev()))
 			{
 				instance.AvailableCultures.Remove("monsters");
 			}

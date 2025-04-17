@@ -1,0 +1,97 @@
+<Prefab>
+	<Constants>
+		<Constant Name="FactionButton.Size" Value="52" />
+		<Constant Name="FactionButton.Margin" Value="9" />
+	</Constants>
+	<Window>
+		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="443" SuggestedHeight="660" Sprite="player_stats_9">
+			<Children>
+
+				<!-- ScrollablePanel for factions -->
+				<NavigationScopeTargeter DataSource="{..}" ScopeID="ArmoryFactionTabScope" ScopeParent="..\ScrollablePanelFactions" ScopeMovements="Horizontal" IsScopeDisabled="@IsManagingTaunts" />
+				<ScrollablePanel Id="ScrollablePanelFactions" HeightSizePolicy ="StretchToParent" WidthSizePolicy="Fixed" SuggestedWidth="380" InnerPanel="MyClipRectFactions\TabButtons" ClipRect="MyClipRectFactions" MarginLeft="30" MarginTop="6" HorizontalScrollbar="..\ScrollbarContainerFactions\Scrollbar" AutoHideScrollBars="true">
+					<Children>
+						<Widget Id="MyClipRectFactions" WidthSizePolicy="Fixed" SuggestedWidth="380" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" AlphaFactor="0.75">
+							<Children>
+								<NavigatableListPanel Id="TabButtons" DataSource="{Factions}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="5">
+									<ItemTemplate>
+										<!-- Display nothing in this native widget (transparent brush) -->
+										<MultiplayerLobbyClassFilterFactionItemButtonWidget ButtonType="Radio" IsEnabled="@IsEnabled" IsSelected="@IsActive" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!FactionButton.Size" SuggestedHeight="!FactionButton.Size" MarginLeft="1" MarginRight="1" Brush="Alliance.TransparentBrush">
+											<Children>
+												<HintWidget DataSource="{Hint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+												<!-- Display faction icon using our custom BannerWidget -->
+												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode"/>
+											</Children>
+										</MultiplayerLobbyClassFilterFactionItemButtonWidget>
+									</ItemTemplate>
+								</NavigatableListPanel>
+							</Children>
+						</Widget>
+					</Children>
+				</ScrollablePanel>
+
+				<!-- Horizontal scrollbar for factions-->
+				<Widget Id="ScrollbarContainerFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedWidth="380" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" >
+					<Children>
+						<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Horizontal" Handle="ScrollbarHandleFactions" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
+							<Children>
+					            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+					            <ImageWidget Id="ScrollbarHandleFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinWidth="50" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" MarginTop="65" MarginLeft="12" MarginRight="12" Sprite="MPLobby\Home\player_stats_divider" AlphaFactor="0.4" />
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="75" MarginBottom="20" MarginLeft="20" MarginRight="20">
+					<Children>
+						<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="3" Brush="MPLobby.ClassFilter.TitleText" Text="@TitleText" />
+
+						<NavigationScopeTargeter DataSource="{..}" ScopeID="ArmoryClassListScope" ScopeParent="..\ScrollablePanel" ScopeMovements="Vertical" RightNavigationScope="TauntSlotsNavigationScope" NavigateFromScopeEdges="true" IsScopeDisabled="@IsManagingTaunts"/>
+						<ScrollablePanel Id="ScrollablePanel" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="MyClipRect\InnerPanel" ClipRect="MyClipRect" MarginTop="35" MarginRight="20" VerticalScrollbar="..\ScrollbarContainer\Scrollbar" AutoHideScrollBars="true">
+							<Children>
+								<Widget Id="MyClipRect" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" HorizontalAlignment="Center" ClipContents="true" AlphaFactor="0.75">
+									<Children>
+										<NavigatableListPanel Id="InnerPanel" DataSource="{ActiveClassGroups}" StackLayout.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StepSize="1000">
+											<ItemTemplate>
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
+													<Children>
+														<TextWidget DoNotAcceptEvents="true" Text="@Name" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" Brush="MPLobby.ClassFilter.ClassTuple.Text" />
+														<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Classes" />
+														<NavigatableListPanel Id="Classes" DataSource="{Classes}" StackLayout.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="30" MarginBottom="20" UseSelfIndexForMinimum="true">
+															<ItemTemplate>
+																<MultiplayerLobbyClassFilterClassItemWidget Command.Click="ExecuteSelect" AllowSwitchOff="false" NotifyParentForSelection="false" IsSelected="@IsSelected" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="394" SuggestedHeight="44" FactionColorWidget="FactionColorWidget" CultureColor="@CultureColor" TroopType="@IconType" IconWidget="Icon" Brush="MPLobby.ClassFilter.ClassTuple.Background">
+																	<Children>
+																		<Widget Id="FactionColorWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="15" SuggestedHeight="40" VerticalAlignment="Center" MarginLeft="5" PositionYOffset="-1" Sprite="MPLobby\Store\class_tuple_faction_color" AlphaFactor="0.7"/>
+																		<Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" VerticalAlignment="Center" MarginLeft="22" PositionYOffset="-1"  />
+																		<TextWidget Text="@Name" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="60" PositionYOffset="-2" Brush="MPLobby.ClassFilter.ClassTuple.Text" />
+																	</Children>
+																</MultiplayerLobbyClassFilterClassItemWidget>
+															</ItemTemplate>
+														</NavigatableListPanel>
+													</Children>
+												</Widget>
+											</ItemTemplate>
+										</NavigatableListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ScrollablePanel>
+
+						<Widget Id="ScrollbarContainer" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="20" SuggestedHeight="800" HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginTop="35" >
+							<Children>
+								<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Vertical" Handle="ScrollbarHandle" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
+									<Children>
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+                    <ImageWidget Id="ScrollbarHandle" WidthSizePolicy="Fixed" SuggestedWidth="12" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinHeight="50" />
+									</Children>
+								</ScrollbarWidget>
+							</Children>
+						</Widget>
+					</Children>
+				</Widget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

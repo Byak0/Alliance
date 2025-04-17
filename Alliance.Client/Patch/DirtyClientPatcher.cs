@@ -19,6 +19,7 @@ namespace Alliance.Client.Patch
 			patchSuccess &= Patch_MissionNetworkComponent.Patch();
 			patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
 			patchSuccess &= Patch_AllianceAgentVisualSpawnComponent.Patch();
+			patchSuccess &= Patch_MPArmoryVM.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;
