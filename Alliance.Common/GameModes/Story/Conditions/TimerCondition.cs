@@ -23,7 +23,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public override void Register(GameEntity gameEntity = null)
 		{
 			_triggered = false;
-			_lastTriggerTime = Mission.Current.GetMissionTimeInSeconds();
+			_lastTriggerTime = Mission.Current?.GetMissionTimeInSeconds() ?? 0f;
 		}
 
 		public override bool Evaluate(ScenarioManager context)
