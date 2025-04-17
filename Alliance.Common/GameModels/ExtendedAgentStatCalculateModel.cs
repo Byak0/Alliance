@@ -57,7 +57,7 @@ namespace Alliance.Common.GameModels
 		protected new float CalculateAILevel(Agent agent, int relevantSkillLevel)
 		{
 			float difficultyModifier = AgentsInfoModel.Instance.Agents[agent.Index].Difficulty;
-			return MBMath.ClampFloat(relevantSkillLevel / 300f * difficultyModifier, 0f, 1f);
+			return MBMath.ClampFloat(relevantSkillLevel / 300f * difficultyModifier, 0f, 1.5f);
 		}
 
 		private int GetSkillValueForItem(Agent agent, ItemObject primaryItem)
