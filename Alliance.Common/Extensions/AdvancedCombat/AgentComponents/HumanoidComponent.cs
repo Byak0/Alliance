@@ -1,7 +1,6 @@
 ﻿using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 {
@@ -74,19 +73,16 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				{
 					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
-					Log($"(Ranged) {Agent.Name} targetting {target.Name}", LogLevel.Debug);
 				}
 				else
 				{
 					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
 					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
-					Log($"(Melee) {Agent.Name} targetting {target.Name}", LogLevel.Debug);
 				}
 			}
 			else
 			{
 				Agent.SetTargetAgent(target);
-				Log($"{Agent.Name} targetting {target.Name}", LogLevel.Debug);
 			}
 		}
 
@@ -99,6 +95,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 		public override void OnMissionResultReady(MissionResult missionResult)
 		{
+			ClearThreat();
 			ClearTarget();
 		}
 	}
