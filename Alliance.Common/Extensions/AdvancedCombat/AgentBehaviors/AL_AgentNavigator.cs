@@ -198,7 +198,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 		{
 			if (TargetAgent.AgentVisuals == null || TargetAgent.Health <= 0 || TargetAgent.IsFadingOut())
 			{
-				Log($"ERROR, Target invalid in AttackTask - {TargetAgent?.Name}", LogLevel.Error);
+				Log($"ERROR, Target invalid in AL_AgentNavigator - {TargetAgent?.Name}", LogLevel.Error);
 				OwnerAgent?.DisableScriptedCombatMovement();
 				OwnerAgent?.DisableScriptedMovement();
 				TargetAgent = null;

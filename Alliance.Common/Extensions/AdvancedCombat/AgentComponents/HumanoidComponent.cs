@@ -25,6 +25,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		{
 			if (_threat == null)
 			{
+				base.OnTickAsAI(dt);
 				return;
 			}
 
