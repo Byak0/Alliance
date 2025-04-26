@@ -166,7 +166,7 @@ namespace Alliance.Common.GameModels
 			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
 			agentDrivenProperties.MaxSpeedMultiplier *= 1.7f;
 			agentDrivenProperties.TopSpeedReachDuration *= 2f;
-			agentDrivenProperties.CombatMaxSpeedMultiplier *= 0.5f;
+			agentDrivenProperties.CombatMaxSpeedMultiplier *= 0.8f;
 		}
 
 		private void UpdateStatsForEnt(Agent agent, AgentDrivenProperties agentDrivenProperties)
