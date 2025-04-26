@@ -1,19 +1,24 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.AnimationPlayer.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.Models
 {
 	public static class TrollConstants
 	{
-		public static readonly List<Animation> IdleAnimations;
-		public static readonly List<Animation> RageAnimations;
-		public static readonly List<Animation> SearchAnimations;
-		public static readonly Animation StompAnimation;
+		public static readonly List<ActionIndexCache> IdleAnimations;
+		public static readonly List<ActionIndexCache> RageAnimations;
+		public static readonly List<ActionIndexCache> SearchAnimations;
+		public static readonly ActionIndexCache StompAnimation;
 		public static readonly List<sbyte> CollisionBones = new List<sbyte>
 			{
 				19, // ID left hand bone
 				26, // ID right hand bone
+			};
+
+		public static readonly List<sbyte> FootCollisionBones = new List<sbyte>
+			{
+				3, // ID left foot bone
+				7, // ID right foot bone
 			};
 
 		public const int CHASE_RADIUS = 30; // Max range to consider when chasing a target
@@ -26,21 +31,21 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 
 		static TrollConstants()
 		{
-			Animation rage1 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_rage_1"); // stuck
-			Animation rage2 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_rage_2");
-			Animation rage3 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_rage_3"); // stuck
+			ActionIndexCache rage1 = ActionIndexCache.Create("act_taunt_rage_1"); // stuck
+			ActionIndexCache rage2 = ActionIndexCache.Create("act_taunt_rage_2");
+			ActionIndexCache rage3 = ActionIndexCache.Create("act_taunt_rage_3"); // stuck
 
 			//Animation idle1 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_idle_1");
 			//Animation idle2 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_warg_idle_2");
 
-			Animation search1 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_23");
-			Animation search2 = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_24");
+			ActionIndexCache search1 = ActionIndexCache.Create("act_taunt_23");
+			ActionIndexCache search2 = ActionIndexCache.Create("act_taunt_24");
 
 
-			IdleAnimations = new List<Animation>() { rage1, rage2, rage3 };
-			RageAnimations = new List<Animation>() { rage1, rage2, rage3 };
-			SearchAnimations = new List<Animation>() { search1, search2 };
-			StompAnimation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_taunt_25");
+			IdleAnimations = new List<ActionIndexCache>() { rage1, rage2, rage3 };
+			RageAnimations = new List<ActionIndexCache>() { rage1, rage2, rage3 };
+			SearchAnimations = new List<ActionIndexCache>() { search1, search2 };
+			StompAnimation = ActionIndexCache.Create("act_troll_stomp");
 		}
 	}
 }

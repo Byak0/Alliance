@@ -27,7 +27,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		private bool _ridingWarg;
 
 		// List of temporary components for bone collision checks
-		private List<BoneCheckDuringAnimation> _boneCheckComponents = new List<BoneCheckDuringAnimation>();
+		private List<BoneCheck> _boneCheckComponents = new List<BoneCheck>();
 
 		public override void OnBehaviorInitialize()
 		{
@@ -247,7 +247,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			}
 		}
 
-		public void AddBoneCheckComponent(BoneCheckDuringAnimation component)
+		public void AddBoneCheckComponent(BoneCheck component)
 		{
 			_boneCheckComponents.Add(component);
 		}

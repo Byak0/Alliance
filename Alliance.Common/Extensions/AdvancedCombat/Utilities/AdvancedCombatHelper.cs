@@ -69,7 +69,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 				return;
 			}
 
-			agent.CustomAttack(kick, kickBoneIds, actionProgressMin, actionProgressMax, targetDetectionRange, boneCollisionRadius, (attacker, target, boneId) =>
+			agent.CustomAttack(kick, kickBoneIds, actionProgressMin, actionProgressMax, targetDetectionRange, boneCollisionRadius, true, (attacker, target, boneId) =>
 			{
 				attacker.DealDamage(target, damage);
 				target.ProjectAgent(attacker.Position, projectionStrength);
@@ -86,8 +86,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 		/// <param name="actionProgressMax">Progress (between 0f-1f)  of the action after which we stop watching for collisions.</param>
 		/// <param name="targetDetectionRange">Range around the agent used to extract list of potential targets when watching for collisions.</param>
 		/// <param name="boneCollisionRadius">Collision radius for bones.</param>
+		/// <param name="stopOnFirstHit">True to stop watching for collisions after the first hit.</param>
 		/// <param name="OnHitCallback">Action to execute on collision.</param>
-		public static void CustomAttack(this Agent agent, ActionIndexCache action, List<sbyte> bonesIdsForCollision, float actionProgressMin, float actionProgressMax, float targetDetectionRange, float boneCollisionRadius, Action<Agent, Agent, sbyte> OnHitCallback)
+		public static void CustomAttack(this Agent agent, ActionIndexCache action, List<sbyte> bonesIdsForCollision, float actionProgressMin, float actionProgressMax, float targetDetectionRange, float boneCollisionRadius, bool stopOnFirstHit, Action<Agent, Agent, sbyte> OnHitCallback)
 		{
 			if (agent == null || !agent.IsActive() || agent.IsFadingOut())
 			{
@@ -112,7 +113,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 						actionProgressMin,
 						actionProgressMax,
 						boneCollisionRadius,
-						OnHitCallback
+						stopOnFirstHit,
+						OnHitCallback,
+						() => { }
 					));
 		}
 
@@ -141,7 +144,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 				actionProgressMax = 0.5f;
 			}
 
-			warg.CustomAttack(action, boneIds, actionProgressMin, actionProgressMax, targetDetectionRange, boneCollisionRadius, (attacker, target, boneId) => HandleWargTargetHit(attacker, target, boneId));
+			warg.CustomAttack(action, boneIds, actionProgressMin, actionProgressMax, targetDetectionRange, boneCollisionRadius, false, (attacker, target, boneId) => HandleWargTargetHit(attacker, target, boneId));
 		}
 
 		public static void HandleWargTargetHit(Agent attacker, Agent target, sbyte boneId)
@@ -163,7 +166,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 
 					// Avoid friendly fire if AI controlled
 					if ((isAIControlled && (target.IsWarg() || target.HasMount && target.MountAgent.IsWarg())
-						&& MBRandom.RandomFloat < 0.9f))
+						&& MBRandom.RandomFloat < 0.99f))
 						return;
 
 					// TODO : Retrieve body part from boneId ?
