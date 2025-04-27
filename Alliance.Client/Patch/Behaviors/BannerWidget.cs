@@ -34,8 +34,6 @@ namespace Alliance.Client.Patch.Behaviors
 		public BannerWidget(UIContext context)
 			: base(context)
 		{
-			CultureID = "sturgia";
-			RefreshBanner();
 		}
 
 		public void RefreshBanner()
