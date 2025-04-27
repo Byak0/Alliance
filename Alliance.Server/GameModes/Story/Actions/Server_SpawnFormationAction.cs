@@ -40,7 +40,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
 			if (playerInCharge?.ControlledAgent == null)
 			{
-				int totalFormations = (int)FormationClass.NumberOfDefaultFormations;
+				int totalFormations = (int)FormationClass.NumberOfRegularFormations;
 
 				// Get list of players in the same team
 				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.GetComponent<MissionPeer>()?.Team == team).ToList();
