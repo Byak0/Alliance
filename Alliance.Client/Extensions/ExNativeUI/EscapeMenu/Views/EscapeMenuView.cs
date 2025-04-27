@@ -119,25 +119,26 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			}
 
 			// Change Team
-			if (gameType != "Scenario" || GameNetwork.MyPeer.IsAdmin())
+			// TODO : Limit team changes once we've properly implemented the team selection UI ?
+			//if (gameType != "Scenario" || GameNetwork.MyPeer.IsAdmin())
+			//{
+			if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
 			{
-				if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
+				list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
 				{
-					list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
-					{
-						OnEscapeMenuToggled(false);
-						_missionTeamSelectComponent.SelectTeam();
-					}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
-				}
-				else if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
-				{
-					list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
-					{
-						OnEscapeMenuToggled(false);
-						_missionTeamSelectComponent.SelectTeam();
-					}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
-				}
+					OnEscapeMenuToggled(false);
+					_missionTeamSelectComponent.SelectTeam();
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
 			}
+			else if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
+			{
+				list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
+				{
+					OnEscapeMenuToggled(false);
+					_missionTeamSelectComponent.SelectTeam();
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+			}
+			//}
 
 			// Options
 			list.Add(new EscapeMenuItemVM(new TextObject("{=NqarFr4P}Options", null), delegate (object o)
