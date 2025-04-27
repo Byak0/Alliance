@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alliance.Common.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -175,9 +176,16 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
 
 		private SpawnTroopsModel()
 		{
+			Factions.Instance.RefreshAvailablecultures();
 			BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-			_selectedFaction = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
+
+			BasicCultureObject selectedCulture = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
+			if (!Factions.Instance.AvailableCultures.ContainsValue(selectedCulture))
+			{
+				selectedCulture = Factions.Instance.AvailableCultures.Values.FirstOrDefault();
+			}
+			_selectedFaction = selectedCulture;
 			_selectedTroop = MultiplayerClassDivisions.GetMPHeroClasses(_selectedFaction).First().TroopCharacter;
 			_selectedTeam = GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team;
 			DifficultyLevel = 1;
