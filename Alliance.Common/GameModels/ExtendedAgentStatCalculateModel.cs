@@ -57,7 +57,7 @@ namespace Alliance.Common.GameModels
 		protected new float CalculateAILevel(Agent agent, int relevantSkillLevel)
 		{
 			float difficultyModifier = AgentsInfoModel.Instance.Agents[agent.Index].Difficulty;
-			return MBMath.ClampFloat(relevantSkillLevel / 300f * difficultyModifier, 0f, 1f);
+			return MBMath.ClampFloat(relevantSkillLevel / 300f * difficultyModifier, 0f, 1.5f);
 		}
 
 		private int GetSkillValueForItem(Agent agent, ItemObject primaryItem)
@@ -166,7 +166,7 @@ namespace Alliance.Common.GameModels
 			// MaxSpeed is multiplied with native_parameters.xml/bipedal_speed_multiplier.
 			agentDrivenProperties.MaxSpeedMultiplier *= 1.7f;
 			agentDrivenProperties.TopSpeedReachDuration *= 2f;
-			agentDrivenProperties.CombatMaxSpeedMultiplier *= 0.5f;
+			agentDrivenProperties.CombatMaxSpeedMultiplier *= 0.8f;
 		}
 
 		private void UpdateStatsForEnt(Agent agent, AgentDrivenProperties agentDrivenProperties)

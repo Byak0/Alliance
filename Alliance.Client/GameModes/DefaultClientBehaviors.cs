@@ -2,6 +2,7 @@
 using Alliance.Client.Extensions.FakeArmy.Behaviors;
 using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.Patch.Behaviors;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using System.Collections.Generic;
@@ -40,7 +41,8 @@ namespace Alliance.Client.GameModes
 				new MultiplayerPreloadHelper(),
 
 				// Default behaviors from Alliance
-				new ClientAutoHandler(), // Core behavior, handle network message redirections
+				new CoreBehavior(),
+				new ClientAutoHandler(), // Handle network message redirections
 				new UsableEntityBehavior(),
 				new PBVoiceChatHandlerClient(),
 				new FakeArmyBehavior(),

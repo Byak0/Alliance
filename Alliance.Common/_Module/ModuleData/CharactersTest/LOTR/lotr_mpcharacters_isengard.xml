@@ -938,8 +938,8 @@
 								occupation="Soldier"
 								culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="22" weight="0.3157" build="0.8547"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000CB26030C00000000000000000000000000000000000000000000001D9C0000"  />
-			<BodyPropertiesMax version="4" age="40" weight="0.4801" build="1"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800FE46030F653576000000000000000000000000000000000000000035EC0000"  />
+			<BodyProperties version="4" age="22" weight="0.5157" build="0.8547"  key="0000000ACEFC000310000000000001010001001011000000100011010011110000CB26030C00000000000000000000000000000000000000000000001D9C0000"  />
+			<BodyPropertiesMax version="4" age="40" weight="0.6801" build="1"  key="0036000FDEFC000356F45544435733474587E5665666665544355735F554544800FE46030F653576000000000000000000000000000000000000000035EC0000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1009,7 +1009,7 @@
 				occupation="Soldier"
 				culture="Culture.isengard">
 		<face>
-			<BodyProperties version="4" age="30" weight="0.3801" build="0.9945"  key="0005000F16FC000356F45544435733474587E5665666665544305133F554544800EF46030E20033200000000000000000000000000000000000000002DE40000"  />
+			<BodyProperties version="4" age="30" weight="0.5801" build="0.9945"  key="0005000F16FC000356F45544435733474587E5665666665544305133F554544800EF46030E20033200000000000000000000000000000000000000002DE40000"  />
 		</face>
 		<skills>
 			<skill id="Athletics"
@@ -1339,13 +1339,13 @@
 			<skill id="Athletics"
 						 value="100" />
 			<skill id="Riding"
-						 value="100" />
+						 value="150" />
 			<skill id="OneHanded"
 						 value="150" />
 			<skill id="TwoHanded"
 						 value="150" />
 			<skill id="Polearm"
-						 value="150" />
+						 value="200" />
 			<skill id="Bow"
 						 value="120" />
 			<skill id="Crossbow"
@@ -1424,7 +1424,7 @@
 			<skill id="Athletics"
 						 value="150" />
 			<skill id="Riding"
-						 value="100" />
+						 value="150" />
 			<skill id="OneHanded"
 						 value="200" />
 			<skill id="TwoHanded"

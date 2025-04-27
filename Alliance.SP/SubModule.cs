@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
@@ -38,6 +39,7 @@ namespace Alliance.SP
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
 
+			mission.AddMissionBehavior(new CoreBehavior());
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 

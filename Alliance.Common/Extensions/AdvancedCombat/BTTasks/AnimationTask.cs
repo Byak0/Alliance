@@ -1,6 +1,4 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.AnimationPlayer.Models;
-using BehaviorTrees;
+﻿using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using System.Collections.Generic;
@@ -13,24 +11,26 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 {
 	public class AnimationTask : BTTask, IBTBannerlordBase
 	{
-		private readonly List<Animation> animations;
+		private readonly List<ActionIndexCache> animations;
 
 		BTBlackboardValue<Agent> agent;
 		public BTBlackboardValue<Agent> Agent { get => agent; set => agent = value; }
 
-		public AnimationTask(List<Animation> animations) : base()
+		public AnimationTask(List<ActionIndexCache> animations) : base()
 		{
 			this.animations = animations;
 		}
 
-		public AnimationTask(Animation animation) : base()
+		public AnimationTask(ActionIndexCache animation) : base()
 		{
-			animations = new List<Animation> { animation };
+			animations = new List<ActionIndexCache> { animation };
 		}
 
 		public override async Task<bool> Execute(CancellationToken cancellationToken)
 		{
-			AnimationSystem.Instance.PlayAnimation(Agent.GetValue(), animations.GetRandomElement());
+			ActionIndexCache action = animations.GetRandomElement();
+			Agent agent = Agent.GetValue();
+			agent?.SetActionChannel(0, action);
 			return true;
 		}
 	}

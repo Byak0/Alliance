@@ -101,4 +101,9 @@
 	<action name="act_warg_fall_slow_left_continue" type="actt_fall" />
 	<!-- Warg END -->
 
+	
+	<!-- Troll -->
+	<action name="act_troll_stomp" />
+
+
 </action_types>

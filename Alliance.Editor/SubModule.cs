@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModels;
 using Alliance.Common.GameModes.Story;
@@ -57,6 +58,7 @@ namespace Alliance.Editor
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
 
+			mission.AddMissionBehavior(new CoreBehavior());
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 
