@@ -125,7 +125,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 							// TODO differentiate idle animations if in combat or not
 							.AddTask(new LogTask("I am idle", LogLevel.Debug))
 							//.AddTask(new AnimationTask(TrollConstants.IdleAnimations))
-							.AddTask(new AnimationBoneCheckTask(TrollConstants.RageAnimations[0], 2f, TrollConstants.CollisionBones, 1f))
+							//.AddTask(new AnimationBoneCheckTask(TrollConstants.RageAnimations[0], 2f, TrollConstants.CollisionBones, 1f))
 							.Up()
 						.Up()
 					.AddSelector("LookForTarget", new StateDecorator(BTState.LookForTarget))
@@ -152,7 +152,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 							.AddTask(new MoveToTargetTask())
 							// TODO only play animation once in a while
 							//.AddTask(new AnimationTask(TrollConstants.RageAnimations))
-							.AddTask(new AnimationBoneCheckTask(TrollConstants.RageAnimations[0], 2f, TrollConstants.CollisionBones, 1f))
+							//.AddTask(new AnimationBoneCheckTask(TrollConstants.RageAnimations[0], 2f, TrollConstants.CollisionBones, 1f))
 							.Up()
 						.AddSequence("CancelChase")
 							.AddTask(new LogTask("I lost my target", LogLevel.Debug))

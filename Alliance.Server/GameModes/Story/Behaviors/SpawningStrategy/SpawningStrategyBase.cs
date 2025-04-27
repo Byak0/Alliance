@@ -230,14 +230,31 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			{
 				basicCharacterObject = mPHeroClassForPeer.HeroCharacter;
 				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
-				// Give banner to officer if none are present for team
-				if (FlagTrackerBehavior != null && !FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty)
+
+				if (FlagTrackerBehavior != null)
 				{
-					EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
-					List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+					bool freeBannerSlot = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty;
+					bool characterHasBanner = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].Item?.IsBannerItem ?? false;
+
+					List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>();
+
+					// Give banner to officer if none are present for team
+					if (!FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && freeBannerSlot)
 					{
-						(EquipmentIndex.ExtraWeaponSlot, banner)
-					};
+						EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
+						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+						{
+							(EquipmentIndex.ExtraWeaponSlot, banner)
+						};
+					}
+					// If banner already exist and character has a default banner, remove it
+					else if (FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && characterHasBanner)
+					{
+						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+						{
+							(EquipmentIndex.ExtraWeaponSlot, EquipmentElement.Invalid)
+						};
+					}
 					SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation, alternativeEquipment: altEquipment);
 				}
 				else
@@ -357,7 +374,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					MatrixFrame? spawnLocation = GetBotSpawnLocation(team, troopCharacter.HasMount());
 					SpawnHelper.SpawnBot(team, _cultures[(int)team.Side], troopCharacter, spawnLocation);
 				}
-				if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
+				if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam && _haveBotsBeenSpawned[(int)team.Side])
 				{
 					ScenarioPersistentData.Instance.TeamRemainingLives[team.Side] -= nbBotsToSpawn;
 					// TODO replace this with a proper UI indicator
