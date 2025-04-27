@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
+using TaleWorlds.LinQuick;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
@@ -39,13 +40,47 @@ namespace Alliance.Server.GameModes.Story.Actions
 			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
 			if (playerInCharge?.ControlledAgent == null)
 			{
-				// If no player is controlling this formation, try to assign the closest player in the team
-				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.ControlledAgent != null && peer.ControlledAgent.Team == team).ToList();
-				if (candidates.Count > 0)
+				int totalFormations = (int)FormationClass.NumberOfRegularFormations;
+
+				// Get list of players in the same team
+				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.GetComponent<MissionPeer>()?.Team == team).ToList();
+				// Sort them by their index for consistent distribution
+				candidates.OrderByQ(peer => peer.Index);
+				// Limit the number of candidates to the number of formations
+				int candidatesCount = Math.Min(candidates.Count, totalFormations);
+
+				// Distribute the formation depending on number of players in the team
+				if (candidatesCount > 1)
 				{
-					Agent closestAgent = candidates.OrderBy(peer => peer.ControlledAgent.Position.DistanceSquared(SpawnZone.GlobalPosition)).First().ControlledAgent;
-					playerInCharge = closestAgent.MissionPeer;
+					int baseFormationCountPerPlayer = totalFormations / candidatesCount;
+					int remainingFormations = totalFormations % candidatesCount;
+
+					int nbFormationAlreadyAssigned = 0;
+					for (int i = 0; i < candidatesCount; i++)
+					{
+						// If there are remaining formations, assign one more to the first players
+						int nbFormationForThisPlayer = baseFormationCountPerPlayer + (i < remainingFormations ? 1 : 0);
+
+						if ((int)Formation < nbFormationAlreadyAssigned + nbFormationForThisPlayer)
+						{
+							playerInCharge = candidates[i].GetComponent<MissionPeer>();
+							break;
+						}
+						nbFormationAlreadyAssigned += nbFormationForThisPlayer;
+					}
+				}
+				else if (candidatesCount == 1)
+				{
+					playerInCharge = candidates[0].GetComponent<MissionPeer>();
+				}
+
+				if (playerInCharge != null)
+				{
 					FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+				}
+				else
+				{
+					Log("No player eligible to control formation " + Formation, LogLevel.Warning);
 				}
 			}
 

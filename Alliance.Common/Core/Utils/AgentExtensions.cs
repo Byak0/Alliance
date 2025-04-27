@@ -34,5 +34,15 @@ namespace Alliance.Common.Core.Utils
 		{
 			return agent.Monster.StringId == "warg";
 		}
+
+		public static bool IsHorse(this Agent agent)
+		{
+			return agent.Monster.StringId == "horse";
+		}
+
+		public static bool IsCamel(this Agent agent)
+		{
+			return agent.Monster.StringId == "camel";
+		}
 	}
 }

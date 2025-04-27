@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Engine;
+﻿using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
@@ -24,17 +25,18 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		{
 			if (_threat == null)
 			{
+				base.OnTickAsAI(dt);
 				return;
 			}
 
-			if (_threat.Health <= 0 || _threat.IsFadingOut() || _threat.RiderAgent?.Team == Agent.Team)
+			if (!Agent.IsActive() || Agent.IsRunningAway || _threat.Health <= 0 || _threat.IsFadingOut() || _threat.RiderAgent?.Team == Agent.Team)
 			{
 				ClearThreat();
 				ClearTarget();
 				return;
 			}
 
-			if (_threat.Position.Distance(Agent.Position) > 30)
+			if (_threat.Position.Distance(Agent.Position) > 30f)
 			{
 				_forgetThreatTimer += dt;
 				if (_forgetThreatTimer >= 10)
@@ -68,10 +70,15 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (target.IsMount)
 			{
 				WorldPosition pos = Agent.GetWorldPosition();
-				Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
-				if (Agent.HasRangedWeapon())
+				if (Agent.HasRangedWeapon(true))
 				{
+					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
+				}
+				else
+				{
+					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
+					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
 				}
 			}
 			else
@@ -85,6 +92,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			_target = null;
 			Agent.DisableScriptedCombatMovement();
 			Agent.DisableScriptedMovement();
+		}
+
+		public override void OnMissionResultReady(MissionResult missionResult)
+		{
+			ClearThreat();
+			ClearTarget();
 		}
 	}
 }

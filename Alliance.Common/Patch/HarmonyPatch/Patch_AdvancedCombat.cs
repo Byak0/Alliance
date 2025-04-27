@@ -454,7 +454,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 			float projectionForce = 2f - (victim.Position.Distance(projectionOrigin) / 10f);
 			AdvancedCombatHelper.ProjectAgent(victim, projectionOrigin, projectionForce);
 
-			while (Current.CurrentTime - startTime < projectionDuration)
+			while (Current != null && Current.CurrentTime - startTime < projectionDuration)
 			{
 				List<Agent> collidingAgents = Current.GetNearbyAgents(
 					victim.Position.AsVec2,

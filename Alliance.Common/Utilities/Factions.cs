@@ -12,7 +12,7 @@ namespace Alliance.Common.Utilities
 	/// </summary>
 	public class Factions
 	{
-		public List<string> NativeCultures;
+		public List<string> NativeCultures = new List<string>() { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait" };
 		public Dictionary<string, BasicCultureObject> AvailableCultures;
 		public List<string> OrderedCultureKeys;
 
@@ -21,16 +21,21 @@ namespace Alliance.Common.Utilities
 
 		static Factions()
 		{
-			instance.AvailableCultures = (from x in MBObjectManager.Instance.GetObjectTypeList<BasicCultureObject>().ToArray()
-										  where x.IsMainCulture
-										  select x).ToDictionary(x => x.StringId);
+			instance.RefreshAvailablecultures();
+		}
+
+		public void RefreshAvailablecultures()
+		{
+			// Refresh the list of available cultures
+			AvailableCultures = (from x in MBObjectManager.Instance.GetObjectTypeList<BasicCultureObject>().ToArray()
+								 where x.IsMainCulture
+								 select x).ToDictionary(x => x.StringId);
 			// Remove monsters from available cultures for everyone except devs
-			if (!GameNetwork.IsServer && !GameNetwork.MyPeer.IsDev())
+			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsDev()))
 			{
-				instance.AvailableCultures.Remove("monsters");
+				AvailableCultures.Remove("monsters");
 			}
-			instance.OrderedCultureKeys = instance.AvailableCultures.Keys.ToList();
-			instance.NativeCultures = new List<string>() { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait" };
+			OrderedCultureKeys = AvailableCultures.Keys.ToList();
 		}
 
 		public BasicCultureObject GetNextCulture(BasicCultureObject currentCulture)

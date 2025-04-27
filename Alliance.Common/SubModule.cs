@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+﻿using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using BehaviorTreeWrapper;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -27,7 +26,6 @@ namespace Alliance.Common
 
 		protected override void OnApplicationTick(float dt)
 		{
-			if (Mission.Current != null) SpatialGrid.UpdateGrid(Mission.Current.Agents);
 		}
 
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)

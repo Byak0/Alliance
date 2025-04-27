@@ -459,11 +459,11 @@
 						<bone_scale bone_type="biped_abdomen"
 									axis="x"
 									key_min="1"
-									key_max="1.0" />
+									key_max="1" />
 						<bone_scale bone_type="biped_abdomen"
 									axis="y"
 									key_min="0.95"
-									key_max="1.18" />
+									key_max="1.10" />
 						<bone_scale bone_type="biped_abdomen"
 									axis="z"
 									key_min="0.95"
@@ -472,11 +472,11 @@
 						<bone_scale bone_type="biped_thigh_l"
 									axis="x"
 									key_min="0.95"
-									key_max="1.12" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_thigh_l"
 									axis="y"
 									key_min="0.95"
-									key_max="1.12" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_thigh_l"
 									axis="z"
 									key_min="1"
@@ -485,11 +485,11 @@
 						<bone_scale bone_type="biped_calf_l"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_calf_l"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_calf_l"
 									axis="z"
 									key_min="1"
@@ -510,11 +510,11 @@
 						<bone_scale bone_type="biped_thigh_r"
 									axis="x"
 									key_min="0.95"
-									key_max="1.12" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_thigh_r"
 									axis="y"
 									key_min="0.95"
-									key_max="1.12" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_thigh_r"
 									axis="z"
 									key_min="1"
@@ -523,11 +523,11 @@
 						<bone_scale bone_type="biped_calf_r"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_calf_r"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_calf_r"
 									axis="z"
 									key_min="1"
@@ -548,7 +548,7 @@
 						<bone_scale bone_type="biped_spine_2"
 									axis="x"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_spine_2"
 									axis="y"
 									key_min="0.9"
@@ -564,7 +564,7 @@
 						<bone_scale bone_type="biped_spine_1"
 									axis="y"
 									key_min="0.9"
-									key_max="1.3" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_spine_1"
 									axis="z"
 									key_min="1"
@@ -573,11 +573,11 @@
 						<bone_scale bone_type="biped_thorax"
 									axis="x"
 									key_min="0.9"
-									key_max="1.05" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_thorax"
 									axis="y"
 									key_min="0.9"
-									key_max="1.05" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_thorax"
 									axis="z"
 									key_min="1"
@@ -586,11 +586,11 @@
 						<bone_scale bone_type="biped_neck"
 									axis="x"
 									key_min="1"
-									key_max="1.1" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_neck"
 									axis="y"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_neck"
 									axis="z"
 									key_min="1"
@@ -611,11 +611,11 @@
 						<bone_scale bone_type="biped_shoulder_l"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_shoulder_l"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_shoulder_l"
 									axis="z"
 									key_min="1"
@@ -624,11 +624,11 @@
 						<bone_scale bone_type="biped_upperarm_l"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_upperarm_l"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_upperarm_l"
 									axis="z"
 									key_min="1"
@@ -637,11 +637,11 @@
 						<bone_scale bone_type="biped_forearm_l"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_l"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_l"
 									axis="z"
 									key_min="1"
@@ -663,11 +663,11 @@
 						<bone_scale bone_type="biped_shoulder_r"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_shoulder_r"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_shoulder_r"
 									axis="z"
 									key_min="1"
@@ -676,11 +676,11 @@
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="z"
 									key_min="1"
@@ -689,11 +689,11 @@
 						<bone_scale bone_type="biped_forearm_r"
 									axis="x"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_r"
 									axis="y"
 									key_min="1"
-									key_max="1" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_r"
 									axis="z"
 									key_min="1"
@@ -728,20 +728,20 @@
 						<bone_scale bone_type="biped_abdomen"
 									axis="y"
 									key_min="0.95"
-									key_max="1.05" />
+									key_max="1" />
 						<bone_scale bone_type="biped_abdomen"
 									axis="z"
 									key_min="0.95"
-									key_max="1.05" />
+									key_max="1" />
 
 						<bone_scale bone_type="biped_thigh_l"
 									axis="x"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thigh_l"
 									axis="y"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thigh_l"
 									axis="z"
 									key_min="1"
@@ -754,11 +754,11 @@
 						<bone_scale bone_type="biped_upperarm_twist1_l"
 									axis="y"
 									key_min="0.8"
-									key_max="1.2" />
+									key_max="1" />
 						<bone_scale bone_type="biped_upperarm_twist1_l"
 									axis="x"
 									key_min="1"
-									key_max="1.1" />
+									key_max="1" />
 
 
 						<bone_scale bone_type="biped_upperarm_twist1_r"
@@ -768,21 +768,21 @@
 						<bone_scale bone_type="biped_upperarm_twist1_r"
 									axis="y"
 									key_min="0.8"
-									key_max="1.2" />
+									key_max="1" />
 						<bone_scale bone_type="biped_upperarm_twist1_r"
 									axis="x"
 									key_min="1"
-									key_max="1.1" />
+									key_max="1" />
 
 
 						<bone_scale bone_type="biped_calf_l"
 									axis="x"
-									key_min="0.92"
-									key_max="1.22" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_calf_l"
 									axis="y"
-									key_min="0.92"
-									key_max="1.22" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_calf_l"
 									axis="z"
 									key_min="1"
@@ -804,11 +804,11 @@
 						<bone_scale bone_type="biped_thigh_r"
 									axis="x"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thigh_r"
 									axis="y"
 									key_min="0.95"
-									key_max="1.1" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thigh_r"
 									axis="z"
 									key_min="1"
@@ -816,12 +816,12 @@
 
 						<bone_scale bone_type="biped_calf_r"
 									axis="x"
-									key_min="0.92"
-									key_max="1.22" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_calf_r"
 									axis="y"
-									key_min="0.92"
-									key_max="1.22" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_calf_r"
 									axis="z"
 									key_min="1"
@@ -842,24 +842,24 @@
 
 						<bone_scale bone_type="biped_spine_1"
 									axis="x"
-									key_min="0.95"
-									key_max="1.05" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_spine_1"
 									axis="y"
-									key_min="0.95"
-									key_max="1.1" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_spine_1"
 									axis="z"
 									key_min="1"
 									key_max="1" />
 						<bone_scale bone_type="biped_spine_2"
 									axis="x"
-									key_min="0.95"
-									key_max="1.1" />
+									key_min="0.9"
+									key_max="1" />
 						<bone_scale bone_type="biped_spine_2"
 									axis="y"
 									key_min="0.90"
-									key_max="1.20" />
+									key_max="1" />
 						<bone_scale bone_type="biped_spine_2"
 									axis="z"
 									key_min="1"
@@ -868,15 +868,15 @@
 						<bone_scale bone_type="biped_thorax"
 									axis="x"
 									key_min="1"
-									key_max="1.22" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thorax"
 									axis="y"
 									key_min="0.9"
-									key_max="1.15" />
+									key_max="1" />
 						<bone_scale bone_type="biped_thorax"
 									axis="z"
 									key_min="0.92"
-									key_max="1.05" />
+									key_max="1" />
 
 						<bone_scale bone_type="biped_neck"
 									axis="x"
@@ -884,115 +884,115 @@
 									key_max="1.2" />
 						<bone_scale bone_type="biped_neck"
 									axis="y"
-									key_min="0.5"
+									key_min="0.8"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_neck"
+									axis="z"
+									key_min="1"
+									key_max="1" />
+						<bone_scale bone_type="biped_head"
+									axis="x"
+									key_min="1"
+									key_max="1" />
+						<bone_scale bone_type="biped_head"
+									axis="y"
+									key_min="1"
+									key_max="1" />
+						<bone_scale bone_type="biped_head"
+									axis="z"
+									key_min="1"
+									key_max="1" />
+
+						<bone_scale bone_type="biped_shoulder_l"
+									axis="x"
+									key_min="0.9"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_shoulder_l"
+									axis="y"
+									key_min="0.9"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_shoulder_l"
+									axis="z"
+									key_min="1"
+									key_max="1" />
+
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="x"
+									key_min="0.8"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="y"
+									key_min="0.8"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_upperarm_l"
+									axis="z"
+									key_min="0.8"
+									key_max="1" />
+
+						<bone_scale bone_type="biped_forearm_l"
+									axis="x"
+									key_min="0.85"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_forearm_l"
+									axis="y"
+									key_min="0.85"
+									key_max="1.1" />
+						<bone_scale bone_type="biped_forearm_l"
+									axis="z"
+									key_min="0.85"
+									key_max="1" />
+
+						<bone_scale bone_type="biped_hand_l"
+									axis="x"
+									key_min="1"
+									key_max="1" />
+						<bone_scale bone_type="biped_hand_l"
+									axis="y"
+									key_min="1"
+									key_max="1" />
+						<bone_scale bone_type="biped_hand_l"
+									axis="z"
+									key_min="1"
+									key_max="1" />
+
+						<bone_scale bone_type="biped_shoulder_r"
+									axis="x"
+									key_min="0.9"
+									key_max="1.15"/>
+						<bone_scale bone_type="biped_shoulder_r"
+									axis="y"
+									key_min="0.9"
 									key_max="1.15" />
-						<bone_scale bone_type="biped_neck"
-									axis="z"
-									key_min="1"
-									key_max="1" />
-						<bone_scale bone_type="biped_head"
-									axis="x"
-									key_min="1"
-									key_max="1" />
-						<bone_scale bone_type="biped_head"
-									axis="y"
-									key_min="1"
-									key_max="1" />
-						<bone_scale bone_type="biped_head"
-									axis="z"
-									key_min="1"
-									key_max="1" />
-
-						<bone_scale bone_type="biped_shoulder_l"
-									axis="x"
-									key_min="0.9"
-									key_max="1.025" />
-						<bone_scale bone_type="biped_shoulder_l"
-									axis="y"
-									key_min="0.9"
-									key_max="1.2" />
-						<bone_scale bone_type="biped_shoulder_l"
-									axis="z"
-									key_min="1"
-									key_max="1.2" />
-
-						<bone_scale bone_type="biped_upperarm_l"
-									axis="x"
-									key_min="0.8"
-									key_max="1.18" />
-						<bone_scale bone_type="biped_upperarm_l"
-									axis="y"
-									key_min="0.8"
-									key_max="1.18" />
-						<bone_scale bone_type="biped_upperarm_l"
-									axis="z"
-									key_min="0.8"
-									key_max="1.18" />
-
-						<bone_scale bone_type="biped_forearm_l"
-									axis="x"
-									key_min="0.85"
-									key_max="1.12" />
-						<bone_scale bone_type="biped_forearm_l"
-									axis="y"
-									key_min="0.85"
-									key_max="1.12" />
-						<bone_scale bone_type="biped_forearm_l"
-									axis="z"
-									key_min="0.85"
-									key_max="1.12" />
-
-						<bone_scale bone_type="biped_hand_l"
-									axis="x"
-									key_min="1"
-									key_max="1" />
-						<bone_scale bone_type="biped_hand_l"
-									axis="y"
-									key_min="1"
-									key_max="1" />
-						<bone_scale bone_type="biped_hand_l"
-									axis="z"
-									key_min="1"
-									key_max="1" />
-
-						<bone_scale bone_type="biped_shoulder_r"
-									axis="x"
-									key_min="0.9"
-									key_max="1.025"/>
-						<bone_scale bone_type="biped_shoulder_r"
-									axis="y"
-									key_min="0.9"
-									key_max="1.2" />
 						<bone_scale bone_type="biped_shoulder_r"
 									axis="z"
 									key_min="1"
-									key_max="1.2" />
+									key_max="1" />
 
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="x"
 									key_min="0.8"
-									key_max="1.18" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="y"
 									key_min="0.8"
-									key_max="1.18" />
+									key_max="1.2" />
 						<bone_scale bone_type="biped_upperarm_r"
 									axis="z"
 									key_min="0.8"
-									key_max="1.18" />
+									key_max="1" />
 
 						<bone_scale bone_type="biped_forearm_r"
 									axis="x"
 									key_min="0.85"
-									key_max="1.12" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_r"
 									axis="y"
 									key_min="0.85"
-									key_max="1.12" />
+									key_max="1.1" />
 						<bone_scale bone_type="biped_forearm_r"
 									axis="z"
 									key_min="0.85"
-									key_max="1.12" />
+									key_max="1" />
 
 						<bone_scale bone_type="biped_hand_r"
 									axis="x"
@@ -1306,7 +1306,7 @@
 			</hair_meshes>
 
 			<eyebrow_meshes >
-				<eyebrow_mesh name="male_eyebrow_1" />
+				<eyebrow_mesh name="troll_eyebrow_bald" />
 			</eyebrow_meshes>
 
 			<beard_meshes>
@@ -2933,7 +2933,7 @@
 			</hair_meshes>
 
 			<eyebrow_meshes >
-				<eyebrow_mesh name="male_eyebrow_1" />
+				<eyebrow_mesh name="troll_eyebrow_bald" />
 			</eyebrow_meshes>
 
 			<beard_meshes>

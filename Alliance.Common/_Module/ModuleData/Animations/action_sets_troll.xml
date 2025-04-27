@@ -7,6 +7,9 @@
 			<action type="act_taunt_rage_1" animation="taunt_rage_1" />
 			<action type="act_taunt_rage_2" animation="taunt_rage_2" />
 			<action type="act_taunt_rage_3" animation="taunt_rage_3" />
+
+			<action type="act_troll_stomp" animation="troll_stomp" />
+			
 			
 			<action type="act_troop_cavalry_sword" animation="pose_cavalry_sword" />
 			<action type="act_inventory_idle_start" animation="inventory_idle_start" />

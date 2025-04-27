@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
@@ -45,7 +46,8 @@ namespace Alliance.Server.GameModes
 				new MultiplayerPreloadHelper(),
 
 				// Default behaviors from Alliance
-				new ServerAutoHandler(), // Core behavior, handle network message redirections
+				new CoreBehavior(),
+				new ServerAutoHandler(), // Handle network message redirections
 				new AllianceLobbyComponent(),
 				new SyncRolesBehavior(),
 				new SyncConfigBehavior(),
