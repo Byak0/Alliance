@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
+﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
@@ -42,8 +43,12 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				int totalFormations = (int)FormationClass.NumberOfRegularFormations;
 
-				// Get list of players in the same team
-				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.GetComponent<MissionPeer>()?.Team == team).ToList();
+				// Get list of players in the same team, preferably commanders
+				List<NetworkCommunicator> candidates = GameNetwork.NetworkPeers.Where(peer => peer.GetComponent<MissionPeer>()?.Team == team && peer.IsCommander()).ToList();
+				if (candidates.Count == 0)
+				{
+					candidates = GameNetwork.NetworkPeers.Where(peer => peer.GetComponent<MissionPeer>()?.Team == team).ToList();
+				}
 				// Sort them by their index for consistent distribution
 				candidates.OrderByQ(peer => peer.Index);
 				// Limit the number of candidates to the number of formations
