@@ -159,115 +159,24 @@ namespace Alliance.Common.Core.Utils
 			RegisterBlow(attacker, victim, null, blow, ref attackCollisionDataForDebugPurpose, MissionWeapon.Invalid, ref combatLogData);
 		}
 
-		// Reusable candidate list for spatial queries.
-		private static readonly List<Agent> ReuseCandidateList = new List<Agent>(256);
-
 		/// <summary>
-		/// Returns a list of nearby alive agents. IT WILL NOT INCLUDE THE MOUNT OF THE TARGET IF THE TARGET IS MOUNTED.
+		/// Return the list of all agents alive near the position.
 		/// Using a simple spatial partitioning scheme and memory reuse.
 		/// Assumes that SpatialGrid.UpdateGrid(agents) is called once per tick.
 		/// </summary>
 		public static List<Agent> GetNearAliveAgentsInRange(float range, Agent target)
 		{
-			// Query a simple spatial grid instead of iterating over all agents.
-			Vec3 targetPos = target.Position;
-			SpatialGrid.GetAgentsInRadius(targetPos, range, ReuseCandidateList);
-
-			// Cache target values.
-			Agent targetMount = target.MountAgent;
-
-			// Precompute squared thresholds.
-			float rangeSquared = range * range;
-			float mountThresholdSquared = (range + 0.5f) * (range + 0.5f);
-
-			int candidateCount = ReuseCandidateList.Count;
-			List<Agent> result = new List<Agent>(candidateCount);
-
-			// Allocate temporary arrays for candidate positions.
-			float[] xs = new float[candidateCount];
-			float[] ys = new float[candidateCount];
-			float[] zs = new float[candidateCount];
-
-			// Fill the arrays with positions.
-			for (int i = 0; i < candidateCount; i++)
-			{
-				Vec3 pos = ReuseCandidateList[i].Position;
-				xs[i] = pos.x;
-				ys[i] = pos.y;
-				zs[i] = pos.z;
-			}
-
-			// Process candidates.
-			for (int i = 0; i < candidateCount; i++)
-			{
-				Agent agent = ReuseCandidateList[i];
-				if (!agent.IsActive() || agent == target || agent == targetMount)
-					continue;
-
-				float dx = xs[i] - targetPos.x;
-				float dy = ys[i] - targetPos.y;
-				float dz = zs[i] - targetPos.z;
-				float distanceSquared = dx * dx + dy * dy + dz * dz;
-
-				float threshold = agent.IsMount ? mountThresholdSquared : rangeSquared;
-				if (distanceSquared < threshold)
-				{
-					result.Add(agent);
-				}
-			}
-
-			return result;
+			return SpatialGrid.GetAgentsInRadius(target.Position, range);
 		}
 
 		/// <summary>
-		/// Return the list of all agents alives that are near the position.
+		/// Return the list of all agents alive near the position.
+		/// Using a simple spatial partitioning scheme and memory reuse.
+		/// Assumes that SpatialGrid.UpdateGrid(agents) is called once per tick.
 		/// </summary>
 		public static List<Agent> GetNearAliveAgentsInRange(float range, Vec3 targetPos)
 		{
-			// Query a simple spatial grid instead of iterating over all agents.
-			SpatialGrid.GetAgentsInRadius(targetPos, range, ReuseCandidateList);
-
-			// Precompute squared thresholds.
-			float rangeSquared = range * range;
-			float mountThresholdSquared = (range + 0.5f) * (range + 0.5f);
-
-			int candidateCount = ReuseCandidateList.Count;
-			List<Agent> result = new List<Agent>(candidateCount);
-
-			// Allocate temporary arrays for candidate positions.
-			float[] xs = new float[candidateCount];
-			float[] ys = new float[candidateCount];
-			float[] zs = new float[candidateCount];
-
-			// Fill the arrays with positions.
-			for (int i = 0; i < candidateCount; i++)
-			{
-				Vec3 pos = ReuseCandidateList[i].Position;
-				xs[i] = pos.x;
-				ys[i] = pos.y;
-				zs[i] = pos.z;
-			}
-
-			// Process candidates.
-			for (int i = 0; i < candidateCount; i++)
-			{
-				Agent agent = ReuseCandidateList[i];
-				if (!agent.IsActive())
-					continue;
-
-				float dx = xs[i] - targetPos.x;
-				float dy = ys[i] - targetPos.y;
-				float dz = zs[i] - targetPos.z;
-				float distanceSquared = dx * dx + dy * dy + dz * dz;
-
-				float threshold = agent.IsMount ? mountThresholdSquared : rangeSquared;
-				if (distanceSquared < threshold)
-				{
-					result.Add(agent);
-				}
-			}
-
-			return result;
+			return SpatialGrid.GetAgentsInRadius(targetPos, range);
 		}
 
 		/// <summary>
@@ -343,13 +252,9 @@ namespace Alliance.Common.Core.Utils
 			);
 		}
 
-		/// <summary>
-		/// Fills the provided list with agents whose positions fall within the given radius of center.
-		/// The list is cleared before adding.
-		/// </summary>
-		public static void GetAgentsInRadius(Vec3 center, float radius, List<Agent> reuseList)
+		public static List<Agent> GetAgentsInRadius(Vec3 center, float radius)
 		{
-			reuseList.Clear();
+			List<Agent> agents = new List<Agent>();
 			float radiusSquared = radius * radius;
 			int minX = (int)Math.Floor((center.x - radius) / CellSize);
 			int maxX = (int)Math.Floor((center.x + radius) / CellSize);
@@ -375,11 +280,12 @@ namespace Alliance.Common.Core.Utils
 						float dz = agent.Position.z - center.z;
 						if (dx * dx + dy * dy + dz * dz <= radiusSquared)
 						{
-							reuseList.Add(agent);
+							agents.Add(agent);
 						}
 					}
 				}
 			}
+			return agents;
 		}
 	}
 }
