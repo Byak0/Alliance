@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
+using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -33,7 +34,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			_targets = targets;
 			_boneIds = boneIds;
 			_collisionRadiusSquared = boneCollisionRadius * boneCollisionRadius;
-			_maxRangeForCheck = Math.Max(10f, _collisionRadiusSquared * 10f);
+			_maxRangeForCheck = Math.Max(20f, _collisionRadiusSquared * 20f);
 			_maxDuration = maxDuration;
 			_stopOnFirstHit = stopAfterFirstHit;
 			_onCollisionCallback = onCollisionCallback;
@@ -92,12 +93,16 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 				agentBonePositions.Add((bone, agentBoneGlobalPos));
 
 #if DEBUG
-				// Show debug capsule for the bones.
-				CapsuleData data = new CapsuleData();
-				agentSkeleton.GetBoneBody(bone, ref data);
-				Vec3 p1 = agentBoneGlobalPos;
-				Vec3 p2 = agentBoneGlobalPos + data.P2;
-				MBDebug.RenderDebugCapsule(p1, p2, _collisionRadiusSquared);
+				if ((_agent == Agent.Main || _agent == Agent.Main?.MountAgent) && Input.IsKeyDown(InputKey.LeftAlt))
+				{
+					// Show debug capsule for the bones.
+					CapsuleData data = new CapsuleData();
+					agentSkeleton.GetBoneBody(bone, ref data);
+					Vec3 p1 = agentBoneGlobalPos;
+					Vec3 p2 = agentBoneGlobalPos + data.P1;
+					MBDebug.RenderDebugCapsule(p1, p2, _collisionRadiusSquared);
+					MBDebug.RenderDebugText3D(agentBoneGlobalPos, bone.ToString(), Colors.Red.ToUnsignedInteger());
+				}
 #endif
 			}
 
@@ -148,6 +153,27 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 				foreach (var (boneId, agentBonePos) in agentBonePositions)
 				{
 					float distanceSquared = (targetBoneGlobalPos - agentBonePos).LengthSquared;
+
+#if DEBUG
+					if ((_agent == Agent.Main || _agent == Agent.Main?.MountAgent) && Input.IsKeyDown(InputKey.LeftAlt))
+					{
+						Color color = Colors.Yellow;
+						float timer = 0f;
+						if (distanceSquared <= _collisionRadiusSquared)
+						{
+							color = Colors.Red;
+							timer = 1f;
+						}
+						// Show debug capsule for the bones.
+						CapsuleData data = new CapsuleData();
+						targetSkeleton.GetBoneBody((sbyte)i, ref data);
+						Vec3 p1 = targetBoneGlobalPos;
+						Vec3 p2 = targetBoneGlobalPos + data.P1;
+						MBDebug.RenderDebugCapsule(p1, p2, _collisionRadiusSquared, color.ToUnsignedInteger(), time: timer);
+						MBDebug.RenderDebugText3D(targetBoneGlobalPos, i.ToString(), Colors.Red.ToUnsignedInteger());
+					}
+#endif
+
 					if (distanceSquared <= _collisionRadiusSquared)
 					{
 						return (sbyte)i;

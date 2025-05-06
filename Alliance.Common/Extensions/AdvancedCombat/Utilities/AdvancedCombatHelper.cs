@@ -194,7 +194,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 					}
 
 					CoreUtils.TakeDamage(target, damagerAgent, damage);
-					Log($"{attacker.RiderAgent?.Name} hitting {target.Index} - collision on bone {boneId}", LogLevel.Debug);
 				}
 			}
 			catch (Exception e)
