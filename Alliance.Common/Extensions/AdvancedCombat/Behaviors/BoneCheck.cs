@@ -27,7 +27,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		// Callback when the action expires
 		protected Action _onExpiration;
 
-		// Constructor callback
 		public BoneCheck(Agent agent, List<Agent> targets, List<sbyte> boneIds, float maxDuration, float boneCollisionRadius, bool stopAfterFirstHit, Action<Agent, Agent, sbyte> onCollisionCallback, Action onExpiration)
 		{
 			_agent = agent;
@@ -73,7 +72,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			Skeleton agentSkeleton = _agent.AgentVisuals?.GetSkeleton();
 			if (agentSkeleton == null)
 			{
-				Log($"Failed to get visuals or skeleton for {_agent.Name}", LogLevel.Error);
+				Log($"Failed to get visuals or skeleton for {_agent.Name}", LogLevel.Debug);
 				return false;
 			}
 			MatrixFrame agentGlobalFrame = _agent.AgentVisuals.GetGlobalFrame();
@@ -109,7 +108,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 				Skeleton targetSkeleton = target.AgentVisuals?.GetSkeleton();
 				if (targetSkeleton == null)
 				{
-					Log($"Failed to get visuals or skeleton for {target.Name}", LogLevel.Error);
+					Log($"Failed to get visuals or skeleton for {target.Name}", LogLevel.Debug);
 					_targets.RemoveAt(i);
 					continue;
 				}

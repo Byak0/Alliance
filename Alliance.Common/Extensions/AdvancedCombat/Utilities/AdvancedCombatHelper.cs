@@ -87,8 +87,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 		/// <param name="targetDetectionRange">Range around the agent used to extract list of potential targets when watching for collisions.</param>
 		/// <param name="boneCollisionRadius">Collision radius for bones.</param>
 		/// <param name="stopOnFirstHit">True to stop watching for collisions after the first hit.</param>
-		/// <param name="OnHitCallback">Action to execute on collision.</param>
-		public static void CustomAttack(this Agent agent, ActionIndexCache action, List<sbyte> bonesIdsForCollision, float actionProgressMin, float actionProgressMax, float targetDetectionRange, float boneCollisionRadius, bool stopOnFirstHit, Action<Agent, Agent, sbyte> OnHitCallback)
+		/// <param name="onHitCallback">Action to execute on collision.</param>
+		/// <param name="onExpirationCallBack">Optional action on expiration.</param>
+		public static void CustomAttack(this Agent agent, ActionIndexCache action, List<sbyte> bonesIdsForCollision, float actionProgressMin, float actionProgressMax, float targetDetectionRange, float boneCollisionRadius, bool stopOnFirstHit, Action<Agent, Agent, sbyte> onHitCallback, Action onExpirationCallBack = null)
 		{
 			if (agent == null || !agent.IsActive() || agent.IsFadingOut())
 			{
@@ -97,7 +98,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 			}
 
 			// Play the animation
-			agent.SetActionChannel(0, action);
+			agent.SetActionChannel(0, action, true);
 
 			// Get potential targets
 			List<Agent> targets = CoreUtils.GetNearAliveAgentsInRange(targetDetectionRange, agent).FindAll(agt => agt != agent && agt.RiderAgent != agent && agt.IsActive());
@@ -114,8 +115,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 						actionProgressMax,
 						boneCollisionRadius,
 						stopOnFirstHit,
-						OnHitCallback,
-						() => { }
+						onHitCallback,
+						onExpirationCallBack
 					));
 		}
 
@@ -206,7 +207,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Utilities
 		public static void ProjectAgent(this Agent nearbyAgent, Vec3 position, float force = 1f)
 		{
 			// TODO handle horses (and wargs ?) well everything without human skeleton
-			if (!nearbyAgent.IsHuman) return;
+			if (!nearbyAgent.IsHuman || nearbyAgent.HasMount || nearbyAgent.IsTroll() || nearbyAgent.IsEnt()) return;
 
 			// TODO LOCK agents positions during projections (duplicate animation clips and enforce position?)
 

@@ -56,21 +56,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 		public WargComponent(Agent agent) : base(agent)
 		{
-			// Make sure warg has a team assigned. If not, assign him a random team.
-			//if (Agent.Team == null)
-			//{
-			//	if (Agent.RiderAgent?.Team != null)
-			//	{
-			//		Agent.SetTeam(Agent.RiderAgent.Team, true);
-			//	}
-			//	else
-			//	{
-			//		Team randomTeam = MBRandom.RandomInt(0, 2) == 0 ? Mission.Current.AttackerTeam : Mission.Current.DefenderTeam;
-			//		Agent.SetTeam(randomTeam, true);
-			//	}
-			//	Log($"In WargComponent, agent.Team was null ({Agent.Team})", LogLevel.Debug);
-			//	return;
-			//}
 		}
 
 		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon)
@@ -144,7 +129,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 							break;
 					}
 				}
-
 			}
 			catch (Exception e)
 			{

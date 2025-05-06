@@ -13,7 +13,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		private float _actionProgressMin;
 		private float _actionProgressMax;
 
-		// Constructor callback
 		public BoneCheckDuringAnimation(ActionIndexCache action, Agent agent, List<Agent> targets, List<sbyte> boneIds, float actionProgressMin, float actionProgressMax, float boneCollisionRadius, bool stopAfterFirstHit, Action<Agent, Agent, sbyte> onCollisionCallback, Action onExpiration)
 			: base(agent, targets, boneIds, actionProgressMax, boneCollisionRadius, stopAfterFirstHit, onCollisionCallback, onExpiration)
 		{

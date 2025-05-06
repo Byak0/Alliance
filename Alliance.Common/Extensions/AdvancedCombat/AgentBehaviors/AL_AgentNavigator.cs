@@ -1,16 +1,23 @@
-﻿using System;
+﻿using Alliance.Common.Extensions.AdvancedCombat.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 {
 	public sealed class AL_AgentNavigator
 	{
+		public enum FollowStrategy
+		{
+			Default,
+			Careful,
+			Aggressive
+		}
+
 		public UsableMachine TargetUsableMachine { get; private set; }
 
 		public WorldPosition TargetPosition { get; private set; }
@@ -20,6 +27,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 		public GameEntity TargetEntity { get; private set; }
 
 		public Agent TargetAgent { get; private set; }
+
+		public FollowStrategy CurrentFollowStrategy { get; private set; }
 
 		public string SpecialTargetTag
 		{
@@ -59,6 +68,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 			_checkBehaviorGroupsTimer = new BasicMissionTimer();
 			_prevPrefabs = new List<int>();
 			CharacterHasVisiblePrefabs = false;
+			CurrentFollowStrategy = FollowStrategy.Default;
 			SetItemsVisibility(true);
 			SetSpecialItem();
 		}
@@ -67,7 +77,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 		{
 			_targetBehavior = null;
 			TargetUsableMachine = null;
-			_agentState = AL_AgentNavigator.NavigationState.NoTarget;
+			_agentState = NavigationState.NoTarget;
 		}
 
 		public void OnAgentRemoved(Agent agent)
@@ -81,12 +91,13 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 			}
 		}
 
-		public void SetTarget(Agent targetAgent)
+		public void SetTarget(Agent targetAgent, FollowStrategy followStrategy = FollowStrategy.Default)
 		{
 			TargetAgent = targetAgent;
+			CurrentFollowStrategy = followStrategy;
 		}
 
-		public void SetTarget(UsableMachine usableMachine, bool isInitialTarget = false)
+		public void SetTargetMachine(UsableMachine usableMachine, bool isInitialTarget = false)
 		{
 			if (usableMachine == null)
 			{
@@ -100,13 +111,13 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 				OwnerAgent.ClearTargetFrame();
 				TargetPosition = WorldPosition.Invalid;
 				TargetEntity = null;
-				_agentState = AL_AgentNavigator.NavigationState.NoTarget;
+				_agentState = NavigationState.NoTarget;
 				return;
 			}
 			if (TargetUsableMachine != usableMachine || isInitialTarget)
 			{
 				TargetPosition = WorldPosition.Invalid;
-				_agentState = AL_AgentNavigator.NavigationState.NoTarget;
+				_agentState = NavigationState.NoTarget;
 				UsableMachine targetUsableMachine2 = TargetUsableMachine;
 				if (targetUsableMachine2 != null)
 				{
@@ -116,7 +127,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 				{
 					TargetUsableMachine = usableMachine;
 					TargetPosition = WorldPosition.Invalid;
-					_agentState = AL_AgentNavigator.NavigationState.UseMachine;
+					_agentState = NavigationState.UseMachine;
 					_targetBehavior = TargetUsableMachine.CreateAIBehaviorObject();
 					((IDetachment)TargetUsableMachine).AddAgent(OwnerAgent, -1);
 					_targetReached = false;
@@ -126,7 +137,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 
 		public void SetTargetFrame(WorldPosition position, float rotation, float rangeThreshold = 1f, float rotationThreshold = -10f, Agent.AIScriptedFrameFlags flags = Agent.AIScriptedFrameFlags.None, bool disableClearTargetWhenTargetIsReached = false)
 		{
-			if (_agentState != AL_AgentNavigator.NavigationState.NoTarget)
+			if (_agentState != NavigationState.NoTarget)
 			{
 				ClearTarget();
 			}
@@ -138,16 +149,24 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 			if (IsTargetReached())
 			{
 				TargetPosition = WorldPosition.Invalid;
-				_agentState = AL_AgentNavigator.NavigationState.NoTarget;
+				_agentState = NavigationState.NoTarget;
 				return;
 			}
-			OwnerAgent.SetScriptedPositionAndDirection(ref position, rotation, false, flags);
-			_agentState = AL_AgentNavigator.NavigationState.GoToTarget;
+
+			if (!OwnerAgent.IsHuman)
+			{
+				OwnerAgent.SetScriptedPosition(ref position, false, flags);
+			}
+			else
+			{
+				OwnerAgent.SetScriptedPositionAndDirection(ref position, rotation, false, flags);
+			}
+			_agentState = NavigationState.GoToTarget;
 		}
 
 		public void ClearTarget()
 		{
-			SetTarget(null, false);
+			SetTarget(null, FollowStrategy.Default);
 		}
 
 		public void Tick(float dt, bool isSimulation = false)
@@ -198,26 +217,55 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 		{
 			if (TargetAgent.AgentVisuals == null || TargetAgent.Health <= 0 || TargetAgent.IsFadingOut())
 			{
-				Log($"ERROR, Target invalid in AL_AgentNavigator - {TargetAgent?.Name}", LogLevel.Error);
 				OwnerAgent?.DisableScriptedCombatMovement();
 				OwnerAgent?.DisableScriptedMovement();
 				TargetAgent = null;
 				return;
 			}
 
-			WorldPosition pos = OwnerAgent.GetWorldPosition();
-			OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity(), pos, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+			// Determine pos depending on FollowStrategy
+			WorldPosition destination = TargetAgent.GetWorldPosition();
+			if (CurrentFollowStrategy == FollowStrategy.Aggressive)
+			{
+				// Predict target destination and rush towards it
+				float distanceToTarget = (TargetAgent.Position - OwnerAgent.Position).Length;
+
+				OwnerAgent.SetMaximumSpeedLimit(OwnerAgent.Monster.WalkingSpeedLimit * 5f, false); // Charge speed
+
+				Vec3 estimatedTargetDestination = TargetAgent.Position + (TargetAgent.GetMovementDirection() * TargetAgent.MovementVelocity.Y).ToVec3();
+				Vec3 directionToEstimatedTarget = (estimatedTargetDestination - OwnerAgent.Position).NormalizedCopy();
+				Vec3 positionToChase = OwnerAgent.Position + directionToEstimatedTarget * 30f;
+
+				destination = positionToChase.ToWorldPosition();
+
+				// If target is too close and behind us, get some distance before turning around
+				bool isTargetInFront = AdvancedCombatHelper.IsInFrontCone(OwnerAgent, TargetAgent, 180);
+				if (distanceToTarget < 20 && !isTargetInFront)
+				{
+					// Just go straight to gain distance
+					destination = (OwnerAgent.Position + OwnerAgent.LookDirection * 20f).ToWorldPosition();
+				}
+			}
+
+			// For non-human agents, we set the target position directly
+			if (!OwnerAgent.IsHuman)
+			{
+				OwnerAgent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.None);
+				return;
+			}
+
+			OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity(), destination, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 			if (OwnerAgent.HasRangedWeapon())
 			{
-				OwnerAgent.SetScriptedPosition(ref pos, false, TaleWorlds.MountAndBlade.Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
+				OwnerAgent.SetScriptedPosition(ref destination, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
 			}
 		}
 
 		private void HandleMovement()
 		{
-			if (_agentState == AL_AgentNavigator.NavigationState.GoToTarget && IsTargetReached())
+			if (_agentState == NavigationState.GoToTarget && IsTargetReached())
 			{
-				_agentState = AL_AgentNavigator.NavigationState.AtTargetPosition;
+				_agentState = NavigationState.AtTargetPosition;
 				if (!_disableClearTargetWhenTargetIsReached)
 				{
 					OwnerAgent.ClearTargetFrame();
