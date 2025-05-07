@@ -35,6 +35,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 
 			// Register Behavior Trees
 			BehaviorTrees.BTRegister.RegisterClass("TrollTree", objects => TrollBehaviorTree.BuildTree(objects));
+			BehaviorTrees.BTRegister.RegisterClass("WargAttackTree", objects => WargAttackBehaviorTree.BuildTree(objects));
+			BehaviorTrees.BTRegister.RegisterClass("WargIdleTree", objects => WargIdleBehaviorTree.BuildTree(objects));
+			BehaviorTrees.BTRegister.RegisterClass("WargTree", objects => WargBehaviorTree.BuildTree(objects));
 		}
 
 		public override void OnMissionTick(float dt)
@@ -215,7 +218,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 
 			if (agent.IsWarg())
 			{
-				agent.AddComponent(new WargComponent(agent));
+				agent.AddComponent(new AL_DefaultAgentComponent(agent));
+				agent.AddComponent(new BehaviorTreeAgentComponent(agent, "WargTree"));
 			}
 			else if (agent.IsTroll())
 			{

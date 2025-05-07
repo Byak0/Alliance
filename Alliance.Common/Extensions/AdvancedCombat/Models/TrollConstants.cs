@@ -9,7 +9,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 		public static readonly List<ActionIndexCache> RageAnimations;
 		public static readonly List<ActionIndexCache> SearchAnimations;
 		public static readonly ActionIndexCache StompAnimation;
-		public static readonly List<sbyte> CollisionBones = new List<sbyte>
+		public static readonly List<sbyte> HandCollisionBones = new List<sbyte>
 			{
 				19, // ID left hand bone
 				26, // ID right hand bone
@@ -17,6 +17,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 
 		public static readonly List<sbyte> FootCollisionBones = new List<sbyte>
 			{
+				3, // ID left foot bone
+				7, // ID right foot bone
+			};
+
+		public static readonly List<sbyte> CollisionBones = new List<sbyte>
+			{
+				19, // ID left hand bone
+				26, // ID right hand bone
 				3, // ID left foot bone
 				7, // ID right foot bone
 			};

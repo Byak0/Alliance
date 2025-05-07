@@ -8,7 +8,7 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 {
-	public class MoveToTargetTask : BTTask, IBTMobile, IBTCombatBlackboard
+	public class ClearTargetTask : BTTask, IBTMobile, IBTCombatBlackboard
 	{
 		BTBlackboardValue<AL_AgentNavigator> _navigator;
 		public BTBlackboardValue<AL_AgentNavigator> Navigator { get => _navigator; set => _navigator = value; }
@@ -17,11 +17,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 		BTBlackboardValue<Agent> _target;
 		public BTBlackboardValue<Agent> Target { get => _target; set => _target = value; }
 
-		public MoveToTargetTask() : base() { }
+		public ClearTargetTask() : base() { }
 
 		public override async Task<bool> Execute(CancellationToken cancellationToken)
 		{
-			Navigator.GetValue().SetTarget(Target.GetValue(), AL_AgentNavigator.FollowStrategy.Aggressive);
+			Target.SetValue(null);
+			Navigator.GetValue().SetTarget(null, AL_AgentNavigator.FollowStrategy.Default);
 			return true;
 		}
 	}

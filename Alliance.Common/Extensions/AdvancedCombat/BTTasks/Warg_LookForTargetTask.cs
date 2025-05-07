@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.AgentComponents;
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
@@ -7,11 +8,12 @@ using BehaviorTrees.Nodes;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 {
-	public class LookForTargetTask : BTTask, IBTCombatBlackboard
+	public class Warg_LookForTargetTask : BTTask, IBTCombatBlackboard
 	{
 		private readonly float range;
 
@@ -21,16 +23,31 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 		BTBlackboardValue<Agent> target;
 		public BTBlackboardValue<Agent> Target { get => target; set => target = value; }
 
-		public LookForTargetTask(float range) : base()
+		public Warg_LookForTargetTask(float range) : base()
 		{
 			this.range = range;
 		}
 
 		public override async Task<bool> Execute(CancellationToken cancellationToken)
 		{
-			Target.SetValue(GetBestTarget(range));
+			Agent target = GetBestTarget(range);
 
-			return Target.GetValue() != null;
+			if (target == null) return false;
+
+			// Tell the target that he is threatened
+			if (target.IsHuman)
+			{
+				MBList<Agent> targetAllies = new MBList<Agent> { };
+				Mission.Current.GetNearbyAllyAgents(target.Position.AsVec2, 10, target.Team, targetAllies);
+				for (int i = 0; i < targetAllies.Count && i < 3; i++)
+				{
+					targetAllies[i].GetComponent<HumanoidComponent>()?.SetThreat(Agent.GetValue());
+				}
+				target.GetComponent<HumanoidComponent>()?.SetThreat(Agent.GetValue());
+			}
+			Target.SetValue(target);
+
+			return true;
 		}
 
 		private Agent GetBestTarget(float range)
@@ -45,8 +62,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			foreach (Agent potentialTarget in nearbyAgents)
 			{
 				if (potentialTarget == null || potentialTarget == agent || !potentialTarget.IsActive() ||
-					(potentialTarget.Team != null && agentTeam != null && !potentialTarget.Team.IsEnemyOf(agentTeam)) ||
-					(potentialTarget.RiderAgent?.Team != null && agentTeam != null && !potentialTarget.RiderAgent.Team.IsEnemyOf(agentTeam)))
+					potentialTarget.IsWarg() || (potentialTarget.MountAgent != null && potentialTarget.MountAgent.IsWarg()) ||
+					(potentialTarget.Team != null && agentTeam != null && !potentialTarget.Team.IsEnemyOf(agentTeam)))
 					continue;
 
 				float score = 0;

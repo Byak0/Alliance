@@ -1,0 +1,83 @@
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
+using Alliance.Common.Extensions.AdvancedCombat.Utilities;
+using BehaviorTrees;
+using BehaviorTrees.Nodes;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using TaleWorlds.MountAndBlade;
+
+namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
+{
+	public class Warg_FindClosestEnemyTask : BTTask, IBTCombatBlackboard
+	{
+		BTBlackboardValue<Agent> agent;
+		public BTBlackboardValue<Agent> Agent { get => agent; set => agent = value; }
+
+		BTBlackboardValue<Agent> target;
+		public BTBlackboardValue<Agent> Target { get => target; set => target = value; }
+
+		public Warg_FindClosestEnemyTask() : base()
+		{
+		}
+
+		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		{
+			Agent warg = Agent.GetValue();
+			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(8f, warg);
+			Agent _target = nearbyAgents.FirstOrDefault(agt =>
+				IsValidTarget(warg, agt)
+				&& CloseEnoughForAttack(warg, agt)
+			);
+			Target.SetValue(_target);
+
+			return Target.GetValue() != null;
+		}
+
+		private bool IsValidTarget(Agent warg, Agent agt)
+		{
+			// 1) Never target yourself or any other warg
+			if (agt == warg || agt.IsWarg()) return false;
+
+			// 2) If this warg has a rider
+			if (warg.RiderAgent != null)
+			{
+				var wargTeam = warg.RiderAgent.Team;
+				bool agentIsEnemy = agt.Team != null && wargTeam != null && agt.Team.IsEnemyOf(wargTeam);
+				bool riderIsEnemy = agt.RiderAgent != null
+									 && agt.RiderAgent.Team != null
+									 && wargTeam != null
+									 && agt.RiderAgent.Team.IsEnemyOf(wargTeam);
+				bool isNeutral = agt.Team == null;
+
+				return agentIsEnemy
+					|| riderIsEnemy
+					|| isNeutral;
+			}
+			// 3) If this warg is riderless
+			else
+			{
+				// Target anyone except warg riders
+				return agt.MountAgent == null
+					|| !agt.MountAgent.IsWarg();
+			}
+		}
+
+		private bool CloseEnoughForAttack(Agent warg, Agent target)
+		{
+			float distanceToTarget = (target.Position - warg.Position).Length;
+			float distanceForAttack = 2f + warg.MovementVelocity.Y;
+			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
+			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(warg, target, 30);
+
+			// Close enough to attack and target is in front
+			if (closeEnoughForAttack && frontAttack)
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+}
