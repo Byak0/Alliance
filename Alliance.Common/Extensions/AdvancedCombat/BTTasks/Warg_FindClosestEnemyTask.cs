@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using System.Collections.Generic;
@@ -38,8 +37,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 
 		private bool IsValidTarget(Agent warg, Agent agt)
 		{
-			// 1) Never target yourself or any other warg
-			if (agt == warg || agt.IsWarg()) return false;
+			// 1) Never target yourself or any other warg or your own rider
+			if (agt == warg || agt.IsWarg() || agt == warg.RiderAgent) return false;
 
 			// 2) If this warg has a rider
 			if (warg.RiderAgent != null)
@@ -70,7 +69,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			float distanceToTarget = (target.Position - warg.Position).Length;
 			float distanceForAttack = 2f + warg.MovementVelocity.Y;
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
-			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(warg, target, 30);
+			bool frontAttack = target.IsInFrontCone(warg, 30);
 
 			// Close enough to attack and target is in front
 			if (closeEnoughForAttack && frontAttack)

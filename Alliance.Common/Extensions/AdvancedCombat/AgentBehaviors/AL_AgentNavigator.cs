@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions.AdvancedCombat.Utilities;
+﻿using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -234,13 +234,13 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 
 				Vec3 estimatedTargetDestination = TargetAgent.Position + (TargetAgent.GetMovementDirection() * TargetAgent.MovementVelocity.Y).ToVec3();
 				Vec3 directionToEstimatedTarget = (estimatedTargetDestination - OwnerAgent.Position).NormalizedCopy();
-				Vec3 positionToChase = OwnerAgent.Position + directionToEstimatedTarget * 30f;
+				Vec3 positionToChase = OwnerAgent.Position + directionToEstimatedTarget * 20f;
 
 				destination = positionToChase.ToWorldPosition();
 
 				// If target is too close and behind us, get some distance before turning around
-				bool isTargetInFront = AdvancedCombatHelper.IsInFrontCone(OwnerAgent, TargetAgent, 180);
-				if (distanceToTarget < 20 && !isTargetInFront)
+				bool isTargetInFront = TargetAgent.IsInFrontCone(OwnerAgent, 180);
+				if (distanceToTarget < 6 && !isTargetInFront)
 				{
 					// Just go straight to gain distance
 					destination = (OwnerAgent.Position + OwnerAgent.LookDirection * 20f).ToWorldPosition();

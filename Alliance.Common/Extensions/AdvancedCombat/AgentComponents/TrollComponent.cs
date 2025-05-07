@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System.Collections.Generic;
@@ -56,10 +55,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 
 			foreach (Agent victim in nearbyAgents)
 			{
-				if (AdvancedCombatHelper.IsInFrontCone(Agent, victim, 120))
+				if (victim.IsInFrontCone(Agent, 120))
 				{
 					float projectionForce = 2f - victim.Position.Distance(Agent.Position) / 2f;
-					AdvancedCombatHelper.ProjectAgent(victim, Agent.Position, projectionForce);
+					victim.ProjectAgent(Agent.Position, projectionForce);
 				}
 			}
 

@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -68,7 +67,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 								float distance = (nearbyAgent.Position - bonePosition).Length;
 								// Calculate the force of the projection (maximum at range 0)
 								float force = MathF.Max(0f, 1 - distance / EntConstants.STOMP_RADIUS);
-								AdvancedCombatHelper.ProjectAgent(nearbyAgent, bonePosition, force);
+								nearbyAgent.ProjectAgent(bonePosition, force);
 								// Deal damage based on the force
 								//Agent.DealDamage(nearbyAgent, (int)(force * EntConstants.BASE_STOMP_DAMAGE));
 								Log($"{Agent.Name} collided with {nearbyAgent.Name} at {_lastProjections[nearbyAgent]}", LogLevel.Debug);

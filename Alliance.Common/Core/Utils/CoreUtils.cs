@@ -15,6 +15,14 @@ namespace Alliance.Common.Core.Utils
 	public delegate Agent GetClosestAllyAgentDelegate(Mission mission, MBTeam team, Vec3 position, float radius);
 	public delegate int GetNearbyEnemyAgentCountDelegate(Mission mission, MBTeam team, Vec2 position, float radius);
 
+	public enum BlowDirection
+	{
+		Front,
+		Back,
+		Left,
+		Right
+	}
+
 	public static class CoreUtils
 	{
 		private static readonly RegisterBlowDelegate _registerBlow;
@@ -157,6 +165,41 @@ namespace Alliance.Common.Core.Utils
 
 			CombatLogData combatLogData = new CombatLogData(false, attacker.IsHuman, attacker.IsMine, attacker.RiderAgent != null, attacker.RiderAgent != null && attacker.RiderAgent.IsMine, attacker.IsMount, victim.IsHuman, victim.IsMine, victim.Health <= 0f, victim.HasMount, victim.RiderAgent != null && victim.RiderAgent.IsMine, victim.IsMount, false, victim.RiderAgent == victim, knockDown, false, 0f);
 			RegisterBlow(attacker, victim, null, blow, ref attackCollisionDataForDebugPurpose, MissionWeapon.Invalid, ref combatLogData);
+		}
+
+		public static BlowDirection GetDirectionOfBlow(Agent victim, Vec3 blowOrigin)
+		{
+			Vec3 victimLookDirection = victim.GetMovementDirection().ToVec3();
+			// Calculate the vector from the victim to the attacker
+			Vec3 victimToBlowOrigin = (blowOrigin - victim.Position).NormalizedCopy();
+			float angleInRadians = (float)Math.Atan2(victimLookDirection.x * victimToBlowOrigin.y - victimLookDirection.y * victimToBlowOrigin.x, victimLookDirection.x * victimToBlowOrigin.x + victimLookDirection.y * victimToBlowOrigin.y);
+			float angleInDegrees = (float)(angleInRadians * (180f / Math.PI));
+			string position = string.Empty;
+			if (angleInDegrees < -135 && angleInDegrees > -180)
+			{
+				position = "Back Right";
+				return BlowDirection.Back;
+			}
+			else if (angleInDegrees < -45 && angleInDegrees > -135)
+			{
+				position = "Front Right";
+				return BlowDirection.Right;
+			}
+			else if (angleInDegrees < 45 && angleInDegrees > -45)
+			{
+				position = "Front Left";
+				return BlowDirection.Front;
+			}
+			else if (angleInDegrees > 45 && angleInDegrees < 135)
+			{
+				position = "Back Left";
+				return BlowDirection.Left;
+			}
+			else
+			{
+				position = "error ? back left ?";
+				return BlowDirection.Back;
+			}
 		}
 
 		/// <summary>

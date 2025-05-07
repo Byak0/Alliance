@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using BehaviorTrees;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 			Agent agent = Agent.GetValue();
 
 			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(2.5f, Agent.GetValue().Position).FindAll(agt =>
-				!agt.IsTroll() && !agt.IsEnt() && AdvancedCombatHelper.IsInFrontCone(agent, agt, 90f));
+				!agt.IsTroll() && !agt.IsEnt() && agt.IsInFrontCone(agent, 90f));
 
 			return nearbyAgents.Count > 0;
 		}

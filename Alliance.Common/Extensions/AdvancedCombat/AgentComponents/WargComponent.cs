@@ -254,7 +254,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			float distanceToTarget = (target.Position - Agent.Position).Length;
 			float distanceForAttack = 2f + Agent.MovementVelocity.Y;
 			bool closeEnoughForAttack = distanceToTarget <= distanceForAttack;
-			bool frontAttack = AdvancedCombatHelper.IsInFrontCone(Agent, target, 45);
+			bool frontAttack = target.IsInFrontCone(Agent, 45);
 
 			// Close enough to attack and target is in front
 			if (closeEnoughForAttack && frontAttack)
@@ -453,7 +453,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			WorldPosition destination = positionToChase.ToWorldPosition();
 
 			// If target is behind the warg, get some distance before turning around
-			bool isTargetInFront = AdvancedCombatHelper.IsInFrontCone(Agent, _target, 180);
+			bool isTargetInFront = _target.IsInFrontCone(Agent, 180);
 			if (distanceToTarget < 8 && !isTargetInFront)
 			{
 				// Just go straight to gain distance

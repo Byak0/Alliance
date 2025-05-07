@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -452,7 +451,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 			//projectingPlane.SetGlobalFrame(originalFrame);
 
 			float projectionForce = 2f - (victim.Position.Distance(projectionOrigin) / 10f);
-			AdvancedCombatHelper.ProjectAgent(victim, projectionOrigin, projectionForce);
+			victim.ProjectAgent(projectionOrigin, projectionForce);
 
 			while (Current != null && Current.CurrentTime - startTime < projectionDuration)
 			{
@@ -470,7 +469,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 				{
 					//victim.DealDamage(agent, 5);	
 					projectionForce = 2f - (agent.Position.Distance(projectionOrigin) / 10f);
-					AdvancedCombatHelper.ProjectAgent(agent, projectionOrigin, projectionForce);
+					agent.ProjectAgent(projectionOrigin, projectionForce);
 					attacker.DealDamage(agent, (int)(projectionForce * 20));
 				}
 

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.AdvancedCombat.Utilities;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using BehaviorTreeWrapper.BlackBoardClasses;
@@ -42,7 +43,27 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			if (agent == null || !agent.IsActive() || agent.IsFadingOut())
 				return false;
 
-			agent.CustomAttack(Action, BoneIds, ActionProgressMin, ActionProgressMax, TargetDetectionRange, BoneCollisionRadius, StopOnFirstHit, OnCollisionCallback);
+			// Play the animation
+			agent.SetActionChannel(0, Action);
+
+			// Get potential targets
+			List<Agent> targets = CoreUtils.GetNearAliveAgentsInRange(TargetDetectionRange, agent).FindAll(agt => agt != agent && agt.RiderAgent != agent && agt.IsActive());
+			if (targets.Count == 0) return true;
+
+			// Check for collisions
+			AdvancedCombatBehavior advancedCombat = Mission.Current.GetMissionBehavior<AdvancedCombatBehavior>();
+			advancedCombat.AddBoneCheckComponent(new BoneCheckDuringAnimation(
+						Action,
+						agent,
+						targets,
+						BoneIds,
+						ActionProgressMin,
+						ActionProgressMax,
+						BoneCollisionRadius,
+						StopOnFirstHit,
+						OnCollisionCallback,
+						() => { }
+					));
 
 			return true;
 		}
