@@ -19,6 +19,8 @@ namespace Alliance.SP
 
 		protected override void OnSubModuleLoad()
 		{
+			Common.SubModule.CurrentModuleName = ModuleId;
+
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
 

@@ -58,7 +58,7 @@ namespace Alliance.Common.Extensions.Audio
 			if (!GameNetwork.IsServer)
 			{
 				SetSoundVolume(NativeOptions.GetConfig(NativeOptions.NativeOptionsType.MasterVolume) * NativeOptions.GetConfig(NativeOptions.NativeOptionsType.SoundVolume));
-				SetSoundVolume(NativeOptions.GetConfig(NativeOptions.NativeOptionsType.MasterVolume) * NativeOptions.GetConfig(NativeOptions.NativeOptionsType.MusicVolume));
+				SetMusicVolume(NativeOptions.GetConfig(NativeOptions.NativeOptionsType.MasterVolume) * NativeOptions.GetConfig(NativeOptions.NativeOptionsType.MusicVolume));
 				NativeOptions.OnNativeOptionChanged += OnNativeOptionChanged;
 
 				waveOutDevice = new WaveOutEvent();

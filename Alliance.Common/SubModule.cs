@@ -9,6 +9,8 @@ namespace Alliance.Common
 	public class SubModule : MBSubModuleBase
 	{
 		public const string ModuleId = "Alliance.Common";
+
+		// Name of the module currently loaded (Alliance, Alliance.SP, Alliance.Editor...)
 		public static string CurrentModuleName = "Alliance";
 
 		protected override void OnSubModuleLoad()
