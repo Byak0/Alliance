@@ -2,8 +2,6 @@
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -19,10 +17,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 
 		public MoveToTargetTask() : base() { }
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Navigator.GetValue().SetTarget(Target.GetValue(), AL_AgentNavigator.FollowStrategy.Aggressive);
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

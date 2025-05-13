@@ -1,10 +1,11 @@
 ﻿using BehaviorTrees;
+using BehaviorTreeWrapper.AbstractDecoratorsListeners;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 {
-	public class HasRiderDecorator : AbstractDecorator, IBTBannerlordBase
+	public class HasRiderDecorator : BannerlordNoWaitDecorator, IBTBannerlordBase
 	{
 		BTBlackboardValue<Agent> _agent;
 		public BTBlackboardValue<Agent> Agent { get => _agent; set => _agent = value; }

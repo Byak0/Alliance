@@ -21,7 +21,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 		public BTBlackboardValue<BTState> State { get; set; }
 		public BTBlackboardValue<float> Timer { get; set; }
 
-		public WargBehaviorTree(Agent agent) : base(250)
+		public WargBehaviorTree(Agent agent) : base()
 		{
 			Navigator = new BTBlackboardValue<AL_AgentNavigator>(agent.GetComponent<AL_DefaultAgentComponent>().AgentNavigator);
 			Agent = new BTBlackboardValue<Agent>(agent);
@@ -155,8 +155,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 			if (objects[0] is not Agent agent) return null;
 
 			BehaviorTree? tree = StartBuildingTree(new WargIdleBehaviorTree(agent))
-				.AddRandomSelector("Random", new AlwaysTrueDecorator())
+				.AddSelector("Random", new AlwaysTrueDecorator())
 					.AddSequence("Nothing", 50)
+						.AddTask(new LogTask(agent.Index + "-Doing nothing", LogLevel.Debug))
 						.Up()
 					.AddSequence("Move", 25)
 						.AddTask(new MoveToRandomPlaceTask(30f))

@@ -1,10 +1,11 @@
 ﻿using Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees;
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
+using BehaviorTreeWrapper.AbstractDecoratorsListeners;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 {
-	public class StateDecorator : AbstractDecorator, IBTStateBlackboard
+	public class StateDecorator : BannerlordNoWaitDecorator, IBTStateBlackboard
 	{
 		private readonly BTState targetState;
 

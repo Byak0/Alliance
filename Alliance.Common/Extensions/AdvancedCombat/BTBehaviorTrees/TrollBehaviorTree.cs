@@ -5,7 +5,6 @@ using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using Alliance.Common.Extensions.AdvancedCombat.BTDecorators;
 using Alliance.Common.Extensions.AdvancedCombat.BTTasks;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using BehaviorTrees;
 using BehaviorTreeWrapper;
 using BehaviorTreeWrapper.Decorators;
@@ -77,7 +76,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 							.AddTask(new SetStateTask(BTState.LookForTarget))
 							.Up()
 						.AddSequence("EnemiesTooClose", new EnemiesTooCloseDecorator())
-							.AddTask(new PlayAnimationAndCheckCollisionTask(ActionIndexCache.Create("act_kick_right_leg"), TrollConstants.FootCollisionBones, 15f, 0.6f, 0.4f, 0.95f, false,
+							.AddTask(new PlayAnimationAndCheckCollisionTask(TrollConstants.StompAnimation, TrollConstants.FootCollisionBones, 15f, 0.6f, 0.4f, 0.95f, false,
 										(Agent agt, Agent tgt, sbyte bone) =>
 										{
 											if (!tgt.IsTroll())
@@ -93,10 +92,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 							.AddTask(new MoveToTargetTask())
 							.AddRandomSelector("Random", new WaitNSecondsTickDecorator(5))
 								.AddSequence("Nothing", 70)
+									.AddTask(new LogTask(agent.Index + "-Doing nothing", LogLevel.Debug))
 									.Up()
 								.AddSequence("ChaseAnim", 30)
 									.AddTask(new AnimationTask(TrollConstants.RageAnimations))
-									.Up()
+							.Up()
 								.Up()
 							.Up()
 						.AddSequence("CancelChase")
@@ -104,6 +104,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 							.AddTask(new ClearTargetTask())
 							.AddRandomSelector("Random", new WaitNSecondsTickDecorator(3))
 								.AddSequence("Nothing", 50)
+									.AddTask(new LogTask(agent.Index + "-Doing nothing", LogLevel.Debug))
 									.Up()
 								.AddSequence("CancelChaseAnim", 50)
 									.AddTask(new AnimationTask(TrollConstants.SearchAnimations))

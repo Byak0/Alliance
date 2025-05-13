@@ -1,11 +1,12 @@
 ﻿using BehaviorTrees;
+using BehaviorTreeWrapper.AbstractDecoratorsListeners;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 {
-	public class RandomWaitDecorator : AbstractDecorator, IBTBannerlordBase
+	public class RandomWaitDecorator : BannerlordNoWaitDecorator, IBTBannerlordBase
 	{
 		private readonly float minWaitTimeS;
 		private readonly float maxWaitTimeS;

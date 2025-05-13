@@ -2,8 +2,6 @@
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 {
@@ -19,11 +17,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.targetState = targetState;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
-			await Task.CompletedTask;
 			State.SetValue(targetState);
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

@@ -1,8 +1,6 @@
 ﻿using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -19,7 +17,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.maxRange = maxRange;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent self = Agent.GetValue();
 			Agent targetAgent = Target.GetValue();
@@ -27,9 +25,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			if (self == null || targetAgent == null || targetAgent.Health <= 0 || targetAgent.IsFadingOut()
 				|| self.Position.Distance(targetAgent.Position) > maxRange)
 			{
-				return false;
+				return BTTaskStatus.FinishedWithFalse;
 			}
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

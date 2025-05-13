@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Extensions.AdvancedCombat.Utilities.AdvancedCombatHelper;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Core.Utils

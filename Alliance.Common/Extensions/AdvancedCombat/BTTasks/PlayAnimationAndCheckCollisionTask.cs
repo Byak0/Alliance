@@ -5,8 +5,6 @@ using BehaviorTrees.Nodes;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -37,18 +35,18 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			OnCollisionCallback = onCollisionCallback;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent agent = Agent.GetValue();
 			if (agent == null || !agent.IsActive() || agent.IsFadingOut())
-				return false;
+				return BTTaskStatus.FinishedWithFalse;
 
 			// Play the animation
 			agent.SetActionChannel(0, Action);
 
 			// Get potential targets
 			List<Agent> targets = CoreUtils.GetNearAliveAgentsInRange(TargetDetectionRange, agent).FindAll(agt => agt != agent && agt.RiderAgent != agent && agt.IsActive());
-			if (targets.Count == 0) return true;
+			if (targets.Count == 0) return BTTaskStatus.FinishedWithTrue;
 
 			// Check for collisions
 			AdvancedCombatBehavior advancedCombat = Mission.Current.GetMissionBehavior<AdvancedCombatBehavior>();
@@ -65,7 +63,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 						() => { }
 					));
 
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

@@ -1,8 +1,8 @@
-﻿using BehaviorTrees;
+﻿using BehaviorTreeWrapper.AbstractDecoratorsListeners;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 {
-	public class AlwaysTrueDecorator : AbstractDecorator
+	public class AlwaysTrueDecorator : BannerlordNoWaitDecorator
 	{
 		public AlwaysTrueDecorator() : base()
 		{

@@ -5,8 +5,6 @@ using Alliance.Common.Extensions.FormationEnforcer.Component;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -26,11 +24,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.range = range;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Target.SetValue(GetBestTarget(range));
 
-			return Target.GetValue() != null;
+			if (Target.GetValue() != null) return BTTaskStatus.FinishedWithTrue;
+			return BTTaskStatus.FinishedWithFalse;
 		}
 
 		private Agent GetBestTarget(float range)

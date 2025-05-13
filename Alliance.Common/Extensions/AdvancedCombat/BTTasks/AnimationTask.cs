@@ -2,8 +2,6 @@
 using BehaviorTrees.Nodes;
 using BehaviorTreeWrapper.BlackBoardClasses;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -26,12 +24,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			animations = new List<ActionIndexCache> { animation };
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			ActionIndexCache action = animations.GetRandomElement();
 			Agent agent = Agent.GetValue();
 			agent?.SetActionChannel(0, action);
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

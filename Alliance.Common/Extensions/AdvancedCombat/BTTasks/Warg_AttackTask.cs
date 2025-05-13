@@ -2,8 +2,6 @@
 using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -20,12 +18,12 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 		{
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent warg = Agent.GetValue();
 			warg.WargAttack();
 
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

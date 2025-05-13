@@ -4,8 +4,6 @@ using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -22,7 +20,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 		{
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent warg = Agent.GetValue();
 			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(8f, warg);
@@ -32,7 +30,9 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			);
 			Target.SetValue(_target);
 
-			return Target.GetValue() != null;
+			if (Target.GetValue() != null) return BTTaskStatus.FinishedWithTrue;
+
+			return BTTaskStatus.FinishedWithFalse;
 		}
 
 		private bool IsValidTarget(Agent warg, Agent agt)

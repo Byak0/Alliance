@@ -2,8 +2,6 @@
 using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -16,10 +14,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 		{
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Timer.SetValue(Mission.Current.GetMissionTimeInSeconds());
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

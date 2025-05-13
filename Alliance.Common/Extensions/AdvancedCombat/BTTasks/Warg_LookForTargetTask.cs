@@ -6,10 +6,9 @@ using Alliance.Common.Extensions.FormationEnforcer.Component;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 {
@@ -28,11 +27,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.range = range;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent target = GetBestTarget(range);
 
-			if (target == null) return false;
+			if (target == null) return BTTaskStatus.FinishedWithFalse;
 
 			// Tell the target that he is threatened
 			if (target.IsHuman)
@@ -45,9 +44,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 				}
 				target.GetComponent<HumanoidComponent>()?.SetThreat(Agent.GetValue());
 			}
+			Log($"Agent {Agent.GetValue().Index} found target : {target.Name} ({target.Index})", LogLevel.Debug);
 			Target.SetValue(target);
 
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 
 		private Agent GetBestTarget(float range)

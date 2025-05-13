@@ -1,6 +1,5 @@
-﻿using BehaviorTrees.Nodes;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using BehaviorTrees;
+using BehaviorTrees.Nodes;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
@@ -16,10 +15,10 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.logLevel = logLevel;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Log(message, logLevel);
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

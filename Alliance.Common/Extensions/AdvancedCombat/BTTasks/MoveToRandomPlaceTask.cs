@@ -5,8 +5,6 @@ using Alliance.Common.Extensions.AdvancedCombat.BTBlackBoards;
 using BehaviorTrees;
 using BehaviorTrees.Nodes;
 using BehaviorTreeWrapper.BlackBoardClasses;
-using System.Threading;
-using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -27,14 +25,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTTasks
 			this.maxDistance = maxDistance;
 		}
 
-		public override async Task<bool> Execute(CancellationToken cancellationToken)
+		public override BTTaskStatus Execute()
 		{
 			Agent agent = Agent.GetValue();
 			Vec3 randomPosition = CoreUtils.GetRandomPositionWithinRadius(agent.Position, maxDistance);
 			WorldPosition destination = new WorldPosition(agent.Mission.Scene, randomPosition);
 			Navigator.GetValue().SetTargetFrame(randomPosition.ToWorldPosition(), 0f);
 			agent.RiderAgent?.GetComponent<AL_DefaultAgentComponent>()?.AgentNavigator.SetTargetFrame(randomPosition.ToWorldPosition(), 0f);
-			return true;
+			return BTTaskStatus.FinishedWithTrue;
 		}
 	}
 }

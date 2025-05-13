@@ -1,9 +1,9 @@
-﻿using BehaviorTrees;
+﻿using BehaviorTreeWrapper.AbstractDecoratorsListeners;
 using TaleWorlds.Core;
 
 namespace Alliance.Common.Extensions.AdvancedCombat.BTDecorators
 {
-	public class RandomChanceDecorator : AbstractDecorator
+	public class RandomChanceDecorator : BannerlordNoWaitDecorator
 	{
 		private readonly float _probability;
 

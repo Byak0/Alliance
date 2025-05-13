@@ -53,7 +53,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Models
 			IdleAnimations = new List<ActionIndexCache>() { rage1, rage2, rage3 };
 			RageAnimations = new List<ActionIndexCache>() { rage1, rage2, rage3 };
 			SearchAnimations = new List<ActionIndexCache>() { search1, search2 };
-			StompAnimation = ActionIndexCache.Create("act_troll_stomp");
+			StompAnimation = ActionIndexCache.Create("act_kick_right_leg");
 		}
 	}
 }
