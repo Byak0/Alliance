@@ -4,6 +4,7 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
 using static Alliance.Common.Utilities.Logger;
@@ -15,6 +16,8 @@ namespace Alliance.Common.GameModes.Story
 	/// </summary>
 	public class ScenarioManager
 	{
+		public static readonly string SCENARIO_FOLDER_NAME = "Scenarios";
+
 		private static ScenarioManager _instance;
 		public static ScenarioManager Instance
 		{
@@ -220,8 +223,35 @@ namespace Alliance.Common.GameModes.Story
 
 		public void RefreshAvailableScenarios()
 		{
+			IEnumerable<ModuleInfo> multiModules = ModuleHelper.GetModules().Where(e =>
+				e.IsSelected &&
+				!e.IsOfficial &&
+				e.HasMultiplayerCategory
+			);
+
+			List<Scenario> scenarios = new List<Scenario>();
+
+			// Check each multiplayer module for scenarios
+			foreach (var module in multiModules)
+			{
+				string scenarioPath = Path.Combine(ModuleHelper.GetModuleFullPath(module.Name), SCENARIO_FOLDER_NAME);
+				if (Directory.Exists(scenarioPath))
+				{
+					try
+					{
+						var moduleScenarios = ScenarioSerializer.DeserializeAllScenarios(scenarioPath);
+						scenarios.AddRange(moduleScenarios);
+					}
+					catch (Exception ex)
+					{
+						Log($"Failed to deserialize scenarios from module {module.Name}: {ex.Message}", LogLevel.Error);
+						continue;
+					}
+				}
+			}
+
 			AvailableScenario = new List<Scenario>();
-			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Scenarios")));
+			AvailableScenario.AddRange(scenarios);
 		}
 	}
 }

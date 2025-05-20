@@ -75,7 +75,7 @@ namespace Alliance.Editor
 		private void GenerateScenarioExamples()
 		{
 			// Generate example scenario XML files
-			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath(Common.SubModule.CurrentModuleName), "Scenarios");
+			string directoryPath = Path.Combine(ModuleHelper.GetModuleFullPath(Common.SubModule.CurrentModuleName), ScenarioManager.SCENARIO_FOLDER_NAME);
 			if (!Directory.Exists(directoryPath) || Directory.GetFiles(directoryPath).Length == 0)
 			{
 				GenerateExampleScenarioXML(ExampleScenarios.GdCFinal(), directoryPath);
