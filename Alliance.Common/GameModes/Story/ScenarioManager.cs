@@ -225,25 +225,11 @@ namespace Alliance.Common.GameModes.Story
 		{
 			IEnumerable<ModuleInfo> multiModules = ModuleHelper.GetModules().Where(e =>
 				e.IsSelected &&
-				e.Type == ModuleType.Community &&
-				(e.Category == ModuleCategory.Multiplayer || e.Category == ModuleCategory.MultiplayerOptional)
+				!e.IsOfficial &&
+				e.HasMultiplayerCategory
 			);
 
 			List<Scenario> scenarios = new List<Scenario>();
-
-			// Load scenarios from the current module first
-			try
-			{
-				string currentModulePath = Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), SCENARIO_FOLDER_NAME);
-				if (Directory.Exists(currentModulePath))
-				{
-					scenarios.AddRange(ScenarioSerializer.DeserializeAllScenarios(currentModulePath));
-				}
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed to deserialize scenarios from current module: {ex.Message}", LogLevel.Error);
-			}
 
 			// Check each multiplayer module for scenarios
 			foreach (var module in multiModules)
