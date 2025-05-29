@@ -1,16 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<Version>$(AllianceVersion)</Version>
-		<TargetFramework>net472</TargetFramework>
-		<Platforms>x64</Platforms>
-		<LangVersion>10.0</LangVersion>
-		<ModuleId>$(MSBuildProjectName)</ModuleId>
-		<ModuleName>Alliance.Common</ModuleName>
-		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
-		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
-	</PropertyGroup>
+    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <LangVersion>10.0</LangVersion>
+    <Platforms>x64</Platforms>
+    <Version>$(AllianceVersion)</Version>
+    <ModuleId>$(MSBuildProjectName)</ModuleId>
+    <ModuleName>Alliance.Common</ModuleName>
+    <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
 
+	<!-- Include SERVER constant when building for net6.0 -->
+	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<DefineConstants>$(DefineConstants);SERVER</DefineConstants>		
+	</PropertyGroup>
+	
 	<!-- Reference TaleWorlds dll -->
 	<ItemGroup>
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
@@ -21,8 +26,15 @@
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
 	</ItemGroup>
-	<ItemGroup>
-	  <None Include="_Module\ModuleData\project.mbproj" />
+
+	<!-- DLL required for GUI (only for net472) -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<Reference Include="System.Numerics">
+			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
+		</Reference>
+		<Reference Include="System.Numerics.Vectors">
+			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	
 	<ItemGroup>

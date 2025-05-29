@@ -1,5 +1,4 @@
-﻿using Alliance.Client.Core.KeyBinder;
-using Alliance.Client.GameModes.BattleRoyale;
+﻿using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
 using Alliance.Client.GameModes.CvC;
@@ -11,14 +10,18 @@ using Alliance.Client.GameModes.Story;
 using Alliance.Client.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
+using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
+using System.Collections.Generic;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Alliance.Client
 {
@@ -29,7 +32,12 @@ namespace Alliance.Client
 		protected override void OnSubModuleLoad()
 		{
 			// Register and initialize Key Binder
-			KeyBinder.Initialize();
+			List<Assembly> assemblies = new List<Assembly>
+			{
+				Assembly.GetAssembly(typeof(Common.SubModule)),
+				Assembly.GetAssembly(typeof(Client.SubModule))
+			};
+			KeyBinder.Initialize(assemblies);
 
 			Client_ActionFactory.Initialize();
 

@@ -51,6 +51,7 @@ namespace Alliance.Common.Patch
 
 			//TODO : Following 1.2 -> Check if any patch can be removed
 			//patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
+			patchSuccess &= Patch_KeyBinder.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsDefault.Patch();

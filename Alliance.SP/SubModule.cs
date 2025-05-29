@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
+using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
@@ -8,6 +9,8 @@ using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.SP.Patch;
+using System.Collections.Generic;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -19,6 +22,14 @@ namespace Alliance.SP
 
 		protected override void OnSubModuleLoad()
 		{
+			// Register and initialize Key Binder
+			List<Assembly> assemblies = new List<Assembly>
+			{
+				Assembly.GetAssembly(typeof(Common.SubModule)),
+				Assembly.GetAssembly(typeof(SP.SubModule))
+			};
+			KeyBinder.Initialize(assemblies);
+
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
 
