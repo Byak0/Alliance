@@ -25,6 +25,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		{
 			// Check if the agent is still performing the action and if there are targets to check against.
 			if (_agent == null || _targets == null || _targets.Count == 0
+				|| _agent.AgentVisuals?.GetSkeleton() == null // Verify skeleton validity before action check, might prevent engine errors
 				|| _agent.GetCurrentAction(0) != _action
 				|| _agent.GetCurrentActionProgress(0) >= _actionProgressMax)
 			{
