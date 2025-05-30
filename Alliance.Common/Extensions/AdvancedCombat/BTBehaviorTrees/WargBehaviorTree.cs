@@ -5,9 +5,7 @@ using Alliance.Common.Extensions.AdvancedCombat.BTDecorators;
 using Alliance.Common.Extensions.AdvancedCombat.BTTasks;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
 using BehaviorTrees;
-using BehaviorTreeWrapper;
 using BehaviorTreeWrapper.BlackBoardClasses;
-using BehaviorTreeWrapper.Decorators;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -21,7 +19,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 		public BTBlackboardValue<BTState> State { get; set; }
 		public BTBlackboardValue<float> Timer { get; set; }
 
-		public WargBehaviorTree(Agent agent) : base()
+		public WargBehaviorTree(Agent agent) : base(1000)
 		{
 			Navigator = new BTBlackboardValue<AL_AgentNavigator>(agent.GetComponent<AL_DefaultAgentComponent>().AgentNavigator);
 			Agent = new BTBlackboardValue<Agent>(agent);
@@ -35,71 +33,31 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 			if (objects[0] is not Agent agent) return null;
 
 			BehaviorTree? tree = StartBuildingTree(new WargBehaviorTree(agent))
-				.AddSelector("main")
+				.AddSequence("main")
+					.AddTask(new RandomWaitTask(0f, 1f))
 
-					// When warg is mounted, only check for attack
-					.AddSelector("HasRider", new HasRiderDecorator())
-						.AddSubTree("WargAttackTree", 100, objects)
-						.Up()
-
-					// Otherwise, act depending on state
-					.AddSelector("NoRider", new HasRiderDecorator(false))
-						// Idle state - wait for a combat event
-						.AddSelector("Idle", new StateDecorator(BTState.Idle))
-							.AddSequence("UnderAttack", new HitDecorator(SubscriptionPossibilities.OnSelfIsHit))
-								.AddTask(new LogTask(agent.Index + "-I am hit", LogLevel.Debug))
-								.AddTask(new SetStateTask(BTState.LookForTarget))
-								.Up()
-							.AddSequence("Spotted", new AlarmedDecorator(SubscriptionPossibilities.OnSelfAlarmedStateChanged))
-								.AddTask(new LogTask(agent.Index + "-I am spotted", LogLevel.Debug))
-								.AddTask(new SetStateTask(BTState.LookForTarget))
-								.Up()
-							.AddSequence("IdleSeq", new WaitNSecondsTickDecorator(5))
-								.AddSubTree("WargIdleTree", 100, objects)
-								// Having two sequences in cascade seems to ignore second sequence decorator result ? Putting a selector inbetween
-								.AddSelector("IdleSeqqx")
-									.AddSequence("IdleSeq-LookForTarget", new RandomChanceDecorator(0.1f))
-										.AddTask(new SetStateTask(BTState.LookForTarget))
-										.Up()
-									.Up()
-								.Up()
-							.Up()
-
-						// Look for target state - try to find a target
-						.AddSelector("LookForTarget", new StateDecorator(BTState.LookForTarget))
-							.AddSequence("LookForTargetSeq")
-								.AddTask(new LogTask(agent.Index + "-I am looking for target", LogLevel.Debug))
-								.AddTask(new Warg_LookForTargetTask(WargConstants.CHASE_RADIUS))
-								.AddTask(new LogTask(agent.Index + "-I found a target", LogLevel.Debug))
-								.AddTask(new SetStateTask(BTState.Chase))
-								.AddTask(new MoveToTargetTask())
-								.Up()
-							.AddSequence("BackToIdle")
-								.AddTask(new LogTask(agent.Index + "-I found no target", LogLevel.Debug))
-								.AddTask(new SetStateTask(BTState.Idle))
-								.Up()
-							.Up()
-
-						// Chase state - try to chase the target
-						.AddSelector("ChaseOrNot", new StateDecorator(BTState.Chase))
+					.AddSelector("mainSel")
+						// When warg is mounted, only check for attack
+						.AddSequence("HasRider", new HasRiderDecorator(true))
+							.AddTask(new LogTask(agent.Index + "-HasRider", LogLevel.Debug))
 							.AddSubTree("WargAttackTree", 100, objects)
-							.AddSequence("LoseInterest", new RandomChanceDecorator(0.05f))
-								.AddTask(new LogTask(agent.Index + "-I lost interest", LogLevel.Debug))
-								.AddTask(new ClearTargetTask())
-								.AddTask(new SetStateTask(BTState.Idle))
-								.Up()
-							.AddSequence("TryChase")
-								.AddTask(new IsTargetCloseTask(WargConstants.CHASE_RADIUS))
-								.Up()
-							.AddSequence("CancelChase")
-								.AddTask(new LogTask("I lost my target", LogLevel.Debug))
-								.AddTask(new ClearTargetTask())
-								.AddTask(new SetStateTask(BTState.LookForTarget))
-								.Up()
+							.Up()
+
+						// Otherwise, move to target & attack
+						.AddSequence("NoRider", new HasRiderDecorator(false))
+							.AddTask(new LogTask(agent.Index + "-NoRider", LogLevel.Debug))
+							.AddTask(new Warg_LookForTargetTask(WargConstants.CHASE_RADIUS))
+							.AddTask(new MoveToTargetTask())
+							.AddSubTree("WargAttackTree", 100, objects)
+							.Up()
+
+						// Backup action if previous sequences were not successful
+						.AddSequence("Idle")
+							.AddTask(new LogTask(agent.Index + "-Idle", LogLevel.Debug))
 							.Up()
 						.Up()
-					.Up()
 
+					.Up()
 				.Finish();
 			return tree;
 		}
@@ -127,13 +85,17 @@ namespace Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees
 			if (objects[0] is not Agent agent) return null;
 
 			BehaviorTree? tree = StartBuildingTree(new WargAttackBehaviorTree(agent))
-				.AddSelector("WargAttack")
+				.AddSelector("main")
 					.AddSequence("TryToAttack", new CooldownAvailableDecorator(WargConstants.ATTACK_COOLDOWN))
+						.AddTask(new LogTask(agent.Index + "-Trying to attack", LogLevel.Debug))
 						.AddTask(new Warg_FindClosestEnemyTask())
 						.AddTask(new Warg_AttackTask())
+						.AddTask(new LogTask(agent.Index + "-Attacking", LogLevel.Debug))
 						.AddTask(new StartCooldownTask())
 						.Up()
-					.Up()
+					.AddSequence("Cancel")
+						.AddTask(new LogTask(agent.Index + "-Cancelled attack", LogLevel.Debug))
+						.Up()
 				.Finish();
 			return tree;
 		}
