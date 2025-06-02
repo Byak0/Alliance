@@ -1,7 +1,8 @@
-﻿using Alliance.Client.Core.KeyBinder.Models;
-using Alliance.Client.Extensions.TroopSpawner.Models;
+﻿using Alliance.Client.Extensions.TroopSpawner.Models;
 using Alliance.Client.Extensions.TroopSpawner.Utilities;
 using Alliance.Client.Extensions.TroopSpawner.ViewModels;
+using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Core.Security.Extension;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ using static Alliance.Common.Utilities.Logger;
 namespace Alliance.Client.Extensions.TroopSpawner.Views
 {
 	[DefaultView]
-	public class SpawnTroopsView : MissionView, IUseKeyBinder
+	public class TroopSpawnMenuView : MissionView, IUseKeyBinder
 	{
 		public bool IsMenuOpen;
 		private static string KeyCategoryId = "alliance_spawn_cat";
@@ -55,14 +56,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 		};
 
 		private GauntletLayer _layer;
-		private SpawnTroopsVM _dataSource;
+		private TroopSpawnMenuVM _dataSource;
 		private GameKey menuKey;
 		private GameKey spawnKey;
 		private GameKey siegeSpawnKey;
 		private float _lastSpawnCommand;
 		private bool _initialized;
 
-		public SpawnTroopsView()
+		public TroopSpawnMenuView()
 		{
 		}
 
@@ -91,12 +92,12 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 		{
 			try
 			{
-				_dataSource = new SpawnTroopsVM();
+				_dataSource = new TroopSpawnMenuVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
 				_layer = new GauntletLayer(25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
-				_layer.LoadMovie("SpawnMenu", _dataSource);
+				_layer.LoadMovie("TroopSpawnMenu", _dataSource);
 				SpriteData spriteData = UIResourceManager.SpriteData;
 				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
 				ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
