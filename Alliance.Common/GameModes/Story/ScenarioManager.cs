@@ -223,16 +223,12 @@ namespace Alliance.Common.GameModes.Story
 
 		public void RefreshAvailableScenarios()
 		{
-			IEnumerable<ModuleInfo> multiModules = ModuleHelper.GetModules().Where(e =>
-				e.IsSelected &&
-				!e.IsOfficial &&
-				e.HasMultiplayerCategory
-			);
+			List<ModuleInfo> selectedModules = TaleWorlds.Engine.Utilities.GetModulesNames().Select(ModuleHelper.GetModuleInfo).ToList();
 
 			List<Scenario> scenarios = new List<Scenario>();
 
 			// Check each multiplayer module for scenarios
-			foreach (var module in multiModules)
+			foreach (ModuleInfo module in selectedModules)
 			{
 				string scenarioPath = Path.Combine(ModuleHelper.GetModuleFullPath(module.Name), SCENARIO_FOLDER_NAME);
 				if (Directory.Exists(scenarioPath))
