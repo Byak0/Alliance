@@ -230,7 +230,7 @@ namespace Alliance.Common.GameModes.Story
 			// Check each multiplayer module for scenarios
 			foreach (ModuleInfo module in selectedModules)
 			{
-				string scenarioPath = Path.Combine(ModuleHelper.GetModuleFullPath(module.Name), SCENARIO_FOLDER_NAME);
+				string scenarioPath = Path.Combine(ModuleHelper.GetModuleFullPath(module.Id), SCENARIO_FOLDER_NAME);
 				if (Directory.Exists(scenarioPath))
 				{
 					try
