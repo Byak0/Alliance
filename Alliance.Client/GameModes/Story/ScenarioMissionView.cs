@@ -39,8 +39,7 @@ namespace Alliance.Client.GameModes.Story
 				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
 				ViewCreator.CreateOrderTroopPlacerView(mission),
 				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});
 			return views.ToArray();
 		}

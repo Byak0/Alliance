@@ -26,7 +26,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool TeleportPlayerToYou { get; set; }
 		public bool TeleportAllPlayerToYou { get; set; }
 		public bool SendWarningToPlayer { get; set; }
-		public string WarningMessageToPlayer{get; set;}
+		public string WarningMessageToPlayer { get; set; }
+		public bool ToggleModoVision { get; set; }
 
 		protected override void OnWrite()
 		{

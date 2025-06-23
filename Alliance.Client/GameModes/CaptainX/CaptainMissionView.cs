@@ -1,5 +1,5 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
-using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -36,7 +36,6 @@ namespace Alliance.Client.GameModes.CaptainX
 				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 				new SpectatorCameraView()
 			});
 			return views.ToArray();
