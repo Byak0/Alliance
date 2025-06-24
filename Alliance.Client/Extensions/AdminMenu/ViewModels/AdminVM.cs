@@ -444,10 +444,10 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
 		public void RefreshPlayerList()
 		{
-			_networkCommunicators = new MBBindingList<NetworkPeerVM>();
+			NetworkPeers = new MBBindingList<NetworkPeerVM>();
 			GameNetwork.NetworkPeers.ToList().ForEach(x =>
 			{
-				_networkCommunicators.Add(new NetworkPeerVM()
+				NetworkPeers.Add(new NetworkPeerVM()
 				{
 					Username = x.UserName,
 					AgentIndex = x.ControlledAgent?.Index ?? -1,
@@ -457,7 +457,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 					IsMuted = x.IsMuted()
 				});
 			});
-			_selectedPeer = _networkCommunicators.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
+			_selectedPeer = NetworkPeers.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
 		}
 
 		public void SelectTarget(Agent agent)
