@@ -115,11 +115,12 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 		{
 			InitLayer();
 			_layerLoaded.InputRestrictions.SetInputRestrictions();
-			AdminInstance.GetInstance().IsVisible = true;
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
 			ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
 			spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
+			adminVM.RefreshPlayerList();
+			adminVM.IsVisible = true;
 			AdminInstance.SetInstance(adminVM);
 			_isMenuOpen = true;
 		}
@@ -214,6 +215,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 						uint color = new Color(1, 0, 0, 1).ToUnsignedInteger();
 						CurrentHoverAgent.AgentVisuals?.GetEntity()?.SetContourColor(color, true);
 						string name = CurrentHoverAgent?.MissionPeer?.DisplayedName ?? CurrentHoverAgent.Name;
+						name += CurrentHoverAgent?.Team?.TeamIndex;
 						Vec3 position = CurrentHoverAgent?.AgentVisuals?.GetGlobalFrame().origin ?? CurrentHoverAgent.Position;
 						MBDebug.RenderDebugText3D(position, name, color);
 					}
@@ -269,7 +271,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 		{
 			Log($"[AdminPanel] Target : {(agent.MissionPeer?.Name ?? agent.Name)}", LogLevel.Information);
 			AdminVM adminVM = AdminInstance.GetInstance();
-			adminVM.RefreshPlayerList();
 			NetworkPeerVM peerVM = new NetworkPeerVM()
 			{
 				Username = agent.MissionPeer?.Name ?? agent.Name,
