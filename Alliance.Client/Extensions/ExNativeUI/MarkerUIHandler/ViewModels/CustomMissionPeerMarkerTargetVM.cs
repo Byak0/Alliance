@@ -33,9 +33,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels
 				if (_isSelected)
 				{
 					// Update colors
-					uint color = TaleWorlds.Library.Color.ConvertStringToColor("#CC0000FF").ToUnsignedInteger();
+					uint color = new Color(1f, 0.1f, 0f, 1f).ToUnsignedInteger();
 					base.Name = GetDetailedName();
+					Distance = 1;
 					RefreshColor(0, color);
+					OnPropertyChangedWithValue(1, "Distance");
 				}
 				else
 				{
@@ -75,9 +77,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels
 		private string GetDetailedName()
 		{
 			string detailedInfos = "*[" + TargetPeer.Name + "]*\n\n";
-			detailedInfos = detailedInfos.Add($"Death count: {TargetPeer.DeathCount}");
-			detailedInfos = detailedInfos.Add($"Kill count: {TargetPeer.KillCount}");
-			detailedInfos = detailedInfos.Add($"Assist count: {TargetPeer.AssistCount}");
+			detailedInfos = detailedInfos.Add($"Death: {TargetPeer.DeathCount}");
+			detailedInfos = detailedInfos.Add($"Kill: {TargetPeer.KillCount}");
+			detailedInfos = detailedInfos.Add($"Assist: {TargetPeer.AssistCount}");
 			detailedInfos = detailedInfos.Add($"Score: {TargetPeer.Score}");
 
 			return detailedInfos;
