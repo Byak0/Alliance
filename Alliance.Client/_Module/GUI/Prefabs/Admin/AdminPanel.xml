@@ -9,7 +9,7 @@
 	<VisualDefinitions>
 	</VisualDefinitions>
 	<Window>
-		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="140" MarginLeft="80" MarginRight="80" MarginBottom="100" Brush="Alliance.MainFrame">
+		<BrushWidget IsVisible="@IsVisible" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="140" MarginLeft="80" MarginRight="80" MarginBottom="100" Brush="Alliance.MainFrame">
 			<Children>
 				<!-- TITRE DE L'UI -->
 				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="100" HorizontalAlignment="Center" VerticalAlignment="Top" PositionXOffset="6" PositionYOffset="-18" Sprite="StdAssets\tabbar_popup" IsDisabled="true">
@@ -273,6 +273,17 @@
 												</ListPanel>
 											</Children>
 										</ButtonWidget>
+
+										<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="ToggleModoVision">
+											<Children>
+												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+													<Children>
+														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" MarginTop="10" MarginBottom="10" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="300" Brush="Popup.Button.Text" Text="Toggle Modo vision" />
+													</Children>
+												</ListPanel>
+											</Children>
+										</ButtonWidget>
+										
 										<!--<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="150" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1">
                       <Children>
                         <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">

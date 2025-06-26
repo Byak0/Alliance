@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
+﻿using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
+using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
 using TaleWorlds.MountAndBlade.View;
@@ -32,6 +32,7 @@ namespace Alliance.Client.GameModes
 				ViewCreator.CreateOptionsUIHandler(),
 				ViewCreator.CreateMissionMainAgentEquipDropView(mission),
 				ViewCreator.CreateMissionBoundaryCrossingView(),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 				new MissionBoundaryWallView(),
 				new MissionItemContourControllerView(),
 				new MissionAgentContourControllerView()
