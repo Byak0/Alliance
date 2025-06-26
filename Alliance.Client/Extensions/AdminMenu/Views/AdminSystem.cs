@@ -215,7 +215,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 						uint color = new Color(1f, 0f, 0f, 1f).ToUnsignedInteger();
 						CurrentHoverAgent.AgentVisuals?.GetEntity()?.SetContourColor(color, true);
 						string name = CurrentHoverAgent?.MissionPeer?.DisplayedName ?? CurrentHoverAgent.Name;
-						name += CurrentHoverAgent?.Team?.TeamIndex;
 						Vec3 position = CurrentHoverAgent?.AgentVisuals?.GetGlobalFrame().origin ?? CurrentHoverAgent.Position;
 						MBDebug.RenderDebugText3D(position, name, color);
 					}
