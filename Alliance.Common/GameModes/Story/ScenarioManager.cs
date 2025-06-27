@@ -174,7 +174,7 @@ namespace Alliance.Common.GameModes.Story
 				return false;
 			}
 
-			bool sideWin = false;
+			bool sideWin = true;
 
 			foreach (ObjectiveBase objective in objectives)
 			{
@@ -195,7 +195,6 @@ namespace Alliance.Common.GameModes.Story
 
 				if (objective.RequiredForActWin)
 				{
-					sideWin = true;
 					sideWin &= objectiveCompleted;
 				}
 			}
