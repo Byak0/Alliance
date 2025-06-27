@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.FlagsTracker.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,6 +80,9 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		protected override void OnInit()
 		{
 			SetScriptComponentToTick(GetTickRequirement());
+
+			// Fix possible UTF-8 encoding issues with ZoneName
+			ZoneName = CoreUtils.FixUtf8Encoding(ZoneName);
 
 			Position = GameEntity.GlobalPosition;
 

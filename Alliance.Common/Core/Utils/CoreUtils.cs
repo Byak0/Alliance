@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -287,6 +288,12 @@ namespace Alliance.Common.Core.Utils
 			{
 				return GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
 			}
+		}
+
+		public static string FixUtf8Encoding(string text)
+		{
+			byte[] bytes = Encoding.Default.GetBytes(text); // interpret the string as Windows-1252
+			return Encoding.UTF8.GetString(bytes); // reinterpret it as UTF-8
 		}
 
 		/// <summary>
