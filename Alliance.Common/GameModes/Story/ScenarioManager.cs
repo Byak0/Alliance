@@ -75,6 +75,10 @@ namespace Alliance.Common.GameModes.Story
 		/// </summary>
 		public virtual void SetActState(ActState newState)
 		{
+			Log($"==================================================", LogLevel.Debug);
+			Log($"{CurrentScenario?.Name?.LocalizedText} - {CurrentActIndex + 1} - {CurrentAct?.Name?.LocalizedText} - {newState}", LogLevel.Debug);
+			Log($"==================================================", LogLevel.Debug);
+
 			ActState = newState;
 			switch (newState)
 			{
@@ -90,6 +94,7 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateInProgress?.Invoke();
 					break;
 				case ActState.DisplayingResults:
+					CurrentAct.VictoryLogic.OnDisplayResults(CurrentWinner);
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
@@ -115,8 +120,8 @@ namespace Alliance.Common.GameModes.Story
 		/// </summary>
 		public virtual void SetWinner(BattleSideEnum winner)
 		{
+			UnregisterObjectives();
 			CurrentWinner = winner;
-			CurrentAct.VictoryLogic.OnDisplayResults(winner);
 		}
 
 		/// <summary>
@@ -183,7 +188,6 @@ namespace Alliance.Common.GameModes.Story
 					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
-						UnregisterObjectives();
 						SetWinner(objective.Side);
 						return true;
 					}
@@ -199,7 +203,6 @@ namespace Alliance.Common.GameModes.Story
 			// If all objectives for the side are completed, the side wins
 			if (sideWin)
 			{
-				UnregisterObjectives();
 				SetWinner(side);
 				return true;
 			}
