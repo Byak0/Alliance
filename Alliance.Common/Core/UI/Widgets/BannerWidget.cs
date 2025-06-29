@@ -1,10 +1,11 @@
-﻿using Alliance.Common.Patch.Utilities;
+﻿#if !SERVER
+using Alliance.Common.Patch.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.MountAndBlade.GauntletUI.Widgets;
 using TaleWorlds.ObjectSystem;
 
-namespace Alliance.Client.Patch.Behaviors
+namespace Alliance.Common.Core.UI.Widgets
 {
 	/// <summary>
 	/// Simple widget that displays a banner based on the culture ID.
@@ -26,7 +27,7 @@ namespace Alliance.Client.Patch.Behaviors
 				{
 					_cultureID = value;
 					RefreshBanner();
-					OnPropertyChanged(value, "CultureID");
+					OnPropertyChanged(value, nameof(CultureID));
 				}
 			}
 		}
@@ -38,7 +39,7 @@ namespace Alliance.Client.Patch.Behaviors
 
 		public void RefreshBanner()
 		{
-			BasicCultureObject basicCultureObject = MBObjectManager.Instance.GetObject<BasicCultureObject>(_cultureID);
+			BasicCultureObject basicCultureObject = MBObjectManager.Instance?.GetObject<BasicCultureObject>(_cultureID.ToLower());
 			if (basicCultureObject == null)
 			{
 				return;
@@ -53,5 +54,4 @@ namespace Alliance.Client.Patch.Behaviors
 		}
 	}
 }
-
-
+#endif

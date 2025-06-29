@@ -1,26 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Core.ExtendedXML.Models;
 using NetworkMessages.FromClient;
+using System;
+using System.ComponentModel;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
-using TaleWorlds.MountAndBlade.ViewModelCollection.HUD;
 using TaleWorlds.MountAndBlade.ViewModelCollection;
-using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Core.ExtendedXML.Extension;
-using Alliance.Common.Core.Configuration.Models;
+using TaleWorlds.MountAndBlade.ViewModelCollection.HUD;
 
-namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews
+namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.MissionViews
 {
 	//replace ViewCreator.CreateMissionMainAgentEquipmentController(mission)
-	public class MissionGauntletMainAgentEquipmentControllerViewCustom : MissionView
+	public class AL_MainAgentEquipmentController : MissionView
 	{
 
 		public event Action<bool> OnEquipmentDropInteractionViewToggled;
@@ -32,7 +28,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 		{
 			get
 			{
-				IMissionScreen missionScreenAsInterface = this._missionScreenAsInterface;
+				IMissionScreen missionScreenAsInterface = _missionScreenAsInterface;
 				return missionScreenAsInterface != null && missionScreenAsInterface.GetDisplayDialog();
 			}
 		}
@@ -41,12 +37,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 		{
 			get
 			{
-				return this._equipHoldHandled;
+				return _equipHoldHandled;
 			}
 			set
 			{
-				this._equipHoldHandled = value;
-				MissionScreen missionScreen = base.MissionScreen;
+				_equipHoldHandled = value;
+				MissionScreen missionScreen = MissionScreen;
 				if (missionScreen == null)
 				{
 					return;
@@ -59,12 +55,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 		{
 			get
 			{
-				return this._dropHoldHandled;
+				return _dropHoldHandled;
 			}
 			set
 			{
-				this._dropHoldHandled = value;
-				MissionScreen missionScreen = base.MissionScreen;
+				_dropHoldHandled = value;
+				MissionScreen missionScreen = MissionScreen;
 				if (missionScreen == null)
 				{
 					return;
@@ -73,45 +69,45 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 			}
 		}
 
-		public MissionGauntletMainAgentEquipmentControllerViewCustom()
+		public AL_MainAgentEquipmentController()
 		{
-			this._missionScreenAsInterface = base.MissionScreen;
-			this.EquipHoldHandled = false;
-			this.DropHoldHandled = false;
+			_missionScreenAsInterface = MissionScreen;
+			EquipHoldHandled = false;
+			DropHoldHandled = false;
 		}
 
 		public override void OnMissionScreenInitialize()
 		{
 			base.OnMissionScreenInitialize();
-			this._gauntletLayer = new GauntletLayer(2, "GauntletLayer", false);
-			this._dataSource = new MissionMainAgentEquipmentControllerVM(new Action<EquipmentIndex>(this.OnDropEquipment), new Action<SpawnedItemEntity, EquipmentIndex>(this.OnEquipItem));
-			this._gauntletLayer.LoadMovie("MainAgentEquipmentController", this._dataSource);
-			this._gauntletLayer.InputRestrictions.SetInputRestrictions(false, InputUsageMask.Invalid);
-			base.MissionScreen.AddLayer(this._gauntletLayer);
-			base.Mission.OnMainAgentChanged += this.OnMainAgentChanged;
+			_gauntletLayer = new GauntletLayer(2, "GauntletLayer", false);
+			_dataSource = new MissionMainAgentEquipmentControllerVM(new Action<EquipmentIndex>(OnDropEquipment), new Action<SpawnedItemEntity, EquipmentIndex>(OnEquipItem));
+			_gauntletLayer.LoadMovie("MainAgentEquipmentController", _dataSource);
+			_gauntletLayer.InputRestrictions.SetInputRestrictions(false, InputUsageMask.Invalid);
+			MissionScreen.AddLayer(_gauntletLayer);
+			Mission.OnMainAgentChanged += OnMainAgentChanged;
 		}
 
 		public override void OnMissionScreenFinalize()
 		{
 			base.OnMissionScreenFinalize();
-			base.Mission.OnMainAgentChanged -= this.OnMainAgentChanged;
-			base.MissionScreen.RemoveLayer(this._gauntletLayer);
-			this._gauntletLayer = null;
-			this._dataSource.OnFinalize();
-			this._dataSource = null;
+			Mission.OnMainAgentChanged -= OnMainAgentChanged;
+			MissionScreen.RemoveLayer(_gauntletLayer);
+			_gauntletLayer = null;
+			_dataSource.OnFinalize();
+			_dataSource = null;
 		}
 
 		public override void OnMissionScreenTick(float dt)
 		{
 			base.OnMissionScreenTick(dt);
-			if (this.IsMainAgentAvailable() && base.Mission.IsMainAgentItemInteractionEnabled)
+			if (IsMainAgentAvailable() && Mission.IsMainAgentItemInteractionEnabled)
 			{
-				this.DropWeaponTick(dt);
-				this.EquipWeaponTick(dt);
+				DropWeaponTick(dt);
+				EquipWeaponTick(dt);
 				return;
 			}
-			this._prevDropKeyDown = false;
-			this._prevEquipKeyDown = false;
+			_prevDropKeyDown = false;
+			_prevEquipKeyDown = false;
 		}
 
 		public override void OnFocusGained(Agent agent, IFocusable focusableObject, bool isInteractable)
@@ -119,9 +115,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 			base.OnFocusGained(agent, focusableObject, isInteractable);
 			UsableMissionObject usableMissionObject;
 			SpawnedItemEntity spawnedItemEntity;
-			if ((usableMissionObject = (focusableObject as UsableMissionObject)) != null && (spawnedItemEntity = (usableMissionObject as SpawnedItemEntity)) != null)
+			if ((usableMissionObject = focusableObject as UsableMissionObject) != null && (spawnedItemEntity = usableMissionObject as SpawnedItemEntity) != null)
 			{
-				this._isCurrentFocusedItemInteractable = isInteractable;
+				_isCurrentFocusedItemInteractable = isInteractable;
 				if (!spawnedItemEntity.WeaponCopy.IsEmpty)
 				{
 					Agent main = Agent.Main;
@@ -131,15 +127,15 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 					IsRaceConditionRespected(main, itemEx);
 					if (!_IsRaceConditionRespected && itemEx != null && itemEx.Race_condition != null && itemEx.Race_condition != "" && Config.Instance.EnableRaceRestrictionOnStuff)
 					{
-						this._isFocusedOnEquipment = false;
+						_isFocusedOnEquipment = false;
 					}
 					else
 					{
-						this._isFocusedOnEquipment = true;
+						_isFocusedOnEquipment = true;
 					}
 					// End of custom code, native end always end with his._isFocusedOnEquipment = true
-					this._focusedWeaponItem = spawnedItemEntity;
-					this._dataSource.SetCurrentFocusedWeaponEntity(this._focusedWeaponItem);
+					_focusedWeaponItem = spawnedItemEntity;
+					_dataSource.SetCurrentFocusedWeaponEntity(_focusedWeaponItem);
 				}
 			}
 		}
@@ -147,141 +143,141 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 		public override void OnFocusLost(Agent agent, IFocusable focusableObject)
 		{
 			base.OnFocusLost(agent, focusableObject);
-			this._isCurrentFocusedItemInteractable = false;
-			this._isFocusedOnEquipment = false;
-			this._focusedWeaponItem = null;
-			this._dataSource.SetCurrentFocusedWeaponEntity(this._focusedWeaponItem);
-			if (this.EquipHoldHandled)
+			_isCurrentFocusedItemInteractable = false;
+			_isFocusedOnEquipment = false;
+			_focusedWeaponItem = null;
+			_dataSource.SetCurrentFocusedWeaponEntity(_focusedWeaponItem);
+			if (EquipHoldHandled)
 			{
-				this.EquipHoldHandled = false;
-				this._equipHoldTime = 0f;
-				this._dataSource.OnCancelEquipController();
-				Action<bool> onEquipmentEquipInteractionViewToggled = this.OnEquipmentEquipInteractionViewToggled;
+				EquipHoldHandled = false;
+				_equipHoldTime = 0f;
+				_dataSource.OnCancelEquipController();
+				Action<bool> onEquipmentEquipInteractionViewToggled = OnEquipmentEquipInteractionViewToggled;
 				if (onEquipmentEquipInteractionViewToggled != null)
 				{
 					onEquipmentEquipInteractionViewToggled(false);
 				}
-				this._equipmentWasInFocusFirstFrameOfEquipDown = false;
+				_equipmentWasInFocusFirstFrameOfEquipDown = false;
 			}
 		}
 
 		private void OnMainAgentChanged(object sender, PropertyChangedEventArgs e)
 		{
-			if (base.Mission.MainAgent == null)
+			if (Mission.MainAgent == null)
 			{
-				if (this.EquipHoldHandled)
+				if (EquipHoldHandled)
 				{
-					this.EquipHoldHandled = false;
-					Action<bool> onEquipmentEquipInteractionViewToggled = this.OnEquipmentEquipInteractionViewToggled;
+					EquipHoldHandled = false;
+					Action<bool> onEquipmentEquipInteractionViewToggled = OnEquipmentEquipInteractionViewToggled;
 					if (onEquipmentEquipInteractionViewToggled != null)
 					{
 						onEquipmentEquipInteractionViewToggled(false);
 					}
 				}
-				this._equipHoldTime = 0f;
-				this._dataSource.OnCancelEquipController();
-				if (this.DropHoldHandled)
+				_equipHoldTime = 0f;
+				_dataSource.OnCancelEquipController();
+				if (DropHoldHandled)
 				{
-					Action<bool> onEquipmentDropInteractionViewToggled = this.OnEquipmentDropInteractionViewToggled;
+					Action<bool> onEquipmentDropInteractionViewToggled = OnEquipmentDropInteractionViewToggled;
 					if (onEquipmentDropInteractionViewToggled != null)
 					{
 						onEquipmentDropInteractionViewToggled(false);
 					}
-					this.DropHoldHandled = false;
+					DropHoldHandled = false;
 				}
-				this._dropHoldTime = 0f;
-				this._dataSource.OnCancelDropController();
+				_dropHoldTime = 0f;
+				_dataSource.OnCancelDropController();
 			}
 		}
 
 		private void EquipWeaponTick(float dt)
 		{
-			if (base.MissionScreen.SceneLayer.Input.IsGameKeyDown(13) && !this._prevDropKeyDown && !this.IsDisplayingADialog && this.IsMainAgentAvailable() && !base.MissionScreen.Mission.IsOrderMenuOpen)
+			if (MissionScreen.SceneLayer.Input.IsGameKeyDown(13) && !_prevDropKeyDown && !IsDisplayingADialog && IsMainAgentAvailable() && !MissionScreen.Mission.IsOrderMenuOpen)
 			{
-				if (!this._firstFrameOfEquipDownHandled)
+				if (!_firstFrameOfEquipDownHandled)
 				{
-					this._equipmentWasInFocusFirstFrameOfEquipDown = this._isFocusedOnEquipment;
-					this._firstFrameOfEquipDownHandled = true;
+					_equipmentWasInFocusFirstFrameOfEquipDown = _isFocusedOnEquipment;
+					_firstFrameOfEquipDownHandled = true;
 				}
-				if (this._equipmentWasInFocusFirstFrameOfEquipDown)
+				if (_equipmentWasInFocusFirstFrameOfEquipDown)
 				{
-					this._equipHoldTime += dt;
-					if (this._equipHoldTime > 0.5f && !this.EquipHoldHandled && this._isFocusedOnEquipment && this._isCurrentFocusedItemInteractable)
+					_equipHoldTime += dt;
+					if (_equipHoldTime > 0.5f && !EquipHoldHandled && _isFocusedOnEquipment && _isCurrentFocusedItemInteractable)
 					{
-						this.HandleOpeningHoldEquip();
-						this.EquipHoldHandled = true;
+						HandleOpeningHoldEquip();
+						EquipHoldHandled = true;
 					}
 				}
-				this._prevEquipKeyDown = true;
+				_prevEquipKeyDown = true;
 				return;
 			}
-			if (this._prevEquipKeyDown && !base.MissionScreen.SceneLayer.Input.IsGameKeyDown(13))
+			if (_prevEquipKeyDown && !MissionScreen.SceneLayer.Input.IsGameKeyDown(13))
 			{
-				if (this._equipmentWasInFocusFirstFrameOfEquipDown)
+				if (_equipmentWasInFocusFirstFrameOfEquipDown)
 				{
-					if (this._equipHoldTime < 0.5f)
+					if (_equipHoldTime < 0.5f)
 					{
-						if (this._focusedWeaponItem != null)
+						if (_focusedWeaponItem != null)
 						{
 							Agent main = Agent.Main;
-							if (main != null && main.CanQuickPickUp(this._focusedWeaponItem))
+							if (main != null && main.CanQuickPickUp(_focusedWeaponItem))
 							{
-								this.HandleQuickReleaseEquip();
+								HandleQuickReleaseEquip();
 							}
 						}
 					}
 					else
 					{
-						this.HandleClosingHoldEquip();
+						HandleClosingHoldEquip();
 					}
 				}
-				if (this.EquipHoldHandled)
+				if (EquipHoldHandled)
 				{
-					this.EquipHoldHandled = false;
+					EquipHoldHandled = false;
 				}
-				this._equipHoldTime = 0f;
-				this._firstFrameOfEquipDownHandled = false;
-				this._prevEquipKeyDown = false;
+				_equipHoldTime = 0f;
+				_firstFrameOfEquipDownHandled = false;
+				_prevEquipKeyDown = false;
 			}
 		}
 
 		private void DropWeaponTick(float dt)
 		{
-			if (base.MissionScreen.SceneLayer.Input.IsGameKeyDown(22) && !this._prevEquipKeyDown && !this.IsDisplayingADialog && this.IsMainAgentAvailable() && this.IsMainAgentHasAtLeastOneItem() && !base.MissionScreen.Mission.IsOrderMenuOpen)
+			if (MissionScreen.SceneLayer.Input.IsGameKeyDown(22) && !_prevEquipKeyDown && !IsDisplayingADialog && IsMainAgentAvailable() && IsMainAgentHasAtLeastOneItem() && !MissionScreen.Mission.IsOrderMenuOpen)
 			{
-				this._dropHoldTime += dt;
-				if (this._dropHoldTime > 0.5f && !this.DropHoldHandled)
+				_dropHoldTime += dt;
+				if (_dropHoldTime > 0.5f && !DropHoldHandled)
 				{
-					this.HandleOpeningHoldDrop();
-					this.DropHoldHandled = true;
+					HandleOpeningHoldDrop();
+					DropHoldHandled = true;
 				}
-				this._prevDropKeyDown = true;
+				_prevDropKeyDown = true;
 				return;
 			}
-			if (this._prevDropKeyDown && !base.MissionScreen.SceneLayer.Input.IsGameKeyDown(22))
+			if (_prevDropKeyDown && !MissionScreen.SceneLayer.Input.IsGameKeyDown(22))
 			{
-				if (this._dropHoldTime < 0.5f)
+				if (_dropHoldTime < 0.5f)
 				{
-					this.HandleQuickReleaseDrop();
+					HandleQuickReleaseDrop();
 				}
 				else
 				{
-					this.HandleClosingHoldDrop();
+					HandleClosingHoldDrop();
 				}
-				this.DropHoldHandled = false;
-				this._dropHoldTime = 0f;
-				this._prevDropKeyDown = false;
+				DropHoldHandled = false;
+				_dropHoldTime = 0f;
+				_prevDropKeyDown = false;
 			}
 		}
 
 		private void HandleOpeningHoldEquip()
 		{
-			MissionMainAgentEquipmentControllerVM dataSource = this._dataSource;
+			MissionMainAgentEquipmentControllerVM dataSource = _dataSource;
 			if (dataSource != null)
 			{
 				dataSource.OnEquipControllerToggle(true);
 			}
-			Action<bool> onEquipmentEquipInteractionViewToggled = this.OnEquipmentEquipInteractionViewToggled;
+			Action<bool> onEquipmentEquipInteractionViewToggled = OnEquipmentEquipInteractionViewToggled;
 			if (onEquipmentEquipInteractionViewToggled == null)
 			{
 				return;
@@ -291,12 +287,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 
 		private void HandleClosingHoldEquip()
 		{
-			MissionMainAgentEquipmentControllerVM dataSource = this._dataSource;
+			MissionMainAgentEquipmentControllerVM dataSource = _dataSource;
 			if (dataSource != null)
 			{
 				dataSource.OnEquipControllerToggle(false);
 			}
-			Action<bool> onEquipmentEquipInteractionViewToggled = this.OnEquipmentEquipInteractionViewToggled;
+			Action<bool> onEquipmentEquipInteractionViewToggled = OnEquipmentEquipInteractionViewToggled;
 			if (onEquipmentEquipInteractionViewToggled == null)
 			{
 				return;
@@ -306,17 +302,17 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 
 		private void HandleQuickReleaseEquip()
 		{
-			this.OnEquipItem(this._focusedWeaponItem, EquipmentIndex.None);
+			OnEquipItem(_focusedWeaponItem, EquipmentIndex.None);
 		}
 
 		private void HandleOpeningHoldDrop()
 		{
-			MissionMainAgentEquipmentControllerVM dataSource = this._dataSource;
+			MissionMainAgentEquipmentControllerVM dataSource = _dataSource;
 			if (dataSource != null)
 			{
 				dataSource.OnDropControllerToggle(true);
 			}
-			Action<bool> onEquipmentDropInteractionViewToggled = this.OnEquipmentDropInteractionViewToggled;
+			Action<bool> onEquipmentDropInteractionViewToggled = OnEquipmentDropInteractionViewToggled;
 			if (onEquipmentDropInteractionViewToggled == null)
 			{
 				return;
@@ -326,12 +322,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 
 		private void HandleClosingHoldDrop()
 		{
-			MissionMainAgentEquipmentControllerVM dataSource = this._dataSource;
+			MissionMainAgentEquipmentControllerVM dataSource = _dataSource;
 			if (dataSource != null)
 			{
 				dataSource.OnDropControllerToggle(false);
 			}
-			Action<bool> onEquipmentDropInteractionViewToggled = this.OnEquipmentDropInteractionViewToggled;
+			Action<bool> onEquipmentDropInteractionViewToggled = OnEquipmentDropInteractionViewToggled;
 			if (onEquipmentDropInteractionViewToggled == null)
 			{
 				return;
@@ -341,7 +337,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 
 		private void HandleQuickReleaseDrop()
 		{
-			this.OnDropEquipment(EquipmentIndex.None);
+			OnDropEquipment(EquipmentIndex.None);
 		}
 
 		private void OnEquipItem(SpawnedItemEntity itemToEquip, EquipmentIndex indexToEquipItTo)
@@ -362,11 +358,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 			if (GameNetwork.IsClient)
 			{
 				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new DropWeapon(base.Input.IsGameKeyDown(10), indexToDrop));
+				GameNetwork.WriteMessage(new DropWeapon(Input.IsGameKeyDown(10), indexToDrop));
 				GameNetwork.EndModuleEventAsClient();
 				return;
 			}
-			Agent.Main.HandleDropWeapon(base.Input.IsGameKeyDown(10), indexToDrop);
+			Agent.Main.HandleDropWeapon(Input.IsGameKeyDown(10), indexToDrop);
 		}
 
 		private bool IsMainAgentAvailable()
@@ -390,19 +386,19 @@ namespace Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentControl
 		public override void OnPhotoModeActivated()
 		{
 			base.OnPhotoModeActivated();
-			this._gauntletLayer.UIContext.ContextAlpha = 0f;
+			_gauntletLayer.UIContext.ContextAlpha = 0f;
 		}
 
 		public override void OnPhotoModeDeactivated()
 		{
 			base.OnPhotoModeDeactivated();
-			this._gauntletLayer.UIContext.ContextAlpha = 1f;
+			_gauntletLayer.UIContext.ContextAlpha = 1f;
 		}
 
 		// Custom new fonction
 		private void IsRaceConditionRespected(Agent main, ExtendedItem itemEx)
 		{
-			if (itemEx == null || itemEx.Race_condition == "" )
+			if (itemEx == null || itemEx.Race_condition == "")
 			{
 				_IsRaceConditionRespected = false;
 				return;
