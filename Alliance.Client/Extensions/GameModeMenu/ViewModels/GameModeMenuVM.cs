@@ -1,7 +1,8 @@
-﻿using Alliance.Client.Extensions.GameModeMenu.ViewModels.Options;
-using Alliance.Common.Core.Configuration;
+﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.UI.VM.Options;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
@@ -14,8 +15,6 @@ using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Utilities;
-using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -282,7 +281,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				if (fi == null) continue; // Skip if option type is not found
 
 				// Retrieve attribute for option type
-				ScenarioEditorAttribute attribute = fi.GetCustomAttribute<ScenarioEditorAttribute>();
+				ConfigPropertyAttribute attribute = fi.GetCustomAttribute<ConfigPropertyAttribute>();
 				if (attribute != null && !attribute.IsEditable) continue; // Skip if option is not editable
 
 				switch (optionProperty.OptionValueType)
@@ -339,47 +338,50 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				object fieldValue = fieldInfo.GetValue(modOptions);
 				ConfigPropertyAttribute configPropertyAttribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
 
-				switch (configPropertyAttribute.ValueType)
+				if (fieldInfo.FieldType == typeof(bool))
 				{
-					case ConfigValueType.Bool:
-						ModOptions.Add(
+					ModOptions.Add(
 						new BoolOptionVM(
-							new TextObject(configPropertyAttribute.Name),
-							new TextObject(configPropertyAttribute.Description),
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
 							() => (bool)fieldInfo.GetValue(modOptions),
 							newValue => fieldInfo.SetValue(modOptions, newValue))
 						);
-						break;
-					case ConfigValueType.Integer:
-						ModOptions.Add(
+				}
+				else if (fieldInfo.FieldType == typeof(int))
+				{
+					ModOptions.Add(
 						new NumericOptionVM(
-							new TextObject(configPropertyAttribute.Name),
-							new TextObject(configPropertyAttribute.Description),
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
 							() => (int)fieldInfo.GetValue(modOptions),
 							newValue => fieldInfo.SetValue(modOptions, (int)newValue),
 							configPropertyAttribute.MinValue,
 							configPropertyAttribute.MaxValue,
 							true, true)
 						);
-						break;
-					case ConfigValueType.Float:
-						ModOptions.Add(
+				}
+				else if (fieldInfo.FieldType == typeof(float))
+				{
+					ModOptions.Add(
 						new NumericOptionVM(
-							new TextObject(configPropertyAttribute.Name),
-							new TextObject(configPropertyAttribute.Description),
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
 							() => (float)fieldInfo.GetValue(modOptions),
 							newValue => fieldInfo.SetValue(modOptions, newValue),
 							configPropertyAttribute.MinValue,
 							configPropertyAttribute.MaxValue,
 							false, true)
 						);
-						break;
-					case ConfigValueType.Enum:
-						List<SelectionItem> selectionItems = GetSelectionItemsFromValues(DefaultConfig.GetAvailableValuesForOption(fieldInfo));
-						ModOptions.Add(
+				}
+				// TODO : add an option for string ? (other than enums)
+				else if (fieldInfo.FieldType == typeof(string) && configPropertyAttribute.DataType != AllianceData.DataTypes.None)
+				{
+					List<SelectionItem> selectionItems = GetSelectionItemsFromValues(configPropertyAttribute.PossibleValues.ToList());
+					ModOptions.Add(
 						new SelectionOptionVM(
-							new TextObject(configPropertyAttribute.Name),
-							new TextObject(configPropertyAttribute.Description),
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
 							new SelectionOptionData(
 								() => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(modOptions)),
 								newValue => fieldInfo.SetValue(modOptions, selectionItems.ElementAtOrDefault(newValue).Data),
@@ -387,7 +389,6 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 								selectionItems),
 							false)
 						);
-						break;
 				}
 			}
 		}

@@ -79,7 +79,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			FieldValue = fieldValue;
 			FieldType = fieldInfo.FieldType;
 
-			var attribute = fieldInfo.GetCustomAttribute<ScenarioEditorAttribute>();
+			var attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
 
 			if (attribute != null)
 			{

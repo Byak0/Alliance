@@ -331,7 +331,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			TroopInformation = new TroopInformationVM();
 			TroopCount = 1;
 			CustomTroopCount = SpawnTroopsModel.Instance.CustomTroopCount;
-			ShowDifficultySlider = Config.Instance.BotDifficulty == nameof(SpawnHelper.Difficulty.PlayerChoice) || GameNetwork.MyPeer.IsAdmin();
+			ShowDifficultySlider = Config.Instance.ShowDifficultySlider || GameNetwork.MyPeer.IsAdmin();
 			Difficulty = SpawnHelper.DifficultyLevelFromString(Config.Instance.BotDifficulty);
 			UseTroopCost = Config.Instance.UseTroopCost;
 

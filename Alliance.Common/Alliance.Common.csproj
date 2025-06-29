@@ -1,15 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
-    <LangVersion>10.0</LangVersion>
-    <Platforms>x64</Platforms>
-    <Version>$(AllianceVersion)</Version>
-    <ModuleId>$(MSBuildProjectName)</ModuleId>
-    <ModuleName>Alliance.Common</ModuleName>
-    <GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
-    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-  </PropertyGroup>
+		<TargetFrameworks>net472;net6.0</TargetFrameworks>
+		<LangVersion>10.0</LangVersion>
+		<Platforms>x64</Platforms>
+		<Version>$(AllianceVersion)</Version>
+		<ModuleId>$(MSBuildProjectName)</ModuleId>
+		<ModuleName>Alliance.Common</ModuleName>
+		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
 
 	<!-- Include SERVER constant when building for net6.0 -->
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
@@ -29,6 +29,7 @@
 
 	<!-- DLL required for GUI (only for net472) -->
 	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
 		</Reference>
@@ -44,7 +45,7 @@
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="System.Net.Http" Version="4.3.4" />
 	</ItemGroup>
-	
+
 	<ItemGroup>
 		<Reference Include=".\Resources\BehaviorTrees\*.dll">
 			<HintPath>%(Identity)</HintPath>
@@ -52,17 +53,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Resource Include="Resources\alliance_delete.png" />
-	  <Resource Include="Resources\alliance_edit.png" />
-	  <Resource Include="Resources\alliance_edit2.png" />
-	  <Resource Include="Resources\alliance_help.png" />
+		<Resource Include="Resources\alliance_delete.png" />
+		<Resource Include="Resources\alliance_edit.png" />
+		<Resource Include="Resources\alliance_edit2.png" />
+		<Resource Include="Resources\alliance_help.png" />
 		<Resource Include="Resources\alliance_help2.png" />
-	  <Resource Include="Resources\alliance_ico.ico" />
-	  <Resource Include="Resources\alliance_info.png" />
-	  <Resource Include="Resources\alliance_manual.png" />
-	  <Resource Include="Resources\alliance_save.png" />
-	  <Resource Include="Resources\alliance_saveas.png" />
-	  <Resource Include="Resources\alliance_translation.png" />
+		<Resource Include="Resources\alliance_ico.ico" />
+		<Resource Include="Resources\alliance_info.png" />
+		<Resource Include="Resources\alliance_manual.png" />
+		<Resource Include="Resources\alliance_save.png" />
+		<Resource Include="Resources\alliance_saveas.png" />
+		<Resource Include="Resources\alliance_translation.png" />
 	</ItemGroup>
 
 </Project>

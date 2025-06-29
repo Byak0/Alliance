@@ -90,7 +90,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(model.DifficultyLevel);
 
 			// If bot difficulty is forced and player is not admin, use difficulty from config
-			if (Config.Instance.BotDifficulty != nameof(SpawnHelper.Difficulty.PlayerChoice) && !peer.IsAdmin())
+			if (!Config.Instance.ShowDifficultySlider && !peer.IsAdmin())
 			{
 				difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Config.Instance.BotDifficulty);
 			}

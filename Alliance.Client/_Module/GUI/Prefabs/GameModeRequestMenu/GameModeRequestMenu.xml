@@ -118,7 +118,7 @@
 														</PartyHeaderToggleWidget>
 														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
 															<ItemTemplate>
-																<GameModeOption/>
+																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 
@@ -143,7 +143,7 @@
 														</PartyHeaderToggleWidget>
 														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
 															<ItemTemplate>
-																<GameModeOption/>
+																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 

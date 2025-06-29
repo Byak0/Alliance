@@ -13,23 +13,23 @@
 				<ListPanel Id="ListPanel" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" LayoutImp.LayoutMethod="HorizontalLeftToRight">
 					<Children>
 
-						<RichTextWidget DataSource="{Name}" Text="@Text" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="200" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="22" />
+						<RichTextWidget DataSource="{Name}" Text="@Text" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="220" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="SPOptions.OptionName.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="22" MarginLeft="-40" />
 
 						<Widget Id="Option" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
 							<Children>
 
-								<ListPanel Id="BooleanOption" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" VerticalAlignment="Center" IsVisible="false" UpdateChildrenStates="true">
+								<Widget Id="BooleanOption" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="false" UpdateChildrenStates="true" MarginLeft="-68">
 									<Children>
-										<ButtonWidget Id="BoolButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" MarginLeft="175" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@OptionValueAsBoolean" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
+										<ButtonWidget Id="BoolButton" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" HorizontalAlignment="Center" Brush="SPOptions.Checkbox.Empty.Button" ButtonType="Toggle" IsSelected="@OptionValueAsBoolean" ToggleIndicator="ToggleIndicator" UpdateChildrenStates="true">
 											<Children>
 												<BrushWidget Id="ToggleIndicator" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="SPOptions.Checkbox.Full.Button" />
 												<HintWidget DataSource="{Description}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
 											</Children>
 										</ButtonWidget>
 									</Children>
-								</ListPanel>
+								</Widget>
 
-								<ListPanel Id="NumericOption" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="20" IsVisible="false">
+								<ListPanel Id="NumericOption" WidthSizePolicy="Fixed" SuggestedWidth="420" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="false">
 									<Children>
 										<SliderWidget Id="Slider" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="338" SuggestedHeight="42" VerticalAlignment="Center" DoNotUpdateHandleSize="true" Filler="Filler" Handle="SliderHandle" IsDiscrete="@IsDiscrete" MaxValueFloat="@Max" MinValueFloat="@Min" ValueFloat="@OptionValue" UpdateValueContinuously="@UpdateContinuously">
 											<Children>
@@ -61,7 +61,7 @@
 									</Children>
 								</Widget>
 
-								<GameModeDropdownWithHorizontalControl Id="StringOption" VerticalAlignment="Center" IsVisible="false" Parameter.SelectorDataSource="{Selector}" UpdateChildrenStates="true" />
+								<DropdownWithHorizontalControl Id="StringOption" WidthSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" IsVisible="false" Parameter.SelectorDataSource="{Selector}" UpdateChildrenStates="true" MarginLeft="-68" />
 
 								<Widget Id="InputOption" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" IsVisible="false" />
 

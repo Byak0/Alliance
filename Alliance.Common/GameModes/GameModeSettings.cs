@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -14,19 +13,19 @@ namespace Alliance.Common.GameModes
 	/// </summary>
 	public class GameModeSettings
 	{
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		public string GameMode;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		public string GameModeName;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		public string GameModeDescription;
 
-		[ScenarioEditor(label: "Native options", tooltip: "Native options from TW.")]
+		[ConfigProperty(label: "Native options", tooltip: "Native options from TW.")]
 		public TWConfig TWOptions;
 
-		[ScenarioEditor(label: "Mod options", tooltip: "Additional options from Alliance.")]
+		[ConfigProperty(label: "Mod options", tooltip: "Additional options from Alliance.")]
 		public Config ModOptions;
 
 		public GameModeSettings(string gameMode, string gameModeName, string gameModeDescription)
