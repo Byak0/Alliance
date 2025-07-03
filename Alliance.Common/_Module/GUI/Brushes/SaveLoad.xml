@@ -1,0 +1,218 @@
+<Brushes>
+  <Brush Name="SaveLoad.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SaveLoad\load_tuple" />
+      <BrushLayer Name="Selected" Sprite="SaveLoad\load_tuple_selected" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="Selected" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.6" SaturationFactor="-80" ValueFactor="-20" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SaveLoad.Search.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\tabbar_long_namebox" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SaveLoad.Search.InputText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="SaveLoad.Search.PlaceholderText" Font="FiraSansExtraCondensed-Light" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextAlphaFactor="0.4" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+      <Style Name="Hovered" FontColor="#F4E1C4FF" TextAlphaFactor="0.6" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+      <Style Name="Pressed" FontColor="#F4E1C4FF" TextAlphaFactor="0.2" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+      <Style Name="Selected" FontColor="#F4E1C4FF" TextAlphaFactor="0" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="SaveLoad.DeleteSave.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\MenuElements\delete_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.6" SaturationFactor="-80" ValueFactor="-20" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+    <Brush Name="SaveLoad.Collapser">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SaveLoad\load_collapser" Color="#FFFFFFFF" ExtendBottom="8" ExtendTop="3" SaturationFactor="20" HueFactor="-10"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  
+  <Brush Name="SaveLoad.Tuple.Title.Text" Font="Galahad" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EFC083CC" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="36" />
+      <Style Name="Hovered" />
+      <Style Name="Pressed" />
+      <Style Name="Selected" FontColor="#EFC083FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="SaveLoad.Tuple.Title.CorruptedText" Font="Galahad" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#B21212CC" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="36" />
+      <Style Name="Hovered" />
+      <Style Name="Pressed" />
+      <Style Name="Selected" FontColor="#B21212FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="SaveLoad.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.6" FontSize="40" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="SaveLoad.Title.CorruptedText" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#B21212FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.6" FontSize="32" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="SaveLoad.Tuple.RealTime.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Justify">
+    <Styles>
+      <Style Name="Default" FontColor="#D1C2AFB3" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.3" TextGlowRadius="0" TextBlur="0.1" FontSize="20" />
+      <Style Name="Hovered" />
+      <Style Name="Pressed" />
+      <Style Name="Selected" FontColor="#D1C2AFFF" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="SaveLoad.Tuple.GameTime.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Justify">
+    <Styles>
+      <Style Name="Default" FontColor="#F1B15FCC" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+      <Style Name="Hovered" />
+      <Style Name="Pressed" />
+      <Style Name="Selected" FontColor="#F1B15FFF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Saveload.Scrollbar.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#573524FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.9" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SaveLoad.Property.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#2168DDFF" IsHidden="true" />
+      <BrushLayer Name="Health" Sprite="General\Icons\Health@2x" IsHidden="true" />
+      <BrushLayer Name="Gold" Sprite="General\Icons\Coin@2x" IsHidden="true" />
+      <BrushLayer Name="Influence" Sprite="General\Icons\Influence@2x" IsHidden="true" />
+      <BrushLayer Name="PartySize" Sprite="General\Icons\Party@2x" IsHidden="true" />
+      <BrushLayer Name="Food" Sprite="General\Icons\Food@2x" IsHidden="true" />
+      <BrushLayer Name="Fiefs" Sprite="General\Icons\Walls" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+
+      <Style Name="Health">
+        <BrushLayer Name="Health" IsHidden="false" />
+      </Style>
+      <Style Name="Gold">
+        <BrushLayer Name="Gold" IsHidden="false" />
+      </Style>
+      <Style Name="Influence">
+        <BrushLayer Name="Influence" IsHidden="false" />
+      </Style>
+      <Style Name="PartySize">
+        <BrushLayer Name="PartySize" IsHidden="false" />
+      </Style>
+      <Style Name="Food">
+        <BrushLayer Name="Food" IsHidden="false" />
+      </Style>
+      <Style Name="Fiefs">
+        <BrushLayer Name="Fiefs" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+</Brushes>

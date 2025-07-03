@@ -1,0 +1,316 @@
+<Brushes>
+
+  <Brush Name="Nameplate.FlatBanner.Big">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Nameplate.FlatBanner.Normal">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Nameplate.FlatBanner.Small">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Nameplate.FlatBanner.Party">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="SettlementNameplateTextBrush" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#111111FF">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapEvent.Visual.Brush" >
+    <Layers>
+      <BrushLayer Name="Default"/>
+    </Layers>
+    <Styles>
+      <Style Name="None">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Raid">
+        <BrushLayer Name="Default" Sprite="SPGeneral\MapEvents\raid_icon" IsHidden="false" />
+      </Style>
+      <Style Name="Siege">
+        <BrushLayer Name="Default" Sprite="SPGeneral\MapEvents\siege_icon" IsHidden="false" />
+      </Style>
+      <Style Name="Battle">
+        <BrushLayer Name="Default" Sprite="SPGeneral\MapEvents\battle_icon" IsHidden="false" />
+      </Style>
+      <Style Name="Rebellion">
+        <BrushLayer Name="Default" Sprite="SPGeneral\MapEvents\rebellion_icon" Color="#FF0000FF" IsHidden="false" />
+      </Style>
+      <Style Name="SallyOut">
+        <BrushLayer Name="Default" Sprite="SPGeneral\MapEvents\sally_out_icon" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementTypeBrush" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Town" Sprite="SPGeneral\Nameplates\neutral_town_top" IsHidden="true" />
+      <BrushLayer Name="Castle" Sprite="SPGeneral\Nameplates\neutral_town_top" IsHidden="true" />
+      <BrushLayer Name="Village" Sprite="SPGeneral\Nameplates\neutral_town_top" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Town">
+        <BrushLayer Name="Town" IsHidden="false" />
+      </Style>
+      <Style Name="Castle">
+        <BrushLayer Name="Castle" IsHidden="false" />
+      </Style>
+      <Style Name="Village">
+        <BrushLayer Name="Village" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementCastleBrush" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="NeutralCastle" Sprite="enemy_castle_9" IsHidden="true" />
+      <BrushLayer Name="AllyCastle" Sprite="enemy_castle_9" IsHidden="true" />
+      <BrushLayer Name="EnemyCastle" Sprite="enemy_castle_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="NeutralCastle">
+        <BrushLayer Name="NeutralCastle" IsHidden="false" Color="#000000FF" />
+      </Style>
+      <Style Name="AllyCastle">
+        <BrushLayer Name="AllyCastle" IsHidden="false" Color="#245E05FF" />
+      </Style>
+      <Style Name="EnemyCastle">
+        <BrushLayer Name="EnemyCastle" IsHidden="false" Color="#870707FF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementVillageBrush" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="NeutralVillage" Sprite="enemy_village_9" IsHidden="true" />
+      <BrushLayer Name="AllyVillage" Sprite="enemy_village_9" IsHidden="true" />
+      <BrushLayer Name="EnemyVillage" Sprite="enemy_village_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="NeutralVillage">
+        <BrushLayer Name="NeutralVillage" IsHidden="false" Color="#000000FF" />
+      </Style>
+      <Style Name="AllyVillage">
+        <BrushLayer Name="AllyVillage" IsHidden="false" Color="#245E05FF" />
+      </Style>
+      <Style Name="EnemyVillage">
+        <BrushLayer Name="EnemyVillage" IsHidden="false" Color="#870707FF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementTownBrush" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="NeutralTown" Sprite="enemy_town_9" IsHidden="true" />
+      <BrushLayer Name="AllyTown" Sprite="enemy_town_9" IsHidden="true" />
+      <BrushLayer Name="EnemyTown" Sprite="enemy_town_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="NeutralTown">
+        <BrushLayer Name="NeutralTown" IsHidden="false" Color="#000000FF" />
+      </Style>
+      <Style Name="AllyTown">
+        <BrushLayer Name="AllyTown" IsHidden="false" Color="#245E05FF" />
+      </Style>
+      <Style Name="EnemyTown">
+        <BrushLayer Name="EnemyTown" IsHidden="false" Color="#870707FF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementTrackBall" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\Nameplates\tracked_ring" ColorFactor="10" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MobileTracker.Ball">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteCircle" Color="#CC6E16FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SettlementInspectedVisual" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\Nameplates\nameplate_vision" Color="#E1E1E1FF" AlphaFactor="0.5" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Settlement.Party.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.55" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="PartyNameplate.FullName.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#A1A1A1FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0.5" FontSize="26" />
+    </Styles>
+  </Brush>
+  <Brush Name="Settlement.Notification.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="Settlement.Notification.Value.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#ECB05BFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="14" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.MobilePartyTracker.Name" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F5E2C4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="1" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Party.Mencount.Number" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="1" FontSize="35" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Settlement.Event.Type.Image">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Tournament">
+        <BrushLayer Name="Default" Sprite="General\Icons\icon_tournament_square" Color="#BD7A29FF" />
+      </Style>
+      <Style Name="AvailableIssue">
+        <BrushLayer Name="Default" Sprite="General\Icons\icon_issue_available" />
+      </Style>
+      <Style Name="ActiveQuest">
+        <BrushLayer Name="Default" Sprite="General\Icons\icon_issue_active" />
+      </Style>
+      <Style Name="ActiveStoryQuest">
+        <BrushLayer Name="Default" Sprite="General\Icons\icon_story_quest_active" />
+      </Style>
+      <Style Name="TrackedIssue">
+        <BrushLayer Name="Default" Sprite="General\Icons\issue_target_icon" />
+      </Style>
+      <Style Name="TrackedStoryQuest">
+        <BrushLayer Name="Default" Sprite="General\Icons\quest_target_icon" />
+      </Style>
+      <Style Name="cow">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\cow" Color="#FFFFFFFF" />
+      </Style>
+      <Style Name="camel">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\camel" Color="#B79046FF" />
+      </Style>
+      <Style Name="butter">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\butter" Color="#FFEAB1FF" />
+      </Style>
+      <Style Name="cheese">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\cheese" Color="#FFDC97FF" />
+      </Style>
+      <Style Name="sheep">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\sheep" Color="#DDC3A3FF" />
+      </Style>
+      <Style Name="wool">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\wool" Color="#FFFFFFFF" />
+      </Style>
+      <Style Name="hog">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\hog" Color="#7F5C49FF" />
+      </Style>
+      <Style Name="wheat">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\wheat" Color="#F5B64CFF" />
+      </Style>
+      <Style Name="grain">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\wheat" Color="#F5B64CFF" />
+      </Style>
+      <Style Name="hardwood">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\hardwood" Color="#C0A796FF" />
+      </Style>
+      <Style Name="clay">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\clay" Color="#B78D6BFF" />
+      </Style>
+      <Style Name="salt">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\salt" Color="#FFFFFFFF" />
+      </Style>
+      <Style Name="iron">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\iron" Color="#A19D94FF" />
+      </Style>
+      <Style Name="fish">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\fish" Color="#BECDD2FF" />
+      </Style>
+      <Style Name="grape">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\grape" Color="#C3CE3DFF" />
+      </Style>
+      <Style Name="flax">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\flax" Color="#B16743FF" />
+      </Style>
+      <Style Name="date_fruit">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\date_fruit" Color="#D3690CFF" />
+      </Style>
+      <Style Name="olives">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\olives" Color="#667227FF" />
+      </Style>
+      <Style Name="cotton">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\cotton" Color="#E8E0D8FF" />
+      </Style>
+      <Style Name="silver">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\silver" Color="#CFCCCCFF" />
+      </Style>
+      <Style Name="fur">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\fur" Color="#B29A7DFF" />
+      </Style>
+      <Style Name="horse">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\horse" Color="#8D5E48FF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+</Brushes>
+
+
