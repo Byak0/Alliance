@@ -11,6 +11,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
+using static Alliance.Common.Core.Configuration.Models.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MPPerkObject;
 using Debug = TaleWorlds.Library.Debug;
@@ -19,16 +20,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 {
 	public static class SpawnHelper
 	{
-		public enum Difficulty
-		{
-			PlayerChoice = -1,
-			Easy = 0,
-			Normal = 1,
-			Hard = 2,
-			VeryHard = 3,
-			Bannerlord = 4
-		}
-
 		public static int TotalBots = 0;
 		public const int MaxBotsPerSpawn = 200;
 
