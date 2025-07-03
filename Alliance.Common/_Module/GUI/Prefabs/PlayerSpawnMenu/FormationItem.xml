@@ -1,0 +1,34 @@
+<Prefab>
+	<Window>
+		<!-- Formation item -->
+		<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="116">
+			<Children>
+				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="440" HeightSizePolicy="Fixed" SuggestedHeight="92" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="OverlayPopup.Background">
+					<Children>
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Background" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="SelectFormation" >
+							<Children>
+								<!-- Selection frame -->
+								<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="SPClan.RoleSelectionButton.GoldFrame" IsVisible="@IsSelected" />
+								<!-- Banner and its border -->
+								<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80" VerticalAlignment="Center" Brush="Frame1.Border"/>
+								<BannerWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80" VerticalAlignment="Center" CultureID="@MainCultureId" />
+								<!-- Formation name -->
+								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="240" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="12" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Top" Brush.FontSize="28" Text="@Name" />
+								<!-- Occupation -->
+								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginTop="8" MarginRight="16" HorizontalAlignment="Right" VerticalAlignment="Top" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Right" Brush.TextVerticalAlignment="Center" Brush.FontSize="28" Text="@Occupation" IsHidden="@EditMode" />
+								<!-- Main language -->
+								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="35" MarginBottom="8" MarginRight="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Right" Brush.TextVerticalAlignment="Center" Brush.FontSize="20" Text="@MainLanguages" IsHidden="@EditMode" />
+							</Children>
+						</ButtonWidget>
+
+						<!-- Edit button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="36" HeightSizePolicy="Fixed" SuggestedHeight="36" VerticalAlignment="Center" HorizontalAlignment="Right" MarginRight="60" Brush="MPLobby.Clan.EditInfo.Button"  UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="EditFormation" IsVisible="@EditMode" />
+
+						<!-- Delete button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="40" HeightSizePolicy="Fixed" SuggestedHeight="40" VerticalAlignment="Center" HorizontalAlignment="Right" MarginRight="8" Brush="Popup.CloseButton"  UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="DeleteFormation" IsVisible="@EditMode" />
+					</Children>
+				</BrushWidget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

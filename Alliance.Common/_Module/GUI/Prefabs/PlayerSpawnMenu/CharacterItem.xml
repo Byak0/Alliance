@@ -1,0 +1,123 @@
+<Prefab>
+	<Window>
+		<!-- Character item -->
+		<SiblingOrderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="@Width" MarginLeft="@MarginLeft" SuggestedHeight="580" VerticalAlignment="Bottom" SiblingOrder="@SiblingOrder" >
+			<Children>
+
+				<!-- Character Select Button -->
+				<ButtonWidget Id="CharacterButton"
+											WidthSizePolicy="Fixed"
+											HeightSizePolicy="Fixed"
+											SuggestedWidth="@Width"
+											SuggestedHeight="580"
+											DoNotPassEventsToChildren="true"
+											UpdateChildrenStates="true"
+											Command.Click="SelectCharacter">
+					<Children>
+
+						<!-- Character Tableau -->
+						<AL_CharacterTableauWidget DataSource="{CharacterViewModel}"
+														WidthSizePolicy="Fixed"
+														HeightSizePolicy="Fixed"
+														SuggestedWidth="800"
+														SuggestedHeight="800"
+														HorizontalAlignment="Center"
+														VerticalAlignment="Center"
+
+														BodyProperties="@BodyProperties"
+														IsFemale="@IsFemale"
+														EquipmentCode="@EquipmentCode"
+														CharStringId="@CharStringId"
+														StanceIndex="@StanceIndex"
+														BannerCodeText="@BannerCodeText"
+														MountCreationKey="@MountCreationKey"
+														ArmorColor1="@ArmorColor1"
+														ArmorColor2="@ArmorColor2"
+														Race="@Race"
+
+														IdleAction="@IdleAction"
+														IdleFaceAnim="@IdleFaceAnim"
+
+														CustomAnimation="@CustomAnimation"
+														IsPlayingCustomAnimations="@IsPlayingCustomAnimations"
+														ShouldLoopCustomAnimation="@ShouldLoopCustomAnimation"
+														CustomAnimationWaitDuration="@CustomAnimationWaitDuration"
+														CustomAnimationProgressRatio="@CustomAnimationProgressRatio"
+
+														LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex"
+														RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex"
+
+														CameraFov="@CameraFov"
+														CameraZoom="@CameraZoom"
+														CameraElevation="@CameraElevation"
+														CameraStrafe="@CameraStrafe"
+														CameraYaw="@CameraYaw"
+														CameraPitch="@CameraPitch"
+														CameraRoll="@CameraRoll"
+														CameraAnimDuration="@CameraAnimDuration"
+														ApplyCameraChange="@ApplyCameraChange"
+
+														EnableLight="@EnableLight"
+														CustomRenderScale="@CustomRenderScale"
+														IsBannerShownInBackground="true"
+														DoNotUseCustomScale="true" />
+
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="360" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.TopHeader.HoverGlow.Centered" MarginBottom="-120" />
+
+
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Bottom"  UpdateChildrenStates="true" >
+							<Children>
+								<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="200" SuggestedHeight="180" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Conversation.Gold.Background" Brush.AlphaFactor="1.2" />
+
+								<!-- Character name -->
+								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="160" HeightSizePolicy="Fixed" SuggestedHeight="42" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="22" Text="@Name" />
+								<!-- Occupation -->
+								<RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="42" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="26" Text="@Occupation" IsHidden="@Officer" />
+								<!-- Officer Icon -->
+								<Widget Sprite="SPKingdom\king_seal"
+												WidthSizePolicy="Fixed"
+												HeightSizePolicy="Fixed"
+												SuggestedWidth="48"
+												SuggestedHeight="48"
+												HorizontalAlignment="Center"
+												VerticalAlignment="Bottom"
+												IsVisible="@Officer" />
+							</Children>
+						</ButtonWidget>
+
+					</Children>
+				</ButtonWidget>
+
+				<!-- Edit Button -->
+				<ButtonWidget WidthSizePolicy="Fixed"
+											HeightSizePolicy="Fixed"
+											SuggestedWidth="48"
+											SuggestedHeight="48"
+											MarginRight="60"
+											MarginBottom="84"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Bottom"
+											Brush="MPLobby.Clan.EditInfo.Button"
+											DoNotPassEventsToChildren="true"
+											Command.Click="EditCharacter"
+											IsVisible="@EditMode" />
+
+				<!-- Delete Button -->
+				<ButtonWidget WidthSizePolicy="Fixed"
+											HeightSizePolicy="Fixed"
+											SuggestedWidth="56"
+											SuggestedHeight="56"
+											MarginLeft="60"
+											MarginBottom="80"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Bottom"
+											Brush="Popup.CloseButton"
+											DoNotPassEventsToChildren="true"
+											Command.Click="DeleteCharacter"
+											IsVisible="@EditMode" />
+
+			</Children>
+		</SiblingOrderWidget>
+
+	</Window>
+</Prefab>
