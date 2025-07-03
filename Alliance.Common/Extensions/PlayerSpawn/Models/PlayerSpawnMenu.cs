@@ -1,6 +1,4 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
-using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -134,13 +132,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			_selectedFormation = formation;
 		}
 
-		public void RequestToJoinFormation(PlayerTeam team, PlayerFormation formation)
-		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new JoinFormationRequest((int)team.TeamSide, formation.Index));
-			GameNetwork.EndModuleEventAsClient();
-		}
-
 		public void MovePlayerToFormation(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation)
 		{
 			if (player == null || team == null || formation == null)
@@ -153,13 +144,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 			formation.Members.Add(player);
 			_playerToFormation[player] = formation;
-
-			if (GameNetwork.IsServer)
-			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncJoinFormation(player, (int)team.TeamSide, formation.Index));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-			}
 		}
 
 		public bool SelectCharacter(NetworkCommunicator player, AvailableCharacter character)
