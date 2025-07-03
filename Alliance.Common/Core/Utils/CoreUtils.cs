@@ -7,6 +7,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.Core.Utils
 {
@@ -285,7 +286,7 @@ namespace Alliance.Common.Core.Utils
 		{
 			get
 			{
-				return GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+				return GameNetwork.NetworkPeers != null ? GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue() : 0;
 			}
 		}
 

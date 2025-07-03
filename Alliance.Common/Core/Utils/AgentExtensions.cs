@@ -1,4 +1,5 @@
-﻿using TaleWorlds.MountAndBlade;
+﻿using TaleWorlds.Core;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Core.Utils
 {
@@ -17,17 +18,32 @@ namespace Alliance.Common.Core.Utils
 
 		public static bool IsTroll(this Agent agent)
 		{
-			return agent.Character?.Race == _trollRaceId || agent.Character?.Race == _ologRaceId || agent.Character?.Race == _olog2RaceId;
+			return agent.Character?.IsTroll() ?? false;
+		}
+
+		public static bool IsTroll(this BasicCharacterObject character)
+		{
+			return character.Race == _trollRaceId || character.Race == _ologRaceId || character.Race == _olog2RaceId;
 		}
 
 		public static bool IsEnt(this Agent agent)
 		{
-			return agent.Character?.Race == _entRaceId;
+			return agent.Character?.IsEnt() ?? false;
+		}
+
+		public static bool IsEnt(this BasicCharacterObject character)
+		{
+			return character.Race == _entRaceId;
 		}
 
 		public static bool IsDwarf(this Agent agent)
 		{
-			return agent.Character?.Race == _dwarfRaceId;
+			return agent.Character?.IsDwarf() ?? false;
+		}
+
+		public static bool IsDwarf(this BasicCharacterObject character)
+		{
+			return character.Race == _dwarfRaceId;
 		}
 
 		public static bool IsWarg(this Agent agent)
