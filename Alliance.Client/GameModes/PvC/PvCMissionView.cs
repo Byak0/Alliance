@@ -38,8 +38,7 @@ namespace Alliance.Client.GameModes.PvC
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});
 			return views.ToArray();
 		}

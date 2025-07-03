@@ -32,8 +32,7 @@ namespace Alliance.Client.GameModes.SiegeX
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});
 			return views.ToArray();
 		}
