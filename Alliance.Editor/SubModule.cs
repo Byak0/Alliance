@@ -43,21 +43,22 @@ namespace Alliance.Editor
 			};
 			KeyBinder.Initialize(assemblies);
 
+			// Apply Harmony patches
+			DirtyCommonPatcher.Patch();
+			DirtyEditorPatcher.Patch();
+
+			KeyBinder.RegisterContexts();
+
 			ActionFactory.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
 			SceneList.Initialize();
-
-			EditorToolsManager.EditorTools = new EditorTools();
 
 			// Need to force load MaterialDesign dlls for obscure reasons
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignThemes.Wpf.dll"));
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignColors.dll"));
 
 			GenerateScenarioExamples();
-
-			// Apply Harmony patches
-			DirtyCommonPatcher.Patch();
-			DirtyEditorPatcher.Patch();
+			EditorToolsManager.EditorTools = new EditorTools();
 
 			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}
@@ -107,7 +108,7 @@ namespace Alliance.Editor
 
 		protected override void OnApplicationTick(float dt)
 		{
-			EditZoneView.Tick(dt);
+			EditorToolsManager.EditorTools.Tick(dt);
 			if (Input.IsKeyPressed(InputKey.O))
 			{
 				OpenScenarioEditor();

@@ -1,4 +1,6 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
 using System;
@@ -35,6 +37,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsComplexType => !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
 		public bool IsZone => FieldType == typeof(SerializableZone);
+		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; }
 
@@ -69,6 +72,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ICommand EditCommand { get; }
 		public ICommand DeleteCommand { get; }
 		public ICommand AddCommand { get; }
+		public ICommand EditPlayerSpawnMenuCommand { get; }
 
 		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
 		{
@@ -96,6 +100,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			EditCommand = new RelayCommand(_ => EditObjectFromFieldInfo(FieldInfo), _ => IsComplexType);
 			DeleteCommand = new RelayCommand(DeleteItem);
 			AddCommand = new RelayCommand(_ => AddItem());
+			EditPlayerSpawnMenuCommand = new RelayCommand(_ => OpenPlayerSpawnMenu(), _ => IsPlayerSpawnMenu);
 
 			if (IsCollection && FieldValue is IEnumerable enumerable)
 			{
@@ -235,6 +240,31 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 
 			return null;
+		}
+
+		public void OpenPlayerSpawnMenu()
+		{
+			if (FieldValue is PlayerSpawnMenu menu)
+			{
+				EditorToolsManager.OpenPlayerSpawnMenu(menu, OnPlayerMenuClosed);
+			}
+			else
+			{
+				Log("Field value is not a valid PlayerSpawnMenu instance.", LogLevel.Error);
+			}
+		}
+
+		private void OnPlayerMenuClosed(PlayerSpawnMenu menu)
+		{
+			if (menu != null)
+			{
+				FieldValue = menu;
+				OnPropertyChanged(nameof(FieldValue));
+			}
+			else
+			{
+				Log("PlayerSpawnMenu was closed without changes.", LogLevel.Warning);
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;

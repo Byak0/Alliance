@@ -4,6 +4,7 @@ using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
@@ -32,8 +33,9 @@ namespace Alliance.SP
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
-
 			DirtySPPatcher.Patch();
+
+			KeyBinder.RegisterContexts();
 		}
 
 		public override void OnGameInitializationFinished(Game game)
@@ -50,6 +52,7 @@ namespace Alliance.SP
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
 
+			mission.AddMissionBehavior(new PlayerSpawnMenuView());
 			mission.AddMissionBehavior(new CoreBehavior());
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
