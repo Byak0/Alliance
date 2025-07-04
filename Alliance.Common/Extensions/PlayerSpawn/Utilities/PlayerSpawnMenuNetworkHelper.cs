@@ -1,15 +1,128 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Core.Configuration.Utilities;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
+using System;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMessage;
+using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Core.Configuration.Models.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Utilities
 {
 	public static class PlayerSpawnMenuNetworkHelper
 	{
+		public static readonly CompressionInfo.Integer OperationCompressionInfo = new CompressionInfo.Integer(0, Enum.GetValues(typeof(PlayerSpawnMenuOperation)).Length, true);
+		public static readonly CompressionInfo.Integer TeamIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
+		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
+		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
+
+		public enum PlayerSpawnMenuOperation
+		{
+			BeginMenuSync,
+			EndMenuSync,
+			AddTeam,
+			UpdateTeam,
+			RemoveTeam,
+			AddFormation,
+			UpdateFormation,
+			RemoveFormation,
+			AddCharacter,
+			UpdateCharacter,
+			RemoveCharacter
+		}
+
+		public enum GlobalOperation
+		{
+			BeginMenuSync = PlayerSpawnMenuOperation.BeginMenuSync,
+			EndMenuSync = PlayerSpawnMenuOperation.EndMenuSync
+		}
+
+		public enum TeamOperation
+		{
+			AddTeam = PlayerSpawnMenuOperation.AddTeam,
+			UpdateTeam = PlayerSpawnMenuOperation.UpdateTeam,
+			RemoveTeam = PlayerSpawnMenuOperation.RemoveTeam
+		}
+
+		public enum FormationOperation
+		{
+			AddFormation = PlayerSpawnMenuOperation.AddFormation,
+			UpdateFormation = PlayerSpawnMenuOperation.UpdateFormation,
+			RemoveFormation = PlayerSpawnMenuOperation.RemoveFormation
+		}
+
+		public enum CharacterOperation
+		{
+			AddCharacter = PlayerSpawnMenuOperation.AddCharacter,
+			UpdateCharacter = PlayerSpawnMenuOperation.UpdateCharacter,
+			RemoveCharacter = PlayerSpawnMenuOperation.RemoveCharacter
+		}
+
+		public static void WritePlayerTeamToPacket(PlayerTeam team)
+		{
+			GameNetworkMessage.WriteIntToPacket(team.Index, TeamIndexCompressionInfo);
+			GameNetworkMessage.WriteStringToPacket(team.Name);
+			GameNetworkMessage.WriteIntToPacket((int)team.TeamSide, CompressionMission.TeamSideCompressionInfo);
+		}
+
+		public static PlayerTeam ReadPlayerTeamFromPacket(ref bool bufferReadValid)
+		{
+			PlayerTeam team = new PlayerTeam();
+			team.Index = GameNetworkMessage.ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+			team.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
+			team.TeamSide = (BattleSideEnum)GameNetworkMessage.ReadIntFromPacket(CompressionMission.TeamSideCompressionInfo, ref bufferReadValid);
+			return team;
+		}
+
+		public static void WritePlayerFormationToPacket(PlayerFormation formation)
+		{
+			GameNetworkMessage.WriteIntToPacket(formation.Index, FormationIndexCompressionInfo);
+			GameNetworkMessage.WriteStringToPacket(formation.Name);
+			GameNetworkMessage.WriteObjectReferenceToPacket(formation.MainCulture, CompressionBasic.GUIDCompressionInfo);
+			GameNetworkMessage.WriteBoolToPacket(formation.Settings.UseMorale);
+		}
+
+		public static PlayerFormation ReadPlayerFormationFromPacket(ref bool bufferReadValid)
+		{
+			PlayerFormation formation = new PlayerFormation();
+			formation.Index = GameNetworkMessage.ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
+			formation.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
+			object cultureObject = GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid);
+			if (cultureObject != null && cultureObject is BasicCultureObject bco)
+			{
+				formation.MainCultureId = bco.StringId;
+			}
+			formation.Settings.UseMorale = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
+			return formation;
+		}
+
+		public static void WriteAvailableCharacterToPacket(AvailableCharacter character)
+		{
+			GameNetworkMessage.WriteIntToPacket(character.Index, CompressionHelper.DefaultIntValueCompressionInfo);
+			GameNetworkMessage.WriteObjectReferenceToPacket(character.Character, CompressionBasic.GUIDCompressionInfo);
+			GameNetworkMessage.WriteBoolToPacket(character.Officer);
+			GameNetworkMessage.WriteIntToPacket(character.SpawnCount, CompressionHelper.DefaultIntValueCompressionInfo);
+			GameNetworkMessage.WriteBoolToPacket(character.IsPercentage);
+			GameNetworkMessage.WriteIntToPacket((int)character.Difficulty, CompressionHelper.DefaultIntValueCompressionInfo);
+			GameNetworkMessage.WriteFloatToPacket(character.HealthMultiplier, CompressionHelper.DefaultFloatValueCompressionInfo);
+		}
+
+		public static AvailableCharacter ReadAvailableCharacterFromPacket(ref bool bufferReadValid)
+		{
+			AvailableCharacter character = new AvailableCharacter();
+			character.Index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+			character.CharacterId = ((BasicCharacterObject)GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid)).StringId;
+			character.Officer = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
+			character.SpawnCount = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+			character.IsPercentage = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
+			character.Difficulty = (Difficulty)GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+			character.HealthMultiplier = GameNetworkMessage.ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid);
+			return character;
+		}
+
 		public static void SendPlayerSpawnMenuToPeer(NetworkCommunicator peer)
 		{
 			if (!GameNetwork.IsServer) return;

@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMessage;
+using static Alliance.Common.Extensions.PlayerSpawn.Utilities.PlayerSpawnMenuNetworkHelper;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
@@ -10,7 +10,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 		protected PlayerSpawnMenu _receivedPlayerSpawnMenu = new PlayerSpawnMenu();
 		protected bool _syncInProgress = false;
 
-		protected virtual void HandlePlayerSpawnMenuOperation(PlayerSpawnMenuMessage message)
+		protected virtual void HandlePlayerSpawnMenuOperation(IPlayerSpawnMenuMessage message)
 		{
 			switch (message.Operation)
 			{
@@ -72,13 +72,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			Log($"Alliance - PlayerSpawn menu initialized with {_receivedPlayerSpawnMenu.Teams?.Count} teams", LogLevel.Information);
 		}
 
-		protected virtual void AddTeamHandler(PlayerSpawnMenuMessage message)
+		protected virtual void AddTeamHandler(IPlayerSpawnMenuMessage message)
 		{
 			_receivedPlayerSpawnMenu?.Teams.Add(message.PlayerTeam);
 			Log($"Alliance - Added team {message.PlayerTeam?.Name}", LogLevel.Debug);
 		}
 
-		protected virtual void AddFormationHandler(PlayerSpawnMenuMessage message)
+		protected virtual void AddFormationHandler(IPlayerSpawnMenuMessage message)
 		{
 			PlayerTeam team = _receivedPlayerSpawnMenu?.Teams.Find(t => t.Index == message.TeamIndex);
 			if (team != null)
@@ -88,7 +88,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			}
 		}
 
-		protected virtual void AddCharacterHandler(PlayerSpawnMenuMessage message)
+		protected virtual void AddCharacterHandler(IPlayerSpawnMenuMessage message)
 		{
 			if (message.AvailableCharacter == null)
 			{
@@ -107,7 +107,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			}
 		}
 
-		protected virtual void RemoveTeamHandler(PlayerSpawnMenuMessage message)
+		protected virtual void RemoveTeamHandler(IPlayerSpawnMenuMessage message)
 		{
 			if (message.PlayerTeam == null)
 			{
@@ -118,7 +118,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			Log($"Alliance - Removed team at index {message.PlayerTeam.Index}", LogLevel.Debug);
 		}
 
-		protected virtual void RemoveFormationHandler(PlayerSpawnMenuMessage message)
+		protected virtual void RemoveFormationHandler(IPlayerSpawnMenuMessage message)
 		{
 			if (message.PlayerFormation == null)
 			{
@@ -130,7 +130,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			Log($"Alliance - Removed formation {message.PlayerFormation.Name} from team {team3?.Name}", LogLevel.Debug);
 		}
 
-		protected virtual void RemoveCharacterHandler(PlayerSpawnMenuMessage message)
+		protected virtual void RemoveCharacterHandler(IPlayerSpawnMenuMessage message)
 		{
 			if (message.AvailableCharacter == null)
 			{

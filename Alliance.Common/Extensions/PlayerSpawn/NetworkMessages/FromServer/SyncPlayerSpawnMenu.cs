@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Network.Messages;
+using static Alliance.Common.Extensions.PlayerSpawn.Utilities.PlayerSpawnMenuNetworkHelper;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
@@ -7,8 +9,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 	/// From server : Update a part of the player spawn menu.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public sealed class SyncPlayerSpawnMenu : PlayerSpawnMenuMessage
+	public sealed class SyncPlayerSpawnMenu : GameNetworkMessage, IPlayerSpawnMenuMessage
 	{
+		public PlayerSpawnMenuOperation Operation { get; set; }
+		public int TeamIndex { get; set; } = -1;
+		public int FormationIndex { get; set; } = -1;
+		public PlayerTeam PlayerTeam { get; set; }
+		public PlayerFormation PlayerFormation { get; set; }
+		public AvailableCharacter AvailableCharacter { get; set; }
+
 		public SyncPlayerSpawnMenu(GlobalOperation operation)
 		{
 			Operation = (PlayerSpawnMenuOperation)operation;
@@ -37,6 +46,80 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		public SyncPlayerSpawnMenu()
 		{
+		}
+
+		protected override void OnWrite()
+		{
+			WriteIntToPacket((int)Operation, OperationCompressionInfo);
+
+			switch (Operation)
+			{
+				case PlayerSpawnMenuOperation.AddTeam:
+				case PlayerSpawnMenuOperation.UpdateTeam:
+				case PlayerSpawnMenuOperation.RemoveTeam:
+					WritePlayerTeamToPacket(PlayerTeam);
+					break;
+
+				case PlayerSpawnMenuOperation.AddFormation:
+				case PlayerSpawnMenuOperation.UpdateFormation:
+				case PlayerSpawnMenuOperation.RemoveFormation:
+					WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
+					WritePlayerFormationToPacket(PlayerFormation);
+					break;
+
+				case PlayerSpawnMenuOperation.AddCharacter:
+				case PlayerSpawnMenuOperation.UpdateCharacter:
+				case PlayerSpawnMenuOperation.RemoveCharacter:
+					WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
+					WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
+					WriteAvailableCharacterToPacket(AvailableCharacter);
+					break;
+
+				case PlayerSpawnMenuOperation.BeginMenuSync:
+				case PlayerSpawnMenuOperation.EndMenuSync:
+				default:
+					break;
+			}
+		}
+
+		protected override bool OnRead()
+		{
+			bool bufferReadValid = true;
+
+			Operation = (PlayerSpawnMenuOperation)ReadIntFromPacket(OperationCompressionInfo, ref bufferReadValid);
+
+			switch (Operation)
+			{
+				case PlayerSpawnMenuOperation.AddTeam:
+				case PlayerSpawnMenuOperation.UpdateTeam:
+				case PlayerSpawnMenuOperation.RemoveTeam:
+					PlayerTeam = ReadPlayerTeamFromPacket(ref bufferReadValid);
+					break;
+				case PlayerSpawnMenuOperation.AddFormation:
+				case PlayerSpawnMenuOperation.UpdateFormation:
+				case PlayerSpawnMenuOperation.RemoveFormation:
+					TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+					PlayerFormation = ReadPlayerFormationFromPacket(ref bufferReadValid);
+					break;
+				case PlayerSpawnMenuOperation.AddCharacter:
+				case PlayerSpawnMenuOperation.UpdateCharacter:
+				case PlayerSpawnMenuOperation.RemoveCharacter:
+					TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+					FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
+					AvailableCharacter = ReadAvailableCharacterFromPacket(ref bufferReadValid);
+					break;
+				case PlayerSpawnMenuOperation.BeginMenuSync:
+				case PlayerSpawnMenuOperation.EndMenuSync:
+				default:
+					break;
+			}
+
+			return bufferReadValid;
+		}
+
+		protected override MultiplayerMessageFilter OnGetLogFilter()
+		{
+			return MultiplayerMessageFilter.Mission;
 		}
 
 		protected override string OnGetLogFormat()

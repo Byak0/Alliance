@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMessage;
+using static Alliance.Common.Extensions.PlayerSpawn.Utilities.PlayerSpawnMenuNetworkHelper;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
