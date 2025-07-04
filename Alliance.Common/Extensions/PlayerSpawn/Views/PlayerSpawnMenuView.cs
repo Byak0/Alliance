@@ -52,22 +52,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 		public override void OnMissionTick(float dt)
 		{
 			Enabled = true;
-			if (Enabled && !IsMenuOpen && CheckMenuKeyPress())
+			if (Enabled && !IsMenuOpen && CheckOpenMenuKeyPress())
 			{
 				// Open menu with default instance of PlayerSpawnMenu
 				OpenMenu(PlayerSpawnMenu.Instance);
 			}
-			else if (IsMenuOpen &&
-					 (Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) ||
-					  _layer.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) ||
-					  _layer.Input.IsKeyPressed(InputKey.RightMouseButton) ||
-					  Input.IsKeyReleased(InputKey.Escape)))
+			else if (IsMenuOpen && CheckCloseMenuKeyPress())
 			{
 				CloseMenu();
 			}
 		}
 
-		private bool CheckMenuKeyPress()
+		private bool CheckOpenMenuKeyPress()
 		{
 			// Safely checks if the menu key is pressed. Input can be null in Modding Kit context.
 			if (MissionScreen?.SceneLayer?.Input != null)
@@ -77,6 +73,19 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			else
 			{
 				return TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey);
+			}
+		}
+
+		private bool CheckCloseMenuKeyPress()
+		{
+			// Safely checks if the menu key is pressed. Input can be null in Modding Kit context.
+			if (MissionScreen?.SceneLayer?.Input != null)
+			{
+				return Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || _layer.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || Input.IsKeyReleased(InputKey.Escape);
+			}
+			else
+			{
+				return TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.RightMouseButton) || TaleWorlds.InputSystem.Input.IsKeyReleased(InputKey.Escape);
 			}
 		}
 
