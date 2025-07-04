@@ -49,6 +49,10 @@ namespace Alliance.Editor.GameModes.Story.Views
 			{
 				_zones.Remove(zone);
 			}
+			if (_editableZone == zone)
+			{
+				_editableZone = null;
+			}
 		}
 
 		public static void SetEditableZone(SerializableZone zone)
