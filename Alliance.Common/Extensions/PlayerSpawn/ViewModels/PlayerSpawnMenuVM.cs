@@ -1,8 +1,8 @@
 ﻿#if !SERVER
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.PlayerSpawn.Utilities;
 using Alliance.Common.Extensions.PlayerSpawn.Views.Popups;
 using Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview;
@@ -44,6 +44,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private TeamEditorPopup _teamEditorPopup;
 		private SaveFileDialog _saveFile;
 		private OpenFileDialog _openFile;
+		private List<string> _availableLanguages;
 
 		public PlayerSpawnMenu PlayerSpawnMenu => _playerSpawnMenu;
 		public PlayerTeamVM SelectedTeam => _selectedTeam;
@@ -212,21 +213,29 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_formationEditorPopup = new FormationEditorPopup();
 			_teamEditorPopup = new TeamEditorPopup();
 
-			List<string> availableLangues = LocalizationHelper.GetAvailableLanguages();
-			string preferedLanguage;
+			_availableLanguages = LocalizationHelper.GetAvailableLanguages();
 
 			PreferredLanguage = new SelectionOptionVM(
 									new TextObject("VOIP preference :"),
 									new TextObject("Your preferred language for VOIP"),
 									new SelectionOptionData(
-										() => availableLangues.IndexOf(LocalizationHelper.GetCurrentLanguage()),
-										newValue => preferedLanguage = availableLangues[newValue],
-										availableLangues.Count,
-										availableLangues),
+										() => _availableLanguages.IndexOf(UserConfig.Instance.PreferredLanguage),
+										newValue => SetLanguage(_availableLanguages[newValue]),
+										_availableLanguages.Count,
+										_availableLanguages),
 								false);
 
 			_playerSpawnMenu = playerSpawnMenu;
 			RefreshMenu();
+		}
+
+		private void SetLanguage(string newValue)
+		{
+			if (UserConfig.Instance.PreferredLanguage != newValue)
+			{
+				UserConfig.Instance.PreferredLanguage = newValue;
+				UserConfig.Instance.Save();
+			}
 		}
 
 		/// <summary>

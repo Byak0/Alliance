@@ -133,7 +133,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 				//ScreenManager.AddLayer(_layer);
 
 				_dataSource.IsVisible = true;
-				_dataSource.EditMode = true;
 				IsMenuOpen = true;
 			}
 			catch (Exception ex)
