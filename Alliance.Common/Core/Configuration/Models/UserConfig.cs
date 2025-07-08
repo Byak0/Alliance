@@ -2,6 +2,7 @@
 using Alliance.Common.Utilities;
 using System;
 using System.IO;
+using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Core.Configuration.Models
@@ -14,7 +15,27 @@ namespace Alliance.Common.Core.Configuration.Models
 		public string PreferredLanguage { get; set; } = LocalizationHelper.GetCurrentLanguage();
 		public bool CanSeeAllPlayersNames { get; set; } = false;
 
-		private UserConfig()
+		[XmlIgnore]
+		public int PreferredLanguageIndex
+		{
+			get
+			{
+				return LocalizationHelper.GetAvailableLanguages().IndexOf(PreferredLanguage);
+			}
+			set
+			{
+				if (value >= 0 && value < LocalizationHelper.GetAvailableLanguages().Count)
+				{
+					PreferredLanguage = LocalizationHelper.GetAvailableLanguages()[value];
+				}
+				else
+				{
+					Log("Invalid language index: " + value, LogLevel.Warning);
+				}
+			}
+		}
+
+		public UserConfig()
 		{
 			LocalizationHelper.GetCurrentLanguage();
 		}
@@ -48,8 +69,7 @@ namespace Alliance.Common.Core.Configuration.Models
 
 			try
 			{
-				System.Xml.Serialization.XmlSerializer serializer =
-					new System.Xml.Serialization.XmlSerializer(typeof(UserConfig));
+				XmlSerializer serializer = new XmlSerializer(typeof(UserConfig));
 
 				using (FileStream stream = new FileStream(CONFIG_PATH, FileMode.Open))
 				{
@@ -74,8 +94,7 @@ namespace Alliance.Common.Core.Configuration.Models
 					Directory.CreateDirectory(directory);
 				}
 
-				System.Xml.Serialization.XmlSerializer serializer =
-					new System.Xml.Serialization.XmlSerializer(typeof(UserConfig));
+				XmlSerializer serializer = new XmlSerializer(typeof(UserConfig));
 
 				using (FileStream stream = new FileStream(CONFIG_PATH, FileMode.Create))
 				{

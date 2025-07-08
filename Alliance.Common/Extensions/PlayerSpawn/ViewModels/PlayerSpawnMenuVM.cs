@@ -219,8 +219,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 									new TextObject("VOIP preference :"),
 									new TextObject("Your preferred language for VOIP"),
 									new SelectionOptionData(
-										() => _availableLanguages.IndexOf(UserConfig.Instance.PreferredLanguage),
-										newValue => SetLanguage(_availableLanguages[newValue]),
+										() => UserConfig.Instance.PreferredLanguageIndex,
+										newValue => SetLanguage(newValue),
 										_availableLanguages.Count,
 										_availableLanguages),
 								false);
@@ -229,12 +229,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			RefreshMenu();
 		}
 
-		private void SetLanguage(string newValue)
+		private void SetLanguage(int newValue)
 		{
-			if (UserConfig.Instance.PreferredLanguage != newValue)
+			if (UserConfig.Instance.PreferredLanguageIndex != newValue)
 			{
-				UserConfig.Instance.PreferredLanguage = newValue;
+				UserConfig.Instance.PreferredLanguageIndex = newValue;
 				UserConfig.Instance.Save();
+				ConfigManager.Instance.SendMyConfigToServer(UserConfig.Instance);
 			}
 		}
 
