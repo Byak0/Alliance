@@ -375,6 +375,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			// Check all fields and properties
 			foreach (var field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
 			{
+				// Skip fields marked with [XmlIgnore]
+				if (Attribute.IsDefined(field, typeof(XmlIgnoreAttribute)))
+					continue;
+
 				var fieldValue = field.GetValue(obj);
 				RecursiveSerializationCallBack(fieldValue, callbackAction);
 			}
@@ -386,6 +390,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				{
 					continue;
 				}
+				// Skip properties marked with [XmlIgnore]
+				if (Attribute.IsDefined(property, typeof(XmlIgnoreAttribute)))
+					continue;
+
 				var propertyValue = property.GetValue(obj);
 				RecursiveSerializationCallBack(propertyValue, callbackAction);
 			}
