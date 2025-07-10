@@ -32,7 +32,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 		public void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
 		{
-			_playerSpawnMenuView.OpenMenu(playerSpawnMenu, onCloseCallback);
+			_playerSpawnMenuView.OpenMenu(playerSpawnMenu, onCloseCallback, true);
 		}
 
 		public void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)

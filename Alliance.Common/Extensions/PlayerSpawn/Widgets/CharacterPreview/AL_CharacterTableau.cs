@@ -189,16 +189,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			// Animate camera
 			if (_isCamAnimating)
 			{
-				_camAnimTimer += dt;
-				float t = Math.Min(1f, _camAnimTimer / _camAnimDuration);
-				t = t * t * (3f - 2f * t); // smoothstep
-
-				_camPos.origin = Vec3.Lerp(_camStartFrame.origin, _camTargetFrame.origin, t);
-				_camPos.rotation = Mat3.Lerp(_camStartFrame.rotation, _camTargetFrame.rotation, t);
-				_verticalFov = _fovStart + (_fovTarget - _fovStart) * t;
-
-				if (t >= 1f)
+				if (_camAnimDuration == 0)
+				{
+					_camPos.origin = _camTargetFrame.origin;
+					_camPos.rotation = _camTargetFrame.rotation;
+					_verticalFov = _fovTarget;
 					_isCamAnimating = false;
+				}
+				else
+				{
+					_camAnimTimer += dt;
+
+					float t = Math.Min(1f, _camAnimTimer / _camAnimDuration);
+					t = t * t * (3f - 2f * t); // smoothstep
+
+					_camPos.origin = Vec3.Lerp(_camStartFrame.origin, _camTargetFrame.origin, t);
+					_camPos.rotation = Mat3.Lerp(_camStartFrame.rotation, _camTargetFrame.rotation, t);
+					_verticalFov = _fovStart + (_fovTarget - _fovStart) * t;
+
+					if (t >= 1f)
+						_isCamAnimating = false;
+				}
 			}
 
 			// Animation gap timer
@@ -219,11 +230,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			// Ensure camera and tableau view exist
 			if (View != null)
 			{
-				if (_continuousRenderCamera == null)
-				{
-					_continuousRenderCamera = Camera.CreateCamera();
-				}
-
 				View.SetDoNotRenderThisFrame(false);
 				View.SetContinuousRendering(true); // Keep this active
 			}
@@ -270,7 +276,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_camTargetFrame = targetFrame;
 			_fovStart = _verticalFov;
 			_fovTarget = targetFov;
-			_camAnimDuration = Math.Max(0.001f, duration);
+			_camAnimDuration = duration;
 			_camAnimTimer = 0f;
 			_isCamAnimating = true;
 		}
@@ -1089,7 +1095,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			GameEntity entity = _agentVisuals?.GetEntity();
 			if (entity == null) return;
 
-			if (_light != null) entity.RemoveComponent(entity.GetLight());
+			if (_light != null && _light.IsValid && entity.HasComponent(_light))
+			{
+				entity.RemoveComponent(_light);
+			}
 			_light = null;
 		}
 	}

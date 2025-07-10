@@ -141,9 +141,8 @@
 							</Children>
 						</BrushWidget>
 
-
-
-
+						
+						
 						<!-- Bottom right part : Character choice -->
 						<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="480" >
 							<Children>
@@ -166,6 +165,10 @@
 					</Children>
 				</BrushWidget>
 
+				<!-- Selected perks -->
+				<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\FirstPerk\CandidatePerks}" MarginTop="-280"/>
+				<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\SecondPerk\CandidatePerks}" MarginTop="-280"/>
+				<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\ThirdPerk\CandidatePerks}" MarginTop="-280"/>
 
 			</Children>
 		</ButtonWidget>

@@ -7,6 +7,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
+using static Alliance.Common.Core.Utils.AgentExtensions;
 using Color = TaleWorlds.Library.Color;
 
 namespace Alliance.Client.Extensions.TroopSpawner.ViewModels

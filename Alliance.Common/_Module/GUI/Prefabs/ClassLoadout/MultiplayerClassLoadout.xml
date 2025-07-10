@@ -352,7 +352,7 @@
 
                         <BrushWidget Id="TroopClassFrame" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPClassLoadout.TroopClass.Frame" ExtendLeft="5" ExtendRight="5" ExtendBottom="5" ExtendTop="5" DoNotAcceptEvents="true" />
 
-                        <MultiplayerTroopTypeIconWidget DataSource="{CompassElement}" Id="IconContainer" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="100" HorizontalAlignment="Center"  VerticalAlignment="Center" ForegroundWidget="IconForeground" IconSpriteType="@IconType" AlphaFactor="0" UseOriginalSize="false">
+                        <MultiplayerTroopTypeIconWidget DataSource="{CompassElement}" Id="IconContainer" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="100" HorizontalAlignment="Center"  VerticalAlignment="Center" ForegroundWidget="IconForeground" IconSpriteType="@IconType" AlphaFactor="0" >
                           <Children>
                             <Widget Id="IconForeground" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Color="#F4E1C4FF"/>
                           </Children>

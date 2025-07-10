@@ -36,6 +36,9 @@
 		<Reference Include="System.Numerics.Vectors">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\System.Numerics.Vectors.dll</HintPath>
 		</Reference>
+		<Reference Include="TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection">
+			<HintPath>$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	
 	<ItemGroup>

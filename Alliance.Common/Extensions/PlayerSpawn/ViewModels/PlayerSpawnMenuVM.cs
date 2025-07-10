@@ -1,11 +1,11 @@
 ﻿#if !SERVER
+using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Utilities;
 using Alliance.Common.Extensions.PlayerSpawn.Views.Popups;
-using Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Utilities;
 using JetBrains.Annotations;
@@ -32,13 +32,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private string _menuTitle;
 		private PlayerSpawnMenu _playerSpawnMenu;
 		private OptionVM _preferredLanguage;
-		private MBBindingList<PlayerTeamVM> _teams;
-		private MBBindingList<PlayerFormationVM> _formations;
-		private MBBindingList<PlayerCharacterVM> _characters;
-		private MBBindingList<OfficerCandidacyVM> _officerCandidacies;
-		private PlayerTeamVM _selectedTeam;
-		private PlayerFormationVM _selectedFormation;
-		private PlayerCharacterVM _selectedCharacter;
+		private MBBindingList<PlayerTeamVM> _teamsVM;
+		private MBBindingList<PlayerFormationVM> _formationsVM;
+		private MBBindingList<PlayerCharacterVM> _charactersVM;
+		private MBBindingList<OfficerCandidacyVM> _officerCandidaciesVM;
+		private PlayerTeamVM _selectedTeamVM;
+		private PlayerFormationVM _selectedFormationVM;
+		private PlayerCharacterVM _selectedCharacterVM;
+		private PlayerCharacterVM _previouslySelectedCharacterVM;
 		private CharacterEditorPopup _characterEditorPopup;
 		private FormationEditorPopup _formationEditorPopup;
 		private TeamEditorPopup _teamEditorPopup;
@@ -47,9 +48,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private List<string> _availableLanguages;
 
 		public PlayerSpawnMenu PlayerSpawnMenu => _playerSpawnMenu;
-		public PlayerTeamVM SelectedTeam => _selectedTeam;
-		public PlayerFormationVM SelectedFormation => _selectedFormation;
-		public PlayerCharacterVM SelectedCharacter => _selectedCharacter;
+		public PlayerTeamVM SelectedTeamVM => _selectedTeamVM;
+		public PlayerFormationVM SelectedFormationVM => _selectedFormationVM;
+
+		[DataSourceProperty]
+		public PlayerCharacterVM SelectedCharacterVM
+		{
+			get
+			{
+				return _selectedCharacterVM;
+			}
+			set
+			{
+				if (value != _selectedCharacterVM)
+				{
+					_selectedCharacterVM = value;
+					OnPropertyChangedWithValue(value, nameof(SelectedCharacterVM));
+				}
+			}
+		}
 
 		[DataSourceProperty]
 		public OptionVM PreferredLanguage
@@ -103,13 +120,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					OnPropertyChangedWithValue(value, nameof(EditMode));
 
 					// Propagate to all formations
-					foreach (PlayerFormationVM formation in _formations)
+					foreach (PlayerFormationVM formation in _formationsVM)
 					{
 						formation.EditMode = _editMode;
 					}
 
 					// Propagate to all characters
-					foreach (PlayerCharacterVM character in _characters)
+					foreach (PlayerCharacterVM character in _charactersVM)
 					{
 						character.EditMode = _editMode;
 					}
@@ -134,12 +151,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		[DataSourceProperty]
 		public MBBindingList<PlayerTeamVM> Teams
 		{
-			get => _teams;
+			get => _teamsVM;
 			set
 			{
-				if (value != _teams)
+				if (value != _teamsVM)
 				{
-					_teams = value;
+					_teamsVM = value;
 					OnPropertyChangedWithValue(value, nameof(Teams));
 				}
 			}
@@ -148,12 +165,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		[DataSourceProperty]
 		public MBBindingList<PlayerFormationVM> Formations
 		{
-			get => _formations;
+			get => _formationsVM;
 			set
 			{
-				if (value != _formations)
+				if (value != _formationsVM)
 				{
-					_formations = value;
+					_formationsVM = value;
 					OnPropertyChangedWithValue(value, nameof(Formations));
 				}
 			}
@@ -162,12 +179,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		[DataSourceProperty]
 		public MBBindingList<PlayerCharacterVM> Characters
 		{
-			get => _characters;
+			get => _charactersVM;
 			set
 			{
-				if (value != _characters)
+				if (value != _charactersVM)
 				{
-					_characters = value;
+					_charactersVM = value;
 					OnPropertyChangedWithValue(value, nameof(Characters));
 				}
 			}
@@ -176,12 +193,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		[DataSourceProperty]
 		public MBBindingList<OfficerCandidacyVM> OfficerCandidacies
 		{
-			get => _officerCandidacies;
+			get => _officerCandidaciesVM;
 			set
 			{
-				if (value != _officerCandidacies)
+				if (value != _officerCandidaciesVM)
 				{
-					_officerCandidacies = value;
+					_officerCandidaciesVM = value;
 					OnPropertyChangedWithValue(value, nameof(OfficerCandidacies));
 				}
 			}
@@ -205,10 +222,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_openFile.Filter = "XML File (.xml)|*.xml";
 			_openFile.InitialDirectory = Path.GetFullPath(Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Spawn_Presets"));
 
-			_teams = new MBBindingList<PlayerTeamVM>();
-			_formations = new MBBindingList<PlayerFormationVM>();
-			_characters = new MBBindingList<PlayerCharacterVM>();
-			_officerCandidacies = new MBBindingList<OfficerCandidacyVM>();
+			_teamsVM = new MBBindingList<PlayerTeamVM>();
+			_formationsVM = new MBBindingList<PlayerFormationVM>();
+			_charactersVM = new MBBindingList<PlayerCharacterVM>();
+			_officerCandidaciesVM = new MBBindingList<OfficerCandidacyVM>();
 			_characterEditorPopup = new CharacterEditorPopup();
 			_formationEditorPopup = new FormationEditorPopup();
 			_teamEditorPopup = new TeamEditorPopup();
@@ -226,7 +243,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 								false);
 
 			_playerSpawnMenu = playerSpawnMenu;
-			RefreshMenu();
+			GenerateMenu();
+
+			_playerSpawnMenu.OnCharacterSelected += OnCharacterSelected;
+			_playerSpawnMenu.OnCharacterDeselected += OnCharacterDeselected;
 		}
 
 		private void SetLanguage(int newValue)
@@ -240,9 +260,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		}
 
 		/// <summary>
-		/// Refresh menu from PlayerSpawnMenu model data.
+		/// Fully regenerate menu from PlayerSpawnMenu model data.
 		/// </summary>
-		public void RefreshMenu()
+		public void GenerateMenu()
 		{
 			Teams.Clear();
 			Formations.Clear();
@@ -250,12 +270,41 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			OfficerCandidacies.Clear();
 			foreach (PlayerTeam team in _playerSpawnMenu.Teams)
 			{
-				PlayerTeamVM teamVM = new PlayerTeamVM(team, SelectTeam, EditTeam, DeleteTeam, EditMode);
-				Teams.Add(teamVM);
-				if (team == _playerSpawnMenu.SelectedTeam)
-				{
-					SelectTeam(teamVM);
-				}
+				Teams.Add(new PlayerTeamVM(team, SelectTeam, EditTeam, DeleteTeam, EditMode));
+			}
+
+			if (_playerSpawnMenu.MyAssignment?.Team == null) return;
+
+			PlayerTeamVM teamVM = Teams.FirstOrDefault(t => t.Team.Index == _playerSpawnMenu.MyAssignment.Team.Index);
+			SelectTeam(teamVM);
+
+			if (_playerSpawnMenu.MyAssignment.Formation == null) return;
+
+			PlayerFormationVM formationVM = Formations.FirstOrDefault(f => f.Formation.Index == _playerSpawnMenu.MyAssignment.Formation.Index);
+			SelectFormation(formationVM);
+
+			if (_playerSpawnMenu.MyAssignment.Character == null) return;
+
+			PlayerCharacterVM characterVM = Characters.FirstOrDefault(c => c.AvailableCharacter.Index == _playerSpawnMenu.MyAssignment.Character.Index);
+			SelectCharacter(characterVM);
+		}
+
+		/// <summary>
+		/// "Light" refresh of all values in the menu.
+		/// </summary>
+		public override void RefreshValues()
+		{
+			foreach (PlayerTeamVM teamVM in Teams)
+			{
+				teamVM.RefreshValues();
+			}
+			foreach (PlayerFormationVM formationVM in Formations)
+			{
+				formationVM.RefreshValues();
+			}
+			foreach (PlayerCharacterVM characterVM in Characters)
+			{
+				characterVM.RefreshValues();
 			}
 		}
 
@@ -281,21 +330,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		private void OnTeamEdited(PlayerTeam team)
 		{
-			_teams.FirstOrDefault(vm => vm.Team == team)?.RefreshValues();
+			_teamsVM.FirstOrDefault(vm => vm.Team == team)?.RefreshValues();
 		}
 
 		public void DeleteTeam(PlayerTeamVM teamVM)
 		{
-			if (teamVM != null && SelectedTeam == teamVM)
-			{
-				_selectedTeam = null;
-				_selectedFormation = null;
-				_playerSpawnMenu.SelectTeam(null);
-				RefreshMenu();
-			}
 			if (Teams.Remove(teamVM))
 			{
 				_playerSpawnMenu.RemoveTeam(teamVM.Team);
+			}
+			if (teamVM != null && SelectedTeamVM == teamVM)
+			{
+				_selectedTeamVM = null;
+				_selectedFormationVM = null;
+				GenerateMenu();
 			}
 		}
 
@@ -303,11 +351,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		public void AddFormation()
 		{
 			// Ensure a team is selected before adding a formation
-			PlayerTeam selectedTeam = SelectedTeam?.Team;
+			PlayerTeam selectedTeam = SelectedTeamVM?.Team;
 			if (selectedTeam == null) return;
 
-			PlayerFormation newFormation = _playerSpawnMenu.AddFormation(selectedTeam, "New formation");
-			PlayerFormationVM newFormationVM = new PlayerFormationVM(selectedTeam, newFormation, SelectFormation, EditFormation, DeleteFormation, EditMode);
+			PlayerFormation newFormation = selectedTeam.AddFormation("New formation");
+			PlayerFormationVM newFormationVM = new PlayerFormationVM(SelectedTeamVM, newFormation, SelectFormation, EditFormation, DeleteFormation, EditMode);
 			Formations.Add(newFormationVM);
 		}
 
@@ -321,35 +369,34 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		private void OnFormationEdited(PlayerFormation formation)
 		{
-			_formations.FirstOrDefault(vm => vm.Formation == formation)?.RefreshValues();
+			_formationsVM.FirstOrDefault(vm => vm.Formation == formation)?.RefreshValues();
 		}
 
 		public void DeleteFormation(PlayerFormationVM formationVM)
 		{
-			if (formationVM != null && SelectedFormation == formationVM)
+			if (formationVM != null && SelectedFormationVM == formationVM)
 			{
-				_selectedFormation = null;
-				_playerSpawnMenu.SelectFormation(null);
+				_selectedFormationVM = null;
 			}
 			if (Formations.Remove(formationVM))
 			{
-				_playerSpawnMenu.RemoveFormation(formationVM.Team, formationVM.Formation);
+				formationVM.TeamVM.Team.RemoveFormation(formationVM.Formation);
 			}
 		}
 
 		[UsedImplicitly]
 		public void AddCharacter()
 		{
-			if (SelectedFormation == null) return;
+			if (SelectedFormationVM == null) return;
 
-			_characterEditorPopup.OpenMenu(new AvailableCharacter(), SelectedFormation.Formation.MainCulture, OnCharacterAdded);
+			_characterEditorPopup.OpenMenu(new AvailableCharacter(), SelectedFormationVM.Formation.MainCulture, OnCharacterAdded);
 		}
 
 		private void OnCharacterAdded(AvailableCharacter character)
 		{
-			if (SelectedFormation == null || character?.CharacterId == null) return;
+			if (SelectedFormationVM == null || character?.CharacterId == null) return;
 
-			_playerSpawnMenu.AddCharacter(SelectedFormation.Formation, character);
+			SelectedFormationVM.Formation.AddCharacter(character);
 			RefreshCharacters();
 		}
 
@@ -357,7 +404,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (characterVM != null)
 			{
-				_characterEditorPopup.OpenMenu(characterVM.AvailableCharacter, SelectedFormation.Formation.MainCulture, OnCharacterEdited);
+				_characterEditorPopup.OpenMenu(characterVM.AvailableCharacter, SelectedFormationVM.Formation.MainCulture, OnCharacterEdited);
 			}
 		}
 
@@ -368,9 +415,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void DeleteCharacter(PlayerCharacterVM characterVM)
 		{
-			if (characterVM != null && SelectedFormation != null && SelectedFormation.Formation.AvailableCharacters.Contains(characterVM.AvailableCharacter))
+			if (characterVM != null && SelectedFormationVM != null && SelectedFormationVM.Formation.AvailableCharacters.Contains(characterVM.AvailableCharacter))
 			{
-				SelectedFormation.Formation.AvailableCharacters.Remove(characterVM.AvailableCharacter);
+				SelectedFormationVM.Formation.AvailableCharacters.Remove(characterVM.AvailableCharacter);
 				RefreshCharacters();
 			}
 		}
@@ -380,16 +427,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			if (playerTeamVM != null)
 			{
 				// Deselect previous Formation/Team
-				if (SelectedFormation != null) SelectedFormation.IsSelected = false;
-				if (SelectedTeam != null) SelectedTeam.IsSelected = false;
-				if (SelectedCharacter != null) SelectedCharacter.IsSelected = false;
+				if (SelectedFormationVM != null) SelectedFormationVM.IsSelected = false;
+				if (SelectedTeamVM != null) SelectedTeamVM.IsSelected = false;
+				if (SelectedCharacterVM != null) SelectedCharacterVM.IsSelected = false;
 
-				_selectedCharacter = null;
-				_selectedFormation = null;
-				_selectedTeam = playerTeamVM;
-				_playerSpawnMenu.SelectTeam(playerTeamVM.Team);
+				SelectedCharacterVM = null;
+				_selectedFormationVM = null;
+				_selectedTeamVM = playerTeamVM;
 				playerTeamVM.IsSelected = true;
-				MenuTitle = $"{SelectedTeam.Team.TeamSide} - {SelectedTeam.Team.Name}";
+				MenuTitle = $"{SelectedTeamVM.Team.TeamSide} - {SelectedTeamVM.Team.Name}";
 
 				// Clear existing characters and officer candidacies
 				Characters.Clear();
@@ -399,12 +445,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				Formations.Clear();
 				foreach (PlayerFormation formation in playerTeamVM.Team.Formations)
 				{
-					PlayerFormationVM formationVM = new PlayerFormationVM(playerTeamVM.Team, formation, SelectFormation, EditFormation, DeleteFormation, EditMode);
+					PlayerFormationVM formationVM = new PlayerFormationVM(playerTeamVM, formation, SelectFormation, EditFormation, DeleteFormation, EditMode);
 					Formations.Add(formationVM);
-					if (formation == _playerSpawnMenu.SelectedFormation)
-					{
-						SelectFormation(formationVM);
-					}
+					//if (formation == _playerSpawnMenu.MyAssignment.Formation)
+					//{
+					//	SelectFormation(formationVM);
+					//}
 				}
 			}
 		}
@@ -413,139 +459,189 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (formationVM != null)
 			{
-				if (SelectedFormation != null) SelectedFormation.IsSelected = false;
-				_selectedFormation = formationVM;
-				_playerSpawnMenu.SelectFormation(formationVM.Formation);
+				if (SelectedFormationVM != null) SelectedFormationVM.IsSelected = false;
+				_selectedFormationVM = formationVM;
 				formationVM.IsSelected = true;
-				MenuTitle = $"{SelectedTeam.Team.TeamSide} - {SelectedTeam.Team.Name} - {SelectedFormation.Name}";
+				MenuTitle = $"{SelectedTeamVM.Team.TeamSide} - {SelectedTeamVM.Team.Name} - {SelectedFormationVM.Name}";
 				// Refresh characters and officer candidacies for the selected formation
 				RefreshCharacters();
 				RefreshOfficerCandidacies();
 			}
 		}
 
-		public void SelectCharacter(PlayerCharacterVM characterVM)
+		/// <summary>
+		/// Called when changing perks for a character.
+		/// </summary>
+		public void UpdateCharacterPerks(PlayerCharacterVM characterVM)
 		{
-			if (characterVM?.CharacterViewModel != null)
+			// If the character is already selected, we can update perks directly
+			if (characterVM == SelectedCharacterVM)
 			{
-				_playerSpawnMenu.MovePlayerToFormation(GameNetwork.MyPeer, SelectedFormation.Team, SelectedFormation.Formation);
-
-				if (_playerSpawnMenu.SelectCharacter(GameNetwork.MyPeer, characterVM.AvailableCharacter))
-				{
-					//if (SelectedCharacter != null) SelectedCharacter.IsSelected = false;
-					//characterVM.IsSelected = true;
-					//_selectedCharacter = characterVM;
-
-					// Test candidacy
-					if (characterVM.AvailableCharacter.Officer)
-					{
-						_playerSpawnMenu.DeclareCandidacy(GameNetwork.MyPeer, "For Frodo !");
-						RefreshOfficerCandidacies();
-					}
-				}
-				else
-				{
-					characterVM.IsSelected = false;
-				}
-
-				//todo test remove and put under condition
-				// todo here ask model if we are authorize to select character (potentially wait for server answer)
-				AL_CharacterViewModel _previouslySelectedCharacter = _selectedCharacter?.CharacterViewModel;
-
-				if (SelectedCharacter != null) SelectedCharacter.IsSelected = false;
-				characterVM.IsSelected = true;
-				_selectedCharacter = characterVM;
-
-				if (_previouslySelectedCharacter != null)
-				{
-					try
-					{
-						_previouslySelectedCharacter.ExecuteStartCustomAnimation("act_walk_backward_1h");
-						_previouslySelectedCharacter.CameraZoom = 1.2f;
-						_previouslySelectedCharacter.CameraAnimDuration = 1.2f;
-						_previouslySelectedCharacter.ApplyCameraChange = true;
-						_previouslySelectedCharacter.EnableLight = false;
-					}
-					catch (Exception ex)
-					{
-						Log("Exception in PlayerSpawnMenuVM : " + ex, LogLevel.Error);
-					}
-				}
-
-				foreach (PlayerCharacterVM playerCharacterVM in _characters)
-				{
-					AL_CharacterViewModel charVM = playerCharacterVM.CharacterViewModel;
-					if (charVM != _selectedCharacter.CharacterViewModel && charVM != _previouslySelectedCharacter)
-					{
-						charVM.ExecuteStartCustomAnimation("act_cheer_1");
-					}
-				}
-
-				_selectedCharacter.CharacterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h");
-				_selectedCharacter.CharacterViewModel.CameraZoom = -1.2f;
-				_selectedCharacter.CharacterViewModel.CameraElevation = 0f;
-				_selectedCharacter.CharacterViewModel.CameraAnimDuration = 1.2f;
-				_selectedCharacter.CharacterViewModel.CameraPitch = 0f;
-				_selectedCharacter.CharacterViewModel.ApplyCameraChange = true;
-				_selectedCharacter.CharacterViewModel.EnableLight = true;
-
-				// Change sibling index to display selected button on top of others
-				_selectedCharacter.SiblingOrder = 0;
-
-				SelectedCharacter.RefreshValues();
-				SelectedFormation.RefreshValues();
+				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
+				_playerSpawnMenu.RequestToUseCharacter(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
 			}
+		}
+
+		/// <summary>
+		/// Called when clicking on a character. Sends a request to the server to confirm selection.
+		/// </summary>
+		public void TrySelectCharacter(PlayerCharacterVM characterVM)
+		{
+			if (characterVM?.AvailableCharacter == null || characterVM == SelectedCharacterVM) return;
+
+			if (!GameNetwork.IsMyPeerReady) return;
+
+			// If character is an officer, prompt for pitch then send request to server
+			if (characterVM.Officer)
+			{
+				// todo: display popup then send variant request
+				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
+				_playerSpawnMenu.RequestToUseCharacter(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
+			}
+			// Classic character - Ask server if we are allowed to select this character
+			else
+			{
+				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
+				_playerSpawnMenu.RequestToUseCharacter(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
+			}
+		}
+
+		/// <summary>
+		/// Called when server has validated player's choice. Updates the VM accordingly.
+		/// </summary>
+		private void OnCharacterDeselected(NetworkCommunicator player, int teamIndex, int formationIndex, int characterIndex)
+		{
+			if (player.IsMine) SelectCharacter(null);
+			RefreshTeamFormationCharacter(teamIndex, formationIndex, characterIndex);
+		}
+
+		/// <summary>
+		/// Called when server has validated player's choice. Updates the VM accordingly.
+		/// </summary>
+		private void OnCharacterSelected(NetworkCommunicator player, int teamIndex, int formationIndex, int characterIndex)
+		{
+			if (player.IsMine)
+			{
+				PlayerTeamVM teamVM = Teams.FirstOrDefault(t => t.Team.Index == teamIndex);
+				if (SelectedTeamVM != teamVM) SelectTeam(teamVM);
+
+				PlayerFormationVM formationVM = Formations.FirstOrDefault(f => f.Formation.Index == formationIndex);
+				if (SelectedFormationVM != formationVM) SelectFormation(formationVM);
+
+				PlayerCharacterVM characterVM = Characters.FirstOrDefault(c => c.AvailableCharacter.Index == characterIndex);
+				SelectCharacter(characterVM);
+			}
+			else
+			{
+				RefreshTeamFormationCharacter(teamIndex, formationIndex, characterIndex);
+			}
+		}
+
+		private void RefreshTeamFormationCharacter(int teamIndex, int formationIndex, int characterIndex)
+		{
+			Teams.FirstOrDefault(t => t.Team.Index == teamIndex)?.RefreshValues();
+			if (SelectedTeamVM.Team.Index == teamIndex)
+			{
+				Formations.FirstOrDefault(f => f.Formation.Index == formationIndex)?.RefreshValues();
+				if (SelectedFormationVM.Formation.Index == formationIndex)
+				{
+					Characters.FirstOrDefault(c => c.AvailableCharacter.Index == characterIndex)?.RefreshValues();
+				}
+			}
+		}
+
+		private void SelectCharacter(PlayerCharacterVM characterVM)
+		{
+			if (characterVM == null)
+			{
+				if (SelectedCharacterVM != null)
+				{
+					_previouslySelectedCharacterVM = SelectedCharacterVM;
+					_previouslySelectedCharacterVM.FallBack();
+					_previouslySelectedCharacterVM.IsSelected = false;
+					SelectedCharacterVM = null;
+				}
+
+				return;
+			}
+
+			// Set the new selected character
+			SelectedCharacterVM = characterVM;
+			SelectedCharacterVM.IsSelected = true;
+			SelectedCharacterVM.Advance();
+
+			// Change sibling index to display selected button on top of others
+			SelectedCharacterVM.SiblingOrder = 0;
+
+			// Make the rest of the characters cheer
+			foreach (PlayerCharacterVM playerCharacterVM in _charactersVM)
+			{
+				if (playerCharacterVM != SelectedCharacterVM && playerCharacterVM != _previouslySelectedCharacterVM)
+				{
+					playerCharacterVM.Cheer();
+				}
+			}
+
+			SelectedCharacterVM.RefreshValues();
+			SelectedFormationVM.RefreshValues();
 		}
 
 		private void RefreshCharacters()
 		{
 			Characters.Clear();
-			if (SelectedFormation != null)
+			PlayerCharacterVM characterToSelect = null;
+			if (SelectedFormationVM != null)
 			{
-				int width = 1440 / (SelectedFormation.Formation.AvailableCharacters.Count + 1);
+				int width = 1440 / (SelectedFormationVM.Formation.AvailableCharacters.Count + 1);
 				int marginLeft = 0;
-				foreach (AvailableCharacter availableCharacter in SelectedFormation.Formation.AvailableCharacters)
+				foreach (AvailableCharacter availableCharacter in SelectedFormationVM.Formation.AvailableCharacters)
 				{
-					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedFormation.Team, SelectedFormation.Formation, availableCharacter, SelectCharacter, EditCharacter, DeleteCharacter, EditMode);
+					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedTeamVM, SelectedFormationVM, availableCharacter, TrySelectCharacter, UpdateCharacterPerks, EditCharacter, DeleteCharacter, EditMode);
 					characterVM.Width = width;
 					characterVM.MarginLeft = marginLeft;
-					if (characterVM.CharacterViewModel != null)
-					{
-						characterVM.CharacterViewModel.IdleAction = "act_walk_idle_1h_with_h_shld_left_stance";
-						characterVM.CharacterViewModel.CameraElevation = 0.2f;
-						characterVM.CharacterViewModel.CameraAnimDuration = 0f;
-						characterVM.CharacterViewModel.ApplyCameraChange = true;
-					}
-
+					characterVM.Idle();
 					Characters.Add(characterVM);
-					if (availableCharacter == _playerSpawnMenu.SelectedCharacter)
+					if (availableCharacter == SelectedCharacterVM?.AvailableCharacter)
 					{
-						characterVM.IsSelected = true;
+						characterToSelect = characterVM;
 					}
 
 					marginLeft += width;
 				}
 			}
+
+			if (characterToSelect != null) SelectCharacter(characterToSelect);
 		}
 
 		private void RefreshOfficerCandidacies()
 		{
 			OfficerCandidacies.Clear();
-			if (SelectedFormation != null)
+			if (SelectedFormationVM != null)
 			{
-				foreach (CandidateInfo candidateInfo in SelectedFormation.Formation.Candidates)
+				foreach (CandidateInfo candidateInfo in SelectedFormationVM.Formation.Candidates)
 				{
-					OfficerCandidacyVM candidacyVM = new OfficerCandidacyVM(SelectedFormation.Formation, SelectOfficerCandidacy, candidateInfo);
+					OfficerCandidacyVM candidacyVM = new OfficerCandidacyVM(SelectedFormationVM.Formation, SelectOfficerCandidacy, candidateInfo);
 					OfficerCandidacies.Add(candidacyVM);
 				}
 			}
 		}
 
-		private void SelectOfficerCandidacy(OfficerCandidacyVM vM)
+		private void SelectOfficerCandidacy(OfficerCandidacyVM vm)
 		{
-			if (vM != null)
+			if (vm != null)
 			{
-				vM.IsSelected = _playerSpawnMenu.ToggleVote(vM.Formation, GameNetwork.MyPeer, vM.Candidate);
+				if (vm.IsSelected)
+				{
+					// If already selected, deselect and remove vote
+					vm.IsSelected = false;
+					vm.Formation.RemoveVote(GameNetwork.MyPeer, vm.Candidate);
+				}
+				else
+				{
+					// If not selected, select and add vote
+					vm.IsSelected = true;
+					vm.Formation.AddVote(GameNetwork.MyPeer, vm.Candidate);
+				}
 			}
 		}
 
@@ -563,7 +659,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 						_playerSpawnMenu = SerializeHelper.LoadClassFromFile(filePath, _playerSpawnMenu);
 						_playerSpawnMenu.RefreshIndices();
 						PlayerSpawnMenu.Instance = _playerSpawnMenu;
-						RefreshMenu();
+						GenerateMenu();
 					}
 				}
 				catch (Exception ex)
@@ -591,6 +687,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		public override void OnFinalize()
 		{
 			base.OnFinalize();
+
+			_playerSpawnMenu.OnCharacterSelected -= OnCharacterSelected;
+			_playerSpawnMenu.OnCharacterDeselected -= OnCharacterDeselected;
 
 			// Ensure all popups are closed when finalizing the menu
 			if (_characterEditorPopup.IsMenuOpen)

@@ -59,7 +59,7 @@
 						</Widget>
 
 						<!--Dropdown Visual-->
-						<Widget Id="DropdownClipWidget" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" ClipContents="true" WidgetToCopyHeightFrom="DropdownContainerWidget\ScrollablePanel">
+						<Widget Id="DropdownClipWidget" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" ClipContents="true" >
 							<Children>
 
 								<BrushWidget Id="DropdownContainerWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" VerticalAlignment="Bottom" SuggestedWidth="!Extension.Width" SuggestedHeight="380" HorizontalAlignment="Center" Brush="!DropdownListBackgroundBrush">

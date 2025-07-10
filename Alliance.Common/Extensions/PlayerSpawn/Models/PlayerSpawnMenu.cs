@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
+using Alliance.Common.GameModes.Story.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -8,75 +11,63 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Models
 {
+	public class PlayerAssignment
+	{
+		public NetworkCommunicator Player;
+		public PlayerTeam Team;
+		public PlayerFormation Formation;
+		public AvailableCharacter Character;
+		public List<int> Perks;
+
+		public PlayerAssignment(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, List<int> perks)
+		{
+			Player = player;
+			Team = team;
+			Formation = formation;
+			Perks = perks;
+		}
+	}
+
 	[Serializable]
 	public class PlayerSpawnMenu
 	{
-		// XML-serializable teams and formations
+		// XML-serializable properties
 		public List<PlayerTeam> Teams { get; set; } = new();
 
-		// Lookup dictionaries
+		// Lookup properties
 		[XmlIgnore]
-		private readonly Dictionary<NetworkCommunicator, PlayerTeam> _playerToTeam = new();
-		public IReadOnlyDictionary<NetworkCommunicator, PlayerTeam> PlayerTeams => _playerToTeam;
+		private readonly Dictionary<NetworkCommunicator, PlayerAssignment> _playerAssignments = new();
 		[XmlIgnore]
-		private readonly Dictionary<NetworkCommunicator, PlayerFormation> _playerToFormation = new();
-		public IReadOnlyDictionary<NetworkCommunicator, PlayerFormation> PlayerFormations => _playerToFormation;
-		[XmlIgnore]
-		private readonly Dictionary<NetworkCommunicator, AvailableCharacter> _playerToCharacter = new();
-		public IReadOnlyDictionary<NetworkCommunicator, AvailableCharacter> PlayerCharacters => _playerToCharacter;
+		public PlayerAssignment MyAssignment => GetPlayerAssignment(GameNetwork.MyPeer);
 
-		[XmlIgnore]
-		private PlayerTeam _selectedTeam;
-		public PlayerTeam SelectedTeam => _selectedTeam;
-		[XmlIgnore]
-		private PlayerFormation _selectedFormation;
-		public PlayerFormation SelectedFormation => _selectedFormation;
-		[XmlIgnore]
-		private AvailableCharacter _selectedCharacter;
-		public AvailableCharacter SelectedCharacter => _selectedCharacter;
+		// Events for UI updates
+		public event Action<NetworkCommunicator, int, int, int> OnCharacterSelected;
+		public event Action<NetworkCommunicator, int, int, int> OnCharacterDeselected;
+		public event Action<string, int, int> OnFormationLanguageUpdated;
 
 		public static PlayerSpawnMenu Instance { get; set; } = new PlayerSpawnMenu();
+
+		public PlayerAssignment GetPlayerAssignment(NetworkCommunicator player)
+		{
+			if (player == null) return null;
+			if (_playerAssignments.TryGetValue(player, out var assignment))
+			{
+				return assignment;
+			}
+			_playerAssignments[player] = new PlayerAssignment(player, null, null, new List<int>());
+			return _playerAssignments[player];
+		}
 
 		public PlayerTeam AddTeam(BattleSideEnum side, string name)
 		{
 			PlayerTeam team = new PlayerTeam()
 			{
-				Index = GetNextTeamIndex(),
+				Index = GetNextTeamIndex(Teams),
 				TeamSide = side,
 				Name = name
 			};
 			Teams.Add(team);
 			return team;
-		}
-
-		public PlayerFormation AddFormation(PlayerTeam team, string name, FormationSettings settings = null, List<AvailableCharacter> chars = null)
-		{
-			PlayerFormation formation = new PlayerFormation()
-			{
-				Index = GetNextFormationIndex(team),
-				Name = name,
-				Settings = settings ?? new FormationSettings(),
-				AvailableCharacters = chars ?? new List<AvailableCharacter>()
-			};
-			team.Formations.Add(formation);
-			return formation;
-		}
-
-		public AvailableCharacter AddCharacter(PlayerFormation formation, string characterId, bool officer)
-		{
-			AvailableCharacter character = new AvailableCharacter
-			{
-				CharacterId = characterId,
-				Officer = officer
-			};
-			return AddCharacter(formation, character);
-		}
-
-		public AvailableCharacter AddCharacter(PlayerFormation formation, AvailableCharacter character)
-		{
-			character.Index = GetNextCharacterIndex(formation);
-			formation.AvailableCharacters.Add(character);
-			return character;
 		}
 
 		public void RemoveTeam(PlayerTeam team)
@@ -85,22 +76,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			// Remove all formations from this team
 			foreach (PlayerFormation formation in team.Formations.ToList())
 			{
-				RemoveFormation(team, formation);
+				team.RemoveFormation(formation);
 			}
 			Teams.Remove(team);
-		}
-
-		public void RemoveFormation(PlayerTeam team, PlayerFormation formation)
-		{
-			if (team == null || formation == null) return;
-			if (!team.Formations.Contains(formation)) return;
-
-			// Remove all players from this formation
-			foreach (NetworkCommunicator player in formation.Members.ToList())
-			{
-				RemovePlayerFromFormation(formation, player);
-			}
-			team.Formations.Remove(formation);
 		}
 
 		public void SelectTeam(PlayerTeam team)
@@ -109,166 +87,137 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (team == null)
 			{
 				BattleSideEnum mySide = GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team?.Side ?? BattleSideEnum.Defender;
-				_selectedTeam = Teams.FirstOrDefault(t => t.TeamSide == mySide);
+				MyAssignment.Team = Teams.FirstOrDefault(t => t.TeamSide == mySide);
 			}
 			else
 			{
-				_selectedTeam = team;
+				MyAssignment.Team = team;
 			}
 		}
 
-		public void SelectFormation(PlayerFormation formation)
-		{
-			if (_selectedTeam == null)
-			{
-				Log("No team selected. Please select a team first.", LogLevel.Error);
-				return;
-			}
-			if (formation != null && !_selectedTeam.Formations.Contains(formation))
-			{
-				Log($"Formation {formation?.Name} not found in team {_selectedTeam.Name}", LogLevel.Error);
-				return;
-			}
-			_selectedFormation = formation;
-		}
-
-		public void MovePlayerToFormation(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation)
+		private void MovePlayerToFormation(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation)
 		{
 			if (player == null || team == null || formation == null)
 			{
 				return;
 			}
-			if (_playerToFormation.TryGetValue(player, out var oldFormation))
+			PlayerAssignment assignment = GetPlayerAssignment(player);
+			if (assignment.Formation != null) assignment.Formation?.RemoveMember(player);
+			assignment.Team = team;
+			assignment.Formation = formation;
+			// Add player to the new formation
+			formation.AddMember(player);
+
+			// Refresh formation language
+			if (GameNetwork.IsServer)
 			{
-				RemovePlayerFromFormation(oldFormation, player);
+				string oldLanguage = formation.MainLanguage;
+				formation.RefreshMainLanguage();
+				if (oldLanguage != formation.MainLanguage)
+				{
+					SyncFormationLanguage(team, formation, formation.MainLanguage);
+				}
 			}
-			formation.Members.Add(player);
-			_playerToFormation[player] = formation;
 		}
 
-		public bool SelectCharacter(NetworkCommunicator player, AvailableCharacter character)
+		public void SyncFormationLanguage(PlayerTeam team, PlayerFormation formation, string language)
 		{
-			if (player == null) return false;
-			// Check if player is in a formation
-			if (!_playerToFormation.TryGetValue(player, out var formation)) return false;
-			// Check if character is available in the formation
-			if (!formation.AvailableCharacters.Contains(character) || character.AvailableSlots <= 0) return false;
+			int mainLanguageIndex = LocalizationHelper.GetAvailableLanguages().IndexOf(language);
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new SyncFormationMainLanguage(team, formation, mainLanguageIndex));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
 
+		public void RequestToUseCharacter(PlayerTeam team, PlayerFormation formation, AvailableCharacter character, List<int> selectedPerks)
+		{
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new RequestCharacterUsage(team, formation, character, selectedPerks));
+			GameNetwork.EndModuleEventAsClient();
+		}
+
+		public void UpdatePerks(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, AvailableCharacter character, List<int> selectedPerks)
+		{
+			PlayerAssignment assignment = GetPlayerAssignment(player);
+
+			if (assignment.Team != team || assignment.Formation != formation || assignment.Character != character)
+			{
+				Log($"Trying to update perks for the wrong character/formation", LogLevel.Error);
+				return;
+			}
+
+			assignment.Perks = selectedPerks;
+			string perks = "";
+			selectedPerks.ForEach(i => perks += i);
+			Log($"{assignment.Player.UserName} updated perks for {assignment.Character.Name} : {perks}");
+		}
+
+		public bool TrySelectCharacter(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, AvailableCharacter character, ref string _failReason)
+		{
+			if (!formation.AvailableCharacters.Contains(character))
+			{
+				_failReason = $"Character {character.Name} is not available in formation {formation.Name} or has no available slots.";
+				return false;
+			}
+
+			if (character.AvailableSlots <= 0)
+			{
+				_failReason = $"Character {character.Name} has no available slots.";
+				return false;
+			}
+
+			SelectCharacter(player, team, formation, character);
+
+			return true;
+		}
+
+		public void SelectCharacter(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, AvailableCharacter character)
+		{
+			if (GameNetwork.IsServer) ClearDisconnectedPlayers();
+
+			PlayerAssignment assignment = GetPlayerAssignment(player);
 			// Free previous character slot if any
-			if (_playerToCharacter.TryGetValue(player, out var previousCharacter)) previousCharacter.UsedSlots--;
+			if (assignment.Character != null)
+			{
+				assignment.Character.UsedSlots--;
+				OnCharacterDeselected?.Invoke(player, assignment.Team.Index, assignment.Formation.Index, assignment.Character.Index);
+			}
 
-			_playerToCharacter[player] = character;
+			// Add player to formation if not already
+			if (!formation.Members.Contains(player))
+			{
+				MovePlayerToFormation(player, team, formation);
+			}
+			assignment.Character = character;
 			character.UsedSlots++;
-			return true;
+
+			OnCharacterSelected?.Invoke(player, team.Index, formation.Index, character.Index);
 		}
 
-		public void DeclareCandidacy(NetworkCommunicator player, string pitch)
+		// todo : find a way to clear disconnected players on client side too (send a message from server ?)
+		private void ClearDisconnectedPlayers()
 		{
-			if (player == null)
-			{
-				Log("Player or pitch is null/empty", LogLevel.Error);
-				return;
-			}
-			if (!_playerToFormation.TryGetValue(player, out var formation))
-			{
-				Log($"{player.UserName} isn't part of a formation", LogLevel.Error);
-				return;
-			}
-			if (!formation.CandidateInfo.TryGetValue(player, out CandidateInfo candidateInfo))
-			{
-				formation.CandidateInfo[player] = candidateInfo = new CandidateInfo(player) { Pitch = pitch, Votes = 0 };
-				formation.Candidates.Add(candidateInfo);
-			}
-			else
-			{
-				candidateInfo.Pitch = pitch;
-			}
-		}
+			List<NetworkCommunicator> toRemove = new();
 
-		public bool ToggleVote(PlayerFormation formation, NetworkCommunicator voter, CandidateInfo candidate)
-		{
-			if (!formation.Candidates.Contains(candidate))
+			foreach (KeyValuePair<NetworkCommunicator, PlayerAssignment> kvp in _playerAssignments)
 			{
-				Log($"{voter.UserName} is not a candidate in {formation.Name}", LogLevel.Error);
-				return false;
-			}
-			if (!formation.PlayerVotes.TryGetValue(voter, out var playerVotes))
-			{
-				formation.PlayerVotes[voter] = playerVotes = new HashSet<CandidateInfo>();
-			}
-			if (playerVotes.Contains(candidate))
-			{
-				// Remove vote
-				playerVotes.Remove(candidate);
-				candidate.Votes--;
-				return false;
-			}
-			// Add vote
-			playerVotes.Add(candidate);
-			candidate.Votes++;
-			return true;
-		}
-
-		public void ElectOfficer(PlayerFormation formation)
-		{
-			if (formation.Candidates.Count == 0)
-			{
-				Log($"No candidates for {formation.Name}", LogLevel.Error);
-				return;
-			}
-
-			NetworkCommunicator officer = formation.Candidates
-				.OrderByDescending(c => c.Votes)
-				.First().Player;
-
-			formation.SetOfficer(officer);
-		}
-
-		public void RemovePlayerFromFormation(PlayerFormation formation, NetworkCommunicator player)
-		{
-			// Remove selected character
-			if (_playerToCharacter.TryGetValue(player, out var selectedCharacter))
-			{
-				selectedCharacter.UsedSlots--;
-				_playerToCharacter.Remove(player);
-			}
-
-			// Check if player is the officer
-			if (formation.Officer == player)
-			{
-				formation.SetOfficer(null);
-			}
-
-			// Check if player has votes
-			if (formation.PlayerVotes.TryGetValue(player, out var playerVotes))
-			{
-				foreach (CandidateInfo ci in playerVotes)
+				if (!kvp.Key.IsConnectionActive) // Seems to be always true on client side so only check on server side
 				{
-					ci.Votes--;
-				}
-				formation.PlayerVotes.Remove(player);
-			}
-
-			// Check if player is a candidate
-			if (formation.CandidateInfo.TryGetValue(player, out CandidateInfo candidateInfo))
-			{
-				// Try to remove candidate from formation
-				formation.Candidates.Remove(candidateInfo);
-				formation.CandidateInfo.Remove(player);
-
-				// Remove that player from everyone's votes
-				foreach (NetworkCommunicator formationMember in formation.Members)
-				{
-					if (formation.PlayerVotes.TryGetValue(formationMember, out var votes))
-					{
-						votes.Remove(candidateInfo);
-					}
+					toRemove.Add(kvp.Key);
 				}
 			}
 
-			// Remove player from formation
-			formation.Members.Remove(player);
-			_playerToFormation.Remove(player);
+			foreach (NetworkCommunicator key in toRemove)
+			{
+				PlayerAssignment assignment = _playerAssignments[key];
+				if (assignment.Character != null)
+				{
+					assignment.Character.UsedSlots--;
+					OnCharacterDeselected?.Invoke(key, assignment.Team.Index, assignment.Formation.Index, assignment.Character.Index);
+				}
+
+				_playerAssignments.Remove(key);
+				Log($"Removed {key.UserName} as he is no longer connected", LogLevel.Debug);
+			}
 		}
 
 		public void RefreshIndices()
@@ -290,15 +239,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 		}
 
-		private int GetNextTeamIndex()
+		public static int GetNextTeamIndex(List<PlayerTeam> teams)
 		{
 			int index = 0;
-			while (Teams.Any(t => t.Index == index))
+			while (teams.Any(t => t.Index == index))
 				index++;
 			return index++;
 		}
 
-		private int GetNextFormationIndex(PlayerTeam team)
+		public static int GetNextFormationIndex(PlayerTeam team)
 		{
 			int index = 0;
 			while (team.Formations.Any(f => f.Index == index))
@@ -306,7 +255,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return index;
 		}
 
-		private int GetNextCharacterIndex(PlayerFormation formation)
+		public static int GetNextCharacterIndex(PlayerFormation formation)
 		{
 			int index = 0;
 			while (formation.AvailableCharacters.Any(c => c.Index == index))

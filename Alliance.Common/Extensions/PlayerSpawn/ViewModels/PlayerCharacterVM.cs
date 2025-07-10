@@ -3,7 +3,17 @@ using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
+using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
+using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Core.Utils.AgentExtensions;
+using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MultiplayerClassDivisions;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 {
@@ -13,21 +23,35 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 	public class PlayerCharacterVM : ViewModel
 	{
 		private bool _editMode;
-		private PlayerTeam _team;
-		private PlayerFormation _formation;
-		private AvailableCharacter _availableCharacter;
-		private AL_CharacterViewModel _characterViewModel;
+		private readonly PlayerTeamVM _teamVM;
+		private readonly PlayerFormationVM _formationVM;
+		private readonly AvailableCharacter _availableCharacter;
 		private readonly Action<PlayerCharacterVM> _onCharacterSelected;
+		private readonly Action<PlayerCharacterVM> _onCharacterPerksUpdated;
 		private readonly Action<PlayerCharacterVM> _onCharacterEdited;
 		private readonly Action<PlayerCharacterVM> _onCharacterDeleted;
+		private AL_CharacterViewModel _characterViewModel;
 		private bool _isSelected;
 		private int _siblingOrder = -1;
 		private int _width;
 		private int _marginLeft;
 
-		public PlayerTeam Team => _team;
-		public PlayerFormation Formation => _formation;
+		private MBBindingList<HeroPerkVM> _perks;
+		public List<IReadOnlyPerkObject> SelectedPerks { get; private set; }
+		public readonly ClassType TroopType;
+
+		public PlayerTeamVM TeamVM => _teamVM;
+		public PlayerFormationVM FormationVM => _formationVM;
 		public AvailableCharacter AvailableCharacter => _availableCharacter;
+
+		[DataSourceProperty]
+		public HeroPerkVM FirstPerk => Perks.ElementAtOrDefault(0);
+
+		[DataSourceProperty]
+		public HeroPerkVM SecondPerk => Perks.ElementAtOrDefault(1);
+
+		[DataSourceProperty]
+		public HeroPerkVM ThirdPerk => Perks.ElementAtOrDefault(2);
 
 		[DataSourceProperty]
 		public bool EditMode
@@ -97,6 +121,23 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		}
 
 		[DataSourceProperty]
+		public MBBindingList<HeroPerkVM> Perks
+		{
+			get
+			{
+				return _perks ??= new MBBindingList<HeroPerkVM>();
+			}
+			set
+			{
+				if (value != _perks)
+				{
+					_perks = value;
+					OnPropertyChangedWithValue(value, nameof(Perks));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public AL_CharacterViewModel CharacterViewModel
 		{
 			get => _characterViewModel;
@@ -140,10 +181,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			get => AvailableCharacter.AvailableSlots <= 0;
 		}
 
-		public PlayerCharacterVM(PlayerTeam team, PlayerFormation playerFormation, AvailableCharacter availableCharacter, Action<PlayerCharacterVM> onCharacterSelected, Action<PlayerCharacterVM> onCharacterEdited = null, Action<PlayerCharacterVM> onCharacterDeleted = null, bool editMode = false)
+		public PlayerCharacterVM(
+								PlayerTeamVM teamVM,
+								PlayerFormationVM playerFormationVM,
+								AvailableCharacter availableCharacter,
+								Action<PlayerCharacterVM> onCharacterSelected,
+								Action<PlayerCharacterVM> onCharacterPerksUpdated,
+								Action<PlayerCharacterVM> onCharacterEdited = null,
+								Action<PlayerCharacterVM> onCharacterDeleted = null,
+								bool editMode = false)
 		{
-			_team = team;
-			_formation = playerFormation;
+			_teamVM = teamVM;
+			_formationVM = playerFormationVM;
 			_availableCharacter = availableCharacter;
 			if (availableCharacter.Character != null)
 			{
@@ -151,10 +200,109 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				CharacterViewModel.FillFrom(availableCharacter);
 			}
 			_onCharacterSelected = onCharacterSelected;
+			_onCharacterPerksUpdated = onCharacterPerksUpdated;
 			_onCharacterEdited = onCharacterEdited;
 			_onCharacterDeleted = onCharacterDeleted;
 			_editMode = editMode;
+
+			InitPerks();
 		}
+
+		private void InitPerks()
+		{
+			SelectedPerks = new List<IReadOnlyPerkObject>();
+			Perks = new MBBindingList<HeroPerkVM>();
+
+			// Check that the character has a hero class
+			MPHeroClass heroClass = AvailableCharacter.Character.GetHeroClass();
+			if (heroClass == null)
+			{
+				Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
+				return;
+			}
+
+			// Get list of perks available for the character
+			List<List<IReadOnlyPerkObject>> perksToShow = AvailableCharacter.Character.GetMPPerks();
+			if (perksToShow == null || perksToShow.Count == 0)
+			{
+				Log($"No perks available for {AvailableCharacter.Name}", LogLevel.Warning);
+				return;
+			}
+
+			// Initialize SelectedPerks with the first perk from each list
+			foreach (List<IReadOnlyPerkObject> perkList in perksToShow)
+			{
+				SelectedPerks.Add(perkList[0]);
+			}
+
+			// Update SelectedPerks with user's selection if possible
+			if (GameNetwork.IsMyPeerReady)
+			{
+				MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
+				int troopIndex = (component.NextSelectedTroopIndex = MultiplayerClassDivisions.GetMPHeroClasses(heroClass.Culture).ToList().IndexOf(heroClass));
+				for (int j = 0; j < perksToShow.Count; j++)
+				{
+					int num2 = component.GetSelectedPerkIndexWithPerkListIndex(troopIndex, j);
+					if (num2 >= perksToShow[j].Count)
+					{
+						num2 = 0;
+					}
+
+					IReadOnlyPerkObject value = perksToShow[j][num2];
+					SelectedPerks[j] = value;
+				}
+			}
+
+			// Create HeroPerkVM instances for each perk and add them to the MBBindingList
+			MBBindingList<HeroPerkVM> newPerks = new MBBindingList<HeroPerkVM>();
+			for (int k = 0; k < perksToShow.Count; k++)
+			{
+				IReadOnlyPerkObject selected = SelectedPerks[k];
+				List<IReadOnlyPerkObject> candidates = perksToShow[k];
+
+				if (selected == null || candidates == null || candidates.Count == 0)
+				{
+					Log($"Warning: Null or empty perk list at index {k} for character {AvailableCharacter.Name}", LogLevel.Warning);
+					continue; // Skip adding this one
+				}
+
+				HeroPerkVM vm = new HeroPerkVM(SelectPerk, selected, candidates, k);
+				if (vm != null)
+					newPerks.Add(vm);
+			}
+			Perks = newPerks;
+		}
+
+		private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)
+		{
+			if (GameNetwork.IsMyPeerReady && Perks != null && Perks.Contains(heroPerk))
+			{
+				UpdateCharacterPreview();
+				_onCharacterPerksUpdated?.Invoke(this);
+			}
+		}
+
+		private void UpdateCharacterPreview()
+		{
+			if (CharacterViewModel == null) return;
+
+			List<IReadOnlyPerkObject> perks = Perks.Select(p => p.SelectedPerk).ToList();
+
+			Equipment equipment = AvailableCharacter.Character.Equipment.Clone();
+			MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(perks);
+			IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipements = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
+			if (alternativeEquipements != null)
+			{
+				foreach ((EquipmentIndex, EquipmentElement) item in alternativeEquipements)
+				{
+					equipment[item.Item1] = item.Item2;
+				}
+			}
+
+			CharacterViewModel.EquipmentCode = equipment.CalculateEquipmentCode();
+			CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture?.BannerKey ?? String.Empty;
+		}
+
 
 		public override void RefreshValues()
 		{
@@ -165,23 +313,73 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			OnPropertyChanged(nameof(IsFull));
 			OnPropertyChanged(nameof(CharacterViewModel));
 			OnPropertyChanged(nameof(IsSelected));
+			Perks.ApplyActionOnAllItems(delegate (HeroPerkVM x)
+			{
+				x.RefreshValues();
+			});
+		}
+
+		public void Advance()
+		{
+			Log($"{AvailableCharacter.Name} is advancing", LogLevel.Debug);
+			if (_characterViewModel == null) return;
+			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h");
+			_characterViewModel.CameraZoom = -1.2f;
+			_characterViewModel.CameraElevation = 0f;
+			_characterViewModel.CameraPitch = 0f;
+			_characterViewModel.CameraAnimDuration = 1.2f;
+			_characterViewModel.ApplyCameraChange = true;
+			_characterViewModel.EnableLight = true;
+		}
+
+		public void FallBack()
+		{
+			Log($"{AvailableCharacter.Name} is fallback", LogLevel.Debug);
+			if (_characterViewModel == null) return;
+			_characterViewModel.ExecuteStartCustomAnimation("act_walk_backward_1h");
+			_characterViewModel.CameraZoom = 1.2f;
+			_characterViewModel.CameraElevation = 0f;
+			_characterViewModel.CameraPitch = 0f;
+			_characterViewModel.CameraAnimDuration = 1.2f;
+			_characterViewModel.ApplyCameraChange = true;
+			_characterViewModel.EnableLight = false;
+		}
+
+		public void Cheer()
+		{
+			Log($"{AvailableCharacter.Name} is cheering", LogLevel.Debug);
+			if (_characterViewModel == null) return;
+			_characterViewModel.ExecuteStartCustomAnimation("act_cheer_1");
+		}
+
+		public void Idle()
+		{
+			Log($"{AvailableCharacter.Name} is idle", LogLevel.Debug);
+			if (CharacterViewModel == null) return;
+			CharacterViewModel.IdleAction = "act_walk_idle_1h_with_h_shld_left_stance";
+			CharacterViewModel.CameraElevation = 0f;
+			CharacterViewModel.CameraAnimDuration = 0f;
+			CharacterViewModel.ApplyCameraChange = true;
 		}
 
 		[UsedImplicitly]
 		public void SelectCharacter()
 		{
+			if (EditMode) return;
 			_onCharacterSelected?.Invoke(this);
 		}
 
 		[UsedImplicitly]
 		public void EditCharacter()
 		{
+			if (!EditMode) return;
 			_onCharacterEdited?.Invoke(this);
 		}
 
 		[UsedImplicitly]
 		public void DeleteCharacter()
 		{
+			if (!EditMode) return;
 			_onCharacterDeleted?.Invoke(this);
 		}
 	}

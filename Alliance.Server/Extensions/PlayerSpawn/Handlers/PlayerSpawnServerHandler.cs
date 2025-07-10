@@ -1,7 +1,9 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.PlayerSpawn.Handlers;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.PlayerSpawn.Utilities;
 using Alliance.Common.Utilities;
 using System;
@@ -20,6 +22,50 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<UpdatePlayerSpawnMenu>(HandleUpdatePlayerSpawnMenu);
+			reg.Register<RequestCharacterUsage>(HandleRequestCharacterUsage);
+		}
+
+		private bool HandleRequestCharacterUsage(NetworkCommunicator peer, RequestCharacterUsage message)
+		{
+			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
+			PlayerFormation formation = team?.Formations.Find(f => f.Index == message.FormationIndex);
+			AvailableCharacter character = formation?.AvailableCharacters.Find(c => c.Index == message.CharacterIndex);
+			if (peer == null || team == null || formation == null || character == null)
+			{
+				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} requested invalid character usage: Team {message.TeamIndex}, Formation {message.FormationIndex}, Character {message.CharacterIndex}", LogLevel.Warning);
+				return false;
+			}
+
+			// If player is already assigned to this team/formation/character, just update its perks
+			PlayerAssignment assignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(peer);
+			if (assignment.Team == team && assignment.Formation == formation && assignment.Character == character)
+			{
+				PlayerSpawnMenu.Instance.UpdatePerks(peer, team, formation, character, message.SelectedPerks);
+				return true;
+			}
+
+			// Try to reserve the character
+			string failReason = string.Empty;
+			if (PlayerSpawnMenu.Instance.TrySelectCharacter(peer, team, formation, character, ref failReason))
+			{
+				// Character successfully reserved
+				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} reserved character {team.Name} - {formation.Name} - {character.Name}", LogLevel.Information);
+
+				// Update the perks
+				PlayerSpawnMenu.Instance.UpdatePerks(peer, team, formation, character, message.SelectedPerks);
+
+				// Notify all players about the character usage
+				GameNetwork.BeginBroadcastModuleEvent();
+				GameNetwork.WriteMessage(new SyncPlayerCharacterUsage(peer, team, formation, character));
+				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			}
+			// Character couldn't be reserved
+			else
+			{
+				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} can't reserve character {team.Name} - {formation.Name} - {character.Name} : {failReason}", LogLevel.Warning);
+			}
+
+			return true;
 		}
 
 		private bool HandleUpdatePlayerSpawnMenu(NetworkCommunicator peer, UpdatePlayerSpawnMenu message)

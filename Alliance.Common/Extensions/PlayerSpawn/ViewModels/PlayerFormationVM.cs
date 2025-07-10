@@ -1,10 +1,7 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.GameModes.Story.Utilities;
 using JetBrains.Annotations;
 using System;
-using System.Collections.Generic;
 using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 {
@@ -14,38 +11,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 	public class PlayerFormationVM : ViewModel
 	{
 		private bool _editMode;
-		private PlayerTeam _team;
-		private PlayerFormation _formation;
+		private readonly PlayerTeamVM _teamVM;
+		private readonly PlayerFormation _formation;
 		private readonly Action<PlayerFormationVM> _onFormationSelected;
 		private readonly Action<PlayerFormationVM> _onFormationEdited;
 		private readonly Action<PlayerFormationVM> _onFormationDeleted;
 		private bool _isSelected;
 		private string _mainLanguages;
 
-		public PlayerTeam Team
-		{
-			get => _team;
-			set
-			{
-				if (value != _team)
-				{
-					_team = value;
-				}
-			}
-		}
-
-		public PlayerFormation Formation
-		{
-			get => _formation;
-			set
-			{
-				if (value != _formation)
-				{
-					_formation = value;
-					RefreshValues();
-				}
-			}
-		}
+		public PlayerTeamVM TeamVM => _teamVM;
+		public PlayerFormation Formation => _formation;
 
 		[DataSourceProperty]
 		public bool EditMode
@@ -129,14 +104,17 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			get => Formation.GetAvailableSlots() <= 0;
 		}
 
-		public PlayerFormationVM(PlayerTeam team, PlayerFormation playerFormation, Action<PlayerFormationVM> onFormationSelected, Action<PlayerFormationVM> onFormationEdited = null, Action<PlayerFormationVM> onFormationDeleted = null, bool editMode = false)
+		public PlayerFormationVM(PlayerTeamVM teamVM, PlayerFormation playerFormation, Action<PlayerFormationVM> onFormationSelected, Action<PlayerFormationVM> onFormationEdited = null, Action<PlayerFormationVM> onFormationDeleted = null, bool editMode = false)
 		{
-			Team = team;
-			Formation = playerFormation;
+			_teamVM = teamVM;
+			_formation = playerFormation;
 			_onFormationSelected = onFormationSelected;
 			_onFormationEdited = onFormationEdited;
 			_onFormationDeleted = onFormationDeleted;
 			_editMode = editMode;
+			MainLanguages = playerFormation.MainLanguage;
+			Formation.OnLanguageChanged += (sender, language) => MainLanguages = language; // todo verify it doesn't subscribe multiple times ?
+			RefreshValues();
 		}
 
 		public override void RefreshValues()
@@ -146,18 +124,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			OnPropertyChanged(nameof(MainCultureId));
 			OnPropertyChanged(nameof(Occupation));
 			OnPropertyChanged(nameof(IsFull));
-			RefreshMainLanguages();
-		}
-
-		private void RefreshMainLanguages()
-		{
-			Dictionary<string, int> languagesRepartition = new Dictionary<string, int>();
-			foreach (NetworkCommunicator networkCommunicator in Formation.Members)
-			{
-			}
-			int nbLg = LocalizationHelper.GetAvailableLanguages().Count;
-			Random rnd = new Random();
-			MainLanguages = LocalizationHelper.GetAvailableLanguages()[Formation.Index];
 		}
 
 		[UsedImplicitly]

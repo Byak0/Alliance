@@ -11,12 +11,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class SyncPlayerSpawnMenu : GameNetworkMessage, IPlayerSpawnMenuMessage
 	{
-		public PlayerSpawnMenuOperation Operation { get; set; }
-		public int TeamIndex { get; set; } = -1;
-		public int FormationIndex { get; set; } = -1;
-		public PlayerTeam PlayerTeam { get; set; }
-		public PlayerFormation PlayerFormation { get; set; }
-		public AvailableCharacter AvailableCharacter { get; set; }
+		public PlayerSpawnMenuOperation Operation { get; private set; }
+		public int TeamIndex { get; private set; } = -1;
+		public int FormationIndex { get; private set; } = -1;
+		public PlayerTeam PlayerTeam { get; private set; }
+		public PlayerFormation PlayerFormation { get; private set; }
+		public AvailableCharacter AvailableCharacter { get; private set; }
 
 		public SyncPlayerSpawnMenu(GlobalOperation operation)
 		{

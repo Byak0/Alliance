@@ -95,10 +95,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 				Log("Alliance - Received AddCharacter with null AvailableCharacter", LogLevel.Warning);
 				return;
 			}
-			PlayerTeam team2 = _receivedPlayerSpawnMenu.Teams.Find(t => t.Index == message.TeamIndex);
-			if (team2 != null)
+			PlayerTeam team = _receivedPlayerSpawnMenu.Teams.Find(t => t.Index == message.TeamIndex);
+			if (team != null)
 			{
-				PlayerFormation formation = team2.Formations.Find(f => f.Index == message.FormationIndex);
+				PlayerFormation formation = team.Formations.Find(f => f.Index == message.FormationIndex);
 				if (formation != null)
 				{
 					formation.AvailableCharacters.Add(message.AvailableCharacter);
@@ -125,9 +125,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 				Log($"Alliance - Received RemoveFormation with null PlayerFormation", LogLevel.Warning);
 				return;
 			}
-			PlayerTeam team3 = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
-			PlayerSpawnMenu.Instance.RemoveFormation(team3, message.PlayerFormation);
-			Log($"Alliance - Removed formation {message.PlayerFormation.Name} from team {team3?.Name}", LogLevel.Debug);
+			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
+			team.RemoveFormation(message.PlayerFormation);
+			Log($"Alliance - Removed formation {message.PlayerFormation.Name} from team {team?.Name}", LogLevel.Debug);
 		}
 
 		protected virtual void RemoveCharacterHandler(IPlayerSpawnMenuMessage message)
@@ -137,10 +137,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 				Log($"Alliance - Received RemoveCharacter with null AvailableCharacter", LogLevel.Warning);
 				return;
 			}
-			PlayerTeam team4 = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
-			if (team4 != null)
+			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
+			if (team != null)
 			{
-				PlayerFormation formation = team4.Formations.Find(f => f.Index == message.FormationIndex);
+				PlayerFormation formation = team.Formations.Find(f => f.Index == message.FormationIndex);
 				if (formation != null)
 				{
 					formation.AvailableCharacters.Remove(message.AvailableCharacter);

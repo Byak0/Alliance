@@ -19,46 +19,54 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Utilities
 		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
 		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
 
-		public enum PlayerSpawnMenuOperation
+		/// <summary>
+		/// From server - Sends the PlayerSpawnMenu to a specific peer.
+		/// </summary>
+		public static void SendPlayerSpawnMenuToPeer(NetworkCommunicator peer)
 		{
-			BeginMenuSync,
-			EndMenuSync,
-			AddTeam,
-			UpdateTeam,
-			RemoveTeam,
-			AddFormation,
-			UpdateFormation,
-			RemoveFormation,
-			AddCharacter,
-			UpdateCharacter,
-			RemoveCharacter
+			if (!GameNetwork.IsServer) return;
+			Log($"Alliance - Sending PlayerSpawnMenu to {peer.UserName}...");
+			SendPlayerSpawnMenu(peer);
 		}
 
-		public enum GlobalOperation
+		/// <summary>
+		/// From server - Broadcasts the PlayerSpawnMenu to all players in the game.
+		/// </summary>
+		public static void SendPlayerSpawnMenuToAll()
 		{
-			BeginMenuSync = PlayerSpawnMenuOperation.BeginMenuSync,
-			EndMenuSync = PlayerSpawnMenuOperation.EndMenuSync
+			if (!GameNetwork.IsServer) return;
+			Log("Alliance - Broadcasting PlayerSpawnMenu to all players...");
+			SendPlayerSpawnMenu();
 		}
 
-		public enum TeamOperation
+		/// <summary>
+		/// From client - Send a new PlayerSpawnMenu for the server to use.
+		/// </summary>
+		public static void RequestUpdatePlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu)
 		{
-			AddTeam = PlayerSpawnMenuOperation.AddTeam,
-			UpdateTeam = PlayerSpawnMenuOperation.UpdateTeam,
-			RemoveTeam = PlayerSpawnMenuOperation.RemoveTeam
-		}
-
-		public enum FormationOperation
-		{
-			AddFormation = PlayerSpawnMenuOperation.AddFormation,
-			UpdateFormation = PlayerSpawnMenuOperation.UpdateFormation,
-			RemoveFormation = PlayerSpawnMenuOperation.RemoveFormation
-		}
-
-		public enum CharacterOperation
-		{
-			AddCharacter = PlayerSpawnMenuOperation.AddCharacter,
-			UpdateCharacter = PlayerSpawnMenuOperation.UpdateCharacter,
-			RemoveCharacter = PlayerSpawnMenuOperation.RemoveCharacter
+			if (!GameNetwork.IsClient) return;
+			Log("Alliance - Sending PlayerSpawnMenu to server...");
+			int messageCount = 0;
+			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.BeginMenuSync));
+			messageCount++;
+			foreach (PlayerTeam team in playerSpawnMenu.Teams)
+			{
+				SendToServer(new UpdatePlayerSpawnMenu(TeamOperation.AddTeam, team));
+				messageCount++;
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					SendToServer(new UpdatePlayerSpawnMenu(FormationOperation.AddFormation, team, formation));
+					messageCount++;
+					foreach (AvailableCharacter character in formation.AvailableCharacters)
+					{
+						SendToServer(new UpdatePlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character));
+						messageCount++;
+					}
+				}
+			}
+			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.EndMenuSync));
+			messageCount++;
+			Log($"Alliance - Total messages sent to update PlayerSpawnMenu: {messageCount}");
 		}
 
 		public static void WritePlayerTeamToPacket(PlayerTeam team)
@@ -123,47 +131,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Utilities
 			return character;
 		}
 
-		public static void SendPlayerSpawnMenuToPeer(NetworkCommunicator peer)
-		{
-			if (!GameNetwork.IsServer) return;
-			Log($"Alliance - Sending PlayerSpawnMenu to {peer.UserName}...");
-			SendPlayerSpawnMenu(peer);
-		}
-
-		public static void SendPlayerSpawnMenuToAll()
-		{
-			if (!GameNetwork.IsServer) return;
-			Log("Alliance - Broadcasting PlayerSpawnMenu to all players...");
-			SendPlayerSpawnMenu();
-		}
-
-		public static void RequestUpdatePlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu)
-		{
-			if (!GameNetwork.IsClient) return;
-			Log("Alliance - Sending PlayerSpawnMenu to server...");
-			int messageCount = 0;
-			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.BeginMenuSync));
-			messageCount++;
-			foreach (PlayerTeam team in playerSpawnMenu.Teams)
-			{
-				SendToServer(new UpdatePlayerSpawnMenu(TeamOperation.AddTeam, team));
-				messageCount++;
-				foreach (PlayerFormation formation in team.Formations)
-				{
-					SendToServer(new UpdatePlayerSpawnMenu(FormationOperation.AddFormation, team, formation));
-					messageCount++;
-					foreach (AvailableCharacter character in formation.AvailableCharacters)
-					{
-						SendToServer(new UpdatePlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character));
-						messageCount++;
-					}
-				}
-			}
-			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.EndMenuSync));
-			messageCount++;
-			Log($"Alliance - Total messages sent to update PlayerSpawnMenu: {messageCount}");
-		}
-
 		private static void SendPlayerSpawnMenu(NetworkCommunicator peer = null)
 		{
 			int messageCount = 0;
@@ -210,6 +177,48 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Utilities
 			GameNetwork.BeginModuleEventAsClient();
 			GameNetwork.WriteMessage(message);
 			GameNetwork.EndModuleEventAsClient();
+		}
+
+		public enum PlayerSpawnMenuOperation
+		{
+			BeginMenuSync,
+			EndMenuSync,
+			AddTeam,
+			UpdateTeam,
+			RemoveTeam,
+			AddFormation,
+			UpdateFormation,
+			RemoveFormation,
+			AddCharacter,
+			UpdateCharacter,
+			RemoveCharacter
+		}
+
+		public enum GlobalOperation
+		{
+			BeginMenuSync = PlayerSpawnMenuOperation.BeginMenuSync,
+			EndMenuSync = PlayerSpawnMenuOperation.EndMenuSync
+		}
+
+		public enum TeamOperation
+		{
+			AddTeam = PlayerSpawnMenuOperation.AddTeam,
+			UpdateTeam = PlayerSpawnMenuOperation.UpdateTeam,
+			RemoveTeam = PlayerSpawnMenuOperation.RemoveTeam
+		}
+
+		public enum FormationOperation
+		{
+			AddFormation = PlayerSpawnMenuOperation.AddFormation,
+			UpdateFormation = PlayerSpawnMenuOperation.UpdateFormation,
+			RemoveFormation = PlayerSpawnMenuOperation.RemoveFormation
+		}
+
+		public enum CharacterOperation
+		{
+			AddCharacter = PlayerSpawnMenuOperation.AddCharacter,
+			UpdateCharacter = PlayerSpawnMenuOperation.UpdateCharacter,
+			RemoveCharacter = PlayerSpawnMenuOperation.RemoveCharacter
 		}
 	}
 }

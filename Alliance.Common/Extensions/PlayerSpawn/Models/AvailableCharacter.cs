@@ -32,7 +32,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		[XmlIgnore]
 		public BasicCultureObject Culture => Character?.Culture ?? CharacterStub?.Culture;
 		[XmlIgnore]
-		public int MaxSlots => SpawnCount * (IsPercentage ? CoreUtils.CurrentPlayerCount / 100 : 1);
+		public int MaxSlots => (int)(SpawnCount * (IsPercentage ? CoreUtils.CurrentPlayerCount / 100f : 1));
 		[XmlIgnore]
 		public int UsedSlots { get; set; }
 		[XmlIgnore]

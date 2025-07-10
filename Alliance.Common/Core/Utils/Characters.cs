@@ -3,6 +3,7 @@ using System.Linq;
 using System.Xml;
 using TaleWorlds.Core;
 using TaleWorlds.Localization;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Common.Core.Utils
@@ -70,6 +71,13 @@ namespace Alliance.Common.Core.Utils
 				CharacterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>().ToList();
 				CharacterDictionary = CharacterObjects.ToDictionary(x => x.StringId);
 				_trueCharactersLoaded = true;
+
+				// Ensure MPClassDivisions are loaded
+				if (!MBObjectManager.Instance.HasType(typeof(MultiplayerClassDivisions.MPHeroClass)))
+				{
+					MBObjectManager.Instance.RegisterType<MultiplayerClassDivisions.MPHeroClass>("MPClassDivision", "MPClassDivisions", 45U, true, false);
+					MBObjectManager.Instance.LoadXML("MPClassDivisions", true, "", false);
+				}
 			}
 			else
 			{

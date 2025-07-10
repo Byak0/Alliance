@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using static Alliance.Common.Utilities.Logger;
@@ -47,6 +48,22 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 		{
 			Dictionary<string, GameKeyContext>.ValueCollection test = HotKeyManager.GetAllCategories();
 			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_menu");
+
+			MissionPeer.OnTeamChanged += OnPlayerChangeTeam;
+		}
+
+		// TODO : improve team change logic / team selection ?
+		private void OnPlayerChangeTeam(NetworkCommunicator peer, Team previousTeam, Team newTeam)
+		{
+			if (peer.IsMine)
+			{
+				PlayerSpawnMenu.Instance.SelectTeam(PlayerSpawnMenu.Instance.Teams.Find(team => team.TeamSide == newTeam.Side));
+				// Refresh the player spawn menu when the player changes team
+				if (_dataSource != null)
+				{
+					_dataSource.GenerateMenu();
+				}
+			}
 		}
 
 		public override void OnMissionTick(float dt)
@@ -103,7 +120,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			}
 		}
 
-		public void OpenMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback = null)
+		public void OpenMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback = null, bool editMode = false)
 		{
 			if (IsMenuOpen)
 			{
@@ -130,9 +147,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 
 				ScreenManager.TopScreen?.AddLayer(_layer);
 				ScreenManager.TrySetFocus(_layer);
-				//ScreenManager.AddLayer(_layer);
 
-				_dataSource.IsVisible = true;
+				_dataSource.EditMode = editMode;
 				IsMenuOpen = true;
 			}
 			catch (Exception ex)
@@ -149,11 +165,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 				{
 					_dataSource.OnFinalize();
 					_layer.InputRestrictions.ResetInputRestrictions();
-					_dataSource.IsVisible = false;
 					ScreenManager.TryLoseFocus(_layer);
 					ScreenManager.TopScreen?.RemoveLayer(_layer);
 					_onMenuClosed?.Invoke(_dataSource.PlayerSpawnMenu);
-					//ScreenManager.RemoveLayer(_layer);
 				}
 			}
 			catch (Exception ex)
