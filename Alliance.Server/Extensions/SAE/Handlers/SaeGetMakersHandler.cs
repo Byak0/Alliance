@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Extensions.SAE.Models;
 using Alliance.Common.Extensions.SAE.NetworkMessages.FromClient;
-using Alliance.Common.Extensions.SAE.NetworkMessages.FromServer;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.SAE.Models;
 using System;
@@ -55,9 +54,7 @@ namespace Alliance.Server.Extensions.SAE.Handlers
 
 					List<SaeMarkerWithIdAndPos> group = markersId.GetRange(startIndex, endIndex - startIndex);
 
-					GameNetwork.BeginModuleEventAsServer(networkPeer);
-					GameNetwork.WriteMessage(new SaeCreateMarkersNetworkServerMessage(group));
-					GameNetwork.EndModuleEventAsServer();
+					SaeMsg.RequestClientToCreateMarkers(networkPeer, group);
 				}
 			}
 		}
