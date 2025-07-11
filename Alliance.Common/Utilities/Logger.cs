@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
-using NetworkMessages.FromServer;
+﻿using NetworkMessages.FromServer;
 using System;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -90,20 +89,6 @@ namespace Alliance.Common.Utilities
 			GameNetwork.BeginModuleEventAsServer(peer);
 			GameNetwork.WriteMessage(new ServerMessage(message));
 			GameNetwork.EndModuleEventAsServer();
-		}
-
-		public static void SendInformationToAll(string message)
-		{
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new SendNotification(message, 1));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-		}
-
-		public static void SendNotificationToAll(string message)
-		{
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new SendNotification(message, 0));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
 		public static void SendAdminNotificationToAll(string message, bool broadcast = true)

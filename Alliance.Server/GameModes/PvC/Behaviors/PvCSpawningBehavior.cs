@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer;
@@ -251,11 +252,11 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 			{
 				ToggleBarriers(TEMPORARY_BARRIER_TAG, true);
 				await Task.Delay(waitTime - 3000);
-				SendInformationToAll($"Starting in 3...");
+				CommonAdminMsg.SendInformationToAll($"Starting in 3...");
 				await Task.Delay(1000);
-				SendInformationToAll($"Starting in 2...");
+				CommonAdminMsg.SendInformationToAll($"Starting in 2...");
 				await Task.Delay(1000);
-				SendInformationToAll($"Starting in 1...");
+				CommonAdminMsg.SendInformationToAll($"Starting in 1...");
 				await Task.Delay(1000);
 				EnableMortality();
 				ToggleBarriers(TEMPORARY_BARRIER_TAG, false);
@@ -275,7 +276,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
 		private void EnableMortality()
 		{
-			SendNotificationToAll($"Rappel : le TK est actif, ne frappez pas vos alliés!");
+			CommonAdminMsg.SendNotificationToAll($"Rappel : le TK est actif, ne frappez pas vos alliés!");
 
 			// Make everyone mortal
 			foreach (Agent agent in Mission.Current?.AllAgents)

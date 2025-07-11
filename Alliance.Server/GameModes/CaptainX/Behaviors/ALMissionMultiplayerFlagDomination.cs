@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.GameModes.PvC;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
@@ -410,9 +411,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 			{
 				_morale += moraleGain;
 				_morale = MBMath.ClampFloat(_morale, -1f, 1f);
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new FlagDominationMoraleChangeMessage(MoraleRounded));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				CaptainXMsg.SendFlagDominationMoraleChangeMessageToAllPeers(new FlagDominationMoraleChangeMessage(MoraleRounded));
 				_gameModeFlagDominationClient?.OnMoraleChanged(MoraleRounded);
 				MPPerkObject.RaiseEventForAllPeers(MPPerkCondition.PerkEventFlags.MoraleChange);
 			}
@@ -513,12 +512,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 			int second = removedCapIndexList[1];
 			FlagCapturePoint flagCapturePoint = AllCapturePoints.First((cp) => cp.FlagIndex != first && cp.FlagIndex != second);
 			NotificationsComponent.FlagXRemaining(flagCapturePoint);
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new FlagDominationMoraleChangeMessage(MoraleRounded));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new FlagDominationFlagsRemovedMessage());
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			CaptainXMsg.SendFlagDominationMoraleChangeMessageToAllPeers(new FlagDominationMoraleChangeMessage(MoraleRounded));
+			CaptainXMsg.SendFlagDominationFlagsRemovedMessageToAllPeers(new FlagDominationFlagsRemovedMessage());
 			_flagRemovalOccured = true;
 			_gameModeFlagDominationClient?.OnNumberOfFlagsChanged();
 			foreach (MissionBehavior missionBehavior in Mission.MissionBehaviors)
@@ -533,9 +528,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		{
 			int flagIndex = capToRemove.FlagIndex;
 			capToRemove.RemovePointAsServer();
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new FlagDominationCapturePointMessage(flagIndex, -1));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			CaptainXMsg.SendCapturedPointMsgToAllPeers(new FlagDominationCapturePointMessage(flagIndex, -1));
 			return flagIndex;
 		}
 
@@ -852,9 +845,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 			if (peer.Peer.Communicator.IsConnectionActive)
 			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				PvCMsg.SendSyncGoldMsgToAllPeers(new SyncGoldsForSkirmish(peer.Peer, newAmount));
 			}
 
 			if (GameModeBaseClient != null)
@@ -942,9 +933,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 			foreach (FlagCapturePoint item in AllCapturePoints.Where((cp) => !cp.IsDeactivated))
 			{
-				GameNetwork.BeginModuleEventAsServer(networkPeer);
-				GameNetwork.WriteMessage(new FlagDominationCapturePointMessage(item.FlagIndex, _capturePointOwners[item.FlagIndex]?.TeamIndex ?? -1));
-				GameNetwork.EndModuleEventAsServer();
+				CaptainXMsg.SendCapturedPointMsgToPeer(networkPeer, new FlagDominationCapturePointMessage(item.FlagIndex, _capturePointOwners[item.FlagIndex]?.TeamIndex ?? -1));
 			}
 		}
 
@@ -1099,9 +1088,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					uint color2 = (uint)((int?)team2?.Color2 ?? -1);
 					allCapturePoint.SetTeamColorsWithAllSynched(color, color2);
 					_capturePointOwners[allCapturePoint.FlagIndex] = team2;
-					GameNetwork.BeginBroadcastModuleEvent();
-					GameNetwork.WriteMessage(new FlagDominationCapturePointMessage(allCapturePoint.FlagIndex, team2?.TeamIndex ?? -1));
-					GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+
+					CaptainXMsg.SendCapturedPointMsgToAllPeers(new FlagDominationCapturePointMessage(allCapturePoint.FlagIndex, team2?.TeamIndex ?? -1));
 					_gameModeFlagDominationClient?.OnCapturePointOwnerChanged(allCapturePoint, team2);
 					NotificationsComponent.FlagXCapturedByTeamX(allCapturePoint, agent.Team);
 					MPPerkObject.RaiseEventForAllPeers(MPPerkCondition.PerkEventFlags.FlagCapture);
@@ -1265,9 +1253,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		{
 			if (!networkPeer.IsServerPeer)
 			{
-				GameNetwork.BeginModuleEventAsServer(networkPeer);
-				GameNetwork.WriteMessage(new FlagDominationMoraleChangeMessage(MoraleRounded));
-				GameNetwork.EndModuleEventAsServer();
+				CaptainXMsg.SendFlagDominationMoraleChangeMessageToPeer(networkPeer, new FlagDominationMoraleChangeMessage(MoraleRounded));
 			}
 		}
 	}
