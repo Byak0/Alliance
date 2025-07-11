@@ -3,6 +3,8 @@ using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.RTSCamera.Extension;
+using Alliance.Server.Core;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using System;
@@ -137,10 +139,14 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			if (playerSelected == null) return false;
 
-			teleportPlayersToYou(new List<NetworkCommunicator> { playerSelected }, peer);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			teleportPlayersToYou(new List<NetworkCommunicator> { playerSelected }, peer, tpPosition);
+
+			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({tpPosition})", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -148,10 +154,14 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		{
 			List<NetworkCommunicator> playerSelected = GameNetwork.NetworkPeers.ToList();
 
-			teleportPlayersToYou(playerSelected, peer);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			teleportPlayersToYou(playerSelected, peer, tpPosition);
+
+			Log($"[AdminPanel] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({tpPosition})", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -160,12 +170,39 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
 			// Check if admin and target player both have an agent
-			if (playerSelected == null || playerSelected.ControlledAgent == null || peer.ControlledAgent == null) return false;
+			if (playerSelected == null) return false;
 
-			peer.ControlledAgent.TeleportToPosition(playerSelected.ControlledAgent.Position);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			bool playerHasAgent = peer.ControlledAgent != null;
+			bool targetHasAgent = playerSelected.ControlledAgent != null;
+
+			if (playerHasAgent && targetHasAgent)
+			{
+				// Both have agents
+				peer.ControlledAgent.TeleportToPosition(playerSelected.ControlledAgent.Position);
+			}
+			else if (playerHasAgent && !targetHasAgent)
+			{
+				// Only requester have agent
+				peer.ControlledAgent.TeleportToPosition(playerSelected.GetCameraPosition());
+			}
+			else if (!playerHasAgent && targetHasAgent)
+			{
+				// Only target have agent
+				ServerCoreMsg.SendClientCameraPosition(playerSelected.ControlledAgent.Frame, peer);
+			}
+			else if (!playerHasAgent && !targetHasAgent)
+			{
+				// None have agent
+				var targetCameraFrame = playerSelected.GetCameraFrame();
+				ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, peer);
+			}
+
+			Log($"[AdminPanel] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({tpPosition})", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -492,7 +529,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		/// </summary>
 		/// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
 		/// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
-		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
+		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer, Vec3 tpPosition)
 		{
 			try
 			{
@@ -500,14 +537,37 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				{
 					// Check if admin and target player both have an agent, also prevent admin from teleporting to himself
 					if (playerToTeleport == null
-						|| playerToTeleport.ControlledAgent == null
-						|| peer.ControlledAgent == null
 						|| peer.VirtualPlayer.Id == playerToTeleport.VirtualPlayer.Id)
 					{
 						continue;
 					}
 
-					playerToTeleport.ControlledAgent.TeleportToPosition(peer.ControlledAgent.Position);
+					bool playerHasAgent = peer.ControlledAgent != null;
+					bool targetHasAgent = playerToTeleport.ControlledAgent != null;
+
+					if (playerHasAgent && targetHasAgent)
+					{
+						// Both have agents
+						playerToTeleport.ControlledAgent.TeleportToPosition(tpPosition);
+					}
+					else if (playerHasAgent && !targetHasAgent)
+					{
+						// Only requester have agent
+						var targetCameraFrame = peer.ControlledAgent.Frame;
+						ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, playerToTeleport);
+					}
+					else if (!playerHasAgent && targetHasAgent)
+					{
+						// Only target have agent
+						playerToTeleport.ControlledAgent.TeleportToPosition(tpPosition);
+
+					}
+					else if (!playerHasAgent && !targetHasAgent)
+					{
+						// Move camera of target to camera of player
+						var targetCameraFrame = peer.GetCameraFrame();
+						ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, playerToTeleport);
+					}
 				}
 			}
 			catch (Exception e)
