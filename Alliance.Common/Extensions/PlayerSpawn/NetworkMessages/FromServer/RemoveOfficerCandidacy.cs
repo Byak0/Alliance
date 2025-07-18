@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Utilities;
-using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
@@ -7,39 +6,43 @@ using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnM
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// From server : Update main language for formation.
+	/// From server : Remove a player's candidacy for officer.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public sealed class SyncFormationMainLanguage : GameNetworkMessage
+	public sealed class RemoveOfficerCandidacy : GameNetworkMessage
 	{
+		public NetworkCommunicator Player { get; private set; }
 		public int TeamIndex { get; private set; } = -1;
 		public int FormationIndex { get; private set; } = -1;
-		public int MainLanguageIndex { get; private set; } = -1;
+		public int CharacterIndex { get; private set; } = -1;
 
-		public SyncFormationMainLanguage(PlayerTeam playerTeam, PlayerFormation playerFormation, int mainLanguageIndex)
+		public RemoveOfficerCandidacy(NetworkCommunicator player, PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter)
 		{
+			Player = player;
 			TeamIndex = playerTeam.Index;
 			FormationIndex = playerFormation.Index;
-			MainLanguageIndex = mainLanguageIndex;
+			CharacterIndex = availableCharacter.Index;
 		}
 
-		public SyncFormationMainLanguage()
+		public RemoveOfficerCandidacy()
 		{
 		}
 
 		protected override void OnWrite()
 		{
+			WriteNetworkPeerReferenceToPacket(Player);
 			WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
 			WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
-			WriteIntToPacket(MainLanguageIndex, CompressionHelper.LanguageCompressionInfo);
+			WriteIntToPacket(CharacterIndex, CharacterIndexCompressionInfo);
 		}
 
 		protected override bool OnRead()
 		{
 			bool bufferReadValid = true;
+			Player = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
 			TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
 			FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
-			MainLanguageIndex = ReadIntFromPacket(CompressionHelper.LanguageCompressionInfo, ref bufferReadValid);
+			CharacterIndex = ReadIntFromPacket(CharacterIndexCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
 		}
 
@@ -50,7 +53,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		protected override string OnGetLogFormat()
 		{
-			return "Alliance - PlayerSpawnMenu - " + TeamIndex + " - " + FormationIndex + " main language updated to index " + MainLanguageIndex;
+			return "Alliance - PlayerSpawnMenu - " + Player?.VirtualPlayer?.UserName + " no longer candidate for officer in " + TeamIndex + " - " + FormationIndex + " - " + CharacterIndex;
 		}
 	}
 }

@@ -7,27 +7,29 @@ using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnM
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 {
 	/// <summary>
-	/// From client : Request a character in the player spawn menu.
+	/// From client : Request to use an officer in the player spawn menu.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
-	public sealed class RequestCharacterUsage : GameNetworkMessage
+	public sealed class RequestOfficerUsage : GameNetworkMessage
 	{
 		public int TeamIndex { get; set; } = -1;
 		public int FormationIndex { get; set; } = -1;
 		public int CharacterIndex { get; set; } = -1;
 		public int NbPerks { get; private set; } = 0;
 		public List<int> SelectedPerks { get; private set; } = new List<int>();
+		public string Pitch { get; set; }
 
-		public RequestCharacterUsage(PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter, List<int> selectedPerks)
+		public RequestOfficerUsage(PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter, List<int> selectedPerks, string pitch)
 		{
 			TeamIndex = playerTeam.Index;
 			FormationIndex = playerFormation.Index;
 			CharacterIndex = availableCharacter.Index;
 			SelectedPerks = selectedPerks;
 			NbPerks = SelectedPerks.Count;
+			Pitch = pitch;
 		}
 
-		public RequestCharacterUsage()
+		public RequestOfficerUsage()
 		{
 		}
 
@@ -41,6 +43,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 			{
 				WriteIntToPacket(selectedPerk, CompressionMission.PerkIndexCompressionInfo);
 			}
+			WriteStringToPacket(Pitch);
 		}
 
 		protected override bool OnRead()
@@ -55,6 +58,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 			{
 				SelectedPerks.Add(ReadIntFromPacket(CompressionMission.PerkIndexCompressionInfo, ref bufferReadValid));
 			}
+			Pitch = ReadStringFromPacket(ref bufferReadValid);
 			return bufferReadValid;
 		}
 
@@ -65,7 +69,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 
 		protected override string OnGetLogFormat()
 		{
-			return "Alliance - PlayerSpawnMenu - Requesting to use character" + TeamIndex + " - " + FormationIndex + " - " + CharacterIndex;
+			return "Alliance - PlayerSpawnMenu - Requesting to use officer" + TeamIndex + " - " + FormationIndex + " - " + CharacterIndex + " - " + Pitch;
 		}
 	}
 }

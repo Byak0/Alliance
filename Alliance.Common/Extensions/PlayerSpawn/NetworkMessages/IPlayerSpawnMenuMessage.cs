@@ -1,5 +1,5 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
-using static Alliance.Common.Extensions.PlayerSpawn.Utilities.PlayerSpawnMenuNetworkHelper;
+using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 {
