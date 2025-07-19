@@ -4,6 +4,9 @@ using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Battle;
 using Alliance.Common.GameModes.BattleRoyale;
@@ -40,9 +43,13 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		private MapCardVM _selectedMap;
 		private MBBindingList<OptionVM> _nativeOptions;
 		private MBBindingList<OptionVM> _modOptions;
+		private string _playerSpawnMenuShortDesc;
+		private PlayerSpawnMenu _playerSpawnMenuInstance;
 
 		public GameModeMenuVM()
 		{
+			_playerSpawnMenuInstance = new PlayerSpawnMenu();
+
 			GameModes = new MBBindingList<GameModeCardVM>()
 			{
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new LobbyGameModeSettings()),
@@ -60,6 +67,23 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		}
 
 		[DataSourceProperty]
+		public string PlayerSpawnMenuShortDesc
+		{
+			get
+			{
+				return _playerSpawnMenuShortDesc;
+			}
+			set
+			{
+				if (value != _playerSpawnMenuShortDesc)
+				{
+					_playerSpawnMenuShortDesc = value;
+					OnPropertyChangedWithValue(value, nameof(PlayerSpawnMenuShortDesc));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public string FilterText
 		{
 			get
@@ -72,7 +96,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				{
 					_filterText = value;
 					FilterMaps(_filterText);
-					OnPropertyChangedWithValue(value, "FilterText");
+					OnPropertyChangedWithValue(value, nameof(FilterText));
 				}
 			}
 		}
@@ -103,7 +127,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				if (value != _gameModes)
 				{
 					_gameModes = value;
-					OnPropertyChangedWithValue(value, "GameModes");
+					OnPropertyChangedWithValue(value, nameof(GameModes));
 				}
 			}
 		}
@@ -120,7 +144,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				if (value != _maps)
 				{
 					_maps = value;
-					OnPropertyChangedWithValue(value, "Maps");
+					OnPropertyChangedWithValue(value, nameof(Maps));
 				}
 			}
 		}
@@ -137,7 +161,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				if (value != _nativeOptions)
 				{
 					_nativeOptions = value;
-					OnPropertyChangedWithValue(value, "NativeOptions");
+					OnPropertyChangedWithValue(value, nameof(NativeOptions));
 				}
 			}
 		}
@@ -154,7 +178,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				if (value != _modOptions)
 				{
 					_modOptions = value;
-					OnPropertyChangedWithValue(value, "ModOptions");
+					OnPropertyChangedWithValue(value, nameof(ModOptions));
 				}
 			}
 		}
@@ -166,6 +190,38 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			{
 				return MBNetwork.MyPeer.IsAdmin();
 			}
+		}
+
+		public void EditPlayerSpawnMenu()
+		{
+			PlayerSpawnMenuView spawnMenuView = Mission.Current.GetMissionBehavior<PlayerSpawnMenuView>();
+			if (spawnMenuView == null) return;
+			_playerSpawnMenuInstance ??= new PlayerSpawnMenu();
+			spawnMenuView.OpenMenu(_playerSpawnMenuInstance, OnPlayerSpawnMenuEdited, true);
+		}
+
+		private void OnPlayerSpawnMenuEdited(PlayerSpawnMenu menu)
+		{
+			_playerSpawnMenuInstance = menu;
+			RefreshPlayerSpawnMenuShortDesc();
+		}
+
+		private void RefreshPlayerSpawnMenuShortDesc()
+		{
+			string defenderTeamsDesc = "Defender team(s):";
+			string attackerTeamsDesc = "Attacker team(s):";
+			foreach (PlayerTeam team in _playerSpawnMenuInstance.Teams)
+			{
+				if (team.TeamSide == BattleSideEnum.Defender)
+				{
+					defenderTeamsDesc += " " + team.Name + "(" + team.Formations.Count + ")";
+				}
+				else if (team.TeamSide == BattleSideEnum.Attacker)
+				{
+					attackerTeamsDesc += " " + team.Name + "(" + team.Formations.Count + ")";
+				}
+			}
+			PlayerSpawnMenuShortDesc = defenderTeamsDesc + " | " + attackerTeamsDesc;
 		}
 
 		public void RequestVoteForGameMode()
@@ -196,6 +252,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 					true));
 				GameNetwork.EndModuleEventAsClient();
 			}
+			PlayerSpawnMenuMsg.RequestUpdatePlayerSpawnMenu(_playerSpawnMenuInstance);
 			CloseMenu();
 		}
 
@@ -206,6 +263,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			_selectedGameMode = gameModeCardVM;
 			_selectedGameMode.IsSelected = true;
 			RefreshMaps();
+			RefreshPlayerSpawnMenuShortDesc();
 			RefreshNativeOptions();
 			RefreshModOptions();
 		}
@@ -216,9 +274,11 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			_selectedMap = mapCardVM;
 			_selectedMap.IsSelected = true;
 			_selectedGameMode.GameModeSettings.TWOptions[OptionType.Map] = mapCardVM.MapInfo.Name;
-			if (mapCardVM is ActCardVM)
+			if (mapCardVM is ActCardVM actCardVM)
 			{
-				_selectedGameMode.GameModeSettings = (mapCardVM as ActCardVM).Act.ActSettings;
+				_playerSpawnMenuInstance = actCardVM.Act.PlayerSpawnMenu;
+				RefreshPlayerSpawnMenuShortDesc();
+				_selectedGameMode.GameModeSettings = actCardVM.Act.ActSettings;
 				RefreshNativeOptions();
 				RefreshModOptions();
 			}
