@@ -35,7 +35,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		[DataSourceProperty]
 		public string Name
 		{
-			get => _candidate?.Player?.UserName ?? string.Empty;
+			get => _candidate?.Candidate?.UserName ?? string.Empty;
 		}
 
 		[DataSourceProperty]

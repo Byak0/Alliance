@@ -2,6 +2,7 @@
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Patch.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
+using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Core.Configuration.Models.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MPPerkObject;
@@ -114,6 +116,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					}
 				}
 
+				// Check if custom culture is provided, otherwise use the one from multiplayer options
+				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(initialDirection).TroopOrigin(new BasicBattleAgentOrigin(character))
 					.VisualsIndex(randomSeed)
@@ -208,7 +213,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
 				uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-				Banner banner = component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner;
+				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, culture.BackgroundColor1, culture.ForegroundColor1);
+
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
 				AgentBuildData agentBuildData = new AgentBuildData(character)
@@ -218,7 +224,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Formation(form)
 					.ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
 					.ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
-					.Banner(component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner);
+					.Banner(banner);
 				agentBuildData.MissionPeer(component);
 				bool randomEquipement = true;
 				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
@@ -480,6 +486,26 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
 		{
 			MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
+			int i = 0;
+			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
+			{
+				IReadOnlyPerkObject selectedPerk = perkList.ElementAtOrValue(indices.ElementAtOrValue(i, 0), null);
+				if (selectedPerk != null)
+				{
+					selectedPerks.Add(selectedPerk);
+				}
+				i++;
+			}
+			return selectedPerks;
+		}
+
+		/// <summary>
+		/// Get corresponding perks from a hero class and a list of perks indices.
+		/// </summary>
+		public static List<IReadOnlyPerkObject> GetPerks(MultiplayerClassDivisions.MPHeroClass heroClass, List<int> indices)
+		{
 			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;

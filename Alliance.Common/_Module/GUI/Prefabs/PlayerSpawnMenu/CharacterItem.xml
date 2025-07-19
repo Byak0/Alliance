@@ -121,7 +121,7 @@
 					<Children>
 
 						<!--Perks-->
-						<MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PopupWidgetFirst="..\..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\CharacterButton" >
+						<MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PopupWidgetFirst="..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\CharacterButton" >
 							<Children>
 								<NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
 								<NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">

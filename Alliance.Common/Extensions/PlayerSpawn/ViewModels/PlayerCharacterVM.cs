@@ -1,9 +1,11 @@
 ﻿#if !SERVER
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview;
+using Alliance.Common.Patch.Utilities;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
 using TaleWorlds.Core;
@@ -35,8 +37,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private int _siblingOrder = -1;
 		private int _width;
 		private int _marginLeft;
+		private MPHeroClass _heroClass;
+		private int _heroClassIndex;
 
 		private MBBindingList<HeroPerkVM> _perks;
+
 		public List<IReadOnlyPerkObject> SelectedPerks { get; private set; }
 		public readonly ClassType TroopType;
 
@@ -198,6 +203,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			{
 				CharacterViewModel = new AL_CharacterViewModel();
 				CharacterViewModel.FillFrom(availableCharacter);
+				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture.Color;
+				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture.Color2;
+				_heroClass = AvailableCharacter.Character.GetHeroClass();
+				_heroClassIndex = MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass);
 			}
 			_onCharacterSelected = onCharacterSelected;
 			_onCharacterPerksUpdated = onCharacterPerksUpdated;
@@ -206,6 +215,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_editMode = editMode;
 
 			InitPerks();
+
+			UpdateCharacterPreview();
 		}
 
 		private void InitPerks()
@@ -214,8 +225,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			Perks = new MBBindingList<HeroPerkVM>();
 
 			// Check that the character has a hero class
-			MPHeroClass heroClass = AvailableCharacter.Character.GetHeroClass();
-			if (heroClass == null)
+			if (_heroClass == null)
 			{
 				Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
 				return;
@@ -239,10 +249,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			if (GameNetwork.IsMyPeerReady)
 			{
 				MissionPeer component = GameNetwork.MyPeer.GetComponent<MissionPeer>();
-				int troopIndex = (component.NextSelectedTroopIndex = MultiplayerClassDivisions.GetMPHeroClasses(heroClass.Culture).ToList().IndexOf(heroClass));
 				for (int j = 0; j < perksToShow.Count; j++)
 				{
-					int num2 = component.GetSelectedPerkIndexWithPerkListIndex(troopIndex, j);
+					int num2 = component.GetSelectedPerkIndexWithPerkListIndex(_heroClassIndex, j);
 					if (num2 >= perksToShow[j].Count)
 					{
 						num2 = 0;
@@ -251,6 +260,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					IReadOnlyPerkObject value = perksToShow[j][num2];
 					SelectedPerks[j] = value;
 				}
+				// log selected perks for debug
+				string logPerks = AvailableCharacter.Name + " selected perks : ";
+				foreach (IReadOnlyPerkObject perkObj in SelectedPerks)
+				{
+					logPerks += perkObj.PerkListIndex;
+				}
+				Log(logPerks, LogLevel.Debug);
 			}
 
 			// Create HeroPerkVM instances for each perk and add them to the MBBindingList
@@ -273,12 +289,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			Perks = newPerks;
 		}
 
-		private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)
+		private void SelectPerk(HeroPerkVM perkContainer, MPPerkVM perkChoice)
 		{
-			if (GameNetwork.IsMyPeerReady && Perks != null && Perks.Contains(heroPerk))
+			if (GameNetwork.IsMyPeerReady && Perks != null && Perks.Contains(perkContainer))
 			{
 				UpdateCharacterPreview();
 				_onCharacterPerksUpdated?.Invoke(this);
+				GameNetwork.MyPeer.GetComponent<MissionPeer>()?.SelectPerk(perkContainer.PerkIndex, perkChoice.PerkIndex, _heroClassIndex);
 			}
 		}
 
@@ -300,7 +317,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 
 			CharacterViewModel.EquipmentCode = equipment.CalculateEquipmentCode();
-			CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture?.BannerKey ?? String.Empty;
+			if (FormationVM.Formation.MainCulture != null) CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture.BannerKey;
 		}
 
 

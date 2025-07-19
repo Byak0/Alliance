@@ -6,6 +6,8 @@ using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.MountAndBlade;
@@ -15,41 +17,32 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Views
 {
-	public class PlayerSpawnMenuView : MissionView, IUseKeyBinder
+	public class PlayerSpawnMenuView : MissionView
 	{
 		private GauntletLayer _layer;
 		private PlayerSpawnMenuVM _dataSource;
-		private GameKey _menuKey;
+		private bool _recentlyClosed;
 
 		private Action<PlayerSpawnMenu> _onMenuClosed;
 
 		public bool IsMenuOpen { get; private set; }
-		public bool Enabled { get; private set; }
-
-		private static readonly string KeyCategoryId = "alliance_player_spawn_cat";
-
-		public BindedKeyCategory BindedKeys => new BindedKeyCategory
-		{
-			CategoryId = KeyCategoryId,
-			Category = "Alliance",
-			Keys = new List<BindedKey>
-			{
-				new BindedKey
-				{
-					Id = "key_menu",
-					Description = "Open the player spawn menu.",
-					Name = "Player spawn menu",
-					DefaultInputKey = InputKey.P
-				}
-			}
-		};
 
 		public override void OnBehaviorInitialize()
 		{
-			Dictionary<string, GameKeyContext>.ValueCollection test = HotKeyManager.GetAllCategories();
-			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_menu");
+			// todo wip , join team
+			if (GameNetwork.MyPeer != null && GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != null)
+			{
+				PlayerSpawnMenu.Instance.SelectTeam();
+			}
 
 			MissionPeer.OnTeamChanged += OnPlayerChangeTeam;
+			PlayerSpawnMenu.OnSpawnStatusChanged += OnSpawnStatusChanged;
+		}
+
+		public override void OnRemoveBehavior()
+		{
+			MissionPeer.OnTeamChanged -= OnPlayerChangeTeam;
+			PlayerSpawnMenu.OnSpawnStatusChanged -= OnSpawnStatusChanged;
 		}
 
 		// TODO : improve team change logic / team selection ?
@@ -59,37 +52,92 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			{
 				PlayerSpawnMenu.Instance.SelectTeam(PlayerSpawnMenu.Instance.Teams.Find(team => team.TeamSide == newTeam.Side));
 				// Refresh the player spawn menu when the player changes team
-				if (_dataSource != null)
+				_dataSource?.GenerateMenu();
+			}
+		}
+
+		private void OnSpawnStatusChanged(bool spawnEnabled)
+		{
+			if (spawnEnabled && GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != null
+					&& GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != Mission.SpectatorTeam
+					&& Agent.Main == null)
+			{
+				if (!IsMenuOpen)
 				{
-					_dataSource.GenerateMenu();
+					if (PlayerSpawnMenu.Instance.MyAssignment.Team == null)
+					{
+						PlayerSpawnMenu.Instance.SelectTeam();
+					}
+					OpenMenu(PlayerSpawnMenu.Instance);
 				}
 			}
 		}
 
-		public override void OnMissionTick(float dt)
+		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
-			Enabled = true;
-			if (Enabled && !IsMenuOpen && CheckOpenMenuKeyPress())
+			base.OnAgentBuild(agent, banner);
+
+			if (agent.MissionPeer != null && agent.MissionPeer.IsMine && IsMenuOpen)
 			{
-				// Open menu with default instance of PlayerSpawnMenu
-				OpenMenu(PlayerSpawnMenu.Instance);
-			}
-			else if (IsMenuOpen && CheckCloseMenuKeyPress())
-			{
+				// If the agent is created, close the menu if it was open
 				CloseMenu();
 			}
 		}
 
-		private bool CheckOpenMenuKeyPress()
+		// todo improve this (user experience)
+		public override void OnMissionTick(float dt)
 		{
-			// Safely checks if the menu key is pressed. Input can be null in Modding Kit context.
-			if (MissionScreen?.SceneLayer?.Input != null)
+			// In-game logic (in multiplayer context)
+			if (GameNetwork.IsClient)
 			{
-				return Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey);
+				if (GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != null
+					&& GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != Mission.SpectatorTeam
+					&& Agent.Main == null)
+				{
+					// If the player has no agent and no character assigned, open the spawn menu
+					if (!IsMenuOpen && !_recentlyClosed)
+					{
+						if (PlayerSpawnMenu.Instance.MyAssignment.Team == null)
+						{
+							PlayerSpawnMenu.Instance.SelectTeam();
+						}
+						OpenMenu(PlayerSpawnMenu.Instance);
+					}
+				}
 			}
-			else
+
+			if (IsMenuOpen && CheckCloseMenuKeyPress())
 			{
-				return TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey);
+				CloseMenu();
+			}
+
+			if (PlayerSpawnMenu.Instance == null) return;
+
+			RefreshVM(dt);
+		}
+
+		private void RefreshVM(float dt)
+		{
+			if (!GameNetwork.IsClient) return;
+
+			// Update Election status
+			if (PlayerSpawnMenu.Instance.ElectionInProgress && PlayerSpawnMenu.Instance.TimeBeforeOfficerElection > 0f)
+			{
+				PlayerSpawnMenu.Instance.TimeBeforeOfficerElection -= dt;
+				if (_dataSource != null)
+				{
+					_dataSource.TimeBeforeOfficerElection = (float)Math.Round(PlayerSpawnMenu.Instance.TimeBeforeOfficerElection, 0);
+				}
+			}
+
+			// Update Spawn status
+			if (PlayerSpawnMenu.Instance.MyAssignment.CanSpawn && PlayerSpawnMenu.Instance.MyAssignment.TimeBeforeSpawn > 0f && PlayerSpawnMenu.Instance.MyAssignment.Character != null)
+			{
+				PlayerSpawnMenu.Instance.MyAssignment.TimeBeforeSpawn = Math.Max(PlayerSpawnMenu.Instance.MyAssignment.TimeBeforeSpawn - dt, 0f);
+				if (_dataSource != null)
+				{
+					_dataSource.TimeBeforeSpawn = (float)Math.Round(PlayerSpawnMenu.Instance.MyAssignment.TimeBeforeSpawn, 1);
+				}
 			}
 		}
 
@@ -98,25 +146,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			// Safely checks if the menu key is pressed. Input can be null in Modding Kit context.
 			if (MissionScreen?.SceneLayer?.Input != null)
 			{
-				return Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || _layer.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || Input.IsKeyReleased(InputKey.Escape);
+				return Input.IsKeyReleased(InputKey.Escape);
 			}
 			else
 			{
-				return TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.RightMouseButton) || TaleWorlds.InputSystem.Input.IsKeyReleased(InputKey.Escape);
-			}
-		}
-
-		public void Enable()
-		{
-			Enabled = true;
-		}
-
-		public void Disable()
-		{
-			Enabled = false;
-			if (IsMenuOpen)
-			{
-				CloseMenu();
+				return TaleWorlds.InputSystem.Input.IsKeyReleased(InputKey.Escape);
 			}
 		}
 
@@ -132,8 +166,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 				Characters.Instance.TryRefreshCharacters();
 				_dataSource = new PlayerSpawnMenuVM(playerSpawnMenu);
 				_onMenuClosed += onCloseCallback;
+				_dataSource.OnCloseMenu += CloseMenu;
 
-				_layer = new GauntletLayer(25, "GauntletLayer");
+				_layer = new GauntletLayer(26, "GauntletLayer");
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("PlayerSpawnMenu", _dataSource);
@@ -150,6 +185,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 
 				_dataSource.EditMode = editMode;
 				IsMenuOpen = true;
+				_recentlyClosed = false;
 			}
 			catch (Exception ex)
 			{
@@ -157,12 +193,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			}
 		}
 
-		private void CloseMenu()
+		public void CloseMenu()
 		{
 			try
 			{
 				if (_layer != null)
 				{
+					_dataSource.OnCloseMenu -= CloseMenu;
 					_dataSource.OnFinalize();
 					_layer.InputRestrictions.ResetInputRestrictions();
 					ScreenManager.TryLoseFocus(_layer);
@@ -177,6 +214,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			_layer = null;
 			_dataSource = null;
 			IsMenuOpen = false;
+			_recentlyClosed = true;
 		}
 	}
 }

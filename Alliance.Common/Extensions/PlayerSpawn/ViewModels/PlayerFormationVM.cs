@@ -113,7 +113,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_onFormationDeleted = onFormationDeleted;
 			_editMode = editMode;
 			MainLanguages = playerFormation.MainLanguage;
-			Formation.OnLanguageChanged += (sender, language) => MainLanguages = language; // todo verify it doesn't subscribe multiple times ?
 			RefreshValues();
 		}
 

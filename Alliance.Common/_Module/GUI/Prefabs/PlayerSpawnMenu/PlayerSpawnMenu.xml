@@ -4,135 +4,149 @@
 	</Constants>
 	<Window>
 
-		<!-- Transparent background covering all the screen. If user clicks on it, close the menu -->
-		<ButtonWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Alliance.TransparentBrush" Sprite="Frame1_canvas" Command.Click="CloseMenu">
+		<!-- Main window -->
+		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" SuggestedWidth="1920" SuggestedHeight="1080" VerticalAlignment="Center" Brush="Alliance.UniformFrame" Sprite="BlankWhiteSquare_9" Brush.AlphaFactor="0.6">
 			<Children>
 
-				<!-- Main window -->
-				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" SuggestedWidth="1920" SuggestedHeight="1080" VerticalAlignment="Center" Brush="Alliance.UniformFrame" Sprite="BlankWhiteSquare_9" Brush.AlphaFactor="0.6">
+				<!-- Top Center : Team & Formation names -->
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.TopHeader.Background" Brush.AlphaFactor="0.8">
+					<Children>
+						<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="32" MarginTop="4" Text="@MenuTitle" />
+					</Children>
+				</BrushWidget>
+
+				<!-- Top Left : Preferred language -->
+				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="520" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="6" >
+					<Children>
+						<GenericOption DataSource="{PreferredLanguage}" />
+					</Children>
+				</BrushWidget>
+
+				<!-- Top Right : Exit button -->
+				<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="80" SuggestedHeight="80" HorizontalAlignment="Right" VerticalAlignment="Top" Brush="Popup.CloseButton" DoNotPassEventsToChildren="true" Command.Click="CloseMenu" />
+
+				<!-- Top : Sync / Load / Save / Edit buttons (admin only) -->
+				<BrushWidget SuggestedWidth="560" SuggestedHeight="60" VerticalAlignment="Top" HorizontalAlignment="Right" MarginRight="104" IsVisible="@IsAdmin" >
 					<Children>
 
-						<!-- Top Center : Team & Formation names -->
-						<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.TopHeader.Background" Brush.AlphaFactor="0.8">
+						<!-- Sync button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="144" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Sync" IsVisible="@EditMode">
 							<Children>
-								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="700" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="32" MarginTop="4" Text="@MenuTitle" />
+								<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="60" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="12" Brush="MPLobby.Matchmaking.CustomGameListButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Brush.AlphaFactor="0.8" IsVisible="@EditMode" />
+								<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="36" Text="Sync" />
 							</Children>
-						</BrushWidget>
+						</ButtonWidget>
 
-						<!-- Top Left : Preferred language -->
-						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="520" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Left" VerticalAlignment="Top" MarginTop="6" >
+						<!-- Load button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="288" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Load" IsVisible="@EditMode">
 							<Children>
-								<GenericOption DataSource="{PreferredLanguage}" />
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Load" />
 							</Children>
-						</BrushWidget>
+						</ButtonWidget>
 
-						<!-- Top : Sync / Load / Save / Edit buttons (admin only) -->
-						<BrushWidget SuggestedWidth="640" SuggestedHeight="60" VerticalAlignment="Top" HorizontalAlignment="Right" IsVisible="@IsAdmin" >
+						<!-- Save button -->
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="160" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save" IsVisible="@EditMode">
 							<Children>
-
-								<!-- Sync button -->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="160" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Left" VerticalAlignment="Top" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Sync" IsVisible="@EditMode">
-									<Children>
-										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="60" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="12" Brush="MPLobby.Matchmaking.CustomGameListButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Brush.AlphaFactor="0.8" IsVisible="@EditMode" />
-										<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="100" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="36" Text="Sync" />
-									</Children>
-								</ButtonWidget>
-
-								<!-- Load button -->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="160" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="320" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Load" IsVisible="@EditMode">
-									<Children>
-										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Load" />
-									</Children>
-								</ButtonWidget>
-
-								<!-- Save button -->
-								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="160" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="160" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save" IsVisible="@EditMode">
-									<Children>
-										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Save" />
-									</Children>
-								</ButtonWidget>
-
-								<!-- Edit mode -->
-								<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="40" MarginRight="24" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Text="Edit mode : " />
-
-								<!-- Edit checkbox -->
-								<ButtonWidget ButtonType="Toggle" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="44" HeightSizePolicy="Fixed" SuggestedHeight="44" VerticalAlignment="Center" HorizontalAlignment="Right" Brush="Alliance.Button.Checkbox" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@EditMode" />
-
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Save" />
 							</Children>
-						</BrushWidget>
+						</ButtonWidget>
+
+						<!-- Edit mode -->
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="40" MarginRight="24" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Text="Edit mode : " />
+
+						<!-- Edit checkbox -->
+						<ButtonWidget ButtonType="Toggle" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="44" HeightSizePolicy="Fixed" SuggestedHeight="44" VerticalAlignment="Center" HorizontalAlignment="Right" Brush="Alliance.Button.Checkbox" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@EditMode" />
+
+					</Children>
+				</BrushWidget>
 
 
-						<!-- Left : Team list, scrollable (Edit mode only) -->
-						<BrushWidget SuggestedWidth="!FormationList.Width" SuggestedHeight="48" VerticalAlignment="Top" HorizontalAlignment="Left" IsVisible="@EditMode" MarginTop="60" >
+				<!-- Left : Team list, scrollable (Edit mode only) -->
+				<BrushWidget SuggestedWidth="!FormationList.Width" SuggestedHeight="48" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="60" IsVisible="@EditMode" >
+					<Children>
+						<ScrollablePanel Id="ScrollablePanelTeams" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectTeams\InnerPanelTeams" ClipRect="ClipRectTeams" HorizontalScrollbar="..\ScrollbarTeams" AutoHideScrollBars="true" MarginBottom="4" >
 							<Children>
-								<ScrollablePanel Id="ScrollablePanelTeams" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectTeams\InnerPanelTeams" ClipRect="ClipRectTeams" HorizontalScrollbar="..\ScrollbarTeams" AutoHideScrollBars="true" MarginBottom="4" >
+								<Widget Id="ClipRectTeams" WidthSizePolicy="Fixed" SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
 									<Children>
-										<Widget Id="ClipRectTeams" WidthSizePolicy="Fixed" SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
+										<NavigatableListPanel Id="InnerPanelTeams" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10">
 											<Children>
-												<NavigatableListPanel Id="InnerPanelTeams" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10">
-													<Children>
-														<ListPanel DataSource="{Teams}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center">
-															<ItemTemplate>
-																<!-- Team item -->
-																<TeamItem/>
-															</ItemTemplate>
-														</ListPanel>
-														<!-- Add Team button -->
-														<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="40" HeightSizePolicy="Fixed" SuggestedHeight="40"  HorizontalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddTeam" />
-													</Children>
-												</NavigatableListPanel>
+												<ListPanel DataSource="{Teams}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center">
+													<ItemTemplate>
+														<!-- Team item -->
+														<TeamItem/>
+													</ItemTemplate>
+												</ListPanel>
+												<!-- Add Team button -->
+												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="40" HeightSizePolicy="Fixed" SuggestedHeight="40"  HorizontalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddTeam" />
 											</Children>
-										</Widget>
+										</NavigatableListPanel>
 									</Children>
-								</ScrollablePanel>
-								<!-- Horizontal scrollbar -->
-								<ScrollbarWidget Id="ScrollbarTeams" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" VerticalAlignment="Bottom" AlignmentAxis="Horizontal" Handle="ScrollbarHandleTeams" MaxValue="100" MinValue="0" >
-									<Children>
-										<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
-										<ImageWidget Id="ScrollbarHandleTeams" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinWidth="8" />
-									</Children>
-								</ScrollbarWidget>
+								</Widget>
 							</Children>
-						</BrushWidget>
-
-
-
-						<!-- Left part : Formation list -->
-						<BrushWidget SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" SuggestedHeight="800" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="108" >
+						</ScrollablePanel>
+						<!-- Horizontal scrollbar -->
+						<ScrollbarWidget Id="ScrollbarTeams" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" VerticalAlignment="Bottom" AlignmentAxis="Horizontal" Handle="ScrollbarHandleTeams" MaxValue="100" MinValue="0" >
 							<Children>
-								<ScrollablePanel Id="ScrollablePanelFormations" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectFormations\InnerPanelFormations" ClipRect="ClipRectFormations" VerticalScrollbar="..\ScrollbarFormations" AutoHideScrollBars="true" MarginBottom="4" >
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
+								<ImageWidget Id="ScrollbarHandleTeams" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinWidth="8" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</BrushWidget>
+
+				<!-- Left : Choose formation (when out of edit mode) -->
+				<BrushWidget SuggestedWidth="!FormationList.Width" SuggestedHeight="48" VerticalAlignment="Top" HorizontalAlignment="Center" MarginTop="124" IsHidden="@ShowTroops">
+					<Children>
+						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="420" SuggestedHeight="160" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Conversation.Gold.Background" Brush.AlphaFactor="0.8" />
+						<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="38" Text="Choose a formation" />
+					</Children>
+				</BrushWidget>
+
+
+
+				<!-- Left part : Formation list -->
+				<BrushWidget SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" SuggestedHeight="800" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="108" >
+					<Children>
+						<ScrollablePanel Id="ScrollablePanelFormations" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectFormations\InnerPanelFormations" ClipRect="ClipRectFormations" VerticalScrollbar="..\ScrollbarFormations" AutoHideScrollBars="true" MarginBottom="4" >
+							<Children>
+								<Widget Id="ClipRectFormations" WidthSizePolicy="Fixed" SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
 									<Children>
-										<Widget Id="ClipRectFormations" WidthSizePolicy="Fixed" SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
+										<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
 											<Children>
-												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
-													<Children>
-														<ListPanel DataSource="{Formations}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="8">
-															<ItemTemplate>
-																<FormationItem/>
-															</ItemTemplate>
-														</ListPanel>
-														<!-- Add Formation button -->
-														<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80"  HorizontalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddFormation" IsVisible="@EditMode" MarginTop="36"/>
-													</Children>
-												</NavigatableListPanel>
+												<ListPanel DataSource="{Formations}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="8">
+													<ItemTemplate>
+														<FormationItem/>
+													</ItemTemplate>
+												</ListPanel>
+												<!-- Add Formation button -->
+												<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80"  HorizontalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddFormation" IsVisible="@EditMode" MarginTop="36"/>
 											</Children>
-										</Widget>
+										</NavigatableListPanel>
 									</Children>
-								</ScrollablePanel>
-								<!-- Vertical scrollbar -->
-								<ScrollbarWidget Id="ScrollbarFormations" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Right" AlignmentAxis="Vertical" Handle="ScrollbarHandleFormations" MaxValue="100" MinValue="0" MarginRight="1" MarginTop="8">
-									<Children>
-										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
-										<ImageWidget Id="ScrollbarHandleFormations" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinHeight="8" />
-									</Children>
-								</ScrollbarWidget>
+								</Widget>
 							</Children>
-						</BrushWidget>
-
-						<!-- Right part : Officer election -->
-						<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="380" VerticalAlignment="Top" HorizontalAlignment="Right" MarginLeft="480" MarginTop="60" >
+						</ScrollablePanel>
+						<!-- Vertical scrollbar -->
+						<ScrollbarWidget Id="ScrollbarFormations" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Right" AlignmentAxis="Vertical" Handle="ScrollbarHandleFormations" MaxValue="100" MinValue="0" MarginRight="1" MarginTop="8">
 							<Children>
-								<RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="28" MarginTop="4" Text="Vote for your officer (multiple choices possible) - 30s remaining" />
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
+								<ImageWidget Id="ScrollbarHandleFormations" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinHeight="8" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</BrushWidget>
+
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="380" VerticalAlignment="Top" HorizontalAlignment="Right" MarginLeft="480" MarginTop="60" IsVisible="@ShowTroops">
+					<Children>
+						<!-- Right part : Officer election (when election in progress) -->
+						<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="380" VerticalAlignment="Top" HorizontalAlignment="Right" IsVisible="@ElectionInProgress">
+							<Children>
+								<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" StackLayout.LayoutMethod="HorizontalCentered">
+									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="28" MarginTop="4" Text="Vote for your officer (multiple choices possible) - Time remaining : " />
+										<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="28" MarginTop="4" FloatText="@TimeBeforeOfficerElection" />
+									</Children>
+								</ListPanel>
 								<ListPanel DataSource="{OfficerCandidacies}" WidthSizePolicy="StretchToParent" SuggestedHeight="420" VerticalAlignment="Top" HorizontalAlignment="Center"  ClipContents="true" ClipHorizontalContent="true" ClipVerticalContent="true" StackLayout.LayoutMethod="HorizontalCentered">
 									<ItemTemplate>
 										<OfficerCandidacyItem/>
@@ -141,24 +155,33 @@
 							</Children>
 						</BrushWidget>
 
-						
-						
-						<!-- Bottom right part : Character choice -->
-						<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="480" >
+						<!-- Right part : Officer info (when no election) -->
+						<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="380" VerticalAlignment="Top" HorizontalAlignment="Right" IsHidden="@ElectionInProgress">
 							<Children>
-								<RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="28" MarginTop="4" Text="Choose your class :" />
-								<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="580" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="60" StackLayout.LayoutMethod="HorizontalCentered">
-									<Children>
-										<Widget DataSource="{Characters}" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" HorizontalAlignment="Center" >
-											<ItemTemplate>
-												<CharacterItem/>
-											</ItemTemplate>
-										</Widget>
-										<!-- Add Character button -->
-										<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80"  HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddCharacter" IsVisible="@EditMode" />
-									</Children>
-								</ListPanel>
-								<!--<CharacterSelectionWidget Formations="@Formations" CurrentFormationIndex="@SelectedFormationIndex" EditMode="@EditMode" SuggestedWidth="1280" SuggestedHeight="640" VerticalAlignment="Center" HorizontalAlignment="Center" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  />-->
+								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="48" Text="@FormationInfoText" />
+							</Children>
+						</BrushWidget>
+					</Children>
+				</BrushWidget>
+
+				<!-- Bottom right part : Character choice -->
+				<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="480" IsVisible="@ShowTroops">
+					<Children>
+						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="580" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="60" StackLayout.LayoutMethod="HorizontalCentered">
+							<Children>
+								<Widget DataSource="{Characters}" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" HorizontalAlignment="Center" >
+									<ItemTemplate>
+										<CharacterItem/>
+									</ItemTemplate>
+								</Widget>
+								<!-- Add Character button -->
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80"  HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Clan.AddAnnouncement.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="AddCharacter" IsVisible="@EditMode" />
+							</Children>
+						</ListPanel>
+
+						<BrushWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="120" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="Conversation.Gold.Background" Brush.AlphaFactor="1.0" >
+							<Children>
+								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" Brush.FontSize="32" Text="@PlayerSpawnInfo" MarginLeft="96" MarginRight="96"/>
 							</Children>
 						</BrushWidget>
 
@@ -170,8 +193,8 @@
 				<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\SecondPerk\CandidatePerks}" MarginTop="-280"/>
 				<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\ThirdPerk\CandidatePerks}" MarginTop="-280"/>
 
-			</Children>
-		</ButtonWidget>
 
+			</Children>
+		</BrushWidget>
 	</Window>
 </Prefab>
