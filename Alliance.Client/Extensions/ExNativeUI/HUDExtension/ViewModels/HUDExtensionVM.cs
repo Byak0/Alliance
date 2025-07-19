@@ -534,6 +534,23 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 		}
 
 		[DataSourceProperty]
+		public bool ShowWarmupInfoText
+		{
+			get
+			{
+				return _showWarmupInfoText;
+			}
+			set
+			{
+				if (value != _showWarmupInfoText)
+				{
+					_showWarmupInfoText = value;
+					OnPropertyChangedWithValue(value, nameof(ShowWarmupInfoText));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public int GeneralWarningCountdown
 		{
 			get
@@ -605,7 +622,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 			UpdateShowTeamScores();
 
 			// Hide warmup info text if PlayerSpawn is enabled
-			_showWarmupInfoText = !mission.HasMissionBehavior<PlayerSpawnMenuView>();
+			ShowWarmupInfoText = !mission.HasMissionBehavior<PlayerSpawnMenuView>();
 
 			Teammates = new MBBindingList<MPPlayerVM>();
 			Enemies = new MBBindingList<MPPlayerVM>();
@@ -673,7 +690,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
 		public void Tick(float dt)
 		{
-			IsInWarmup = _showWarmupInfoText && _gameMode.IsInWarmup;
+			IsInWarmup = _gameMode.IsInWarmup;
 			CheckTimers();
 			if (_isTeammateAndEnemiesRelevant)
 			{
