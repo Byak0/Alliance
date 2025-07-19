@@ -1,5 +1,4 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.MissionViews;
-using Alliance.Common.Extensions.PlayerSpawn.Views;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -20,9 +19,8 @@ namespace Alliance.Client.GameModes
 			return new List<MissionView>()
 			{
 				// Custom views
-				new PlayerSpawnMenuView(),
-				new AL_MainAgentEquipmentController(),
-				
+				new AL_MainAgentEquipmentController(),				
+
 				// Default views from native
 				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),
@@ -34,6 +32,7 @@ namespace Alliance.Client.GameModes
 				ViewCreator.CreateOptionsUIHandler(),
 				ViewCreator.CreateMissionMainAgentEquipDropView(mission),
 				ViewCreator.CreateMissionBoundaryCrossingView(),
+				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 				new MissionBoundaryWallView(),
 				new MissionItemContourControllerView(),
 				new MissionAgentContourControllerView()
