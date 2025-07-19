@@ -7,13 +7,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 	/// </summary>
 	public class CandidateInfo
 	{
-		public NetworkCommunicator Player { get; }
+		public NetworkCommunicator Candidate { get; }
 		public string Pitch { get; set; }
 		public int Votes { get; set; }
 
-		public CandidateInfo(NetworkCommunicator player)
+		public CandidateInfo(NetworkCommunicator candidate, string pitch)
 		{
-			Player = player;
+			Candidate = candidate;
+			Pitch = pitch;
+			Votes = 0;
 		}
 	}
 }

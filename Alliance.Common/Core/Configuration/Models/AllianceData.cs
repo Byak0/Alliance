@@ -49,7 +49,7 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		public static string[] AvailableSounds() => AudioPlayer.Instance.GetAvailableSounds();
 
-		public static readonly string[] AvailableSides = new string[] { BattleSideEnum.Attacker.ToString(), BattleSideEnum.Defender.ToString() };
+		public static readonly string[] AvailableSides = new string[] { BattleSideEnum.Defender.ToString(), BattleSideEnum.Attacker.ToString() };
 
 		public static readonly string[] AvailableGameModes = new string[] { "Lobby", "Scenario", "BattleRoyale", "PvC", "CvC", "CaptainX", "BattleX", "SiegeX", "Captain", "Battle", "Siege", "Skirmish" };
 

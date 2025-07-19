@@ -38,6 +38,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		[XmlIgnore]
 		public readonly Dictionary<NetworkCommunicator, CandidateInfo> CandidateInfo = new();
 		[XmlIgnore]
+		public HashSet<CandidateInfo> MyVotes = new();
+		[XmlIgnore]
 		private string _mainLanguage = LocalizationHelper.GetCurrentLanguage();
 		[XmlIgnore]
 		public string MainLanguage
@@ -55,6 +57,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		// Events for UI updates
 		public event Action<PlayerFormation, string> OnLanguageChanged;
+		public event Action<PlayerFormation> OnOfficerCandidaciesUpdated;
+		public event Action<PlayerFormation> OnOfficerUpdated;
 
 		public AvailableCharacter AddCharacter(string characterId, bool officer)
 		{
@@ -97,9 +101,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 		}
 
-		public void AddCandidate(CandidateInfo info)
+		public void AddCandidate(NetworkCommunicator candidate, string pitch)
 		{
-			if (!Members.Contains(info.Player))
+			CandidateInfo info = new CandidateInfo(candidate, pitch);
+			if (!Members.Contains(info.Candidate))
 			{
 				Log("Cannot add a candidate who is not a member of the formation.", LogLevel.Error);
 				return;
@@ -107,7 +112,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (info != null && !Candidates.Contains(info))
 			{
 				Candidates.Add(info);
-				CandidateInfo[info.Player] = info;
+				CandidateInfo[info.Candidate] = info;
+				OnOfficerCandidaciesUpdated?.Invoke(this);
 			}
 		}
 
@@ -116,7 +122,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (info != null && Candidates.Contains(info))
 			{
 				Candidates.Remove(info);
-				CandidateInfo.Remove(info.Player);
+				CandidateInfo.Remove(info.Candidate);
+				OnOfficerCandidaciesUpdated?.Invoke(this);
 			}
 		}
 
@@ -131,8 +138,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			{
 				PlayerVotes[player] = new HashSet<CandidateInfo>();
 			}
-			PlayerVotes[player].Add(candidate);
-			candidate.Votes++;
+			if (!PlayerVotes[player].Contains(candidate))
+			{
+				PlayerVotes[player].Add(candidate);
+				candidate.Votes++;
+			}
 		}
 
 		public void RemoveVote(NetworkCommunicator player, CandidateInfo candidate)
@@ -144,30 +154,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 			PlayerVotes[player].Remove(candidate);
 			candidate.Votes--;
-		}
-
-		public void ElectOfficer()
-		{
-			CandidateInfo electedCandidate = null;
-			int maxVotes = 0;
-			foreach (var candidate in Candidates)
-			{
-				if (candidate.Votes > maxVotes)
-				{
-					maxVotes = candidate.Votes;
-					electedCandidate = candidate;
-				}
-			}
-			if (electedCandidate != null)
-			{
-				Officer = electedCandidate.Player;
-				Log($"Officer elected: {Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
-			}
-			else
-			{
-				Officer = Members.GetRandomElementInefficiently();
-				Log($"Officer randomly selected : {Officer?.UserName} (no candidate available)", LogLevel.Warning);
-			}
 		}
 
 		public void RefreshMainLanguage()
@@ -184,6 +170,17 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			{
 				MainLanguage = LocalizationHelper.GetLanguage(languagePreferences.OrderByDescending(kvp => kvp.Value).First().Key);
 			}
+		}
+
+		public void SetOfficer(NetworkCommunicator officer)
+		{
+			if (officer != null && !Members.Contains(officer))
+			{
+				Log("Cannot set an officer who is not a member of the formation.", LogLevel.Error);
+				return;
+			}
+			Officer = officer;
+			OnOfficerUpdated?.Invoke(this);
 		}
 
 		public int GetOccupiedSlots()
