@@ -7,7 +7,6 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 {
 	/// <summary>
 	/// Server-side behavior to handle PlayerSpawnMenu initialization. Called by the different GameMode behaviors to get custom spawn behavior.
-	/// TODO : move to common so client can know if the spawn menu is enabled ? or not
 	/// </summary>
 	public class PlayerSpawnBehavior : MissionNetwork
 	{

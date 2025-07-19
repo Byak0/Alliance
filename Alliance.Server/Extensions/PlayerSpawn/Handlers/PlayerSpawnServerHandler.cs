@@ -32,7 +32,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			PlayerSpawnBehavior playerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
 			if (playerSpawnBehavior == null || !playerSpawnBehavior.Initialized)
 			{
-				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} tried to request character usage but PlayerSpawnBehavior is not enabled.", LogLevel.Warning);
+				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} tried to request character usage but PlayerSpawnBehavior is not enabled.", LogLevel.Error);
 				return false;
 			}
 
@@ -117,7 +117,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			PlayerSpawnBehavior playerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
 			if (playerSpawnBehavior == null || !playerSpawnBehavior.Initialized)
 			{
-				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} tried to request character usage but PlayerSpawnBehavior is not initialized.", LogLevel.Warning);
+				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} tried to request character usage but PlayerSpawnBehavior is not initialized.", LogLevel.Error);
 				return false;
 			}
 
@@ -127,7 +127,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			AvailableCharacter character = formation?.AvailableCharacters.Find(c => c.Index == message.CharacterIndex);
 			if (peer == null || team == null || formation == null || character == null || !character.Officer)
 			{
-				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} requested invalid officer usage: Team {message.TeamIndex}, Formation {message.FormationIndex}, Character {message.CharacterIndex}", LogLevel.Warning);
+				Log($"Alliance - PlayerSpawnMenu - {peer?.UserName} requested invalid officer usage: Team {message.TeamIndex}, Formation {message.FormationIndex}, Character {message.CharacterIndex}", LogLevel.Error);
 				return false;
 			}
 
@@ -234,7 +234,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			// Check if the peer is authorized to update the player spawn menu
 			if (!peer.IsAdmin())
 			{
-				Log($"Alliance - Unauthorized attempt to update player spawn menu by {peer.UserName}", LogLevel.Warning);
+				Log($"Alliance - Unauthorized attempt to update player spawn menu by {peer.UserName}", LogLevel.Error);
 				return false;
 			}
 

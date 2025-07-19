@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
+using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using NetworkMessages.FromClient;
 using NetworkMessages.FromServer;
 using System;
@@ -56,6 +57,9 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		protected int[] _agentCountsOnSide = new int[2];
 		protected (int, int)[] _defenderAttackerCountsInFlagArea;
 		protected float _lastPerkTickTime;
+		private PlayerSpawnBehavior _playerSpawnBehavior;
+
+		public string PlayerSpawnMenuFile { get; protected set; } = "spawn_preset_20_aserai_def_vs_vlandia_att.xml";
 
 		public override bool IsGameModeHidingAllAgentVisuals
 		{
@@ -192,18 +196,31 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 			Banner banner2 = new Banner(object2.BannerKey, object2.BackgroundColor2, object2.ForegroundColor2);
 			Mission.Teams.Add(BattleSideEnum.Attacker, @object.BackgroundColor1, @object.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
 			Mission.Teams.Add(BattleSideEnum.Defender, object2.BackgroundColor2, object2.ForegroundColor2, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
+
+			// Initialize the player spawn menu
+			_playerSpawnBehavior = Mission.GetMissionBehavior<PlayerSpawnBehavior>();
+			if (_playerSpawnBehavior != null) InitPlayerSpawnMenu();
 		}
 
 		public override void AfterStart()
 		{
 			RoundController.OnRoundStarted += OnPreparationStart;
 			RoundController.OnPreparationEnded += OnPreparationEnded;
-			if (WarmupComponent != null)
-			{
-				WarmupComponent.OnWarmupEnding += OnWarmupEnding;
-			}
+			if (WarmupComponent != null) WarmupComponent.OnWarmupEnding += OnWarmupEnding;
+			if (_playerSpawnBehavior != null) RoundController.OnRoundStarted += StartPlayerSpawnSession;
 			RoundController.OnPreRoundEnding += OnRoundEnd;
 			RoundController.OnPostRoundEnded += OnPostRoundEnd;
+		}
+
+		public virtual void InitPlayerSpawnMenu()
+		{
+			// Make use of the warmup to let players elect their officers
+			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimit.GetIntValue() * 60);
+		}
+
+		private void StartPlayerSpawnSession()
+		{
+			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
 		}
 
 		protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
@@ -215,10 +232,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		{
 			RoundController.OnRoundStarted -= OnPreparationStart;
 			RoundController.OnPreparationEnded -= OnPreparationEnded;
-			if (WarmupComponent != null)
-			{
-				WarmupComponent.OnWarmupEnding -= OnWarmupEnding;
-			}
+			if (WarmupComponent != null) WarmupComponent.OnWarmupEnding -= OnWarmupEnding;
+			if (_playerSpawnBehavior != null) RoundController.OnRoundStarted -= StartPlayerSpawnSession;
 			RoundController.OnPreRoundEnding -= OnRoundEnd;
 			RoundController.OnPostRoundEnded -= OnPostRoundEnd;
 
