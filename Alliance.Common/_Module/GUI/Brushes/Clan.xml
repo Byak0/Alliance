@@ -1,0 +1,1245 @@
+<Brushes>
+
+  <Brush Name="Flat.Banner.Small">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Clan.TornBanner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_new" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6"/>
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Clan.BannerEncyclopediaButton">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio=""/>
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  
+  <Brush Name="Clan.Header">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\header" ExtendTop="21" ExtendRight="13" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  
+  <Brush Name="Clan.TopPanel.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\army_bar" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" SaturationFactor="15" HueFactor="-10" ValueFactor="-13" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.TopPanel.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\army_bar" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" SaturationFactor="15" HueFactor="-10" ValueFactor="-13" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Clan.Sort.Base" TransitionDuration="0">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\header_fiefs_1" />
+    </Layers>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Clan.Fiefs.Sort.1" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\fiefs_sort_header_fief_name" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Fiefs.Sort.2" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\fiefs_sort_header_governor" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Fiefs.Sort.3" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\fiefs_sort_header_profit" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Other.Sort.1" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\other_sort_header_workshop_name" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Other.Sort.2" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\other_sort_header_location" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Other.Sort.3" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\other_sort_header_income" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Parties.Sort.1" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\parties_sort_header_name" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Parties.Sort.2" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\parties_sort_header_location" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Parties.Sort.3" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\parties_sort_header_size" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Members.Sort.1" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\members_sort_header_name" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Members.Sort.2" BaseBrush="Clan.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\members_sort_header_location" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush> 
+
+  <Brush Name="Clan.Management.Collapser">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\clan_collapser" Color="#FFFFFFFF" ExtendBottom="8" ExtendTop="3" SaturationFactor="20" HueFactor="-10"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" SaturationFactor="-50" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="ClanFinance.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\background_quest" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.Collapser">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\finance_collapser" ExtendBottom="20" ExtendLeft="11" ExtendRight="12" ExtendTop="17" />
+      <BrushLayer Name="Hovered" Sprite="Clan\finance_collapser_hover" ExtendBottom="20" ExtendLeft="11" ExtendRight="12" ExtendTop="17" />
+      <BrushLayer Name="Pressed" Sprite="Clan\finance_collapser_pressed" ExtendBottom="20" ExtendLeft="11" ExtendRight="12" ExtendTop="17" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1" />
+        <BrushLayer Name="Hovered" AlphaFactor="0" />
+        <BrushLayer Name="Pressed" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0" ColorFactor="1" />
+        <BrushLayer Name="Hovered" AlphaFactor="1" />
+        <BrushLayer Name="Pressed" AlphaFactor="0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.2" />
+        <BrushLayer Name="Hovered" AlphaFactor="0" />
+        <BrushLayer Name="Pressed" AlphaFactor="0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0" ColorFactor="1" />
+        <BrushLayer Name="Hovered" AlphaFactor="0" />
+        <BrushLayer Name="Pressed" AlphaFactor="1" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Clan.Management.LeftTuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\clan_tuple" />
+      <BrushLayer Name="Selected" Sprite="Clan\clan_tuple_selected" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.1" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0" ColorFactor="1" />
+        <BrushLayer Name="Selected" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.5" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+    <Brush Name="Clan.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\clan_tuple" Color="#FFEBC1FF" ColorFactor="1.3"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Clan.Finance.LeftTuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\finance_tuple" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.LeftTupleLocked">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\clan_tuple_tip" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\banner" OverlayXOffset="0" OverlayYOffset="0" />
+    </Layers>
+  </Brush>
+  <Brush Name="Clan.Management.Slot">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\portrait_slot_little" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="MidHighlight">
+        <BrushLayer Name="Default" ColorFactor="3.0" />
+      </Style>
+      <Style Name="FullHighlight">
+        <BrushLayer Name="Default" ColorFactor="4.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.UniqueRole.Slot">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\portrait_slot_right_panel" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="MidHighlight">
+        <BrushLayer Name="Default" ColorFactor="3.0" />
+      </Style>
+      <Style Name="FullHighlight">
+        <BrushLayer Name="Default" ColorFactor="4.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Lord.Status">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Dead">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\Dead" />
+      </Style>
+      <Style Name="Married">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\Married" />
+      </Style>
+      <Style Name="Pregnant">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\icon_pregnant" />
+      </Style>
+      <Style Name="InBattle">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\InBattle" />
+      </Style>
+      <Style Name="InSiege">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\InSiege" />
+      </Style>
+      <Style Name="Child">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\icon_ischild" />
+      </Style>
+      <Style Name="Prisoner">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\icon_inprison" />
+      </Style>
+      <Style Name="Sick">
+        <BrushLayer Name="Default" Sprite="SPGeneral\Clan\Status\icon_terminallyill" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.FamilyCollapser">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\flat_header" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Clan.Management.Reset">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\reset" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Lord.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\flat_card" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="BannerEditor.Switch.Colors.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\switch_colors" Color="#D69846FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.5" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" ColorFactor="1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.3" ColorFactor="1" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="SPClan.RoleSelection.Dropdown">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="role_selection_dropdown_canvas_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.7" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" IsHidden="false" AlphaFactor="0" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="dropdown" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="SPClan.NameChange.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\edit_name_icon" Color="#BE945BFF" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Slider.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_slider_knob" IsHidden="true" ExtendLeft="12" ExtendTop="14" ExtendBottom="12" ExtendRight="12" />
+      <BrushLayer Name="Hovered" Sprite="SPGeneral\SPOptions\standart_slider_knob_hover" IsHidden="true" ExtendLeft="12" ExtendTop="14" ExtendBottom="12" ExtendRight="12" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Hovered" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" SaturationFactor="-40" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Slider.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_slider_frame" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" SaturationFactor="-40" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Slider.Fill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_slider_fill" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" SaturationFactor="-40" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Slider.Canvas">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_slider_canvas" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" SaturationFactor="-40" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.RoleSelectionButton.GoldFrame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="gold_frame_9" ExtendLeft="7" ExtendTop="7" ExtendRight="7" ExtendBottom="8" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.RoleSelectionButton.ReplaceIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\replace_icon" Color="#f4e1c4ff" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.RoleSelectionButton.ReplaceBackground">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#00000099" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.RoleSelectionPopup.Background">
+    <Layers>
+      <BrushLayer Name="Frame" Sprite="gold_frame_9" ExtendLeft="7" ExtendTop="7" ExtendRight="7" ExtendBottom="8" />
+      <BrushLayer Name="Background" Sprite="BlankWhiteSquare_9" Color="#312B22FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Frame" ColorFactor="1" />
+        <BrushLayer Name="Background" ColorFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Members.InArmyIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\party_in_army_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Members.TalkIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\conversation_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Income.ManageWorkshopIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\change_workshop_production_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Income.ManageAlleyIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\manage_alley_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Parties.ChangePartyLeaderIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\change_party_leader_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="SPClan.Members.RecallIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\recall_icon" Color="#be945bff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.NameTitle.Text" Font="Galahad">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0.1" TextShadowOffset="1" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.TabControl.Text" Font="Galahad" TextVerticalAlignment="Center" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="28" />
+      <Style Name="Selected" FontColor="#FEDBA6FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Renown.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="60" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.UpcomingTier.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="60" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.NextTier.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="60" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.RenownValue.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.TierValue.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Leader.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="60" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.UniqueRole.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="19" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Subtitle.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#A16332FF" TextOutlineAmount="0.0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Supporter.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Supporter.Influence.Description.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.RightPanel.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#BD9357FF" TextOutlineAmount="0.0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.Collapser.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AF91FF" TextGlowRadius="0.1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.1" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered" FontColor="#FFFFFFFF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled" FontColor="#736757FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="OverLimit" FontColor="#C6AF91FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Tuple.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F7C895FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+      <Style Name="Disabled" TextAlphaFactor="0.5" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.PartyStrength.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#B1B1B1FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Tuple.Location.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F7E4CCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Party.Tuple.Property.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Party.Member.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Party.Wage.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextOutlineColor="#000000FF" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.LeftPanel.Header.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.TupleLocked.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#B1B1B1FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.SettlementTrait.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.RightCollapser.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="40" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.LordName.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DBBB8DFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="26" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.LordLevel.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Management.Location.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#CBA473FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.CurrentGold.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E8C98BFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.TotalIncome.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#BFE38BFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.TotalExpenses.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E4A48BFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.DailyChange.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextOutlineColor="#000000FF" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.Settlement.IncomeText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#BFE38BFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Finance.Settlement.ExpenseText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#E4A48BFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Village.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Stat.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+      <Style Name="Positive" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+      <Style Name="Negative" FontColor="#F44242FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Stat.Seperator.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <!-- TODO_Kursad: Enable this and remove below, after animations are fixed-->
+  <!--<Brush Name="Clan.Stat.Value.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+      <Style Name="Warning" AnimationToPlayOnBegin="WarningAnim" />
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnim" Duration="1" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#D69846FF" />
+          <KeyFrame Time="0.01" Value="#F44242FF" />
+        </AnimationProperty>
+        <AnimationProperty PropertyName="TextBlur">
+          <KeyFrame Time="0.0" Value="0" />
+          <KeyFrame Time="0.01" Value="1" />
+        </AnimationProperty>
+        <AnimationProperty PropertyName="TextGlowRadius">
+          <KeyFrame Time="0.0" Value="0" />
+          <KeyFrame Time="0.01" Value="0.5" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>-->
+  <Brush Name="Clan.Stat.Value.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+      <Style Name="Warning" FontColor="#F44242FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24"  />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.PartySize.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Role.Title.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Role.Effects.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="16" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Stat.NegativeChange.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#DE7045FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Stat.PositiveChange.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#A7DF50FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.RightPanel.Name.Text" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#BE945BFF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.RightPanel.EditableName.Text" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered" FontColor="#BE945BFF" TextColorFactor="1.3" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed" FontColor="#BE945BFF" TextColorFactor="0.8" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+	<Brush Name="Clan.RightPanel.Name.Text" Font="Galahad" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+				<BrushLayer Name="Default" />
+			</Style>
+		</Styles>
+	</Brush>
+  <Brush Name="Clan.RightPanel.SubName.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#CCAE87FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Fiefs.NoGovernor.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="ClanCardSelectionPopup.DescriptionTitle.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Styles>
+      <Style Name="Default" FontColor="#EDD9BEFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="24" />
+      <Style Name="Hovered" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="24" TextColorFactor="0.9" />
+      <Style Name="Pressed" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="24" TextColorFactor="0.5"/>
+      <Style Name="Selected" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="24" />
+    </Styles>
+  </Brush>
+   <Brush Name="ClanCardSelectionPopup.Property.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Top" >
+    <Styles>
+      <Style Name="Default" FontColor="#F9E1C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Label" FontColor="#F09B29FF" TextValueFactor="0.5" />
+    </Styles>
+  </Brush>
+  <Brush Name="ClanCardSelectionPopup.ActionResult.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" >
+    <Styles>
+      <Style Name="Default" FontColor="#F9E1C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="28" />
+      <Style Name="PositiveChange" FontColor="#A7DF50FF" TextValueFactor="0.5" />
+      <Style Name="NegativeChange" FontColor="#DE7045FF" TextValueFactor="0.5" />
+    </Styles>
+  </Brush>
+  <Brush Name="ClanCardSelectionPopup.ItemTitle.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Styles>
+      <Style Name="Default" FontColor="#EDD9BEFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+      <Style Name="Hovered" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.9" />
+      <Style Name="Pressed" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.5"/>
+      <Style Name="Selected" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+    </Styles>
+  </Brush>
+	<Brush Name="ClanSellWorkshopPopup.Item.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+		<Styles>
+			<Style Name="Default" FontColor="#EDD9BEFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+			<Style Name="Hovered" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.9" />
+			<Style Name="Pressed" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.5"/>
+			<Style Name="Selected" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+		</Styles>
+	</Brush>
+  <Brush Name="Clan.MarriagePopup.Paragraph.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+		<Styles>
+			<Style Name="Default" FontColor="#F4E1C4FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+			<Style Name="IncreaseStyle" FontColor="#00FF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+			<Style Name="IncreaseStyle.MouseOver" FontColor="#00FF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+      <Style Name="IncreaseStyle.MouseDown" FontColor="#00FF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+			<Style Name="DecreaseStyle" FontColor="#FF0000FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+			<Style Name="DecreaseStyle.MouseOver" FontColor="#FF0000FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+			<Style Name="DecreaseStyle.MouseDown" FontColor="#FF0000FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="24" />
+		</Styles>
+	</Brush>
+  <Brush Name="Clan.MarriagePopup.Title.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+		<Styles>
+			<Style Name="Default" FontColor="#F4E1C4FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.0" TextOutlineAmount="0.0" TextOutlineColor="#000000FF" FontSize="28" />
+		</Styles>
+	</Brush>
+  <Brush Name="Clan.Workshop.Type.Image">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#2168DDFF" IsHidden="true" />
+      <BrushLayer Name="artisans" Sprite="BlankWhiteSquare_9" Color="#2168DDFF" IsHidden="true" />
+      <BrushLayer Name="brewery" Sprite="General\Icons\ShopIcons\brewery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="velvet_weavery" Sprite="General\Icons\ShopIcons\velvet_weavery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="linen_weavery" Sprite="General\Icons\ShopIcons\linen_weavery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="wine_press" Sprite="General\Icons\ShopIcons\wine_press_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="pottery_shop" Sprite="General\Icons\ShopIcons\pottery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="olive_press" Sprite="General\Icons\ShopIcons\oil_press_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="wool_weavery" Sprite="General\Icons\ShopIcons\wool_weavery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="tannery" Sprite="General\Icons\ShopIcons\tannery_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="wood_WorkshopType" Sprite="General\Icons\ShopIcons\wood_workshop_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="smithy" Sprite="General\Icons\ShopIcons\smithy_large" Color="#f4e1c4ff" IsHidden="true" />
+      <BrushLayer Name="silversmithy" Sprite="General\Icons\ShopIcons\silver_smithy_large" Color="#f4e1c4ff" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="artisans">
+        <BrushLayer Name="artisans" IsHidden="false" />
+      </Style>
+      <Style Name="brewery">
+        <BrushLayer Name="brewery" IsHidden="false" />
+      </Style>
+      <Style Name="velvet_weavery">
+        <BrushLayer Name="velvet_weavery" IsHidden="false" />
+      </Style>
+      <Style Name="linen_weavery">
+        <BrushLayer Name="linen_weavery" IsHidden="false" />
+      </Style>
+      <Style Name="wine_press">
+        <BrushLayer Name="wine_press" IsHidden="false" />
+      </Style>
+      <Style Name="pottery_shop">
+        <BrushLayer Name="pottery_shop" IsHidden="false" />
+      </Style>
+      <Style Name="olive_press">
+        <BrushLayer Name="olive_press" IsHidden="false" />
+      </Style>
+      <Style Name="wool_weavery">
+        <BrushLayer Name="wool_weavery" IsHidden="false" />
+      </Style>
+      <Style Name="tannery">
+        <BrushLayer Name="tannery" IsHidden="false" />
+      </Style>
+      <Style Name="wood_WorkshopType">
+        <BrushLayer Name="wood_WorkshopType" IsHidden="false" />
+      </Style>
+      <Style Name="smithy">
+        <BrushLayer Name="smithy" IsHidden="false" />
+      </Style>
+      <Style Name="silversmithy">
+        <BrushLayer Name="silversmithy" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Fief.Stat.Type.Image">
+    <Layers>
+      <BrushLayer Name="Default" IsHidden="true" />
+      <BrushLayer Name="None" IsHidden="true" />
+      <BrushLayer Name="Wall" Sprite="General\Icons\Walls" IsHidden="true" />
+      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" IsHidden="true" />
+      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" IsHidden="true" />
+      <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" IsHidden="true" />
+      <BrushLayer Name="Food" Sprite="General\Icons\Food" IsHidden="true" />
+      <BrushLayer Name="Loyalty" Sprite="SPGeneral\MapOverlay\Settlement\icon_loyalty" IsHidden="true" />
+      <BrushLayer Name="Security" Sprite="SPGeneral\MapOverlay\Settlement\icon_security" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="None">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Wall">
+        <BrushLayer Name="Wall" IsHidden="false" />
+      </Style>
+      <Style Name="Garrison">
+        <BrushLayer Name="Garrison" IsHidden="false" />
+      </Style>
+      <Style Name="Militia">
+        <BrushLayer Name="Militia" IsHidden="false" />
+      </Style>
+      <Style Name="Prosperity">
+        <BrushLayer Name="Prosperity" IsHidden="false" />
+      </Style>
+      <Style Name="Food">
+        <BrushLayer Name="Food" IsHidden="false" />
+      </Style>
+      <Style Name="Loyalty">
+        <BrushLayer Name="Loyalty" IsHidden="false" />
+      </Style>
+      <Style Name="Security">
+        <BrushLayer Name="Security" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.Fief.Profit.Type.Image">
+    <Layers>
+      <BrushLayer Name="Default" IsHidden="true" />
+      <BrushLayer Name="Tax" Sprite="SPGeneral\MapOverlay\Settlement\icon_tax_big" IsHidden="true" />
+      <BrushLayer Name="Tariff" Sprite="SPGeneral\MapOverlay\Settlement\icon_tariff_big" IsHidden="true" />
+      <BrushLayer Name="Garrison" Sprite="SPGeneral\MapOverlay\Settlement\icon_garrison_wages_big" IsHidden="true" />
+      <BrushLayer Name="Village" Sprite="SPGeneral\MapOverlay\Settlement\icon_village_big" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="None">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Tax">
+        <BrushLayer Name="Tax" IsHidden="false" />
+      </Style>
+      <Style Name="Tariff">
+        <BrushLayer Name="Tariff" IsHidden="false" />
+      </Style>
+      <Style Name="Garrison">
+        <BrushLayer Name="Garrison" IsHidden="false" />
+      </Style>
+      <Style Name="Village">
+        <BrushLayer Name="Village" IsHidden="false" />
+      </Style>
+      <Style Name="Governor">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+    </Styles>
+  </Brush>
+</Brushes>

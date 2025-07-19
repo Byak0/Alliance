@@ -153,7 +153,6 @@
 			id="mp_heavy_ranged_berricos"
 			hero="mp_heavy_ranged_berricos_hero"
 			troop="mp_heavy_ranged_berricos_troop"
-			banner_bearer="mp_heavy_ranged_berricos_banner_bearer"
 			hero_idle_anim="act_battania_mp_fian_idle"
 			troop_idle_anim="act_idle_bow_1"
 			hero_mount_idle_anim="act_vlandia_mp_vanguard_mount_idle"

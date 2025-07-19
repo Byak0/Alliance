@@ -10,6 +10,7 @@
 		<ModuleName>Alliance</ModuleName>
 		<GameFolder>$(BANNERLORD_SERVER_DIR)</GameFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<BuildProjectReferences>false</BuildProjectReferences>
 	</PropertyGroup>
 
 	<ItemGroup>

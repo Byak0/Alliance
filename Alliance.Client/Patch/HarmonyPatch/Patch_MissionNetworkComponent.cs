@@ -78,7 +78,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
 			Team teamFromTeamIndex = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.TeamIndex);
 			AgentBuildData agentBuildData = new AgentBuildData(character).MissionPeer(message.IsPlayerAgent ? missionPeer : null).Monster(message.Monster).TroopOrigin(new BasicBattleAgentOrigin(character))
 			.Equipment(message.SpawnEquipment)
-				.EquipmentSeed(message.BodyPropertiesSeed);
+			.EquipmentSeed(message.BodyPropertiesSeed);
 			Vec3 position = message.Position;
 			AgentBuildData agentBuildData2 = agentBuildData.InitialPosition(position);
 			Vec2 vec = message.Direction;
@@ -106,9 +106,6 @@ namespace Alliance.Client.Patch.HarmonyPatch
 				agentBuildData3.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData3.AgentRace, agentBuildData3.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData3.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData3.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
 			}
 
-			Banner banner = teamFromTeamIndex.Banner;
-
-			agentBuildData3.Banner(banner);
 			Agent mountAgent = Mission.Current.SpawnAgent(agentBuildData3, false).MountAgent;
 
 			return false;

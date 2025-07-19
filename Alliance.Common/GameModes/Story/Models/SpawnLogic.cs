@@ -1,4 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
 using System;
 using System.Xml.Serialization;
 
@@ -10,31 +10,31 @@ namespace Alliance.Common.GameModes.Story.Models
 	[Serializable]
 	public class SpawnLogic
 	{
-		[ScenarioEditor(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker")]
+		[ConfigProperty(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker")]
 		public string DefaultCharacterAttacker;
-		[ScenarioEditor(label: "Default unit (defender)", tooltip: "Default character to spawn for defender")]
+		[ConfigProperty(label: "Default unit (defender)", tooltip: "Default character to spawn for defender")]
 		public string DefaultCharacterDefender;
-		[ScenarioEditor(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker")]
+		[ConfigProperty(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker")]
 		public string DefaultSpawnTagAttacker;
-		[ScenarioEditor(label: "Default spawn (defender)", tooltip: "By default, use spawn positions with this tag for defender")]
+		[ConfigProperty(label: "Default spawn (defender)", tooltip: "By default, use spawn positions with this tag for defender")]
 		public string DefaultSpawnTagDefender;
-		[ScenarioEditor(label: "Spawn type (attacker)", tooltip: "How to choose the spawn location for the attacker")]
+		[ConfigProperty(label: "Spawn type (attacker)", tooltip: "How to choose the spawn location for the attacker")]
 		public LocationStrategy LocationStrategyAttacker;
-		[ScenarioEditor(label: "Spawn type (defender)", tooltip: "How to choose the spawn location for the defender")]
+		[ConfigProperty(label: "Spawn type (defender)", tooltip: "How to choose the spawn location for the defender")]
 		public LocationStrategy LocationStrategyDefender;
-		[ScenarioEditor(label: "Number of lives (attacker)", tooltip: "Number of lives for attacker")]
+		[ConfigProperty(label: "Number of lives (attacker)", tooltip: "Number of lives for attacker")]
 		public int MaxLivesAttacker;
-		[ScenarioEditor(label: "Number of lives (defender)", tooltip: "Number of lives for defender")]
+		[ConfigProperty(label: "Number of lives (defender)", tooltip: "Number of lives for defender")]
 		public int MaxLivesDefender;
-		[ScenarioEditor(label: "Respawn type (attacker)", tooltip: "Define how attackers can respawn")]
+		[ConfigProperty(label: "Respawn type (attacker)", tooltip: "Define how attackers can respawn")]
 		public RespawnStrategy RespawnStrategyAttacker;
-		[ScenarioEditor(label: "Respawn type (defender)", tooltip: "Define how defenders can respawn")]
+		[ConfigProperty(label: "Respawn type (defender)", tooltip: "Define how defenders can respawn")]
 		public RespawnStrategy RespawnStrategyDefender;
-		[ScenarioEditor(label: "Keep lives", tooltip: "If enabled, add number of lives on top of the lives left from previous act. Otherwise previous lives left are lost.")]
+		[ConfigProperty(label: "Keep lives", tooltip: "If enabled, add number of lives on top of the lives left from previous act. Otherwise previous lives left are lost.")]
 		public bool KeepLivesFromPreviousAct;
-		[ScenarioEditor(label: "Store agents", tooltip: "If enabled, store the state and positions of all agents at the end of the act.")]
+		[ConfigProperty(label: "Store agents", tooltip: "If enabled, store the state and positions of all agents at the end of the act.")]
 		public bool StoreAgentsInfo;
-		[ScenarioEditor(label: "Use stored agents", tooltip: "If enabled, spawn the agents that were stored in a previous act.")]
+		[ConfigProperty(label: "Use stored agents", tooltip: "If enabled, spawn the agents that were stored in a previous act.")]
 		public bool UsePreviousActAgents;
 
 		[XmlIgnore]

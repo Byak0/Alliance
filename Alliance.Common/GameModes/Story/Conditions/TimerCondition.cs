@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -10,9 +10,9 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// </summary>
 	public class TimerCondition : Condition
 	{
-		[ScenarioEditor(label: "Wait Time", tooltip: "Time in seconds to wait before the condition is met.")]
+		[ConfigProperty(label: "Wait Time", tooltip: "Time in seconds to wait before the condition is met.")]
 		public float WaitTime;
-		[ScenarioEditor(label: "Repeat", tooltip: "If true, it will trigger regularly, using WaitTime as an interval.")]
+		[ConfigProperty(label: "Repeat", tooltip: "If true, it will trigger regularly, using WaitTime as an interval.")]
 		public bool Repeat;
 
 		private bool _triggered;

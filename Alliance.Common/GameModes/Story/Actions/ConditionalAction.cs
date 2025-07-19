@@ -1,5 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Conditions;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,13 +13,13 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	public class ConditionalAction : ActionBase
 	{
-		[ScenarioEditor(label: "Conditions", tooltip: "If there are multiple conditions, they must all be met.")]
+		[ConfigProperty(label: "Conditions", tooltip: "If there are multiple conditions, they must all be met.")]
 		public List<Condition> Condition;
-		[ScenarioEditor(label: "Actions if true", tooltip: "Actions to execute if all conditions are met.")]
+		[ConfigProperty(label: "Actions if true", tooltip: "Actions to execute if all conditions are met.")]
 		public List<ActionBase> ActionIfTrue;
-		[ScenarioEditor(label: "Actions if false", tooltip: "Actions to execute if any condition is not met.")]
+		[ConfigProperty(label: "Actions if false", tooltip: "Actions to execute if any condition is not met.")]
 		public List<ActionBase> ActionIfFalse;
-		[ScenarioEditor(label: "Delay", tooltip: "Delay in seconds before executing the \"Actions if true\".")]
+		[ConfigProperty(label: "Delay", tooltip: "Delay in seconds before executing the \"Actions if true\".")]
 		public float Delay = 0f;
 
 		public ConditionalAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse, float delay = 0f)

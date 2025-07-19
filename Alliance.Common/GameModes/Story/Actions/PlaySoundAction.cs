@@ -1,7 +1,7 @@
-﻿using Alliance.Common.Core.Utils;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.MountAndBlade;
 
@@ -20,15 +20,15 @@ namespace Alliance.Common.GameModes.Story.Actions
 			MainMusic
 		}
 
-		[ScenarioEditor(label: "Sound Name", tooltip: "You can use either a file name from Alliance/ModuleSounds or a native event. Examples: \n- LOTR/OST/Flaming Red Hair.wav\n- event:/music/musicians/aserai/01", dataType: ScenarioData.DataTypes.Sounds)]
+		[ConfigProperty(label: "Sound Name", tooltip: "You can use either a file name from Alliance/ModuleSounds or a native event. Examples: \n- LOTR/OST/Flaming Red Hair.wav\n- event:/music/musicians/aserai/01", dataType: AllianceData.DataTypes.Sounds)]
 		public string SoundName;
-		[ScenarioEditor(label: "Category", tooltip: "Type of sound to play.\n- AudioLocal : generic localized sounds (explosions, sound effects, etc.)\n- MusicLocal : localized music (taverns)\n- MainMusic : main music theme (not localized)")]
+		[ConfigProperty(label: "Category", tooltip: "Type of sound to play.\n- AudioLocal : generic localized sounds (explosions, sound effects, etc.)\n- MusicLocal : localized music (taverns)\n- MainMusic : main music theme (not localized)")]
 		public SoundCategory SoundType;
-		[ScenarioEditor(label: "Mute Main Music", tooltip: "Mute the current main music while this sound is playing (for temporary/localized musics). Doesn't work with native sounds.")]
+		[ConfigProperty(label: "Mute Main Music", tooltip: "Mute the current main music while this sound is playing (for temporary/localized musics). Doesn't work with native sounds.")]
 		public bool PauseMainMusicWhilePlaying;
-		[ScenarioEditor(label: "Volume", tooltip: "Volume level. Default is 1.")]
+		[ConfigProperty(label: "Volume", tooltip: "Volume level. Default is 1.")]
 		public float Volume = 1f;
-		[ScenarioEditor(label: "Position", tooltip: "Position of the sound. Radius is the hearing range. Can't be used with Main Music.")]
+		[ConfigProperty(label: "Position", tooltip: "Position of the sound. Radius is the hearing range. Can't be used with Main Music.")]
 		public SerializableZone SoundZone;
 
 		public PlaySoundAction() { }

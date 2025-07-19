@@ -59,6 +59,9 @@
 											<DataTrigger Binding="{Binding IsZone}" Value="True">
 												<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
 											</DataTrigger>
+											<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
+												<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
+											</DataTrigger>
 										</Style.Triggers>
 									</Style>
 								</ContentControl.Style>

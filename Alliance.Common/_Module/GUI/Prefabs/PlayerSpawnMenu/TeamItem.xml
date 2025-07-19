@@ -1,0 +1,21 @@
+<Prefab>
+	<Window>
+		<!-- Team item -->
+		<Widget WidthSizePolicy="Fixed" SuggestedWidth="180" HeightSizePolicy="Fixed" SuggestedHeight="44" HorizontalAlignment="Center" >
+			<Children>
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="180" HeightSizePolicy="Fixed" SuggestedHeight="44" HorizontalAlignment="Left" MarginLeft="0" Brush="MPLobby.ClassFilter.ClassTuple.Background" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsSelected="@IsSelected" Command.Click="SelectTeam" >
+					<Children>
+						<!-- Team name -->
+						<TextWidget WidthSizePolicy="Fixed" SuggestedWidth="120" HeightSizePolicy="Fixed" SuggestedHeight="40" MarginBottom="0" MarginLeft="12" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Text="@Name" />
+					</Children>
+				</ButtonWidget>
+
+				<!-- Edit button -->
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="22" HeightSizePolicy="Fixed" SuggestedHeight="22" VerticalAlignment="Center" HorizontalAlignment="Right" MarginRight="26" Brush="MPLobby.Clan.EditInfo.Button"  UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="EditTeam" />
+
+				<!-- Delete button -->
+				<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="24" HeightSizePolicy="Fixed" SuggestedHeight="24" VerticalAlignment="Center" HorizontalAlignment="Right" MarginRight="2" Brush="Popup.CloseButton"  UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="DeleteTeam" />
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

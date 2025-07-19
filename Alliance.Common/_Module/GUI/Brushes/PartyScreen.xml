@@ -1,0 +1,951 @@
+<Brushes>
+  <Brush Name="Party.QuestProgress.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\tabbar_extension" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.QuestProgress.BarCanvas">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\progress_bar_canvas" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.QuestProgress.BarFrame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\progress_bar_frame" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.QuestProgress.BarFill">
+    <Layers>
+      <BrushLayer Name="EmptyFill" Sprite="PartyScreen\progress_stone" ColorFactor="1.5" Color="#FFFFFF00" ExtendLeft="7" ExtendRight="7" />
+      <BrushLayer Name="DefaultFill" Sprite="PartyScreen\progress_stone" ColorFactor="1.5" Color="#FFFFFFFF" ExtendLeft="7" ExtendRight="7" />
+      <BrushLayer Name="ChangeFill" Sprite="PartyScreen\progress_stone" ColorFactor="1.5" Color="#FFFFFF00" ExtendLeft="7" ExtendRight="7" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.QuestProgress.BarDivider">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\slider_value_seperator" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TopRight.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\header_right" ExtendBottom="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TopLeft.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\header_left" ExtendBottom="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopBack">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\HintBG@2x" ColorFactor="0.2" AlphaFactor="0.2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Toggle.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\button_collapser" ExtendLeft="26" ExtendRight="34" ExtendTop="34" ExtendBottom="34" />
+      <BrushLayer Name="HoverLayer" Sprite="PartyScreen\button_collapser_hover" ExtendLeft="26" ExtendRight="34" ExtendTop="34" ExtendBottom="34" />
+      <BrushLayer Name="PressedLayer" Sprite="PartyScreen\button_collapser_pressed" ExtendLeft="30" ExtendRight="37" ExtendTop="34" ExtendBottom="34" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+        <BrushLayer Name="PressedLayer" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.Toggle.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\button_collapser" ExtendLeft="26" ExtendRight="34" ExtendTop="34" ExtendBottom="34" HorizontalFlip="true" />
+      <BrushLayer Name="HoverLayer" Sprite="PartyScreen\button_collapser_hover" ExtendLeft="26" ExtendRight="34" ExtendTop="34" ExtendBottom="34" HorizontalFlip="true" />
+      <BrushLayer Name="PressedLayer" Sprite="PartyScreen\button_collapser_pressed" ExtendLeft="30" ExtendRight="37" ExtendTop="34" ExtendBottom="34" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+        <BrushLayer Name="PressedLayer" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.Toggle.ExpandIndicator" GlobalAlphaFactor="0.6">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\collapsed" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Collapsed">
+        <BrushLayer Name="Default" Sprite="StdAssets\collapsed" />
+      </Style>
+      <Style Name="Expanded">
+        <BrushLayer Name="Default" Sprite="StdAssets\expanded" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTupple.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\button_right" ExtendTop="2" ExtendBottom="2" />
+      <BrushLayer Name="HoverLayer" Sprite="PartyScreen\button_right_hover" ExtendTop="2" ExtendBottom="2" />
+      <BrushLayer Name="PressedLayer" Sprite="PartyScreen\button_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" />
+      <BrushLayer Name="SelectedLayer" Sprite="PartyScreen\button_right_selected" ExtendTop="2" ExtendBottom="2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="false" AlphaFactor="1.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTupple.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\button_left" ExtendTop="2" ExtendBottom="2" />
+      <BrushLayer Name="HoverLayer" Sprite="PartyScreen\button_left_hover" ExtendTop="2" ExtendBottom="2" />
+      <BrushLayer Name="PressedLayer" Sprite="PartyScreen\button_left_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" />
+      <BrushLayer Name="SelectedLayer" Sprite="PartyScreen\button_left_selected" ExtendTop="2" ExtendBottom="2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="true" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="true" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="PressedLayer" IsHidden="true" AlphaFactor="0.0" />
+        <BrushLayer Name="SelectedLayer" IsHidden="false" AlphaFactor="1.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.SoundBrush">
+    <Layers>
+    </Layers>
+    <Styles>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+        <StateSound StateName="Hovered" Audio="mini_popup" />
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Opened" Audio="item_open" />
+        <EventSound EventName="Closed" Audio="item_close" />
+        <EventSound EventName="DragBegin" Audio="inventory/unit" />
+        <EventSound EventName="DragEnd" Audio="inventory/unit" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.TroopTupple.HealthBarFill">
+    <Layers>
+      <BrushLayer Name="EmptyFill" Sprite="health_bar_fill_9" ColorFactor="1" Color="#FFFFFF00" />
+      <BrushLayer Name="DefaultFill" Sprite="health_bar_fill_9" ColorFactor="1" Color="#FFFFFFFF" />
+      <BrushLayer Name="ChangeFill" Sprite="health_bar_fill_9" ColorFactor="1" Color="#FFFFFF00" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTupple.HealthBarText" Font="FiraSansExtraCondensed-Medium">
+    <Styles>
+      <Style Name="Default" FontColor="#F1F1F1FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" FontSize="12">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTupple.Extension.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\tuple_extension" ExtendLeft="16" ExtendRight="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTupple.Extension.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\tuple_extension" ExtendLeft="16" ExtendRight="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.UpgradeIcon.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.TransferButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Slot">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\extension_button_slot" ExtendLeft="9" ExtendRight="9" ExtendTop="9" ExtendBottom="9" />
+      <BrushLayer Name="EmptyLayer" Sprite="PartyScreen\extension_button_slot_canvas_empty" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="EmptyLayer" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.RecruitPopUp.RecruitButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\rectangle_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="party/recruit_prisoner" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.RecruitPopup.RecruitAllButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\wide_rectangle_button_default" IsHidden="true"/>
+      <BrushLayer Name="Hovered" Sprite="StdAssets\wide_rectangle_button_hovered" IsHidden="true"/>
+      <BrushLayer Name="Pressed" Sprite="StdAssets\wide_rectangle_button_pressed" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" ColorFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" ColorFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" IsHidden="false"/>
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="party/recruit_all"/>
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.UpgradeSlot.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" HueFactor="-5" SaturationFactor="80" ValueFactor="10" />
+      <BrushLayer Name="Overlay" Sprite="BlankWhiteSquare_9" Color="#FCD658FF" AlphaFactor="0.25" ExtendTop="-5" ExtendBottom="-7" ExtendLeft="-5" ExtendRight="-5"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" ColorFactor="0.9" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="party/upgrade" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.UpgradeSlot.ButtonUnavailable">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" ColorFactor="0.5" SaturationFactor="-150" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradeSlot.ButtonInsufficient">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\troop_upgrade_button_default" ColorFactor="0.5" SaturationFactor="-150" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.RecruitSlot.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="party/recruit_prisoner" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.TalkSlot.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="conversation" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.StockButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradePopup.TroopTupple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_troops_popup_tuple" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_troops_popup_tuple" ColorFactor="1.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_troops_popup_tuple" Color="#CCA468FF" ColorFactor="1.3" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_troops_popup_tuple" ColorFactor="1.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="PartyScreen\upgrade_troops_popup_tuple" ColorFactor="0.7"  IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradePopup.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\standart_popup" />
+      <BrushLayer Name="Frame" ExtendLeft="10" ExtendRight="8" ExtendTop="8" ExtendBottom="7" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradePopup.Dent">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#110A04BF" />
+      <BrushLayer Name="Frame" Sprite="SPGeneral\dent_leftlist" ExtendLeft="18" ExtendRight="18" ExtendTop="18" ExtendBottom="18" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" Sprite="SPGeneral\dent_leftlist" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradePopup.Dent.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EDD9FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="18" />
+      <Style Name="Selected" FontColor="#F9EDD9FF" />
+      <Style Name="Hovered" FontColor="#F9EDD9FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.UpgradePopup.Tuple.Text" Font="FiraSansExtraCondensed-Regular">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F9EDD9FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" FontSize="20">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.StockButtonText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#A68459FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.StockButtonInfo" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#C4C4C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.CountChangePrefix" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Extension.CountChangeSuffix" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="26" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\SliderSeperator" Color="#F7E499FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.LeftFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" Color="#7A5B1EFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.RightFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" Color="#296024FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.EmptyFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" Color="#27221BFF" AlphaFactor="0.75" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.ChangeFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#00000000" />
+      </Style>
+      <Style Name="Positive">
+        <BrushLayer Name="Default" Color="#7A5B1EFF" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Negative">
+        <BrushLayer Name="Default" Color="#296024FF" ColorFactor="1.4" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.TroopTuple.Slider.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\slider_frame_slick" ExtendLeft="4" ExtendTop="4" ExtendRight="4" ExtendBottom="4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Formation.MainButton" BaseBrush="DropdownBaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\formation_flag" SaturationFactor="30" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="1.0" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.Formation.Seperator">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="divider_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.0" />
+      </Style>
+      <Style Name="Opened">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Closed">
+        <BrushLayer Name="Default" AlphaFactor="0.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Scrollbar.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#3C2A20FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.8" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.8" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="1.8" AlphaFactor="0.6"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.8" AlphaFactor="1"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1.8" AlphaFactor="0.4"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Formation.Item">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\formation_square" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="0.65" HueFactor="-10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="1.0" HueFactor="-10" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="1.0" HueFactor="-10" SaturationFactor="30" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="1.0" SaturationFactor="30" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="default" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Party.Role.Dropdown">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Role.Dropdown.Item">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0.3" Color="#FF00FFFF" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" Color="#222222CC" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.Transfer" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.Name" Font="Galahad" TextHorizontalAlignment="Left">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#D8BA86FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="40">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.Title" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#D8BA86FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="48">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.CenterName" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Party.Text.Toggle" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#C6AF91FF" TextGlowRadius="0.1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.1" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+
+      <Style Name="Hovered" FontColor="#FFFFFFFF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled" FontColor="#736757FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="OverLimit" FontColor="#C6AF91FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="32" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnimation" Duration="0.6" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#C6AF91FF" />
+          <KeyFrame Time="0.3" Value="#ED3D3DFF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Party.Sort.Order.Button.Ascending" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\sort_arrow" VerticalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" SaturationFactor="0.8" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Party.Sort.Order.Button.Descending" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="PartyScreen\sort_arrow" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" SaturationFactor="0.8" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Party.Text.Tuple" Font="FiraSansExtraCondensed-Regular">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" FontSize="20">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.UpgradeAvailable" Font="FiraSansExtraCondensed-Regular" TextAlphaFactor="0.8">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F1F1F1FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" FontSize="25">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.UpgradeAmount" Font="Galahad">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FBE6A4FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" FontSize="14">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Text.TroopInfo" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" FontSize="26">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Role.Title.Text" Font="Galahad" TextVerticalAlignment="Center" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#ECA851FF" TextAlphaFactor="1" TextGlowColor="#FFFFFF00" TextOutlineColor="#000000FF" TextOutlineAmount="0.0001" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Role.Main.Text" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Center" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FEF2E3FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Party.Role.HeroName.Text" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Center" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#B6A289FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+</Brushes>

@@ -1,0 +1,385 @@
+<Brushes>
+  <Brush Name="ArmyManagement.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\standart_popup" />
+      <BrushLayer Name="Frame" ExtendLeft="5" ExtendRight="0" ExtendTop="5" ExtendBottom="4" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Panel.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#110A04BF" />
+      <BrushLayer Name="Frame" Sprite="SPGeneral\dent_leftlist" ExtendLeft="15" ExtendRight="15" ExtendTop="15" ExtendBottom="15" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" Sprite="SPGeneral\dent_leftlist" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Panel.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#110A04BF" />
+      <BrushLayer Name="Frame" Sprite="SPGeneral\dent_leftlist" ExtendLeft="15" ExtendRight="15" ExtendTop="15" ExtendBottom="15" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\voter_tuple" />
+      <BrushLayer Name="Selected" Sprite="ArmyManagement\voter_tuple_selected" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="Selected" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.VerticalStatus.Box">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#128505FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#2FCF1DFF"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Color="#082E04FF"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.CheckmarkStatus">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\checkmark" Color="#128505FF" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#2FCF1DFF" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Color="#082E04FF"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Cart">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\army_card" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Cart.Remove">
+    <Layers>
+      <BrushLayer Name="Default" Sprite = "StdAssets\remove_default" IsHidden="true"/>
+      <BrushLayer Name="Hovered" Sprite = "StdAssets\remove_hovered" IsHidden="true"/>
+      <BrushLayer Name="Pressed" Sprite = "StdAssets\remove_pressed" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" ColorFactor="1.0"  IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed"  ColorFactor="0.7"  IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Pressed"  ColorFactor="0"  IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Army.AddCoherenceButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\rectangle_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Boost.CurrencyBrush">
+    <Layers>
+      <BrushLayer Name="Gold" Sprite="General\Icons\Coin@2x" IsHidden="true" />
+      <BrushLayer Name="Influence" Sprite="General\Icons\Influence@2x" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Gold">
+        <BrushLayer Name="Gold" IsHidden="false" />
+      </Style>
+      <Style Name="Influence">
+        <BrushLayer Name="Influence" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.ArrowBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\expanded" IsHidden="true" />
+      <BrushLayer Name="Ascending" Sprite="StdAssets\expanded" VerticalFlip="true" IsHidden="true" />
+      <BrushLayer Name="Descending" Sprite="StdAssets\expanded" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Ascending">
+        <BrushLayer Name="Ascending" IsHidden="false" />
+      </Style>
+      <Style Name="Descending">
+        <BrushLayer Name="Descending" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.1">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_1" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.2">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.3">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.4">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.5">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_5" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.6">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="ArmyManagement\header_gather_army_6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyManagement.Sort.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Tuple.Name" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
+      <Style Name="Hovered" FontColor="#EDC995FF" />
+      <Style Name="Pressed" FontColor="#EDC995FF" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Tuple.Value" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Cart.Name" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DBBB8DFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="17" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.Cart.Value" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="19" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.TotalCostAndStrength.Title" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextColorFactor="1" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="32" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="ArmyManagement.Army.TotalCostAndStrength.PositiveValue" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F09B29FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="32" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="ArmyManagement.Army.TotalCostAndStrength.NegativeValue" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FF0000FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="32" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="ArmyManagement.Boost.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="22" />
+    </Styles>
+  </Brush>
+</Brushes>

@@ -1,15 +1,23 @@
-﻿using Alliance.Common.GameModes.Story.Interfaces;
+﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
 	/// <summary>
-	/// Manager for the editor tools. Implemented in Editor project.
+	/// Provides static, solution-wide access to modding kit tools, enabling editing of zones, player spawn menus, and simple objects.
+	/// Primarily used with the Scenario Editor and AL_TriggerAction script.
+	/// Necessary because the Common project cannot reference the Editor project.
 	/// </summary>
 	public static class EditorToolsManager
 	{
 		public static IEditorTools EditorTools;
+
+		public static void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
+		{
+			EditorTools?.OpenPlayerSpawnMenu(playerSpawnMenu, onCloseCallback);
+		}
 
 		public static void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)
 		{

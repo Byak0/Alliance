@@ -1,0 +1,90 @@
+<Brushes>
+
+  <Brush Name="MapSiege.Machine.Construction.Brush" TransitionDuration="0">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare" Color="#F39C12FF" OverlayMethod="CoverWithTexture" OverlaySprite="slider_progress_small" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="ConstructionAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="ConstructionAnimation" Duration="1" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="OverlayXOffset">
+          <KeyFrame Time="0" Value="-40" />
+          <KeyFrame Time="0.5" Value="-80" />
+          <KeyFrame Time="1" Value="-160" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+  
+  <Brush Name="MapSiege.Machine.Normal.Brush" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapSiege.Construction.Button" TransitionDuration="0.07">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="reserve_popup_9" ExtendTop="12" ExtendLeft="11" ExtendRight="11" ExtendBottom="13"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default" >
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.3" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="panels/siege/engine_build" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="MapSiege.Construction.HammerWithAnimation">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\project_popup_hammer_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="0.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="Sprite">
+          <KeyFrame Time="0" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
+          <KeyFrame Time="0.4" Value="SPGeneral\TownManagement\project_popup_hammer_icon_down" />
+          <KeyFrame Time="0.5" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="MapSiege.Number.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EBDABEFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" FontSize="35" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapSiege.Reserve.Number.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EBDABEFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+</Brushes>

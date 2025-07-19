@@ -1,0 +1,172 @@
+<Brushes>
+  <Brush Name="ArmyOverlay.PageControl.Text" Font="FiraSansExtraCondensed-Regular">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyOverlay.ArmyValues.Text" Font="FiraSansExtraCondensed-Regular">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="16" />
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyOverlay.NextPage.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\Army\gold_arrow_left" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyOverlay.ArmyManagement.PlusButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\plus_button_small" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="ArmyOverlay.PreviousPage.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\Army\gold_arrow_left" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterListButtonToggleBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\Settlement\notable_toggle" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="SPGeneral\MapOverlay\Settlement\notable_toggle_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" ValueFactor="10" HueFactor="-10" SaturationFactor="20" IsHidden="false" />
+      </Style>
+    </Styles>
+	<SoundProperties>
+		<StateSounds>
+		</StateSounds>
+		<EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+		</EventSounds>
+	</SoundProperties>
+  </Brush>
+
+  <Brush Name="ArmyOverlay.Cohesion.Fill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite = "SPGeneral\MapOverlay\Army\slider_boxy_fill" IsHidden="true"/>
+      <BrushLayer Name="Warning" Sprite = "SPGeneral\MapOverlay\Army\slider_boxy_fill" Color="#FF00FFFF" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default" >
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="WarningLeader" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Warning" IsHidden="false"/>
+      </Style>
+      <Style Name="WarningNormal" >
+        <BrushLayer Name="Warning" IsHidden="false"/>
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty LayerName="Warning" PropertyName="ColorFactor">
+          <KeyFrame Time="0.0" Value="1.0" />
+          <KeyFrame Time="0.2" Value="1.1" />
+          <KeyFrame Time="0.4" Value="1.7" />
+
+          <KeyFrame Time="0.75" Value="1.7" />
+
+          <KeyFrame Time="1.1" Value="1.7" />
+          <KeyFrame Time="1.3" Value="1.1" />
+          <KeyFrame Time="1.5" Value="1.0" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="PartyListButtonToggleBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\Settlement\garrison_toggle" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="SPGeneral\MapOverlay\Settlement\garrison_toggle_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" ValueFactor="10" HueFactor="-10" SaturationFactor="20" IsHidden="false" />
+      </Style>
+    </Styles>
+	<SoundProperties>
+		<StateSounds>
+		</StateSounds>
+		<EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+		</EventSounds>
+	</SoundProperties>
+  </Brush>
+</Brushes>

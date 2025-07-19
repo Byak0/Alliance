@@ -1,6 +1,6 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
@@ -14,9 +14,9 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public SerializableZone Zone;
 		public SideType Side = SideType.All;
 		public TargetType Target = TargetType.All;
-		[ScenarioEditor(label: "Target count", tooltip: "How many matching agents must be present in the zone.")]
+		[ConfigProperty(label: "Target count", tooltip: "How many matching agents must be present in the zone.")]
 		public int TargetCount = 1;
-		[ScenarioEditor(label: "Exact count only", tooltip: "If enabled, the condition will only trigger if there is the EXACT number of matching agents in the zone (not more, not less).")]
+		[ConfigProperty(label: "Exact count only", tooltip: "If enabled, the condition will only trigger if there is the EXACT number of matching agents in the zone (not more, not less).")]
 		public bool ExactCountOnly = false;
 
 		public AgentEnteredZoneCondition() { }

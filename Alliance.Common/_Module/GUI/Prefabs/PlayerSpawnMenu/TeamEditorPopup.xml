@@ -1,0 +1,109 @@
+<Prefab>
+	<Constants>
+		<Constant Name="TroopBanner.Frame.Width" Value="451" />
+		<Constant Name="TroopBanner.Frame.Height" Value="115" />
+
+		<Constant Name="Perks.Frame.Width" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Width" />
+		<Constant Name="Perks.Frame.Height" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Height" />
+
+		<Constant Name="TroopBanner.ItemBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Width" />
+		<Constant Name="TroopBanner.ItemBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Height" />
+
+		<Constant Name="MPClassLoadout.ItemCultureBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Width" />
+		<Constant Name="MPClassLoadout.ItemCultureBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Height" />
+
+		<Constant Name="SubClassButton.MarginTop" Value="5" />
+
+		<Constant Name="Extension.Hidden.MarginTop" Value="2" />
+		<Constant Name="Extension.Hidden.Height" Value="0" />
+		<Constant Name="Extension.Selected.MarginTop" Value="48" />
+		<Constant Name="Extension.Height" Value="100" />
+	</Constants>
+	<VisualDefinitions>
+		<VisualDefinition Name="Extension" EaseIn="true" TransitionDuration="0.25">
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Default" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Pressed" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Hovered" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Disabled" />
+			<VisualState SuggestedHeight="!Extension.Height" MarginTop="!Extension.Selected.MarginTop" State="Selected" />
+		</VisualDefinition>
+	</VisualDefinitions>
+	<Window>
+
+		<BrushWidget SuggestedWidth="700" SuggestedHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.UniformFrame" Sprite="BlankWhiteSquare_9">
+			<Children>
+
+				<!-- Formation Editor -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+					<Children>
+
+						<!--Text Input-->
+						<Widget Id="TextInputParent" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="410" SuggestedHeight="60" Sprite="General\CharacterCreation\name_input_area" HorizontalAlignment="Center">
+							<Children>
+								<EditableTextWidget Id="TextInputWidget" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="12" MarginBottom="12" Brush="Review.NameInput.Text" RealText="@Name" KeyboardInfoText="Name"/>
+							</Children>
+						</Widget>
+
+
+						<!-- Settings -->
+						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="520" HeightSizePolicy="StretchToParent" SuggestedHeight="800" VerticalAlignment="Top" HorizontalAlignment="Center" MarginTop="120" >
+							<Children>
+
+								<ScrollablePanel Id="ScrollablePanelFormations" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectFormations\InnerPanelFormations" ClipRect="ClipRectFormations" VerticalScrollbar="..\ScrollbarFormations" AutoHideScrollBars="true" MarginBottom="4" >
+									<Children>
+										<Widget Id="ClipRectFormations" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
+											<Children>
+												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+													<Children>
+														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+															<ItemTemplate>
+																<GenericOption/>
+															</ItemTemplate>
+														</ListPanel>
+													</Children>
+												</NavigatableListPanel>
+											</Children>
+										</Widget>
+									</Children>
+								</ScrollablePanel>
+
+								<!-- Vertical scrollbar -->
+								<ScrollbarWidget Id="ScrollbarFormations" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Right" AlignmentAxis="Vertical" Handle="ScrollbarHandleFormations" MaxValue="100" MinValue="0" MarginRight="1">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
+										<ImageWidget Id="ScrollbarHandleFormations" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinHeight="8" />
+									</Children>
+								</ScrollbarWidget>
+
+
+							</Children>
+						</BrushWidget>
+
+
+					</Children>
+				</Widget>
+
+				<!-- Cancel/Confirm buttons -->
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="60" VerticalAlignment="Bottom" HorizontalAlignment="Center">
+					<Children>
+
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="224" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" MarginLeft="-224" Brush="Standard.DialogCloseButtons.CancelButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Cancel" >
+							<Children>
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"  Brush="Clan.NameTitle.Text" Brush.FontSize="28" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="24" Text="Cancel" />
+							</Children>
+						</ButtonWidget>
+
+						<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="224" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" MarginLeft="224" Brush="Standard.DialogCloseButtons.DoneButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save" >
+							<Children>
+								<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"  Brush="Clan.NameTitle.Text" Brush.FontSize="28" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="24" Text="Save" />
+							</Children>
+						</ButtonWidget>
+
+					</Children>
+				</BrushWidget>
+
+			</Children>
+		</BrushWidget>
+
+	</Window>
+</Prefab>

@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Extensions.CustomScripts.Scripts;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.CustomScripts.Scripts;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
@@ -12,11 +12,11 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// </summary>
 	public class ObjectUsedCondition : Condition
 	{
-		[ScenarioEditor(label: "Object ID", tooltip: "ID of the script to listen to.")]
+		[ConfigProperty(label: "Object ID", tooltip: "ID of the script to listen to.")]
 		public string ObjectId;
-		[ScenarioEditor(label: "Allow multiple use", tooltip: "If enabled, condition can be triggered every time the object is used.")]
+		[ConfigProperty(label: "Allow multiple use", tooltip: "If enabled, condition can be triggered every time the object is used.")]
 		public bool AllowMultipleUses;
-		[ScenarioEditor(label: "Restrict to parent entity", tooltip: "If enabled, condition will only check its parent entity and children (entity MUST have any MissionObject script, can be AL_TriggerAction).")]
+		[ConfigProperty(label: "Restrict to parent entity", tooltip: "If enabled, condition will only check its parent entity and children (entity MUST have any MissionObject script, can be AL_TriggerAction).")]
 		public bool ParentEntityOnly;
 
 		private bool _used;

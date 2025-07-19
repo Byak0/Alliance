@@ -1,6 +1,7 @@
-﻿using Alliance.Client.Core.KeyBinder.Models;
-using Alliance.Client.Extensions.SAE.Models;
+﻿using Alliance.Client.Extensions.SAE.Models;
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Extensions.SAE.Models;
 using Alliance.Common.Extensions.SAE.NetworkMessages.FromClient;
 using System;

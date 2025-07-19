@@ -1,0 +1,1434 @@
+<Brushes>
+  <Brush Name="Inventory.Tuple.SoundBrush">
+    <Layers>
+    </Layers>
+    <Styles>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+        <StateSound StateName="Hovered" Audio="mini_popup" />
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="item_open" />
+        <EventSound EventName="Closed" Audio="item_close" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PriceChangeSuffix">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\gold_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Slider.LeftFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" Color="#7A5B1EFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Slider.RightFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" Color="#1D1D1BFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Slider.ChangeFill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_fill_white_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#00000000" />
+      </Style>
+      <Style Name="Positive">
+        <BrushLayer Name="Default" Color="#7A5B1EFF" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Negative">
+        <BrushLayer Name="Default" Color="#296024FF" ColorFactor="1.4" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Slider.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\slider_frame_slick" ExtendLeft="4" ExtendTop="4" ExtendRight="4" ExtendBottom="4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.EquipedItemControls.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\toolbox" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.ItemPreview.CloseButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\bottom_cross_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.9" Sprite="StdAssets\bottom_cross_button" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\bottom_cross_button" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.75" Sprite="StdAssets\bottom_cross_button" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Lock">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\lock_checkbox_unchecked" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="StdAssets\lock_checkbox_checked" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tooltip.Background">
+    <Layers>
+      <BrushLayer Name="Default" ExtendTop="10" ExtendLeft="10" ExtendRight="10" ExtendBottom="10" Sprite="inventory_tooltip_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tooltip.WeaponAlternativeUsageButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\inventory_tooltip_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" Color="#E0BC62FF" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tabbard.PreviousCharacter">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little_disabled" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tabbard.NextCharacter">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little_disabled" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Inventory.SwapMountCharacter.Button">
+    <Layers>
+      <BrushLayer Name="Default" Color="#A47C3FFF" Sprite="Inventory\char_mount_switcher_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.25" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Inventory.TopRight.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_right" ExtendBottom="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.TopLeft.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_left" ExtendBottom="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_left" ExtendTop="2" ExtendBottom="2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_left" ExtendTop="2" ExtendBottom="2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_left" ExtendTop="2" ExtendBottom="2" SaturationFactor="20" ValueFactor="10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_left_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" ValueFactor="-30" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_left" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="20" ValueFactor="10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" ValueFactor="-30" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Civillian.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" HueFactor="-150" SaturationFactor="10" ColorFactor="0.9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" SaturationFactor="10"  ExtendBottom="2"  ColorFactor="1"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="20" ValueFactor="10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" ValueFactor="-30" ColorFactor="0.9" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Civillian.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" HueFactor="-150" SaturationFactor="10" ColorFactor="0.9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" SaturationFactor="10"  ExtendBottom="2"  ColorFactor="1"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="20" ValueFactor="10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" ValueFactor="-30" ColorFactor="0.9" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.CharacterCantUse.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" Color="#FF4239FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" ColorFactor="1.2"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.CharacterCantUse.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" Color="#FF4239FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="20" ValueFactor="10" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right_pressed" ExtendTop="2" ExtendBottom="2" ExtendLeft="2" ExtendRight="2" ValueFactor="-30" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\tuple_right" ExtendTop="2" ExtendBottom="2" SaturationFactor="15" ValueFactor="5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\tuple_extension" ExtendLeft="16" ExtendRight="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\tuple_extension" ExtendLeft="16" ExtendRight="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.BuyButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.SellButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\done_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.SpecialButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\dynamic_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.StockButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button_pressed" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="SPGeneral\InventoryPartyExtension\Extension\stock_button" ColorFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryBuyAllButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little_thiqq" Color="#FFFFFFFF" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" HorizontalFlip="true" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="inventory/take_all" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventorySellAllButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little_thiqq" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="inventory/take_all" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.Tuple.BuyButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little" Color="#FFFFFFFF" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little_disabled" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="transfer" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.Tuple.SellButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\bigNextButton" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" Sprite="StdAssets\arrow_little" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="StdAssets\arrow_little_disabled" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="transfer" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryWarModeButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\modWar" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\modWar" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\modWarDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\modWarDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\modWarDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryCivillianModeButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\modCivillian" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\modCivillian" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\modCivillianDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\modCivillianDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\modCivillianDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterAllButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterAll" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterAll" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterAllDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterAllDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterAllDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterWeaponsButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterWeapons" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterWeapons" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterWeaponsDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterWeaponsDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterWeaponsDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterArmorsButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterArmors" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterArmors" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterArmorsDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterArmorsDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterArmorsDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterShieldsButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterShields" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterShields" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterShieldsDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterShieldsDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterShieldsDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterMountsButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterMounts" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterMounts" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterMountsDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterMountsDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterMountsDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryFilterFoodButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\filterFood" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\filterFood" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\filterFoodDown" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\filterFoodDown" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Inventory\filterFoodDark" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryHelmetSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\helmetSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\helmetSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\helmetSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryCloakSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\cloakSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\cloakSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\cloakSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryArmorSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\armorSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\armorSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\armorSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryGloveSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\gloveSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\gloveSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\gloveSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryBootSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\bootSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\bootSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\bootSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryMountSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\mountSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\mountSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\mountSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryMountArmorSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\mountArmorSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\mountArmorSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\mountArmorSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryWeaponSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\weaponSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\weaponSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\weaponSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryBannerSlot" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\bannerSlot" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\bannerSlot" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\bannerSlotHighlight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.EquipButtonIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\equip" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.SlaughterButtonIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\slaughter" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="InventoryUnequipButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\icon_unequip" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" Color="#0099FFFF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="InventoryInspectButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\icon_inspect" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" Color="#0099FFFF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Inventory.Tuple.Extension.PreviewButtonIcon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\inspect" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="inspect" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryItemCostFont" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="VeryBad" FontColor="#FF0000FF" />
+      <Style Name="Bad" FontColor="#D87F49FF" />
+      <Style Name="Default" FontColor="#FFD987FF" TextGlowColor="#FF0000FF" TextOutlineColor="#FF0000FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="18" />
+      <Style Name="Good" FontColor="#A2D46CFF" />
+      <Style Name="VeryGood" FontColor="#00FF00FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="InventoryWeightFont" Font="Galahad" FontColor="#F4E1C4FF" TextHorizontalAlignment="Left">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#FF0000FF" TextOutlineColor="#FF0000FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="20">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Warned" FontColor="#FF0000FF" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnimation" Duration="0.6" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#FFFFFFFF" />
+          <KeyFrame Time="0.3" Value="#FF0000FF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Inventory.Experience.Label" Font="Galahad" >
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FAF4DEFF" TextGlowColor="#000000FF" FontSize="30">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Warned" FontColor="#ED1C24FF" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnimation" Duration="0.6" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#FAF4DEFF" />
+          <KeyFrame Time="0.3" Value="#ED1C24FF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Inventory.Tuple.Extension.PlusButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\plus_button_default" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="StdAssets\plus_button_hovered" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="StdAssets\plus_button_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="StdAssets\plus_button_default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="StdAssets\plus_button_hover" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="StdAssets\plus_button_pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="StdAssets\plus_button_default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Inventory.Tuple.Extension.MinusButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\minus_button_default" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="StdAssets\minus_button_hover" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="StdAssets\minus_button_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="StdAssets\minus_button_default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Inventory.Encumbered.Font" Font="Galahad" FontColor="#FFFFFFFF" TextHorizontalAlignment="Left">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FF0000FF" TextAlphaFactor="0" TextGlowColor="#FF0000FF" TextOutlineColor="#000000FF" TextBlur="0" TextOutlineAmount="0.001" TextGlowRadius="0" FontSize="25">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Warned" FontColor="#FF0000FF" TextAlphaFactor="1" AnimationToPlayOnBegin="WarningAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="WarningAnimation" Duration="0.6" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#FFFFFFFF" />
+          <KeyFrame Time="0.3" Value="#FF0000FF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Inventory.SidePanel.TypeSort.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_left_1" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_1_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_1_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_1_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.NameSort.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_left_2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_2_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_2_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_2_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.CountSort.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_left_3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_3" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_3_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_3_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_3_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.ValueSort.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_left_4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_4" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_4_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_4_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_left_4_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.TypeSort.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_right_1" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_1_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_1_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_1_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.NameSort.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_right_2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_2_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_2_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_2_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.CountSort.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_right_3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_3" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_3_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_3_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_3_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Inventory.SidePanel.ValueSort.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Inventory\header_button_right_4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_4" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_4_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_4_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Inventory\header_button_right_4_selected" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="InventoryHeaderFontBrush" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextGlowRadius="0.2" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryTooltipDescriptionFontBrush" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#EFC78DFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryDefaultFontBrush" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryButtonTextBrush" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryGoldFontBrush" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FFD987FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.StockButtonText" Font="Galahad_Numbers_Bold" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.StockButtonInfo" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Styles>
+      <Style Name="Default" FontColor="#C4C4C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PriceDescription" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DCDCDCFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PriceValue" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E2C380FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PieceChangePrefix" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PieceChangeSuffix" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="26" />
+    </Styles>
+  </Brush>
+  <Brush Name="Inventory.Tuple.Extension.PriceChangePrefix" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E2C380FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="InventoryArmorAnimatedBrush" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" />
+	  <Style Name="Increase" FontColor="#F4E1C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" AnimationToPlayOnBegin="IncreaseAnimation" />
+	  <Style Name="Decrease" FontColor="#F4E1C4FF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="22" AnimationToPlayOnBegin="DecreaseAnimation" />
+    </Styles>
+	  <Animations>
+		  <Animation Name="IncreaseAnimation" Duration="0.6" Loop="false">
+			  <AnimationProperty PropertyName="FontColor">
+				  <KeyFrame Time="0.0" Value="#F4E1C4FF" />
+				  <KeyFrame Time="0.01" Value="#00FF00FF" />
+			  </AnimationProperty>
+			  <AnimationProperty PropertyName="TextBlur">
+				  <KeyFrame Time="0.0" Value="0" />
+				  <KeyFrame Time="0.01" Value="1" />
+			  </AnimationProperty>
+			  <AnimationProperty PropertyName="TextGlowRadius">
+				  <KeyFrame Time="0.0" Value="0" />
+				  <KeyFrame Time="0.01" Value="0.5" />
+			  </AnimationProperty>
+		  </Animation>
+		  <Animation Name="DecreaseAnimation" Duration="0.6" Loop="false">
+			  <AnimationProperty PropertyName="FontColor">
+				  <KeyFrame Time="0.0" Value="#F4E1C4FF" />
+				  <KeyFrame Time="0.01" Value="#FF0000FF" />
+			  </AnimationProperty>
+			  <AnimationProperty PropertyName="TextBlur">
+				  <KeyFrame Time="0.0" Value="0" />
+				  <KeyFrame Time="0.01" Value="1" />
+			  </AnimationProperty>
+			  <AnimationProperty PropertyName="TextGlowRadius">
+				  <KeyFrame Time="0.0" Value="0" />
+				  <KeyFrame Time="0.01" Value="0.5" />
+			  </AnimationProperty>
+		  </Animation>
+	  </Animations>
+  </Brush>
+
+  <Brush Name="Inventory.SortArrow">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\expanded" IsHidden="true" />
+      <BrushLayer Name="Ascending" Sprite="StdAssets\expanded" VerticalFlip="true" IsHidden="true" />
+      <BrushLayer Name="Descending" Sprite="StdAssets\expanded" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Ascending">
+        <BrushLayer Name="Ascending" IsHidden="false" />
+      </Style>
+      <Style Name="Descending">
+        <BrushLayer Name="Descending" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>  
+
+</Brushes>

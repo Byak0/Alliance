@@ -1,0 +1,66 @@
+<Brushes>
+  <Brush Name="BoardGame.Dice">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Disabled" Color="#33FF22FF" AlphaFactor="0.3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="BoardGame.Button" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\bottom_button" Color="#FFFFFFFF" AlphaFactor="0.8" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" Sprite="SPGeneral\SPScoreboard\bottom_button" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" Sprite="SPGeneral\SPScoreboard\bottom_button" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" Sprite="SPGeneral\SPScoreboard\bottom_button" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" Sprite="SPGeneral\SPScoreboard\bottom_button" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.8" Sprite="SPGeneral\SPScoreboard\bottom_button" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="BoardGame.Button.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FAF4DEFF" TextGlowColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="BoardGame.TurnOver.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FAF4DEFF" TextGlowColor="#000000FF" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="BoardGame.InstructionsTitle.Text" Font="FiraSansExtraCondensed-Regular">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0"  FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="BoardGame.Instructions.Text" Font="FiraSansExtraCondensed-Regular">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" FontSize="22" />
+    </Styles>
+  </Brush>
+	<Brush Name="BoardGame.QuickNavigation.Button.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+		<Styles>
+			<Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" TextColorFactor="0.6"/>
+		</Styles>
+	</Brush>
+</Brushes>

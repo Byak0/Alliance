@@ -238,6 +238,22 @@
 		</StackPanel>
 	</DataTemplate>
 
+	<!-- Template for PlayerSpawnMenu - Show button to open the menu directly -->
+	<DataTemplate x:Key="PlayerSpawnMenuTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<Button Content="Edit"
+					Command="{Binding EditPlayerSpawnMenuCommand}"
+					Height="24"
+					Width="128"
+					Padding="0, 0, 0, 0"
+					FontFamily="{StaticResource DefaultFontFamily}"
+					FontSize="{StaticResource DefaultFontSize}"/>
+		</StackPanel>
+	</DataTemplate>
+
 	<!-- Template for List values -->
 	<DataTemplate x:Key="ListTemplate">
 		<StackPanel Orientation="Vertical" Margin="0">

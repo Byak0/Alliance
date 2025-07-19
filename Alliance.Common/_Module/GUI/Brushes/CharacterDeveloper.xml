@@ -1,0 +1,953 @@
+<Brushes>
+  <Brush Name="CharacterDeveloper.Panel">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\CharacterCreation\character_creation_panel" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ProgressBarFillBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\progress_bar_fill" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="ProgressBar.LearningRate.FillBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\progress_bar_fill" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#00FF00FF"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="LeftPanel.Header">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\left_panel_stone" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Skill.Point.Big">
+    <Layers>
+      <BrushLayer Name="Empty" Sprite="CharacterDeveloper\focus_point_big_empty" Color="#C1914FFF" IsHidden="true"/>
+      <BrushLayer Name="Full" Sprite="CharacterDeveloper\focus_point_big_filled" Color="#C1914FFF" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Empty">
+        <BrushLayer Name="Empty" IsHidden="false"/>
+      </Style>
+      <Style Name="Full">
+        <BrushLayer Name="Full" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Skill.Point.Small">
+    <Layers>
+      <BrushLayer Name="Empty" Sprite="CharacterDeveloper\focus_point_empty" Color="#C1914FFF" IsHidden="true"/>
+      <BrushLayer Name="Full" Sprite="CharacterDeveloper\focus_point_filled" Color="#C1914FFF" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Empty">
+        <BrushLayer Name="Empty" IsHidden="false"/>
+      </Style>
+      <Style Name="Full">
+        <BrushLayer Name="Full" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="SkillProgressBrush">
+    <Layers>
+      <BrushLayer Name="EmptyFill" Sprite="little_progressbar_fill_9" AlphaFactor="0.1" />
+      <BrushLayer Name="DefaultFill" Sprite="little_progressbar_fill_9" />
+      <BrushLayer Name="ChangeFill" Sprite="little_progressbar_fill_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="AddFocusButtonBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\add_focus_button_glow" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.2" Color="#966401FF" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.1" ColorFactor="0.3" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="panels/skill_add" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="AddFocusButton.SoundBrush">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="panels/skill_add" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+
+  <Brush Name="CharacterDeveloper.Point.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\cp_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.4" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.AddFocus.Icon.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\add_focus_button_circle" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.4" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="FocusStateBrush">
+    <Layers>
+      <BrushLayer Name="Empty" Sprite="CharacterDeveloper\focus_point_large_empty" IsHidden="true" AlphaFactor="0.5" />
+      <BrushLayer Name="Full" Sprite="CharacterDeveloper\focus_point_large_full" IsHidden="false" />
+    </Layers>
+    <Styles>
+      <Style Name="Empty">
+        <BrushLayer Name="Empty" IsHidden="false" />
+        <BrushLayer Name="Full" IsHidden="true" />
+      </Style>
+      <Style Name="Full">
+        <BrushLayer Name="Full" IsHidden="false" />
+        <BrushLayer Name="Empty" IsHidden="true" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="PreviousCharacterButtonBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="StdAssets\arrow_little_disabled" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="checkbox" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="CharacterDeveloper.CloseButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\standart_popup_button" IsHidden="true" VerticalFlip="true" />
+      <BrushLayer Name="Pressed" Sprite="StdAssets\standart_popup_button" ColorFactor="0.8" IsHidden="true" VerticalFlip="true" />
+      <BrushLayer Name="Hovered" Sprite="StdAssets\standart_popup_button_hover" IsHidden="true" VerticalFlip="true" />
+      <BrushLayer Name="Disabled" Sprite="StdAssets\standart_popup_button_hover" ColorFactor="0.2" IsHidden="true" VerticalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" VerticalFlip="true">
+        <BrushLayer Name="Default" IsHidden="false" VerticalFlip="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" VerticalFlip="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" VerticalFlip="true" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" VerticalFlip="true" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="NextCharacterButtonBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_little" IsHidden="true" HorizontalFlip="true" />
+      <BrushLayer Name="Disabled" Sprite="StdAssets\arrow_little_disabled" IsHidden="true" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" IsHidden="false" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" HorizontalFlip="true" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="checkbox" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.SkillButtonBackground">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\SkillBackgrounds\skill_card" ExtendLeft="18" ExtendTop="18" ExtendRight="17" ExtendBottom="18" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+      <BrushLayer Name="Selected" Sprite="CharacterDeveloper\SkillBackgrounds\skill_card_selection" ExtendLeft="19" ExtendTop="18" ExtendRight="18" ExtendBottom="18" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.45" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.SkillButtonBackground.CannotLearn">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\SkillBackgrounds\skill_card" ExtendLeft="18" ExtendTop="18" ExtendRight="17" ExtendBottom="18" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+      <BrushLayer Name="Selected" Sprite="CharacterDeveloper\SkillBackgrounds\skill_card_selection" ExtendLeft="19" ExtendTop="18" ExtendRight="18" ExtendBottom="18" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.45" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <!--<Brush Name="CharacterDeveloper.SkillButtonBackground.Base" TransitionDuration="0">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\SkillBackgrounds\1" AlphaFactor="0.9" OverlayMethod="CoverWithTexture" OverlaySprite="skill_plate_selected_state_overlay_anim" OverlayXOffset="100" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Selected" AnimationToPlayOnBegin="HoverAnimation">
+        <BrushLayer Name="Default" ColorFactor="2.1" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="HoverAnimation" Duration="25.0" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0" Value="2.1" />
+        </AnimationProperty>
+        <AnimationProperty LayerName="Default" PropertyName="OverlayXOffset">
+          <KeyFrame Time="0" Value="0" />
+          <KeyFrame Time="12,5" Value="512" />
+          <KeyFrame Time="25" Value="1024" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>-->
+
+  <Brush Name="CharacterDeveloper.AttributeButtonBackground">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\SkillBackgrounds\attribute_card" ExtendLeft="7" ExtendTop="7" ExtendRight="7" ExtendBottom="7" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+      <BrushLayer Name="Selected" Sprite="CharacterDeveloper\SkillBackgrounds\attribute_card_selection" ExtendLeft="7" ExtendTop="7" ExtendRight="7" ExtendBottom="7" IsHidden="true" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.45" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Selected" ColorFactor="0.3" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.3" AlphaFactor="0.8" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerksSelection.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="switcher_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.AddAttribute.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\AttributePopup\plus_button" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="CharacterDeveloper\AttributePopup\plus_button_hover" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="CharacterDeveloper\AttributePopup\plus_button_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false"  />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="panels/skill_add" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="SkillFocusLevelBrush">
+    <Layers>
+      <BrushLayer Name="Focus_1" Sprite="CharacterDeveloper\focus_point_small_1" IsHidden="true" />
+      <BrushLayer Name="Focus_2" Sprite="CharacterDeveloper\focus_point_small_2" IsHidden="true" />
+      <BrushLayer Name="Focus_3" Sprite="CharacterDeveloper\focus_point_small_3" IsHidden="true" />
+      <BrushLayer Name="Focus_4" Sprite="CharacterDeveloper\focus_point_small_4" IsHidden="true" />
+      <BrushLayer Name="Focus_5" Sprite="CharacterDeveloper\focus_point_small_5" IsHidden="true" />
+      <BrushLayer Name="Focus_6" Sprite="CharacterDeveloper\focus_point_small_6" IsHidden="true" />
+      <BrushLayer Name="Focus_7" Sprite="CharacterDeveloper\focus_point_small_7" IsHidden="true" />
+      <BrushLayer Name="Focus_8" Sprite="CharacterDeveloper\focus_point_small_8" IsHidden="true" />
+      <BrushLayer Name="Focus_9" Sprite="CharacterDeveloper\focus_point_small_9" IsHidden="true" />
+      <BrushLayer Name="Focus_10" Sprite="CharacterDeveloper\focus_point_small_10" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="0">
+        <BrushLayer Name="Focus_1" IsHidden="true" />
+      </Style>
+      <Style Name="1">
+        <BrushLayer Name="Focus_1" IsHidden="false" />
+      </Style>
+      <Style Name="2">
+        <BrushLayer Name="Focus_2" IsHidden="false" />
+      </Style>
+      <Style Name="3">
+        <BrushLayer Name="Focus_3" IsHidden="false" />
+      </Style>
+      <Style Name="4">
+        <BrushLayer Name="Focus_4" IsHidden="false" />
+      </Style>
+      <Style Name="5">
+        <BrushLayer Name="Focus_5" IsHidden="false" />
+      </Style>
+      <Style Name="6">
+        <BrushLayer Name="Focus_6" IsHidden="false" />
+      </Style>
+      <Style Name="7">
+        <BrushLayer Name="Focus_7" IsHidden="false" />
+      </Style>
+      <Style Name="8">
+        <BrushLayer Name="Focus_8" IsHidden="false" />
+      </Style>
+      <Style Name="9">
+        <BrushLayer Name="Focus_9" IsHidden="false" />
+      </Style>
+      <Style Name="10">
+        <BrushLayer Name="Focus_10" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="CharacterDeveloper.NotEarnedPerkBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="0.5"  />
+    </Layers>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.InSelectionPerkBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="1.8" ExtendRight="10" ExtendTop="10" ExtendLeft="10" ExtendBottom="10"/>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="1.8" />
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="1" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.EarnedActivePerkBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="1.2" Color="#FEC157FF" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.EarnedNotActivePerkBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="0.4" />
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="0.8" />
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" ColorFactor="0.2" Color="#FEC157FF" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.EarnedNotSelectedPerkBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Hovered" AnimationToPlayOnBegin="HoveredAnimation">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0" Value="0.8" />
+          <KeyFrame Time="0.5" Value="2.5" />
+          <KeyFrame Time="1" Value="0.8"/>
+        </AnimationProperty>
+      </Animation>
+      <Animation Name="HoveredAnimation" Duration="0.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0" Value="2" />
+          <KeyFrame Time="0.25" Value="2.5" />
+          <KeyFrame Time="0.5" Value="2" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.EarnedNotSelectedFollowingPerk.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\character_perk_background" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" >
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerkNotificationBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\notification" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0" Value="1" />
+          <KeyFrame Time="0.5" Value="2" />
+          <KeyFrame Time="1" Value="1" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerkPopup.PerkToggle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\perk_bg" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.7" AlphaFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerkSelection.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="character_developer_switcher_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="panels/skill_new" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerkSelection.Indicator">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\selected_perk_indicator" Color="#BB8344FF" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="CharacterDeveloper\selected_perk_indicator_hover" Color="#BB8344FF" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" ColorFactor="1.2" AlphaFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.PerkSelection.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextColorFactor="1" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" AnimationToPlayOnBegin="DefaultAnimation" FontSize="36" />
+      <Style Name="Hovered" FontColor="#E8C18DFF" />
+      <Style Name="Disabled" FontColor="#B59161FF" TextColorFactor="0.5" />
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#D69846FF" />
+          <KeyFrame Time="0.25" Value="#E8C18DFF" />
+          <KeyFrame Time="0.5" Value="#E8C18DFF" />
+          <KeyFrame Time="0.7" Value="#E8C18DFF" />
+          <KeyFrame Time="1" Value="#D69846FF" />
+          <KeyFrame Time="1.5" Value="#D69846FF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+  <Brush Name="CharacterDeveloper.Companion.PerkSelection">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\notification" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation" />
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0.0" Value="1.0" />
+          <KeyFrame Time="0.2" Value="1.1" />
+          <KeyFrame Time="0.4" Value="1.3" />
+          <KeyFrame Time="0.75" Value="1.5" />
+          <KeyFrame Time="1.1" Value="1.3" />
+          <KeyFrame Time="1.3" Value="1.1" />
+          <KeyFrame Time="1.5" Value="1.0" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+  <Brush Name="DescriptionButtonToggleBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\skill_description" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" ValueFactor="10" HueFactor="-10" SaturationFactor="20" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="HowToLearnButtonToggleBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\how_to_learn" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" ValueFactor="10" HueFactor="-10" SaturationFactor="20" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Attribute.AddAttribute.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\add_attribute_point_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.6" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Character.Selection.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\tabbar_long_namebox" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.6" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Attribute.Close.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\close_button" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="StdAssets\close_button_hover" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="StdAssets\close_button_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="CharacterDeveloper.MainSkill.Name.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.MainSkill.Description.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="21" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.GridSkillName.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FDF1DFFF" TextAlphaFactor="0.8" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="21" />
+      <Style Name="Disabled" FontColor="#FDF1DFFF" TextAlphaFactor="0.8" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="21"  />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.LearningRate.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#CDC0ADFF" TextAlphaFactor="0.8" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.GridAttributeName.Text" Font="Galahad" TextHorizontalAlignment="Center" FontSize="30" >
+    <Styles>
+      <Style Name="Default" FontColor="#FDF1DFFF" TextAlphaFactor="0.7" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+      <Style Name="Hovered" FontColor="#FDF1DFFF"  TextAlphaFactor="1" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+      <Style Name="Pressed" FontColor="#FDF1DFFF" TextAlphaFactor="0.4" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+      <Style Name="Selected" FontColor="#FDF1DFFF" TextAlphaFactor="1" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+      <Style Name="Disabled" FontColor="#FDF1DFFF" TextAlphaFactor="0.4" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.GridAttributeLevel.Text" Font="Galahad" TextHorizontalAlignment="Center" FontSize="40" >
+    <Styles>
+      <Style Name="Default" FontColor="#FDF1DFFF" TextAlphaFactor="0.7" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+      <Style Name="Disabled" FontColor="#FEC157FF" TextAlphaFactor="0.4" TextOutlineAmount="0.01" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="CharacterDeveloper.AddFocus.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="18" />
+      <Style Name="Disabled" FontColor="#686868FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.GridSkillLevel.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FCB066FF" TextOutlineAmount="0.01" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
+      <Style Name="Disabled" FontColor="#BD4E1DFF" TextOutlineAmount="0.01" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineAmount="0" TextGlowRadius="0.1" TextBlur="0.7" TextShadowOffset="1" TextShadowAngle="60" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.Skill.Stats.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#BB9D76FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="18" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.RightPanel.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineAmount="0" TextGlowRadius="0.1" TextBlur="0.7" TextShadowOffset="1" TextShadowAngle="60" FontSize="55" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.RightPanel.FreeFocus.Text.Prox" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="26" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.CurrentSkill.Value.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="50" />
+      <Style Name="Disabled" FontColor="#BD4E1DFF" TextOutlineAmount="0.01" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="50" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.SkillFrame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="CharacterDeveloper\skill_frame" />
+    </Layers>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.MessageText" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EBD6A8FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.MessageBigText" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EBD6A8FF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="35" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.PerkNameText" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.PerkEffectText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="18" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.ChooseOneText" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.4" TextGlowColor="#00000055" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkPopup.ButtonText" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.Companion.UnspentPerks.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkSelection.Pick.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default"  FontColor="#C6AC8DFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkSelection.PerkName.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D29D5AFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="CharacterDeveloper.PerkSelection.Description.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" FontSize="20" />
+    </Styles>
+  </Brush>
+</Brushes>

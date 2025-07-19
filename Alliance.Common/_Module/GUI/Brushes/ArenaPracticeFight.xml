@@ -1,0 +1,9 @@
+<Brushes>
+  <Brush Name="ArenaPracticeFight.Text" >
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0.1" TextGlowRadius="0.1" FontSize="32" />
+    </Styles>
+  </Brush>
+</Brushes>

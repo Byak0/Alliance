@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Core.Configuration;
+using Alliance.Common.Core.Configuration.Models;
+using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -9,6 +11,13 @@ namespace Alliance.Common.Core.Utils
 	public class CoreBehavior : MissionBehavior
 	{
 		public override MissionBehaviorType BehaviorType => MissionBehaviorType.Other;
+
+		public override void OnBehaviorInitialize()
+		{
+			base.OnBehaviorInitialize();
+
+			if (GameNetwork.IsClient) ConfigManager.Instance.SendMyConfigToServer(UserConfig.Instance);
+		}
 
 		public override void OnMissionTick(float dt)
 		{

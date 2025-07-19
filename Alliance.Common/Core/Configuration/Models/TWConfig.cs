@@ -1,6 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Utilities;
-using System;
+﻿using System;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -16,91 +14,91 @@ namespace Alliance.Common.Core.Configuration.Models
 	[Serializable]
 	public class TWConfig
 	{
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public string ServerName;
-		[ScenarioEditor(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
+		[ConfigProperty(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
 		public string WelcomeMessage = "Hello";
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public string GamePassword;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public string AdminPassword;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public int GameDefinitionId;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public bool AllowPollsToKickPlayers;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public bool AllowPollsToBanPlayers;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public bool AllowPollsToChangeMaps;
-		[ScenarioEditor(label: "Allow individual banner.", tooltip: "Allow players to use their custom banner.")]
+		[ConfigProperty(label: "Allow individual banner.", tooltip: "Allow players to use their custom banner.")]
 		public bool AllowIndividualBanners;
-		[ScenarioEditor(label: "Realistic blocking", tooltip: "Use animation progress dependent blocking.")]
+		[ConfigProperty(label: "Realistic blocking", tooltip: "Use animation progress dependent blocking.")]
 		public bool UseRealisticBlocking;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public string PremadeMatchGameMode;
-		[ScenarioEditor(label: "Game mode", dataType: ScenarioData.DataTypes.GameMode)]
+		[ConfigProperty(label: "Game mode", dataType: AllianceData.DataTypes.GameMode)]
 		public string GameType;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public Enum PremadeGameType;
-		[ScenarioEditor(label: "Map", dataType: ScenarioData.DataTypes.Map)]
+		[ConfigProperty(label: "Map", dataType: AllianceData.DataTypes.Map)]
 		public string Map;
-		[ScenarioEditor(label: "Culture for attacker", dataType: ScenarioData.DataTypes.Culture)]
+		[ConfigProperty(label: "Culture for attacker", dataType: AllianceData.DataTypes.Culture)]
 		public string CultureTeam1;
-		[ScenarioEditor(label: "Culture for defender", dataType: ScenarioData.DataTypes.Culture)]
+		[ConfigProperty(label: "Culture for defender", dataType: AllianceData.DataTypes.Culture)]
 		public string CultureTeam2;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public int MaxNumberOfPlayers;
-		//[ScenarioEditor(isEditable: false)]
+		//[ConfigProperty(isEditable: false)]
 		//public int MinNumberOfPlayersForMatchStart;
-		[ScenarioEditor(label: "Number of bots for attacker")]
+		[ConfigProperty(label: "Number of bots for attacker")]
 		public int NumberOfBotsTeam1;
-		[ScenarioEditor(label: "Number of bots for defender")]
+		[ConfigProperty(label: "Number of bots for defender")]
 		public int NumberOfBotsTeam2;
-		[ScenarioEditor(label: "Amount of bots per formation")]
+		[ConfigProperty(label: "Amount of bots per formation")]
 		public int NumberOfBotsPerFormation;
-		[ScenarioEditor(label: "Friendly fire to self (melee)", tooltip: "A percentage of how much melee damage inflicted upon a friend is dealt back to the inflictor.")]
+		[ConfigProperty(label: "Friendly fire to self (melee)", tooltip: "A percentage of how much melee damage inflicted upon a friend is dealt back to the inflictor.")]
 		public int FriendlyFireDamageMeleeSelfPercent;
-		[ScenarioEditor(label: "Friendly fire (melee)", tooltip: "A percentage of how much melee damage inflicted upon a friend is actually dealt.")]
+		[ConfigProperty(label: "Friendly fire (melee)", tooltip: "A percentage of how much melee damage inflicted upon a friend is actually dealt.")]
 		public int FriendlyFireDamageMeleeFriendPercent;
-		[ScenarioEditor(label: "Friendly fire to self (ranged)", tooltip: "A percentage of how much ranged damage inflicted upon a friend is dealt back to the inflictor.")]
+		[ConfigProperty(label: "Friendly fire to self (ranged)", tooltip: "A percentage of how much ranged damage inflicted upon a friend is dealt back to the inflictor.")]
 		public int FriendlyFireDamageRangedSelfPercent;
-		[ScenarioEditor(label: "Friendly fire (ranged)", tooltip: "A percentage of how much ranged damage inflicted upon a friend is actually dealt.")]
+		[ConfigProperty(label: "Friendly fire (ranged)", tooltip: "A percentage of how much ranged damage inflicted upon a friend is actually dealt.")]
 		public int FriendlyFireDamageRangedFriendPercent;
-		[ScenarioEditor(label: "Who can spectators look at, and how.")]
+		[ConfigProperty(label: "Who can spectators look at, and how.")]
 		public SpectatorCameraTypes SpectatorCamera;
-		[ScenarioEditor(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In minutes.")]
+		[ConfigProperty(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In minutes.")]
 		public int WarmupTimeLimit;
-		[ScenarioEditor(label: "Map max duration", tooltip: "Maximum duration for the map. In minutes.")]
+		[ConfigProperty(label: "Map max duration", tooltip: "Maximum duration for the map. In minutes.")]
 		public int MapTimeLimit;
-		[ScenarioEditor(label: "Round max duration", tooltip: "Maximum duration for each round. In seconds.")]
+		[ConfigProperty(label: "Round max duration", tooltip: "Maximum duration for each round. In seconds.")]
 		public int RoundTimeLimit;
-		[ScenarioEditor(label: "Round preparation time", tooltip: "Time available to select class/equipment. In seconds.")]
+		[ConfigProperty(label: "Round preparation time", tooltip: "Time available to select class/equipment. In seconds.")]
 		public int RoundPreparationTimeLimit;
-		[ScenarioEditor(label: "Round total", tooltip: "Maximum amount of rounds before the game ends.")]
+		[ConfigProperty(label: "Round total", tooltip: "Maximum amount of rounds before the game ends.")]
 		public int RoundTotal;
-		[ScenarioEditor(label: "Respawn period (attacker)", tooltip: "Wait time after death, before respawning again. In seconds.")]
+		[ConfigProperty(label: "Respawn period (attacker)", tooltip: "Wait time after death, before respawning again. In seconds.")]
 		public int RespawnPeriodTeam1;
-		[ScenarioEditor(label: "Respawn period (defender)", tooltip: "Wait time after death, before respawning again. In seconds.")]
+		[ConfigProperty(label: "Respawn period (defender)", tooltip: "Wait time after death, before respawning again. In seconds.")]
 		public int RespawnPeriodTeam2;
-		[ScenarioEditor(label: "Unlimited gold")]
+		[ConfigProperty(label: "Unlimited gold")]
 		public bool UnlimitedGold;
-		[ScenarioEditor(label: "Gold gain multiplier from agent deaths.")]
+		[ConfigProperty(label: "Gold gain multiplier from agent deaths.")]
 		public int GoldGainChangePercentageTeam1;
-		[ScenarioEditor(label: "Gold gain multiplier from agent deaths.")]
+		[ConfigProperty(label: "Gold gain multiplier from agent deaths.")]
 		public int GoldGainChangePercentageTeam2;
-		[ScenarioEditor(label: "Min score to win match.")]
+		[ConfigProperty(label: "Min score to win match.")]
 		public int MinScoreToWinMatch;
-		[ScenarioEditor(label: "Min score to win duel.")]
+		[ConfigProperty(label: "Min score to win duel.")]
 		public int MinScoreToWinDuel;
-		[ScenarioEditor(label: "Minimum needed difference in poll results before it is accepted.")]
+		[ConfigProperty(label: "Minimum needed difference in poll results before it is accepted.")]
 		public int PollAcceptThreshold;
-		[ScenarioEditor(label: "Auto team balancing", tooltip: "Maximum player imbalance between team 1 and team 2. Selecting 0 will disable auto team balancing.")]
+		[ConfigProperty(label: "Auto team balancing", tooltip: "Maximum player imbalance between team 1 and team 2. Selecting 0 will disable auto team balancing.")]
 		public int AutoTeamBalanceThreshold;
-		[ScenarioEditor(label: "Enables mission recording.")]
+		[ConfigProperty(label: "Enables mission recording.")]
 		public bool EnableMissionRecording;
-		[ScenarioEditor(label: "Sets if the game mode uses single spawning.")]
+		[ConfigProperty(label: "Sets if the game mode uses single spawning.")]
 		public bool SingleSpawn;
-		[ScenarioEditor(label: "Disables the inactivity kick timer.")]
+		[ConfigProperty(label: "Disables the inactivity kick timer.")]
 		public bool DisableInactivityKick;
 
 		public TWConfig() { }
@@ -191,7 +189,7 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		private object GetDefaultValue(OptionType key)
 		{
-			Log($"No value set for option {key}, using default value : {key.GetValueText()}", LogLevel.Debug);
+			Log($"No value set for option {key}, using server value : {key.GetValueText()}", LogLevel.Debug);
 			return key.GetOptionProperty().OptionValueType switch
 			{
 				OptionValueType.Bool => key.GetBoolValue(),

@@ -11,6 +11,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
+using static Alliance.Common.Core.Utils.AgentExtensions;
 
 namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 {
@@ -399,12 +400,5 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 			Perks = mBBindingList;
 		}
-	}
-
-	public enum ClassType
-	{
-		Troop,
-		Hero,
-		BannerBearer
 	}
 }

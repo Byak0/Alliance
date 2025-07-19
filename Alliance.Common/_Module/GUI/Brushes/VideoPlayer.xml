@@ -1,0 +1,9 @@
+<Brushes>
+  
+  <Brush Name="SubTitle.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.2" TextGlowRadius="0.2" TextBlur="0.2" FontSize="48" />
+    </Styles>
+  </Brush>
+  
+</Brushes>

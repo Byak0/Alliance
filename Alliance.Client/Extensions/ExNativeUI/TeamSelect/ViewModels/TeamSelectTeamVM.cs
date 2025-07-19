@@ -492,7 +492,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 			}
 			else if (MultiplayerOptions.OptionType.GameType.GetStrValue() == "PvC")
 			{
-				if ((int)Team.Side == Config.Instance.CommanderSide)
+				if (Team.Side.ToString() == Config.Instance.CommanderSide)
 				{
 					DisplayedPrimary = new TextObject("{=al_commanders}Commanders").ToString();
 				}
