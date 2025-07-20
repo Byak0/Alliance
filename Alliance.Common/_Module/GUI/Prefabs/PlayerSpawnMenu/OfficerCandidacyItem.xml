@@ -1,0 +1,12 @@
+<Prefab>
+	<Window>
+		<!-- Officer candidacy item -->
+		<ButtonWidget WidthSizePolicy="Fixed" SuggestedWidth="256" SuggestedHeight="316" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Kingdom.Voter.Tuple" DoNotPassEventsToChildren="true" IsSelected="@IsSelected" Command.Click="ToggleVote">
+			<Children>
+				<TextWidget Text="@Name" Brush="DefaultBrush" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Top" Brush.FontSize="28"  MarginTop="36" />
+				<TextWidget Text="@Pitch" WidthSizePolicy="Fixed" SuggestedWidth="200" HeightSizePolicy="Fixed" SuggestedHeight="160" Brush="DefaultBrush" Brush.FontSize="24" HorizontalAlignment="Center" VerticalAlignment="Center" />
+				<Widget Sprite="SPKingdom\king_seal" SuggestedWidth="48" SuggestedHeight="48" VerticalAlignment="Bottom" HorizontalAlignment="Center" MarginBottom="36" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" IsVisible="@IsSelected" />
+			</Children>
+		</ButtonWidget>
+	</Window>
+</Prefab>

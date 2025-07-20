@@ -1,0 +1,221 @@
+<Prefab>
+	<Constants>
+		<Constant Name="TroopBanner.Frame.Width" Value="451" />
+		<Constant Name="TroopBanner.Frame.Height" Value="115" />
+
+		<Constant Name="Perks.Frame.Width" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Width" />
+		<Constant Name="Perks.Frame.Height" BrushLayer="Default" BrushName="MPClassLoadout.Perks.Frame" BrushValueType="Height" />
+
+		<Constant Name="TroopBanner.ItemBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Width" />
+		<Constant Name="TroopBanner.ItemBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.TroopBanner.ItemBackground" BrushValueType="Height" />
+
+		<Constant Name="MPClassLoadout.ItemCultureBackground.Width" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Width" />
+		<Constant Name="MPClassLoadout.ItemCultureBackground.Height" BrushLayer="Default" BrushName="MPClassLoadout.ItemCultureBackground" BrushValueType="Height" />
+
+		<Constant Name="SubClassButton.MarginTop" Value="5" />
+
+		<Constant Name="Extension.Hidden.MarginTop" Value="2" />
+		<Constant Name="Extension.Hidden.Height" Value="0" />
+		<Constant Name="Extension.Selected.MarginTop" Value="48" />
+		<Constant Name="Extension.Height" Value="100" />
+	</Constants>
+	<VisualDefinitions>
+		<VisualDefinition Name="Extension" EaseIn="true" TransitionDuration="0.25">
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Default" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Pressed" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Hovered" />
+			<VisualState SuggestedHeight="!Extension.Hidden.Height" MarginTop="!Extension.Hidden.MarginTop" State="Disabled" />
+			<VisualState SuggestedHeight="!Extension.Height" MarginTop="!Extension.Selected.MarginTop" State="Selected" />
+		</VisualDefinition>
+	</VisualDefinitions>
+	<Window>
+
+		<BrushWidget SuggestedWidth="1200" SuggestedHeight="700" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Alliance.UniformFrame" Sprite="BlankWhiteSquare_9">
+			<Children>
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" >
+					<Children>
+
+						<!-- Culture selection -->
+						<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="120" VerticalAlignment="Top" MarginLeft="-34"  >
+							<Children>
+								<!-- Decoration bar -->
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" Sprite="StdAssets\tabbar_long" />
+
+								<!-- Name container -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="240" SuggestedHeight="47" ClipContents="true" VerticalAlignment="Top" HorizontalAlignment="Center" MarginTop="1" Sprite="StdAssets\tabbar_long_namebox">
+									<Children>
+										<!-- Banner background -->
+										<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" VerticalAlignment="Center" MarginLeft="46" CultureID="@CultureId"/>
+										<!-- Culture name -->
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="32" Brush="Clan.NameTitle.Text" VerticalAlignment="Center" MarginLeft="30" Text="@CultureName" />
+									</Children>
+								</Widget>
+
+								<!-- Left arrow -->
+								<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="10" MarginLeft="100" Brush="ButtonRightArrowBrush1" Command.Click="SelectPreviousCulture" />
+
+								<!-- Right arrow -->
+								<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="32" SuggestedHeight="32" VerticalAlignment="Top" HorizontalAlignment="Right" MarginTop="10" MarginRight="100" Brush="ButtonLeftArrowBrush1" Command.Click="SelectNextCulture" />
+
+								<!-- Filter buttons for troops / heroes / banner bearers -->
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="66" VerticalAlignment="Top" HorizontalAlignment="Right" MarginRight="-70">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Top" >
+											<Children>
+												<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowTroops" Command.Click="ToggleShowTroops" />
+												<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Troops" />
+											</Children>
+										</Widget>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Center">
+											<Children>
+												<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowHeroes" Command.Click="ToggleShowHeroes" />
+												<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Heroes" />
+											</Children>
+										</Widget>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="22" VerticalAlignment="Bottom">
+											<Children>
+												<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="24" SuggestedHeight="24" HorizontalAlignment="Left" Brush="Alliance.Button.Checkbox" IsSelected="@ShowBannerBearers" Command.Click="ToggleShowBannerBearers" />
+												<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="120" SuggestedHeight="22" MarginTop="1" MarginLeft="24" HorizontalAlignment="Left" Brush="MPClassLoadout.PerkNameText" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Center" Text="Banner Bearers" />
+											</Children>
+										</Widget>
+									</Children>
+								</Widget>
+							</Children>
+						</Widget>
+
+
+						<!-- Troops of selected culture -->
+						<Widget WidthSizePolicy="Fixed" SuggestedWidth="460" HeightSizePolicy="StretchToParent" VerticalAlignment="Top" MarginTop="70">
+							<Children>
+
+								<!-- Scrollable list -->
+								<ScrollablePanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AutoHideScrollBars="false" VerticalScrollbar="Scrollbar" InnerPanel="ClipRect\InnerPanel" ClipRect="ClipRect" >
+									<Children>
+
+										<!-- Clip rect -->
+										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" >
+											<Children>
+
+												<!-- Inner panel -->
+												<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="1">
+													<ItemTemplate>
+
+														<!-- Troops grouped by type -->
+														<!-- Troop group -->
+														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" >
+															<Children>
+																<!-- Troops of that type -->
+																<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalBottomToTop">
+																	<ItemTemplate>
+
+																		<!-- Troop button -->
+																		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" UpdateChildrenStates="true">
+																			<Children>
+
+																				<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Body" />
+
+																				<!--Troop Tuple Body-->
+																				<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="Body" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" Command.Click="SelectTroop" IsSelected="@IsSelected" TroopType="@IconType" UpdateChildrenStates="true" >
+																					<Children>
+																						<!-- Background -->
+																						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="420" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Background" />
+
+																						<!-- Troop name -->
+																						<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="396" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" PositionYOffset="0" MarginLeft="32" Brush="MPLobby.ClassFilter.ClassTuple.Text" Text="@Name" />
+																					</Children>
+																				</MultiplayerClassLoadoutTroopSubclassButtonWidget>
+
+																			</Children>
+																		</Widget>
+
+
+																	</ItemTemplate>
+																</ListPanel>
+															</Children>
+														</Widget>
+
+													</ItemTemplate>
+												</ListPanel>
+
+											</Children>
+										</Widget>
+
+										<!-- Scrollbar -->
+										<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="8" HorizontalAlignment="Right" UpdateChildrenStates="true" MarginTop="6" MarginLeft="15" MarginBottom="15" AlignmentAxis="Vertical" MaxValue="100" MinValue="0" Handle="Handle" >
+											<Children>
+												<!-- Background color -->
+												<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+
+												<!-- Handle -->
+												<ImageWidget Id="Handle" WidthSizePolicy="Fixed" SuggestedWidth="8" MinHeight="50" HorizontalAlignment="Center" Brush="MPLobby.CustomServer.ScrollHandle" />
+											</Children>
+										</ScrollbarWidget>
+
+									</Children>
+								</ScrollablePanel>
+
+
+
+							</Children>
+						</Widget>
+
+						<!-- Settings -->
+						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="740" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" HorizontalAlignment="Right" MarginTop="120">
+							<Children>
+
+								<ScrollablePanel Id="ScrollablePanelFormations" HeightSizePolicy ="StretchToParent" WidthSizePolicy="StretchToParent" InnerPanel="ClipRectFormations\InnerPanelFormations" ClipRect="ClipRectFormations" VerticalScrollbar="..\ScrollbarFormations" AutoHideScrollBars="true" MarginBottom="4" >
+									<Children>
+										<Widget Id="ClipRectFormations" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
+											<Children>
+												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+													<Children>
+														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+															<ItemTemplate>
+																<GenericOption/>
+															</ItemTemplate>
+														</ListPanel>
+													</Children>
+												</NavigatableListPanel>
+											</Children>
+										</Widget>
+									</Children>
+								</ScrollablePanel>
+
+								<!-- Vertical scrollbar -->
+								<ScrollbarWidget Id="ScrollbarFormations" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Right" AlignmentAxis="Vertical" Handle="ScrollbarHandleFormations" MaxValue="100" MinValue="0" MarginRight="1">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="MPLobby\CustomServer\lobby_slider_bed" AlphaFactor="0.2" />
+										<ImageWidget Id="ScrollbarHandleFormations" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="6" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="FaceGen.Scrollbar.Handle" MinHeight="8" />
+									</Children>
+								</ScrollbarWidget>
+
+							</Children>
+						</BrushWidget>
+
+						<!-- Cancel/Confirm buttons -->
+						<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="740" HeightSizePolicy="Fixed" SuggestedHeight="60" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+							<Children>
+
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="224" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" MarginLeft="-224" Brush="Standard.DialogCloseButtons.CancelButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Cancel" >
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"  Brush="Clan.NameTitle.Text" Brush.FontSize="28" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="24" Text="Cancel" />
+									</Children>
+								</ButtonWidget>
+
+								<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="224" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" MarginLeft="224" Brush="Standard.DialogCloseButtons.DoneButton" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save" >
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent"  Brush="Clan.NameTitle.Text" Brush.FontSize="28" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="24" Text="Save" />
+									</Children>
+								</ButtonWidget>
+
+							</Children>
+						</BrushWidget>
+
+					</Children>
+				</Widget>
+			</Children>
+		</BrushWidget>
+
+	</Window>
+</Prefab>

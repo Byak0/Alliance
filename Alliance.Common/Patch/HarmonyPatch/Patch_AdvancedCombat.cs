@@ -11,6 +11,7 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.TwoDimension;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Mission;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.Patch.HarmonyPatch
 {
@@ -581,138 +582,138 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		}
 
 		/*public static async Task FlyCarpet6(Agent victim, Vec3 projectionVector, float duration)
-        {
-            int i = 0;
-            
-            //ActionIndexCache horseFallbackAction = ActionIndexCache.Create("act_horse_fall_backwards");
-            //ActionIndexCache fallbackAction = ActionIndexCache.Create("act_strike_fall_back_back_rise");
-            //ActionIndexCache fallbackLeftAction = ActionIndexCache.Create("act_strike_fall_back_back_rise_left_stance");
-            //ActionIndexCache fallbackHAction = ActionIndexCache.Create("act_strike_fall_back_heavy_back_rise");
-            //ActionIndexCache fallbackHLeftAction = ActionIndexCache.Create("act_strike_fall_back_heavy_back_rise_left_stance");
+		{
+			int i = 0;
+			
+			//ActionIndexCache horseFallbackAction = ActionIndexCache.Create("act_horse_fall_backwards");
+			//ActionIndexCache fallbackAction = ActionIndexCache.Create("act_strike_fall_back_back_rise");
+			//ActionIndexCache fallbackLeftAction = ActionIndexCache.Create("act_strike_fall_back_back_rise_left_stance");
+			//ActionIndexCache fallbackHAction = ActionIndexCache.Create("act_strike_fall_back_heavy_back_rise");
+			//ActionIndexCache fallbackHLeftAction = ActionIndexCache.Create("act_strike_fall_back_heavy_back_rise_left_stance");
 
-            float startTime = Mission.Current.CurrentTime;
-            //Vec3 agentPosition = victim.Position;
-            float distance = projectionVector.Length;
+			float startTime = Mission.Current.CurrentTime;
+			//Vec3 agentPosition = victim.Position;
+			float distance = projectionVector.Length;
 
-            // Calculate the gravity force
-            Vec3 gravity = -Vec3.Up * gravityMagnitude;
+			// Calculate the gravity force
+			Vec3 gravity = -Vec3.Up * gravityMagnitude;
 
-            // Create the flying carpet entity
-            GameEntity flyingCarpet = GameEntity.Instantiate(Mission.Current.Scene, "flying_carpet", false);
-            //flyingCarpet.BodyFlag |= BodyFlags.Barrier3D; Prevent flying to the moon but less satisfying physic :(
-            // Calculate the position of the plane in front of the agent
-            Vec3 originalPosition = agentPosition + Vec3.Up * planeHeightOffset + projectionVector.NormalizedCopy() * planeVectorOffset;
-            InformationManager.DisplayMessage(new InformationMessage("AgentPos = " + agentPosition, Colors.Green));
-            InformationManager.DisplayMessage(new InformationMessage("carpetPos = " + originalPosition, Colors.Green));
+			// Create the flying carpet entity
+			GameEntity flyingCarpet = GameEntity.Instantiate(Mission.Current.Scene, "flying_carpet", false);
+			//flyingCarpet.BodyFlag |= BodyFlags.Barrier3D; Prevent flying to the moon but less satisfying physic :(
+			// Calculate the position of the plane in front of the agent
+			Vec3 originalPosition = agentPosition + Vec3.Up * planeHeightOffset + projectionVector.NormalizedCopy() * planeVectorOffset;
+			InformationManager.DisplayMessage(new InformationMessage("AgentPos = " + agentPosition, Colors.Green));
+			InformationManager.DisplayMessage(new InformationMessage("carpetPos = " + originalPosition, Colors.Green));
 
-            // Set the local position of the flying carpet entity
-            //flyingCarpet.SetLocalPosition(originalPosition);
+			// Set the local position of the flying carpet entity
+			//flyingCarpet.SetLocalPosition(originalPosition);
 
-            // Calculate the rotation to align the carpet with the push vector
-            MatrixFrame frame = CalculateFrame(originalPosition, projectionVector);
+			// Calculate the rotation to align the carpet with the push vector
+			MatrixFrame frame = CalculateFrame(originalPosition, projectionVector);
 
-            // Set the frame (position and orientation) of the flying carpet entity
-            flyingCarpet.SetGlobalFrame(frame);
+			// Set the frame (position and orientation) of the flying carpet entity
+			flyingCarpet.SetGlobalFrame(frame);
 
-            Vec3 normalizedProjVector = projectionVector.NormalizedCopy();
-            List<Agent> collidedAgents = new List<Agent>();
-            while (Mission.Current.CurrentTime - startTime < duration)
-            {
-                float elapsedTime = Mission.Current.CurrentTime - startTime;
-                float percentageDuration = elapsedTime / duration;
-                Vec2 projectedDirection = projectionVector.AsVec2;
+			Vec3 normalizedProjVector = projectionVector.NormalizedCopy();
+			List<Agent> collidedAgents = new List<Agent>();
+			while (Mission.Current.CurrentTime - startTime < duration)
+			{
+				float elapsedTime = Mission.Current.CurrentTime - startTime;
+				float percentageDuration = elapsedTime / duration;
+				Vec2 projectedDirection = projectionVector.AsVec2;
 
-                List<Agent> collidingAgents = Mission.Current.GetNearbyAgents(
-                    flyingCarpet.GetGlobalFrame().origin.AsVec2,
-                    1f,
-                    new MBList<Agent>()
-                ).FindAll(agent => !collidedAgents.Contains(agent) && flyingCarpet.GetGlobalFrame().origin.Z - agent.Position.Z < 2f);
+				List<Agent> collidingAgents = Mission.Current.GetNearbyAgents(
+					flyingCarpet.GetGlobalFrame().origin.AsVec2,
+					1f,
+					new MBList<Agent>()
+				).FindAll(agent => !collidedAgents.Contains(agent) && flyingCarpet.GetGlobalFrame().origin.Z - agent.Position.Z < 2f);
 
-                collidedAgents.AddRange(collidingAgents);
+				collidedAgents.AddRange(collidingAgents);
 
-                foreach (Agent agent in collidingAgents)
-                {
-                    // Get the agent's forward direction
-                    Vec3 agentForward = agent.GetMovementDirection().ToVec3();
+				foreach (Agent agent in collidingAgents)
+				{
+					// Get the agent's forward direction
+					Vec3 agentForward = agent.GetMovementDirection().ToVec3();
 
-                    // Calculate the vector from the agent to the flying carpet
-                    Vec3 agentToCarpet = flyingCarpet.GetGlobalFrame().origin - agent.Position;
+					// Calculate the vector from the agent to the flying carpet
+					Vec3 agentToCarpet = flyingCarpet.GetGlobalFrame().origin - agent.Position;
 
-                    // Calculate the angle between the agent's forward direction and the vector to the carpet
-                    float angle = Vec3.AngleBetweenTwoVectors(agentForward, agentToCarpet);
+					// Calculate the angle between the agent's forward direction and the vector to the carpet
+					float angle = Vec3.AngleBetweenTwoVectors(agentForward, agentToCarpet);
 
-                    // Convert the angle to degrees
-                    float angleDegrees = angle * (180f / MathF.PI);
+					// Convert the angle to degrees
+					float angleDegrees = angle * (180f / MathF.PI);
 
-                    // Calculate the cross product of the agent's forward direction and the vector to the carpet
-                    Vec3 crossProduct = Vec3.CrossProduct(agentForward, agentToCarpet);
+					// Calculate the cross product of the agent's forward direction and the vector to the carpet
+					Vec3 crossProduct = Vec3.CrossProduct(agentForward, agentToCarpet);
 
-                    // Check if the flying carpet is coming from the right or left side of the agent
-                    bool fromRight = crossProduct.y > 0f;
+					// Check if the flying carpet is coming from the right or left side of the agent
+					bool fromRight = crossProduct.y > 0f;
 
-                    // Check the strength of the flying carpet
-                    bool isStrong = percentageDuration < 0.50f;
-                    Logger.Log(angle + " || " + angleDegrees, LogLevel.Information, ConsoleColor.Red);
-                    if (percentageDuration > 0.75f)
-                    {
+					// Check the strength of the flying carpet
+					bool isStrong = percentageDuration < 0.50f;
+					Logger.Log(angle + " || " + angleDegrees, LogLevel.Information, ConsoleColor.Red);
+					if (percentageDuration > 0.75f)
+					{
 
-                    }
-                    else if (agent.HasMount)
-                    {
-                        agent.LookDirection = originalPosition;
-                        agent.SetActionChannel(0, horseFallbackAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
-                    }
-                    else if (fromRight && !isStrong)
-                    {
-                        Logger.Log("Weak hit coming from right");
-                        agent.LookDirection = originalPosition;
-                        agent.SetActionChannel(0, fallbackAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
-                    }
-                    else if (!fromRight && !isStrong)
-                    {
-                        Logger.Log("Weak hit coming from left");
-                        agent.LookDirection = originalPosition;
-                        agent.SetActionChannel(0, fallbackLeftAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
-                    }
-                    else if (fromRight && isStrong)
-                    {
-                        Logger.Log("Strong hit coming from right");
-                        agent.LookDirection = originalPosition;
-                        agent.SetActionChannel(0, fallbackHAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
-                    }
-                    else if (!fromRight && isStrong)
-                    {
-                        Logger.Log("Strong hit coming from left");
-                        agent.LookDirection = originalPosition;
-                        agent.SetActionChannel(0, fallbackHLeftAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
-                    }
-                }
+					}
+					else if (agent.HasMount)
+					{
+						agent.LookDirection = originalPosition;
+						agent.SetActionChannel(0, horseFallbackAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+					}
+					else if (fromRight && !isStrong)
+					{
+						Logger.Log("Weak hit coming from right");
+						agent.LookDirection = originalPosition;
+						agent.SetActionChannel(0, fallbackAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+					}
+					else if (!fromRight && !isStrong)
+					{
+						Logger.Log("Weak hit coming from left");
+						agent.LookDirection = originalPosition;
+						agent.SetActionChannel(0, fallbackLeftAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+					}
+					else if (fromRight && isStrong)
+					{
+						Logger.Log("Strong hit coming from right");
+						agent.LookDirection = originalPosition;
+						agent.SetActionChannel(0, fallbackHAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+					}
+					else if (!fromRight && isStrong)
+					{
+						Logger.Log("Strong hit coming from left");
+						agent.LookDirection = originalPosition;
+						agent.SetActionChannel(0, fallbackHLeftAction, false, 0UL, 0f, 1f, -0.2f, 0.4f, 0f, false, -0.1f, 0, true);
+					}
+				}
 
-                float elapsedSeconds = Mission.Current.CurrentTime - startTime;
-                float t = elapsedSeconds / duration;
-                float lerpT = SmoothStep(0f, 1f, t);
-                float currentDistance = distance * lerpT;
+				float elapsedSeconds = Mission.Current.CurrentTime - startTime;
+				float t = elapsedSeconds / duration;
+				float lerpT = SmoothStep(0f, 1f, t);
+				float currentDistance = distance * lerpT;
 
-                // Calculate the new position without gravity
-                Vec3 newPosition = originalPosition + normalizedProjVector * currentDistance;
+				// Calculate the new position without gravity
+				Vec3 newPosition = originalPosition + normalizedProjVector * currentDistance;
 
-                // Apply gravity to the newPosition
-                float gravityOffset = 0.5f * gravityMagnitude * elapsedSeconds * elapsedSeconds;
-                newPosition += -Vec3.Up * gravityOffset;
+				// Apply gravity to the newPosition
+				float gravityOffset = 0.5f * gravityMagnitude * elapsedSeconds * elapsedSeconds;
+				newPosition += -Vec3.Up * gravityOffset;
 
-                // Move the flying carpet entity to the new position
-                flyingCarpet.SetLocalPosition(newPosition + Vec3.Up * planeHeightOffset);
+				// Move the flying carpet entity to the new position
+				flyingCarpet.SetLocalPosition(newPosition + Vec3.Up * planeHeightOffset);
 
-                i++;
+				i++;
 
-                await Task.Yield();
-            }
+				await Task.Yield();
+			}
 
-            InformationManager.DisplayMessage(new InformationMessage("Carpet updated " + i + " times. Original pos : " + originalPosition + " | Final pos : " + flyingCarpet.GlobalPosition, Colors.Green));
+			InformationManager.DisplayMessage(new InformationMessage("Carpet updated " + i + " times. Original pos : " + originalPosition + " | Final pos : " + flyingCarpet.GlobalPosition, Colors.Green));
 
-            // Remove the carpet entity
-            flyingCarpet.Remove(0);
-        }*/
+			// Remove the carpet entity
+			flyingCarpet.Remove(0);
+		}*/
 
 		/// <summary>
 		/// Returns a matrix frame with vectors aligned to the given push vector.

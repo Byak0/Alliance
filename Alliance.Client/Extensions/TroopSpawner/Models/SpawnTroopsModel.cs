@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Utilities;
+﻿using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

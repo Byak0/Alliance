@@ -51,6 +51,7 @@ namespace Alliance.Common.Patch
 
 			//TODO : Following 1.2 -> Check if any patch can be removed
 			//patchSuccess &= Patch_MultiplayerTeamSelectComponent.Patch();
+			patchSuccess &= Patch_KeyBinder.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsImmediate.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsInitial.Patch();
 			patchSuccess &= Patch_MultiplayerOptionsDefault.Patch();
@@ -60,6 +61,9 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_AdvancedCombat.Patch();
 			patchSuccess &= Patch_MissionPeer.Patch();
 			patchSuccess &= Patch_ActionSetCode.Patch();
+#if !SERVER && DEBUG
+			patchSuccess &= Patch_WidgetExtensions.Patch();
+#endif
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

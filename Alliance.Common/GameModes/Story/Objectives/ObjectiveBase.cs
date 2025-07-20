@@ -1,27 +1,27 @@
-﻿using Alliance.Common.GameModes.Story.Models;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Models;
 using TaleWorlds.Core;
 
 namespace Alliance.Common.GameModes.Story.Objectives
 {
 	public abstract class ObjectiveBase
 	{
-		[ScenarioEditor(label: "Owner", tooltip: "Which side must complete this objective")]
+		[ConfigProperty(label: "Owner", tooltip: "Which side must complete this objective")]
 		public BattleSideEnum Side;
 
-		[ScenarioEditor(label: "Name", tooltip: "Name of the objective")]
+		[ConfigProperty(label: "Name", tooltip: "Name of the objective")]
 		public LocalizedString Name = new LocalizedString("Objective name");
 
-		[ScenarioEditor(label: "Description", tooltip: "Description of the objective")]
+		[ConfigProperty(label: "Description", tooltip: "Description of the objective")]
 		public LocalizedString Description = new LocalizedString("Objective description");
 
-		[ScenarioEditor(label: "Instant win", tooltip: "If true, completing this objective will instantly win the act")]
+		[ConfigProperty(label: "Instant win", tooltip: "If true, completing this objective will instantly win the act")]
 		public bool InstantActWin;
 
-		[ScenarioEditor(label: "Required for win", tooltip: "If true, this objective must be completed to win the act")]
+		[ConfigProperty(label: "Required for win", tooltip: "If true, this objective must be completed to win the act")]
 		public bool RequiredForActWin;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		public bool Active = true;
 
 		public ObjectiveBase(BattleSideEnum side, LocalizedString name, LocalizedString description, bool instantWin, bool requiredForWin)

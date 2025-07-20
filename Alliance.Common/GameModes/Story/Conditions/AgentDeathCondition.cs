@@ -1,5 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Behaviors;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Behaviors;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -10,13 +10,12 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// </summary>
 	public class AgentDeathCondition : Condition
 	{
-
-		[ScenarioEditor(label: "Character", tooltip: "ID of the character to check death.")]
+		[ConfigProperty(label: "Character", tooltip: "ID of the character to check death.")]
 		public string Character;
 		public SideType Side = SideType.All;
-		[ScenarioEditor(label: "Death quota", tooltip: "How many time character need to die to trigger condition.")]
+		[ConfigProperty(label: "Death quota", tooltip: "How many time character need to die to trigger condition.")]
 		public int DeathQuota = 1;
-		[ScenarioEditor(label: "Repeat", tooltip: "If true, it will reset Death quota each time is it reached.")]
+		[ConfigProperty(label: "Repeat", tooltip: "If true, it will reset Death quota each time is it reached.")]
 		public bool ConditionMayRepeat;
 
 		private int _deathCount = 0;

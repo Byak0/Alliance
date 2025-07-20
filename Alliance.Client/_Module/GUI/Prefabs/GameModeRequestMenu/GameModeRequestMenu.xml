@@ -82,7 +82,7 @@
 
 						<!-- List of available options (depending on GameMode) -->
 						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="800" SuggestedHeight="810" HorizontalAlignment="Right" VerticalAlignment="Top">
-							<Children>	
+							<Children>
 								<BrushWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="55" MarginLeft="0" Brush="MPLobby.TopHeader.Background">
 									<Children>
 										<TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="800" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="3" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="34" Text="Options"/>
@@ -97,14 +97,24 @@
 												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
 													<Children>
 
+														<!-- Player Spawn Menu short description-->
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" MarginTop="16" Text="@PlayerSpawnMenuShortDesc" />
+
+														<!-- Button to open the PlayerSpawnMenu and edit it -->
+														<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="280" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="16" Brush="WideButton.Flat" Command.Click="EditPlayerSpawnMenu" >
+															<Children>
+																<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" Text="Edit spawn menu" />
+															</Children>
+														</ButtonWidget>
+
 														<!-- Native options -->
-														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="5" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\NativeOptions" ListPanel="..\NativeOptions" RenderLate="true" UpdateChildrenStates="true">
+														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="8" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\NativeOptions" ListPanel="..\NativeOptions" RenderLate="true" UpdateChildrenStates="true">
 															<Children>
 																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" LayoutImp.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
 																	<Children>
 																		<Widget Id="CollapseParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" UpdateChildrenStates="true">
 																			<Children>
-																				<TextWidget Text="Native" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																				<TextWidget Text="Native settings" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
 																					<Children>
 																						<ImageWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
 																					</Children>
@@ -118,7 +128,7 @@
 														</PartyHeaderToggleWidget>
 														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
 															<ItemTemplate>
-																<GameModeOption/>
+																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 
@@ -129,7 +139,7 @@
 																	<Children>
 																		<Widget Id="CollapseParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" UpdateChildrenStates="true">
 																			<Children>
-																				<TextWidget Text="Mod" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																				<TextWidget Text="Mod settings" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
 																					<Children>
 																						<ImageWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
 																					</Children>
@@ -143,7 +153,7 @@
 														</PartyHeaderToggleWidget>
 														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
 															<ItemTemplate>
-																<GameModeOption/>
+																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 
@@ -185,7 +195,7 @@
 							</Children>
 						</BrushWidget>
 
-					
+
 						<!-- Vertical separator between Game Mode and Maps -->
 						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="13" SuggestedHeight="900" HorizontalAlignment="Left"  MarginLeft="295" MarginTop="0" Brush="MPLobby.Profile.Popup.Background" />
 

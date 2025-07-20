@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
+﻿using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModels;
@@ -13,6 +14,7 @@ using Alliance.Common.Utilities;
 using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
 using Alliance.Editor.Patch;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using TaleWorlds.Core;
@@ -33,22 +35,30 @@ namespace Alliance.Editor
 		{
 			Common.SubModule.CurrentModuleName = ModuleId;
 
+			// Register and initialize Key Binder
+			List<Assembly> assemblies = new List<Assembly>
+			{
+				Assembly.GetAssembly(typeof(Common.SubModule)),
+				Assembly.GetAssembly(typeof(Editor.SubModule))
+			};
+			KeyBinder.Initialize(assemblies);
+
+			// Apply Harmony patches
+			DirtyCommonPatcher.Patch();
+			DirtyEditorPatcher.Patch();
+
+			KeyBinder.RegisterContexts();
+
 			ActionFactory.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
 			SceneList.Initialize();
-
-			EditorToolsManager.EditorTools = new EditorTools();
 
 			// Need to force load MaterialDesign dlls for obscure reasons
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignThemes.Wpf.dll"));
 			Assembly.LoadFrom(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MaterialDesignColors.dll"));
 
 			GenerateScenarioExamples();
-
-			// Apply Harmony patches
-			DirtyCommonPatcher.Patch();
-
-			DirtyEditorPatcher.Patch();
+			EditorToolsManager.EditorTools = new EditorTools();
 
 			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}
@@ -98,7 +108,7 @@ namespace Alliance.Editor
 
 		protected override void OnApplicationTick(float dt)
 		{
-			EditZoneView.Tick(dt);
+			EditorToolsManager.EditorTools.Tick(dt);
 			if (Input.IsKeyPressed(InputKey.O))
 			{
 				OpenScenarioEditor();

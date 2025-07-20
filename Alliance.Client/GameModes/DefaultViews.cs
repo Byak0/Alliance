@@ -1,4 +1,4 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
+﻿using Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.MissionViews;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
@@ -19,8 +19,8 @@ namespace Alliance.Client.GameModes
 			return new List<MissionView>()
 			{
 				// Custom views
-				new MissionGauntletMainAgentEquipmentControllerViewCustom(),
-				
+				new AL_MainAgentEquipmentController(),				
+
 				// Default views from native
 				MultiplayerViewCreator.CreateMissionServerStatusUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerAdminPanelUIHandler(),

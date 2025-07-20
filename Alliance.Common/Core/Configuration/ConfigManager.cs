@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.NetworkMessages.FromClient;
 using Alliance.Common.Core.Configuration.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,13 @@ namespace Alliance.Common.Core.Configuration
 					}
 				}
 			}
+		}
+
+		public void SendMyConfigToServer(UserConfig userConfig)
+		{
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new UpdateUserConfig(userConfig));
+			GameNetwork.EndModuleEventAsClient();
 		}
 
 		public void SendConfigToPeer(NetworkCommunicator networkPeer)

@@ -25,7 +25,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 		public override bool Tick(float dt)
 		{
 			// Check if the agent is still performing the action and if there are targets to check against.
-			if (_agent == null || _targets == null || _targets.Count == 0
+			// TODO check, subject to crash under certain conditions (due to agent state ?)
+			if (_agent == null || _agent.AgentVisuals == null || !_agent.IsActive() || _agent.Health <= 0 || _targets == null || _targets.Count == 0
 				|| _agent.GetCurrentAction(0) != _action
 				|| _agent.GetCurrentActionProgress(0) >= _actionProgressMax)
 			{

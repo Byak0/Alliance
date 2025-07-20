@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.AdvancedCombat.BTBehaviorTrees;
 using Alliance.Common.Extensions.AdvancedCombat.Models;
 using Alliance.Common.Extensions.AdvancedCombat.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdvancedCombat.Utilities;
-using BehaviorTreeWrapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -220,8 +219,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 			else if (agent.IsTroll())
 			{
 				agent.AddComponent(new HumanoidComponent(agent));
-				agent.AddComponent(new BehaviorTreeAgentComponent(agent, "TrollTree"));
-				//agent.AddComponent(new TrollComponent(agent));
+				//agent.AddComponent(new BehaviorTreeAgentComponent(agent, "TrollTree"));
+				agent.AddComponent(new TrollComponent(agent));
 				//Log("Added TrollComponent to agent", LogLevel.Debug);
 			}
 			else if (agent.IsEnt())

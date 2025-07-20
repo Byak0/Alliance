@@ -1,13 +1,17 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
+using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.SP.Patch;
+using System.Collections.Generic;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -19,10 +23,19 @@ namespace Alliance.SP
 
 		protected override void OnSubModuleLoad()
 		{
+			// Register and initialize Key Binder
+			List<Assembly> assemblies = new List<Assembly>
+			{
+				Assembly.GetAssembly(typeof(Common.SubModule)),
+				Assembly.GetAssembly(typeof(SP.SubModule))
+			};
+			KeyBinder.Initialize(assemblies);
+
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
-
 			DirtySPPatcher.Patch();
+
+			KeyBinder.RegisterContexts();
 		}
 
 		public override void OnGameInitializationFinished(Game game)
@@ -39,6 +52,7 @@ namespace Alliance.SP
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
 
+			mission.AddMissionBehavior(new PlayerSpawnMenuView());
 			mission.AddMissionBehavior(new CoreBehavior());
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}

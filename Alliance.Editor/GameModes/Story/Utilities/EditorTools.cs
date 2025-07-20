@@ -1,4 +1,6 @@
-﻿using Alliance.Common.GameModes.Story.Interfaces;
+﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
+using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Editor.GameModes.Story.ViewModels;
 using Alliance.Editor.GameModes.Story.Views;
@@ -6,9 +8,32 @@ using System;
 
 namespace Alliance.Editor.GameModes.Story.Utilities
 {
+	/// <summary>
+	/// Some tools for the modding kit. Allow editing zones, player spawn menus, and any simple object.
+	/// Mostly used with the Scenario Editor and AL_TriggerAction script.
+	/// </summary>
 	public class EditorTools : IEditorTools
 	{
 		private ObjectEditorWindow _objectEditorWindow;
+		private PlayerSpawnMenuView _playerSpawnMenuView;
+
+		public EditorTools()
+		{
+			// Initialize the PlayerSpawnMenuView
+			_playerSpawnMenuView = new PlayerSpawnMenuView();
+			_playerSpawnMenuView.OnBehaviorInitialize();
+		}
+
+		public void Tick(float dt)
+		{
+			_playerSpawnMenuView.OnMissionTick(dt);
+			EditZoneView.Tick(dt);
+		}
+
+		public void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
+		{
+			_playerSpawnMenuView.OpenMenu(playerSpawnMenu, onCloseCallback, true);
+		}
 
 		public void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)
 		{

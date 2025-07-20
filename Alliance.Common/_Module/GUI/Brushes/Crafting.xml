@@ -1,0 +1,1651 @@
+<Brushes>
+  <Brush Name="Crafting.Materials.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_calradiansteels" />
+    </Layers>
+    <Styles>
+      <Style Name="CrudeIron">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_crudeirons" />
+      </Style>
+      <Style Name="CrudeIronBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_crudeirons" />
+      </Style>
+      <Style Name="IronOre">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_iron_ores" />
+      </Style>
+      <Style Name="IronOreBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_iron_ores" />
+      </Style>
+      <Style Name="Charcoal">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_charcoals" />
+      </Style>
+      <Style Name="CharcoalBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_charcoals" />
+      </Style>
+      <Style Name="Hardwood">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_hardwoods" />
+      </Style>
+      <Style Name="HardwoodBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_hardwoods" />
+      </Style>
+      <Style Name="Iron">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_irons" />
+      </Style>
+      <Style Name="IronBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_irons" />
+      </Style>
+      <Style Name="CompositeIron">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_compositeirons" />
+      </Style>
+      <Style Name="CompositeIronBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_compositeirons" />
+      </Style>
+      <Style Name="Steel">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_steels" />
+      </Style>
+      <Style Name="SteelBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_steels" />
+      </Style>
+      <Style Name="FineSteel">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_refinedsteels" />
+      </Style>
+      <Style Name="FineSteelBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_refinedsteels" />
+      </Style>
+      <Style Name="ThamaskeneSteel">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_calradiansteels" />
+      </Style>
+      <Style Name="ThamaskeneSteelBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_calradiansteels" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Material.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_calradiansteel" />
+    </Layers>
+    <Styles>
+      <Style Name="Iron1">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_crudeiron" />
+      </Style>
+      <Style Name="Iron1Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_crudeiron" />
+      </Style>
+      <Style Name="IronOre">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_iron_ore" />
+      </Style>
+      <Style Name="IronOreBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_iron_ore" />
+      </Style>
+      <Style Name="Charcoal">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_charcoal" />
+      </Style>
+      <Style Name="CharcoalBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_charcoal" />
+      </Style>
+      <Style Name="Wood">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_hardwood" />
+      </Style>
+      <Style Name="WoodBig">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_hardwood" />
+      </Style>
+      <Style Name="Iron3">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_iron" />
+      </Style>
+      <Style Name="Iron3Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_iron" />
+      </Style>
+      <Style Name="Iron2">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_compositeiron" />
+      </Style>
+      <Style Name="Iron2Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_compositeiron" />
+      </Style>
+      <Style Name="Iron4">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_steel" />
+      </Style>
+      <Style Name="Iron4Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_steel" />
+      </Style>
+      <Style Name="Iron5">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_refinedsteel" />
+      </Style>
+      <Style Name="Iron5Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_refinedsteel" />
+      </Style>
+      <Style Name="Iron6">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_small_calradiansteel" />
+      </Style>
+      <Style Name="Iron6Big">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_materials_big_calradiansteel" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.NewWeapon.Popup.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\crafted_popup" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Crafting.Card.Items" >
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Scabbard.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\crafting_button_show_scabbard" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.25" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.CraftingTab.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_hovered" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_selected" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="crafting/craft_tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.RefinementTab.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_hovered" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_selected" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="crafting/refine_tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.SmeltingTab.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_hovered" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_pressed" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_selected" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\main_tab_default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="crafting/smelt_tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Craft.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\craft_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\craft_icon" ColorFactor="0.6" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\craft_icon" ColorFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\craft_icon" AlphaFactor="0.2" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\craft_icon" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\craft_icon" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Smelt.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\smelt_icon"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\smelt_icon" ColorFactor="0.6" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\smelt_icon" ColorFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\smelt_icon" AlphaFactor="0.2" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\smelt_icon" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\smelt_icon" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Refine.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\refine_icon" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\refine_icon" ColorFactor="0.6" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\refine_icon" ColorFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\refine_icon" AlphaFactor="0.2" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\refine_icon" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\refine_icon" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Number.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\number_background" Color="#EFAB6BFF" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Crafting.Difficulty.Overlay">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare" ColorFactor="0.5" AlphaFactor="0.5" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Crafting.Character.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\portrait" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.MainAction.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas_hover" ColorFactor="1.25" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\bottom_crafting_button_canvas" ColorFactor="0.7" SaturationFactor="-80" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="empty" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Leave.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button_hover" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button_hover" ColorFactor="1.25" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\crafting_leave_button" ColorFactor="0.7" SaturationFactor="-80" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="default" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Card.NewlyUnlocked.Overlay">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="weapon_piece_card_higlight_9" Color="#FFAD08FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="HighlightAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered" >
+        <BrushLayer Name="Default" AlphaFactor="2"/>
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="HighlightAnimation" Duration="2" Loop="true">
+        <AnimationProperty PropertyName="AlphaFactor" LayerName="Default">
+          <KeyFrame Time="0.0" Value="0.15" />
+          <KeyFrame Time="0.75" Value="1.25" />
+          <KeyFrame Time="1.25" Value="1.25" />
+          <KeyFrame Time="2" Value="0.15" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Card.NewlyUnlocked.Dot">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\newly_crafted_highlight_dot" Color="#FF9A00FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DotHighlightAnimation">
+        <BrushLayer Name="Default"/>
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="DotHighlightAnimation" Duration="2" Loop="true">
+        <AnimationProperty PropertyName="AlphaFactor" LayerName="Default">
+          <KeyFrame Time="0.0" Value="0.15" />
+          <KeyFrame Time="0.75" Value="1.25" />
+          <KeyFrame Time="1.25" Value="1.25" />
+          <KeyFrame Time="2" Value="0.15" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Card.HavePiece" TransitionDuration="0.070">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\weapon_piece_card" IsHidden="true" />
+      <BrushLayer Name="DefaultFrame" Sprite="Crafting\crafting_card_frame_default" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="Crafting\weapon_piece_card_hovered" IsHidden="true" />
+      <BrushLayer Name="HoveredFrame" Sprite="Crafting\crafting_card_frame_hovered" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="Crafting\weapon_piece_card_pressed" IsHidden="true" />
+      <BrushLayer Name="PressedFrame" Sprite="Crafting\crafting_card_frame_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="Crafting\weapon_piece_card_selected" IsHidden="true" />
+      <BrushLayer Name="SelectedFrame" Sprite="Crafting\crafting_card_frame_selected" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="Crafting\weapon_piece_card_disabled" IsHidden="true" />
+      <BrushLayer Name="DisabledFrame" Sprite="Crafting\crafting_card_frame_locked" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="DefaultFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+        <BrushLayer Name="HoveredFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+        <BrushLayer Name="PressedFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+        <BrushLayer Name="SelectedFrame" IsHidden="false" ColorFactor="1.6" />
+      </Style>
+	  <Style Name="Disabled">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="DefaultFrame" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+        <EventSound EventName="HoverBegin" Audio="mini_popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Card.DontHavePiece" TransitionDuration="0.070">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\weapon_piece_card" IsHidden="true" SaturationFactor="-100"/>
+      <BrushLayer Name="DefaultFrame" Sprite="Crafting\crafting_card_frame_default" IsHidden="true" SaturationFactor="-100"/>
+
+      <BrushLayer Name="Hovered" Sprite="Crafting\weapon_piece_card_hovered" IsHidden="true" SaturationFactor="-100" />
+      <BrushLayer Name="HoveredFrame" Sprite="Crafting\crafting_card_frame_hovered" IsHidden="true" SaturationFactor="-100" />
+
+      <BrushLayer Name="Pressed" Sprite="Crafting\weapon_piece_card_pressed" IsHidden="true"  SaturationFactor="-100"/>
+      <BrushLayer Name="PressedFrame" Sprite="Crafting\crafting_card_frame_pressed" IsHidden="true" SaturationFactor="-100"/>
+
+      <BrushLayer Name="Selected" Sprite="Crafting\weapon_piece_card_selected" IsHidden="true" SaturationFactor="-100"/>
+      <BrushLayer Name="SelectedFrame" Sprite="Crafting\crafting_card_frame_selected" IsHidden="true" SaturationFactor="-100"/>
+
+      <BrushLayer Name="Disabled" Sprite="Crafting\weapon_piece_card_disabled" IsHidden="true" />
+      <BrushLayer Name="DisabledFrame" Sprite="Crafting\crafting_card_frame_locked" IsHidden="true" SaturationFactor="-100" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="DefaultFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+        <BrushLayer Name="HoveredFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+        <BrushLayer Name="PressedFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+        <BrushLayer Name="SelectedFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+        <BrushLayer Name="DisabledFrame" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+        <EventSound EventName="HoverBegin" Audio="mini_popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Empty">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\empty_item" Color="#ecb567ff" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.4" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.6" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0.8" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.4" ColorFactor="0.7" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="-100" ValueFactor="-85" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.MaterialBrush.HavePiece">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="2.5"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ValueFactor="3"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="-100" ValueFactor="-85"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.MaterialBrush.DontHavePiece">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" SaturationFactor="-100" ValueFactor="-85"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="2.5" SaturationFactor="-100" ValueFactor="-85"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ValueFactor="3" SaturationFactor="-100" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" SaturationFactor="-100" ValueFactor="-85"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="-100" ValueFactor="-85"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Left.Card.HasPiece" TransitionDuration="0.070">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\left_card_base_default" IsHidden="true"  ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="DefaultFrame" Sprite="Crafting\left_card_frame_default" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="Hovered" Sprite="Crafting\left_card_base_hovered" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="HoveredFrame" Sprite="Crafting\left_card_frame_hovered" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="Pressed" Sprite="Crafting\left_card_base_pressed" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="PressedFrame" Sprite="Crafting\left_card_frame_pressed" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="Selected" Sprite="Crafting\left_card_base_selected" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+      <BrushLayer Name="SelectedFrame" Sprite="Crafting\left_card_frame_selected" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="DefaultFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+        <BrushLayer Name="HoveredFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+        <BrushLayer Name="PressedFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+        <BrushLayer Name="SelectedFrame" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Left.Card.DontHavePiece" TransitionDuration="0.070">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\left_card_base_default" IsHidden="true"  ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="DefaultFrame" Sprite="Crafting\left_card_frame_default" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="Hovered" Sprite="Crafting\left_card_base_hovered" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="HoveredFrame" Sprite="Crafting\left_card_frame_hovered" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="Pressed" Sprite="Crafting\left_card_base_pressed" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="PressedFrame" Sprite="Crafting\left_card_frame_pressed" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="Selected" Sprite="Crafting\left_card_base_selected" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+      <BrushLayer Name="SelectedFrame" Sprite="Crafting\left_card_frame_selected" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+        <BrushLayer Name="DefaultFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+        <BrushLayer Name="HoveredFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+        <BrushLayer Name="PressedFrame" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+        <BrushLayer Name="SelectedFrame" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="tab" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Grid.Divider">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\CharacterCreation\stone_divider_thin" ExtendBottom="22" ExtendLeft="2" ExtendRight="3" ExtendTop="22" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.WeaponType.Dropdown">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\dropdown" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.35" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.9" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.WeaponType.Dropdown.Item">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\dropdown_popup_hover" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.5" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.25" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Piece.Lock.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\lock_closed" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.5" ColorFactor="0.75" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1"  IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Smelting.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\smelt_tuple_default"  IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="Crafting\smelt_tuple_default"  ColorFactor="1.2" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="Crafting\smelt_tuple_pressed"  IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="Crafting\smelt_tuple_selected"  IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected"  IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+        <StateSound StateName="Hovered" Audio="mini_popup" />
+      </StateSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Dirt">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\dirt" />
+    </Layers>
+    <Style>
+      <BrushLayer Name="Default" Color="#00000000" />
+    </Style>
+  </Brush>
+
+  <Brush Name="Refinement.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\tuple_refine"  IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="Crafting\tuple_refine"  IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="Crafting\tuple_refine_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="Crafting\tuple_refine_selected" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected"  IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+        <StateSound StateName="Hovered" Audio="mini_popup" />
+      </StateSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Smelting.Transfer.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\arrow_pointing_left" Color="#FFFFFFFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.65" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="transfer" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Smelting.SelectedItem.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\hovering_item_card" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.65" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Smelting.Sort.BaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\header_button1" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="Crafting\header_button1_pressed" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.6" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Smelting.Lock">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\lock_checkbox_unchecked" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="StdAssets\lock_checkbox_checked" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Show.Scabbard.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\show_scabbard_default" Color="#DEA664FF" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="Crafting\show_scabbard_selected" Color="#DEA664FF" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.3" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" AlphaFactor="1" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Reset.Angle.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\reset_angle_default" Color="#DEA664FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.3" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Smelting.Sort.Type.Button" BaseBrush="Smelting.Sort.BaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\header_button1" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Smelting.Sort.Name.Button" BaseBrush="Smelting.Sort.BaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\header_button2" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Smelting.Sort.Cost.Button" BaseBrush="Smelting.Sort.BaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\header_button3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Crafting.Checkbox.Full.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\checkbox_full" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="checkbox" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Checkbox.Empty.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\checkbox_empty" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" AlphaFactor="0" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="checkbox" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Randomize.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\CharacterCreation\character_creation_panel_extension_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="crafting/randomize" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Order.WrongDamageType.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F23924FF" TextBlur="1" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Tooltip.WeaponAlternativeUsageButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\inventory_tooltip_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="0.7" Color="#E0BC62FF" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Difficulty.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextBlur="1" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="18" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Tier.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F7C895FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Tabs.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" >
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.3" FontSize="24" />
+      <Style Name="Hovered" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.6" FontSize="24" />
+      <Style Name="Pressed" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.1" FontSize="24" />
+      <Style Name="Selected" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="24" />
+      <Style Name="Disabled" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Tabs.Text.Large" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" >
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.3" FontSize="32" />
+      <Style Name="Hovered" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.6" FontSize="32" />
+      <Style Name="Pressed" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.1" FontSize="32" />
+      <Style Name="Selected" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="32" />
+      <Style Name="Disabled" FontColor="#C6AC8DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="32" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Card.Tier.Text" Font="Galahad" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#BB8B5BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.5" FontSize="20" />
+      <Style Name="Hovered" FontColor="#BB8B5BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="20" />
+      <Style Name="Pressed" FontColor="#BB8B5BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="0.2" FontSize="20" />
+      <Style Name="Selected" FontColor="#BB8B5BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="20" />
+      <Style Name="Disabled" FontColor="#C6B9A5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" TextAlphaFactor="1" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Property.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2CC" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Bonus" FontColor="#7FEF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Penalty" FontColor="#E2171BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Property.Slider.FillTarget" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#F9EAD2FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Bonus">
+        <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#80A000FF"/>
+      </Style>
+      <Style Name="Penalty">
+        <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#A03300FF"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Material.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Material.PositiveChange.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#ADAD49FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Material.NegativeChange.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#E45050FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Property.Value.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F7C895CC" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="22" />
+      <Style Name="Bonus" FontColor="#7FEF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="22" />
+      <Style Name="Penalty" FontColor="#E2171BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.01" TextOutlineColor="#000000FF" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.WeaponType.Dropdown.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Popup.Property.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2CC" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Bonus" FontColor="#7FEF00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Penalty" FontColor="#E2171BFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Popup.Property.Value.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F7C895CC" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="18" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Result.Positive" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#27AE60FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Result.Negative" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E74C3CFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Result.Neutral" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#ECF0F1FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.5" FontSize="20" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Crafting.Popup.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#ED922FFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.Popup.Name.Description.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EDBD71FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Smelting.Tuple.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EDD9FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="18" />
+      <Style Name="Selected" FontColor="#F9EDD9FF" />
+      <Style Name="Hovered" FontColor="#F9EDD9FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Smelting.Tuple.Yield.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#ADAD49FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="18" />
+      <Style Name="Selected" FontColor="#ADAD49FF" />
+      <Style Name="Hovered" FontColor="#ADAD49FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Smelting.Tuple.Cost.Small.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F3EEE6FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="18" />
+      <Style Name="Selected" FontColor="#F1C585FF" />
+      <Style Name="Hovered" FontColor="#F1C585FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Crafting.MainAction.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F3EEE6FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="33" />
+      <Style Name="Selected" FontColor="#F1C585FF" />
+      <Style Name="Hovered" FontColor="#F1C585FF" />
+      <Style Name="Disabled" FontColor="#CCCCCCCC" TextAlphaFactor="0.8" />
+    </Styles>
+  </Brush>
+  <Brush Name="Refinement.Tuple.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Selected" />
+      <Style Name="Hovered" />
+    </Styles>
+  </Brush>
+  <Brush Name="Refinement.Amount.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="32" />
+      <Style Name="Selected" />
+      <Style Name="Hovered" />
+      <Style Name="Pressed" />
+      <Style Name="Disabled"  FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="32" TextColorFactor="0.5"/>
+    </Styles>
+  </Brush>
+  <Brush Name="Refinement.Direction.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DE9A43FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="36" />
+      <Style Name="Selected" />
+      <Style Name="Hovered" />
+    </Styles>
+  </Brush>
+  <Brush Name="Refinement.MaterialName.Big.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="36" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Refinement.MaterialAmount.Big.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DE9A43FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="46" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.NameInput.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="22" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Result.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#000000FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Result.Frame">
+    <Layers>
+      <BrushLayer Name="Frame" ExtendLeft="15" ExtendRight="15" ExtendTop="15" ExtendBottom="15" Sprite="frame_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Stamina.Percentage.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F9EAD2FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="14" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card" TransitionDuration="0.1600">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="order_popup_card_default_9" AlphaFactor="0.75" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="order_popup_card_selected_9"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.75" SaturationFactor="-100" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="popup" />
+        <EventSound EventName="HoverBegin" Audio="mini_popup" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  
+  <Brush Name="Crafting.Order.CraftingModeButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_pressed" ColorFactor="1" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_default" ColorFactor="0.4" SaturationFactor="-50" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="Crafting\order_mode_button_selected" ColorFactor="1" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  
+  <Brush Name="Crafting.Mode.Selection.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="crafting_mode_selection_button_9" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#b3733aff" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#b3733aff" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#b3733aff" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Color="#b3733aff" ColorFactor="0.6" SaturationFactor="-50" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#a96f36ff" ColorFactor="1" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Crafting.Weapon.Type.Selection.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="crafting_mode_selection_button_9" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#8d764cff" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#8d764cff" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#8d764cff" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Color="#8d764cff" ColorFactor="0.6" SaturationFactor="-50" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#8d764cff" ColorFactor="1" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  
+  <Brush Name="Crafting.History.Dropdown.Item.Flat">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\dropdown_hover_flat" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.History.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\CharacterCreation\character_creation_panel_extension_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.8" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Crafting.History.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#624726FF"/>
+      <BrushLayer Name="Frame" Sprite="WhiteFrame_9" Color="#624726FF" AlphaFactor="0.8"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.4" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.4" ColorFactor="0.65" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0.8" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.55" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.History.Control.Button.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E0C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="26" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Crafting.History.Tuple.Name" Font="Galahad" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E0BB7DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="30" />
+    </Styles>
+  </Brush>
+    
+  <Brush Name="Crafting.History.Title" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E0BB7DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="42" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Crafting.History.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\history_button" Color="#E1AB69FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.45" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Sprite="StdAssets\history_button_selected" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.55" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Popup.Result.Positive" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#4EAD00FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="26" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Popup.Result.Negative" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#AD2600FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="26" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Header" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Top">
+    <Styles>
+      <Style Name="Default" FontColor="#EDD9BEFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+      <Style Name="Hovered" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.9" />
+      <Style Name="Pressed" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" TextColorFactor="0.5"/>
+      <Style Name="Selected" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.3" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="30" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Owner.Name" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EDD9BBFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Price.Value" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F8E0C4FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="32" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Property.Label" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F9E1C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+      <Style Name="Value" FontColor="#F09B29FF" TextValueFactor="0.5" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Property.Value" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F09B29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Property.Value.Positive" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#1FD415FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Order.Card.Property.Value.Negative" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#ED1C24FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.TemplateSelection.Card.Header" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EDD9BEFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="23" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.TemplateSelection.Card.Label" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F8E0C4FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.TemplateSelection.Card.Value" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F09A29FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Mode.Selection.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E0BB7DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="24" />
+      <Style Name="Hovered" FontColor="#E0BB7DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="24" />
+      <Style Name="Pressed" FontColor="#E0BB7DFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="24" />
+      <Style Name="Selected" FontColor="#FFB94FFF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0.1" TextOutlineAmount="0.1" TextOutlineColor="#000000FF" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.WeaponType.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E0C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#00000000" FontSize="28" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Crafting.Size.Slider.Label" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E0C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="28" />
+    </Styles>
+  </Brush>
+    
+  <Brush Name="Crafting.Hero.Skill.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E0C5FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="1" TextOutlineAmount="0.0001" TextOutlineColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+
+</Brushes>
