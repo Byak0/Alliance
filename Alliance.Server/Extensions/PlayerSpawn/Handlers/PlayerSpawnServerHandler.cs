@@ -60,9 +60,9 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			if (assignment.Team == team && assignment.Formation == formation && assignment.Character == character)
 			{
 				PlayerSpawnMenu.Instance.UpdatePerks(peer, team, formation, character, message.SelectedPerks);
-				string perks = "";
-				message.SelectedPerks.ForEach(i => perks += i);
-				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} updated perks for character {team.Name} - {formation.Name} - {character.Name} : {perks}", LogLevel.Debug);
+				string perksLog = "";
+				message.SelectedPerks.ForEach(i => perksLog += i);
+				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} updated perks for character {team.Name} - {formation.Name} - {character.Name} : {perksLog}", LogLevel.Debug);
 				return true;
 			}
 
@@ -119,7 +119,9 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 				PlayerSpawnMenu.Instance.UpdateSpawnStatus(peer, false, -1f);
 			}
 			PlayerSpawnMenuMsg.SendAddPlayerCharacterUsageToAll(peer, team, formation, character);
-			Log($"Alliance - PlayerSpawnMenu - {peer.UserName} reserved character {team.Name} - {formation.Name} - {character.Name}", LogLevel.Information);
+			string perks = "";
+			message.SelectedPerks.ForEach(i => perks += i);
+			Log($"Alliance - PlayerSpawnMenu - {peer.UserName} reserved character {team.Name} - {formation.Name} - {character.Name} - perks {perks}", LogLevel.Information);
 			return true;
 		}
 
@@ -304,7 +306,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			// Set player's team is they are known
 			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
 			{
-				if (player.GetComponent<MissionPeer>().Team != null)
+				if (player.GetComponent<MissionPeer>()?.Team != null)
 				{
 					PlayerTeam newTeam = PlayerSpawnMenu.Instance.Teams.FirstOrDefault(team => team.TeamSide == player.GetComponent<MissionPeer>().Team.Side);
 					PlayerSpawnMenu.Instance.SetPlayerTeam(player, newTeam);

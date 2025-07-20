@@ -329,7 +329,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			OnPropertyChanged(nameof(Officer));
 			OnPropertyChanged(nameof(Occupation));
 			OnPropertyChanged(nameof(IsFull));
-			OnPropertyChanged(nameof(CharacterViewModel));
+			//OnPropertyChanged(nameof(CharacterViewModel));
 			OnPropertyChanged(nameof(IsSelected));
 			Perks.ApplyActionOnAllItems(delegate (HeroPerkVM x)
 			{

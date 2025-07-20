@@ -1,4 +1,4 @@
-﻿#if !SERVER
+﻿#if !SERVER && DEBUG
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
