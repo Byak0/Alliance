@@ -7,7 +7,7 @@
       <Name>Vlandia</Name>
       <Formations>
         <PlayerFormation>
-          <Index>2</Index>
+          <Index>0</Index>
           <Name>Infanterie</Name>
           <MainCultureId>vlandia</MainCultureId>
           <Settings>
@@ -44,7 +44,7 @@
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
-          <Index>3</Index>
+          <Index>1</Index>
           <Name>Infanterie Lourde</Name>
           <MainCultureId>vlandia</MainCultureId>
           <Settings>
@@ -81,7 +81,7 @@
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
-          <Index>4</Index>
+          <Index>2</Index>
           <Name>Arbalétriers</Name>
           <MainCultureId>vlandia</MainCultureId>
           <Settings>
@@ -118,7 +118,7 @@
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
-          <Index>5</Index>
+          <Index>3</Index>
           <Name>Cavalerie</Name>
           <MainCultureId>vlandia</MainCultureId>
           <Settings>
