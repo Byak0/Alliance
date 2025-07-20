@@ -6,23 +6,21 @@ using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnM
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// From server : Remove a player's candidacy for officer.
+	/// From server : Assign a player to a team in the player spawn menu.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public sealed class RemoveOfficerCandidacy : GameNetworkMessage
+	public sealed class SetPlayerTeam : GameNetworkMessage
 	{
 		public NetworkCommunicator Player { get; private set; }
 		public int TeamIndex { get; private set; } = -1;
-		public int FormationIndex { get; private set; } = -1;
 
-		public RemoveOfficerCandidacy(NetworkCommunicator player, PlayerTeam playerTeam, PlayerFormation playerFormation)
+		public SetPlayerTeam(NetworkCommunicator player, PlayerTeam playerTeam)
 		{
 			Player = player;
-			TeamIndex = playerTeam.Index;
-			FormationIndex = playerFormation.Index;
+			TeamIndex = playerTeam?.Index ?? -1;
 		}
 
-		public RemoveOfficerCandidacy()
+		public SetPlayerTeam()
 		{
 		}
 
@@ -30,7 +28,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 		{
 			WriteNetworkPeerReferenceToPacket(Player);
 			WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
-			WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
 		}
 
 		protected override bool OnRead()
@@ -38,7 +35,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 			bool bufferReadValid = true;
 			Player = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
 			TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
-			FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
 		}
 
@@ -49,7 +45,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		protected override string OnGetLogFormat()
 		{
-			return "Alliance - PlayerSpawnMenu - " + Player?.VirtualPlayer?.UserName + " no longer candidate for officer in " + TeamIndex + " - " + FormationIndex;
+			return "Alliance - PlayerSpawnMenu - " + Player?.VirtualPlayer?.UserName + " joined team " + TeamIndex;
 		}
 	}
 }

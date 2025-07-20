@@ -39,6 +39,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private int _marginLeft;
 		private MPHeroClass _heroClass;
 		private int _heroClassIndex;
+		private bool _advanced = false;
 
 		private MBBindingList<HeroPerkVM> _perks;
 
@@ -338,8 +339,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void Advance()
 		{
+
 			Log($"{AvailableCharacter.Name} is advancing", LogLevel.Debug);
-			if (_characterViewModel == null) return;
+			if (_characterViewModel == null || _advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h");
 			_characterViewModel.CameraZoom = -1.2f;
 			_characterViewModel.CameraElevation = 0f;
@@ -347,12 +349,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_characterViewModel.CameraAnimDuration = 1.2f;
 			_characterViewModel.ApplyCameraChange = true;
 			_characterViewModel.EnableLight = true;
+			_advanced = true;
 		}
 
 		public void FallBack()
 		{
 			Log($"{AvailableCharacter.Name} is fallback", LogLevel.Debug);
-			if (_characterViewModel == null) return;
+			if (_characterViewModel == null || !_advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_backward_1h");
 			_characterViewModel.CameraZoom = 1.2f;
 			_characterViewModel.CameraElevation = 0f;
@@ -360,6 +363,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_characterViewModel.CameraAnimDuration = 1.2f;
 			_characterViewModel.ApplyCameraChange = true;
 			_characterViewModel.EnableLight = false;
+			_advanced = false;
 		}
 
 		public void Cheer()

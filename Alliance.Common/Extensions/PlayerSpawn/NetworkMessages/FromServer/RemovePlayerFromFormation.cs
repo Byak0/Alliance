@@ -6,23 +6,23 @@ using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnM
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// From server : Remove a player's candidacy for officer.
+	/// From server : Remove a player from a formation.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public sealed class RemoveOfficerCandidacy : GameNetworkMessage
+	public sealed class RemovePlayerFromFormation : GameNetworkMessage
 	{
 		public NetworkCommunicator Player { get; private set; }
 		public int TeamIndex { get; private set; } = -1;
 		public int FormationIndex { get; private set; } = -1;
 
-		public RemoveOfficerCandidacy(NetworkCommunicator player, PlayerTeam playerTeam, PlayerFormation playerFormation)
+		public RemovePlayerFromFormation(NetworkCommunicator player, PlayerTeam playerTeam, PlayerFormation playerFormation)
 		{
 			Player = player;
 			TeamIndex = playerTeam.Index;
 			FormationIndex = playerFormation.Index;
 		}
 
-		public RemoveOfficerCandidacy()
+		public RemovePlayerFromFormation()
 		{
 		}
 
@@ -49,7 +49,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		protected override string OnGetLogFormat()
 		{
-			return "Alliance - PlayerSpawnMenu - " + Player?.VirtualPlayer?.UserName + " no longer candidate for officer in " + TeamIndex + " - " + FormationIndex;
+			return "Alliance - PlayerSpawnMenu - " + Player?.VirtualPlayer?.UserName + " no longer member of formation " + TeamIndex + " - " + FormationIndex;
 		}
 	}
 }

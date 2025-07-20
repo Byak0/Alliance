@@ -8,6 +8,7 @@ using Alliance.Common.Utilities;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using System;
 using System.IO;
+using System.Linq;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
@@ -25,6 +26,14 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			reg.Register<RequestCharacterUsage>(HandleRequestCharacterUsage);
 			reg.Register<RequestOfficerUsage>(HandleRequestOfficerUsage);
 			reg.Register<VoteForOfficer>(HandleVoteForOfficer);
+			reg.Register<RequestPlayerSpawnMenu>(HandleRequestPlayerSpawnMenu);
+
+		}
+
+		private bool HandleRequestPlayerSpawnMenu(NetworkCommunicator peer, RequestPlayerSpawnMenu message)
+		{
+			PlayerSpawnMenuMsg.SendPlayerSpawnMenuToPeer(peer);
+			return true;
 		}
 
 		private bool HandleRequestCharacterUsage(NetworkCommunicator peer, RequestCharacterUsage message)
@@ -66,25 +75,27 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 				return false;
 			}
 
-			// If the character was an officer candidate, remove the candidacy and broadcast the change
-			if (formation.CandidateInfo.TryGetValue(peer, out CandidateInfo candidateInfo))
+			// If the player was already assigned to a different team/formation/character, clear the previous assignment
+			if (assignment.Formation != null)
 			{
-				formation.RemoveCandidate(candidateInfo);
-				PlayerSpawnMenuMsg.SendRemoveOfficerCandidacyToAll(peer, team, formation, character);
-				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer candidacy in {team.Name} - {formation.Name} - {character.Name}", LogLevel.Debug);
+				// If the character was an officer candidate, remove the candidacy
+				if (assignment.Formation.CandidateInfo.TryGetValue(peer, out CandidateInfo candidateInfo))
+				{
+					PlayerSpawnMenu.Instance.RemoveFormationCandidate(assignment.Team, assignment.Formation, candidateInfo);
+					Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer candidacy in {assignment.Team.Name} - {assignment.Formation.Name}", LogLevel.Debug);
+				}
+				// If the player was the elected officer of his formation, replace him with another candidate
+				if (assignment.Formation.Officer == peer)
+				{
+					PlayerSpawnMenu.Instance.SetFormationOfficer(assignment.Team, assignment.Formation, PlayerSpawnMenu.Instance.GetOfficerReplacement(assignment.Team, assignment.Formation));
+					Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer status in {assignment.Team.Name} - {assignment.Formation.Name}, replaced by {assignment.Formation.Officer?.UserName}", LogLevel.Debug);
+				}
 			}
 
-			// If the player was the elected officer of this formation, remove the officer status
-			if (formation.Officer == peer)
-			{
-				formation.SetOfficer(null);
-				PlayerSpawnMenuMsg.SendSetFormationOfficerToAll(null, team, formation);
-				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer status in {team.Name} - {formation.Name}", LogLevel.Debug);
-			}
-
-			// Validation passed, proceed to select the character and broadcast the change			
+			// Validation passed, proceed to select the character, update assignments and broadcast the change			
 			PlayerSpawnMenu.Instance.SelectCharacter(peer, team, formation, character);
 			PlayerSpawnMenu.Instance.UpdatePerks(peer, team, formation, character, message.SelectedPerks);
+
 			// Update Spawn status / time before spawn
 			if (playerSpawnBehavior.SpawnInProgress)
 			{
@@ -149,12 +160,21 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 				return false;
 			}
 
-			// If the character was an officer candidate, remove the candidacy and broadcast the change
-			if (formation.CandidateInfo.TryGetValue(peer, out CandidateInfo oldCandidateInfo))
+			// If the player was already assigned to a different team/formation/character, clear the previous assignment
+			if (assignment.Formation != null)
 			{
-				formation.RemoveCandidate(oldCandidateInfo);
-				PlayerSpawnMenuMsg.SendRemoveOfficerCandidacyToAll(peer, team, formation, character);
-				Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer candidacy in {team.Name} - {formation.Name} - {character.Name}", LogLevel.Debug);
+				// If the character was an officer candidate, remove the candidacy
+				if (assignment.Formation.CandidateInfo.TryGetValue(peer, out CandidateInfo candidateInfo))
+				{
+					PlayerSpawnMenu.Instance.RemoveFormationCandidate(assignment.Team, assignment.Formation, candidateInfo);
+					Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer candidacy in {assignment.Team.Name} - {assignment.Formation.Name}", LogLevel.Debug);
+				}
+				// If the player was the elected officer of his formation, replace him with another candidate
+				if (assignment.Formation.Officer == peer)
+				{
+					PlayerSpawnMenu.Instance.SetFormationOfficer(assignment.Team, assignment.Formation, PlayerSpawnMenu.Instance.GetOfficerReplacement(assignment.Team, assignment.Formation));
+					Log($"Alliance - PlayerSpawnMenu - {peer.UserName} removed from officer status in {assignment.Team.Name} - {assignment.Formation.Name}, replaced by {assignment.Formation.Officer?.UserName}", LogLevel.Debug);
+				}
 			}
 
 			// Check if pitch is too long
@@ -199,7 +219,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			// Check if the target candidate is valid
 			PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(peer);
 			PlayerAssignment candidateAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(message.Target);
-			PlayerFormation formation = candidateAssignment.Formation;
+			PlayerFormation formation = candidateAssignment?.Formation;
 			if (formation == null || !formation.CandidateInfo.TryGetValue(message.Target, out CandidateInfo candidateInfo))
 			{
 				Log($"Alliance - {peer.UserName} tried to vote for {message.Target?.UserName} but the target is not a candidate in formation {formation?.Name}", LogLevel.Error);
@@ -255,9 +275,9 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 		}
 
 		// Override the base method to add custom behavior for when the menu sync ends
-		protected override void EndMenuSyncHandler()
+		protected override void EndMenuSyncHandler(IPlayerSpawnMenuMessage message)
 		{
-			base.EndMenuSyncHandler();
+			base.EndMenuSyncHandler(message);
 
 			// Save the updated player spawn menu to file
 			string fileName = $"spawn_preset_{DateTime.Now:yyyyMMdd_HHmmss}_{_currentPeerMakingChanges.UserName}.xml";
@@ -265,7 +285,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			try
 			{
 				Log($"Alliance - Saving PlayerSpawnMenu to {filePath}");
-				SerializeHelper.SaveClassToFile(filePath, _receivedPlayerSpawnMenu);
+				SerializeHelper.SaveClassToFile(filePath, _syncContext.Menu);
 			}
 			catch (Exception ex)
 			{
@@ -278,7 +298,18 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			}
 
 			// Broadcast the updated player spawn menu to all players
+			// todo enable it back but conditioned to a value sent by client ?
 			PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+
+			// Set player's team is they are known
+			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
+			{
+				if (player.GetComponent<MissionPeer>().Team != null)
+				{
+					PlayerTeam newTeam = PlayerSpawnMenu.Instance.Teams.FirstOrDefault(team => team.TeamSide == player.GetComponent<MissionPeer>().Team.Side);
+					PlayerSpawnMenu.Instance.SetPlayerTeam(player, newTeam);
+				}
+			}
 		}
 	}
 }

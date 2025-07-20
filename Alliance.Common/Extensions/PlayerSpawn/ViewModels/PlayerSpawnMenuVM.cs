@@ -381,11 +381,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 			else
 			{
-				NetworkCommunicator officer = _playerSpawnMenu.MyAssignment?.Formation?.Officer;
+
+				NetworkCommunicator officer = SelectedFormationVM?.Formation?.Officer;
 				if (officer != null)
 				{
 					if (officer.IsMine) FormationInfoText = $"You are the officer! Lead your formation to victory!";
-					else FormationInfoText = $"Your officer is {officer.UserName}. Press alt to see their name.";
+					else if (officer == _playerSpawnMenu.MyAssignment?.Formation?.Officer) FormationInfoText = $"Your officer is {officer.UserName}. Press alt to see their name.";
+					else FormationInfoText = $"This formation officer is {officer.UserName}.";
 				}
 				else
 				{
@@ -646,8 +648,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		private void OnOfficerUpdated(PlayerFormation formation)
 		{
-			if (formation != SelectedFormationVM?.Formation) return;
-
 			RefreshFormationInfoText();
 		}
 
@@ -662,6 +662,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				// Refresh characters and officer candidacies for the selected formation
 				RefreshCharacters();
 				RefreshOfficerCandidacies();
+				RefreshFormationInfoText();
 				ShowTroops = true;
 			}
 		}
@@ -796,7 +797,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private void RefreshTeamFormationCharacter(PlayerTeam team, PlayerFormation formation, AvailableCharacter character)
 		{
 			Teams.FirstOrDefault(t => t.Team.Index == team.Index)?.RefreshValues();
-			if (SelectedTeamVM.Team.Index == team.Index)
+			if (SelectedTeamVM?.Team?.Index == team.Index)
 			{
 				Formations.FirstOrDefault(f => f.Formation.Index == formation.Index)?.RefreshValues();
 				if (SelectedFormationVM?.Formation.Index == formation.Index)

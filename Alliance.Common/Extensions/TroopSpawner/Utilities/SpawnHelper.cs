@@ -208,6 +208,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 
 				BasicCultureObject culture = customCulture != null ? customCulture : component.Culture;
+				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+
 				uint color = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
 				uint color2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
 				uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;

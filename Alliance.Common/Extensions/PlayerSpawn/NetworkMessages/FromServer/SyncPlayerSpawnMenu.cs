@@ -12,36 +12,43 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 	public sealed class SyncPlayerSpawnMenu : GameNetworkMessage, IPlayerSpawnMenuMessage
 	{
 		public PlayerSpawnMenuOperation Operation { get; private set; }
+		public int SyncId { get; set; } = -1;
+		public int? TotalMessageCount { get; private set; } // Only used in EndMenuSync operation to indicate how many messages were sent in total.
 		public int TeamIndex { get; private set; } = -1;
 		public int FormationIndex { get; private set; } = -1;
 		public PlayerTeam PlayerTeam { get; private set; }
 		public PlayerFormation PlayerFormation { get; private set; }
 		public AvailableCharacter AvailableCharacter { get; private set; }
 
-		public SyncPlayerSpawnMenu(GlobalOperation operation)
+		public SyncPlayerSpawnMenu(GlobalOperation operation, int syncId, int? totalMessageCount = null)
 		{
 			Operation = (PlayerSpawnMenuOperation)operation;
+			SyncId = syncId;
+			TotalMessageCount = totalMessageCount;
 		}
 
-		public SyncPlayerSpawnMenu(TeamOperation operation, PlayerTeam playerTeam)
+		public SyncPlayerSpawnMenu(TeamOperation operation, PlayerTeam playerTeam, int syncId)
 		{
 			Operation = (PlayerSpawnMenuOperation)operation;
 			PlayerTeam = playerTeam;
+			SyncId = syncId;
 		}
 
-		public SyncPlayerSpawnMenu(FormationOperation operation, PlayerTeam playerTeam, PlayerFormation playerFormation)
+		public SyncPlayerSpawnMenu(FormationOperation operation, PlayerTeam playerTeam, PlayerFormation playerFormation, int syncId)
 		{
 			Operation = (PlayerSpawnMenuOperation)operation;
 			TeamIndex = playerTeam.Index;
 			PlayerFormation = playerFormation;
+			SyncId = syncId;
 		}
 
-		public SyncPlayerSpawnMenu(CharacterOperation operation, PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter)
+		public SyncPlayerSpawnMenu(CharacterOperation operation, PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter, int syncId)
 		{
 			Operation = (PlayerSpawnMenuOperation)operation;
 			TeamIndex = playerTeam.Index;
 			FormationIndex = playerFormation.Index;
 			AvailableCharacter = availableCharacter;
+			SyncId = syncId;
 		}
 
 		public SyncPlayerSpawnMenu()
@@ -51,6 +58,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 		protected override void OnWrite()
 		{
 			WriteIntToPacket((int)Operation, OperationCompressionInfo);
+			WriteIntToPacket(SyncId, SyncIdCompressionInfo);
 
 			switch (Operation)
 			{
@@ -75,8 +83,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 					WriteAvailableCharacterToPacket(AvailableCharacter);
 					break;
 
-				case PlayerSpawnMenuOperation.BeginMenuSync:
 				case PlayerSpawnMenuOperation.EndMenuSync:
+					WriteIntToPacket(TotalMessageCount.Value, TotalMessageCountCompressionInfo);
+					break;
+
+				case PlayerSpawnMenuOperation.BeginMenuSync:
 				default:
 					break;
 			}
@@ -87,6 +98,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 			bool bufferReadValid = true;
 
 			Operation = (PlayerSpawnMenuOperation)ReadIntFromPacket(OperationCompressionInfo, ref bufferReadValid);
+			SyncId = ReadIntFromPacket(SyncIdCompressionInfo, ref bufferReadValid);
 
 			switch (Operation)
 			{
@@ -95,12 +107,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 				case PlayerSpawnMenuOperation.RemoveTeam:
 					PlayerTeam = ReadPlayerTeamFromPacket(ref bufferReadValid);
 					break;
+
 				case PlayerSpawnMenuOperation.AddFormation:
 				case PlayerSpawnMenuOperation.UpdateFormation:
 				case PlayerSpawnMenuOperation.RemoveFormation:
 					TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
 					PlayerFormation = ReadPlayerFormationFromPacket(ref bufferReadValid);
 					break;
+
 				case PlayerSpawnMenuOperation.AddCharacter:
 				case PlayerSpawnMenuOperation.UpdateCharacter:
 				case PlayerSpawnMenuOperation.RemoveCharacter:
@@ -108,8 +122,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 					FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
 					AvailableCharacter = ReadAvailableCharacterFromPacket(ref bufferReadValid);
 					break;
-				case PlayerSpawnMenuOperation.BeginMenuSync:
+
 				case PlayerSpawnMenuOperation.EndMenuSync:
+					TotalMessageCount = ReadIntFromPacket(TotalMessageCountCompressionInfo, ref bufferReadValid);
+					break;
+
+				case PlayerSpawnMenuOperation.BeginMenuSync:
 				default:
 					break;
 			}
@@ -124,7 +142,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		protected override string OnGetLogFormat()
 		{
-			return "Alliance - PlayerSpawnMenu - Sending " + Operation.ToString() + " to clients";
+			return "Alliance - PlayerSpawnMenu - Sending " + Operation.ToString() + " to clients (syncId: " + SyncId + ")";
 		}
 	}
 }

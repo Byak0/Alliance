@@ -1,9 +1,10 @@
 ﻿using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.PlayerSpawn.Handlers;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
-using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModes.Story.Utilities;
+using System;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -11,6 +12,9 @@ namespace Alliance.Client.Extensions.PlayerSpawn.Handlers
 {
 	public class PlayerSpawnClientHandler : PlayerSpawnMenuHandlerBase, IHandlerRegister
 	{
+		private const float RETRY_COOLDOWN = 5.0f;
+		private DateTime _lastRetryTime = DateTime.MinValue;
+
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<SyncPlayerSpawnMenu>(HandlePlayerSpawnMenuOperation);
@@ -22,26 +26,36 @@ namespace Alliance.Client.Extensions.PlayerSpawn.Handlers
 			reg.Register<SetFormationOfficer>(HandleSetFormationOfficer);
 			reg.Register<SetElectionStatus>(HandleSetElectionTimer);
 			reg.Register<SetSpawnStatus>(HandleSetSpawnStatus);
+			reg.Register<RemovePlayerFromFormation>(HandleRemovePlayerFromFormation);
+			reg.Register<SetPlayerTeam>(HandleSetPlayerTeam);
 		}
 
-		protected override void EndMenuSyncHandler()
+		protected override void EndMenuSyncHandler(IPlayerSpawnMenuMessage message)
 		{
-			base.EndMenuSyncHandler();
-
-			// Try to select a default team after a complete sync
-			PlayerSpawnMenu.Instance.SelectTeam();
-
-			// Force reopening the menu to refresh it completely
-			PlayerSpawnMenuView view = Mission.Current?.GetMissionBehavior<PlayerSpawnMenuView>();
-			if (view != null && view.IsMenuOpen)
+			_syncContext.ExpectedMessageCount = message.TotalMessageCount;
+			if (_syncContext.ExpectedMessageCount.HasValue && _syncContext.ReceivedMessageCount != _syncContext.ExpectedMessageCount.Value)
 			{
-				view.CloseMenu();
-				view.OpenMenu(PlayerSpawnMenu.Instance);
+				Log($"Mismatch: Expected {_syncContext.ExpectedMessageCount}, got {_syncContext.ReceivedMessageCount}", LogLevel.Warning);
+				// Request server to send the menu again if last retry was old enough
+				if ((DateTime.Now - _lastRetryTime).TotalSeconds > RETRY_COOLDOWN)
+				{
+					_lastRetryTime = DateTime.Now;
+					PlayerSpawnMenuMsg.RequestPlayerSpawnMenu();
+					Log("Alliance - Requesting player spawn menu again due to mismatch", LogLevel.Warning);
+				}
+				else
+				{
+					Log("Alliance - Skipping retry, cooldown not met", LogLevel.Warning);
+				}
 			}
+
+			base.EndMenuSyncHandler(message);
 		}
 
 		private void HandleAddCharacterUsage(AddCharacterUsage message)
 		{
+			if (PlayerSpawnMenu.Instance?.Teams == null) return;
+
 			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
 			PlayerFormation formation = team?.Formations.Find(f => f.Index == message.FormationIndex);
 			AvailableCharacter character = formation?.AvailableCharacters.Find(c => c.Index == message.CharacterIndex);
@@ -105,11 +119,10 @@ namespace Alliance.Client.Extensions.PlayerSpawn.Handlers
 		{
 			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
 			PlayerFormation formation = team?.Formations.Find(f => f.Index == message.FormationIndex);
-			AvailableCharacter character = formation?.AvailableCharacters.Find(c => c.Index == message.CharacterIndex);
 
-			if (message.Player == null || team == null || formation == null || character == null)
+			if (message.Player == null || team == null || formation == null)
 			{
-				Log($"Alliance - PlayerSpawnMenu - {message.Player} requested invalid character usage: Team {message.TeamIndex}, Formation {message.FormationIndex}, Character {message.CharacterIndex}", LogLevel.Error);
+				Log($"Alliance - PlayerSpawnMenu - {message.Player} candidacy can't be removed from: Team {message.TeamIndex}, Formation {message.FormationIndex}", LogLevel.Error);
 				return;
 			}
 
@@ -158,6 +171,32 @@ namespace Alliance.Client.Extensions.PlayerSpawn.Handlers
 			{
 				PlayerSpawnMenu.Instance.EndSpawn();
 			}
+		}
+
+		private void HandleRemovePlayerFromFormation(RemovePlayerFromFormation message)
+		{
+			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
+			PlayerFormation formation = team?.Formations.Find(f => f.Index == message.FormationIndex);
+
+			if (message.Player == null || team == null || formation == null)
+			{
+				Log($"Alliance - PlayerSpawnMenu - {message.Player} can't be removed from: Team {message.TeamIndex}, Formation {message.FormationIndex}", LogLevel.Error);
+				return;
+			}
+
+			if (!formation.Members.Contains(message.Player))
+			{
+				Log($"Alliance - PlayerSpawnMenu - {message.Player} is not a member of formation {formation.Name}", LogLevel.Error);
+				return;
+			}
+
+			PlayerSpawnMenu.Instance.RemoveFormationMember(team, formation, message.Player);
+		}
+
+		private void HandleSetPlayerTeam(SetPlayerTeam message)
+		{
+			PlayerTeam team = PlayerSpawnMenu.Instance.Teams.Find(t => t.Index == message.TeamIndex);
+			PlayerSpawnMenu.Instance.SetPlayerTeam(message.Player, team);
 		}
 	}
 }

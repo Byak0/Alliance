@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
-using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
 using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
@@ -60,6 +59,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		public static event Action<PlayerTeam, PlayerFormation> OnOfficerCandidaciesUpdated;
 		public static event Action<bool> OnElectionStatusChanged;
 		public static event Action<bool> OnSpawnStatusChanged;
+		public static event Action<PlayerTeam> OnMyTeamChanged;
 
 		public static PlayerSpawnMenu Instance { get; set; } = new PlayerSpawnMenu();
 
@@ -147,21 +147,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			Teams.Remove(team);
 		}
 
-		public void SelectTeam(PlayerTeam team = null)
-		{
-			// Default to native team if no team is provided
-			if (team == null)
-			{
-				MissionPeer myPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
-				BattleSideEnum mySide = myPeer?.Team?.Side ?? BattleSideEnum.Defender;
-				MyAssignment.Team = Teams.FirstOrDefault(t => t.TeamSide == mySide);
-			}
-			else
-			{
-				MyAssignment.Team = team;
-			}
-		}
-
 		public void MovePlayerToFormation(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation)
 		{
 			if (player == null || team == null || formation == null)
@@ -206,6 +191,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		/// </summary>
 		public void ElectOfficer(PlayerTeam team, PlayerFormation formation)
 		{
+			if (!GameNetwork.IsServer) return;
+
 			CandidateInfo electedCandidate = null;
 			int maxVotes = 0;
 			foreach (CandidateInfo candidate in formation.Candidates)
@@ -218,17 +205,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 			if (electedCandidate != null)
 			{
-				formation.SetOfficer(electedCandidate.Candidate);
-				PlayerSpawnMenuMsg.SendSetFormationOfficerToAll(electedCandidate.Candidate, team, formation);
-				// todo add synchronization message 
+				SetFormationOfficer(team, formation, electedCandidate.Candidate);
 				Log($"Officer elected: {formation.Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
 
 				// Set officer's character
 				SelectCharacter(electedCandidate.Candidate, team, formation, GetPlayerAssignment(formation.Officer).Character);
 				// Notify all players about the character usage
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new AddCharacterUsage(electedCandidate.Candidate, team, formation, GetPlayerAssignment(formation.Officer).Character));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				PlayerSpawnMenuMsg.SendAddPlayerCharacterUsageToAll(electedCandidate.Candidate, team, formation, GetPlayerAssignment(formation.Officer).Character);
 
 				// Set the other candidates to characters with available slots
 				foreach (CandidateInfo candidate in formation.Candidates)
@@ -242,9 +225,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 							SelectCharacter(candidate.Candidate, team, formation, availableCharacter);
 							Log($"Candidate {candidate.Candidate.UserName} assigned to character {availableCharacter.Name}.", LogLevel.Information);
 							// Notify all players about the character usage
-							GameNetwork.BeginBroadcastModuleEvent();
-							GameNetwork.WriteMessage(new AddCharacterUsage(candidate.Candidate, team, formation, availableCharacter));
-							GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+							PlayerSpawnMenuMsg.SendAddPlayerCharacterUsageToAll(candidate.Candidate, team, formation, availableCharacter);
 						}
 						else
 						{
@@ -255,10 +236,67 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 			else
 			{
-				formation.SetOfficer(formation.Members.GetRandomElementInefficiently());
-				// todo add synchronization message 
+				SetFormationOfficer(team, formation, formation.Members.GetRandomElementInefficiently());
 				Log($"Officer randomly selected : {formation.Officer?.UserName} (no candidate found)", LogLevel.Information);
 			}
+		}
+
+		public NetworkCommunicator GetOfficerReplacement(PlayerTeam team, PlayerFormation formation)
+		{
+			if (formation == null || team == null) return null;
+
+			// Find the candidate with the most votes (excluding current officer)
+			CandidateInfo replacementCandidate = formation.Candidates
+				.Where(c => c.Candidate != formation.Officer)
+				.OrderByDescending(c => c.Votes)
+				.FirstOrDefault();
+			if (replacementCandidate != null && formation.Members.Contains(replacementCandidate.Candidate)) return replacementCandidate.Candidate;
+
+			// If no candidate found, return a random member of the formation (excluding current officer)
+			return formation.Members.FirstOrDefault(member => member != formation.Officer);
+		}
+
+		public void RemoveFormationMember(PlayerTeam team, PlayerFormation formation, NetworkCommunicator member)
+		{
+			PlayerAssignment assignment = GetPlayerAssignment(member);
+			if (assignment == null || assignment.Team != team || assignment.Formation != formation || !formation.Members.Contains(member))
+			{
+				Log($"Alliance - PlayerSpawnMenu - {member?.UserName} tried to remove from formation {formation?.Name} but is not assigned to it.", LogLevel.Error);
+				return;
+			}
+
+			formation.RemoveMember(member);
+
+			if (!GameNetwork.IsServer) return;
+
+			PlayerSpawnMenuMsg.SendRemovePlayerFromFormationToAll(member, team, formation);
+
+			// If the player was assigned to a character, clear it
+			if (assignment.Character != null) ClearCharacterSelection(member);
+			// If the character was an officer candidate, remove the candidacy
+			if (assignment.Formation.CandidateInfo.TryGetValue(member, out CandidateInfo candidateInfo))
+			{
+				RemoveFormationCandidate(assignment.Team, assignment.Formation, candidateInfo);
+				Log($"Alliance - PlayerSpawnMenu - {member.UserName} removed from officer candidacy in {assignment.Team.Name} - {assignment.Formation.Name}", LogLevel.Debug);
+			}
+			// If the player was the elected officer of his formation, replace him with another candidate
+			if (assignment.Formation.Officer == member)
+			{
+				SetFormationOfficer(assignment.Team, assignment.Formation, GetOfficerReplacement(assignment.Team, assignment.Formation));
+				Log($"Alliance - PlayerSpawnMenu - {member.UserName} removed from officer status in {assignment.Team.Name} - {assignment.Formation.Name}, replaced by {assignment.Formation.Officer?.UserName}", LogLevel.Debug);
+			}
+		}
+
+		public void SetFormationOfficer(PlayerTeam team, PlayerFormation formation, NetworkCommunicator newOfficer)
+		{
+			formation.SetOfficer(newOfficer);
+			if (GameNetwork.IsServer) PlayerSpawnMenuMsg.SendSetFormationOfficerToAll(newOfficer, team, formation);
+		}
+
+		public void RemoveFormationCandidate(PlayerTeam team, PlayerFormation formation, CandidateInfo candidate)
+		{
+			formation.RemoveCandidate(candidate);
+			if (GameNetwork.IsServer) PlayerSpawnMenuMsg.SendRemoveOfficerCandidacyToAll(candidate.Candidate, team, formation);
 		}
 
 		public void ClearCharacterSelection(NetworkCommunicator player)
@@ -273,6 +311,22 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				OnCharacterDeselected?.Invoke(player, assignment.Team, assignment.Formation, assignment.Character);
 				assignment.Character = null;
 			}
+		}
+
+		public void SetPlayerTeam(NetworkCommunicator player, PlayerTeam newTeam)
+		{
+			PlayerAssignment assignment = GetPlayerAssignment(player);
+			if (assignment == null) return;
+
+			if (GameNetwork.IsServer) PlayerSpawnMenuMsg.SendSetPlayerTeamToAll(player, newTeam);
+
+			assignment.Team = newTeam;
+			assignment.Formation = null;
+			assignment.Character = null;
+
+			if (player.IsMine) OnMyTeamChanged?.Invoke(newTeam);
+
+			Log($"Alliance - PlayerSpawnMenu - {player.UserName} joined team {newTeam?.Name}", LogLevel.Debug);
 		}
 
 		public bool TrySelectCharacter(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, AvailableCharacter character, ref string _failReason)
@@ -296,8 +350,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		public void SelectCharacter(NetworkCommunicator player, PlayerTeam team, PlayerFormation formation, AvailableCharacter character)
 		{
-			//if (GameNetwork.IsServer) ClearDisconnectedPlayers(); // todo move to a better place, maybe in a periodic update or when players are added/removed
-
 			ClearCharacterSelection(player);
 
 			PlayerAssignment assignment = GetPlayerAssignment(player);
@@ -326,7 +378,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			PlayerSpawnMenuMsg.SendSpawnStatusToPeer(canSpawn, timeBeforeSpawn, peer);
 		}
 
-		// todo : find a way to clear disconnected players on client side too (send a message from server ?)
 		public void ClearDisconnectedPlayers()
 		{
 			List<NetworkCommunicator> playersToRemove = new();
@@ -345,20 +396,28 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 		}
 
+		// todo : find a way to clear disconnected players on client side too (send a message from server ?)
 		public void ClearPlayer(NetworkCommunicator player)
 		{
 			if (!_playerAssignments.TryGetValue(player, out PlayerAssignment assignment)) return;
 
-			if (assignment.Character != null)
-			{
-				assignment.Character.UsedSlots--;
-				OnCharacterDeselected?.Invoke(player, assignment.Team, assignment.Formation, assignment.Character);
-			}
-
 			if (assignment.Formation != null && assignment.Formation.Members.Contains(player))
 			{
-				assignment.Formation.RemoveMember(player);
+				// If the character was an officer candidate, remove the candidacy
+				if (assignment.Formation.CandidateInfo.TryGetValue(player, out CandidateInfo candidateInfo))
+				{
+					RemoveFormationCandidate(assignment.Team, assignment.Formation, candidateInfo);
+					Log($"Alliance - PlayerSpawnMenu - {player.UserName} removed from officer candidacy in {assignment.Team.Name} - {assignment.Formation.Name}", LogLevel.Debug);
+				}
+				// If the player was the elected officer of his formation, replace him with another candidate
+				if (assignment.Formation.Officer == player)
+				{
+					SetFormationOfficer(assignment.Team, assignment.Formation, PlayerSpawnMenu.Instance.GetOfficerReplacement(assignment.Team, assignment.Formation));
+					Log($"Alliance - PlayerSpawnMenu - {player.UserName} removed from officer status in {assignment.Team.Name} - {assignment.Formation.Name}, replaced by {assignment.Formation.Officer?.UserName}", LogLevel.Debug);
+				}
 			}
+
+			if (assignment.Character != null) ClearCharacterSelection(player);
 
 			_playerAssignments.Remove(player);
 			Log($"Removed {player.UserName} assignment", LogLevel.Debug);

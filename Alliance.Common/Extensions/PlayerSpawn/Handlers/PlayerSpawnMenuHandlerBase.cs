@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
+using System.Collections.Generic;
 using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
 using static Alliance.Common.Utilities.Logger;
 
@@ -7,19 +8,50 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 {
 	public abstract class PlayerSpawnMenuHandlerBase
 	{
-		protected PlayerSpawnMenu _receivedPlayerSpawnMenu = new PlayerSpawnMenu();
-		protected bool _syncInProgress = false;
+		protected class SyncContext
+		{
+			public PlayerSpawnMenu Menu = new PlayerSpawnMenu();
+			public int CurrentSyncId;
+			public bool InProgress = false;
+			public int AddTeamCount = 0;
+			public int AddFormationCount = 0;
+			public int AddCharacterCount = 0;
+			public int ReceivedMessageCount = 0;
+			public int? ExpectedMessageCount = null;
+		}
+
+		protected SyncContext _syncContext = new();
+		protected List<IPlayerSpawnMenuMessage> _bufferedMessages = new();
 
 		protected virtual void HandlePlayerSpawnMenuOperation(IPlayerSpawnMenuMessage message)
 		{
+			if (message.SyncId != _syncContext.CurrentSyncId && message.Operation != PlayerSpawnMenuOperation.BeginMenuSync)
+			{
+				Log($"Alliance - Buffering {message.Operation} because SyncId invalid (expected {_syncContext.CurrentSyncId}, received {message.SyncId}", LogLevel.Debug);
+				_bufferedMessages.Add(message);
+				return;
+			}
+
+			if (!_syncContext.InProgress && message.Operation != PlayerSpawnMenuOperation.BeginMenuSync)
+			{
+				Log($"Alliance - Buffering {message.Operation} because BeginMenuSync not yet received", LogLevel.Debug);
+				_bufferedMessages.Add(message);
+				return;
+			}
+
+			if (message.Operation != PlayerSpawnMenuOperation.BeginMenuSync && message.Operation != PlayerSpawnMenuOperation.EndMenuSync)
+			{
+				_syncContext.ReceivedMessageCount++;
+			}
+
 			switch (message.Operation)
 			{
 				case PlayerSpawnMenuOperation.BeginMenuSync:
-					BeginMenuSyncHandler();
+					BeginMenuSyncHandler(message);
 					break;
 
 				case PlayerSpawnMenuOperation.EndMenuSync:
-					EndMenuSyncHandler();
+					EndMenuSyncHandler(message);
 					break;
 
 				case PlayerSpawnMenuOperation.AddTeam:
@@ -52,35 +84,63 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			}
 		}
 
-		protected virtual void BeginMenuSyncHandler()
+		protected virtual void BeginMenuSyncHandler(IPlayerSpawnMenuMessage message)
 		{
 			Log($"Alliance - Received BeginMenuSync", LogLevel.Debug);
-			_receivedPlayerSpawnMenu = new PlayerSpawnMenu();
-			_syncInProgress = true;
+			_syncContext = new SyncContext
+			{
+				InProgress = true,
+				CurrentSyncId = message.SyncId
+			};
+
+			foreach (IPlayerSpawnMenuMessage buffered in _bufferedMessages)
+			{
+				// Re-process buffered messages with the current SyncId
+				if (buffered.SyncId == _syncContext.CurrentSyncId)
+				{
+					Log($"Alliance - Processing buffered {buffered.Operation}", LogLevel.Debug);
+					HandlePlayerSpawnMenuOperation(buffered);
+				}
+			}
+			_bufferedMessages.Clear();
 		}
 
-		protected virtual void EndMenuSyncHandler()
+		protected virtual void EndMenuSyncHandler(IPlayerSpawnMenuMessage message)
 		{
 			Log($"Alliance - Received EndMenuSync", LogLevel.Debug);
-			if (!_syncInProgress)
+			if (!_syncContext.InProgress)
 			{
 				Log("Alliance - Received EndMenuSync but no BeginMenuSync was received", LogLevel.Warning);
 				return;
 			}
-			PlayerSpawnMenu.Instance = _receivedPlayerSpawnMenu;
-			_syncInProgress = false;
-			Log($"Alliance - PlayerSpawn menu initialized with {_receivedPlayerSpawnMenu.Teams?.Count} teams", LogLevel.Information);
+
+			_syncContext.ExpectedMessageCount = message.TotalMessageCount;
+			if (_syncContext.ExpectedMessageCount.HasValue && _syncContext.ReceivedMessageCount != _syncContext.ExpectedMessageCount.Value)
+			{
+				Log($"Mismatch: Expected {_syncContext.ExpectedMessageCount}, got {_syncContext.ReceivedMessageCount}", LogLevel.Warning);
+				return;
+			}
+
+			if (_syncContext.Menu.Teams.Count == 0)
+			{
+				Log("Alliance - Warning: EndMenuSync received but menu is empty.", LogLevel.Warning);
+			}
+
+			PlayerSpawnMenu.Instance = _syncContext.Menu;
+			Log($"Alliance - PlayerSpawnMenu synched. Teams: {_syncContext.Menu.Teams.Count}", LogLevel.Information);
+
+			_syncContext = new SyncContext();
 		}
 
 		protected virtual void AddTeamHandler(IPlayerSpawnMenuMessage message)
 		{
-			_receivedPlayerSpawnMenu?.Teams.Add(message.PlayerTeam);
+			_syncContext.Menu?.Teams.Add(message.PlayerTeam);
 			Log($"Alliance - Added team {message.PlayerTeam?.Name}", LogLevel.Debug);
 		}
 
 		protected virtual void AddFormationHandler(IPlayerSpawnMenuMessage message)
 		{
-			PlayerTeam team = _receivedPlayerSpawnMenu?.Teams.Find(t => t.Index == message.TeamIndex);
+			PlayerTeam team = _syncContext.Menu?.Teams.Find(t => t.Index == message.TeamIndex);
 			if (team != null)
 			{
 				team.Formations.Add(message.PlayerFormation);
@@ -95,7 +155,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 				Log("Alliance - Received AddCharacter with null AvailableCharacter", LogLevel.Warning);
 				return;
 			}
-			PlayerTeam team = _receivedPlayerSpawnMenu.Teams.Find(t => t.Index == message.TeamIndex);
+			PlayerTeam team = _syncContext.Menu.Teams.Find(t => t.Index == message.TeamIndex);
 			if (team != null)
 			{
 				PlayerFormation formation = team.Formations.Find(f => f.Index == message.FormationIndex);

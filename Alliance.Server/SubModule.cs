@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
@@ -29,6 +30,7 @@ namespace Alliance.Server
 		public const string ModuleId = "Alliance.Server";
 		public const string RolesFilePath = "./alliance_roles.txt";
 		public const string ConfigFilePath = "./alliance_config.txt";
+		public const string PlayerSpawnMenuFilePath = "spawn_preset_lobby_inf.xml";
 
 		protected override void OnSubModuleLoad()
 		{
@@ -74,6 +76,18 @@ namespace Alliance.Server
 			ExtendedXMLLoader.Init();
 
 			ScenarioManagerServer.Initialize();
+
+			// Initialize the player spawn menu
+			if (PlayerSpawnMenu.TryLoadFromFile(PlayerSpawnMenuFilePath, out PlayerSpawnMenu newMenu))
+			{
+				PlayerSpawnMenu.Instance = newMenu;
+				Log($"Alliance - Loaded PlayerSpawnMenu succesfully with {PlayerSpawnMenu.Instance.Teams.Count} teams.", LogLevel.Information);
+			}
+			else
+			{
+				PlayerSpawnMenu.Instance = new PlayerSpawnMenu();
+				Log($"Alliance - Failed to load PlayerSpawnMenu from {PlayerSpawnMenuFilePath}. Using default menu.", LogLevel.Warning);
+			}
 		}
 
 		protected override void OnGameStart(Game game, IGameStarter gameStarter)

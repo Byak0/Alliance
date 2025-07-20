@@ -87,18 +87,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		public void RemoveMember(NetworkCommunicator member)
 		{
-			if (member != null && Members.Contains(member)) Members.Remove(member);
-			// Remove member from other relevant collections
-			if (Officer == member) Officer = null;
-			if (CandidateInfo.ContainsKey(member)) RemoveCandidate(CandidateInfo[member]);
-			if (PlayerVotes.ContainsKey(member))
-			{
-				foreach (var candidate in PlayerVotes[member])
-				{
-					candidate.Votes--;
-				}
-				PlayerVotes.Remove(member);
-			}
+			if (member == null || !Members.Contains(member)) return;
+
+			Members.Remove(member);
 		}
 
 		public void AddCandidate(NetworkCommunicator candidate, string pitch)

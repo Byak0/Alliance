@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
+using System.Linq;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -27,16 +28,30 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 			Initialized = true;
 		}
 
+		public override void OnRemoveBehavior()
+		{
+			base.OnRemoveBehavior();
+			MissionPeer.OnTeamChanged -= OnPlayerChangeTeam;
+		}
+
 		private void OnPlayerChangeTeam(NetworkCommunicator peer, Team previousTeam, Team newTeam)
 		{
 			if (PlayerSpawnMenu.Instance == null) return;
 
-			// Clear previous player assignment if any
-			PlayerAssignment previousAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(peer);
-			PlayerSpawnMenu.Instance.ClearCharacterSelection(peer);
+			PlayerAssignment assignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(peer);
+
+			// If the player was assigned in a formation, clear the previous assignment
+			if (assignment.Formation != null) PlayerSpawnMenu.Instance.RemoveFormationMember(assignment.Team, assignment.Formation, peer);
+
+			// Update the player's team
+			PlayerSpawnMenu.Instance.SetPlayerTeam(peer, PlayerSpawnMenu.Instance.Teams.FirstOrDefault(team => team.TeamSide == newTeam.Side));
 		}
 
 		protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
+		{
+		}
+
+		protected override void HandleLateNewClientAfterSynchronized(NetworkCommunicator networkPeer)
 		{
 			PlayerSpawnMenu.Instance.ClearDisconnectedPlayers();
 
@@ -73,6 +88,13 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 
 			// Send the spawn status
 			PlayerSpawnMenuMsg.SendSpawnStatusToPeer(SpawnInProgress, SpawnWaitTimeAfterSelection, networkPeer);
+
+			// If server stored a team for this client, send it
+			if (networkPeer.GetComponent<MissionPeer>().Team != null)
+			{
+				PlayerTeam newTeam = PlayerSpawnMenu.Instance.Teams.FirstOrDefault(team => team.TeamSide == networkPeer.GetComponent<MissionPeer>().Team.Side);
+				PlayerSpawnMenu.Instance.SetPlayerTeam(networkPeer, newTeam);
+			}
 		}
 
 		public override void OnPlayerDisconnectedFromServer(NetworkCommunicator networkPeer)

@@ -1,12 +1,9 @@
 ﻿#if !SERVER
-using Alliance.Common.Core.KeyBinder;
-using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.PlayerSpawn.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
@@ -22,6 +19,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 		private GauntletLayer _layer;
 		private PlayerSpawnMenuVM _dataSource;
 		private bool _recentlyClosed;
+		private bool _menuReceivedFromServer = false;
+		private float _timeSinceLastSyncRequest = 0f;
 
 		private Action<PlayerSpawnMenu> _onMenuClosed;
 
@@ -29,30 +28,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 
 		public override void OnBehaviorInitialize()
 		{
-			// todo wip , join team
-			if (GameNetwork.MyPeer != null && GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != null)
-			{
-				PlayerSpawnMenu.Instance.SelectTeam();
-			}
-
-			MissionPeer.OnTeamChanged += OnPlayerChangeTeam;
+			PlayerSpawnMenu.OnMyTeamChanged += OnMyTeamChanged;
 			PlayerSpawnMenu.OnSpawnStatusChanged += OnSpawnStatusChanged;
 		}
 
 		public override void OnRemoveBehavior()
 		{
-			MissionPeer.OnTeamChanged -= OnPlayerChangeTeam;
+			PlayerSpawnMenu.OnMyTeamChanged -= OnMyTeamChanged;
 			PlayerSpawnMenu.OnSpawnStatusChanged -= OnSpawnStatusChanged;
 		}
 
-		// TODO : improve team change logic / team selection ?
-		private void OnPlayerChangeTeam(NetworkCommunicator peer, Team previousTeam, Team newTeam)
+		private void OnMyTeamChanged(PlayerTeam newTeam)
 		{
-			if (peer.IsMine)
+			if (newTeam != null && GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != Mission.SpectatorTeam && Agent.Main == null && !IsMenuOpen)
 			{
-				PlayerSpawnMenu.Instance.SelectTeam(PlayerSpawnMenu.Instance.Teams.Find(team => team.TeamSide == newTeam.Side));
-				// Refresh the player spawn menu when the player changes team
-				_dataSource?.GenerateMenu();
+				OpenMenu(PlayerSpawnMenu.Instance);
+			}
+			else if (IsMenuOpen)
+			{
+				_dataSource.GenerateMenu();
 			}
 		}
 
@@ -62,12 +56,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 					&& GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != Mission.SpectatorTeam
 					&& Agent.Main == null)
 			{
-				if (!IsMenuOpen)
+				if (!IsMenuOpen && PlayerSpawnMenu.Instance.MyAssignment.Team != null)
 				{
-					if (PlayerSpawnMenu.Instance.MyAssignment.Team == null)
-					{
-						PlayerSpawnMenu.Instance.SelectTeam();
-					}
 					OpenMenu(PlayerSpawnMenu.Instance);
 				}
 			}
@@ -87,25 +77,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 		// todo improve this (user experience)
 		public override void OnMissionTick(float dt)
 		{
-			// In-game logic (in multiplayer context)
-			if (GameNetwork.IsClient)
-			{
-				if (GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != null
-					&& GameNetwork.MyPeer.GetComponent<MissionPeer>()?.Team != Mission.SpectatorTeam
-					&& Agent.Main == null)
-				{
-					// If the player has no agent and no character assigned, open the spawn menu
-					if (!IsMenuOpen && !_recentlyClosed)
-					{
-						if (PlayerSpawnMenu.Instance.MyAssignment.Team == null)
-						{
-							PlayerSpawnMenu.Instance.SelectTeam();
-						}
-						OpenMenu(PlayerSpawnMenu.Instance);
-					}
-				}
-			}
-
 			if (IsMenuOpen && CheckCloseMenuKeyPress())
 			{
 				CloseMenu();

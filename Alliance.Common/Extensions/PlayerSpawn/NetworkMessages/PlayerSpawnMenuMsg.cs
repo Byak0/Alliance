@@ -16,10 +16,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 {
 	public static class PlayerSpawnMenuMsg
 	{
+		private static int _nextSyncId = 1;
 		public static readonly CompressionInfo.Integer OperationCompressionInfo = new CompressionInfo.Integer(0, Enum.GetValues(typeof(PlayerSpawnMenuOperation)).Length, true);
-		public static readonly CompressionInfo.Integer TeamIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
-		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
-		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(0, 32, true);
+		public static readonly CompressionInfo.Integer SyncIdCompressionInfo = new CompressionInfo.Integer(-1, 8190, true);
+		public static readonly CompressionInfo.Integer TotalMessageCountCompressionInfo = new CompressionInfo.Integer(-1, 254, true);
+		public static readonly CompressionInfo.Integer TeamIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
+		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
+		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
 
 		#region Server Messages
 		/// <summary>
@@ -84,6 +87,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 			SendToClient(new RemoveCharacterUsage(player));
 		}
 
+		// From server - A player left a formation - Broadcast info to all players.
+		public static void SendRemovePlayerFromFormationToAll(NetworkCommunicator player, PlayerTeam playerTeam, PlayerFormation playerFormation)
+		{
+			SendToClient(new RemovePlayerFromFormation(player, playerTeam, playerFormation));
+		}
+
+		// From server - A player joined a team - Broadcast info to all players.
+		public static void SendSetPlayerTeamToAll(NetworkCommunicator player, PlayerTeam playerTeam)
+		{
+			SendToClient(new SetPlayerTeam(player, playerTeam));
+		}
+
 		// From server - A player is candidate for officer - Send info to a specific peer.
 		public static void SendAddOfficerCandidacyToPeer(NetworkCommunicator officerCandidate, PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter, string pitch, NetworkCommunicator targetPeer)
 		{
@@ -97,9 +112,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		}
 
 		// From server - A player is no longer candidate for officer - Broadcast info to all players.
-		public static void SendRemoveOfficerCandidacyToAll(NetworkCommunicator officerCandidate, PlayerTeam playerTeam, PlayerFormation playerFormation, AvailableCharacter availableCharacter)
+		public static void SendRemoveOfficerCandidacyToAll(NetworkCommunicator officerCandidate, PlayerTeam playerTeam, PlayerFormation playerFormation)
 		{
-			SendToClient(new RemoveOfficerCandidacy(officerCandidate, playerTeam, playerFormation, availableCharacter));
+			SendToClient(new RemoveOfficerCandidacy(officerCandidate, playerTeam, playerFormation));
 		}
 
 		// From server - Set a formation's officer - Broadcast info to all players.
@@ -125,27 +140,29 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 
 		private static void SendPlayerSpawnMenu(NetworkCommunicator player = null)
 		{
+			int syncId = _nextSyncId++;
 			int messageCount = 0;
-			SendToClient(new SyncPlayerSpawnMenu(GlobalOperation.BeginMenuSync), player);
-			messageCount++;
+			SendToClient(new SyncPlayerSpawnMenu(GlobalOperation.BeginMenuSync, syncId), player);
+
 			foreach (PlayerTeam team in PlayerSpawnMenu.Instance.Teams)
 			{
-				SendToClient(new SyncPlayerSpawnMenu(TeamOperation.AddTeam, team), player);
+				SendToClient(new SyncPlayerSpawnMenu(TeamOperation.AddTeam, team, syncId), player);
 				messageCount++;
 				foreach (PlayerFormation formation in team.Formations)
 				{
-					SendToClient(new SyncPlayerSpawnMenu(FormationOperation.AddFormation, team, formation), player);
+					SendToClient(new SyncPlayerSpawnMenu(FormationOperation.AddFormation, team, formation, syncId), player);
 					messageCount++;
 					foreach (AvailableCharacter character in formation.AvailableCharacters)
 					{
-						SendToClient(new SyncPlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character), player);
+						SendToClient(new SyncPlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character, syncId), player);
 						messageCount++;
 					}
 				}
 			}
-			SendToClient(new SyncPlayerSpawnMenu(GlobalOperation.EndMenuSync), player);
-			messageCount++;
-			Log($"Alliance - Total messages sent to sync PlayerSpawnMenu: {messageCount}");
+
+			SendToClient(new SyncPlayerSpawnMenu(GlobalOperation.EndMenuSync, syncId, messageCount), player);
+
+			Log($"Alliance - Total messages sent to sync PlayerSpawnMenu: {messageCount} with id {syncId}", LogLevel.Debug);
 		}
 
 		// Sends a message to the specified peer or broadcasts it to all clients if no peer is specified.
@@ -167,34 +184,43 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		#endregion
 
 		#region Client Messages
+		public static void RequestPlayerSpawnMenu()
+		{
+			Log("Alliance - Requesting server to send us the PlayerSpawnMenu...", LogLevel.Debug);
+			SendToServer(new RequestPlayerSpawnMenu());
+		}
+
+
 		/// <summary>
 		/// From client - Send a new PlayerSpawnMenu for the server to use.
 		/// </summary>
 		public static void RequestUpdatePlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu)
 		{
 			if (!GameNetwork.IsClient) return;
-			Log("Alliance - Sending PlayerSpawnMenu to server...");
+			Log("Alliance - Sending PlayerSpawnMenu to server...", LogLevel.Debug);
+			int syncId = _nextSyncId++;
 			int messageCount = 0;
-			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.BeginMenuSync));
-			messageCount++;
+
+			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.BeginMenuSync, syncId));
+
 			foreach (PlayerTeam team in playerSpawnMenu.Teams)
 			{
-				SendToServer(new UpdatePlayerSpawnMenu(TeamOperation.AddTeam, team));
+				SendToServer(new UpdatePlayerSpawnMenu(TeamOperation.AddTeam, team, syncId));
 				messageCount++;
 				foreach (PlayerFormation formation in team.Formations)
 				{
-					SendToServer(new UpdatePlayerSpawnMenu(FormationOperation.AddFormation, team, formation));
+					SendToServer(new UpdatePlayerSpawnMenu(FormationOperation.AddFormation, team, formation, syncId));
 					messageCount++;
 					foreach (AvailableCharacter character in formation.AvailableCharacters)
 					{
-						SendToServer(new UpdatePlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character));
+						SendToServer(new UpdatePlayerSpawnMenu(CharacterOperation.AddCharacter, team, formation, character, syncId));
 						messageCount++;
 					}
 				}
 			}
-			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.EndMenuSync));
-			messageCount++;
-			Log($"Alliance - Total messages sent to update PlayerSpawnMenu: {messageCount}");
+
+			SendToServer(new UpdatePlayerSpawnMenu(GlobalOperation.EndMenuSync, syncId, messageCount));
+			Log($"Alliance - Total messages sent to update PlayerSpawnMenu: {messageCount} with id {syncId}", LogLevel.Debug);
 		}
 
 		// From client - Request to reserve a character.
