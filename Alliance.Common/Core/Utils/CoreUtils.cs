@@ -88,11 +88,11 @@ namespace Alliance.Common.Core.Utils
 		/// </summary>
 		public static void TakeDamage(Agent victim, Agent attacker, int damage, float magnitude = 50f, bool knockDown = false)
 		{
-			if (victim == null || attacker == null)
+			if (victim == null || victim.AgentVisuals == null || attacker == null)
 			{
 				Log("Victim and/or attacker is null. Damage skipped", LogLevel.Warning);
 				return;
-			};
+			}
 
 			if (victim.Health <= 0) return;
 
