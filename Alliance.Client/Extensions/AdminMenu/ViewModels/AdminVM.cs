@@ -31,8 +31,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private NetworkPeerVM _selectedPeer;
 		private bool _isSudo;
 		private bool _isVisible;
+        private string _banReason = "";
 
-		public AdminVM()
+        public AdminVM()
 		{
 			_isSudo = GameNetwork.MyPeer.IsDev();
 			_unitCharacter = new CharacterViewModel();
@@ -280,10 +281,24 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// Filter list of players with given text filter
-		/// </summary>
-		public void FilterPlayers(string filterText)
+        [DataSourceProperty]
+        public string BanReason
+        {
+            get => _banReason;
+            set
+            {
+                if (value != _banReason)
+                {
+                    _banReason = value;
+                    OnPropertyChanged(nameof(BanReason));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Filter list of players with given text filter
+        /// </summary>
+        public void FilterPlayers(string filterText)
 		{
 			foreach (NetworkPeerVM networkPeerVM in _networkCommunicators)
 			{
@@ -358,7 +373,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		public void PrompWarningMessageSelection()
 		{
 			if (_selectedPeer == null) { return; }
-			// Prompt a text inquiry for user to enter a new name
+			// Prompt a text inquiry for user to enter a custom message
 			InformationManager.ShowTextInquiry(
 				new TextInquiryData("Custom Warning message",
 				"Write your warning message :",
@@ -374,16 +389,64 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				"Your warning message"),
 				false);
 		}
+        public void BanPlayer()
+        {
+            if (_selectedPeer == null)
+            {
+                InformationManager.DisplayMessage(new InformationMessage("Aucun joueur sélectionné.", Colors.Red));
+                return;
+            }
 
-		public void BanPlayer()
-		{
-			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { Ban = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
-		}
+            // // Prompt a text inquiry for user to enter ban reason
+            InformationManager.ShowTextInquiry(
+                new TextInquiryData(
+                    "Bannissement joueur",
+                    $"Entrez la raison du bannissement pour {_selectedPeer.Username}:",
+                    true,  
+                    true,  
+                    "Confirmer",  
+                    "Annuler",    
+                    new Action<string>(reason =>
+                    {
+                        if (string.IsNullOrWhiteSpace(reason))
+                        {
+                            InformationManager.DisplayMessage(new InformationMessage("La raison ne peut pas être vide.", Colors.Red));
+                            return;
+                        }
+                        SendBanRequest(reason);
+                    }),
+                    null,  
+                    false, 
+                    null,  
+                    "",    
+                    ""  
+                ),
+                false 
+            );
+        }
 
-		public void ToggleMutePlayer()
+        private void SendBanRequest(string reason)
+        {
+            try
+            {
+                GameNetwork.BeginModuleEventAsClient();
+                GameNetwork.WriteMessage(new AdminClient()
+                {
+                    Ban = true,
+                    PlayerSelected = _selectedPeer.PeerId,
+                    BanReason = reason
+                });
+                GameNetwork.EndModuleEventAsClient();
+            }
+            catch (Exception ex)
+            {
+                InformationManager.DisplayMessage(new InformationMessage(
+                    $"Erreur lors de l'envoi de la requête: {ex.Message}", Colors.Red));
+                Log($"Erreur SendBanRequest: {ex.Message}", LogLevel.Error);
+            }
+        }
+
+        public void ToggleMutePlayer()
 		{
 			if (_selectedPeer == null) { return; }
 			GameNetwork.BeginModuleEventAsClient();

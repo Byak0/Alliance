@@ -7,6 +7,7 @@ using Alliance.Server.Core.Security;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -294,27 +295,97 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(playerToKick.Peer.Id, false);
 			return true;
 		}
+        public bool Ban(NetworkCommunicator peer, AdminClient admin)
+        {
+            if (!peer.IsAdmin())
+            {
+                SendMessageToClient(peer, "Permission refusée.", AdminServerLog.ColorList.Danger, true);
+                return false;
+            }
 
-		public bool Ban(NetworkCommunicator peer, AdminClient admin)
-		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
+            NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x =>
+                x.VirtualPlayer.Id.ToString() == admin.PlayerSelected);
 
-			// Check si joueur existe
-			if (playerSelected == null) return false;
+            if (playerSelected == null)
+            {
+                SendMessageToClient(peer, "Joueur introuvable.", AdminServerLog.ColorList.Danger, true);
+                return false;
+            }
 
-			MissionPeer playerToKick = playerSelected.GetComponent<MissionPeer>();
+            try
+            {
+                //Create directory if not exist
+                string logsPath = System.IO.Path.Combine(BasePath.Name, "bin", "Win64_Shipping_Server");
+                System.IO.Directory.CreateDirectory(logsPath);
 
-			Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été ban.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été ban par {peer.UserName}", AdminServerLog.ColorList.Success);
+                //File name for banned player
+                string fileName = "alliance_AllBans.txt";
+                string fullPath = System.IO.Path.Combine(logsPath, fileName);
 
-			SecurityManager.AddBan(playerSelected.VirtualPlayer);
+                //Prepare log entry
+                string logEntry = $@"
+========================================
+[BAN ENTRY] {DateTime.Now:yyyy-MM-dd HH:mm:ss}
+Admin: {peer.UserName}
+Admin Peer ID: {peer.VirtualPlayer.Id}
+Banned Player: {playerSelected.UserName}
+Player Peer ID: {playerSelected.VirtualPlayer.Id}
+Reason: {admin.BanReason}
 
-			DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(playerToKick.Peer.Id, false);
+========================================
+				";
 
-			return true;
-		}
+                // Check if file exist
+                if (!System.IO.File.Exists(fullPath))
+                {
+                    // If not exist then create it with header
+                    string header = $@"=======================
+HISTORIQUE DES BANNISSEMENTS
+=======================
+Ce fichier contient l'historique complet de tous les bannissements.
+Chaque entrée est séparée par une ligne de ====.
 
-		public bool ToggleMutePlayer(NetworkCommunicator peer, AdminClient admin)
+Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
+
+=======================
+					";
+                    System.IO.File.WriteAllText(fullPath, header);
+                }
+
+                //Add new log entry into the file
+                System.IO.File.AppendAllText(fullPath, logEntry);
+
+                //Ban the player
+                MissionPeer playerToBan = playerSelected.GetComponent<MissionPeer>();
+                SecurityManager.AddBan(playerSelected.VirtualPlayer);
+                DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(playerToBan.Peer.Id, false);
+
+                //Notification
+                string notificationMessage = $"[BAN] {playerSelected.UserName} banni par {peer.UserName}. Raison: {admin.BanReason}";
+                Log(notificationMessage, LogLevel.Information);
+
+                foreach (NetworkCommunicator adminPeer in GameNetwork.NetworkPeers.Where(p => p.IsAdmin()))
+                {
+                    if (adminPeer != peer)
+                    {
+                        SendMessageToClient(adminPeer, notificationMessage, AdminServerLog.ColorList.Success, true);
+                    }
+                }
+
+                SendMessageToClient(peer, $"Joueur {playerSelected.UserName} banni avec succès.", AdminServerLog.ColorList.Success, true);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Log($"Erreur lors du bannissement de {playerSelected?.UserName}: {ex.Message}\n{ex.StackTrace}", LogLevel.Error);
+                SendMessageToClient(peer, $"Erreur lors du bannissement: {ex.Message}",
+                                  AdminServerLog.ColorList.Danger, true);
+                return false;
+            }
+        }
+
+        public bool ToggleMutePlayer(NetworkCommunicator peer, AdminClient admin)
 		{
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 

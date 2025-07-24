@@ -27,8 +27,9 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool TeleportAllPlayerToYou { get; set; }
 		public bool SendWarningToPlayer { get; set; }
 		public string WarningMessageToPlayer { get; set; }
+        public string BanReason { get; set; }
 
-		protected override void OnWrite()
+        protected override void OnWrite()
 		{
 			WriteBoolToPacket(Heal);
 			WriteBoolToPacket(HealAll);
@@ -48,7 +49,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(SendWarningToPlayer);
 			WriteStringToPacket(PlayerSelected);
 			WriteStringToPacket(WarningMessageToPlayer);
-		}
+            WriteStringToPacket(BanReason ?? "");
+        }
 
 		protected override bool OnRead()
 		{
@@ -71,8 +73,9 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			SendWarningToPlayer = ReadBoolFromPacket(ref bufferReadValid);
 			PlayerSelected = ReadStringFromPacket(ref bufferReadValid);
 			WarningMessageToPlayer = ReadStringFromPacket(ref bufferReadValid);
+            BanReason = ReadStringFromPacket(ref bufferReadValid);
 
-			return bufferReadValid;
+            return bufferReadValid;
 		}
 
 		protected override MultiplayerMessageFilter OnGetLogFilter()
