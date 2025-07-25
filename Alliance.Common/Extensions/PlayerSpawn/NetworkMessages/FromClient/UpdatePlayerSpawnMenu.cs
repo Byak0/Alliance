@@ -12,7 +12,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 	public sealed class UpdatePlayerSpawnMenu : GameNetworkMessage, IPlayerSpawnMenuMessage
 	{
 		public PlayerSpawnMenuOperation Operation { get; private set; }
-		public int SyncId { get; set; } = -1;
+		public int SyncId { get; private set; } = -1;
 		public int? TotalMessageCount { get; private set; } // Only used in EndMenuSync operation to indicate how many messages were sent in total.
 		public int TeamIndex { get; private set; } = -1;
 		public int FormationIndex { get; private set; } = -1;

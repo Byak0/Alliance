@@ -36,6 +36,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 		{
 			PlayerSpawnMenu.OnMyTeamChanged -= OnMyTeamChanged;
 			PlayerSpawnMenu.OnSpawnStatusChanged -= OnSpawnStatusChanged;
+			PlayerSpawnMenu.Instance.Clear();
 		}
 
 		private void OnMyTeamChanged(PlayerTeam newTeam)

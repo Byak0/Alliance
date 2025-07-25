@@ -261,12 +261,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					IReadOnlyPerkObject value = perksToShow[j][num2];
 					SelectedPerks[j] = value;
 				}
-				// log selected perks for debug
+				// Log selected perks for debug
 				string logPerks = AvailableCharacter.Name + " selected perks : ";
+				List<string> perksNames = new List<string>();
 				foreach (IReadOnlyPerkObject perkObj in SelectedPerks)
 				{
-					logPerks += perkObj.PerkListIndex;
+					perksNames.Add(perkObj.Name.ToString());
 				}
+				logPerks += string.Join(", ", perksNames);
 				Log(logPerks, LogLevel.Debug);
 			}
 

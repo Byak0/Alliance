@@ -466,6 +466,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return index;
 		}
 
+		public void Clear()
+		{
+			Teams.Clear();
+			_playerAssignments.Clear();
+			ElectionInProgress = false;
+			TimeBeforeOfficerElection = 0f;
+			Log("PlayerSpawnMenu cleared.", LogLevel.Debug);
+		}
+
 		/// <summary>
 		/// Try loading the PlayerSpawnMenu from file. Returns true if successful, false otherwise.
 		/// </summary>
