@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.GameModes.PvC;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -296,9 +297,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 			if (peer.Peer.Communicator.IsConnectionActive)
 			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncGoldsForSkirmish(peer.Peer, newAmount));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				PvCMsg.SendSyncGoldMsgToAllPeers(new SyncGoldsForSkirmish(peer.Peer, newAmount));
 			}
 
 			if (GameModeBaseClient != null)
