@@ -14,7 +14,14 @@ namespace Alliance.Server.Core.Handlers
 
 		private void HandleClientCameraFrame(SetClientCameraFrame setClientCameraFrameMsg)
 		{
-			Mission.Current.GetMissionBehavior<RTSCameraView>().ForceCameraToFrame(setClientCameraFrameMsg);
+			var rtsCameraView = Mission.Current?.GetMissionBehavior<RTSCameraView>();
+
+			if (rtsCameraView == null)
+			{
+				return;
+			}
+
+			rtsCameraView.ForceCameraToFrame(setClientCameraFrameMsg);
 			return;
 		}
 	}

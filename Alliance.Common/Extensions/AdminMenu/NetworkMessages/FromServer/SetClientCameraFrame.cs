@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 		}
 		protected override string OnGetLogFormat()
 		{
-			return "Serveur Network message log";
+			return "Setting client camera frame";
 		}
 	}
 }
