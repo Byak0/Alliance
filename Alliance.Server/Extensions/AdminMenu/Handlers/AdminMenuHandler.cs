@@ -101,8 +101,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return GodModAll(peer);
 				if (admin.Kill)
 					return Kill(peer, admin);
-				if (admin.KillAll)
-					return KillAll(peer);
+				if (admin.KillPlayers)
+					return KillPlayers(peer);
+				if (admin.KillBots)
+					return KillBots(peer);
 				if (admin.Kick)
 					return Kick(peer, admin);
 				if (admin.Ban)
@@ -237,7 +239,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-		public bool KillAll(NetworkCommunicator peer)
+		public bool KillPlayers(NetworkCommunicator peer)
 		{
 			List<NetworkCommunicator> playersToKill = GameNetwork.NetworkPeers.ToList();
 
@@ -245,6 +247,16 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			Log($"[AdminPanel] Tous les joueurs ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
 			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			return true;
+		}
+
+		public bool KillBots(NetworkCommunicator peer)
+		{
+
+			killBots(peer);
+
+			Log($"[AdminPanel] Tous les Bots ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
+			SendMessageToClient(peer, $"[Serveur] Tous les Bots ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -433,6 +445,34 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers. ({e.Message})", LogLevel.Error);
 				SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers.", AdminServerLog.ColorList.Danger, true);
 			}
+		}
+
+		private void killBots(NetworkCommunicator peer = null)
+		{
+			try
+			{
+				foreach (var agent in Mission.Current.AllAgents)
+				{
+					if (agent == null || !agent.IsActive() || agent.IsMount)
+						continue;
+
+					// Vérifie si l'agent est contrôlé par l'IA (donc pas un joueur)
+					if (!agent.IsPlayerControlled && agent.Controller == Agent.ControllerType.AI)
+					{
+						CoreUtils.TakeDamage(agent, 2000, 2000f);
+					}
+				}
+
+			}
+			catch (Exception e)
+			{
+				Log($"[AdminPanel] Erreur lors de l'exécution de killBots. ({e.Message})", LogLevel.Error);
+				if (peer != null)
+				{
+					SendMessageToClient(peer, "[AdminPanel] Erreur lors de l'exécution de la commande killBots.", AdminServerLog.ColorList.Danger, true);
+				}
+			}
+
 		}
 
 		/// <summary>
