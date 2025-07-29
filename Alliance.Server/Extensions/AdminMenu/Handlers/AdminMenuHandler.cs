@@ -447,6 +447,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			}
 		}
 
+		/// <summary>
+		/// Liste et tue tout les Bots sur la mission en cours. Ne tue pas les montures (= 2000 dégats perçant à la tête)
+		/// </summary>
+		/// <param name="peer">NetworkCommunicator à l'origine de la demande, utile uniquement pour logguer en cas d'erreur</param>
 		private void killBots(NetworkCommunicator peer = null)
 		{
 			try
