@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.AdminMenu.Model;
+using Alliance.Common.Core.Configuration.Utilities;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System;
@@ -31,9 +32,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private NetworkPeerVM _selectedPeer;
 		private bool _isSudo;
 		private bool _isVisible;
-        private string _banReason = "";
+		private string _banReason = "";
 
-        public AdminVM()
+		public AdminVM()
 		{
 			_isSudo = GameNetwork.MyPeer.IsDev();
 			_unitCharacter = new CharacterViewModel();
@@ -281,24 +282,24 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
-        [DataSourceProperty]
-        public string BanReason
-        {
-            get => _banReason;
-            set
-            {
-                if (value != _banReason)
-                {
-                    _banReason = value;
-                    OnPropertyChanged(nameof(BanReason));
-                }
-            }
-        }
+		[DataSourceProperty]
+		public string BanReason
+		{
+			get => _banReason;
+			set
+			{
+				if (value != _banReason)
+				{
+					_banReason = value;
+					OnPropertyChanged(nameof(BanReason));
+				}
+			}
+		}
 
-        /// <summary>
-        /// Filter list of players with given text filter
-        /// </summary>
-        public void FilterPlayers(string filterText)
+		/// <summary>
+		/// Filter list of players with given text filter
+		/// </summary>
+		public void FilterPlayers(string filterText)
 		{
 			foreach (NetworkPeerVM networkPeerVM in _networkCommunicators)
 			{
@@ -312,69 +313,51 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		public void Heal()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { Heal = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Heal = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void HealAll()
 		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { HealAll = true, PlayerSelected = null });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { HealAll = true, PlayerSelected = null });
 		}
 
 		public void GodMod()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { GodMod = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodMod = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void GodModAll()
 		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { GodModAll = true, PlayerSelected = null });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodModAll = true, PlayerSelected = null });
 		}
 
 		public void KillPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void KillPlayers()
 		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { KillPlayers = true, PlayerSelected = null });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillPlayers = true, PlayerSelected = null });
 		}
 
 		public void KillBots()
 		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { KillBots = true, PlayerSelected = null });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillBots = true, PlayerSelected = null });
 		}
 
 		public void KickPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { Kick = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kick = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void SendWarningToPlayer(string customWarning)
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId, WarningMessageToPlayer = customWarning });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId, WarningMessageToPlayer = customWarning });
 		}
 
 		public void PrompWarningMessageSelection()
@@ -396,102 +379,94 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				"Your warning message"),
 				false);
 		}
-        public void BanPlayer()
-        {
-            if (_selectedPeer == null)
-            {
-                InformationManager.DisplayMessage(new InformationMessage("Aucun joueur sélectionné.", Colors.Red));
-                return;
-            }
 
-            // // Prompt a text inquiry for user to enter ban reason
-            InformationManager.ShowTextInquiry(
-                new TextInquiryData(
-                    "Bannissement joueur",
-                    $"Entrez la raison du bannissement pour {_selectedPeer.Username}:",
-                    true,  
-                    true,  
-                    "Confirmer",  
-                    "Annuler",    
-                    new Action<string>(reason =>
-                    {
-                        if (string.IsNullOrWhiteSpace(reason))
-                        {
-                            InformationManager.DisplayMessage(new InformationMessage("La raison ne peut pas être vide.", Colors.Red));
-                            return;
-                        }
-                        SendBanRequest(reason);
-                    }),
-                    null,  
-                    false, 
-                    null,  
-                    "",    
-                    ""  
-                ),
-                false 
-            );
-        }
+		public void BanPlayer()
+		{
+			if (_selectedPeer == null)
+			{
+				Log("No player selected.", LogLevel.Warning);
+				return;
+			}
 
-        private void SendBanRequest(string reason)
-        {
-            try
-            {
-                GameNetwork.BeginModuleEventAsClient();
-                GameNetwork.WriteMessage(new AdminClient()
-                {
-                    Ban = true,
-                    PlayerSelected = _selectedPeer.PeerId,
-                    BanReason = reason
-                });
-                GameNetwork.EndModuleEventAsClient();
-            }
-            catch (Exception ex)
-            {
-                InformationManager.DisplayMessage(new InformationMessage(
-                    $"Erreur lors de l'envoi de la requête: {ex.Message}", Colors.Red));
-                Log($"Erreur SendBanRequest: {ex.Message}", LogLevel.Error);
-            }
-        }
+			// // Prompt a text inquiry for user to enter ban reason
+			InformationManager.ShowTextInquiry(
+				new TextInquiryData(
+					"Ban player",
+					$"Ban reason for {_selectedPeer.Username}:",
+					true,  
+					true,  
+					"Confirm",  
+					"Cancel",    
+					new Action<string>(reason =>
+					{
+						if (string.IsNullOrWhiteSpace(reason))
+						{
+							Log("Ban reason can't be empty.", LogLevel.Warning);
+							return;
+						} 
+						else if (reason.Length > CompressionHelper.StringMaxLength)
+						{
+							Log($"Ban reason can't exceed {CompressionHelper.StringMaxLength} characters.", LogLevel.Warning);
+							return;
+						}
+						SendBanRequest(reason);
+					}),
+					null,  
+					false, 
+					null,  
+					"",    
+					""  
+				),
+				false 
+			);
+		}
 
-        public void ToggleMutePlayer()
+		private void SendBanRequest(string reason)
+		{
+			try
+			{
+				ClientAdminMenuMsg.SendMessageToServer(new AdminClient()
+				{
+					Ban = true,
+					PlayerSelected = _selectedPeer.PeerId,
+					BanReason = reason
+				});
+			}
+			catch (Exception ex)
+			{
+				Log($"Erreur SendBanRequest: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void ToggleMutePlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { ToggleMutePlayer = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { ToggleMutePlayer = true, PlayerSelected = _selectedPeer.PeerId });
 			_selectedPeer.IsMuted = !_selectedPeer.IsMuted;
 		}
 
 		public void Respawn()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { Respawn = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Respawn = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 
 		public void TeleportToPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { TeleportToPlayer = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportToPlayer = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void TeleportPlayerToYou()
 		{
 			if (_selectedPeer == null) { return; }
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PeerId });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PeerId });
 		}
 
 		public void TeleportAllPlayerToYou()
 		{
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
-			GameNetwork.EndModuleEventAsClient();
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
 		}
 
 		public void ToggleModoVision()
@@ -506,9 +481,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			if (_selectedPeer == null) { return; }
 			if (GameNetwork.MyPeer.IsDev())
 			{
-				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new AdminClient() { SetAdmin = true, PlayerSelected = _selectedPeer.PeerId });
-				GameNetwork.EndModuleEventAsClient();
+				ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SetAdmin = true, PlayerSelected = _selectedPeer.PeerId });
 			}
 		}
 

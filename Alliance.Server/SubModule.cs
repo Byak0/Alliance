@@ -29,6 +29,7 @@ namespace Alliance.Server
 		public const string ModuleId = "Alliance.Server";
 		public const string RolesFilePath = "./alliance_roles.txt";
 		public const string ConfigFilePath = "./alliance_config.txt";
+		public const string BanHistoryFilePath = "./alliance_AllBans.txt";
 
 		protected override void OnSubModuleLoad()
 		{
