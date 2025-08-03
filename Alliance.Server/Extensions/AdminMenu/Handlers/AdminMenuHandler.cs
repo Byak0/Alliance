@@ -1,8 +1,11 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.RTSCamera.Extension;
+using Alliance.Server.Core;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using System;
@@ -71,7 +74,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			peer.ControlledAgent.TeleportToPosition(req.Position);
 			Log($"[AdminPanel] L'admin {peer.UserName} s'est téléporté en {req.Position}", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] L'admin {peer.UserName} s'est téléporté en {req.Position}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] L'admin {peer.UserName} s'est téléporté en {req.Position}", AdminServerLog.ColorList.Success, true);
 
 			return true;
 		}
@@ -80,9 +83,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		{
 			if (peer.IsAdmin())
 			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SendNotification(notification.Text, notification.NotificationType));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				CommonAdminMsg.SendNotificationToAll(notification.Text, notification.NotificationType);
 			}
 
 			return false;
@@ -102,8 +103,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return GodModAll(peer);
 				if (admin.Kill)
 					return Kill(peer, admin);
-				if (admin.KillAll)
-					return KillAll(peer);
+				if (admin.KillPlayers)
+					return KillPlayers(peer);
+				if (admin.KillBots)
+					return KillBots(peer);
 				if (admin.Kick)
 					return Kick(peer, admin);
 				if (admin.Ban)
@@ -138,10 +141,14 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			if (playerSelected == null) return false;
 
-			teleportPlayersToYou(new List<NetworkCommunicator> { playerSelected }, peer);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			teleportPlayersToYou(new List<NetworkCommunicator> { playerSelected }, peer, tpPosition);
+
+			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({tpPosition})", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été téléporté par l'administrateur {peer.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -149,10 +156,14 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		{
 			List<NetworkCommunicator> playerSelected = GameNetwork.NetworkPeers.ToList();
 
-			teleportPlayersToYou(playerSelected, peer);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			teleportPlayersToYou(playerSelected, peer, tpPosition);
+
+			Log($"[AdminPanel] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({tpPosition})", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été téléportés par l'administrateur {peer.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -161,12 +172,39 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id.ToString() == admin.PlayerSelected).FirstOrDefault();
 
 			// Check if admin and target player both have an agent
-			if (playerSelected == null || playerSelected.ControlledAgent == null || peer.ControlledAgent == null) return false;
+			if (playerSelected == null) return false;
 
-			peer.ControlledAgent.TeleportToPosition(playerSelected.ControlledAgent.Position);
+			Vec3 tpPosition = peer.ControlledAgent != null ?
+				peer.ControlledAgent.Position :
+				peer.GetCameraPosition();
 
-			Log($"[AdminPanel] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({peer.ControlledAgent.Position})", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({peer.ControlledAgent.Position})", AdminServerLog.ColorList.Success, true);
+			bool playerHasAgent = peer.ControlledAgent != null;
+			bool targetHasAgent = playerSelected.ControlledAgent != null;
+
+			if (playerHasAgent && targetHasAgent)
+			{
+				// Both have agents
+				peer.ControlledAgent.TeleportToPosition(playerSelected.ControlledAgent.Position);
+			}
+			else if (playerHasAgent && !targetHasAgent)
+			{
+				// Only requester have agent
+				peer.ControlledAgent.TeleportToPosition(playerSelected.GetCameraPosition());
+			}
+			else if (!playerHasAgent && targetHasAgent)
+			{
+				// Only target have agent
+				ServerCoreMsg.SendClientCameraPosition(playerSelected.ControlledAgent.Frame, peer);
+			}
+			else if (!playerHasAgent && !targetHasAgent)
+			{
+				// None have agent
+				var targetCameraFrame = playerSelected.GetCameraFrame();
+				ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, peer);
+			}
+
+			Log($"[AdminPanel] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({tpPosition})", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] L'administrateur {peer.UserName} s'est téléporté sur le joueur {playerSelected.UserName} ({tpPosition})", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -177,7 +215,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
 			Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été soigné par l'administrateur {peer.UserName}", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est soigné par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -190,14 +228,14 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			{
 				Mission.Current.GetMissionBehavior<RespawnBehavior>().RespawnPlayer(playerSelected);
 				Log($"[AdminPanel] Le joueur : {playerSelected?.UserName} a été respawn par l'administrateur {peer.UserName}", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est respawn par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected?.UserName} est respawn par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				return true;
 
 			}
 			else
 			{
 				Log($"[AdminPanel] Erreur lors du respawn, le joueur n'est pas dans une équipe ", LogLevel.Information);
-				SendMessageToClient(peer, $"[AdminPanel]  Erreur lors du respawn, le joueur n'est pas dans une équipe.", AdminServerLog.ColorList.Danger, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel]  Erreur lors du respawn, le joueur n'est pas dans une équipe.", AdminServerLog.ColorList.Danger, true);
 				return false;
 			}
 
@@ -210,7 +248,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			healPlayers(playersSelected, peer);
 
 			Log($"[AdminPanel] Tous les joueurs ont été soignés par l'administrateur {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été soignés par l'administrateur {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été soignés par l'administrateur {peer.UserName}.", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -221,7 +259,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			godModPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
 			Log($"[AdminPanel] Le joueur : {playerSelected.UserName} est en GodMod grâce à l'admin {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mis en GodMod par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mis en GodMod par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 
 			return true;
 		}
@@ -233,19 +271,28 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			godModPlayers(playersSelected, peer);
 
 			Log($"[AdminPanel] Tous les joueurs entrent en GodMod grâce à l'admin {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Tous les joueurs entrent en GodMod grâce à l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les joueurs entrent en GodMod grâce à l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
 
 			return true;
 		}
 
-		public bool KillAll(NetworkCommunicator peer)
+		public bool KillPlayers(NetworkCommunicator peer)
 		{
 			List<NetworkCommunicator> playersToKill = GameNetwork.NetworkPeers.ToList();
 
 			killPlayers(playersToKill, peer);
 
 			Log($"[AdminPanel] Tous les joueurs ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			return true;
+		}
+
+		public bool KillBots(NetworkCommunicator peer)
+		{
+			killBots(peer);
+
+			Log($"[AdminPanel] Tous les Bots ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les Bots ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -258,7 +305,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			killPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
 			Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été tué par l'admin {peer.UserName}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été tué par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été tué par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 
 			return true;
 		}
@@ -271,13 +318,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			if (playerSelected == null) return false;
 			admin.WarningMessageToPlayer = string.IsNullOrEmpty(admin.WarningMessageToPlayer) ? "Vous avez reçu un avertissement d'un Admin" : admin.WarningMessageToPlayer;
 
-
-			GameNetwork.BeginModuleEventAsServer(playerSelected);
-			GameNetwork.WriteMessage(new SendNotification($"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !", 0));
-			GameNetwork.EndModuleEventAsServer();
+			CommonAdminMsg.SendNotificationToPeerAsServer(playerSelected, $"{admin.WarningMessageToPlayer} (Admin : {peer.UserName}) !");
 
 			Log($"[AdminPanel] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a reçu un avertissement par {peer.UserName} avec la raison suivante : {admin.WarningMessageToPlayer}", AdminServerLog.ColorList.Success, true);
 			return true;
 
 		}
@@ -290,7 +334,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			if (playerSelected == null) return false;
 
 			Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été kick.", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été kick par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été kick par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 			MissionPeer playerToKick = playerSelected.GetComponent<MissionPeer>();
 			DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(playerToKick.Peer.Id, false);
 			return true;
@@ -368,18 +412,18 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
                 {
                     if (adminPeer != peer)
                     {
-                        SendMessageToClient(adminPeer, notificationMessage, AdminServerLog.ColorList.Success, true);
+                        ServerAdminMenuMsg.SendMessageToClient(adminPeer, notificationMessage, AdminServerLog.ColorList.Success, true);
                     }
                 }
 
-                SendMessageToClient(peer, $"Joueur {playerSelected.UserName} banni avec succès.", AdminServerLog.ColorList.Success, true);
+                ServerAdminMenuMsg.SendMessageToClient(peer, $"Joueur {playerSelected.UserName} banni avec succès.", AdminServerLog.ColorList.Success, true);
 
                 return true;
             }
             catch (Exception ex)
             {
                 Log($"Erreur lors du bannissement de {playerSelected?.UserName}: {ex.Message}\n{ex.StackTrace}", LogLevel.Error);
-                SendMessageToClient(peer, $"Erreur lors du bannissement: {ex.Message}",
+                ServerAdminMenuMsg.SendMessageToClient(peer, $"Erreur lors du bannissement: {ex.Message}",
                                   AdminServerLog.ColorList.Danger, true);
                 return false;
             }
@@ -394,23 +438,18 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 
 			if (playerSelected.IsMuted())
 			{
-
-				GameNetwork.BeginModuleEventAsServer(playerSelected);
-				GameNetwork.WriteMessage(new SendNotification($"Vous avez été démute par un Admin ({peer.UserName}) !", 0));
-				GameNetwork.EndModuleEventAsServer();
+				CommonAdminMsg.SendNotificationToPeerAsServer(playerSelected, $"Vous avez été démute par un Admin ({peer.UserName}) !");
 
 				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} n'est plus mute.", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été retiré des jouers mués par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été retiré des jouers mués par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				SecurityManager.RemoveMute(playerSelected.VirtualPlayer);
 			}
 			else
 			{
-				GameNetwork.BeginModuleEventAsServer(playerSelected);
-				GameNetwork.WriteMessage(new SendNotification($"Vous avez été mute par un Admin ({peer.UserName}) !", 0));
-				GameNetwork.EndModuleEventAsServer();
+				CommonAdminMsg.SendNotificationToPeerAsServer(playerSelected, $"Vous avez été mute par un Admin ({peer.UserName}) !");
 
 				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été mute.", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mute par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été mute par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				SecurityManager.AddMute(playerSelected.VirtualPlayer);
 			}
 
@@ -427,13 +466,13 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 			if (playerSelected.IsAdmin())
 			{
 				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} n'est plus admin.", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été retiré des admins par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été retiré des admins par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				SecurityManager.RemoveAdmin(playerSelected.VirtualPlayer);
 			}
 			else
 			{
 				Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été promu admin.", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été promu admin par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été promu admin par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				SecurityManager.AddAdmin(playerSelected.VirtualPlayer);
 			}
 
@@ -451,7 +490,7 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 				}
 				_invulnerable = !_invulnerable;
 				Log($"[AdminPanel] Tous les agents ({Mission.Current?.AllAgents.Count}) ont été rendu {state.ToString()} par l'administrateur {peer.UserName}", LogLevel.Information);
-				SendMessageToClient(peer, $"[Serveur] Tous les agents été rendu {state} par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les agents été rendu {state} par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 				return true;
 			}
 
@@ -461,25 +500,8 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 			if (playerSelected != null && playerSelected.ControlledAgent == null) return false;
 			playerSelected.ControlledAgent.ToggleInvulnerable();
 			Log($"[AdminPanel] Le joueur : {playerSelected.UserName} a été rendu {playerSelected.ControlledAgent.CurrentMortalityState} par l'administrateur {peer.UserName}", LogLevel.Information);
-			SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été rendu {playerSelected.ControlledAgent.CurrentMortalityState} par {peer.UserName}", AdminServerLog.ColorList.Success, true);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Le joueur {playerSelected.UserName} a été rendu {playerSelected.ControlledAgent.CurrentMortalityState} par {peer.UserName}", AdminServerLog.ColorList.Success, true);
 			return true;
-		}
-
-		private void SendMessageToClient(NetworkCommunicator targetPeer, string message, AdminServerLog.ColorList color, bool forAdmin = false)
-		{
-			if (!forAdmin)
-			{
-				GameNetwork.BeginModuleEventAsServer(targetPeer);
-				GameNetwork.WriteMessage(new AdminServerLog(message, color));
-				GameNetwork.EndModuleEventAsServer();
-			}
-
-			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
-			{
-				GameNetwork.BeginModuleEventAsServer(peer);
-				GameNetwork.WriteMessage(new AdminServerLog(message, color));
-				GameNetwork.EndModuleEventAsServer();
-			}
 		}
 
 		/// <summary>
@@ -502,8 +524,64 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 			catch (Exception e)
 			{
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers. ({e.Message})", LogLevel.Error);
-				SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers.", AdminServerLog.ColorList.Danger, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers.", AdminServerLog.ColorList.Danger, true);
 			}
+		}
+
+		/// <summary>
+		/// Liste et tue tous les Bots sur la mission en cours (= 2000 dégats perçant à la tête).
+		/// Ne tue les montures que s'il n'y a aucun autre agent à tuer, et uniquement si elles n'ont pas de cavalier.
+		/// Ignore les autres animaux (agents neutres, sans team et pas considérés comme montures).
+		/// </summary>
+		/// <param name="peer">NetworkCommunicator à l'origine de la demande, utile uniquement pour logguer en cas d'erreur</param>
+		private void killBots(NetworkCommunicator peer = null)
+		{
+			try
+			{
+				List<Agent> agentsToKill = new List<Agent>();
+				List<Agent> mountsToKill = new List<Agent>();
+
+				foreach (var agent in Mission.Current.AllAgents)
+				{
+					if (agent == null || !agent.IsActive())
+						continue;
+
+					// Vérifie si l'agent est contrôlé par l'IA (donc pas un joueur)
+					if (!agent.IsPlayerControlled && agent.Controller == Agent.ControllerType.AI)
+					{
+						if(!agent.IsMount && agent.Team != null)
+						{
+							agentsToKill.Add(agent);
+						}
+						else if(agent.IsMount && agent.RiderAgent?.MissionPeer == null)
+						{
+							mountsToKill.Add(agent);
+						}
+					}
+				}
+
+				foreach(var agent in agentsToKill)
+				{
+					CoreUtils.TakeDamage(agent, 2000, 2000f);
+				}
+
+				if(agentsToKill.Count == 0)
+				{
+					foreach (var agent in mountsToKill)
+					{
+						CoreUtils.TakeDamage(agent, 2000, 2000f);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log($"[AdminPanel] Erreur lors de l'exécution de killBots. ({e.Message})", LogLevel.Error);
+				if (peer != null)
+				{
+					ServerAdminMenuMsg.SendMessageToClient(peer, "[AdminPanel] Erreur lors de l'exécution de la commande killBots.", AdminServerLog.ColorList.Danger, true);
+				}
+			}
+
 		}
 
 		/// <summary>
@@ -530,7 +608,7 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 			catch (Exception e)
 			{
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction godModPlayers. ({e.Message})", LogLevel.Error);
-				SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction godModPlayers.", AdminServerLog.ColorList.Danger, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction godModPlayers.", AdminServerLog.ColorList.Danger, true);
 			}
 		}
 
@@ -554,7 +632,7 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 			catch (Exception e)
 			{
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction healPlayers. ({e.Message})", LogLevel.Error);
-				SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction healPlayers.", AdminServerLog.ColorList.Danger, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction healPlayers.", AdminServerLog.ColorList.Danger, true);
 			}
 		}
 
@@ -563,7 +641,7 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 		/// </summary>
 		/// <param name="playersToTeleport">Tous les joueurs à téléporté</param>
 		/// <param name="peer">Les joueurs seront téléportés à la position de ce joueur</param>
-		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer)
+		private void teleportPlayersToYou(List<NetworkCommunicator> playersToTeleport, NetworkCommunicator peer, Vec3 tpPosition)
 		{
 			try
 			{
@@ -571,20 +649,43 @@ Date de création du fichier: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 				{
 					// Check if admin and target player both have an agent, also prevent admin from teleporting to himself
 					if (playerToTeleport == null
-						|| playerToTeleport.ControlledAgent == null
-						|| peer.ControlledAgent == null
 						|| peer.VirtualPlayer.Id == playerToTeleport.VirtualPlayer.Id)
 					{
 						continue;
 					}
 
-					playerToTeleport.ControlledAgent.TeleportToPosition(peer.ControlledAgent.Position);
+					bool playerHasAgent = peer.ControlledAgent != null;
+					bool targetHasAgent = playerToTeleport.ControlledAgent != null;
+
+					if (playerHasAgent && targetHasAgent)
+					{
+						// Both have agents
+						playerToTeleport.ControlledAgent.TeleportToPosition(tpPosition);
+					}
+					else if (playerHasAgent && !targetHasAgent)
+					{
+						// Only requester have agent
+						var targetCameraFrame = peer.ControlledAgent.Frame;
+						ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, playerToTeleport);
+					}
+					else if (!playerHasAgent && targetHasAgent)
+					{
+						// Only target have agent
+						playerToTeleport.ControlledAgent.TeleportToPosition(tpPosition);
+
+					}
+					else if (!playerHasAgent && !targetHasAgent)
+					{
+						// Move camera of target to camera of player
+						var targetCameraFrame = peer.GetCameraFrame();
+						ServerCoreMsg.SendClientCameraPosition(targetCameraFrame, playerToTeleport);
+					}
 				}
 			}
 			catch (Exception e)
 			{
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction teleportPlayersToYou. ({e.Message})", LogLevel.Error);
-				SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction teleportPlayersToYou.", AdminServerLog.ColorList.Danger, true);
+				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction teleportPlayersToYou.", AdminServerLog.ColorList.Danger, true);
 			}
 		}
 
