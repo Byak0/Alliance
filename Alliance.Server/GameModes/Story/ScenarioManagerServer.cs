@@ -80,9 +80,10 @@ namespace Alliance.Server.GameModes.Story
 
 		public override void SetActState(ActState newState)
 		{
-			base.SetActState(newState);
-
+			// Important: sync the state before setting it and triggering events to maintain consistency with clients.
 			SyncActState(newState);
+
+			base.SetActState(newState);
 		}
 
 		/// <summary>

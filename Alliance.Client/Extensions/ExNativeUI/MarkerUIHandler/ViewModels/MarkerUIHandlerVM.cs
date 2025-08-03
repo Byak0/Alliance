@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.Extensions.AdminMenu.Model;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,393 +14,397 @@ using TaleWorlds.PlayerServices;
 
 namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels
 {
-    public class MarkerUIHandlerVM : ViewModel
-    {
-        public class MarkerDistanceComparer : IComparer<MissionMarkerTargetVM>
-        {
-            public int Compare(MissionMarkerTargetVM x, MissionMarkerTargetVM y)
-            {
-                return y.Distance.CompareTo(x.Distance);
-            }
-        }
+	public class MarkerUIHandlerVM : ViewModel
+	{
+		public class MarkerDistanceComparer : IComparer<MissionMarkerTargetVM>
+		{
+			public int Compare(MissionMarkerTargetVM x, MissionMarkerTargetVM y)
+			{
+				return y.Distance.CompareTo(x.Distance);
+			}
+		}
 
-        private readonly Camera _missionCamera;
+		private readonly Camera _missionCamera;
 
-        private bool _prevEnabledState;
+		private bool _prevEnabledState;
 
-        private bool _fadeOutTimerStarted;
+		private bool _fadeOutTimerStarted;
 
-        private float _fadeOutTimer;
+		private float _fadeOutTimer;
 
-        private MarkerDistanceComparer _distanceComparer;
+		private MarkerDistanceComparer _distanceComparer;
 
-        private readonly ICommanderInfo _commanderInfo;
+		private readonly ICommanderInfo _commanderInfo;
 
-        private readonly Dictionary<MissionPeer, MissionPeerMarkerTargetVM> _teammateDictionary;
+		public readonly Dictionary<MissionPeer, CustomMissionPeerMarkerTargetVM> _teammateDictionary;
 
-        private readonly MissionMultiplayerSiegeClient _siegeClient;
+		public readonly Dictionary<MissionPeer, CustomMissionPeerMarkerTargetVM> _currentSelectedUserVMDico = new();
 
-        private readonly List<PlayerId> _friendIDs;
+		private readonly MissionMultiplayerSiegeClient _siegeClient;
 
-        private MBBindingList<MissionFlagMarkerTargetVM> _flagTargets;
+		private readonly List<PlayerId> _friendIDs;
 
-        private MBBindingList<MissionPeerMarkerTargetVM> _peerTargets;
+		private MBBindingList<MissionFlagMarkerTargetVM> _flagTargets;
 
-        private MBBindingList<MissionSiegeEngineMarkerTargetVM> _siegeEngineTargets;
+		private MBBindingList<CustomMissionPeerMarkerTargetVM> _peerTargets;
 
-        private MBBindingList<MissionAlwaysVisibleMarkerTargetVM> _alwaysVisibleTargets;
+		private MBBindingList<MissionSiegeEngineMarkerTargetVM> _siegeEngineTargets;
 
-        private bool _isEnabled;
+		private MBBindingList<MissionAlwaysVisibleMarkerTargetVM> _alwaysVisibleTargets;
 
-        [DataSourceProperty]
-        public MBBindingList<MissionFlagMarkerTargetVM> FlagTargets
-        {
-            get
-            {
-                return _flagTargets;
-            }
-            set
-            {
-                if (value != _flagTargets)
-                {
-                    _flagTargets = value;
-                    OnPropertyChangedWithValue(value, "FlagTargets");
-                }
-            }
-        }
+		private bool _isEnabled;
 
-        [DataSourceProperty]
-        public MBBindingList<MissionPeerMarkerTargetVM> PeerTargets
-        {
-            get
-            {
-                return _peerTargets;
-            }
-            set
-            {
-                if (value != _peerTargets)
-                {
-                    _peerTargets = value;
-                    OnPropertyChangedWithValue(value, "PeerTargets");
-                }
-            }
-        }
+		[DataSourceProperty]
+		public MBBindingList<MissionFlagMarkerTargetVM> FlagTargets
+		{
+			get
+			{
+				return _flagTargets;
+			}
+			set
+			{
+				if (value != _flagTargets)
+				{
+					_flagTargets = value;
+					OnPropertyChangedWithValue(value, "FlagTargets");
+				}
+			}
+		}
 
-        [DataSourceProperty]
-        public MBBindingList<MissionSiegeEngineMarkerTargetVM> SiegeEngineTargets
-        {
-            get
-            {
-                return _siegeEngineTargets;
-            }
-            set
-            {
-                if (value != _siegeEngineTargets)
-                {
-                    _siegeEngineTargets = value;
-                    OnPropertyChangedWithValue(value, "SiegeEngineTargets");
-                }
-            }
-        }
+		[DataSourceProperty]
+		public MBBindingList<CustomMissionPeerMarkerTargetVM> PeerTargets
+		{
+			get
+			{
+				return _peerTargets;
+			}
+			set
+			{
+				if (value != _peerTargets)
+				{
+					_peerTargets = value;
+					OnPropertyChangedWithValue(value, "PeerTargets");
+				}
+			}
+		}
 
-        [DataSourceProperty]
-        public MBBindingList<MissionAlwaysVisibleMarkerTargetVM> AlwaysVisibleTargets
-        {
-            get
-            {
-                return _alwaysVisibleTargets;
-            }
-            set
-            {
-                if (value != _alwaysVisibleTargets)
-                {
-                    _alwaysVisibleTargets = value;
-                    OnPropertyChangedWithValue(value, "AlwaysVisibleTargets");
-                }
-            }
-        }
+		[DataSourceProperty]
+		public MBBindingList<MissionSiegeEngineMarkerTargetVM> SiegeEngineTargets
+		{
+			get
+			{
+				return _siegeEngineTargets;
+			}
+			set
+			{
+				if (value != _siegeEngineTargets)
+				{
+					_siegeEngineTargets = value;
+					OnPropertyChangedWithValue(value, "SiegeEngineTargets");
+				}
+			}
+		}
 
-        [DataSourceProperty]
-        public bool IsEnabled
-        {
-            get
-            {
-                return _isEnabled;
-            }
-            set
-            {
-                if (value != _isEnabled)
-                {
-                    _isEnabled = value;
-                    OnPropertyChangedWithValue(value, "IsEnabled");
-                    UpdateTargetStates(value);
-                }
-            }
-        }
+		[DataSourceProperty]
+		public MBBindingList<MissionAlwaysVisibleMarkerTargetVM> AlwaysVisibleTargets
+		{
+			get
+			{
+				return _alwaysVisibleTargets;
+			}
+			set
+			{
+				if (value != _alwaysVisibleTargets)
+				{
+					_alwaysVisibleTargets = value;
+					OnPropertyChangedWithValue(value, "AlwaysVisibleTargets");
+				}
+			}
+		}
 
-        public MarkerUIHandlerVM(Camera missionCamera)
-        {
-            _missionCamera = missionCamera;
-            FlagTargets = new MBBindingList<MissionFlagMarkerTargetVM>();
-            PeerTargets = new MBBindingList<MissionPeerMarkerTargetVM>();
-            SiegeEngineTargets = new MBBindingList<MissionSiegeEngineMarkerTargetVM>();
-            AlwaysVisibleTargets = new MBBindingList<MissionAlwaysVisibleMarkerTargetVM>();
-            _teammateDictionary = new Dictionary<MissionPeer, MissionPeerMarkerTargetVM>();
-            _distanceComparer = new MarkerDistanceComparer();
-            _commanderInfo = Mission.Current.GetMissionBehavior<ICommanderInfo>();
-            if (_commanderInfo != null)
-            {
-                _commanderInfo.OnFlagNumberChangedEvent += OnFlagNumberChangedEvent;
-                _commanderInfo.OnCapturePointOwnerChangedEvent += OnCapturePointOwnerChangedEvent;
-                OnFlagNumberChangedEvent();
-                _siegeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerSiegeClient>();
-                if (_siegeClient != null)
-                {
-                    _siegeClient.OnCapturePointRemainingMoraleGainsChangedEvent += OnCapturePointRemainingMoraleGainsChanged;
-                }
-            }
+		[DataSourceProperty]
+		public bool IsEnabled
+		{
+			get
+			{
+				return _isEnabled;
+			}
+			set
+			{
+				if (value != _isEnabled)
+				{
+					_isEnabled = value;
+					OnPropertyChangedWithValue(value, "IsEnabled");
+					UpdateTargetStates(value);
+				}
+			}
+		}
 
-            MissionPeer.OnTeamChanged += OnTeamChanged;
-            _friendIDs = new List<PlayerId>();
-            IFriendListService[] friendListServices = PlatformServices.Instance.GetFriendListServices();
-            foreach (IFriendListService friendListService in friendListServices)
-            {
-                _friendIDs.AddRange(friendListService.GetAllFriends());
-            }
-        }
+		public MarkerUIHandlerVM(Camera missionCamera)
+		{
+			_missionCamera = missionCamera;
+			FlagTargets = new MBBindingList<MissionFlagMarkerTargetVM>();
+			PeerTargets = new MBBindingList<CustomMissionPeerMarkerTargetVM>();
+			SiegeEngineTargets = new MBBindingList<MissionSiegeEngineMarkerTargetVM>();
+			AlwaysVisibleTargets = new MBBindingList<MissionAlwaysVisibleMarkerTargetVM>();
+			_teammateDictionary = new Dictionary<MissionPeer, CustomMissionPeerMarkerTargetVM>();
+			_distanceComparer = new MarkerDistanceComparer();
+			_commanderInfo = Mission.Current.GetMissionBehavior<ICommanderInfo>();
+			if (_commanderInfo != null)
+			{
+				_commanderInfo.OnFlagNumberChangedEvent += OnFlagNumberChangedEvent;
+				_commanderInfo.OnCapturePointOwnerChangedEvent += OnCapturePointOwnerChangedEvent;
+				OnFlagNumberChangedEvent();
+				_siegeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerSiegeClient>();
+				if (_siegeClient != null)
+				{
+					_siegeClient.OnCapturePointRemainingMoraleGainsChangedEvent += OnCapturePointRemainingMoraleGainsChanged;
+				}
+			}
 
-        public override void OnFinalize()
-        {
-            base.OnFinalize();
-            if (_commanderInfo != null)
-            {
-                _commanderInfo.OnFlagNumberChangedEvent -= OnFlagNumberChangedEvent;
-                _commanderInfo.OnCapturePointOwnerChangedEvent -= OnCapturePointOwnerChangedEvent;
-                if (_siegeClient != null)
-                {
-                    _siegeClient.OnCapturePointRemainingMoraleGainsChangedEvent -= OnCapturePointRemainingMoraleGainsChanged;
-                }
-            }
+			MissionPeer.OnTeamChanged += OnTeamChanged;
+			_friendIDs = new List<PlayerId>();
+			IFriendListService[] friendListServices = PlatformServices.Instance.GetFriendListServices();
+			foreach (IFriendListService friendListService in friendListServices)
+			{
+				_friendIDs.AddRange(friendListService.GetAllFriends());
+			}
+		}
 
-            MissionPeer.OnTeamChanged -= OnTeamChanged;
-        }
+		public override void OnFinalize()
+		{
+			base.OnFinalize();
+			if (_commanderInfo != null)
+			{
+				_commanderInfo.OnFlagNumberChangedEvent -= OnFlagNumberChangedEvent;
+				_commanderInfo.OnCapturePointOwnerChangedEvent -= OnCapturePointOwnerChangedEvent;
+				if (_siegeClient != null)
+				{
+					_siegeClient.OnCapturePointRemainingMoraleGainsChangedEvent -= OnCapturePointRemainingMoraleGainsChanged;
+				}
+			}
 
-        public void Tick(float dt)
-        {
-            OnRefreshPeerMarkers();
-            UpdateAlwaysVisibleTargetScreenPosition();
-            if (IsEnabled)
-            {
-                UpdateTargetScreenPositions();
-                _fadeOutTimerStarted = false;
-                _fadeOutTimer = 0f;
-                _prevEnabledState = IsEnabled;
-            }
-            else
-            {
-                if (_prevEnabledState)
-                {
-                    _fadeOutTimerStarted = true;
-                }
+			MissionPeer.OnTeamChanged -= OnTeamChanged;
+		}
 
-                if (_fadeOutTimerStarted)
-                {
-                    _fadeOutTimer += dt;
-                }
+		public void Tick(float dt)
+		{
+			OnRefreshPeerMarkers();
+			UpdateAlwaysVisibleTargetScreenPosition();
+			if (IsEnabled)
+			{
+				UpdateTargetScreenPositions();
+				_fadeOutTimerStarted = false;
+				_fadeOutTimer = 0f;
+				_prevEnabledState = IsEnabled;
+			}
+			else
+			{
+				if (_prevEnabledState)
+				{
+					_fadeOutTimerStarted = true;
+				}
 
-                if (_fadeOutTimer < 2f)
-                {
-                    UpdateTargetScreenPositions();
-                }
-                else
-                {
-                    _fadeOutTimerStarted = false;
-                }
-            }
+				if (_fadeOutTimerStarted)
+				{
+					_fadeOutTimer += dt;
+				}
 
-            _prevEnabledState = IsEnabled;
-        }
+				if (_fadeOutTimer < 2f)
+				{
+					UpdateTargetScreenPositions();
+				}
+				else
+				{
+					_fadeOutTimerStarted = false;
+				}
+			}
 
-        private void OnCapturePointRemainingMoraleGainsChanged(int[] remainingMoraleGainsArr)
-        {
-            foreach (MissionFlagMarkerTargetVM flagTarget in FlagTargets)
-            {
-                int flagIndex = flagTarget.TargetFlag.FlagIndex;
-                if (flagIndex >= 0 && flagIndex < remainingMoraleGainsArr.Length)
-                {
-                    flagTarget.OnRemainingMoraleChanged(remainingMoraleGainsArr[flagIndex]);
-                }
-            }
+			_prevEnabledState = IsEnabled;
+		}
 
-            Debug.Print("OnCapturePointRemainingMoraleGainsChanged: " + remainingMoraleGainsArr.Length);
-        }
+		private void OnCapturePointRemainingMoraleGainsChanged(int[] remainingMoraleGainsArr)
+		{
+			foreach (MissionFlagMarkerTargetVM flagTarget in FlagTargets)
+			{
+				int flagIndex = flagTarget.TargetFlag.FlagIndex;
+				if (flagIndex >= 0 && flagIndex < remainingMoraleGainsArr.Length)
+				{
+					flagTarget.OnRemainingMoraleChanged(remainingMoraleGainsArr[flagIndex]);
+				}
+			}
 
-        private void OnTeamChanged(NetworkCommunicator peer, Team previousTeam, Team newTeam)
-        {
-            if (_commanderInfo != null)
-            {
-                OnFlagNumberChangedEvent();
-            }
+			Debug.Print("OnCapturePointRemainingMoraleGainsChanged: " + remainingMoraleGainsArr.Length);
+		}
 
-            if (!peer.IsMine)
-            {
-                return;
-            }
+		private void OnTeamChanged(NetworkCommunicator peer, Team previousTeam, Team newTeam)
+		{
+			if (_commanderInfo != null)
+			{
+				OnFlagNumberChangedEvent();
+			}
 
-            SiegeEngineTargets.Clear();
-            foreach (GameEntity item in Mission.Current.GetActiveEntitiesWithScriptComponentOfType<SiegeWeapon>())
-            {
-                SiegeWeapon firstScriptOfType = item.GetFirstScriptOfType<SiegeWeapon>();
-                if (newTeam.Side == firstScriptOfType.Side)
-                {
-                    SiegeEngineTargets.Add(new MissionSiegeEngineMarkerTargetVM(firstScriptOfType));
-                }
-            }
-        }
+			if (!peer.IsMine)
+			{
+				return;
+			}
 
-        private void UpdateTargetScreenPositions()
-        {
-            PeerTargets.ApplyActionOnAllItems(delegate (MissionPeerMarkerTargetVM pt)
-            {
-                pt.UpdateScreenPosition(_missionCamera);
-            });
-            FlagTargets.ApplyActionOnAllItems(delegate (MissionFlagMarkerTargetVM ft)
-            {
-                ft.UpdateScreenPosition(_missionCamera);
-            });
-            SiegeEngineTargets.ApplyActionOnAllItems(delegate (MissionSiegeEngineMarkerTargetVM st)
-            {
-                st.UpdateScreenPosition(_missionCamera);
-            });
-            PeerTargets.Sort(_distanceComparer);
-            FlagTargets.Sort(_distanceComparer);
-            SiegeEngineTargets.Sort(_distanceComparer);
-        }
+			SiegeEngineTargets.Clear();
+			foreach (GameEntity item in Mission.Current.GetActiveEntitiesWithScriptComponentOfType<SiegeWeapon>())
+			{
+				SiegeWeapon firstScriptOfType = item.GetFirstScriptOfType<SiegeWeapon>();
+				if (newTeam.Side == firstScriptOfType.Side)
+				{
+					SiegeEngineTargets.Add(new MissionSiegeEngineMarkerTargetVM(firstScriptOfType));
+				}
+			}
+		}
 
-        private void UpdateAlwaysVisibleTargetScreenPosition()
-        {
-            foreach (MissionAlwaysVisibleMarkerTargetVM alwaysVisibleTarget in AlwaysVisibleTargets)
-            {
-                alwaysVisibleTarget.UpdateScreenPosition(_missionCamera);
-            }
-        }
+		private void UpdateTargetScreenPositions()
+		{
+			PeerTargets.ApplyActionOnAllItems(delegate (CustomMissionPeerMarkerTargetVM pt)
+			{
+				pt.UpdateScreenPosition(_missionCamera);
+			});
+			FlagTargets.ApplyActionOnAllItems(delegate (MissionFlagMarkerTargetVM ft)
+			{
+				ft.UpdateScreenPosition(_missionCamera);
+			});
+			SiegeEngineTargets.ApplyActionOnAllItems(delegate (MissionSiegeEngineMarkerTargetVM st)
+			{
+				st.UpdateScreenPosition(_missionCamera);
+			});
+			PeerTargets.Sort(_distanceComparer);
+			FlagTargets.Sort(_distanceComparer);
+			SiegeEngineTargets.Sort(_distanceComparer);
+		}
 
-        private void OnFlagNumberChangedEvent()
-        {
-            ResetCapturePointLists();
-            InitCapturePoints();
-        }
+		private void UpdateAlwaysVisibleTargetScreenPosition()
+		{
+			foreach (MissionAlwaysVisibleMarkerTargetVM alwaysVisibleTarget in AlwaysVisibleTargets)
+			{
+				alwaysVisibleTarget.UpdateScreenPosition(_missionCamera);
+			}
+		}
 
-        private void InitCapturePoints()
-        {
-            if (_commanderInfo != null && Config.Instance.ShowFlagMarkers)
-            {
-                FlagCapturePoint[] array = _commanderInfo.AllCapturePoints.Where((c) => !c.IsDeactivated).ToArray();
-                foreach (FlagCapturePoint flag in array)
-                {
-                    MissionFlagMarkerTargetVM missionFlagMarkerTargetVM = new MissionFlagMarkerTargetVM(flag);
-                    FlagTargets.Add(missionFlagMarkerTargetVM);
-                    missionFlagMarkerTargetVM.OnOwnerChanged(_commanderInfo.GetFlagOwner(flag));
-                }
-            }
-        }
+		private void OnFlagNumberChangedEvent()
+		{
+			ResetCapturePointLists();
+			InitCapturePoints();
+		}
 
-        private void ResetCapturePointLists()
-        {
-            FlagTargets.Clear();
-        }
+		private void InitCapturePoints()
+		{
+			if (_commanderInfo != null && Config.Instance.ShowFlagMarkers)
+			{
+				FlagCapturePoint[] array = _commanderInfo.AllCapturePoints.Where((c) => !c.IsDeactivated).ToArray();
+				foreach (FlagCapturePoint flag in array)
+				{
+					MissionFlagMarkerTargetVM missionFlagMarkerTargetVM = new MissionFlagMarkerTargetVM(flag);
+					FlagTargets.Add(missionFlagMarkerTargetVM);
+					missionFlagMarkerTargetVM.OnOwnerChanged(_commanderInfo.GetFlagOwner(flag));
+				}
+			}
+		}
 
-        private void OnCapturePointOwnerChangedEvent(FlagCapturePoint flag, Team team)
-        {
-            foreach (MissionFlagMarkerTargetVM flagTarget in FlagTargets)
-            {
-                if (flagTarget.TargetFlag == flag)
-                {
-                    flagTarget.OnOwnerChanged(team);
-                }
-            }
-        }
+		private void ResetCapturePointLists()
+		{
+			FlagTargets.Clear();
+		}
 
-        private void OnRefreshPeerMarkers()
-        {
-            if (GameNetwork.MyPeer == null)
-            {
-                return;
-            }
+		private void OnCapturePointOwnerChangedEvent(FlagCapturePoint flag, Team team)
+		{
+			foreach (MissionFlagMarkerTargetVM flagTarget in FlagTargets)
+			{
+				if (flagTarget.TargetFlag == flag)
+				{
+					flagTarget.OnOwnerChanged(team);
+				}
+			}
+		}
 
-            BattleSideEnum battleSideEnum = GameNetwork.MyPeer.ControlledAgent?.Team.Side ?? BattleSideEnum.None;
-            List<MissionPeerMarkerTargetVM> list = PeerTargets.ToList();
-            foreach (MissionPeer missionPeer in VirtualPlayer.Peers<MissionPeer>())
-            {
-                if (missionPeer?.Team == null || missionPeer.IsMine || missionPeer.Team.Side != battleSideEnum)
-                {
-                    continue;
-                }
+		private void OnRefreshPeerMarkers()
+		{
+			if (GameNetwork.MyPeer == null)
+			{
+				return;
+			}
 
-                IEnumerable<MissionPeerMarkerTargetVM> source = PeerTargets.Where((t) => t.TargetPeer?.Peer.Id.Equals(missionPeer.Peer.Id) ?? false);
-                if (source.Count() > 0)
-                {
-                    MissionPeerMarkerTargetVM currentMarker = source.First();
-                    IEnumerable<MissionAlwaysVisibleMarkerTargetVM> source2 = AlwaysVisibleTargets.Where((t) => t.TargetPeer.Peer.Id.Equals(currentMarker.TargetPeer.Peer.Id));
-                    if (BannerlordConfig.EnableDeathIcon && !missionPeer.IsControlledAgentActive)
-                    {
-                        if (!source2.Any() && source.First().TargetPeer?.ControlledAgent != null)
-                        {
-                            MissionAlwaysVisibleMarkerTargetVM missionAlwaysVisibleMarkerTargetVM = new MissionAlwaysVisibleMarkerTargetVM(currentMarker.TargetPeer, source.First().WorldPosition, OnRemoveAlwaysVisibleMarker);
-                            missionAlwaysVisibleMarkerTargetVM.UpdateScreenPosition(_missionCamera);
-                            AlwaysVisibleTargets.Add(missionAlwaysVisibleMarkerTargetVM);
-                        }
+			BattleSideEnum battleSideEnum = GameNetwork.MyPeer.ControlledAgent?.Team.Side ?? BattleSideEnum.None;
+			bool isAdmin = GameNetwork.MyPeer.IsAdmin();
 
-                        continue;
-                    }
-                }
+			List<CustomMissionPeerMarkerTargetVM> list = PeerTargets.ToList();
+			foreach (MissionPeer missionPeer in VirtualPlayer.Peers<MissionPeer>())
+			{
+				if (missionPeer?.Team == null || missionPeer.IsMine || (missionPeer.Team.Side != battleSideEnum && !(isAdmin && XmlAdminConfig.GetInstance().CanSeeAllPlayersNames)))
+				{
+					continue;
+				}
 
-                // Only show marker of officers
-                if (missionPeer.Peer.IsOfficer())
-                {
-                    if (!_teammateDictionary.ContainsKey(missionPeer))
-                    {
-                        MissionPeerMarkerTargetVM missionPeerMarkerTargetVM = new MissionPeerMarkerTargetVM(missionPeer, _friendIDs.Contains(missionPeer.Peer.Id));
-                        PeerTargets.Add(missionPeerMarkerTargetVM);
-                        _teammateDictionary.Add(missionPeer, missionPeerMarkerTargetVM);
-                    }
-                    else
-                    {
-                        list.Remove(_teammateDictionary[missionPeer]);
-                    }
-                }
-            }
+				IEnumerable<CustomMissionPeerMarkerTargetVM> source = PeerTargets.Where((t) => t.TargetPeer?.Peer.Id.Equals(missionPeer.Peer.Id) ?? false);
+				if (source.Count() > 0)
+				{
+					CustomMissionPeerMarkerTargetVM currentMarker = source.First();
+					IEnumerable<MissionAlwaysVisibleMarkerTargetVM> source2 = AlwaysVisibleTargets.Where((t) => t.TargetPeer.Peer.Id.Equals(currentMarker.TargetPeer.Peer.Id));
+					if (BannerlordConfig.EnableDeathIcon && !missionPeer.IsControlledAgentActive)
+					{
+						if (!source2.Any() && source.First().TargetPeer?.ControlledAgent != null)
+						{
+							MissionAlwaysVisibleMarkerTargetVM missionAlwaysVisibleMarkerTargetVM = new MissionAlwaysVisibleMarkerTargetVM(currentMarker.TargetPeer, source.First().WorldPosition, OnRemoveAlwaysVisibleMarker);
+							missionAlwaysVisibleMarkerTargetVM.UpdateScreenPosition(_missionCamera);
+							AlwaysVisibleTargets.Add(missionAlwaysVisibleMarkerTargetVM);
+						}
 
-            foreach (MissionPeerMarkerTargetVM item in list)
-            {
-                MissionPeerMarkerTargetVM current;
-                if ((current = item) != null)
-                {
-                    PeerTargets.Remove(current);
-                    _teammateDictionary.Remove(current.TargetPeer);
-                }
-            }
-        }
+						continue;
+					}
+				}
 
-        public void OnRemoveAlwaysVisibleMarker(MissionAlwaysVisibleMarkerTargetVM marker)
-        {
-            AlwaysVisibleTargets.Remove(marker);
-        }
+				// Only show marker of officers
+				if (missionPeer.Peer.IsOfficer() || (isAdmin && XmlAdminConfig.GetInstance().CanSeeAllPlayersNames))
+				{
+					if (!_teammateDictionary.ContainsKey(missionPeer))
+					{
+						CustomMissionPeerMarkerTargetVM CustomMissionPeerMarkerTargetVM = new CustomMissionPeerMarkerTargetVM(missionPeer, _friendIDs.Contains(missionPeer.Peer.Id));
+						PeerTargets.Add(CustomMissionPeerMarkerTargetVM);
+						_teammateDictionary.Add(missionPeer, CustomMissionPeerMarkerTargetVM);
+					}
+					else
+					{
+						list.Remove(_teammateDictionary[missionPeer]);
+					}
+				}
+			}
 
-        private void UpdateTargetStates(bool state)
-        {
-            PeerTargets.ApplyActionOnAllItems(delegate (MissionPeerMarkerTargetVM pt)
-            {
-                pt.IsEnabled = state;
-            });
-            FlagTargets.ApplyActionOnAllItems(delegate (MissionFlagMarkerTargetVM ft)
-            {
-                ft.IsEnabled = state;
-            });
-            SiegeEngineTargets.ApplyActionOnAllItems(delegate (MissionSiegeEngineMarkerTargetVM st)
-            {
-                st.IsEnabled = state;
-            });
-        }
-    }
+			foreach (CustomMissionPeerMarkerTargetVM item in list)
+			{
+				CustomMissionPeerMarkerTargetVM current;
+				if ((current = item) != null)
+				{
+					PeerTargets.Remove(current);
+					_teammateDictionary.Remove(current.TargetPeer);
+				}
+			}
+		}
+
+		public void OnRemoveAlwaysVisibleMarker(MissionAlwaysVisibleMarkerTargetVM marker)
+		{
+			AlwaysVisibleTargets.Remove(marker);
+		}
+
+		private void UpdateTargetStates(bool state)
+		{
+			PeerTargets.ApplyActionOnAllItems(delegate (CustomMissionPeerMarkerTargetVM pt)
+			{
+				pt.IsEnabled = state;
+			});
+			FlagTargets.ApplyActionOnAllItems(delegate (MissionFlagMarkerTargetVM ft)
+			{
+				ft.IsEnabled = state;
+			});
+			SiegeEngineTargets.ApplyActionOnAllItems(delegate (MissionSiegeEngineMarkerTargetVM st)
+			{
+				st.IsEnabled = state;
+			});
+		}
+	}
 }

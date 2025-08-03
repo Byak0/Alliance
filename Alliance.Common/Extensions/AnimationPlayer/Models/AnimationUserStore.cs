@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -54,7 +55,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 			}
 			else
 			{
-				_filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Mount and Blade II Bannerlord", "Configs", SubModule.CurrentModuleName, "MyAnimations.xml");
+				_filePath = PathHelper.GetAllianceDocumentFilePath("MyAnimations.xml");
 				// Only loads user config for admins for now
 				if (File.Exists(_filePath) && GameNetwork.MyPeer != null && GameNetwork.MyPeer.IsAdmin())
 				{

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Client.Extensions.AdminMenu.Model;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System;
 using System.Linq;
@@ -6,6 +7,7 @@ using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 {
@@ -28,6 +30,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private RolesVM _roles;
 		private NetworkPeerVM _selectedPeer;
 		private bool _isSudo;
+		private bool _isVisible;
 
 		public AdminVM()
 		{
@@ -51,6 +54,23 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					_isSudo = value;
 					OnPropertyChangedWithValue(value, "IsSudo");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool IsVisible
+		{
+			get
+			{
+				return _isVisible;
+			}
+			set
+			{
+				if (value != _isVisible)
+				{
+					_isVisible = value;
+					OnPropertyChangedWithValue(value, "IsVisible");
 				}
 			}
 		}
@@ -315,7 +335,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		public void KillPlayers()
 		{
 			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { KillPlayers = true, PlayerSelected =  null });
+			GameNetwork.WriteMessage(new AdminClient() { KillPlayers = true, PlayerSelected = null });
 			GameNetwork.EndModuleEventAsClient();
 		}
 
@@ -411,6 +431,13 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			GameNetwork.EndModuleEventAsClient();
 		}
 
+		public void ToggleModoVision()
+		{
+			bool isModoVisionActivated = !XmlAdminConfig.GetInstance().CanSeeAllPlayersNames;
+			XmlAdminConfig.GetInstance().CanSeeAllPlayersNames = isModoVisionActivated;
+			Log("Modo vision is now : " + (isModoVisionActivated ? "ON" : "OFF"));
+		}
+
 		public void SetAdmin()
 		{
 			if (_selectedPeer == null) { return; }
@@ -424,10 +451,10 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
 		public void RefreshPlayerList()
 		{
-			_networkCommunicators = new MBBindingList<NetworkPeerVM>();
+			NetworkPeers = new MBBindingList<NetworkPeerVM>();
 			GameNetwork.NetworkPeers.ToList().ForEach(x =>
 			{
-				_networkCommunicators.Add(new NetworkPeerVM()
+				NetworkPeers.Add(new NetworkPeerVM()
 				{
 					Username = x.UserName,
 					AgentIndex = x.ControlledAgent?.Index ?? -1,
@@ -437,7 +464,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 					IsMuted = x.IsMuted()
 				});
 			});
-			_selectedPeer = _networkCommunicators.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
+			_selectedPeer = NetworkPeers.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
 		}
 
 		public void SelectTarget(Agent agent)

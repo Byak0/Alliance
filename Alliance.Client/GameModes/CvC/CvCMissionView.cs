@@ -38,7 +38,6 @@ namespace Alliance.Client.GameModes.CvC
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 			});
 			return views.ToArray();
 		}
