@@ -29,7 +29,6 @@ namespace Alliance.Client.GameModes.PvC
 				new FormationStatusView(),
 				new HUDExtensionUIHandlerView(),
 				new SpectatorView(),
-				new PlayerSpawnMenuView(),
 
 				// Native views
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),

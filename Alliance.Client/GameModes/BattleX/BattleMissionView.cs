@@ -27,7 +27,6 @@ namespace Alliance.Client.GameModes.BattleX
 				new FormationStatusView(),
 				new HUDExtensionUIHandlerView(),
 				new AgentStatusView(),
-				new PlayerSpawnMenuView(),
 
 				// Native battle views
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
