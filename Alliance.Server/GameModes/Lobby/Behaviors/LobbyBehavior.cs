@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.GameModes.Lobby.Behaviors;
+using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
@@ -7,6 +8,8 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 {
 	public class LobbyBehavior : MissionMultiplayerGameModeBase
 	{
+		private PlayerSpawnBehavior _playerSpawnBehavior;
+
 		public override bool IsGameModeHidingAllAgentVisuals
 		{
 			get
@@ -31,15 +34,19 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 		public override void OnBehaviorInitialize()
 		{
 			base.OnBehaviorInitialize();
-			BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-			Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
-			Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);
-			teamAttack.SetIsEnemyOf(teamAttack, true);
 
 			BasicCultureObject cultureDef = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			Banner bannerDef = new Banner(cultureDef.BannerKey, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1);
 			Team teamDef = Mission.Teams.Add(BattleSideEnum.Defender, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1, bannerDef, isPlayerGeneral: false, isPlayerSergeant: true, true);
 			teamDef.SetIsEnemyOf(teamDef, true);
+
+			BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
+			Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);
+			teamAttack.SetIsEnemyOf(teamAttack, true);
+
+			_playerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
+			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
 		}
 
 		protected override void HandleEarlyNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
@@ -50,8 +57,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 		protected override void HandleNewClientAfterSynchronized(NetworkCommunicator networkPeer)
 		{
 			MissionPeer component = networkPeer.GetComponent<MissionPeer>();
-			component.Team = Mission.AttackerTeam;
-			component.Culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			component.Team = Mission.DefenderTeam;
 		}
 
 		public LobbyBehavior()

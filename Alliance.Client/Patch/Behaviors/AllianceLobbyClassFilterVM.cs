@@ -33,7 +33,7 @@ namespace Alliance.Client.Patch.Behaviors
 				onSelectionChange(classItem, false);
 
 			// Add new factions
-			foreach (string factionName in Alliance.Common.Utilities.Factions.Instance.AvailableCultures.Keys)
+			foreach (string factionName in Common.Core.Utils.Factions.Instance.AvailableCultures.Keys)
 			{
 				Factions.Add(new MPLobbyClassFilterFactionItemVM(factionName, true, factionChangedWrapper, selectionChangedWrapper));
 			}

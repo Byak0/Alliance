@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System.Xml.Serialization;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -16,7 +17,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		public float Radius = 1f;
 		public bool UseLocalSpace = false;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
 		public GameEntity LocalEntity;
 

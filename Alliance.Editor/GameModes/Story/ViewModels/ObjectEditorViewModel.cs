@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Conditions;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -81,7 +82,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			foreach (FieldInfo fi in obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
 			{
 				// Skip fields that are marked as not editable
-				ScenarioEditorAttribute attribute = fi.GetCustomAttribute<ScenarioEditorAttribute>();
+				ConfigPropertyAttribute attribute = fi.GetCustomAttribute<ConfigPropertyAttribute>();
 				if (attribute == null || attribute.IsEditable)
 				{
 					// Create a view model to display the field content

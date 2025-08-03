@@ -1,8 +1,6 @@
-﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -37,7 +35,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 
 		public override void OnRemoveBehavior()
 		{
-			
+
 			_playersPreviousCharacter.Clear();
 			base.OnRemoveBehavior();
 		}
@@ -53,9 +51,9 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 			MissionPeer missionPeer = playerSelected.GetComponent<MissionPeer>();
 
 			if (CanPlayerBeRespawned(missionPeer) && playerSelected.IsSynchronized && (missionPeer.Team == Mission.AttackerTeam || missionPeer.Team == Mission.DefenderTeam))
-				{
-					SpawnPlayer(playerSelected, missionPeer, GetCharacterOfPeer(missionPeer));
-				}
+			{
+				SpawnPlayer(playerSelected, missionPeer, GetCharacterOfPeer(missionPeer));
+			}
 		}
 
 		/// <summary>
@@ -63,6 +61,9 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 		/// </summary>
 		private BasicCharacterObject GetCharacterOfPeer(MissionPeer missionPeer)
 		{
+			BasicCharacterObject character = PlayerSpawnMenu.Instance.GetPlayerAssignment(missionPeer.GetNetworkPeer()).Character?.Character;
+			if (character != null) return character;
+
 			if (_playersPreviousCharacter.ContainsKey(missionPeer) && _playersPreviousCharacter[missionPeer].Culture == missionPeer.Culture)
 			{
 				return _playersPreviousCharacter[missionPeer];
@@ -85,8 +86,18 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 
 		public void SpawnPlayer(NetworkCommunicator playerSelected, MissionPeer missionPeer, BasicCharacterObject basicCharacterObject)
 		{
-			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForCharacter(basicCharacterObject);
-			MPOnSpawnPerkHandler perkHandler = GetOnSpawnPerkHandler(missionPeer);
+			MPOnSpawnPerkHandler perkHandler;
+
+			List<int> selectedPerks = PlayerSpawnMenu.Instance.GetPlayerAssignment(playerSelected).Perks;
+			if (selectedPerks != null)
+			{
+				perkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(basicCharacterObject, selectedPerks));
+			}
+			else
+			{
+				perkHandler = GetOnSpawnPerkHandler(missionPeer);
+			}
+
 			BasicCultureObject _cultureTeam;
 			MPHeroClass _defaultMpClassTeam;
 

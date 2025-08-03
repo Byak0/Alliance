@@ -1,0 +1,248 @@
+<Brushes>
+  <Brush Name="Tournament.ControlButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="bottom_button_9" Color="#FFFFFFFF" AlphaFactor="0.8" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="2.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.8" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.ControlButton.Join" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\bottom_button" HueFactor="-5" Color="#FFFFFFFF" AlphaFactor="0.6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.8"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="2.5"   />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85"   />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4"  />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.8"   />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.ControlButton.Leave" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\bottom_button" HueFactor="-5" Color="#FFFFFFFF" AlphaFactor="0.6 " />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.8"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="2.5"   />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85"   />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4"  />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.8"   />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.ControlButton.SkipAll.Icon" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\simple_dropdown_arrow_left" HorizontalFlip="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2"   />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85"   />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4"  />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.4"   />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.ControlButton.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FAF4DEFF" TextGlowColor="#000000FF" FontSize="24" />
+      <Style Name="Disabled" FontColor="#969387FF" />
+    </Styles>
+  </Brush>
+    <Brush Name="Tournament.Prize.Title.Text" Font="Galahad" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D3B4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.BetWindow.Text" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D3B4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Category">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Disabled" Color="#AAAAAAFF" AlphaFactor="0.2" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Participant.Text" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#FAF4DEFF" TextGlowColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.MainHero.Participant.Text" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#8CDBB5FF" TextGlowColor="#000000FF" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Match">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Team">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Participant">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\party_bar_collapser" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
+      </Style>
+      <Style Name="Current" AnimationToPlayOnBegin="CurrentMatchAnimation">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
+      </Style>
+      <Style Name="Over">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Dead">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="CurrentMatchAnimation" Duration="1" Loop="true">
+        <AnimationProperty PropertyName="ColorFactor" LayerName="Default">
+          <KeyFrame Time="0.0" Value="1" />
+          <KeyFrame Time="0.5" Value="2.5" />
+          <KeyFrame Time="1" Value="1" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+  <Brush Name="Tournament.Bet">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Disabled" Color="#33FF22FF" AlphaFactor="0.3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Flags.Cup">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\tournament_cup" AlphaFactor="0.7" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Flags.Success" TransitionDuration="0.25">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\banner" Color="#9DD163FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Opened">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Flags.Success.Alt">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_new" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Flags.Defeat" TransitionDuration="0.25">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\banner" Color="#FF5D4BFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="Opened">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Title" TextHorizontalAlignment="Center" TransitionDuration="5.5">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="40" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Winner.Info" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" TransitionDuration="5.5">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="35" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.Winner.Name" TextHorizontalAlignment="Center" TransitionDuration="5.5">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="45" />
+    </Styles>
+  </Brush>
+  <Brush Name="Tournament.BetPopup.Text" Font="ProximFiraSansExtraCondensed-Regular" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D3B4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+</Brushes>

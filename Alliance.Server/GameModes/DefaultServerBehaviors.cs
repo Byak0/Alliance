@@ -12,6 +12,7 @@ using Alliance.Server.Extensions.Animals.Behaviors;
 using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.FakeArmy.Behaviors;
+using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.Patch.Behaviors;
@@ -51,6 +52,7 @@ namespace Alliance.Server.GameModes
 				new AllianceLobbyComponent(),
 				new SyncRolesBehavior(),
 				new SyncConfigBehavior(),
+				new PlayerSpawnBehavior(),
 				new UsableEntityBehavior(),
 				new TroopSpawnerBehavior(),
 				new ClassLimiterBehavior(),
