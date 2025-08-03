@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.ShrinkingZone.Behaviors;
 using Alliance.Common.GameModes.BattleRoyale.Behaviors;
 using Alliance.Server.Core;
@@ -83,13 +83,13 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 			{
 				_spawnStarted = true;
 				spawnBehavior.RequestStartSpawnSession();
-				SendNotificationToAll("Fight will start in 20s...");
+				CommonAdminMsg.SendNotificationToAll("Fight will start in 20s...");
 			}
 			if (_spawnStarted && spawnBehavior.SpawnEnded && !_gameEnded)
 			{
 				if (!_zoneInitialized)
 				{
-					SendNotificationToAll("Fight !");
+					CommonAdminMsg.SendNotificationToAll("Fight !");
 					InitShrinkingZone();
 					_zoneInitialized = true;
 				}
@@ -107,13 +107,13 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 				{
 					Agent winner = remainingAgents.FirstOrDefault();
 					string winMessage = $"{winner.Name} is the last surviving participant. GG !";
-					SendNotificationToAll(winMessage);
+					CommonAdminMsg.SendNotificationToAll(winMessage);
 					Log(winMessage);
 				}
 				else
 				{
 					string loseMessage = $"Nobody survived... How is that even possible ?";
-					SendNotificationToAll(loseMessage);
+					CommonAdminMsg.SendNotificationToAll(loseMessage);
 					Log(loseMessage);
 				}
 				GameModeStarter.Instance.StartLobby("Lobby", MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
@@ -150,9 +150,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 
 				if (!warningAlreadySentRecently)
 				{
-					GameNetwork.BeginModuleEventAsServer(peer.GetNetworkPeer());
-					GameNetwork.WriteMessage(new SendNotification("Go back into the zone or you'll die !", 0));
-					GameNetwork.EndModuleEventAsServer();
+					CommonAdminMsg.SendNotificationToPeerAsServer(peer.GetNetworkPeer(), "Go back into the zone or you'll die !");
 					_playerWarningTimestamps[peer] = Mission.Current.CurrentTime; // Update last warning time
 				}
 			}
