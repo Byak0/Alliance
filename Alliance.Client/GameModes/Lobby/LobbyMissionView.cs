@@ -20,7 +20,6 @@ namespace Alliance.Client.GameModes.Lobby
 			{
 				// Custom views
 				new AgentStatusView(),
-				new PlayerSpawnMenuView(),
 				
 				// Native views
 				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
