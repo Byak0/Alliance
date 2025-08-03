@@ -15,7 +15,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool GodMod { get; set; }
 		public bool GodModAll { get; set; }
 		public bool Kill { get; set; }
-		public bool KillAll { get; set; }
+		public bool KillPlayers { get; set; }
+		public bool KillBots { get; set; }
 		public bool Kick { get; set; }
 		public bool Ban { get; set; }
 		public bool ToggleMutePlayer { get; set; }
@@ -35,7 +36,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(GodMod);
 			WriteBoolToPacket(GodModAll);
 			WriteBoolToPacket(Kill);
-			WriteBoolToPacket(KillAll);
+			WriteBoolToPacket(KillPlayers);
+			WriteBoolToPacket(KillBots);
 			WriteBoolToPacket(Kick);
 			WriteBoolToPacket(Ban);
 			WriteBoolToPacket(ToggleMutePlayer);
@@ -58,7 +60,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			GodMod = ReadBoolFromPacket(ref bufferReadValid);
 			GodModAll = ReadBoolFromPacket(ref bufferReadValid);
 			Kill = ReadBoolFromPacket(ref bufferReadValid);
-			KillAll = ReadBoolFromPacket(ref bufferReadValid);
+			KillPlayers = ReadBoolFromPacket(ref bufferReadValid);
+			KillBots = ReadBoolFromPacket(ref bufferReadValid);
 			Kick = ReadBoolFromPacket(ref bufferReadValid);
 			Ban = ReadBoolFromPacket(ref bufferReadValid);
 			ToggleMutePlayer = ReadBoolFromPacket(ref bufferReadValid);

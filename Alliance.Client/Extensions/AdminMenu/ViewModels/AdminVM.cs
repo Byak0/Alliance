@@ -332,10 +332,17 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			GameNetwork.EndModuleEventAsClient();
 		}
 
-		public void KillAll()
+		public void KillPlayers()
 		{
 			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new AdminClient() { KillAll = true, PlayerSelected = null });
+			GameNetwork.WriteMessage(new AdminClient() { KillPlayers = true, PlayerSelected = null });
+			GameNetwork.EndModuleEventAsClient();
+		}
+
+		public void KillBots()
+		{
+			GameNetwork.BeginModuleEventAsClient();
+			GameNetwork.WriteMessage(new AdminClient() { KillBots = true, PlayerSelected = null });
 			GameNetwork.EndModuleEventAsClient();
 		}
 

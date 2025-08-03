@@ -102,8 +102,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return GodModAll(peer);
 				if (admin.Kill)
 					return Kill(peer, admin);
-				if (admin.KillAll)
-					return KillAll(peer);
+				if (admin.KillPlayers)
+					return KillPlayers(peer);
+				if (admin.KillBots)
+					return KillBots(peer);
 				if (admin.Kick)
 					return Kick(peer, admin);
 				if (admin.Ban)
@@ -273,7 +275,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			return true;
 		}
 
-		public bool KillAll(NetworkCommunicator peer)
+		public bool KillPlayers(NetworkCommunicator peer)
 		{
 			List<NetworkCommunicator> playersToKill = GameNetwork.NetworkPeers.ToList();
 
@@ -281,6 +283,15 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 			Log($"[AdminPanel] Tous les joueurs ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
 			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les joueurs ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
+			return true;
+		}
+
+		public bool KillBots(NetworkCommunicator peer)
+		{
+			killBots(peer);
+
+			Log($"[AdminPanel] Tous les Bots ont été tués par l'admin {peer.UserName}.", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToClient(peer, $"[Serveur] Tous les Bots ont été tués par l'admin {peer.UserName}.", AdminServerLog.ColorList.Success, true);
 			return true;
 		}
 
@@ -444,6 +455,62 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				Log($"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers. ({e.Message})", LogLevel.Error);
 				ServerAdminMenuMsg.SendMessageToClient(peer, $"[AdminPanel] Erreur lors de l'execution de la fonction killPlayers.", AdminServerLog.ColorList.Danger, true);
 			}
+		}
+
+		/// <summary>
+		/// Liste et tue tous les Bots sur la mission en cours (= 2000 dégats perçant à la tête).
+		/// Ne tue les montures que s'il n'y a aucun autre agent à tuer, et uniquement si elles n'ont pas de cavalier.
+		/// Ignore les autres animaux (agents neutres, sans team et pas considérés comme montures).
+		/// </summary>
+		/// <param name="peer">NetworkCommunicator à l'origine de la demande, utile uniquement pour logguer en cas d'erreur</param>
+		private void killBots(NetworkCommunicator peer = null)
+		{
+			try
+			{
+				List<Agent> agentsToKill = new List<Agent>();
+				List<Agent> mountsToKill = new List<Agent>();
+
+				foreach (var agent in Mission.Current.AllAgents)
+				{
+					if (agent == null || !agent.IsActive())
+						continue;
+
+					// Vérifie si l'agent est contrôlé par l'IA (donc pas un joueur)
+					if (!agent.IsPlayerControlled && agent.Controller == Agent.ControllerType.AI)
+					{
+						if(!agent.IsMount && agent.Team != null)
+						{
+							agentsToKill.Add(agent);
+						}
+						else if(agent.IsMount && agent.RiderAgent?.MissionPeer == null)
+						{
+							mountsToKill.Add(agent);
+						}
+					}
+				}
+
+				foreach(var agent in agentsToKill)
+				{
+					CoreUtils.TakeDamage(agent, 2000, 2000f);
+				}
+
+				if(agentsToKill.Count == 0)
+				{
+					foreach (var agent in mountsToKill)
+					{
+						CoreUtils.TakeDamage(agent, 2000, 2000f);
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log($"[AdminPanel] Erreur lors de l'exécution de killBots. ({e.Message})", LogLevel.Error);
+				if (peer != null)
+				{
+					ServerAdminMenuMsg.SendMessageToClient(peer, "[AdminPanel] Erreur lors de l'exécution de la commande killBots.", AdminServerLog.ColorList.Danger, true);
+				}
+			}
+
 		}
 
 		/// <summary>
