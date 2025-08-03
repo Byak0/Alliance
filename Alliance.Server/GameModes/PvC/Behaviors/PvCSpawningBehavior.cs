@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.ClassLimiter.Models;
@@ -355,7 +356,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 
 		private void EnableMortality()
 		{
-			SendNotificationToAll($"Rappel : le TK est actif, ne frappez pas vos alliés!");
+			CommonAdminMsg.SendNotificationToAll($"Rappel : le TK est actif, ne frappez pas vos alliés!");
 
 			// Make everyone mortal
 			foreach (Agent agent in Mission.Current?.AllAgents)
