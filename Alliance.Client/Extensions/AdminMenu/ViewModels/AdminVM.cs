@@ -1,4 +1,4 @@
-﻿using Alliance.Client.Extensions.AdminMenu.Model;
+﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Configuration.Utilities;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
@@ -471,8 +471,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
 		public void ToggleModoVision()
 		{
-			bool isModoVisionActivated = !XmlAdminConfig.GetInstance().CanSeeAllPlayersNames;
-			XmlAdminConfig.GetInstance().CanSeeAllPlayersNames = isModoVisionActivated;
+			bool isModoVisionActivated = !UserConfig.Instance.CanSeeAllPlayersNames;
+			UserConfig.Instance.CanSeeAllPlayersNames = isModoVisionActivated;
+			UserConfig.Instance.Save();
 			Log("Modo vision is now : " + (isModoVisionActivated ? "ON" : "OFF"));
 		}
 
