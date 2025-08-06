@@ -39,6 +39,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			return new Server_DamageAgentInZoneAction();
 		}
 
+		public override MortalityStateZoneAction MortalityStateZoneAction()
+		{
+			return new Server_MortalityStateZoneAction();
+		}
+
 		public override ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
 		{
 			return new Server_ShowOrHideEntitiesAction();
