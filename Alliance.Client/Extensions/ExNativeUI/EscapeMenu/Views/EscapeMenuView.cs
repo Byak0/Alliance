@@ -1,6 +1,8 @@
 ﻿using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -20,6 +22,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 	[OverrideView(typeof(MissionMultiplayerEscapeMenu))]
 	public class MissionGauntletMultiplayerEscapeMenu : MissionGauntletEscapeMenuBase
 	{
+		private PlayerSpawnMenuView _playerSpawnMenuView;
+
 		public MissionGauntletMultiplayerEscapeMenu(string gameType)
 			: base("MultiplayerEscapeMenu")
 		{
@@ -34,6 +38,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			_missionAdminComponent = Mission.GetMissionBehavior<MultiplayerAdminComponent>();
 			_missionTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
 			_gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+			_playerSpawnMenuView = Mission.GetMissionBehavior<PlayerSpawnMenuView>();
 			TextObject textObject = GameTexts.FindText("str_multiplayer_game_type", _gameType);
 			DataSource = new MPEscapeMenuVM(null, textObject);
 		}
@@ -107,7 +112,17 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				list.Add(_changeCultureItem);
 			}
 
-			// Change Troop
+			// Change Troop (PlayerSpawnMenu)
+			if (_playerSpawnMenuView != null)
+			{
+				list.Add(new EscapeMenuItemVM(new TextObject("{=Yza0JYJt}Change Troop", null), delegate (object o)
+				{
+					OnEscapeMenuToggled(false);
+					_playerSpawnMenuView.OpenMenu(PlayerSpawnMenu.Instance);
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+			}
+
+			// Change Troop (native)
 			if (_gameModeClient.IsGameModeUsingAllowTroopChange)
 			{
 				_changeTroopItem = new EscapeMenuItemVM(new TextObject("{=Yza0JYJt}Change Troop", null), delegate (object o)

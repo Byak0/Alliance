@@ -1,5 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Actions;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -13,10 +13,10 @@ namespace Alliance.Common.GameModes.Story.Models
 	[Serializable]
 	public class VictoryLogic
 	{
-		[ScenarioEditor(label: "Actions on victory", tooltip: "These actions will be triggered as soon as one side completed its objectives.")]
+		[ConfigProperty(label: "Actions on victory", tooltip: "These actions will be triggered as soon as one side completed its objectives.")]
 		public List<ActionBase> ActionsOnDisplayResults;
 
-		[ScenarioEditor(label: "Actions delayed", tooltip: "Actions triggered after a short delay")]
+		[ConfigProperty(label: "Actions delayed", tooltip: "Actions triggered after a short delay")]
 		public List<ActionBase> ActionsOnActCompleted;
 
 		public VictoryLogic(List<ActionBase> displayResultsActions, List<ActionBase> actionsOnActCompleted)

@@ -1,0 +1,239 @@
+<Brushes>
+  <Brush Name="Quest.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\background_quest" AlphaFactor="0.6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.LeftPanel.Header">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\questlist_header" ExtendBottom="17" ExtendLeft="0" ExtendRight="5" ExtendTop="0" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Quest.LeftPanel.Toggle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\quest_collapser_default" ExtendBottom="8" ExtendTop="3" SaturationFactor="20" HueFactor="-10"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="filter" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Quest.LeftPanel.QuestButton.Active">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\quest_screen_tuple_default" Color="#FFEBC1FF" HueFactor="-5" ColorFactor="1.1"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default"  SaturationFactor="50"  ColorFactor="1.8" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8"  />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Quest.LeftPanel.QuestButton.Active.MainStory">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\quest_screen_tuple_default" Color="#FFEBC1FF" SaturationFactor="100" ColorFactor="1.1"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.3"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8"  />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="StageTask.ProgressStone">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\progress_stone" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+    </Styles>
+  </Brush>
+
+    <Brush Name="StageTask.TwoWayProgress.Fill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\twoway_fill" HorizontalFlip="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="StageTask.TwoWayProgress.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Quest\twoway_progress_bar_indicator" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Quest.Tuple.Notification">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="tuple_notification_9" Color="#FCC537FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="QuestNotification" AnimationToPlayOnBegin="QuestNotificationAnimation">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+    <Animations>
+      <Animation Name="QuestNotificationAnimation" Duration="0.6" Loop="true">
+        <AnimationProperty PropertyName="AlphaFactor">
+          <KeyFrame Time="0.0" Value="0.0" />
+          <KeyFrame Time="0.3" Value="0.5" />
+          <KeyFrame Time="0.5" Value="1" />
+          <KeyFrame Time="0.6" Value="1" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Quest.Sorting.Dropdown.Center.Small">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_dropdown_with_arrows_mid_small" ExtendTop="11" ExtendBottom="11" ExtendLeft="14" ExtendRight="14" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="SPGeneral\SPOptions\standart_dropdown_with_arrows_mid_hover_small" ExtendTop="11" ExtendBottom="11" ExtendLeft="14" ExtendRight="14" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Hovered" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" IsHidden="false" AlphaFactor="0.8" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="dropdown" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Quest.Sorting.Dropdown.Extension.Small">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPOptions\standart_dropdown_extension" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="QuestStageTextBrush" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="QuestStage.DaysAgo.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#B1B1B1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Quest.LeftPanel.Toggle.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AF91FF" TextGlowRadius="0.1" TextBlur="1" TextShadowOffset="0" TextOutlineAmount="0.1" TextGlowColor="#00000055" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.CenterPanel.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0" TextGlowRadius="0.15" TextBlur="0.2" TextShadowOffset="1" TextShadowAngle="60" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.LeftPanel.Quest.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#E2B881FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.LeftPanel.Quest.Time.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D6CAB3FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.LeftPanel.Quest.Old.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#A1A1A1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.LeftPanel.Quest.Text.Prox" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.InfoBox.RemainingTime" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E2B881FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="60" />
+    </Styles>
+  </Brush>
+  <Brush Name="Quest.Sort.Explaination.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+</Brushes>

@@ -2,30 +2,25 @@
 
 namespace Alliance.Common.Core.Configuration.Models
 {
-	[AttributeUsage(AttributeTargets.Field)]
+	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class ConfigPropertyAttribute : Attribute
 	{
-		public string Name { get; set; }
-		public string Description { get; set; }
-		public float MinValue { get; set; }
-		public float MaxValue { get; set; }
-		public readonly ConfigValueType ValueType;
+		public bool IsEditable { get; }
+		public string Label { get; }
+		public string Tooltip { get; }
+		public float MinValue { get; }
+		public float MaxValue { get; }
+		public string[] PossibleValues => AllianceData.GetData(DataType);
+		public AllianceData.DataTypes DataType { get; }
 
-		public ConfigPropertyAttribute(string name, string description, ConfigValueType valueType, float minValue = 0, float maxValue = 10)
+		public ConfigPropertyAttribute(bool isEditable = true, string label = "", string tooltip = null, float minValue = 0, float maxValue = 10, AllianceData.DataTypes dataType = AllianceData.DataTypes.None)
 		{
-			Name = name;
-			Description = description;
+			IsEditable = isEditable;
+			Label = label;
+			Tooltip = tooltip;
 			MinValue = minValue;
 			MaxValue = maxValue;
-			ValueType = valueType;
+			DataType = dataType;
 		}
-	}
-
-	public enum ConfigValueType
-	{
-		Bool,
-		Integer,
-		Float,
-		Enum
 	}
 }

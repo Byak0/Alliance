@@ -1,0 +1,330 @@
+<Brushes>
+
+	<Brush Name="GameOver.Banner.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\game_over_screen_title_band" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1.0" />
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Banner.Victory" BaseBrush="GameOver.Banner.Base">
+		<Layers>
+			<BrushLayer Name="Default" Color="#DAE374FF" />
+		</Layers>
+	</Brush>
+
+	<Brush Name="GameOver.Banner.ClanDestroyed" BaseBrush="GameOver.Banner.Base">
+		<Layers>
+			<BrushLayer Name="Default" Color="#F35959FF" />
+		</Layers>
+	</Brush>
+
+	<Brush Name="GameOver.Banner.Retirement" BaseBrush="GameOver.Banner.Base">
+		<Layers>
+			<BrushLayer Name="Default" Color="#b7aa9dff" />
+		</Layers>
+	</Brush>
+
+
+	<Brush Name="GameOver.Banner.Frame.Victory">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\banner_frame_positive" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default"/>
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Banner.Frame.ClanDestroyed">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\banner_frame_negative" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default"/>
+			</Style>
+		</Styles>
+	</Brush>
+
+  <Brush Name="GameOver.Banner.Frame.Retirement">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="GameOver\banner_frame_negative" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" SaturationFactor="-100"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+	<Brush Name="GameOver.Banner.Shield">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\banner_base" OverlayXOffset="0" OverlayYOffset="-3" />
+		</Layers>
+	</Brush>
+
+	<Brush Name="GameOver.Mask.Victory">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\victory" HeightPolicy="Original" WidthPolicy="Original" OverlayMethod="CoverWithTexture" UseOverlayAlphaAsMask="true" OverlaySprite="game_over_mask"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default" AnimationToPlayOnBegin="TextureAnim">
+				<BrushLayer Name="Default"/>
+			</Style>
+		</Styles>
+		<Animations>
+			<Animation Name="TextureAnim" Duration="60.0" Loop="true">
+				<AnimationProperty PropertyName="XOffset" LayerName="Default">
+					<KeyFrame Time="0.0" Value="0" />
+					<KeyFrame Time="15.0" Value="-25" />
+					<KeyFrame Time="30.0" Value="0" />
+					<KeyFrame Time="45.0" Value="25" />
+					<KeyFrame Time="60.0" Value="0" />
+				</AnimationProperty>
+			</Animation>
+		</Animations>
+	</Brush>
+
+	<Brush Name="GameOver.Mask.ClanDestroyed">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\clan_defeated" HeightPolicy="Original" WidthPolicy="Original" OverlayMethod="CoverWithTexture" UseOverlayAlphaAsMask="true" OverlaySprite="game_over_mask"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default" AnimationToPlayOnBegin="TextureAnim">
+				<BrushLayer Name="Default"/>
+			</Style>
+		</Styles>
+		<Animations>
+			<Animation Name="TextureAnim" Duration="60.0" Loop="true">
+				<AnimationProperty PropertyName="XOffset" LayerName="Default">
+					<KeyFrame Time="0.0" Value="0" />
+					<KeyFrame Time="15.0" Value="-25" />
+					<KeyFrame Time="30.0" Value="0" />
+					<KeyFrame Time="45.0" Value="25" />
+					<KeyFrame Time="60.0" Value="0" />
+				</AnimationProperty>
+			</Animation>
+		</Animations>
+	</Brush>
+
+	<Brush Name="GameOver.Mask.Retirement">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\retired" WidthPolicy="Overriden" HeightPolicy="Overriden" OverridenWidth="1536" OverridenHeight="864" OverlayMethod="CoverWithTexture" UseOverlayAlphaAsMask="true" OverlaySprite="game_over_mask"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default" AnimationToPlayOnBegin="TextureAnim">
+				<BrushLayer Name="Default"/>
+			</Style>
+		</Styles>
+		<Animations>
+			<Animation Name="TextureAnim" Duration="60.0" Loop="true">
+				<AnimationProperty PropertyName="XOffset" LayerName="Default">
+					<KeyFrame Time="0.0" Value="-120" />
+					<KeyFrame Time="15.0" Value="-145" />
+					<KeyFrame Time="30.0" Value="-120" />
+					<KeyFrame Time="45.0" Value="-95" />
+					<KeyFrame Time="60.0" Value="-120" />
+				</AnimationProperty>
+			</Animation>
+		</Animations>
+	</Brush>
+
+	<Brush Name="GameOver.Background">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" AlphaFactor="0"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="0"/>
+			</Style>
+			<Style Name="Retirement">
+				<BrushLayer Name="Default" AlphaFactor ="0.2" Color ="#7c7b7bff"/>
+			</Style>
+			<Style Name="ClanDestroyed">
+				<BrushLayer Name="Default" AlphaFactor ="0.2" Color ="#000000ff" />
+			</Style>
+			<Style Name="Victory">
+				<BrushLayer Name="Default" AlphaFactor ="0.2" Color ="#8c6415ff" />
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Category.Button" TransitionDuration="0.3">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\tab_item_hover_effect" Color="#A37D39FF"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor ="0"/>
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor ="0.4" />
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default" AlphaFactor ="1" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" AlphaFactor ="0.2" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" AlphaFactor ="0.2" SaturationFactor="-70"/>
+			</Style>
+		</Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="General" Audio="endgame/tab_general" />
+        <EventSound EventName="Battle" Audio="endgame/tab_battles" />
+        <EventSound EventName="Finance" Audio="endgame/tab_finances" />
+        <EventSound EventName="Crafting" Audio="endgame/tab_crafting" />
+        <EventSound EventName="Companion" Audio="endgame/tab_companions" />
+      </EventSounds>
+    </SoundProperties>
+	</Brush>
+
+	<Brush Name="GameOver.Category.Visual.Base" TransitionDuration="0.3">
+		<Layers>
+			<BrushLayer Name="Default"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor ="0.4"/>
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" AlphaFactor ="0.8"/>
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Default" AlphaFactor ="1"/>
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" AlphaFactor ="0.3"/>
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" AlphaFactor ="0.4" SaturationFactor="-70"/>
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Category.Visual" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Effect">
+		<Layers>
+			<BrushLayer Name="Default" Color="#fec157ff"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" />
+			</Style>
+			<Style Name="General" >
+				<BrushLayer Name="Default" Sprite="GameOver\general"/>
+			</Style>
+			<Style Name="Battle" >
+				<BrushLayer Name="Default" Sprite="GameOver\battles"/>
+			</Style>
+			<Style Name="Finance" >
+				<BrushLayer Name="Default" Sprite="GameOver\finances"/>
+			</Style>
+			<Style Name="Crafting" >
+				<BrushLayer Name="Default" Sprite="GameOver\smithing"/>
+			</Style>
+			<Style Name="Companion" >
+				<BrushLayer Name="Default" Sprite="GameOver\companions"/>
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Category.Visual.General" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\general" Color="#fec157ff"/>
+		</Layers>
+	</Brush>
+
+	<Brush Name="GameOver.Category.Visual.Battle" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\battles" Color="#fec157ff"/>
+		</Layers>
+	</Brush>
+	
+	<Brush Name="GameOver.Category.Visual.Finance" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\finances" Color="#fec157ff"/>
+		</Layers>
+	</Brush>
+	
+	<Brush Name="GameOver.Category.Visual.Crafting" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\smithing" Color="#fec157ff"/>
+		</Layers>
+	</Brush>
+	
+	<Brush Name="GameOver.Category.Visual.Companion" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="GameOver\companions" Color="#fec157ff"/>
+		</Layers>
+	</Brush>
+
+	<Brush Name="GameOver.Stat.Type.Visual">
+		<Layers>
+			<BrushLayer Name="Default"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default"/>
+			</Style>
+			<Style Name="None">
+				<BrushLayer Name="Default"/>
+			</Style>
+			<Style Name="Influence">
+				<BrushLayer Name="Default" Sprite="General\Icons\Influence@2x"/>
+			</Style>
+			<Style Name="Issue">
+				<BrushLayer Name="Default" Sprite="General\Icons\icon_issue_available_square"/>
+			</Style>
+			<Style Name="Tournament">
+				<BrushLayer Name="Default" Sprite="General\Icons\icon_tournament_square" Color="#BD7A29FF"/>
+			</Style>
+			<Style Name="Gold">
+				<BrushLayer Name="Default" Sprite="General\Icons\Coin@2x"/>
+			</Style>
+			<Style Name="Crime">
+				<BrushLayer Name="Default" Sprite="SPGeneral\MapOverlay\Settlement\icon_crime" ExtendLeft="10" ExtendTop="10" ExtendRight="10" ExtendBottom="10"/>
+			</Style>
+			<Style Name="Kill">
+				<BrushLayer Name="Default" Sprite="General\Mission\PersonalKillfeed\kill_icon"/>
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Stat.Value.Text" Font="FiraSansExtraCondensed-Medium" TextHorizontalAlignment="Right" TextVerticalAlignment="Top">
+		<Styles>
+			<Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Stat.Definition.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Stat.Category.Title.Text" Font="FiraSansExtraCondensed-Medium" TextHorizontalAlignment="Left">
+		<Styles>
+			<Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="25" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Statistics.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+		<Styles>
+			<Style Name="Default" FontColor="#fd9b04ff" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+		</Styles>
+	</Brush>
+
+	<Brush Name="GameOver.Popper.Text" Font="Galahad" TextHorizontalAlignment="Center">
+		<Styles>
+			<Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+		</Styles>
+	</Brush>
+</Brushes>

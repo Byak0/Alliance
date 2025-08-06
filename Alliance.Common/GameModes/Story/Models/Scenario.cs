@@ -1,4 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
 using System;
 using System.Collections.Generic;
 
@@ -6,22 +6,22 @@ namespace Alliance.Common.GameModes.Story.Models
 {
 	public class Scenario
 	{
-		[ScenarioEditor(false)]
+		[ConfigProperty(false)]
 		public string Id;
-		[ScenarioEditor(false)]
+		[ConfigProperty(false)]
 		public int Version;
-		[ScenarioEditor(false)]
+		[ConfigProperty(false)]
 		public DateTime LastEditedAt;
-		[ScenarioEditor(false)]
+		[ConfigProperty(false)]
 		public string LastEditedBy;
 
-		[ScenarioEditor(label: "Scenario name")]
+		[ConfigProperty(label: "Scenario name")]
 		public LocalizedString Name = new("My cool scenario");
 
-		[ScenarioEditor(label: "Scenario description", tooltip: "Short description, displayed to players at the beginning of the scenario.")]
+		[ConfigProperty(label: "Scenario description", tooltip: "Short description, displayed to players at the beginning of the scenario.")]
 		public LocalizedString Description = new("Make great things in this super scenario");
 
-		[ScenarioEditor(label: "Acts", tooltip: "Acts are the 'chapters' of the scenario. You can add as many as you want. A scenario must have at least one act to work.")]
+		[ConfigProperty(label: "Acts", tooltip: "Acts are the 'chapters' of the scenario. You can add as many as you want. A scenario must have at least one act to work.")]
 		public List<Act> Acts;
 
 		public Scenario(LocalizedString name, LocalizedString desc)

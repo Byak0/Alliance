@@ -1,4 +1,5 @@
-﻿using Alliance.Client.Core.KeyBinder.Models;
+﻿using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Extensions.Vehicles.Scripts;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
@@ -11,10 +12,10 @@ using TaleWorlds.MountAndBlade.View.Screens;
 
 namespace Alliance.Client.Extensions.Vehicles.Views
 {
-    /// <summary>
-    /// View responsible for the vehicle camera.
-    /// </summary>
-    [DefaultView]
+	/// <summary>
+	/// View responsible for the vehicle camera.
+	/// </summary>
+	[DefaultView]
     public class VehicleView : MissionView, IUseKeyBinder
     {
         private static string KeyCategoryId = "vehicle";

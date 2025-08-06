@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Security.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
@@ -31,6 +32,12 @@ namespace Alliance.Common.Core.Security.Extension
 			{
 				return true;
 			}
+
+			if (PlayerSpawnMenu.Instance.MyAssignment?.Formation?.Officer == player.Communicator)
+			{
+				return true;
+			}
+
 			foreach (Player officer in Roles.Instance.Officers)
 			{
 				if (officer.Id.Equals(player.Id))
@@ -79,7 +86,7 @@ namespace Alliance.Common.Core.Security.Extension
 					return true;
 				}
 			}
-			return false;
+			return IsDev(player);
 		}
 
 		public static bool IsDev(this NetworkCommunicator player)

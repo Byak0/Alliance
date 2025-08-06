@@ -34,11 +34,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				MatrixFrame globalFrame = gameEntity.GetGlobalFrame();
 				ItemRosterElement itemRosterElement = new ItemRosterElement(Game.Current.ObjectManager.GetObject<ItemObject>("sheep"), 0, null);
 				globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-				Mission mission = Mission.Current;
 				ItemRosterElement itemRosterElement2 = itemRosterElement;
 				ItemRosterElement itemRosterElement3 = default(ItemRosterElement);
 				Vec2 asVec = globalFrame.rotation.f.AsVec2;
-				Agent agent = mission.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
+				Agent agent = Mission.Current.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceId);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceIdForAnimals);
 				AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
@@ -53,11 +52,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				MatrixFrame globalFrame = gameEntity.GetGlobalFrame();
 				ItemRosterElement itemRosterElement = new ItemRosterElement(Game.Current.ObjectManager.GetObject<ItemObject>("cow"), 0, null);
 				globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-				Mission mission = Mission.Current;
 				ItemRosterElement itemRosterElement2 = itemRosterElement;
 				ItemRosterElement itemRosterElement3 = default(ItemRosterElement);
 				Vec2 asVec = globalFrame.rotation.f.AsVec2;
-				Agent agent = mission.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
+				Agent agent = Mission.Current.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceId);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceIdForAnimals);
 				AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
@@ -72,11 +70,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				MatrixFrame globalFrame = gameEntity.GetGlobalFrame();
 				ItemRosterElement itemRosterElement = new ItemRosterElement(Game.Current.ObjectManager.GetObject<ItemObject>("goose"), 0, null);
 				globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-				Mission mission = Mission.Current;
 				ItemRosterElement itemRosterElement2 = itemRosterElement;
 				ItemRosterElement itemRosterElement3 = default(ItemRosterElement);
 				Vec2 asVec = globalFrame.rotation.f.AsVec2;
-				Agent agent = mission.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
+				Agent agent = Mission.Current.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceId);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceIdForAnimals);
 				AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
@@ -91,11 +88,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				MatrixFrame globalFrame = gameEntity.GetGlobalFrame();
 				ItemRosterElement itemRosterElement = new ItemRosterElement(Game.Current.ObjectManager.GetObject<ItemObject>("chicken"), 0, null);
 				globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-				Mission mission = Mission.Current;
 				ItemRosterElement itemRosterElement2 = itemRosterElement;
 				ItemRosterElement itemRosterElement3 = default(ItemRosterElement);
 				Vec2 asVec = globalFrame.rotation.f.AsVec2;
-				Agent agent = mission.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
+				Agent agent = Mission.Current.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceId);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceIdForAnimals);
 				AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
@@ -110,11 +106,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				MatrixFrame globalFrame = gameEntity.GetGlobalFrame();
 				ItemRosterElement itemRosterElement = new ItemRosterElement(Game.Current.ObjectManager.GetObject<ItemObject>("hog"), 0, null);
 				globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-				Mission mission = Mission.Current;
 				ItemRosterElement itemRosterElement2 = itemRosterElement;
 				ItemRosterElement itemRosterElement3 = default(ItemRosterElement);
 				Vec2 asVec = globalFrame.rotation.f.AsVec2;
-				Agent agent = mission.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
+				Agent agent = Mission.Current.SpawnMonster(itemRosterElement2, itemRosterElement3, globalFrame.origin, asVec, -1);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceId);
 				SetAgentExcludeFaceGroupIdAux(agent, _disabledFaceIdForAnimals);
 				AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
@@ -135,11 +130,10 @@ namespace Alliance.Server.Extensions.Animals.Behaviors
 				if (@object.HasHorseComponent)
 				{
 					globalFrame.rotation.OrthonormalizeAccordingToForwardAndKeepUpAsZAxis();
-					Mission mission = Mission.Current;
 					ItemRosterElement itemRosterElement3 = itemRosterElement;
 					ItemRosterElement itemRosterElement4 = itemRosterElement2;
 					Vec2 asVec = globalFrame.rotation.f.AsVec2;
-					Agent agent = mission.SpawnMonster(itemRosterElement3, itemRosterElement4, globalFrame.origin, asVec, -1);
+					Agent agent = Mission.Current.SpawnMonster(itemRosterElement3, itemRosterElement4, globalFrame.origin, asVec, -1);
 					AnimalSpawnSettings.CheckAndSetAnimalAgentFlags(gameEntity, agent);
 					SimulateAnimalAnimations(agent);
 					list.Add(agent);

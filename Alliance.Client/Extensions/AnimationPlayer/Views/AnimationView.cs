@@ -1,5 +1,6 @@
-﻿using Alliance.Client.Core.KeyBinder.Models;
-using Alliance.Client.Extensions.AnimationPlayer.ViewModels;
+﻿using Alliance.Client.Extensions.AnimationPlayer.ViewModels;
+using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;

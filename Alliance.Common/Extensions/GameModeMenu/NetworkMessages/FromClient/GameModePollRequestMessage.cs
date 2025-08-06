@@ -3,6 +3,7 @@ using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Configuration.Utilities;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
@@ -105,8 +106,16 @@ namespace Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient
 				}
 				else if (fieldInfo.FieldType == typeof(string))
 				{
-					int index = DefaultConfig.GetAvailableValuesForOption(fieldInfo).FindIndex(item => item == (string)fieldValue);
-					WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
+					ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+					if (attribute.DataType == AllianceData.DataTypes.None)
+					{
+						WriteStringToPacket((string)fieldValue);
+					}
+					else
+					{
+						int index = attribute.PossibleValues.FindIndex(item => item == (string)fieldValue);
+						WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
+					}
 				}
 			}
 		}
@@ -173,10 +182,15 @@ namespace Alliance.Common.Extensions.GameModeMenu.NetworkMessages.FromClient
 				}
 				else if (fieldInfo.FieldType == typeof(string))
 				{
-					int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
-					if (index > -1)
+					ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+					if (attribute.DataType == AllianceData.DataTypes.None)
 					{
-						fieldInfo.SetValue(ModOptions, DefaultConfig.GetAvailableValuesForOption(fieldInfo).ElementAtOrDefault(index));
+						fieldInfo.SetValue(ModOptions, ReadStringFromPacket(ref bufferReadValid));
+					}
+					else
+					{
+						int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+						fieldInfo.SetValue(ModOptions, attribute.PossibleValues.ElementAtOrDefault(index));
 					}
 				}
 			}
