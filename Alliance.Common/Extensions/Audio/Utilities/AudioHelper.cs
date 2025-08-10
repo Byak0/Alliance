@@ -7,7 +7,7 @@ namespace Alliance.Common.Extensions.Audio.Utilities
     /// </summary>
     public class AudioHelper
     {
-        public static bool CanTargetHearSound(Vec3 emitterPos, Vec3 targetPos, float maxDistance = 30f)
+        public static bool CanTargetHearSound(Vec3 emitterPos, Vec3 targetPos, float maxDistance = 3000f)
         {
             // TODO : Add check for obstacles between the 2 positions
             return targetPos.Distance(emitterPos) < maxDistance;

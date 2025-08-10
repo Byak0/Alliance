@@ -885,7 +885,8 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				float pbVolume = 5 * pbOptionVolume;
 
 				// Apply panning to the left and right channels
-				float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f, pbVolume);
+				//float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f, pbVolume);
+				float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 3000f, pbVolume);
 
 				panProvider.Pan = 0.0f;
 				volumeProvider.Volume = clampedVolume;

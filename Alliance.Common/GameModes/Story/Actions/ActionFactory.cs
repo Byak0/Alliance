@@ -76,6 +76,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new TeleportAgentAction();
 		}
 
+		public virtual VOIPRangeInZoneAction VOIPRangeInZoneAction()
+		{
+			return new VOIPRangeInZoneAction();
+		}
+
 		public virtual PlaySoundAction PlaySoundAction()
 		{
 			return new PlaySoundAction();
