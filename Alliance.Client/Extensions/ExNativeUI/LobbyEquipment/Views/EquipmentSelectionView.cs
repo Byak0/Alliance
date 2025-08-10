@@ -134,7 +134,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views
 			ResourceDepot uiresourceDepot = UIResourceManager.UIResourceDepot;
 			_dataSource = new EquipmentSelectionVM(missionBehavior, new Action<MultiplayerClassDivisions.MPHeroClass>(OnRefreshSelection), _lastSelectedHeroClass);
 			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
-			_gauntletLayer.LoadMovie("AL_MultiplayerClassLoadout", _dataSource);
+			_gauntletLayer.LoadMovie("MultiplayerClassLoadout", _dataSource);
 		}
 
 		public void OnTryToggle(bool isActive)

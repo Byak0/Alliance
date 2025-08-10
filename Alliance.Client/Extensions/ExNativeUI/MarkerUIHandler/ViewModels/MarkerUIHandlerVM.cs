@@ -1,5 +1,4 @@
-﻿using Alliance.Client.Extensions.AdminMenu.Model;
-using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using System.Collections.Generic;
 using System.Linq;
@@ -336,7 +335,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels
 			List<CustomMissionPeerMarkerTargetVM> list = PeerTargets.ToList();
 			foreach (MissionPeer missionPeer in VirtualPlayer.Peers<MissionPeer>())
 			{
-				if (missionPeer?.Team == null || missionPeer.IsMine || (missionPeer.Team.Side != battleSideEnum && !(isAdmin && XmlAdminConfig.GetInstance().CanSeeAllPlayersNames)))
+				if (missionPeer?.Team == null || missionPeer.IsMine || (missionPeer.Team.Side != battleSideEnum && !(isAdmin && UserConfig.Instance.CanSeeAllPlayersNames)))
 				{
 					continue;
 				}
@@ -360,7 +359,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.ViewModels
 				}
 
 				// Only show marker of officers
-				if (missionPeer.Peer.IsOfficer() || (isAdmin && XmlAdminConfig.GetInstance().CanSeeAllPlayersNames))
+				if (missionPeer.Peer.IsOfficer() || (isAdmin && UserConfig.Instance.CanSeeAllPlayersNames))
 				{
 					if (!_teammateDictionary.ContainsKey(missionPeer))
 					{

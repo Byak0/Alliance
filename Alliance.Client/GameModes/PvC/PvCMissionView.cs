@@ -3,6 +3,7 @@ using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
 using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
 using Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;

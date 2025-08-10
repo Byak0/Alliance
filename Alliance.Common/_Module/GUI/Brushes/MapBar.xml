@@ -1,0 +1,580 @@
+<Brushes>
+
+  <Brush Name="Map.MainHeroParty.Tracker">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPRecruitment\portrait_patron" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapTextBrushWithAnim" Font="Galahad" TextHorizontalAlignment="Left">
+    <Layers>
+      <BrushLayer Name="Default" Color="#FAF4DEFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" AnimationToPlayOnBegin="ValueChangeAnimation" FontSize="21" />
+      <Style Name="Negative" AnimationToPlayOnBegin="NegativeValueChangeAnimation" />
+      <Style Name="Positive" AnimationToPlayOnBegin="PositiveValueChangeAnimation" />
+    </Styles>
+    <Animations>
+      <Animation Name="PositiveValueChangeAnimation" Duration="0.5" Loop="false">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#F4E1C4FF" />
+          <KeyFrame Time="0.01" Value="#A8D521FF" />
+          <KeyFrame Time="0.02" Value="#A8D521FF" />
+          <KeyFrame Time="0.04" Value="#A8D521FF" />
+          <KeyFrame Time="0.05" Value="#A8D521FF" />
+          <KeyFrame Time="0.6" Value="#A8D521FF" />
+        </AnimationProperty>
+        <AnimationProperty PropertyName="TextGlowRadius">
+          <KeyFrame Time="0.0" Value="0" />
+          <KeyFrame Time="0.01" Value="0.0" />
+        </AnimationProperty>
+      </Animation>
+      <Animation Name="NegativeValueChangeAnimation" Duration="0.6" Loop="false">
+        <AnimationProperty PropertyName="FontColor">
+          <KeyFrame Time="0.0" Value="#F4E1C4FF" />
+          <KeyFrame Time="0.01" Value="#FF0000FF" />
+          <KeyFrame Time="0.02" Value="#FF0000FF" />
+          <KeyFrame Time="0.04" Value="#FF0000FF" />
+          <KeyFrame Time="0.05" Value="#FF0000FF" />
+          <KeyFrame Time="0.6" Value="#FF0000FF" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="MapUnreadBrushWithAnim">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapMenuUnread@2x" Color="#381704FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation" />
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0.0" Value="1.0" />
+          <KeyFrame Time="0.2" Value="1.1" />
+          <KeyFrame Time="0.4" Value="1.7" />
+          <KeyFrame Time="0.75" Value="1.7" />
+          <KeyFrame Time="1.1" Value="1.7" />
+          <KeyFrame Time="1.3" Value="1.1" />
+          <KeyFrame Time="1.5" Value="1.0" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="Map.ChooseBanner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_banner_choose_update" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation" />
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ColorFactor">
+          <KeyFrame Time="0.0" Value="1.0" />
+          <KeyFrame Time="0.2" Value="1.1" />
+          <KeyFrame Time="0.4" Value="1.7" />
+          <KeyFrame Time="0.75" Value="1.7" />
+          <KeyFrame Time="1.1" Value="1.7" />
+          <KeyFrame Time="1.3" Value="1.1" />
+          <KeyFrame Time="1.5" Value="1.0" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+
+  <Brush Name="MapBarLeftButton1">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button1" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button1_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button1_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button1_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button1" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarLeftButton2">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button2" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button2_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button2_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button2_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button2" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarLeftButton3">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button3" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button3_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button3_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button3_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button3" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarLeftButton4">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button4" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button4_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button4_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button4_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button4" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarLeftButton5">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button5" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button5_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button5_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button5_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button5" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapBarLeftButton6">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_button6" IsHidden="true" />
+      <BrushLayer Name="Pressed" Sprite="MapBar\mapbar_left_button6_pressed" IsHidden="true" />
+      <BrushLayer Name="Selected" Sprite="MapBar\mapbar_left_button6_pressed" IsHidden="true" />
+      <BrushLayer Name="Hovered" Sprite="MapBar\mapbar_left_button6_hover" IsHidden="true" />
+      <BrushLayer Name="Disabled" Sprite="MapBar\mapbar_left_button6" ColorFactor="0.6" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Hovered" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Pressed" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Disabled" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapBar.GatherArmy.Background">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\army_button_background" />
+    </Layers>
+    <Styles>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button1_exit" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#ffc349FF" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button1" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button1_exit" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button2" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button2_character" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button3" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button3_inventory" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button4" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button4_party" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button5" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button5_quest" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button6" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button6_clan" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Button7" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\bottom_left_button7_kingdom" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.GatherArmy.Button" BaseBrush="MapBar.Left.Generic.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\army_button_front" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon1" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.6"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#ffc349FF" ColorFactor="1.5"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon1" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon1" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon2" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon2" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon3" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon4" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon4" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon5" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon5" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon6" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon6" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.Left.Icon7" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_icon7" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapBar.GatherArmy.Icon" BaseBrush="MapBar.Left.Generic.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\Icons\Army" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="MapTimeImage">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_center_circle_daynight" Color="#FFFFFFFF" WidthPolicy="Overriden" HeightPolicy="Overriden" OverridenWidth="176" OverridenHeight="50" />
+      <BrushLayer Name="Part2" Sprite="MapBar\mapbar_center_circle_daynight" Color="#FFFFFFFF" WidthPolicy="Overriden" HeightPolicy="Overriden" OverridenWidth="176" OverridenHeight="50" XOffset="15" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" />
+    </Styles>
+  </Brush>
+  <Brush Name="MapInfoBarExtendButtonBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\arrow_looking_up" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapTextBrush" Font="FiraSansExtraCondensed-Regular">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#E4E4E4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="MapTextBrushGal" Font="Galahad">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#E4E4E4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="17" />
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarPlayButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Play@2x" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="Play@2x_selected" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="2.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarPauseButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Pause@2x" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="Pause@2x_selected" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="2.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBarFastForwardButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="FastForward@2x" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="FastForward@2x_selected" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="2.0" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBar.Center.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_center_circle_frame" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="2.0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>  
+  <Brush Name="MapBar.Silhouette">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_frame_silhouette" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="MapScreen">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+      <Style Name="InventoryGauntletScreen">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="GauntletPartyScreen">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="GauntletCharacterDeveloperScreen">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="GauntletClanScreen">
+        <BrushLayer Name="Default" AlphaFactor="0.2" />
+      </Style>
+      <Style Name="GauntletQuestsScreen">
+        <BrushLayer Name="Default" AlphaFactor="0.3" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBar.Silhouette.Left" BaseBrush="MapBar.Silhouette">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_left_frame_silhouette" />
+    </Layers>
+    <Styles>
+    </Styles>
+  </Brush>
+  <Brush Name="MapBar.Silhouette.Center" BaseBrush="MapBar.Silhouette">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_center_frame_silhouette" />
+    </Layers>
+  </Brush>
+  <Brush Name="MapBar.Silhouette.Right" BaseBrush="MapBar.Silhouette">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapBar\mapbar_right_frame_silhouette" />
+    </Layers>
+  </Brush>
+  <Brush Name="Map.Paused.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.3" TextGlowRadius="0.1" TextBlur="0.5" FontSize="35" />
+    </Styles>
+  </Brush>
+</Brushes>

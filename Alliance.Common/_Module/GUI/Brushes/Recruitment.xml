@@ -1,0 +1,146 @@
+<Brushes>
+  <Brush Name="Recruitment.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\standart_popup" />
+      <BrushLayer Name="Frame" ExtendLeft="5" ExtendRight="0" ExtendTop="8" ExtendBottom="7" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Panel.Left">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPRecruitment\left_dent" SaturationFactor="20"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Panel.Right">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPRecruitment\right_dent" SaturationFactor="20"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Owner.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPRecruitment\portrait_patron" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Troop.Brush">
+    <Layers>
+      <BrushLayer Name="Available" Sprite="SPGeneral\SPRecruitment\portrait_relation" IsHidden="true" />
+      <BrushLayer Name="Unavailable" Sprite="SPGeneral\SPRecruitment\portrait_norelation" IsHidden="true" />
+      <BrushLayer Name="EmptyNoRelation" Sprite="SPGeneral\SPRecruitment\portrait_norelation" IsHidden="true" />
+      <BrushLayer Name="EmptyEnoughRelation" Sprite="SPGeneral\SPRecruitment\portrait_relation" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Available">
+        <BrushLayer Name="Available" IsHidden="false" />
+      </Style>
+      <Style Name="Unavailable">
+        <BrushLayer Name="Unavailable" IsHidden="false" />
+      </Style>
+      <Style Name="EmptyNoRelation">
+        <BrushLayer Name="EmptyNoRelation" IsHidden="false" />
+      </Style>
+      <Style Name="EmptyEnoughRelation">
+        <BrushLayer Name="EmptyEnoughRelation" IsHidden="false" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="transfer" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Recruitment.Troop.Cart.Brush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\SPRecruitment\portrait_cart" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" ValueFactor="-10" SaturationFactor="10" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="transfer" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Recruitment.Notable.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#e1e1e1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Troop.Cart.CostText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFD987FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Info.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.WageInfo.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#FFD987FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Popup.Title.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.RecruitAllButton.Text" Font="Galahad" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Popup.Done.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Recruitment.Popup.DoneButton" BaseBrush="Standard.TriplePopupCloseButtons.DoneButton">
+    <Layers>
+    </Layers>
+    <Styles>
+    </Styles>
+    <SoundProperties>
+      <StateSounds>
+      </StateSounds>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="inventory/onehanded" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+</Brushes>

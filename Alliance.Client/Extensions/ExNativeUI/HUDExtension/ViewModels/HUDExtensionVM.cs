@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModes.Story.Behaviors;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 		private string _allyTeamColor2;
 		private string _enemyTeamColor;
 		private string _enemyTeamColor2;
+		private bool _showWarmupInfoText;
 		private string _warmupInfoText;
 		private int _allyTeamScore = -1;
 		private int _enemyTeamScore = -1;
@@ -532,6 +534,23 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 		}
 
 		[DataSourceProperty]
+		public bool ShowWarmupInfoText
+		{
+			get
+			{
+				return _showWarmupInfoText;
+			}
+			set
+			{
+				if (value != _showWarmupInfoText)
+				{
+					_showWarmupInfoText = value;
+					OnPropertyChangedWithValue(value, nameof(ShowWarmupInfoText));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public int GeneralWarningCountdown
 		{
 			get
@@ -588,14 +607,23 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 			MissionLobbyComponent missionBehavior = mission.GetMissionBehavior<MissionLobbyComponent>();
 			_isTeamsEnabled = missionBehavior.MissionType != 0 && missionBehavior.MissionType != MultiplayerGameType.Duel;
 			_missionLobbyEquipmentNetworkComponent = mission.GetMissionBehavior<MissionLobbyEquipmentNetworkComponent>();
+
+			// Show HUD if at least one element is enabled. Otherwise hide everything.
+			ShowHud = Config.Instance.ShowFlagMarkers || Config.Instance.ShowOfficers || Config.Instance.ShowScore;
+
 			// Hide round countdown and team avatars for scenarios
 			IsRoundCountdownAvailable = _gameMode.IsGameModeUsingRoundCountdown && _gameMode is not ScenarioClientBehavior;
 			ShowTeamAvatars = _gameMode is not ScenarioClientBehavior;
 			IsRoundCountdownSuspended = false;
+
 			// Disable Score depending on config
 			_isTeamScoresEnabled = _isTeamsEnabled && Config.Instance.ShowScore;
 			_isTeamMemberCountsEnabled = missionBehavior.MissionType == MultiplayerGameType.Battle;
 			UpdateShowTeamScores();
+
+			// Hide warmup info text if PlayerSpawn is enabled
+			ShowWarmupInfoText = !mission.HasMissionBehavior<PlayerSpawnMenuView>();
+
 			Teammates = new MBBindingList<MPPlayerVM>();
 			Enemies = new MBBindingList<MPPlayerVM>();
 			_teammateDictionary = new Dictionary<MissionPeer, MPPlayerVM>();

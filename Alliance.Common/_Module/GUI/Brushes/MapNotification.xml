@@ -1,0 +1,325 @@
+<Brushes>
+  <Brush Name="Map.Notification.Sound">
+    <Layers>
+      <BrushLayer Name="Default" IsVisible="false" />
+    </Layers>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="OnInspection" Audio="default" />
+        <EventSound EventName="OnRemoveBegin" Audio="default" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Map.Notification.Ring">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\MapNotification\notification_ring" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.More.Panel">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\Tutorial\shadow" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" AnimationToPlayOnBegin="DefaultAnimation" HueFactor="-100" />
+    </Styles>
+    <Animations>
+      <Animation Name="DefaultAnimation" Duration="1.5" Loop="true">
+        <AnimationProperty LayerName="Default" PropertyName="ValueFactor">
+          <KeyFrame Time="0.0" Value="0" />
+          <KeyFrame Time="0.2" Value="5" />
+          <KeyFrame Time="0.4" Value="8" />
+          <KeyFrame Time="0.75" Value="30" />
+          <KeyFrame Time="1.1" Value="8" />
+          <KeyFrame Time="1.3" Value="5" />
+          <KeyFrame Time="1.5" Value="0" />
+        </AnimationProperty>
+        <AnimationProperty LayerName="Default" PropertyName="SaturationFactor">
+          <KeyFrame Time="0.0" Value="0" />
+          <KeyFrame Time="0.2" Value="50" />
+          <KeyFrame Time="0.4" Value="100" />
+          <KeyFrame Time="0.75" Value="100" />
+          <KeyFrame Time="1.1" Value="100" />
+          <KeyFrame Time="1.3" Value="50" />
+          <KeyFrame Time="1.5" Value="0" />
+        </AnimationProperty>
+      </Animation>
+    </Animations>
+  </Brush>
+  <Brush Name="Map.Notification.Remove.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapMenuUnread@2x" Color="#381704FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.Type.Circle.Image">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#2168DDFF" IsHidden="true" />
+      
+      <BrushLayer Name="traitgained_calculating_-2" Sprite="SPGeneral\MapNotification\notification_illustration_calculating_-2" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_calculating_-1" Sprite="SPGeneral\MapNotification\notification_illustration_calculating_-1" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_calculating_1" Sprite="SPGeneral\MapNotification\notification_illustration_calculating_1" Color="#FDBF54FF" IsHidden="true" />
+      <BrushLayer Name="traitgained_calculating_2" Sprite="SPGeneral\MapNotification\notification_illustration_calculating_2" Color="#FDBF54FF" IsHidden="true" />
+      
+      <BrushLayer Name="traitgained_generosity_-2" Sprite="SPGeneral\MapNotification\notification_illustration_generosity_-2" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_generosity_-1" Sprite="SPGeneral\MapNotification\notification_illustration_generosity_-1" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_generosity_1" Sprite="SPGeneral\MapNotification\notification_illustration_generosity_1" Color="#FDBF54FF" IsHidden="true" />
+      <BrushLayer Name="traitgained_generosity_2" Sprite="SPGeneral\MapNotification\notification_illustration_generosity_2" Color="#FDBF54FF" IsHidden="true" />
+      
+      <BrushLayer Name="traitgained_honor_-2" Sprite="SPGeneral\MapNotification\notification_illustration_honor_-2" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_honor_-1" Sprite="SPGeneral\MapNotification\notification_illustration_honor_-1" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_honor_1" Sprite="SPGeneral\MapNotification\notification_illustration_honor_1" Color="#FDBF54FF" IsHidden="true" />
+      <BrushLayer Name="traitgained_honor_2" Sprite="SPGeneral\MapNotification\notification_illustration_honor_2" Color="#FDBF54FF" IsHidden="true" />
+      
+      <BrushLayer Name="traitgained_mercy_-2" Sprite="SPGeneral\MapNotification\notification_illustration_mercy_-2" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_mercy_-1" Sprite="SPGeneral\MapNotification\notification_illustration_mercy_-1" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_mercy_1" Sprite="SPGeneral\MapNotification\notification_illustration_mercy_1" Color="#FDBF54FF" IsHidden="true" />
+      <BrushLayer Name="traitgained_mercy_2" Sprite="SPGeneral\MapNotification\notification_illustration_mercy_2" Color="#FDBF54FF" IsHidden="true" />
+      
+      <BrushLayer Name="traitgained_valor_-2" Sprite="SPGeneral\MapNotification\notification_illustration_valor_-2" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_valor_-1" Sprite="SPGeneral\MapNotification\notification_illustration_valor_-1" Color="#BC1D1DFF" IsHidden="true" />
+      <BrushLayer Name="traitgained_valor_1" Sprite="SPGeneral\MapNotification\notification_illustration_valor_1" Color="#FDBF54FF" IsHidden="true" />
+      <BrushLayer Name="traitgained_valor_2" Sprite="SPGeneral\MapNotification\notification_illustration_valor_2" Color="#FDBF54FF" IsHidden="true" />
+      
+      <BrushLayer Name="trait_lost_line" Sprite="SPGeneral\MapNotification\trait_lose" Color="#ED1C24FF" IsHidden="true" />
+      
+      <BrushLayer Name="battle" Sprite="SPGeneral\MapNotification\notification_illustration_war" IsHidden="true" />
+      <BrushLayer Name="peace" Sprite="SPGeneral\MapNotification\notification_illustration_peace" IsHidden="true" />
+      <BrushLayer Name="rebellion" Sprite="SPGeneral\MapNotification\notification_illustration_revolt" IsHidden="true" />
+      <BrushLayer Name="marriage" Sprite="SPGeneral\MapNotification\notification_illustration_marriage" IsHidden="true" />
+      <BrushLayer Name="newborn" Sprite="SPGeneral\MapNotification\notification_illustration_birth" IsHidden="true" />
+      <BrushLayer Name="stillborn" Sprite="SPGeneral\MapNotification\notification_illustration_stillborn" IsHidden="true" />
+      <BrushLayer Name="death" Sprite="SPGeneral\MapNotification\notification_illustration_death" IsHidden="true" />
+      <BrushLayer Name="armydispersion" Sprite="SPGeneral\MapNotification\notification_illustration_armydisbanded" IsHidden="true" />
+      <BrushLayer Name="armycreation" Sprite="SPGeneral\MapNotification\notification_illustration_army_created" IsHidden="true" />
+      <BrushLayer Name="vote" Sprite="SPGeneral\MapNotification\notification_illustration_vote_pending" IsHidden="true" />
+      <BrushLayer Name="quest" Sprite="SPGeneral\MapNotification\notification_illustration_quest" IsHidden="true" />
+      <BrushLayer Name="settlementundersiege" Sprite="SPGeneral\MapNotification\notification_illustration_settlement_siege" IsHidden="true" />
+      <BrushLayer Name="settlementownerchanged" Sprite="SPGeneral\MapNotification\notification_illustration_settlement_owner_changed" IsHidden="true" />
+      <BrushLayer Name="conspiracyquest" Sprite="SPGeneral\MapNotification\notification_illustration_conspiracy_quest" IsHidden="true" />
+      <BrushLayer Name="education" Sprite="SPGeneral\MapNotification\notification_illustration_education" IsHidden="true" />
+      <BrushLayer Name="ransom" Sprite="SPGeneral\MapNotification\notification_illustration_issuecomplete" IsHidden="true" />
+      <BrushLayer Name="comeofage" Sprite="SPGeneral\MapNotification\notification_illustration_heir_coming_of_age" IsHidden="true" />
+      <BrushLayer Name="kingdomdestroyed" Sprite="SPGeneral\MapNotification\notification_illustration_kingdom_destroyed" IsHidden="true" />
+      <BrushLayer Name="alley_leader_died" Sprite="SPGeneral\MapNotification\notification_illustration_back_alley" IsHidden="true" />
+      <BrushLayer Name="alley_under_attack" Sprite="SPGeneral\MapNotification\notification_illustration_back_alley" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      
+      <Style Name="traitgained_calculating_-2">
+        <BrushLayer Name="traitgained_calculating_-2" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_calculating_-1">
+        <BrushLayer Name="traitgained_calculating_-1" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_calculating_by_increase">
+        <BrushLayer Name="traitgained_calculating_-1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_calculating_by_decrease">
+        <BrushLayer Name="traitgained_calculating_1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_calculating_1">
+        <BrushLayer Name="traitgained_calculating_1" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_calculating_2">
+        <BrushLayer Name="traitgained_calculating_2" IsHidden="false" />
+      </Style>
+      
+      <Style Name="traitgained_generosity_-2">
+        <BrushLayer Name="traitgained_generosity_-2" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_generosity_-1">
+        <BrushLayer Name="traitgained_generosity_-1" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_generosity_by_increase">
+        <BrushLayer Name="traitgained_generosity_-1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_generosity_by_decrease">
+        <BrushLayer Name="traitgained_generosity_1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_generosity_1">
+        <BrushLayer Name="traitgained_generosity_1" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_generosity_2">
+        <BrushLayer Name="traitgained_generosity_2" IsHidden="false" />
+      </Style>
+      
+      <Style Name="traitgained_honor_-2">
+        <BrushLayer Name="traitgained_honor_-2" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_honor_-1">
+        <BrushLayer Name="traitgained_honor_-1" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_honor_by_increase">
+        <BrushLayer Name="traitgained_honor_-1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_honor_by_decrease">
+        <BrushLayer Name="traitgained_honor_1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_honor_1">
+        <BrushLayer Name="traitgained_honor_1" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_honor_2">
+        <BrushLayer Name="traitgained_honor_2" IsHidden="false" />
+      </Style>
+      
+      <Style Name="traitgained_mercy_-2">
+        <BrushLayer Name="traitgained_mercy_-2" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_mercy_-1">
+        <BrushLayer Name="traitgained_mercy_-1" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_mercy_by_increase">
+        <BrushLayer Name="traitgained_mercy_-1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_mercy_by_decrease">
+        <BrushLayer Name="traitgained_mercy_1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_mercy_1">
+        <BrushLayer Name="traitgained_mercy_1" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_mercy_2">
+        <BrushLayer Name="traitgained_mercy_2" IsHidden="false" />
+      </Style>
+      
+      <Style Name="traitgained_valor_-2">
+        <BrushLayer Name="traitgained_valor_-2" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_valor_-1">
+        <BrushLayer Name="traitgained_valor_-1" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_valor_by_increase">
+        <BrushLayer Name="traitgained_valor_-1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitlost_valor_by_decrease">
+        <BrushLayer Name="traitgained_valor_1" IsHidden="false" />
+        <BrushLayer Name="trait_lost_line" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_valor_1">
+        <BrushLayer Name="traitgained_valor_1" IsHidden="false" />
+      </Style>
+      <Style Name="traitgained_valor_2">
+        <BrushLayer Name="traitgained_valor_2" IsHidden="false" />
+      </Style>
+      
+      <Style Name="battle">
+        <BrushLayer Name="battle" IsHidden="false" />
+      </Style>
+      <Style Name="peace">
+        <BrushLayer Name="peace" IsHidden="false" />
+      </Style>
+      <Style Name="rebellion">
+        <BrushLayer Name="rebellion" IsHidden="false" />
+      </Style>
+      <Style Name="marriage">
+        <BrushLayer Name="marriage" IsHidden="false" />
+      </Style>
+      <Style Name="newborn">
+        <BrushLayer Name="newborn" IsHidden="false" />
+      </Style>
+      <Style Name="stillborn">
+        <BrushLayer Name="stillborn" IsHidden="false" />
+      </Style>
+      <Style Name="death">
+        <BrushLayer Name="death" IsHidden="false" />
+      </Style>
+      <Style Name="armydispersion">
+        <BrushLayer Name="armydispersion" IsHidden="false" />
+      </Style>
+      <Style Name="armycreation">
+        <BrushLayer Name="armycreation" IsHidden="false" />
+      </Style>
+      <Style Name="vote">
+        <BrushLayer Name="vote" IsHidden="false" />
+      </Style>
+      <Style Name="quest">
+        <BrushLayer Name="quest" IsHidden="false" />
+      </Style>
+      <Style Name="settlementundersiege">
+        <BrushLayer Name="settlementundersiege" IsHidden="false" />
+      </Style>
+      <Style Name="settlementownerchanged">
+        <BrushLayer Name="settlementownerchanged" IsHidden="false" />
+      </Style>
+      <Style Name="conspiracyquest">
+        <BrushLayer Name="conspiracyquest" IsHidden="false" />
+      </Style>
+      <Style Name="education">
+        <BrushLayer Name="education" IsHidden="false" />
+      </Style>
+      <Style Name="ransom">
+        <BrushLayer Name="ransom" IsHidden="false" />
+      </Style>
+      <Style Name="comeofage">
+        <BrushLayer Name="comeofage" IsHidden="false" />
+      </Style>
+      <Style Name="kingdomdestroyed">
+        <BrushLayer Name="kingdomdestroyed" IsHidden="false" />
+      </Style>
+      <Style Name="alley_leader_died">
+        <BrushLayer Name="alley_leader_died" IsHidden="false" />
+      </Style>
+      <Style Name="alley_under_attack">
+        <BrushLayer Name="alley_under_attack" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.Title.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#EBC391FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="16" />
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.Description.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="14" />
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.Remove.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="15" />
+    </Styles>
+  </Brush>
+  <Brush Name="Map.Notification.More.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E3D6C6FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+</Brushes>
