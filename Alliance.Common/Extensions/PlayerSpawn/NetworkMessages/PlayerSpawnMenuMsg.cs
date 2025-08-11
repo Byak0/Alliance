@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Utilities;
+﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;

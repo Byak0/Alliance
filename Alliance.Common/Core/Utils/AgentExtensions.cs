@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Extensions.TroopSpawner.Models;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -124,6 +125,41 @@ namespace Alliance.Common.Core.Utils
 			}
 
 			return perksToShow;
+		}
+
+		public static void AddAgentInfo(this Agent agent, float difficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, int lives = AgentsInfoModel.DEFAULT_LIVES, int speakingRange = AgentsInfoModel.DEFAULT_SPEAKING_RANGE, bool synchronize = false)
+		{
+			AgentsInfoModel.Instance.AddAgentInfo(agent, difficulty, lives, speakingRange, synchronize);
+		}
+
+		public static void SetDifficulty(this Agent agent, float difficulty, bool synchronize = false)
+		{
+			AgentsInfoModel.Instance.UpdateAgentDifficulty(agent, difficulty, synchronize);
+		}
+
+		public static void SetLives(this Agent agent, int lives, bool synchronize = false)
+		{
+			AgentsInfoModel.Instance.UpdateAgentLives(agent, lives, synchronize);
+		}
+
+		public static void SetSpeakingRange(this Agent agent, int speakingRange, bool synchronize = false)
+		{
+			AgentsInfoModel.Instance.UpdateAgentSpeakingRange(agent, speakingRange, synchronize);
+		}
+
+		public static float GetDifficulty(this Agent agent)
+		{
+			return AgentsInfoModel.Instance.Agents[agent.Index].Difficulty;
+		}
+
+		public static int GetLives(this Agent agent)
+		{
+			return AgentsInfoModel.Instance.Agents[agent.Index].Lives;
+		}
+
+		public static int GetSpeakingRange(this Agent agent)
+		{
+			return AgentsInfoModel.Instance.Agents[agent.Index].SpeakingRange;
 		}
 	}
 }

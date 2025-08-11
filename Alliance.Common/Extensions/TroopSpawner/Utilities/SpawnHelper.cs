@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Patch.Utilities;
@@ -33,7 +34,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// <summary>
 		/// Use this method if you want to spawn a bot from multi-threaded/async code.
 		/// </summary>
-		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			var spawnRequest = new SpawnRequest
 			{
@@ -71,7 +72,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			}
 		}
 
-		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			return SpawnBot(out _, team, culture, character, position, onSpawnPerkHandler, selectedFormation, botDifficulty, mortalityState, healthMultiplier);
 		}
@@ -81,7 +82,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		/// <param name="agent">Return the agent instance after spawn.</param>
 		/// <returns>True if spawn successful, false otherwise.</returns>
-		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			agent = null;
 			try
@@ -155,6 +156,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent = Mission.Current.SpawnAgent(agentBuildData2, false);
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
+
+				// Calculate health limit
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
@@ -170,8 +173,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 
 				agent.AIStateFlags |= Agent.AIStateFlag.Alarmed;
-				AgentsInfoModel.Instance.AddAgentInfo(agent, botDifficulty, synchronize: true);
-				if (hasMount) AgentsInfoModel.Instance.AddAgentInfo(agent.MountAgent, botDifficulty, synchronize: true);
+
+				// Update Alliance custom agent properties
+				agent.AddAgentInfo(difficulty: botDifficulty, synchronize: true);
+				if (hasMount) agent.MountAgent.AddAgentInfo(difficulty: botDifficulty, synchronize: true);
+
 				agent.UpdateAgentProperties();
 				agent.WieldInitialWeapons();
 
@@ -186,7 +192,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			}
 		}
 
-		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, BasicCultureObject customCulture = null)
+		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float difficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f, BasicCultureObject customCulture = null)
 		{
 			try
 			{
@@ -280,16 +286,20 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				Agent agent = Mission.Current.SpawnAgent(agentBuildData, spawnFromAgentVisuals: true);
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
+
+				// Calculate health limit
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
 				agent.HealthLimit += bonusHealth;
 				// Additional health for officers
-				if (networkPeer.IsOfficer())
-				{
-					agent.HealthLimit *= Config.Instance.OfficerHPMultip;
-				}
+				if (networkPeer.IsOfficer()) agent.HealthLimit *= Config.Instance.OfficerHPMultip;
+				agent.HealthLimit *= healthMultiplier;
 				agent.Health = agent.HealthLimit;
+
+				// Update Alliance custom agent properties
+				agent.AddAgentInfo(difficulty: difficulty, synchronize: true);
+				agent.MountAgent?.AddAgentInfo(difficulty: difficulty, synchronize: true);
 
 				agent.WieldInitialWeapons();
 

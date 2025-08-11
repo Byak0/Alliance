@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.Configuration.Utilities;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System;
 using System.Linq;
@@ -393,17 +393,17 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				new TextInquiryData(
 					"Ban player",
 					$"Ban reason for {_selectedPeer.Username}:",
-					true,  
-					true,  
-					"Confirm",  
-					"Cancel",    
+					true,
+					true,
+					"Confirm",
+					"Cancel",
 					new Action<string>(reason =>
 					{
 						if (string.IsNullOrWhiteSpace(reason))
 						{
 							Log("Ban reason can't be empty.", LogLevel.Warning);
 							return;
-						} 
+						}
 						else if (reason.Length > CompressionHelper.StringMaxLength)
 						{
 							Log($"Ban reason can't exceed {CompressionHelper.StringMaxLength} characters.", LogLevel.Warning);
@@ -411,13 +411,13 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 						}
 						SendBanRequest(reason);
 					}),
-					null,  
-					false, 
-					null,  
-					"",    
-					""  
+					null,
+					false,
+					null,
+					"",
+					""
 				),
-				false 
+				false
 			);
 		}
 

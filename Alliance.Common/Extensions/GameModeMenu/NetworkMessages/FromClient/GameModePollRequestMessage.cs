@@ -1,6 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.Configuration.Utilities;
+using Alliance.Common.Core.Utils;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.Library;
