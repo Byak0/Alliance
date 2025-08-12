@@ -66,6 +66,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new DamageAgentInZoneAction();
 		}
 
+		public virtual MortalityStateZoneAction MortalityStateZoneAction()
+		{
+			return new MortalityStateZoneAction();
+		}
+
+
 		public virtual ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
 		{
 			return new ShowOrHideEntitiesAction();
