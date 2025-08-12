@@ -19,7 +19,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 			switch (message.DataType)
 			{
 				case AgentDataType.All:
-					AgentsInfoModel.Instance.AddAgentInfo(agent, message.Difficulty, message.SpeakingRange, message.Lives);
+					AgentsInfoModel.Instance.AddAgentInfo(agent, message.Difficulty, message.Lives, message.SpeakingRange);
 					Log($"Add agent {agent.Index} infos => Diff: {message.Difficulty}, speakRange: {message.SpeakingRange}, lives: {message.Difficulty}", LogLevel.Debug);
 					break;
 				case AgentDataType.Difficulty:
