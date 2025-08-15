@@ -6,206 +6,207 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.TroopSpawner.Models
 {
-    /// <summary>
-    /// Singleton class to store various informations about Agents.
-    /// Helps to ensure that each agent uses its own slot to prevent engine from crashing at spawn.
-    /// Access it with AgentsInfoModel.Instance.Agents[agent.Index]
-    /// </summary>
-    public sealed class AgentsInfoModel
-    {
-        public ConcurrentDictionary<int, AgentInfo> Agents { get; private set; }
-        private const int RESERVED_SLOTS = 500;
-        private const int TOTAL_SLOTS = 2000;
+	/// <summary>
+	/// Singleton class to store various informations about Agents.
+	/// Helps to ensure that each agent uses its own slot to prevent engine from crashing at spawn.
+	/// Access it with AgentsInfoModel.Instance.Agents[agent.Index]
+	/// </summary>
+	public sealed class AgentsInfoModel
+	{
+		public const float DEFAULT_DIFFICULTY = 1f;
+		public const int DEFAULT_LIVES = 1;
+		public const int DEFAULT_SPEAKING_RANGE = 30;
+		private const int DEFAULT_EXPIRATION_TIMER = 30;
 
-        /// <summary>
-        /// Return any number of available slots, whether they are consecutive or not.
-        /// Use this to define agentBuildData.Index and ensure the agent you are spawning won't crash the engine.
-        /// </summary>
-        /// <returns>The first slots available, or empty list if no slot available</returns>
-        public List<int> GetAvailableSlotIndex(int requiredSlots = 1)
-        {
-            List<int> availableSlots = new List<int>();
+		public ConcurrentDictionary<int, AgentInfo> Agents { get; private set; }
+		private const int RESERVED_SLOTS = 500;
+		private const int TOTAL_SLOTS = 2000;
 
-            for (int i = RESERVED_SLOTS; i < Agents.Count; i++)
-            {
-                if (!Agents.ContainsKey(i) || Agents[i].Agent == null)
-                {
-                    availableSlots.Add(i);
-                    if (availableSlots.Count == requiredSlots)
-                    {
-                        return availableSlots;
-                    }
-                }
-            }
+		/// <summary>
+		/// Return any number of available slots, whether they are consecutive or not.
+		/// Use this to define agentBuildData.Index and ensure the agent you are spawning won't crash the engine.
+		/// </summary>
+		/// <returns>The first slots available, or empty list if no slot available</returns>
+		public List<int> GetAvailableSlotIndex(int requiredSlots = 1)
+		{
+			List<int> availableSlots = new List<int>();
 
-            return new List<int>(); // Return an empty list if enough slots are not available
-        }
+			for (int i = RESERVED_SLOTS; i < Agents.Count; i++)
+			{
+				if (!Agents.ContainsKey(i) || Agents[i].Agent == null)
+				{
+					availableSlots.Add(i);
+					if (availableSlots.Count == requiredSlots)
+					{
+						return availableSlots;
+					}
+				}
+			}
 
-        public int GetAvailableSlotCount()
-        {
-            int availableSlots = 0;
-            for (int i = RESERVED_SLOTS; i < Agents.Count; i++)
-            {
-                if (Agents[i].Agent == null)
-                {
-                    availableSlots++;
-                }
-            }
-            return availableSlots;
-        }
+			return new List<int>(); // Return an empty list if enough slots are not available
+		}
 
-        /// <summary>
-        /// Add agent informations to the model.
-        /// Use <see cref="GetAvailableSlotIndex"/> to retrieve an available slot before creating the Agent.
-        /// </summary>
-        /// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
-        public void AddAgentInfo(Agent agent, float diff = 1f, int exp = 0, int lives = 0, bool synchronize = false)
-        {
-            Agents[agent.Index] = new AgentInfo(agent, diff, exp, lives);
-            if (synchronize)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.All, diff, exp, lives));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            }
-        }
+		public int GetAvailableSlotCount()
+		{
+			int availableSlots = 0;
+			for (int i = RESERVED_SLOTS; i < Agents.Count; i++)
+			{
+				if (Agents[i].Agent == null)
+				{
+					availableSlots++;
+				}
+			}
+			return availableSlots;
+		}
 
-        /// <summary>
-        /// Update agent difficulty.
-        /// </summary>
-        /// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
-        public void UpdateAgentDifficulty(Agent agent, float diff = 1f, bool synchronize = false)
-        {
-            Agents[agent.Index].Difficulty = diff;
-            if (synchronize)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Difficulty, difficulty: diff));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            }
-        }
+		/// <summary>
+		/// Add agent informations to the model.
+		/// Use <see cref="GetAvailableSlotIndex"/> to retrieve an available slot before creating the Agent.
+		/// </summary>
+		/// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
+		public void AddAgentInfo(Agent agent, float diff = DEFAULT_DIFFICULTY, int lives = DEFAULT_LIVES, int speakingRange = DEFAULT_SPEAKING_RANGE, bool synchronize = false)
+		{
+			Agents[agent.Index] = new AgentInfo(agent, diff, lives, speakingRange);
+			if (synchronize) SynchronizeAgentValue(agent, AgentDataType.All);
+		}
 
-        /// <summary>
-        /// Update agent experience.
-        /// </summary>
-        /// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
-        public void UpdateAgentExperience(Agent agent, int exp = 0, bool synchronize = false)
-        {
-            Agents[agent.Index].Experience = exp;
-            if (synchronize)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Experience, experience: exp));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            }
-        }
+		/// <summary>
+		/// Update agent difficulty.
+		/// </summary>
+		/// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
+		public void UpdateAgentDifficulty(Agent agent, float diff = DEFAULT_DIFFICULTY, bool synchronize = false)
+		{
+			Agents[agent.Index].Difficulty = diff;
+			if (synchronize) SynchronizeAgentValue(agent, AgentDataType.Difficulty);
+		}
 
-        /// <summary>
-        /// Update agent lives.
-        /// </summary>
-        /// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
-        public void UpdateAgentLives(Agent agent, int lives = 0, bool synchronize = false)
-        {
-            Agents[agent.Index].Lives = lives;
-            if (synchronize)
-            {
-                GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, DataType.Lives, lives: lives));
-                GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-            }
-        }
+		/// <summary>
+		/// Update agent speaking range.
+		/// </summary>
+		/// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
+		public void UpdateAgentSpeakingRange(Agent agent, int speakingRange = DEFAULT_SPEAKING_RANGE, bool synchronize = false)
+		{
+			Agents[agent.Index].SpeakingRange = speakingRange;
+			if (synchronize) SynchronizeAgentValue(agent, AgentDataType.SpeakingRange);
+		}
 
-        public void ClearAllAgentInfos()
-        {
-            for (int i = 0; i < Agents.Count; i++)
-            {
-                if (Agents[i].Agent != null)
-                {
-                    MarkAgentInfoAsExpiredWithDelay(Agents[i].Agent.Index);
-                }
-            }
-        }
+		/// <summary>
+		/// Update agent lives.
+		/// </summary>
+		/// <param name="synchronize">Set this to true if you want to synchronize with all clients</param>
+		public void UpdateAgentLives(Agent agent, int lives = DEFAULT_LIVES, bool synchronize = false)
+		{
+			Agents[agent.Index].Lives = lives;
+			if (synchronize) SynchronizeAgentValue(agent, AgentDataType.Lives);
+		}
 
-        public void MarkAgentInfoAsExpiredWithDelay(Agent agent, int delay = 30)
-        {
-            MarkAgentInfoAsExpiredWithDelay(agent.Index, delay);
-        }
+		public void SynchronizeAgentValue(Agent agent, AgentDataType dataType)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new AgentsInfoMessage(agent.Index, dataType, Agents[agent.Index]));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
 
-        public void MarkAgentInfoAsExpiredWithDelay(int agentIndex, int delay = 30)
-        {
-            Agents[agentIndex].ExpirationTimer = delay;
-            Log($"Marking agent n.{agentIndex} as expired in {delay}s", LogLevel.Debug);
-        }
+		public void ClearAllAgentInfos()
+		{
+			for (int i = 0; i < Agents.Count; i++)
+			{
+				if (Agents[i].Agent != null)
+				{
+					MarkAgentInfoAsExpiredWithDelay(Agents[i].Agent.Index);
+				}
+			}
+		}
 
-        public void CheckAndRemoveExpiredAgents()
-        {
-            for (int i = 0; i < Agents.Count; i++)
-            {
-                if (Agents[i].ExpirationTimer > 0)
-                {
-                    Agents[i].ExpirationTimer--;
-                }
-                else if (Agents[i].ExpirationTimer == 0)
-                {
-                    Log($"Removing expired agent n.{i}", LogLevel.Debug);
-                    Agents[i] = new AgentInfo(null, 1f, 0, 0);
-                }
-            }
-        }
+		public void MarkAgentInfoAsExpiredWithDelay(Agent agent, int delay = DEFAULT_EXPIRATION_TIMER)
+		{
+			MarkAgentInfoAsExpiredWithDelay(agent.Index, delay);
+		}
 
-        static AgentsInfoModel()
-        {
-            instance.Agents = new ConcurrentDictionary<int, AgentInfo>();
-            for (int i = 0; i < TOTAL_SLOTS; i++)
-            {
-                instance.Agents[i] = new AgentInfo(null, 1f, 0, 0);
-            }
-        }
+		public void MarkAgentInfoAsExpiredWithDelay(int agentIndex, int delay = DEFAULT_EXPIRATION_TIMER)
+		{
+			Agents[agentIndex].ExpirationTimer = delay;
+			Log($"Marking agent n.{agentIndex} as expired in {delay}s", LogLevel.Debug);
+		}
 
-        private static readonly AgentsInfoModel instance = new();
-        public static AgentsInfoModel Instance { get { return instance; } }
-    }
+		public void CheckAndRemoveExpiredAgents()
+		{
+			for (int i = 0; i < Agents.Count; i++)
+			{
+				if (Agents[i].ExpirationTimer > 0)
+				{
+					Agents[i].ExpirationTimer--;
+				}
+				else if (Agents[i].ExpirationTimer == 0)
+				{
+					Log($"Removing expired agent n.{i}", LogLevel.Debug);
+					Agents[i] = new AgentInfo(null);
+				}
+			}
+		}
 
-    public class AgentInfo
-    {
-        public AgentInfo(Agent agent, float diff, int exp, int lives, int expirationTimer = -1)
-        {
-            Agent = agent;
-            Difficulty = diff;
-            Experience = exp;
-            Lives = lives;
-            ExpirationTimer = expirationTimer;
-        }
+		static AgentsInfoModel()
+		{
+			instance.Agents = new ConcurrentDictionary<int, AgentInfo>();
+			for (int i = 0; i < TOTAL_SLOTS; i++)
+			{
+				instance.Agents[i] = new AgentInfo(null);
+			}
+		}
 
-        /// <summary>
-        /// Agent reference.
-        /// </summary>
-        public readonly Agent Agent;
+		private static readonly AgentsInfoModel instance = new();
+		public static AgentsInfoModel Instance { get { return instance; } }
+	}
 
-        /// <summary>
-        /// Difficulty modifier, impacts the AI behavior and skills.
-        /// </summary>
-        /// <value>
-        /// Between 0.5 (easy) and 2.5 (hardest). Default value is 1f.
-        /// </value>
-        public float Difficulty;
+	public class AgentInfo
+	{
+		public AgentInfo(Agent agent, float diff = AgentsInfoModel.DEFAULT_DIFFICULTY, int lives = AgentsInfoModel.DEFAULT_LIVES, int speakingRange = AgentsInfoModel.DEFAULT_SPEAKING_RANGE, int expirationTimer = -1)
+		{
+			Agent = agent;
+			Difficulty = diff;
+			Lives = lives;
+			SpeakingRange = speakingRange;
+			ExpirationTimer = expirationTimer;
+		}
 
-        /// <summary>
-        /// Experience level, might have an use later.
-        /// </summary>
-        public int Experience;
+		/// <summary>
+		/// Agent reference.
+		/// </summary>
+		public readonly Agent Agent;
 
-        /// <summary>
-        /// Number of lives that this agent possess.
-        /// </summary>
-        public int Lives;
+		/// <summary>
+		/// Difficulty modifier, impacts the AI behavior and skills.
+		/// </summary>
+		/// <value>
+		/// Between 0.5 (easy) and 2.5 (hardest).
+		/// </value>
+		public float Difficulty;
 
-        /// <summary>
-        /// Set this to free the agent slot after the timer expires.
-        /// </summary>
-        /// <value>
-        /// In seconds. -1 means no expiration.
-        /// </value>
-        public int ExpirationTimer;
-    }
+		/// <summary>
+		/// Number of lives that this agent possess.
+		/// </summary>
+		public int Lives;
+
+		/// <summary>
+		/// Speaking range of the agent, used for VOIP.
+		/// </summary>
+		public int SpeakingRange;
+
+		/// <summary>
+		/// Set this to free the agent slot after the timer expires.
+		/// </summary>
+		/// <value>
+		/// In seconds. -1 means no expiration.
+		/// </value>
+		public int ExpirationTimer;
+	}
+
+	public enum AgentDataType
+	{
+		None,
+		Difficulty,
+		Lives,
+		SpeakingRange,
+		All
+	}
 }

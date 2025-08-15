@@ -1,6 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.Audio.Utilities;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.VOIP.NetworkMessages.FromServer;
 using Concentus.Enums;
@@ -599,9 +601,11 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				}
 
 				Vec3 agentPosition;
+				float speakingRange = AgentsInfoModel.DEFAULT_SPEAKING_RANGE;
 				if (iteratedNetworkPeer.ControlledAgent != null)
 				{
 					agentPosition = iteratedNetworkPeer.ControlledAgent.Position;
+					speakingRange = iteratedNetworkPeer.ControlledAgent.GetSpeakingRange();
 				}
 				else
 				{
@@ -611,7 +615,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				}
 
 
-				if (AudioHelper.CanTargetHearSound(agentPosition, myPosition))
+				if (AudioHelper.CanTargetHearSound(agentPosition, myPosition, speakingRange))
 				{
 					int peerVoiceDataIndex = GetPlayerVoiceDataIndex(iteratedMissionPeer);
 
@@ -638,7 +642,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 			{
 				if (target.MissionPeer != null) continue;
 
-				if (AudioHelper.CanTargetHearSound(myPosition, target.Position))
+				if (AudioHelper.CanTargetHearSound(myPosition, target.Position, target.GetSpeakingRange()))
 				{
 					int agentVoiceDataIndex = _playerVoiceList.FindIndex(x => x.Agent == target);
 
@@ -856,14 +860,17 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				}
 
 				Vec3 speakerPosition;
+				float speakingRange = AgentsInfoModel.DEFAULT_SPEAKING_RANGE;
 
 				if (Peer?.ControlledAgent != null)
 				{
 					speakerPosition = Peer.ControlledAgent.Position;
+					speakingRange = Peer.ControlledAgent.GetSpeakingRange();
 				}
 				else if (Agent != null)
 				{
 					speakerPosition = Agent.Position;
+					speakingRange = Agent.GetSpeakingRange();
 				}
 				else if (GameNetwork.MyPeer.ControlledAgent != null)
 				{
@@ -885,7 +892,7 @@ namespace Alliance.Client.Extensions.VOIP.Behaviors
 				float pbVolume = 5 * pbOptionVolume;
 
 				// Apply panning to the left and right channels
-				float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, 30f, pbVolume);
+				float clampedVolume = CalculateVolume(speakerPosition, listenerPosition, speakingRange, pbVolume);
 
 				panProvider.Pan = 0.0f;
 				volumeProvider.Volume = clampedVolume;

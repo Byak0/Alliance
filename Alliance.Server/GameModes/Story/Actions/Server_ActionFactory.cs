@@ -53,5 +53,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 		{
 			return new Server_TeleportAgentAction();
 		}
+
+		public override VOIPRangeInZoneAction VOIPRangeInZoneAction()
+		{
+			return new Server_VOIPRangeInZoneAction();
+		}
 	}
 }
