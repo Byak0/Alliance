@@ -55,7 +55,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 		{
 			int speakingRange = agent.GetSpeakingRange();
 			AgentInZone.Add(agent, speakingRange);
-			AgentsInfoModel.Instance.UpdateAgentSpeakingRange(agent, VOIP_Range, true);
+			agent.SetSpeakingRange(VOIP_Range, true);
 		}
 
 		public void RemoveInAgentWithCustomSpeakingRange(Agent agent)
@@ -63,7 +63,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			if (AgentInZone.TryGetValue(agent, out int speakingRange))
 			{
 				AgentInZone.Remove(agent);
-				AgentsInfoModel.Instance.UpdateAgentSpeakingRange(agent, speakingRange, true);
+				agent.SetSpeakingRange(speakingRange, true);
 			}
 		}
 	}
