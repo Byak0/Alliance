@@ -5,11 +5,6 @@ namespace Alliance.Server.Core.Database.Models
 {
     public partial class DiscordUser
     {
-        public DiscordUser()
-        {
-            BnlPlayers = new HashSet<BnlPlayer>();
-        }
-
         public string DiscordId { get; set; }
         public DateTime? LstUpdTmstmp { get; set; }
         public string DiscordTagName { get; set; }
@@ -18,7 +13,5 @@ namespace Alliance.Server.Core.Database.Models
         public DateTime CreatedAt { get; set; }
         public string DisplayedName { get; set; }
         public int Id { get; set; }
-
-        public virtual ICollection<BnlPlayer> BnlPlayers { get; set; }
     }
 }

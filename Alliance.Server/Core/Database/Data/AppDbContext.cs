@@ -14,16 +14,13 @@ namespace Alliance.Server.Core.Database.Data
 		{
 		}
 
-		public virtual DbSet<BnlGame> BnlGames { get; set; }
-		public virtual DbSet<BnlMsg> BnlMsgs { get; set; }
-		public virtual DbSet<BnlPlayer> BnlPlayers { get; set; }
-		public virtual DbSet<BnlScenario> BnlScenarios { get; set; }
-		public virtual DbSet<BnlTk> BnlTks { get; set; }
 		public virtual DbSet<DiscordEvent> DiscordEvents { get; set; }
 		public virtual DbSet<DiscordSpamContentMsgDico> DiscordSpamContentMsgDicos { get; set; }
 		public virtual DbSet<DiscordSpamMsg> DiscordSpamMsgs { get; set; }
 		public virtual DbSet<DiscordUser> DiscordUsers { get; set; }
 		public virtual DbSet<DiscordUserWarning> DiscordUserWarnings { get; set; }
+		public virtual DbSet<ZeventDonation> ZeventDonations { get; set; }
+		public virtual DbSet<ZeventGoldPile> ZeventGoldPiles { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -36,143 +33,6 @@ namespace Alliance.Server.Core.Database.Data
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.HasPostgresExtension("uuid-ossp");
-
-			modelBuilder.Entity<BnlGame>(entity =>
-			{
-				entity.ToTable("bnl_game");
-
-				entity.Property(e => e.Id).HasColumnName("id");
-
-				entity.Property(e => e.BnlScenarioId).HasColumnName("bnl_scenario_id");
-
-				entity.Property(e => e.LstUpdTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("lst_upd_tmstmp");
-
-				entity.Property(e => e.MapName)
-					.HasMaxLength(50)
-					.HasColumnName("map_name");
-
-				entity.HasOne(d => d.BnlScenario)
-					.WithMany(p => p.BnlGames)
-					.HasForeignKey(d => d.BnlScenarioId)
-					.HasConstraintName("FK_725e436adfc629f84b68cb56dd1");
-			});
-
-			modelBuilder.Entity<BnlMsg>(entity =>
-			{
-				entity.ToTable("bnl_msg");
-
-				entity.Property(e => e.Id).HasColumnName("id");
-
-				entity.Property(e => e.BnlGameId).HasColumnName("bnl_game_id");
-
-				entity.Property(e => e.BnlPlayerId).HasColumnName("bnl_player_id");
-
-				entity.Property(e => e.LstUpdTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("lst_upd_tmstmp");
-
-				entity.Property(e => e.Msg)
-					.IsRequired()
-					.HasMaxLength(500)
-					.HasColumnName("msg");
-
-				entity.Property(e => e.PlayerName)
-					.IsRequired()
-					.HasMaxLength(50)
-					.HasColumnName("player_name");
-
-				entity.HasOne(d => d.BnlGame)
-					.WithMany(p => p.BnlMsgs)
-					.HasForeignKey(d => d.BnlGameId)
-					.OnDelete(DeleteBehavior.ClientSetNull)
-					.HasConstraintName("FK_105abc8a5948adea354ccf26cf2");
-
-				entity.HasOne(d => d.BnlPlayer)
-					.WithMany(p => p.BnlMsgs)
-					.HasForeignKey(d => d.BnlPlayerId)
-					.OnDelete(DeleteBehavior.ClientSetNull)
-					.HasConstraintName("FK_5b557c5df00b75000651f0a7689");
-			});
-
-			modelBuilder.Entity<BnlPlayer>(entity =>
-			{
-				entity.ToTable("bnl_player");
-
-				entity.Property(e => e.Id).HasColumnName("id");
-
-				entity.Property(e => e.DiscordId).HasColumnName("discord_id");
-
-				entity.Property(e => e.IsrtTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("isrt_tmstmp");
-
-				entity.Property(e => e.LstUpdTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("lst_upd_tmstmp");
-
-				entity.Property(e => e.Username)
-					.IsRequired()
-					.HasMaxLength(100)
-					.HasColumnName("username");
-
-				entity.HasOne(d => d.Discord)
-					.WithMany(p => p.BnlPlayers)
-					.HasForeignKey(d => d.DiscordId)
-					.HasConstraintName("FK_9ed60a7483375913cfa6a4e367c");
-			});
-
-			modelBuilder.Entity<BnlScenario>(entity =>
-			{
-				entity.ToTable("bnl_scenario");
-
-				entity.Property(e => e.Id).HasColumnName("id");
-
-				entity.Property(e => e.GameMode)
-					.IsRequired()
-					.HasMaxLength(10)
-					.HasColumnName("game_mode");
-
-				entity.Property(e => e.LstUpdTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("lst_upd_tmstmp");
-
-				entity.Property(e => e.Name)
-					.IsRequired()
-					.HasMaxLength(10)
-					.HasColumnName("name");
-			});
-
-			modelBuilder.Entity<BnlTk>(entity =>
-			{
-				entity.ToTable("bnl_tk");
-
-				entity.Property(e => e.Id).HasColumnName("id");
-
-				entity.Property(e => e.AttackerName)
-					.IsRequired()
-					.HasMaxLength(50)
-					.HasColumnName("attacker_name");
-
-				entity.Property(e => e.BnlGameId).HasColumnName("bnl_game_id");
-
-				entity.Property(e => e.DamageTaken).HasColumnName("damage_taken");
-
-				entity.Property(e => e.LstUpdTmstmp)
-					.HasColumnType("timestamp without time zone")
-					.HasColumnName("lst_upd_tmstmp");
-
-				entity.Property(e => e.VictimName)
-					.IsRequired()
-					.HasMaxLength(50)
-					.HasColumnName("victim_name");
-
-				entity.HasOne(d => d.BnlGame)
-					.WithMany(p => p.BnlTks)
-					.HasForeignKey(d => d.BnlGameId)
-					.HasConstraintName("FK_7a6d1c0465017673e7aa550af34");
-			});
 
 			modelBuilder.Entity<DiscordEvent>(entity =>
 			{
@@ -391,6 +251,57 @@ namespace Alliance.Server.Core.Database.Data
 					.IsRequired()
 					.HasMaxLength(50)
 					.HasColumnName("warning_level");
+			});
+
+			modelBuilder.Entity<ZeventDonation>(entity =>
+			{
+				entity.ToTable("zevent_donation");
+
+				entity.Property(e => e.Id).HasColumnName("id");
+
+				entity.Property(e => e.DeletedAt)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("deletedAt");
+
+				entity.Property(e => e.DonationAmount).HasColumnName("donation_amount");
+
+				entity.Property(e => e.InsertDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("insert_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.LastUpdateDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("last_update_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.Username)
+					.IsRequired()
+					.HasMaxLength(255)
+					.HasColumnName("username");
+			});
+
+			modelBuilder.Entity<ZeventGoldPile>(entity =>
+			{
+				entity.ToTable("zevent_gold_pile");
+
+				entity.Property(e => e.Id).HasColumnName("id");
+
+				entity.Property(e => e.DeletedAt)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("deletedAt");
+
+				entity.Property(e => e.GoldAmount).HasColumnName("gold_amount");
+
+				entity.Property(e => e.InsertDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("insert_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.LastUpdateDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("last_update_date")
+					.HasDefaultValueSql("now()");
 			});
 
 			OnModelCreatingPartial(modelBuilder);
