@@ -20,7 +20,9 @@ namespace Alliance.Server.Core.Database.Data
 		public virtual DbSet<DiscordUser> DiscordUsers { get; set; }
 		public virtual DbSet<DiscordUserWarning> DiscordUserWarnings { get; set; }
 		public virtual DbSet<ZeventDonation> ZeventDonations { get; set; }
+		public virtual DbSet<ZeventDonator> ZeventDonators { get; set; }
 		public virtual DbSet<ZeventGoldPile> ZeventGoldPiles { get; set; }
+		public virtual DbSet<ZeventReward> ZeventRewards { get; set; }
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
@@ -279,6 +281,46 @@ namespace Alliance.Server.Core.Database.Data
 					.IsRequired()
 					.HasMaxLength(255)
 					.HasColumnName("username");
+
+				entity.HasOne(d => d.UsernameNavigation)
+					.WithMany(p => p.ZeventDonations)
+					.HasPrincipalKey(p => p.Username)
+					.HasForeignKey(d => d.Username)
+					.OnDelete(DeleteBehavior.ClientSetNull)
+					.HasConstraintName("zevent_donation_username_fkey");
+			});
+
+			modelBuilder.Entity<ZeventDonator>(entity =>
+			{
+				entity.ToTable("zevent_donator");
+
+				entity.HasComment("Table des donateurs");
+
+				entity.HasIndex(e => e.Username, "zevent_donator_username_key")
+					.IsUnique();
+
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.UseIdentityAlwaysColumn();
+
+				entity.Property(e => e.DeletedAt)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("deletedAt");
+
+				entity.Property(e => e.InsertDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("insert_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.LastUpdateDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("last_update_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.Username)
+					.IsRequired()
+					.HasMaxLength(255)
+					.HasColumnName("username");
 			});
 
 			modelBuilder.Entity<ZeventGoldPile>(entity =>
@@ -302,6 +344,49 @@ namespace Alliance.Server.Core.Database.Data
 					.HasColumnType("timestamp without time zone")
 					.HasColumnName("last_update_date")
 					.HasDefaultValueSql("now()");
+			});
+
+			modelBuilder.Entity<ZeventReward>(entity =>
+			{
+				entity.ToTable("zevent_reward");
+
+				entity.HasComment("Contient les tentes offert en récompense aux donateurs");
+
+				entity.Property(e => e.Id)
+					.HasColumnName("id")
+					.UseIdentityAlwaysColumn();
+
+				entity.Property(e => e.DeletedAt)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("deletedAt");
+
+				entity.Property(e => e.InsertDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("insert_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.LastUpdateDate)
+					.HasColumnType("timestamp without time zone")
+					.HasColumnName("last_update_date")
+					.HasDefaultValueSql("now()");
+
+				entity.Property(e => e.RewardTag).HasColumnName("reward_tag");
+
+				entity.Property(e => e.Tier).HasColumnName("tier");
+
+				entity.Property(e => e.Username)
+					.IsRequired()
+					.HasMaxLength(255)
+					.HasColumnName("username");
+
+				entity.Property(e => e.Variant).HasColumnName("variant");
+
+				entity.HasOne(d => d.UsernameNavigation)
+					.WithMany(p => p.ZeventRewards)
+					.HasPrincipalKey(p => p.Username)
+					.HasForeignKey(d => d.Username)
+					.OnDelete(DeleteBehavior.ClientSetNull)
+					.HasConstraintName("zevent_reward_username_fkey");
 			});
 
 			OnModelCreatingPartial(modelBuilder);
