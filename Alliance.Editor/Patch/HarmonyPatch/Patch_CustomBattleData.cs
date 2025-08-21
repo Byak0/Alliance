@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade.CustomBattle.CustomBattle;
+using TaleWorlds.MountAndBlade.CustomBattle.CustomBattle.SelectionItem;
 using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Utilities.Logger;
 
@@ -38,6 +39,13 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 					typeof(CustomBattleData).GetProperty(nameof(CustomBattleData.Factions), BindingFlags.Static | BindingFlags.Public).GetGetMethod(),
 					prefix: new HarmonyMethod(typeof(Patch_CustomBattleData).GetMethod(
 						nameof(Prefix_Factions), BindingFlags.Static | BindingFlags.Public)));
+
+				// Patch the constructor of FactionItemVM
+				Harmony.Patch(
+					AccessTools.Constructor(typeof(FactionItemVM), new Type[] { typeof(BasicCultureObject), typeof(Action<FactionItemVM>) }),
+					postfix: new HarmonyMethod(typeof(Patch_CustomBattleData).GetMethod(
+						nameof(PostFix_FactionItemVM_ctor), BindingFlags.Static | BindingFlags.Public)));
+
 			}
 			catch (Exception e)
 			{
@@ -75,6 +83,15 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 
 			// Return false to skip the original method
 			return false;
+		}
+
+		/// <summary>
+		/// Postfix for FactionItemVM constructor to set CultureCode using StringId instead of native fixed enum. 
+		/// Otherwise our custom faction code are set to "anyotherfaction"
+		/// </summary>
+		public static void PostFix_FactionItemVM_ctor(FactionItemVM __instance)
+		{
+			__instance.CultureCode = __instance.Faction.StringId;
 		}
 	}
 }
