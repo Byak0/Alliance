@@ -23,6 +23,10 @@ namespace Alliance.Common.Core.Utils
 		{
 			if (Mission.Current != null)
 			{
+#if !SERVER
+				EntityUtils.Tick(dt);
+#endif
+
 				SpatialGrid.UpdateGrid(Mission.Current.AllAgents);
 
 #if DEBUG

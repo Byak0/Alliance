@@ -108,6 +108,7 @@ namespace Alliance.Editor
 
 		protected override void OnApplicationTick(float dt)
 		{
+			EntityUtils.Tick(dt);
 			EditorToolsManager.EditorTools.Tick(dt);
 			if (Input.IsKeyPressed(InputKey.O))
 			{
