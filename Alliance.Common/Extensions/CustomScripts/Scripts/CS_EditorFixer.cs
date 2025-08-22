@@ -348,20 +348,40 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		/// </summary>
 		public static (int updated, int added, string outPath) UpdatePrefabFile(string sourceXmlPath, string prefabName, List<PrefabArg2> entries)
 		{
-			XDocument doc = XDocument.Load(sourceXmlPath);
-			XElement root = doc.Root ?? throw new InvalidOperationException("Invalid prefab XML: missing root.");
+			// Paths
+			string modulePath = ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName);
+			string outDir = Path.Combine(modulePath, "PrefabsWithFixedArg2");
+			Directory.CreateDirectory(outDir);
+			string outPath = Path.Combine(outDir, Path.GetFileName(sourceXmlPath));
 
-			XElement prefabRoot = root.Elements("game_entity")
+			// 1) Load NATIVE doc and grab the target prefab (baseline structure)
+			XDocument nativeDoc = XDocument.Load(sourceXmlPath);
+			XElement nativeRoot = nativeDoc.Root ?? throw new InvalidOperationException("Invalid prefab XML: missing root.");
+			XElement nativePrefab = nativeRoot.Elements("game_entity")
+				.FirstOrDefault(ge => string.Equals((string)ge.Attribute("name"), prefabName, StringComparison.Ordinal))
+				?? throw new InvalidOperationException($"Prefab '{prefabName}' not found in '{sourceXmlPath}'.");
+
+			// 2) Load WORKING doc (override if exists, otherwise start from native)
+			XDocument workDoc = File.Exists(outPath) ? XDocument.Load(outPath) : new XDocument(new XElement(nativeRoot));
+			XElement workRoot = workDoc.Root ?? throw new InvalidOperationException("Invalid prefab XML: missing root.");
+
+			// 3) Replace ONLY the target prefab in the working doc with the fresh native one
+			XElement workPrefab = workRoot.Elements("game_entity")
 				.FirstOrDefault(ge => string.Equals((string)ge.Attribute("name"), prefabName, StringComparison.Ordinal));
-			if (prefabRoot == null)
-				throw new InvalidOperationException($"Prefab '{prefabName}' not found in '{sourceXmlPath}'.");
 
+			XElement nativeClone = new XElement(nativePrefab); // deep clone
+
+			if (workPrefab != null)
+				workPrefab.ReplaceWith(nativeClone);
+			else
+				workRoot.Add(nativeClone);
+
+			// 4) Apply/merge argument2 updates onto the (now native) prefab element
 			int updated = 0, added = 0;
 
-			for (int i = 0; i < entries.Count; i++)
+			foreach (var e in entries)
 			{
-				PrefabArg2 e = entries[i];
-				XElement geNode = ResolveGameEntityByPath(prefabRoot, e.Path);
+				XElement geNode = ResolveGameEntityByPath(nativeClone, e.Path);
 				if (geNode == null) continue;
 
 				IEnumerable<XElement> metaMeshNodes = geNode.Element("components")?.Descendants("meta_mesh_component")
@@ -390,13 +410,8 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 			}
 
-			// Write to copy: Module/PrefabsWithFixedArg2/<same file name>.xml
-			string modulePath = ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName);
-			string outDir = Path.Combine(modulePath, "PrefabsWithFixedArg2");
-			Directory.CreateDirectory(outDir);
-			string outPath = Path.Combine(outDir, Path.GetFileName(sourceXmlPath));
-
-			AtomicWrite(doc, outPath);
+			// 5) Write back atomically to the override file (other prefabs remain untouched)
+			AtomicWrite(workDoc, outPath);
 			return (updated, added, outPath);
 		}
 
