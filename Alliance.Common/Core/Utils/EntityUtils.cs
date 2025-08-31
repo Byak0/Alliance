@@ -205,6 +205,27 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
+		/// Set the scale of a MatrixFrame directly (instead of multiplying existing scale like native method).
+		/// </summary>
+		public static MatrixFrame SetScale(MatrixFrame m, Vec3 newScale, bool orthonormalize = true)
+		{
+			Mat3 rot = m.rotation;
+
+			if (orthonormalize) rot.Orthonormalize();
+
+			Vec3 s = rot.s; s.Normalize();
+			Vec3 f = rot.f; f.Normalize();
+			Vec3 u = rot.u; u.Normalize();
+
+			// Apply new scale per-axis
+			rot.s = s * newScale.x;
+			rot.f = f * newScale.y;
+			rot.u = u * newScale.z;
+
+			return new MatrixFrame(rot, m.origin);
+		}
+
+		/// <summary>
 		/// Create a text mesh using a glyph map.
 		/// The material must have an atlas texture with glyphs.
 		///	</summary>
