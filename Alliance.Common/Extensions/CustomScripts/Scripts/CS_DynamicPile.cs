@@ -22,7 +22,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		// ----- Pile geometry -----
 		public float ConeMaxHeight = 7.77f;
 		public float Cone2MaxHeight = 4.1f;
-		public int ConeMaxVolume = 20000;
+		public int ConeMaxVolume = 20_000;
 		public int MaxVolumePerSecond = 10;
 		public float EstimateGravity = 8f;
 
