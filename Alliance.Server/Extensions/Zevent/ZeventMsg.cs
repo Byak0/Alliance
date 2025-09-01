@@ -5,14 +5,22 @@ namespace Alliance.Client.Extensions.Zevent
 {
 	internal static class ZeventMsg
 	{
-		public static void RequestClientsToUpdateGoldPile(float targetAmount)
+		/// <summary>
+		/// Need to send the Integer value. So it should NOT be divided by 1000
+		/// </summary>
+		/// <param name="targetAmount"></param>
+		public static void RequestClientsToUpdateGoldPile(int targetAmount)
 		{
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
-		public static void RequestClientToUpdateGoldPile(float targetAmount, NetworkCommunicator target)
+		/// <summary>
+		/// Need to send the Integer value. So it should NOT be divided by 1000
+		/// </summary>
+		/// <param name="targetAmount"></param>
+		public static void RequestClientToUpdateGoldPile(int targetAmount, NetworkCommunicator target)
 		{
 			GameNetwork.BeginModuleEventAsServer(target);
 			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount));

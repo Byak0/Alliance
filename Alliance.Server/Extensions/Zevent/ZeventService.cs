@@ -47,9 +47,9 @@ namespace Alliance.Server.Extensions.Zevent
 		public async Task HandleZeventExtendedItemAsync(ItemEffect zEventEffect)
 		{
 			if (zEventEffect == null) return;
-			if (zEventEffect.Type != ItemEffectType.Zevent)
+			if (zEventEffect.Type != "ZEVENT" /*ItemEffectType.ZEVENT*/)
 			{
-				Log("HandleZeventExtendedItemAsync can only be called if type is :" + ItemEffectType.Zevent, LogLevel.Error);
+				Log("HandleZeventExtendedItemAsync can only be called if type is :" + "ZEVENT", LogLevel.Error);
 				return;
 			}
 
@@ -71,9 +71,9 @@ namespace Alliance.Server.Extensions.Zevent
 				}
 
 				CS_DynamicPile goldPileScript = gameEntity.GetFirstScriptOfType<CS_DynamicPile>();
+				int pileTargetAmount = response.Total;
 				// We need to divide by 1000 because CS_DynamicPile max value is 20_000 instead of 20_000_000
-				float pileTargetAmount = response.Total / 1000f;
-				goldPileScript.SetVolumeTarget(pileTargetAmount);
+				goldPileScript.SetVolumeTarget(pileTargetAmount / 1000);
 				ZeventMsg.RequestClientsToUpdateGoldPile(pileTargetAmount);
 
 				// Save new total donation amount in DB

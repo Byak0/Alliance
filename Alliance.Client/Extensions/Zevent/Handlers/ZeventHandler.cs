@@ -6,8 +6,10 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.Extensions.Zevent.Handlers
 {
-	internal class ZeventHandler : IHandlerRegister
+	public class ZeventHandler : IHandlerRegister
 	{
+		public ZeventHandler() { }
+
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<ZEventUpdatePileNetworkServerMessage>(OnUpdateGoldPileRequest);
@@ -18,7 +20,8 @@ namespace Alliance.Client.Extensions.Zevent.Handlers
 			GameEntity gameEntity = Mission.Current.Scene.GetFirstEntityWithScriptComponent<CS_DynamicPile>();
 			if (gameEntity == null) return;
 			CS_DynamicPile goldPileScript = gameEntity.GetFirstScriptOfType<CS_DynamicPile>();
-			float pileTargetAmount = message.GoldPileTarget;
+			// We need to divide by 1000 because CS_DynamicPile max value is 20_000 instead of 20_000_000
+			float pileTargetAmount = message.GoldPileTarget / 1000;
 			goldPileScript.SetVolumeTarget(pileTargetAmount);
 		}
 	}

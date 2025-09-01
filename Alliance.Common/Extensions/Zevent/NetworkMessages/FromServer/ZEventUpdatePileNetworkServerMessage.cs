@@ -4,28 +4,29 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer
 {
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-	public class ZEventUpdatePileNetworkServerMessage : GameNetworkMessage
+	public sealed class ZEventUpdatePileNetworkServerMessage : GameNetworkMessage
 	{
-		public float GoldPileTarget { get; private set; }
+		public int GoldPileTarget { get; private set; }
 
-		readonly CompressionInfo.Float CompressionInfo;
+		readonly CompressionInfo.Integer CompressionInfo = new CompressionInfo.Integer(0, 20_000_000, true);
 
-		public ZEventUpdatePileNetworkServerMessage(float target)
+		public ZEventUpdatePileNetworkServerMessage() { }
+
+		public ZEventUpdatePileNetworkServerMessage(int target)
 		{
 			GoldPileTarget = target;
-			CompressionInfo = new CompressionInfo.Float(0, 20000, 0.1f);
 		}
 
 		protected override void OnWrite()
 		{
-			WriteFloatToPacket(GoldPileTarget, CompressionInfo);
+			WriteIntToPacket(GoldPileTarget, CompressionInfo);
 		}
 
 		protected override bool OnRead()
 		{
 			bool bufferReadValid = true;
 
-			GoldPileTarget = ReadFloatFromPacket(CompressionInfo, ref bufferReadValid);
+			GoldPileTarget = ReadIntFromPacket(CompressionInfo, ref bufferReadValid);
 
 			return bufferReadValid;
 		}

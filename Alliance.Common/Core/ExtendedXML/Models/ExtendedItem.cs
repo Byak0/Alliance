@@ -1,6 +1,4 @@
-﻿using EnumsNET;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 using System.Xml;
 using TaleWorlds.Core;
 using TaleWorlds.ObjectSystem;
@@ -48,7 +46,8 @@ namespace Alliance.Common.Core.ExtendedXML.Models
 				foreach (XmlNode child in node.FirstChild.ChildNodes)
 				{
 					Effects.Add(new ItemEffect(
-						Enums.Parse<ItemEffectType>(XmlHelper.ReadString(child, "type"), true),
+						//Enums.Parse<ItemEffectType>(XmlHelper.ReadString(child, "type"), true),
+						XmlHelper.ReadString(child, "type"),
 						XmlHelper.ReadString(child, "value"),
 						XmlHelper.ReadString(child, "position")
 					));
@@ -60,21 +59,27 @@ namespace Alliance.Common.Core.ExtendedXML.Models
 
 	public class ItemEffect
 	{
-		public ItemEffectType Type { get; private set; }
+		public string Type { get; private set; }
 		public string Value { get; private set; }
 		public string Position { get; private set; }
 
-		public ItemEffect(ItemEffectType type, string value, string position)
+		public ItemEffect(string type, string value, string position)
 		{
 			Type = type;
 			Value = value;
 			Position = position;
 		}
 	}
-
+	/*
 	public enum ItemEffectType
 	{
 		[EnumMember(Value = "ZEVENT")]
-		Zevent,
-	}
+		ZEVENT,
+		[EnumMember(Value = "DropPrefab")]
+		DropPrefab,
+		[EnumMember(Value = "Spyglass")]
+		Spyglass,
+		[EnumMember(Value = "SwitchMesh")]
+		SwitchMesh
+	}*/
 }
