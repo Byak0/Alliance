@@ -1,7 +1,7 @@
 ﻿using Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer;
 using TaleWorlds.MountAndBlade;
 
-namespace Alliance.Client.Extensions.Zevent
+namespace Alliance.Server.Extensions.Zevent
 {
 	internal static class ZeventMsg
 	{
@@ -9,10 +9,10 @@ namespace Alliance.Client.Extensions.Zevent
 		/// Need to send the Integer value. So it should NOT be divided by 1000
 		/// </summary>
 		/// <param name="targetAmount"></param>
-		public static void RequestClientsToUpdateGoldPile(int targetAmount)
+		public static void RequestClientsToUpdateGoldPile(int targetAmount, int baseAmount = -1)
 		{
 			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount));
+			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount, baseAmount));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
@@ -20,10 +20,10 @@ namespace Alliance.Client.Extensions.Zevent
 		/// Need to send the Integer value. So it should NOT be divided by 1000
 		/// </summary>
 		/// <param name="targetAmount"></param>
-		public static void RequestClientToUpdateGoldPile(int targetAmount, NetworkCommunicator target)
+		public static void RequestClientToUpdateGoldPile(int targetAmount, NetworkCommunicator target, int baseAmount = -1)
 		{
 			GameNetwork.BeginModuleEventAsServer(target);
-			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount));
+			GameNetwork.WriteMessage(new ZEventUpdatePileNetworkServerMessage(targetAmount, baseAmount));
 			GameNetwork.EndModuleEventAsServer();
 		}
 	}

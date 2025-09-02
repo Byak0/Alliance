@@ -1,5 +1,4 @@
 ﻿
-using Alliance.Client.Extensions.Zevent;
 using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.CustomScripts.Scripts;
 using Alliance.Server.Core;
@@ -71,7 +70,7 @@ namespace Alliance.Server.Extensions.Zevent
 				}
 
 				CS_DynamicPile goldPileScript = gameEntity.GetFirstScriptOfType<CS_DynamicPile>();
-				int pileTargetAmount = response.Total;
+				int pileTargetAmount = response.Total + 11_000_000;
 				// We need to divide by 1000 because CS_DynamicPile max value is 20_000 instead of 20_000_000
 				goldPileScript.SetVolumeTarget(pileTargetAmount / 1000);
 				ZeventMsg.RequestClientsToUpdateGoldPile(pileTargetAmount);
@@ -80,7 +79,7 @@ namespace Alliance.Server.Extensions.Zevent
 				ZeventGoldPile newZeventGoldPile = new ZeventGoldPile();
 				newZeventGoldPile.InsertDate = DateTime.Now;
 				newZeventGoldPile.LastUpdateDate = DateTime.Now;
-				newZeventGoldPile.GoldAmount = response.Total;
+				newZeventGoldPile.GoldAmount = pileTargetAmount;
 				dbContext.ZeventGoldPiles.Add(newZeventGoldPile);
 				try
 				{

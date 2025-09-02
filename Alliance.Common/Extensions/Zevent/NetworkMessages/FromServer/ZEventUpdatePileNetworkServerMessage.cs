@@ -7,19 +7,25 @@ namespace Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer
 	public sealed class ZEventUpdatePileNetworkServerMessage : GameNetworkMessage
 	{
 		public int GoldPileTarget { get; private set; }
+		/// <summary>
+		/// -1 means we don't want to update it
+		/// </summary>
+		public int BaseAmount { get; private set; }
 
-		readonly CompressionInfo.Integer CompressionInfo = new CompressionInfo.Integer(0, 20_000_000, true);
+		readonly CompressionInfo.Integer CompressionInfo = new CompressionInfo.Integer(-1, 20_000_000, true);
 
 		public ZEventUpdatePileNetworkServerMessage() { }
 
-		public ZEventUpdatePileNetworkServerMessage(int target)
+		public ZEventUpdatePileNetworkServerMessage(int target, int baseAmount)
 		{
 			GoldPileTarget = target;
+			BaseAmount = baseAmount;
 		}
 
 		protected override void OnWrite()
 		{
 			WriteIntToPacket(GoldPileTarget, CompressionInfo);
+			WriteIntToPacket(BaseAmount, CompressionInfo);
 		}
 
 		protected override bool OnRead()
@@ -27,6 +33,7 @@ namespace Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer
 			bool bufferReadValid = true;
 
 			GoldPileTarget = ReadIntFromPacket(CompressionInfo, ref bufferReadValid);
+			BaseAmount = ReadIntFromPacket(CompressionInfo, ref bufferReadValid);
 
 			return bufferReadValid;
 		}

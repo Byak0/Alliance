@@ -60,7 +60,17 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		// ----- Volume state -----
 		public float CurrentVolume = 0f;
+		/// <summary>
+		/// To be used only in EDITOR !!!
+		/// </summary>
 		public float VolumeToAdd = 0f;
+		public float VolumeTargetted
+		{
+			get
+			{
+				return _volumeTargetted;
+			}
+		}
 		private float _volumeTargetted;
 		private float _lastVolumeAdded;
 		private float _currentVolumeEstimate = 0f;
@@ -130,6 +140,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			_currentVolumeEstimate = CurrentVolume;
 			_volumeTargetted = CurrentVolume;
 			UpdateCones();
+			UpdateTextLabel();
 		}
 
 		/// <summary>
@@ -327,6 +338,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				MatrixFrame f = _coneEntity.GetGlobalFrame();
 				f.origin = new Vec3(f.origin.x, f.origin.y, _currentConeZ);
 				_coneEntity.SetGlobalFrame(f);
+				_coneEntity.SetPhysicsState(false, true);
 			}
 
 			if (_cone2Entity != null)

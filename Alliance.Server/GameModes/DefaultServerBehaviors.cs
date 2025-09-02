@@ -15,6 +15,7 @@ using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
+using Alliance.Server.Extensions.Zevent.Behavior;
 using Alliance.Server.Patch.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -64,6 +65,9 @@ namespace Alliance.Server.GameModes
 				new AdvancedCombatBehavior(),
 				new AnimalBehavior(),
 				new ConditionsBehavior(),
+
+				// Zevent special behavior (probably temporary)
+				new ZeventBehavior(),
 
 				// Special MissionBehaviors fixing native bugs
 				new NotAllPlayersJoinFixBehavior()
