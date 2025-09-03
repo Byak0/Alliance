@@ -1,8 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
-using System.Linq;
-using TaleWorlds.Core;
 using TaleWorlds.Engine;
-using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.Utils.EntityUtils;
 using static Alliance.Common.Utilities.Logger;
@@ -12,11 +9,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 {
 	/// <summary>
 	/// Display custom text on an object. 
-	/// TODO: Can be synchronized.
-	/// TODO: Can optionally be edited by players.
+	/// Can optionally be edited by players (locally, or synchronized).
 	/// Generates ONE mesh (two triangles per glyph) on the XZ plane.
 	/// </summary>
-	public class CS_TextPanel : SynchedMissionObject, IFocusable
+	public class CS_TextPanel : SynchedMissionObject
 	{
 		public string Text = "Hello world";
 		public bool IsSynchronized = true;
@@ -29,8 +25,6 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		public AvailableFonts Font = AvailableFonts.Galahad;
 
 		public SimpleButton RENDER;
-
-		public FocusableObjectType FocusableObjectType => FocusableObjectType.None;
 
 		protected override void OnEditorVariableChanged(string variableName)
 		{
@@ -78,44 +72,6 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			base.OnEditorInit();
 			EntityUtils.EnqueueTextPanel(this);
-		}
-
-		public void OnFocusGain(Agent userAgent)
-		{
-		}
-
-		public void OnFocusLose(Agent userAgent)
-		{
-		}
-
-		public TextObject GetInfoTextForBeingNotInteractable(Agent userAgent)
-		{
-			return new TextObject();
-		}
-
-		public string GetDescriptionText(GameEntity gameEntity = null)
-		{
-			if (int.TryParse(gameEntity.Name.Split(new char[] { '_' }).Last(), out int num))
-			{
-				string text = gameEntity.Name;
-				text = text.Remove(text.Count() - num.ToString().Count());
-				text += "x";
-				TextObject textObject;
-				if (GameTexts.TryGetText("str_destructible_component", out textObject, text))
-				{
-					return textObject.ToString();
-				}
-				return "";
-			}
-			else
-			{
-				TextObject textObject2;
-				if (GameTexts.TryGetText("str_destructible_component", out textObject2, gameEntity.Name))
-				{
-					return textObject2.ToString();
-				}
-				return "";
-			}
 		}
 	}
 }

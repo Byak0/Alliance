@@ -2,17 +2,17 @@
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
-namespace Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromClient
+namespace Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromServer
 {
-	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromClient)]
-	public sealed class RequestUseEntity : GameNetworkMessage
+	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
+	public sealed class HideEntity : GameNetworkMessage
 	{
 		public Guid ID { get; private set; }
 
-		// This empty constructor is required so the engine recognize this class as a valid NetworkMessage
-		public RequestUseEntity() { }
+		// This empty constructor and the sealed class keyword is required so the engine recognize this class as a valid NetworkMessage
+		public HideEntity() { }
 
-		public RequestUseEntity(Guid id)
+		public HideEntity(Guid id)
 		{
 			ID = id;
 		}
@@ -36,10 +36,9 @@ namespace Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromClient
 		{
 			return MultiplayerMessageFilter.MissionObjects;
 		}
-
 		protected override string OnGetLogFormat()
 		{
-			return $"Player request to use entity {ID}";
+			return $"Hide entity {ID}";
 		}
 	}
 }
