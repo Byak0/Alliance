@@ -1,4 +1,5 @@
 ﻿using Alliance.Server.Core.Database.Models;
+using Alliance.Server.Core.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace Alliance.Server.Core.Database.Data
@@ -28,7 +29,7 @@ namespace Alliance.Server.Core.Database.Data
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseNpgsql(DbConfig.DbConnectionString);
+				optionsBuilder.UseNpgsql(SecretsManager.DB_CONNECTION_STRING);
 			}
 		}
 

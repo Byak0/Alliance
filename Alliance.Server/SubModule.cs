@@ -8,7 +8,6 @@ using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
-using Alliance.Server.Core.Database;
 using Alliance.Server.Core.Database.Data;
 using Alliance.Server.Core.Security;
 using Alliance.Server.GameModes.BattleRoyale;
@@ -135,7 +134,7 @@ namespace Alliance.Server
 			var services = new ServiceCollection();
 
 			services.AddDbContext<AppDbContext>(options =>
-				options.UseNpgsql(DbConfig.DbConnectionString));
+				options.UseNpgsql(SecretsManager.DB_CONNECTION_STRING));
 
 			var serviceProvider = services.BuildServiceProvider();
 

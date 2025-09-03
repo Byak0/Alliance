@@ -11,7 +11,6 @@
 		<GameFolder>$(BANNERLORD_SERVER_DIR)</GameFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<BuildProjectReferences>false</BuildProjectReferences>
-	  <UserSecretsId>81431068-8e17-4ecc-a30f-2017b736c033</UserSecretsId>
   </PropertyGroup>
 
 	<ItemGroup>
@@ -34,7 +33,6 @@
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	    <PrivateAssets>all</PrivateAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
 	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
 	</ItemGroup>
 
@@ -73,7 +71,6 @@
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Npgsql.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Npgsql.EntityFrameworkCore.PostgreSQL.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.Extensions.Configuration.UserSecrets.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.Relational.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.Design.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
@@ -87,5 +84,5 @@
 		<!-- Put the current time in server name in ds_config_alliance.txt to circumvent duplicated server in TW lobby... -->
 		<Exec Command="powershell -Command &quot;$path = '$(GameFolder)\Modules\Native\ds_config_alliance.txt'; $content = Get-Content $path -Raw; $hour = Get-Date -Format 'HHmmss'; $newContent = $content -replace 'ServerName Alliance - Test Server \d+', ('ServerName Alliance - Test Server ' + $hour); Set-Content $path -Value $newContent&quot;" />
 	</Target>
-
+	
 </Project>
