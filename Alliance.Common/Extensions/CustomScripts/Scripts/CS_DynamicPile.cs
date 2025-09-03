@@ -17,13 +17,13 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// </summary>
 	public class CS_DynamicPile : MissionObject
 	{
-		public bool Enabled = true;
+		public bool Enabled = false;
 
 		// ----- Pile geometry -----
 		public float ConeMaxHeight = 7.77f;
 		public float Cone2MaxHeight = 4.1f;
-		public int ConeMaxVolume = 20_000;
-		public int MaxVolumePerSecond = 10;
+		public float ConeMaxVolume = 20000f;
+		public float MaxVolumePerSecond = 10f;
 		public float EstimateGravity = 8f;
 
 		// ----- Heart spin -----
@@ -132,7 +132,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		}
 
 		/// <summary>
-		/// Set the current volume immediately, without animation.
+		/// Set the current volume immediately, without animation.		
 		/// </summary>
 		public void SetVolume(float newVolume)
 		{
