@@ -1,19 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using System;
 
 namespace Alliance.Server.Core.Security
 {
 	public static class SecretsManager
 	{
-		/// <summary>
-		/// Get configuration from User Secrets of this project
-		/// </summary>
-		private static readonly IConfigurationRoot configuration = new ConfigurationBuilder()
-				.AddUserSecrets<SubModule>()
-				.Build();
-
-		public static IConfigurationRoot GetSecrets()
-		{
-			return configuration;
-		}
+		public static readonly string DB_CONNECTION_STRING = Environment.GetEnvironmentVariable("ConnectionStrings");
+		public static readonly string ZEVENT_AMOUNT_GET_API = Environment.GetEnvironmentVariable("ZeventAmountGetEndpoint");
 	}
 }

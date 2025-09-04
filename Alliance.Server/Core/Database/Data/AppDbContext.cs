@@ -1,4 +1,5 @@
 ﻿using Alliance.Server.Core.Database.Models;
+using Alliance.Server.Core.Security;
 using Microsoft.EntityFrameworkCore;
 
 namespace Alliance.Server.Core.Database.Data
@@ -28,7 +29,7 @@ namespace Alliance.Server.Core.Database.Data
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseNpgsql(DbConfig.DbConnectionString);
+				optionsBuilder.UseNpgsql(SecretsManager.DB_CONNECTION_STRING);
 			}
 		}
 
@@ -265,7 +266,14 @@ namespace Alliance.Server.Core.Database.Data
 					.HasColumnType("timestamp without time zone")
 					.HasColumnName("deletedAt");
 
-				entity.Property(e => e.DonationAmount).HasColumnName("donation_amount");
+				entity.Property(e => e.DonationAmount)
+					.HasPrecision(8, 2)
+					.HasColumnName("donation_amount");
+
+				entity.Property(e => e.DonationComment)
+					.IsRequired()
+					.HasMaxLength(255)
+					.HasColumnName("donation_comment");
 
 				entity.Property(e => e.InsertDate)
 					.HasColumnType("timestamp without time zone")
@@ -287,21 +295,17 @@ namespace Alliance.Server.Core.Database.Data
 					.HasPrincipalKey(p => p.Username)
 					.HasForeignKey(d => d.Username)
 					.OnDelete(DeleteBehavior.ClientSetNull)
-					.HasConstraintName("zevent_donation_username_fkey");
+					.HasConstraintName("FK_e63c8c7d98486fa9585f0234c9e");
 			});
 
 			modelBuilder.Entity<ZeventDonator>(entity =>
 			{
 				entity.ToTable("zevent_donator");
 
-				entity.HasComment("Table des donateurs");
-
-				entity.HasIndex(e => e.Username, "zevent_donator_username_key")
+				entity.HasIndex(e => e.Username, "UQ_7b259f86d01758eb46da97787bf")
 					.IsUnique();
 
-				entity.Property(e => e.Id)
-					.HasColumnName("id")
-					.UseIdentityAlwaysColumn();
+				entity.Property(e => e.Id).HasColumnName("id");
 
 				entity.Property(e => e.DeletedAt)
 					.HasColumnType("timestamp without time zone")
@@ -350,11 +354,7 @@ namespace Alliance.Server.Core.Database.Data
 			{
 				entity.ToTable("zevent_reward");
 
-				entity.HasComment("Contient les tentes offert en récompense aux donateurs");
-
-				entity.Property(e => e.Id)
-					.HasColumnName("id")
-					.UseIdentityAlwaysColumn();
+				entity.Property(e => e.Id).HasColumnName("id");
 
 				entity.Property(e => e.DeletedAt)
 					.HasColumnType("timestamp without time zone")
@@ -386,7 +386,7 @@ namespace Alliance.Server.Core.Database.Data
 					.HasPrincipalKey(p => p.Username)
 					.HasForeignKey(d => d.Username)
 					.OnDelete(DeleteBehavior.ClientSetNull)
-					.HasConstraintName("zevent_reward_username_fkey");
+					.HasConstraintName("FK_2a0c8c9b63c0d4dfef6ef584644");
 			});
 
 			OnModelCreatingPartial(modelBuilder);

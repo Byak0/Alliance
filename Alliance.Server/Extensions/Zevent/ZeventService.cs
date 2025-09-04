@@ -53,7 +53,7 @@ namespace Alliance.Server.Extensions.Zevent
 			}
 
 			// Call Zevent API in order to get new total donation amount
-			string zEventDonationApi = SecretsManager.GetSecrets().GetSection("ZeventAmountGetEndpoint").Value;
+			string zEventDonationApi = SecretsManager.ZEVENT_AMOUNT_GET_API;
 
 			try
 			{

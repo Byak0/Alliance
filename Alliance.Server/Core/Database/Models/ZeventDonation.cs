@@ -9,7 +9,8 @@ namespace Alliance.Server.Core.Database.Models
 		public DateTime LastUpdateDate { get; set; }
 		public DateTime? DeletedAt { get; set; }
 		public string Username { get; set; }
-		public int DonationAmount { get; set; }
+		public string DonationComment { get; set; }
+		public decimal DonationAmount { get; set; }
 
 		public virtual ZeventDonator UsernameNavigation { get; set; }
 	}
