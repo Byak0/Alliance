@@ -12,7 +12,6 @@
 		<UseWPF>true</UseWPF>
 		<OutputType>Library</OutputType>
 		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
-		<UserSecretsId>8a53caf7-cb13-4711-ba3e-b363dac9ddd3</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
