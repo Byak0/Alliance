@@ -297,7 +297,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			{
 				_volumeDisplayed = CurrentVolume;
 
-				_textPanel.Text = (CurrentVolume * 1000f).ToString("N", _labelFormat) + " E";
+				_textPanel.UpdateText((CurrentVolume * 1000f).ToString("N", _labelFormat) + " E");
 				_textPanel.Render();
 			}
 		}

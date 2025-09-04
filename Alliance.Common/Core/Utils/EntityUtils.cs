@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using static Alliance.Common.Utilities.Logger;
@@ -17,7 +18,7 @@ namespace Alliance.Common.Core.Utils
 	public static class EntityUtils
 	{
 		// Default glyph map for manipulating ASCII characters (0-127).
-		public static readonly FixedGridGlyphMap DefaultAsciiGrid = new FixedGridGlyphMap(16, 16, 0, 127, 1f, true);
+		public static readonly FixedGridGlyphMap DefaultAsciiGrid = new FixedGridGlyphMap(16, 16, 0, 256, 1f, true);
 
 		private const int MAX_TEXT_PANEL_BUILT_PER_TICK = 32;
 
@@ -58,7 +59,7 @@ namespace Alliance.Common.Core.Utils
 
 					// Build mesh (triangles = white; no vertex color)
 					var mesh = CreateTextMesh(
-						text: panel.Text ?? string.Empty,
+						text: panel.CleanedText ?? string.Empty,
 						fontSizeMeters: Math.Max(0.01f, panel.FontSize),
 						panelMaxWidthMeters: panel.PanelMaxWidth,
 						alignment: panel.TextAlignment,
@@ -329,44 +330,107 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
-		/// Break a raw string into lines based on max width and glyph map.
+		/// Break a raw string into lines based on max width and glyph map,
+		/// preferring word boundaries (space, or after '-').
+		/// Won't cut words unless a single word exceeds maxWidth.
 		/// </summary>
 		private static List<Line> BreakIntoLines(string raw, float maxWidth, FixedGridGlyphMap glyphMap, float glyphW, float spacing)
 		{
-			List<Line> lines = new List<Line>();
+			var lines = new List<Line>();
 			if (raw.Length == 0) { lines.Add(new Line(raw, 0, 0, 0f)); return lines; }
 
 			int start = 0;
 			float penX = 0f;
 			int countInLine = 0;
 
+			// Track the best soft-wrap spot in the current line.
+			int lastBreakCut = -1;          // substring end index (exclusive) to cut at
+			float lastBreakWidth = 0f;      // visual width if we cut there
+
 			for (int i = 0; i < raw.Length; i++)
 			{
 				char ch = raw[i];
 
+				// Hard line break
 				if (ch == '\n')
 				{
 					float width = penX - (countInLine > 0 ? spacing : 0f);
 					lines.Add(new Line(raw, start, i, Math.Max(0f, width)));
-					start = i + 1; penX = 0f; countInLine = 0;
+
+					start = i + 1;
+					penX = 0f;
+					countInLine = 0;
+					lastBreakCut = -1;
+					lastBreakWidth = 0f;
 					continue;
 				}
 
+				// Measure this glyph
 				float adv = glyphMap.AdvanceFor(ch, glyphW);
 				float prospective = penX + adv + (countInLine > 0 ? spacing : 0f);
+
+				// Record soft-wrap candidates:
+				// - before a space (don't include trailing spaces in the line)
+				// - after a hyphen (keep the hyphen at the end of the line)
+				if (ch == ' ')
+				{
+					// break BEFORE this space
+					float widthAtSpace = penX - (countInLine > 0 ? spacing : 0f);
+					lastBreakCut = i;                  // exclude the space
+					lastBreakWidth = Math.Max(0f, widthAtSpace);
+				}
+				else if (ch == '-')
+				{
+					// break AFTER this hyphen
+					float widthAtHyphen = (penX + adv) - (countInLine > 0 ? spacing : 0f);
+					lastBreakCut = i + 1;              // include the hyphen
+					lastBreakWidth = Math.Max(0f, widthAtHyphen);
+				}
 
 				bool wrap = maxWidth > 0f && countInLine > 0 && prospective > maxWidth;
 				if (wrap)
 				{
-					float width = penX - (countInLine > 0 ? spacing : 0f);
-					lines.Add(new Line(raw, start, i, Math.Max(0f, width)));
-					start = i; penX = 0f; countInLine = 0;
+					if (lastBreakCut > start)
+					{
+						// Soft wrap at last recorded boundary
+						lines.Add(new Line(raw, start, lastBreakCut, lastBreakWidth));
+
+						// Start next line after the cut; eat any subsequent spaces
+						start = lastBreakCut;
+						while (start < raw.Length && raw[start] == ' ') start++;
+
+						// Reset line state and reprocess current char on new line
+						penX = 0f;
+						countInLine = 0;
+						lastBreakCut = -1;
+						lastBreakWidth = 0f;
+
+						i = start - 1; // reprocess from new line
+						continue;
+					}
+					else
+					{
+						// No soft break available -> hard wrap before current char
+						float width = penX - (countInLine > 0 ? spacing : 0f);
+						lines.Add(new Line(raw, start, i, Math.Max(0f, width)));
+
+						start = i;
+						penX = 0f;
+						countInLine = 0;
+						lastBreakCut = -1;
+						lastBreakWidth = 0f;
+
+						i = start - 1; // reprocess current char on the new line
+						continue;
+					}
 				}
 
+				// Accept this glyph
 				penX += adv + (countInLine > 0 ? spacing : 0f);
 				countInLine++;
 			}
 
+			// Flush last line
 			if (start <= raw.Length)
 			{
 				float width = penX - (countInLine > 0 ? spacing : 0f);
@@ -384,6 +448,26 @@ namespace Alliance.Common.Core.Utils
 			public readonly int Columns, Rows, StartChar, EndChar;
 			public readonly float SpaceWidthFactor;
 			public readonly bool FlipV;
+			static readonly Dictionary<int, int> UniToAtlas = BuildCp437Map();
+			static Dictionary<int, int> UniToAtlas2 = BuildCp437Map();
+
+			static Dictionary<int, int> BuildCp437Map()
+			{
+				var enc = Encoding.GetEncoding(437);
+				var dict = new Dictionary<int, int>(256);
+				for (int i = 0; i < 256; i++)
+				{
+					string s = enc.GetString(new[] { (byte)i });
+					dict[s[0]] = i; // map that Unicode code point to CP437 index
+				}
+				return dict;
+			}
+
+			bool TryGetAtlasIndex(char ch, out int idx)
+			{
+				UniToAtlas2 ??= BuildCp437Map();
+				return UniToAtlas2.TryGetValue(ch, out idx);
+			}
 
 			public FixedGridGlyphMap(int columns = 16, int rows = 16, int startChar = 0, int endChar = 127, float spaceWidthFactor = 1f, bool flipV = true)
 			{
@@ -397,11 +481,9 @@ namespace Alliance.Common.Core.Utils
 
 			public bool TryGetUV(char ch, out Vec2 uvMin, out Vec2 uvMax)
 			{
-				int code = ch;
-				if (code < StartChar || code >= EndChar) code = '?';
-				if (code < StartChar || code >= EndChar) { uvMin = new Vec2(0, 0); uvMax = new Vec2(0, 0); return false; }
-
-				int idx = code - StartChar; int col = idx % Columns; int row = idx / Columns;
+				if (!TryGetAtlasIndex(ch, out int idx)) idx = '?'; // or your fallback
+																   // grid math using idx in [0..255]
+				int col = idx % Columns, row = idx / Columns;
 				float u0 = (float)col / Columns, v0 = (float)row / Rows;
 				float u1 = (float)(col + 1) / Columns, v1 = (float)(row + 1) / Rows;
 				if (FlipV) { float nv0 = 1f - v1, nv1 = 1f - v0; v0 = nv0; v1 = nv1; }

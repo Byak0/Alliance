@@ -18,7 +18,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 			CS_TextPanel script = missionObject?.GameEntity?.GetFirstScriptOfType<CS_TextPanel>();
 			if (script != null)
 			{
-				script.Text = message.Text;
+				script.UpdateText(message.Text);
 				script.Render();
 			}
 		}
