@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace Alliance.Server.Core.Database.Models
 {
-	/// <summary>
-	/// Table des donateurs
-	/// </summary>
 	public partial class ZeventDonator
 	{
 		public ZeventDonator()
