@@ -22,9 +22,25 @@ namespace Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer
 			Tier = tier;
 			Variant = variant;
 			TotalDonations = totalDonations;
+
 			// Crop name and message if needed
-			Name = name?.Length > 13 ? name?.Substring(0, 13) : string.Empty;
-			Message = message.Length > 17 ? message.Substring(0, 17) : message;
+			if (name == null)
+			{
+				Name = string.Empty;
+			}
+			else
+			{
+				Name = name.Length > 17 ? name.Substring(0, 17) : name;
+			}
+			if (message == null)
+			{
+				Message = string.Empty;
+			}
+			else
+			{
+				Message = message.Length > 17 ? message.Substring(0, 17) : message;
+			}
+
 		}
 
 		protected override void OnWrite()

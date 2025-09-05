@@ -104,13 +104,13 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 			try
 			{
 				AppDbContext dbContext = ServiceLocator.GetService<AppDbContext>();
-				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-				Dictionary<string, ZeventReward> rewardByDonator = dbContext.ZeventDonators.Select(donator => new KeyValuePair<string, ZeventReward>(donator.Username, donator.ZeventRewards.OrderByDescending(reward => reward.Tier).FirstOrDefault())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				Dictionary<string, ZeventReward> rewardByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, ZeventReward>(donator.Username, donator.ZeventRewards.OrderByDescending(reward => reward.Tier).FirstOrDefault())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				foreach (KeyValuePair<string, decimal> donator in donationsByDonator)
 				{
 					if (rewardByDonator.TryGetValue(donator.Key, out ZeventReward reward) && reward != null)
 					{
-						string message = dbContext.ZeventDonators.Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
+						string message = dbContext.ZeventDonators.AsNoTracking().Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
 						DonatorsInfo[donator.Key] = new DonatorInfo()
 						{
 							Username = donator.Key,
@@ -135,8 +135,8 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 			try
 			{
 				AppDbContext dbContext = ServiceLocator.GetService<AppDbContext>();
-				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-				Dictionary<string, ZeventReward> rewardByDonator = dbContext.ZeventDonators.Select(donator => new KeyValuePair<string, ZeventReward>(donator.Username, donator.ZeventRewards.OrderByDescending(reward => reward.Tier).FirstOrDefault())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				Dictionary<string, ZeventReward> rewardByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, ZeventReward>(donator.Username, donator.ZeventRewards.OrderByDescending(reward => reward.Tier).FirstOrDefault())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				List<ZeventReward> rewards = dbContext.ZeventRewards.ToList();
 
 				foreach (KeyValuePair<string, decimal> donator in donationsByDonator)
@@ -151,7 +151,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 						}
 						else
 						{
-							string message = dbContext.ZeventDonators.Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
+							string message = dbContext.ZeventDonators.AsNoTracking().Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
 							// Update existing info
 							existingInfo.Tier = reward.Tier;
 							existingInfo.Variant = reward.Variant;
@@ -178,8 +178,8 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 			try
 			{
 				AppDbContext dbContext = ServiceLocator.GetService<AppDbContext>();
-				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-				Dictionary<string, int> rewardByDonator = dbContext.ZeventDonators.Select(donator => new
+				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				Dictionary<string, int> rewardByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new
 				{
 					donator.Username,
 					MaxTier = donator.ZeventRewards.Select(reward => (int?)reward.Tier).Max() ?? 0
@@ -190,7 +190,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 					int newRewardTier = GetRewardTierForAmount(donator.Value);
 					if (newRewardTier > oldRewardTier)
 					{
-						string lastMessage = dbContext.ZeventDonators.Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
+						string lastMessage = dbContext.ZeventDonators.AsNoTracking().Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
 						int freeTag;
 						if (hasAReward)
 						{

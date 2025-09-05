@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
@@ -71,7 +70,7 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
 				{
 					if (effect.Type == "ZEVENT")
 					{
-						if (!peer.IsAdmin()) return;
+						//if (!peer.IsAdmin()) return;
 
 						await ZeventService.Instance.HandleZeventExtendedItemAsync(effect);
 					}

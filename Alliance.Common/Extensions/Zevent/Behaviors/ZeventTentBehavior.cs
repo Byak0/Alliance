@@ -83,6 +83,26 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 				return;
 			}
 
+			ZeventTentData existingTent = _spawnedTents.FirstOrDefault(e => e.TentId == tentId);
+			if (existingTent.Name != null)
+			{
+				// There is already a tent existing, we need to remove it
+				string alrTentPref = GetTentPrefab(existingTent.Tier, existingTent.Variant);
+				List<GameEntity> entities = new List<GameEntity>();
+				// VERY UGLY AND VERY BAD PERFORMANCE BUT THX TALEWORLD (This time at least...) IT WORK FINE
+				Mission.Current.Scene.GetEntities(ref entities);
+				GameEntity alrTentEnti = entities.Where(e => tentOrigin.Frame.NearlyEquals(e.GetGlobalFrame(), 0.5f) && e.Name.StartsWith("building_medieval_tente_")).FirstOrDefault();
+
+				if (alrTentEnti != null)
+				{
+					alrTentEnti.SetVisibilityExcludeParents(false);
+					alrTentEnti.RemoveAllChildren();
+					alrTentEnti.Remove(1);
+				}
+
+				_spawnedTents.Remove(existingTent);
+			}
+
 			string tentPrefab = GetTentPrefab(tier, variant);
 			GameEntity tentEntity = GameEntity.Instantiate(Mission.Current.Scene, tentPrefab, false);
 			tentEntity.SetGlobalFrame(tentOrigin.Frame);
