@@ -2,6 +2,7 @@
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
+using Alliance.Common.Extensions.Zevent.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration.Behaviors;
@@ -14,6 +15,7 @@ using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.Extensions.SAE.Behaviors;
+using Alliance.Server.Extensions.ToggleEntities.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Behaviors;
 using Alliance.Server.Extensions.Zevent.Behavior;
 using Alliance.Server.Patch.Behaviors;
@@ -65,9 +67,11 @@ namespace Alliance.Server.GameModes
 				new AdvancedCombatBehavior(),
 				new AnimalBehavior(),
 				new ConditionsBehavior(),
+				new ToggleEntitiesBehavior(),
 
 				// Zevent special behavior (probably temporary)
 				new ZeventBehavior(),
+				new ZeventTentBehavior(),
 
 				// Special MissionBehaviors fixing native bugs
 				new NotAllPlayersJoinFixBehavior()

@@ -32,7 +32,7 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 
 		public TextObject GetInteractionText(Agent agent, GameEntity entity)
 		{
-			TextObject to = new TextObject("Press {KEY} to use " + entity.Name);
+			TextObject to = new TextObject("Press {KEY} to equip " + entity.Name);
 			to.SetTextVariable("KEY", HyperlinkTexts.GetKeyHyperlinkText(HotKeyManager.GetHotKeyId("CombatHotKeyCategory", 13)));
 			return to;
 		}
@@ -44,7 +44,8 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 				string itemName = target.Entity.GetTagValue(AllianceTags.ITEM_PREFIX_TAG);
 				ItemObject itemObject = MBObjectManager.Instance.GetObject<ItemObject>(itemName);
 				MissionWeapon missionWeapon = new MissionWeapon(itemObject, null, agent.Team.Banner);
-				if (itemObject.IsBannerItem)
+				if (itemObject.IsBannerItem ||
+					itemObject.HasWeaponComponent && itemObject.WeaponComponent?.PrimaryWeapon?.WeaponClass == WeaponClass.Boulder)
 				{
 					agent.EquipWeaponToExtraSlotAndWield(ref missionWeapon);
 				}

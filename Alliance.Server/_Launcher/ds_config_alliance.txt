@@ -1,9 +1,9 @@
-ServerName Alliance - Test Server 1
+ServerName [Alliance] ZEvent 2025
 GameType Lobby
-AdminPassword test123
+AdminPassword azepoirhezal684
 Map proto_zevent
-CultureTeam1 vlandia
-CultureTeam2 empire
+CultureTeam1 zevent
+CultureTeam2 zevent
 MaxNumberOfPlayers 500
 MinNumberOfPlayersForMatchStart 0
 NumberOfBotsPerFormation 150

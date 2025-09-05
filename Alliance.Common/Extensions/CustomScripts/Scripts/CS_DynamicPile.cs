@@ -148,6 +148,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		/// </summary>
 		public void SetVolumeTarget(float targetVolume)
 		{
+			Enabled = true;
 			RecomputeRiseDelay();
 			_volumeTargetted = targetVolume;
 		}
@@ -338,7 +339,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				MatrixFrame f = _coneEntity.GetGlobalFrame();
 				f.origin = new Vec3(f.origin.x, f.origin.y, _currentConeZ);
 				_coneEntity.SetGlobalFrame(f);
-				_coneEntity.SetPhysicsState(false, true);
+
 			}
 
 			if (_cone2Entity != null)

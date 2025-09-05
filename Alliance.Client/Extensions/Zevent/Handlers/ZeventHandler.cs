@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.CustomScripts.Scripts;
+using Alliance.Common.Extensions.Zevent.Behaviors;
 using Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
@@ -14,6 +15,15 @@ namespace Alliance.Client.Extensions.Zevent.Handlers
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<ZEventUpdatePileNetworkServerMessage>(OnUpdateGoldPileRequest);
+			reg.Register<ZEventInitTent>(OnInitTentRequest);
+		}
+
+		public void OnInitTentRequest(ZEventInitTent message)
+		{
+			Log($"Server requested me to init tent id {message.TentId}, tier {message.Tier}, variant {message.Variant}, total donations {message.TotalDonations}, name {message.Name} and message {message.Message}", LogLevel.Debug);
+			ZeventTentBehavior zeventBehavior = Mission.Current.GetMissionBehavior<ZeventTentBehavior>();
+			if (zeventBehavior == null) return;
+			zeventBehavior.SpawnTent(message.TentId, message.Tier, message.Variant, message.TotalDonations, message.Name, message.Message);
 		}
 
 		public void OnUpdateGoldPileRequest(ZEventUpdatePileNetworkServerMessage message)
@@ -26,13 +36,12 @@ namespace Alliance.Client.Extensions.Zevent.Handlers
 
 			if (message.BaseAmount != -1)
 			{
-				float pileBase = message.BaseAmount / 1000;
+				float pileBase = message.BaseAmount / 1000f;
 				goldPileScript.SetVolume(pileBase);
 			}
 
-
 			// We need to divide by 1000 because CS_DynamicPile max value is 20_000 instead of 20_000_000
-			float pileTargetAmount = message.GoldPileTarget / 1000;
+			float pileTargetAmount = message.GoldPileTarget / 1000f;
 			goldPileScript.SetVolumeTarget(pileTargetAmount);
 		}
 	}

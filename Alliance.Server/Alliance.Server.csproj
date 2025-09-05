@@ -82,7 +82,7 @@
 		<!-- Copy config (.txt file) to Server/Modules/Native folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*config*.txt&quot; &quot;$(GameFolder)\Modules\Native\&quot; /E /C /I /Y /F" />
 		<!-- Put the current time in server name in ds_config_alliance.txt to circumvent duplicated server in TW lobby... -->
-		<Exec Command="powershell -Command &quot;$path = '$(GameFolder)\Modules\Native\ds_config_alliance.txt'; $content = Get-Content $path -Raw; $hour = Get-Date -Format 'HHmmss'; $newContent = $content -replace 'ServerName Alliance - Test Server \d+', ('ServerName Alliance - Test Server ' + $hour); Set-Content $path -Value $newContent&quot;" />
+		<Exec Command="powershell -Command &quot;$path = '$(GameFolder)\Modules\Native\ds_config_alliance.txt'; $content = Get-Content $path -Raw; $hour = Get-Date -Format 'HHmmss'; $newContent = $content -replace 'Test Server \d+', ('Test Server ' + $hour); Set-Content $path -Value $newContent&quot;" />
 	</Target>
 	
 </Project>
