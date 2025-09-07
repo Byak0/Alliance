@@ -49,7 +49,7 @@ namespace Alliance.Client.GameModes
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
-				new ZeventTentBehavior()
+				new ZeventCommonBehavior()
 			};
 		}
 	}

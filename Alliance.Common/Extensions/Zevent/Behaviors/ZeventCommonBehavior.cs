@@ -10,7 +10,7 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.Zevent.Behaviors
 {
-	public class ZeventTentBehavior : MissionNetwork, IMissionBehavior
+	public class ZeventCommonBehavior : MissionNetwork, IMissionBehavior
 	{
 		struct TentOrigins
 		{
@@ -20,6 +20,7 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 
 		struct ZeventTentData
 		{
+			public GameEntity Entity;
 			public int TentId;
 			public int Tier;
 			public int Variant;
@@ -35,9 +36,18 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 		{
 			base.OnBehaviorInitialize();
 
-			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME) return;
+			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME && Mission.Current?.SceneName != "proto_zevent_night") return;
 
 			InitTentOrigins();
+
+			// Set corpse fade out time to 2 second
+			Mission.Current.SetMissionCorpseFadeOutTimeInSeconds(2f);
+		}
+
+		public override void OnMissionTick(float dt)
+		{
+			base.OnMissionTick(dt);
+			//Mission.Current.ClearCorpses(false);
 		}
 
 		protected override void HandleNewClientAfterSynchronized(NetworkCommunicator networkPeer)
@@ -83,23 +93,16 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 				return;
 			}
 
+			bool isNew = false;
+
 			ZeventTentData existingTent = _spawnedTents.FirstOrDefault(e => e.TentId == tentId);
-			if (existingTent.Name != null)
+			if (existingTent.Entity != null)
 			{
-				// There is already a tent existing, we need to remove it
-				string alrTentPref = GetTentPrefab(existingTent.Tier, existingTent.Variant);
-				List<GameEntity> entities = new List<GameEntity>();
-				// VERY UGLY AND VERY BAD PERFORMANCE BUT THX TALEWORLD (This time at least...) IT WORK FINE
-				Mission.Current.Scene.GetEntities(ref entities);
-				GameEntity alrTentEnti = entities.Where(e => tentOrigin.Frame.NearlyEquals(e.GetGlobalFrame(), 0.5f) && e.Name.StartsWith("building_medieval_tente_")).FirstOrDefault();
-
-				if (alrTentEnti != null)
-				{
-					alrTentEnti.SetVisibilityExcludeParents(false);
-					alrTentEnti.RemoveAllChildren();
-					alrTentEnti.Remove(1);
-				}
-
+				isNew = true;
+				// Remove existing entity before spawning a new one
+				existingTent.Entity.SetVisibilityExcludeParents(false);
+				existingTent.Entity.RemoveAllChildren();
+				existingTent.Entity.Remove(1);
 				_spawnedTents.Remove(existingTent);
 			}
 
@@ -117,6 +120,7 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 
 			_spawnedTents.Add(new ZeventTentData
 			{
+				Entity = tentEntity,
 				TentId = tentId,
 				Tier = tier,
 				Variant = variant,
@@ -125,7 +129,10 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 				Message = message
 			});
 
-			Log($"Spawned tent n°{tentId} for {name}", LogLevel.Debug);
+			if (isNew)
+				Log($"Une nouvelle tente a été créée pour {name} (emplacement {tentId}/tier {tier}) !", LogLevel.Information);
+			else
+				Log($"La tente de {name} a été mise à jour (emplacement {tentId}/tier {tier}) !", LogLevel.Information);
 
 			if (GameNetwork.IsServer)
 			{
@@ -135,7 +142,5 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 			}
 		}
-
-
 	}
 }

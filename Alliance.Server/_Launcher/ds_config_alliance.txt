@@ -13,7 +13,7 @@ FriendlyFireDamageMeleeFriendPercent 75
 FriendlyFireDamageMeleeSelfPercent 0
 FriendlyFireDamageRangedFriendPercent 75
 FriendlyFireDamageRangedSelfPercent 0
-RoundPreparationTimeLimit 20
+RoundPreparationTimeLimit 10
 RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360

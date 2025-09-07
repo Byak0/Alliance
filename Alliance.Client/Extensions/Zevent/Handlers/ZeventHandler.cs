@@ -21,7 +21,7 @@ namespace Alliance.Client.Extensions.Zevent.Handlers
 		public void OnInitTentRequest(ZEventInitTent message)
 		{
 			Log($"Server requested me to init tent id {message.TentId}, tier {message.Tier}, variant {message.Variant}, total donations {message.TotalDonations}, name {message.Name} and message {message.Message}", LogLevel.Debug);
-			ZeventTentBehavior zeventBehavior = Mission.Current.GetMissionBehavior<ZeventTentBehavior>();
+			ZeventCommonBehavior zeventBehavior = Mission.Current.GetMissionBehavior<ZeventCommonBehavior>();
 			if (zeventBehavior == null) return;
 			zeventBehavior.SpawnTent(message.TentId, message.Tier, message.Variant, message.TotalDonations, message.Name, message.Message);
 		}

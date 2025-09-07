@@ -30,7 +30,7 @@ namespace Alliance.Common.Extensions.Zevent.NetworkMessages.FromServer
 			}
 			else
 			{
-				Name = name.Length > 17 ? name.Substring(0, 17) : name;
+				Name = name.Length > 13 ? name.Substring(0, 13) : name;
 			}
 			if (message == null)
 			{

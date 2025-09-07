@@ -1,5 +1,4 @@
-﻿using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Extensions.CustomScripts.Scripts;
+﻿using Alliance.Common.Extensions.CustomScripts.Scripts;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Database.Data;
 using Alliance.Server.Core.Database.Models;
@@ -42,15 +41,8 @@ namespace Alliance.Server.Extensions.Zevent
 		/// </summary>
 		/// <param name="zEventEffect">The effect to apply based on the Zevent donation total.</param>
 		/// <returns>A task representing the asynchronous operation.</returns>
-		public async Task HandleZeventExtendedItemAsync(ItemEffect zEventEffect)
+		public async Task RefreshZeventGoldPileAsync()
 		{
-			if (zEventEffect == null) return;
-			if (zEventEffect.Type != "ZEVENT" /*ItemEffectType.ZEVENT*/)
-			{
-				Log("HandleZeventExtendedItemAsync can only be called if type is :" + "ZEVENT", LogLevel.Error);
-				return;
-			}
-
 			// Call Zevent API in order to get new total donation amount
 			string zEventDonationApi = SecretsManager.ZEVENT_AMOUNT_GET_API;
 

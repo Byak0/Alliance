@@ -45,12 +45,13 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 			{ 5, 1 }
 		};
 
-		private ZeventTentBehavior _tentBehavior;
+		private ZeventCommonBehavior _tentBehavior;
 		private Dictionary<string, DonatorInfo> DonatorsInfo = new Dictionary<string, DonatorInfo>();
 		private Random _random = new Random();
 		private float _lastUpdate = 0f;
 		private bool _enabled = false;
 		private bool _updateTent = false;
+		private int _lastUsedTag = -1;
 
 		private const float UPDATE_INTERVAL = 10;
 
@@ -64,7 +65,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 
 			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME) return;
 
-			_tentBehavior = Mission.Current.GetMissionBehavior<ZeventTentBehavior>();
+			_tentBehavior = Mission.Current.GetMissionBehavior<ZeventCommonBehavior>();
 
 			InitGold();
 
@@ -137,7 +138,6 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 				AppDbContext dbContext = ServiceLocator.GetService<AppDbContext>();
 				Dictionary<string, decimal> donationsByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, decimal>(donator.Username, donator.ZeventDonations.Sum(donation => donation.DonationAmount))).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				Dictionary<string, ZeventReward> rewardByDonator = dbContext.ZeventDonators.AsNoTracking().Select(donator => new KeyValuePair<string, ZeventReward>(donator.Username, donator.ZeventRewards.OrderByDescending(reward => reward.Tier).FirstOrDefault())).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-				List<ZeventReward> rewards = dbContext.ZeventRewards.ToList();
 
 				foreach (KeyValuePair<string, decimal> donator in donationsByDonator)
 				{
@@ -153,6 +153,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 						{
 							string message = dbContext.ZeventDonators.AsNoTracking().Where(d => d.Username == donator.Key).Select(d => d.ZeventDonations.OrderByDescending(dd => dd.InsertDate).First().DonationComment).FirstOrDefault();
 							// Update existing info
+							existingInfo.Username = reward.Username;
 							existingInfo.Tier = reward.Tier;
 							existingInfo.Variant = reward.Variant;
 							existingInfo.Tag = reward.RewardTag;
@@ -199,8 +200,13 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 						}
 						else
 						{
-							// Find a new tag (max tag used + 1)
-							freeTag = dbContext.ZeventRewards.Any() ? dbContext.ZeventRewards.Max(r => r.RewardTag) + 1 : 1;
+							// Get last used tag from DB and compare to last one used
+							int _lastUsedTagDB = dbContext.ZeventRewards.Any() ? dbContext.ZeventRewards.Max(r => r.RewardTag) : 0;
+							// If DB last used tag is higher than the one we have, use it
+							if (_lastUsedTag == -1 || _lastUsedTagDB > _lastUsedTag) _lastUsedTag = _lastUsedTagDB;
+							// Increment last used tag
+							_lastUsedTag++;
+							freeTag = _lastUsedTag;
 						}
 						AssignNewRewardToDonator(dbContext, donator.Key, donator.Value, freeTag, newRewardTier, GetRandomVariant(newRewardTier), lastMessage);
 					}

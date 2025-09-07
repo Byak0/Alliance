@@ -71,7 +71,7 @@ namespace Alliance.Server.GameModes
 
 				// Zevent special behavior (probably temporary)
 				new ZeventBehavior(),
-				new ZeventTentBehavior(),
+				new ZeventCommonBehavior(),
 
 				// Special MissionBehaviors fixing native bugs
 				new NotAllPlayersJoinFixBehavior()

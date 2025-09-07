@@ -58,5 +58,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 		{
 			return new Server_VOIPRangeInZoneAction();
 		}
+
+		public override ZEventAction ZEventAction()
+		{
+			return new Server_ZEventAction();
+		}
 	}
 }
