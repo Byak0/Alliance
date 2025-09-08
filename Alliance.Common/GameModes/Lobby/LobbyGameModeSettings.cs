@@ -35,7 +35,8 @@ namespace Alliance.Common.GameModes.Lobby
 			return new List<OptionType>
 			{
 				OptionType.CultureTeam1,
-				OptionType.NumberOfBotsTeam1
+				OptionType.CultureTeam2,
+				OptionType.NumberOfBotsTeam1,
 			};
 		}
 

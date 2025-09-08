@@ -63,7 +63,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 		{
 			base.OnBehaviorInitialize();
 
-			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME) return;
+			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME && Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NIGHT_NAME) return;
 
 			_tentBehavior = Mission.Current.GetMissionBehavior<ZeventCommonBehavior>();
 
@@ -340,7 +340,7 @@ namespace Alliance.Server.Extensions.Zevent.Behavior
 
 		public static void SyncGoldPileOfConnectingUsers(NetworkCommunicator networkPeer)
 		{
-			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME) return;
+			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME && Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NIGHT_NAME) return;
 
 			Log("Player joining on Zevent map, sync gold pile to him", LogLevel.Information);
 

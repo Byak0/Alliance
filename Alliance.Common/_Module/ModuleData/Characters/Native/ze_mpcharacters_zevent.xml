@@ -410,6 +410,57 @@
 			<EquipmentRoster civilian="true" />
 		</Equipments>
 	</NPCCharacter>
+	<NPCCharacter id="mp_ze_pikeman" 
+		default_group="Infantry" 
+		level="26" name="Pikeman" 
+		occupation="Soldier" 
+		culture="Culture.zevent" 
+		is_female="false">
+		<face>
+			<!--face_key value="34.12;0.4;0.4568;C07C0000001;11111211161111;7010000100000;11101100010100;7600407111110;0;0;180000" max_value="68.79;0.7253;0.6852;11FC0FC03C384F;FFFFFFFEFFFBEFFF;FFFFFFA97EF7FEFF;FFEFFFFFFFFFFFFF;ABFD80AFFFFFF;0;0;309101" /-->
+			<BodyProperties
+				version="4"
+				age="34.12"
+				weight="0.4"
+				build="0.4568"
+				key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax
+				version="4"
+				age="48.79"
+				weight="0.7253"
+				build="0.6852"
+				key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="TwoHanded" value="150" />
+			<skill id="Throwing" value="150" />
+			<skill id="Riding" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Athletics" value="150" />
+			<skill id="Bow" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.sturgia_noble_sword_1_t5" />
+				<equipment slot="Item2" id="Item.vlandia_pike_1_t5" />
+				<equipment slot="Head" id="Item.tall_helmet" />
+				<equipment slot="Body" id="Item.white_coat_over_mail" />
+				<equipment slot="Leg" id="Item.lamellar_plate_boots" />
+				<equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+				<equipment slot="Cape" id="Item.noble_pauldron" />
+			</EquipmentRoster>
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.sturgia_noble_sword_1_t5" />
+				<equipment slot="Item2" id="Item.vlandia_pike_1_t5" />
+				<equipment slot="Head" id="Item.plumed_helmet" />
+				<equipment slot="Body" id="Item.white_coat_over_mail" />
+				<equipment slot="Leg" id="Item.lamellar_plate_boots" />
+				<equipment slot="Gloves" id="Item.lamellar_plate_gauntlets" />
+				<equipment slot="Cape" id="Item.scale_shoulder_armor" />
+			</EquipmentRoster>
+		</Equipments>
+	</NPCCharacter>
 	<NPCCharacter id="mp_ze_noble_flagbearer"
 		default_group="Infantry"
 		level="31"
@@ -564,6 +615,115 @@
 				<equipment slot="HorseHarness" id="Item.imperial_riding_harness" />
 			</EquipmentRoster>
 			<EquipmentRoster civilian="true" />
+		</Equipments>
+	</NPCCharacter>
+	<NPCCharacter id="mp_ze_marksman" 
+		default_group="Ranged" 
+		level="26"
+		name="Heavy Archer" 
+		occupation="Soldier" 
+		culture="Culture.zevent" 
+		is_female="false">
+		<face>
+			<BodyProperties
+				version="4"
+				age="34.12"
+				weight="0.4"
+				build="0.4568"
+				key="00000C07000000010011111211161111000701000010000000111011000101000007600407111110000000000000000000000000000000000000000000500000" />
+			<BodyPropertiesMax
+				version="4"
+				age="48.79"
+				weight="0.7253"
+				build="0.6852"
+				key="0011FC0FC03C384FFFFFFFFEFFFBEFFFFFFFFFA97EF7FEFFFFEFFFFFFFFFFFFF000ABFD80AFFFFFF000000000000000000000000000000000000000000C89101" />
+		</face>
+		<skills>
+			<skill id="TwoHanded" value="80" />
+			<skill id="Bow" value="160" />
+			<skill id="OneHanded" value="100" />
+			<skill id="Polearm" value="40" />
+			<skill id="Athletics" value="120" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.noble_long_bow" />
+				<equipment slot="Item2" id="Item.piercing_arrows" />
+				<equipment slot="Item3" id="Item.piercing_arrows" />
+				<equipment slot="Head" id="Item.kettle_helmet_over_padded_cap" />
+				<equipment slot="Body" id="Item.nordic_sloven_over_mail" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.empire_plate_armor_shoulder_b" />
+			</EquipmentRoster>
+			<EquipmentRoster civilian="true" />
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.noble_long_bow" />
+				<equipment slot="Item2" id="Item.piercing_arrows" />
+				<equipment slot="Item3" id="Item.steppe_guardian_shield" />
+				<equipment slot="Head" id="Item.kettle_helmet_over_arming_coif" />
+				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.mail_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster civilian="true" />
+		</Equipments>
+	</NPCCharacter>
+	<NPCCharacter id="mp_ze_sharpshooter" 
+		default_group="Ranged" 
+		level="26" name="Heavy Crossbow" 
+		occupation="Soldier" 
+		culture="Culture.zevent"
+		is_female="false">
+		<face>
+			<!-- value="18.16;0.3333;0;C0700000001;11111211151111;7010000100000;11101100010100;500202111110;0;0;280000" max_value="23;0.4667;0.2;11FC0FC03C384F;FFFFFFFEFFF7EFFF;FFFFFFA97EF7FEFF;FFEFFFFFFFFFFFFF;37FD303FFFFFF;0;0;309101" /-->
+			<BodyProperties
+				version="4"
+				age="23.16"
+				weight="0.3333"
+				build="0"
+				key="00000C07000000010011111211151111000701000010000000111011000101000000500202111110000000000000000000000000000000000000000000A00000" />
+			<BodyPropertiesMax
+				version="4"
+				age="25"
+				weight="0.4667"
+				build="0.2"
+				key="000A8C0D8000301016A8842489774BDBCB2A22B852C6A6DF75328877A37A85B50077760307E5646500000000000000000000000000000000000000003EFC2043"  />
+		</face>
+		<skills>
+			<skill id="bow" value="150" />
+			<skill id="TwoHanded" value="150" />
+			<skill id="OneHanded" value="150" />
+			<skill id="Polearm" value="150" />
+			<skill id="Crossbow" value="150" />
+			<skill id="Athletics" value="150" />
+		</skills>
+		<Equipments>
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.crossbow_g" />
+				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item3" id="Item.bolt_c" />
+				<equipment slot="Head" id="Item.guards_kettle_over_laced_coif" />
+				<equipment slot="Body" id="Item.nordic_sloven_over_mail" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.mail_shoulders" />
+			</EquipmentRoster>
+			<EquipmentRoster civilian="false">
+				<equipment slot="Item0" id="Item.vlandia_sword_2_t3" />
+				<equipment slot="Item1" id="Item.crossbow_g" />
+				<equipment slot="Item2" id="Item.bolt_c" />
+				<equipment slot="Item3" id="Item.bolt_c" />
+				<equipment slot="Head" id="Item.guards_kettle_over_laced_coif" />
+				<equipment slot="Body" id="Item.buckled_wildsman_armor" />
+				<equipment slot="Leg" id="Item.plated_strip_boots" />
+				<equipment slot="Gloves" id="Item.plated_strip_gauntlets" />
+				<equipment slot="Cape" id="Item.empire_plate_armor_shoulder_b" />
+			</EquipmentRoster>
 		</Equipments>
 	</NPCCharacter>
 

@@ -36,7 +36,7 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 		{
 			base.OnBehaviorInitialize();
 
-			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME && Mission.Current?.SceneName != "proto_zevent_night") return;
+			if (Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NAME && Mission.Current?.SceneName != ZeventConst.ZEVENT_MAP_NIGHT_NAME) return;
 
 			InitTentOrigins();
 

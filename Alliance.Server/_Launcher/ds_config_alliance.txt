@@ -1,6 +1,5 @@
 ServerName [Alliance] ZEvent 2025
 GameType Lobby
-AdminPassword azepoirhezal684
 Map proto_zevent
 CultureTeam1 zevent
 CultureTeam2 zevent

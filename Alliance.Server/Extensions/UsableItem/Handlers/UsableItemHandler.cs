@@ -59,8 +59,6 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
 				{
 					if (effect.Type == "ZEVENT")
 					{
-						//if (!peer.IsAdmin()) return;
-
 						await ZeventService.Instance.RefreshZeventGoldPileAsync();
 					}
 				});
