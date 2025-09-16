@@ -481,8 +481,8 @@ namespace Alliance.Common.Core.Utils
 
 			public bool TryGetUV(char ch, out Vec2 uvMin, out Vec2 uvMax)
 			{
-				if (!TryGetAtlasIndex(ch, out int idx)) idx = '?'; // or your fallback
-																   // grid math using idx in [0..255]
+				if (!TryGetAtlasIndex(ch, out int idx)) idx = '?'; // fallback char index
+
 				int col = idx % Columns, row = idx / Columns;
 				float u0 = (float)col / Columns, v0 = (float)row / Rows;
 				float u1 = (float)(col + 1) / Columns, v1 = (float)(row + 1) / Rows;

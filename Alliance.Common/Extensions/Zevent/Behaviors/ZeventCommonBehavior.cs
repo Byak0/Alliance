@@ -47,7 +47,6 @@ namespace Alliance.Common.Extensions.Zevent.Behaviors
 		public override void OnMissionTick(float dt)
 		{
 			base.OnMissionTick(dt);
-			//Mission.Current.ClearCorpses(false);
 		}
 
 		protected override void HandleNewClientAfterSynchronized(NetworkCommunicator networkPeer)

@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	{
 		/// <summary>
 		/// Do not use outside of editor. String format is ISO-8859-1 and escaped.
-		/// Use CleanedText instead.
+		/// Use UpdateText/CleanedText instead.
 		/// </summary>
 		public string Text = "Hello world";
 		public bool IsSynchronized = true;

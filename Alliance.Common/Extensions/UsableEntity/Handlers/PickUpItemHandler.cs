@@ -60,11 +60,10 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 					agent.TryToWieldWeaponInSlot(slot, Agent.WeaponWieldActionType.WithAnimation, true);
 				}
 
-				// todo uncomment. Was commented to allow infinite shield pick up.
-				//if (!target.Entity.HasTag(AllianceTags.NO_HIDE_ON_USE_TAG))
-				//{
-				//	UsableEntityBehavior?.HideEntity(target.ID);
-				//}
+				if (!target.Entity.HasTag(AllianceTags.NO_HIDE_ON_USE_TAG))
+				{
+					UsableEntityBehavior?.HideEntity(target.ID);
+				}
 
 				Log($"Agent {agent.Name} ({agent.MissionPeer?.Name}) used entity {target.Entity.Name}({target.ID}) and equipped {itemName}", LogLevel.Debug);
 			}
