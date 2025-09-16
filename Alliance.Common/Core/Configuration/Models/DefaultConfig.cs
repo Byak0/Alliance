@@ -14,7 +14,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		public bool NoFriend = false;
 
 		[ConfigProperty(true, "Authorize Poll", "Authorize everyone to use the GameMode menu when in Lobby.")]
-		public bool AuthorizePoll = true;
+		public bool AuthorizePoll = false;
 
 		[ConfigProperty(true, "Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", dataType: DataTypes.Difficulty)]
 		public string BotDifficulty = nameof(Difficulty.Normal);
@@ -28,7 +28,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(true, "Toggle formation", "Activate or not the formation system (debuff isolated players).")]
 		public bool EnableFormation = false;
 		[ConfigProperty(true, "Enable player limits", "Limit the number of characters available to players. Limits are defined in CharactersExtended.xml.")]
-		public bool UsePlayerLimit = true;
+		public bool UsePlayerLimit = false;
 
 		[ConfigProperty(true, "Use gold to recruit troops", "Use gold system to recruit troops.")]
 		public bool UseTroopCost = false;
@@ -49,7 +49,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int FreeRespawnTimer = 60;
 
 		[ConfigProperty(true, "Allow custom appearance", "Spawn players with their custom appearance instead of the character default one.")]
-		public bool AllowCustomBody = false;
+		public bool AllowCustomBody = true;
 		[ConfigProperty(true, "Randomize bot appearance", "Randomize bots appearance. If false, all bots will have the same appearance.")]
 		public bool RandomizeAppearance = true;
 

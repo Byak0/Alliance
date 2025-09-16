@@ -50,7 +50,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
 			if (sendVoiceRecord.IsAnnouncement && speaker.IsAdmin())
 			{
 				speakerPosition = speaker.GetCameraPosition();
-				Log($"Speaker {speaker.UserName} camera position = {speakerPosition}", LogLevel.Debug);
+				//Log($"Speaker {speaker.UserName} camera position = {speakerPosition}", LogLevel.Debug);
 			}
 			else if (speaker.ControlledAgent != null)
 			{
@@ -81,7 +81,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
 				else
 				{
 					listenerPosition = listener.GetCameraPosition();
-					Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
+					//Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
 				}
 
 				if (AudioHelper.CanTargetHearSound(speakerPosition, listenerPosition, speakingRange) || sendVoiceRecord.IsAnnouncement)
@@ -143,7 +143,7 @@ namespace Alliance.Server.Extensions.VOIP.Behaviors
 				else
 				{
 					listenerPosition = listener.GetCameraPosition();
-					Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
+					//Log($"Listener {listener.UserName} camera position = {listenerPosition}", LogLevel.Debug);
 				}
 
 				if (AudioHelper.CanTargetHearSound(speaker.Position, listenerPosition, speakingRange))

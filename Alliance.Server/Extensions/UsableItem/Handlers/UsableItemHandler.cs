@@ -1,10 +1,8 @@
 ﻿using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.Audio;
-using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
 using Alliance.Server.Extensions.Zevent;
 using TaleWorlds.Core;
@@ -17,16 +15,6 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
 {
 	public class UsableItemHandler : IHandlerRegister
 	{
-		UsableEntityBehavior _gameMode;
-
-		UsableEntityBehavior GameMode
-		{
-			get
-			{
-				return _gameMode ??= Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
-			}
-		}
-
 		public void Register(NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<RequestUseItem>(HandleRequestUseItem);
@@ -71,9 +59,7 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
 				{
 					if (effect.Type == "ZEVENT")
 					{
-						if (!peer.IsAdmin()) return;
-
-						await ZeventService.Instance.HandleZeventExtendedItemAsync(effect);
+						await ZeventService.Instance.RefreshZeventGoldPileAsync();
 					}
 				});
 			}

@@ -2,6 +2,6 @@
 {
 	public class StreamerAmounts
 	{
-		public int Total { get; set; }
+		public float total { get; set; }
 	}
 }

@@ -40,7 +40,7 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 				new TextInquiryData("Text Panel",
 				"Change text:", true, true,
 				new TextObject("{=WiNRdfsm}Confirm", null).ToString(), new TextObject("{=3CpNUnVl}Cancel", null).ToString(),
-				newText => OnTextConfirmed(newText, target, textPanel), null, false, null, "", textPanel.Text),
+				newText => OnTextConfirmed(newText, target, textPanel), null, false, null, "", textPanel.CleanedText),
 				false);
 		}
 
@@ -59,7 +59,7 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 			}
 			else
 			{
-				textPanel.Text = newText;
+				textPanel.UpdateText(newText);
 				textPanel.Render();
 			}
 		}

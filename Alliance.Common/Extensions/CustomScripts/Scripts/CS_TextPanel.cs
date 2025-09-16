@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
+using System.Text;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.Utils.EntityUtils;
@@ -14,22 +15,32 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// </summary>
 	public class CS_TextPanel : SynchedMissionObject
 	{
+		/// <summary>
+		/// Do not use outside of editor. String format is ISO-8859-1 and escaped.
+		/// Use UpdateText/CleanedText instead.
+		/// </summary>
 		public string Text = "Hello world";
 		public bool IsSynchronized = true;
 		public bool IsEditable = false;
 		public float FontSize = 0.5f; // meters (glyph height)
 		public float LetterSpacing = 0f; // in "em" relative to glyph width; e.g., 0.1 = +10%
-		public float LineSpacing = 1f; // multiplier for space beween lines;
+		public float LineSpacing = 1f; // multiplier for space between lines;
 		public float PanelMaxWidth = 4f; // meters; <=0 = no wrap
 		public TextHorizontalAlignment TextAlignment = TextHorizontalAlignment.Center;
 		public AvailableFonts Font = AvailableFonts.Galahad;
 
 		public SimpleButton RENDER;
 
+		/// <summary>
+		/// Text in UTF-8, unescaped. Updated automatically when Text is changed.
+		/// </summary>
+		public string CleanedText { get; private set; }
+
+		private static readonly Encoding Latin1Encoding = Encoding.GetEncoding("ISO-8859-1");
+
 		protected override void OnEditorVariableChanged(string variableName)
 		{
 			if (variableName == nameof(RENDER) ||
-				variableName == nameof(Text) ||
 				variableName == nameof(FontSize) ||
 				variableName == nameof(PanelMaxWidth) ||
 				variableName == nameof(TextAlignment) ||
@@ -39,6 +50,24 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			{
 				Render();
 			}
+			else if (variableName == nameof(Text))
+			{
+				// Text value from editor is in ISO-8859-1 and escaped, need to clean it
+				CleanedText = CleanText(Text);
+				Render();
+			}
+		}
+
+		public void UpdateText(string newText)
+		{
+			CleanedText = newText;
+		}
+
+		private string CleanText(string str)
+		{
+			byte[] bytes = Latin1Encoding.GetBytes(str);
+			string textUTF8 = Encoding.UTF8.GetString(bytes);
+			return System.Text.RegularExpressions.Regex.Unescape(textUTF8);
 		}
 
 		public string ResolveMaterialName()
@@ -65,12 +94,16 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		protected override void OnInit()
 		{
 			base.OnInit();
+			// Since Text is stored in ISO-8859-1 and escaped, clean it to get proper content
+			CleanedText = CleanText(Text);
 			EntityUtils.EnqueueTextPanel(this);
 		}
 
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
+			// Since Text is stored in ISO-8859-1 and escaped, clean it to get proper content
+			CleanedText = CleanText(Text);
 			EntityUtils.EnqueueTextPanel(this);
 		}
 	}

@@ -1,7 +1,8 @@
-﻿using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer;
-using Alliance.Common.GameModes.Story.Actions;
+﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Server.Extensions.ToggleEntities.Behaviors;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
@@ -21,35 +22,22 @@ namespace Alliance.Server.GameModes.Story.Actions
 				Visible = !Visible;
 			}
 
+			ToggleEntitiesBehavior toggleBehavior = Mission.Current.GetMissionBehavior<ToggleEntitiesBehavior>();
 			if (ParentEntityOnly && _gameEntity != null)
 			{
-				foreach (GameEntity gameEntity in _gameEntity.CollectChildrenEntitiesWithTag(Tag))
-				{
-					gameEntity.SetVisibilityExcludeParents(Visible);
-				}
-				if (_gameEntity.HasTag(Tag))
-				{
-					_gameEntity.SetVisibilityExcludeParents(Visible);
-				}
+				// TODO: Add support for any entity. For now, we rely on MissionObjectId to sync with clients.
 				MissionObject missionObject = _gameEntity.GetFirstScriptOfType<MissionObject>();
+				if (missionObject == null)
+				{
+					Log($"Error in ShowOrHideEntitiesAction - Game entity must have a MissionObject script if ParentEntityOnly is checked", LogLevel.Error);
+					return;
+				}
 
-				if (missionObject == null) return;
-
-				// TODO change to message that target only entity
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncToggleEntitiesLocal(Tag, Visible, missionObject.Id));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				toggleBehavior.SetLocalTagVisibility(missionObject, Tag, Visible);
 			}
 			else
 			{
-				foreach (GameEntity entity in Mission.Current.Scene.FindEntitiesWithTag(Tag))
-				{
-					entity.SetVisibilityExcludeParents(Visible);
-				}
-
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SyncToggleEntities(Tag, Visible));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				toggleBehavior.SetTagVisibility(Tag, Visible);
 			}
 		}
 	}

@@ -105,7 +105,7 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 			{
 				CS_TextPanel textPanel = target.Entity.GetFirstScriptOfType<CS_TextPanel>();
 				if (textPanel == null || !textPanel.IsEditable) return;
-				textPanel.Text = text;
+				textPanel.UpdateText(text);
 				if (GameNetwork.IsServer)
 				{
 					GameNetwork.BeginBroadcastModuleEvent();

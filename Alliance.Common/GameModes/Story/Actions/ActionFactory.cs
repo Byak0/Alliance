@@ -92,6 +92,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new PlaySoundAction();
 		}
 
+		public virtual ZEventAction ZEventAction()
+		{
+			return new ZEventAction();
+		}
+
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.
 	}
 }

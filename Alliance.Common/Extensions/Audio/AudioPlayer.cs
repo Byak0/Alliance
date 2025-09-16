@@ -437,7 +437,7 @@ namespace Alliance.Common.Extensions.Audio
 						Vec3 soundOrigin = sound.SoundOrigin.Value;
 						sound.PanningProvider.Pan = AudioHelper.CalculatePan(soundOrigin, currentPosition, currentRotation);
 						sound.VolumeProvider.Volume = defaultSoundVolume * sound.InitialVolume * AudioHelper.CalculateVolume(currentPosition, soundOrigin, sound.MaxHearingDistance);
-						Log($"New pan/volume for 3d sound {soundOrigin} is {sound.PanningProvider.Pan}/{sound.VolumeProvider.Volume}", LogLevel.Debug);
+						//Log($"New pan/volume for 3d sound {soundOrigin} is {sound.PanningProvider.Pan}/{sound.VolumeProvider.Volume}", LogLevel.Debug);
 					}
 				}
 			}

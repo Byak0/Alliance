@@ -1,6 +1,5 @@
-ServerName Alliance - Test Server 1
+ServerName [Alliance] Test Server 1
 GameType Lobby
-AdminPassword test123
 Map proto_zevent
 CultureTeam1 vlandia
 CultureTeam2 empire
@@ -13,7 +12,7 @@ FriendlyFireDamageMeleeFriendPercent 75
 FriendlyFireDamageMeleeSelfPercent 0
 FriendlyFireDamageRangedFriendPercent 75
 FriendlyFireDamageRangedSelfPercent 0
-RoundPreparationTimeLimit 20
+RoundPreparationTimeLimit 10
 RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360

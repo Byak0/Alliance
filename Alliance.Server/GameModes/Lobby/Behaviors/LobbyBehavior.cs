@@ -43,7 +43,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
 			Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);
-			teamAttack.SetIsEnemyOf(teamAttack, true);
+			teamAttack.SetIsEnemyOf(teamAttack, false);
 
 			_playerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
 			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());

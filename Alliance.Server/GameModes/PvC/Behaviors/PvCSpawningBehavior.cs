@@ -4,9 +4,9 @@ using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
+using Alliance.Server.Extensions.ToggleEntities.Behaviors;
 using Alliance.Server.Extensions.TroopSpawner.Interfaces;
 using NetworkMessages.FromServer;
 using System;
@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
-using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Extensions.UsableEntity.Utilities.AllianceTags;
@@ -336,22 +335,12 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 			}
 			else
 			{
-				ToggleBarriers(TEMPORARY_BARRIER_TAG, true);
+				ToggleEntitiesBehavior toggleBehavior = Mission.Current.GetMissionBehavior<ToggleEntitiesBehavior>();
+				toggleBehavior.SetTagVisibility(TEMPORARY_BARRIER_TAG, true);
 				await Task.Delay(waitTime);
 				EnableMortality();
-				ToggleBarriers(TEMPORARY_BARRIER_TAG, false);
+				toggleBehavior.SetTagVisibility(TEMPORARY_BARRIER_TAG, false);
 			}
-		}
-
-		private void ToggleBarriers(string tag, bool show)
-		{
-			foreach (GameEntity entity in Mission.Current.Scene.FindEntitiesWithTag(tag))
-			{
-				entity.SetVisibilityExcludeParents(show);
-			}
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new SyncToggleEntities(tag, show));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
 		private void EnableMortality()
