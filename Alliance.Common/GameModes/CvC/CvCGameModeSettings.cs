@@ -67,12 +67,16 @@ namespace Alliance.Common.GameModes.CvC
 				OptionType.CultureTeam2,
 				OptionType.NumberOfBotsTeam1,
 				OptionType.NumberOfBotsTeam2,
+				OptionType.AutoTeamBalanceThreshold,
+				OptionType.WarmupTimeLimitInSeconds,
 				OptionType.RoundPreparationTimeLimit,
 				OptionType.RoundTimeLimit,
 				OptionType.RoundTotal,
+				OptionType.UnlimitedGold,
 				OptionType.FriendlyFireDamageMeleeFriendPercent,
+				OptionType.FriendlyFireDamageMeleeSelfPercent,
 				OptionType.FriendlyFireDamageRangedFriendPercent,
-				OptionType.AutoTeamBalanceThreshold
+				OptionType.FriendlyFireDamageRangedSelfPercent
 			};
 		}
 
