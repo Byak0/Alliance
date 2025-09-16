@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
@@ -239,17 +240,36 @@ namespace Alliance.Common.GameModels
 		private void UpdateHumanAgentStats(Agent agent, AgentDrivenProperties agentDrivenProperties, MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter)
 		{
 			Equipment spawnEquipment = agent.SpawnEquipment;
-			agentDrivenProperties.ArmorHead = spawnEquipment.GetHeadArmorSum();
-			agentDrivenProperties.ArmorTorso = spawnEquipment.GetHumanBodyArmorSum();
-			agentDrivenProperties.ArmorLegs = spawnEquipment.GetLegArmorSum();
-			agentDrivenProperties.ArmorArms = spawnEquipment.GetArmArmorSum();
-			MPPerkObject.MPPerkHandler perkHandler = MPPerkObject.GetPerkHandler(agent);
-			BasicCharacterObject character = agent.Character;
 			MissionEquipment equipment = agent.Equipment;
+			BasicCharacterObject character = agent.Character;
+			MissionPeer missionPeer = agent.MissionPeer ?? agent.OwningAgentMissionPeer;
+			bool isPlayer = agent.MissionPeer != null;
+			MPPerkObject.MPPerkHandler perkHandler = MPPerkObject.GetPerkHandler(agent);
+
+			if (Config.Instance.LocalizedArmor || missionPeer == null)
+			{
+				// Localized armor values based on equipment (default singleplayer behavior)
+				agentDrivenProperties.ArmorHead = spawnEquipment.GetHeadArmorSum();
+				agentDrivenProperties.ArmorTorso = spawnEquipment.GetHumanBodyArmorSum();
+				agentDrivenProperties.ArmorLegs = spawnEquipment.GetLegArmorSum();
+				agentDrivenProperties.ArmorArms = spawnEquipment.GetArmArmorSum();
+			}
+			else
+			{
+				// Global armor values based on class (default multiplayer behavior)
+				MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(missionPeer);
+				for (int i = (int)DrivenProperty.ArmorHead; i < (int)DrivenProperty.ArmorArms; i++)
+				{
+					DrivenProperty drivenProperty = (DrivenProperty)i;
+					float stat = agentDrivenProperties.GetStat(drivenProperty);
+					agentDrivenProperties.SetStat(drivenProperty, stat + (float)mPHeroClassForCharacter.ArmorValue + onSpawnPerkHandler.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat));
+				}
+			}
+
 			float totalWeightOfWeapons = equipment.GetTotalWeightOfWeapons();
 			totalWeightOfWeapons *= 1f + (perkHandler?.GetEncumbrance(isOnBody: true) ?? 0f);
-			EquipmentIndex wieldedItemIndex = agent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
-			EquipmentIndex wieldedItemIndex2 = agent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+			EquipmentIndex wieldedItemIndex = agent.GetPrimaryWieldedItemIndex();
+			EquipmentIndex wieldedItemIndex2 = agent.GetOffhandWieldedItemIndex();
 			if (wieldedItemIndex != EquipmentIndex.None)
 			{
 				ItemObject item = equipment[wieldedItemIndex].Item;
@@ -269,10 +289,10 @@ namespace Alliance.Common.GameModels
 			}
 
 			agentDrivenProperties.WeaponsEncumbrance = totalWeightOfWeapons;
-			EquipmentIndex wieldedItemIndex3 = agent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
+			EquipmentIndex wieldedItemIndex3 = agent.GetPrimaryWieldedItemIndex();
 			WeaponComponentData weaponComponentData = wieldedItemIndex3 != EquipmentIndex.None ? equipment[wieldedItemIndex3].CurrentUsageItem : null;
 			ItemObject primaryItem = wieldedItemIndex3 != EquipmentIndex.None ? equipment[wieldedItemIndex3].Item : null;
-			EquipmentIndex wieldedItemIndex4 = agent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+			EquipmentIndex wieldedItemIndex4 = agent.GetOffhandWieldedItemIndex();
 			WeaponComponentData secondaryItem = wieldedItemIndex4 != EquipmentIndex.None ? equipment[wieldedItemIndex4].CurrentUsageItem : null;
 			agentDrivenProperties.SwingSpeedMultiplier = 0.93f + 0.0007f * GetSkillValueForItem(agent, primaryItem);
 			agentDrivenProperties.ThrustOrRangedReadySpeedMultiplier = agentDrivenProperties.SwingSpeedMultiplier;
@@ -534,7 +554,6 @@ namespace Alliance.Common.GameModels
 			agentDrivenProperties.AiDefendWithShieldDecisionChanceValue = MathF.Min(2f, 0.5f + num + 0.6f * num3);
 			agentDrivenProperties.AiMoveEnemySideTimeValue = -2.5f + 0.5f * num;
 			agentDrivenProperties.AiMinimumDistanceToContinueFactor = 2f + 0.3f * (3f - num);
-			agentDrivenProperties.AiHearingDistanceFactor = 1f + num;
 			agentDrivenProperties.AiChargeHorsebackTargetDistFactor = 1.5f * (3f - num);
 			agentDrivenProperties.AiWaitBeforeShootFactor = agent.PropertyModifiers.resetAiWaitBeforeShootFactor ? 0f : 1f - 0.5f * num2;
 
@@ -546,7 +565,7 @@ namespace Alliance.Common.GameModels
 			agentDrivenProperties.AiRangerHorizontalErrorMultiplier = shootingErrorMultiplier * ((float)Math.PI / 90f);
 
 			agentDrivenProperties.AIAttackOnDecideChance = MathF.Clamp(0.1f * CalculateAIAttackOnDecideMaxValue() * (3f - agent.Defensiveness), 0.05f, 1f);
-			agentDrivenProperties.SetStat(DrivenProperty.UseRealisticBlocking, agent.Controller != Agent.ControllerType.Player ? 1f : 0f);
+			agentDrivenProperties.SetStat(DrivenProperty.UseRealisticBlocking, agent.Controller != AgentControllerType.Player ? 1f : 0f);
 		}
 
 		/// <summary>
@@ -612,35 +631,6 @@ namespace Alliance.Common.GameModels
 		public override float GetDismountResistance(Agent agent)
 		{
 			return agent.Character.DismountResistance;
-		}
-
-		private int GetSkillValueForItem(BasicCharacterObject characterObject, ItemObject primaryItem)
-		{
-			return characterObject.GetSkillValue((primaryItem != null) ? primaryItem.RelevantSkill : DefaultSkills.Athletics);
-		}
-
-		private void SetMountedWeaponPenaltiesOnAgent(Agent agent, AgentDrivenProperties agentDrivenProperties, WeaponComponentData equippedWeaponComponent)
-		{
-			int effectiveSkill = GetEffectiveSkill(agent, DefaultSkills.Riding);
-			float num = 0.3f - (float)effectiveSkill * 0.003f;
-			if (num > 0f)
-			{
-				float val = agentDrivenProperties.SwingSpeedMultiplier * (1f - num);
-				float val2 = agentDrivenProperties.ThrustOrRangedReadySpeedMultiplier * (1f - num);
-				float val3 = agentDrivenProperties.ReloadSpeed * (1f - num);
-				float val4 = agentDrivenProperties.WeaponBestAccuracyWaitTime * (1f + num);
-				agentDrivenProperties.SwingSpeedMultiplier = Math.Max(0f, val);
-				agentDrivenProperties.ThrustOrRangedReadySpeedMultiplier = Math.Max(0f, val2);
-				agentDrivenProperties.ReloadSpeed = Math.Max(0f, val3);
-				agentDrivenProperties.WeaponBestAccuracyWaitTime = Math.Max(0f, val4);
-			}
-
-			float num2 = 15f - (float)effectiveSkill * 0.15f;
-			if (num2 > 0f)
-			{
-				float val5 = agentDrivenProperties.WeaponInaccuracy * (1f + num2);
-				agentDrivenProperties.WeaponInaccuracy = Math.Max(0f, val5);
-			}
 		}
 
 		public static float CalculateMaximumSpeedMultiplier(Agent agent)
