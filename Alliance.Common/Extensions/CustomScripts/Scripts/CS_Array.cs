@@ -30,6 +30,12 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		public bool UseObjectOffset = false;
 		public string ObjectOffsetEntityName = "";
 
+		public bool UseFollowPath = false;
+		public string PathName = "";
+		public float PathStep = 1f;
+		public Vec3 RotationInfluence = new Vec3(1f, 1f, 1f);   // X=Side, Y=Up, Z=Forward
+		public Vec3 PositionInfluence = new Vec3(1f, 1f, 1f);   // X, Y, Z position blend
+
 		// Tagging
 		public bool ApplyTag = false;
 		public string TagToApply = "";
@@ -63,7 +69,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			propertyName == nameof(UseConstantOffset) || propertyName == nameof(ConstantOffset) ||
 			propertyName == nameof(UseObjectOffset) || propertyName == nameof(ObjectOffsetEntityName) ||
 			propertyName == nameof(ApplyTag) || propertyName == nameof(TagToApply) ||
-			propertyName == nameof(AddSuffixToTag) || propertyName == nameof(SuffixStartingIndex);
+			propertyName == nameof(AddSuffixToTag) || propertyName == nameof(SuffixStartingIndex) ||
+			propertyName == nameof(UseFollowPath) || propertyName == nameof(PathName) ||
+			propertyName == nameof(PositionInfluence) || propertyName == nameof(RotationInfluence) ||
+			propertyName == nameof(PathStep);
 
 		protected override void OnEditorTick(float dt)
 		{
@@ -150,74 +159,131 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					return;
 				}
 
-				// Base (original) global frame
-				MatrixFrame sourceFrame = sourceEntity.GetGlobalFrame();
-
-				// Relative offset uses LOCAL mesh size, not transform scale (Blender behavior)
+				MatrixFrame sourceFrame = new MatrixFrame(sourceEntity.GetGlobalFrame().rotation, Vec3.Zero);
 				Vec3 sizeLocal = EntityUtils.GetLocalSizeOrFallback(sourceEntity);
-
-				// Per-iteration local translation (applied once per step)
 				Vec3 stepLocal = new Vec3(
 					(UseRelativeOffset ? RelativeOffset.X * sizeLocal.X : 0f) + (UseConstantOffset ? ConstantOffset.X : 0f),
 					(UseRelativeOffset ? RelativeOffset.Y * sizeLocal.Y : 0f) + (UseConstantOffset ? ConstantOffset.Y : 0f),
 					(UseRelativeOffset ? RelativeOffset.Z * sizeLocal.Z : 0f) + (UseConstantOffset ? ConstantOffset.Z : 0f)
 				);
 
-				// Object Offset relative (source^-1 * object)
 				MatrixFrame objectOffsetRel = MatrixFrame.Identity;
-				bool useObjectOffset = UseObjectOffset && !string.IsNullOrEmpty(ObjectOffsetEntityName);
-
-				if (useObjectOffset)
+				if (UseObjectOffset && !string.IsNullOrEmpty(ObjectOffsetEntityName))
 				{
 					GameEntity driver = Scene.GetFirstEntityWithName(ObjectOffsetEntityName);
-					if (driver == null)
-					{
-						useObjectOffset = false;
-						Log($"[CS_Array] ObjectOffset '{ObjectOffsetEntityName}' not found; ignoring.", LogLevel.Warning);
-					}
-					else
+					if (driver != null)
 					{
 						objectOffsetRel = sourceFrame.TransformToLocal(driver.GetGlobalFrame());
 					}
+					else
+					{
+						Log($"[CS_Array] ObjectOffset '{ObjectOffsetEntityName}' not found; ignoring.", LogLevel.Warning);
+					}
 				}
 
-				// Accumulate from the source pose; include original as first duplicate (index 0)
+				Path path = null;
+				bool usePath = UseFollowPath && !string.IsNullOrEmpty(PathName);
+				if (usePath)
+				{
+					path = Scene.GetPathWithName(PathName);
+					if (path == null)
+					{
+						Log($"[CS_Array] Path '{PathName}' not found; ignoring FollowPath.", LogLevel.Warning);
+						usePath = false;
+					}
+				}
+
+				ClampInfluenceValues();
+
+				Vec3 totalOffsetLocal = Vec3.Zero;
 				MatrixFrame cloneFrame = sourceFrame;
 
 				for (int i = 0; i < Count; i++)
 				{
-					if (i > 0)
-					{
-						if (useObjectOffset) cloneFrame = cloneFrame.TransformToParent(objectOffsetRel); // rotate/scale/translate once
+					float distance = i * PathStep;
 
-						cloneFrame.origin = cloneFrame.TransformToParent(stepLocal);   // then translate once in local axes
+					if (usePath)
+					{
+						if (distance > path.TotalDistance)
+						{
+							Log($"[CS_Array] Skipping entity {i}, distance {distance} exceeds path length {path.TotalDistance}", LogLevel.Warning);
+							break;
+						}
+
+						Vec3 currentPos = path.GetFrameForDistance(distance).origin;
+						Vec3 nextPos = path.GetFrameForDistance(MathF.Min(distance + 0.1f, path.TotalDistance)).origin;
+
+						Vec3 pathDir = (nextPos - currentPos).NormalizedCopy();
+						Vec3 worldUp = Vec3.Up;
+						if (MathF.Abs(Vec3.DotProduct(pathDir, worldUp)) > 0.999f)
+							worldUp = Vec3.Side;
+
+						// Create path frame
+						Vec3 pathF = pathDir;
+						Vec3 pathS = Vec3.CrossProduct(worldUp, pathF).NormalizedCopy();
+						Vec3 pathU = Vec3.CrossProduct(pathF, pathS).NormalizedCopy();
+						Mat3 pathRot = new Mat3(pathS, pathF, pathU);
+						pathRot.Orthonormalize();
+						MatrixFrame pathFrame = new MatrixFrame(pathRot, currentPos);
+
+						// Blend rotation & position
+						cloneFrame = EntityUtils.BlendEulerRotation(sourceFrame, pathFrame, RotationInfluence.x, RotationInfluence.y, RotationInfluence.z);
+						cloneFrame = EntityUtils.BlendPositionTowards(cloneFrame, pathFrame, PositionInfluence.x, PositionInfluence.y, PositionInfluence.z);
+
+						if ((UseRelativeOffset || UseConstantOffset) && i > 0)
+						{
+							totalOffsetLocal += stepLocal;
+							cloneFrame.origin += cloneFrame.rotation.TransformToParent(totalOffsetLocal);
+						}
+					}
+					else
+					{
+						if (i > 0)
+						{
+							if (UseObjectOffset)
+								cloneFrame = cloneFrame.TransformToParent(objectOffsetRel);
+
+							totalOffsetLocal += stepLocal;
+							cloneFrame.origin += cloneFrame.rotation.TransformToParent(totalOffsetLocal);
+						}
+						else
+						{
+							cloneFrame = sourceFrame;
+						}
 					}
 
-					// Create editor-modifiable copy
 					if (!EntityUtils.TryCreateEditableCopy(Scene, sourceEntity, out GameEntity clone))
 					{
-						Log($"[CS_Array] Aborting generation, can't copy entity", LogLevel.Error);
+						Log("[CS_Array] Aborting generation, can't copy entity", LogLevel.Error);
 						return;
 					}
 
 					clone.SetGlobalFrame(cloneFrame);
-
-					// Parent under this tool entity for easy cleanup
 					GameEntity.AddChild(clone);
-
 					clone.Name = $"{SuffixStartingIndex + i}_{EntityToDuplicate}";
 
-					if (ApplyTag) clone.AddTag(AddSuffixToTag ? $"{TagToApply}{SuffixStartingIndex + i}" : TagToApply);
+					if (ApplyTag)
+						clone.AddTag(AddSuffixToTag ? $"{TagToApply}{SuffixStartingIndex + i}" : TagToApply);
 				}
 
-				Log($"[CS_Array] Generated {Count} entities.", LogLevel.Information);
-
-				MBEditor.UpdateSceneTree(); // Refresh editor tree to show new entities
+				Log($"[CS_Array] Generated {Count} entities{(usePath ? " along path" : "")}.", LogLevel.Information);
+				MBEditor.UpdateSceneTree();
 			}
 			finally
 			{
 				_isGenerating = false;
 			}
+		}
+
+		private void ClampInfluenceValues()
+		{
+			RotationInfluence.x = MathF.Clamp(RotationInfluence.x, 0f, 1f);
+			RotationInfluence.y = MathF.Clamp(RotationInfluence.y, 0f, 1f);
+			RotationInfluence.z = MathF.Clamp(RotationInfluence.z, 0f, 1f);
+
+			PositionInfluence.x = MathF.Clamp(PositionInfluence.x, 0f, 1f);
+			PositionInfluence.y = MathF.Clamp(PositionInfluence.y, 0f, 1f);
+			PositionInfluence.z = MathF.Clamp(PositionInfluence.z, 0f, 1f);
 		}
 	}
 }
