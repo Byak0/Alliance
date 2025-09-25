@@ -227,6 +227,45 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
+		/// Return the source matrix frame turned forward the target frame, proportionaly to influences (0 to 1f).
+		/// </summary>
+		public static MatrixFrame BlendEulerRotation(MatrixFrame source, MatrixFrame target, float pitchInfluence, float rollInfluence, float yawInfluence)
+		{
+			// Convert to quaternions
+			Quaternion qSource = source.rotation.ToQuaternion();
+			Quaternion qTarget = target.rotation.ToQuaternion();
+
+			// Convert to Euler angles
+			Vec3 eulerSource = source.rotation.GetEulerAngles();
+			Vec3 eulerTarget = target.rotation.GetEulerAngles();
+
+			// Blend each angle separately
+			float pitch = TaleWorlds.Library.MathF.Lerp(eulerSource.x, eulerTarget.x, pitchInfluence); // X axis
+			float roll = TaleWorlds.Library.MathF.Lerp(eulerSource.y, eulerTarget.y, rollInfluence);   // Y axis
+			float yaw = TaleWorlds.Library.MathF.Lerp(eulerSource.z, eulerTarget.z, yawInfluence);     // Z axis
+
+			// Reconstruct rotation from blended Euler
+			Mat3 blendedRot = Mat3.Identity;
+			blendedRot.ApplyEulerAngles(new Vec3(pitch, roll, yaw));
+
+			return new MatrixFrame(blendedRot, source.origin);
+		}
+
+		/// <summary>
+		/// Return the source matrix frame moved toward the target frame, proportionaly to influences (0 to 1f).
+		/// </summary>
+		public static MatrixFrame BlendPositionTowards(MatrixFrame source, MatrixFrame target, float xInfluence, float yInfluence, float zInfluence)
+		{
+			Vec3 blendedPos = new Vec3(
+				TaleWorlds.Library.MathF.Lerp(source.origin.x, target.origin.x, xInfluence),
+				TaleWorlds.Library.MathF.Lerp(source.origin.y, target.origin.y, yInfluence),
+				TaleWorlds.Library.MathF.Lerp(source.origin.z, target.origin.z, zInfluence)
+			);
+
+			return new MatrixFrame(source.rotation, blendedPos);
+		}
+
+		/// <summary>
 		/// Create a text mesh using a glyph map.
 		/// The material must have an atlas texture with glyphs.
 		///	</summary>
