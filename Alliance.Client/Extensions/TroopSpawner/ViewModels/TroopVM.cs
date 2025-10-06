@@ -295,12 +295,10 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 					break;
 			}
 			ExtendedTroop = Troop.GetExtendedCharacterObject();
-			TroopLimit = ExtendedTroop?.TroopLeft + "/" + ExtendedTroop?.TroopLimit;
 			TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
-			UseTroopLimit = Config.Instance.UseTroopLimit;
 			UseTroopCost = Config.Instance.UseTroopCost;
 			TroopLimitMarginR = Config.Instance.UseTroopCost ? 80 : 20;
-			TroopNameWidth = 150 + (!Config.Instance.UseTroopLimit ? 50 : 0) + (!Config.Instance.UseTroopCost ? 60 : 0);
+			TroopNameWidth = 200 + (!Config.Instance.UseTroopCost ? 60 : 0);
 			_onTroopSelected = onSelect;
 			_onPerkSelect = onPerkSelect;
 			IconType = heroClass.IconType.ToString();
@@ -311,13 +309,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			RefreshValues();
 
 			SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshCost;
-			SpawnTroopsModel.Instance.OnTroopSpawned += RefreshTroopCount;
 		}
 
 		public override void OnFinalize()
 		{
 			SpawnTroopsModel.Instance.OnDifficultyUpdated -= RefreshCost;
-			SpawnTroopsModel.Instance.OnTroopSpawned -= RefreshTroopCount;
 		}
 
 		public override void RefreshValues()
@@ -339,11 +335,6 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 		private void RefreshCost()
 		{
 			TroopCost = SpawnHelper.GetTroopCost(Troop, SpawnHelper.DifficultyMultiplierFromLevel(SpawnTroopsModel.Instance.DifficultyLevel));
-		}
-
-		private void RefreshTroopCount(TroopSpawnedEventArgs args)
-		{
-			TroopLimit = ExtendedTroop?.TroopLeft + "/" + ExtendedTroop?.TroopLimit;
 		}
 
 		private void InitPerksList()

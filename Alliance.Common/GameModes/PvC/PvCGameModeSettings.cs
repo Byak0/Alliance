@@ -32,7 +32,6 @@ namespace Alliance.Common.GameModes.PvC
 			ModOptions.MoraleMultiplierForFlag = 1f;
 			ModOptions.MoraleMultiplierForLastFlag = 1f;
 			ModOptions.UseTroopCost = true;
-			ModOptions.UseTroopLimit = false;
 			ModOptions.GoldMultiplier = 1.3f;
 			ModOptions.StartingGold = 0;
 			ModOptions.GoldPerKill = 0;

@@ -12,7 +12,6 @@ using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
@@ -68,7 +67,6 @@ namespace Alliance.Client
 			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
 			ExtendedXMLLoader.Init();
 
-			ClassLimiterModel.Instance.Init();
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
 		}

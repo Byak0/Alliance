@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -62,7 +61,6 @@ namespace Alliance.Server
 			AnimationSystem.Instance.Init();
 
 			SceneList.Initialize();
-			ClassLimiterModel.Instance.Init();
 
 			Log("Alliance behaviors initialized.", LogLevel.Debug);
 		}
