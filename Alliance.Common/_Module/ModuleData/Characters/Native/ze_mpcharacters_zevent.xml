@@ -8,7 +8,6 @@
 	  default_group="Infantry"
 	  name="Peasant Woman"
 	  level="6"
-	  is_basic_troop="true"
 	  occupation="Soldier"
 	  culture="Culture.zevent"
 	  is_female="true">
