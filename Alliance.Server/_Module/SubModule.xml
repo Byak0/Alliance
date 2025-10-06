@@ -36,13 +36,7 @@
       <XmlName id="BasicCultures" path="Cultures/SOP" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="CharactersExtended" path="CharactersExtended/LOTR" />
-    </XmlNode>
-    <XmlNode>
       <XmlName id="CharactersExtended" path="CharactersExtended/Native" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="CharactersExtended" path="CharactersExtended/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="Monsters" path="Monsters/LOTR" />

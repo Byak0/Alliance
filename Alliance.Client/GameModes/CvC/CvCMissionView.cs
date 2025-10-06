@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
 using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
-using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
 using Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
@@ -23,7 +22,6 @@ namespace Alliance.Client.GameModes.CvC
 			views.AppendList(new List<MissionView>
 			{
 				// Custom views
-				new EquipmentSelectionView(),
 				new AgentStatusView(),
 				new FormationStatusView(),
 				new HUDExtensionUIHandlerView(),

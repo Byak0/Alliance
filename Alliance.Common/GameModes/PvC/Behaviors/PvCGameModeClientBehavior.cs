@@ -1,14 +1,11 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedXML.Models;
 using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.GameModes.Captain.Behaviors;
 using System.Linq;
 using System.Reflection;
 using TaleWorlds.Core;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.PvC.Behaviors
@@ -80,13 +77,6 @@ namespace Alliance.Common.GameModes.PvC.Behaviors
 		private void OnPostRoundEnd()
 		{
 			FormationControlModel.Instance.Clear();
-
-			// Reset TroopLeft count after round
-			MBReadOnlyList<ExtendedCharacter> extCharacterObjects = MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>();
-			foreach (ExtendedCharacter extCharacterObject in extCharacterObjects)
-			{
-				extCharacterObject.TroopLeft = extCharacterObject.TroopLimit;
-			}
 		}
 
 		public override void OnGoldAmountChangedForRepresentative(MissionRepresentativeBase representative, int goldAmount)

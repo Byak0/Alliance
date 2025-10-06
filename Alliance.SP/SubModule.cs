@@ -3,7 +3,6 @@ using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Views;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -43,7 +42,6 @@ namespace Alliance.SP
 			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
 			ExtendedXMLLoader.Init();
 
-			ClassLimiterModel.Instance.Init();
 			SceneList.Initialize();
 		}
 

@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.ClassLimiter.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Patch.Utilities;
 using System;
@@ -437,28 +436,21 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{
-					// Get a random hero from the available classes
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.HeroCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.HeroCharacter]).GetRandomElementInefficiently()?.HeroCharacter;
-					// If no hero is available, try again without class limitation
-					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().HeroCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().HeroCharacter;
 				}
 				// Every 50 agents, spawn a banner bearer
 				else if (nbAgents % 50 == 0)
 				{
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.BannerBearerCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.BannerBearerCharacter]).GetRandomElementInefficiently()?.BannerBearerCharacter;
-					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().BannerBearerCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().BannerBearerCharacter;
 				}
+				// Else spawn a random troop
 				else
 				{
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => ClassLimiterModel.Instance.CharactersAvailable[troop.TroopCharacter]).GetRandomElementInefficiently()?.TroopCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 				}
-
-				// If no troop is available, try again without class limitation
-				bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 
 				goldToUse -= GetTroopCost(bco, difficulty);
 				agentsToSpawn.Add(bco);
-				ClassLimiterModel.Instance.ReserveCharacterSlot(bco);
 				nbAgents++;
 			}
 
