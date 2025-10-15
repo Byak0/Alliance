@@ -1,4 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.Core.Configuration.Models;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -9,9 +9,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	public class StartScenarioAction : ActionBase
 	{
-		[ScenarioEditor(label: "Scenario ID", tooltip: "ID of the scenario to load. You can leave it empty to use current scenario.")]
+		[ConfigProperty(label: "Scenario ID", tooltip: "ID of the scenario to load. You can leave it empty to use current scenario.")]
 		public string ScenarioId;
-		[ScenarioEditor(label: "Act index", tooltip: "Index of act to load.")]
+		[ConfigProperty(label: "Act index", tooltip: "Index of act to load.")]
 		public int ActIndex;
 
 		public StartScenarioAction(string scenarioId, int actIndex)

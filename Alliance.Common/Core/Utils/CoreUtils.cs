@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.Agent;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.Core.Utils
 {
@@ -86,11 +88,11 @@ namespace Alliance.Common.Core.Utils
 		/// </summary>
 		public static void TakeDamage(Agent victim, Agent attacker, int damage, float magnitude = 50f, bool knockDown = false)
 		{
-			if (victim == null || attacker == null)
+			if (victim == null || victim.AgentVisuals == null || attacker == null)
 			{
 				Log("Victim and/or attacker is null. Damage skipped", LogLevel.Warning);
 				return;
-			};
+			}
 
 			if (victim.Health <= 0) return;
 
@@ -285,8 +287,14 @@ namespace Alliance.Common.Core.Utils
 		{
 			get
 			{
-				return GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue();
+				return GameNetwork.NetworkPeers != null ? GameNetwork.NetworkPeers.Count + MultiplayerOptions.OptionType.NumberOfBotsTeam1.GetIntValue() + MultiplayerOptions.OptionType.NumberOfBotsTeam2.GetIntValue() : 0;
 			}
+		}
+
+		public static string FixUtf8Encoding(string text)
+		{
+			byte[] bytes = Encoding.Default.GetBytes(text); // interpret the string as Windows-1252
+			return Encoding.UTF8.GetString(bytes); // reinterpret it as UTF-8
 		}
 
 		/// <summary>

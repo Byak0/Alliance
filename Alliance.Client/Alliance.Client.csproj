@@ -10,6 +10,7 @@
 		<ModuleName>Alliance</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 		<UseWPF>false</UseWPF>
 	</PropertyGroup>
 

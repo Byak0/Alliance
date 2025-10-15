@@ -1,13 +1,15 @@
-﻿using Alliance.Common.Extensions.UsableEntity.NetworkMessages.FromServer;
+﻿using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.CustomScripts.Scripts;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
+using Alliance.Common.Extensions.UsableEntity.Handlers;
+using Alliance.Common.Extensions.UsableEntity.Interfaces;
 using Alliance.Common.Extensions.UsableEntity.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.ObjectSystem;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 {
@@ -16,14 +18,53 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 	/// </summary>
 	public class UsableEntityBehavior : MissionNetwork, IMissionBehavior
 	{
-		private List<GameEntity> _usableEntities = new List<GameEntity>();
+		public readonly struct InteractionTarget
+		{
+			public readonly Guid ID;
+			public readonly GameEntity Entity;
+			public readonly IInteractionHandler Handler;
+			public InteractionTarget(Guid id, GameEntity e, IInteractionHandler h) { ID = id; Entity = e; Handler = h; }
+			public bool IsValid => Entity != null && Handler != null;
+		}
 
-		readonly MultiplayerRoundController roundController;
+		public sealed class InteractionRegistry
+		{
+			private readonly List<IInteractionHandler> _handlers = new();
+			public void Register(IInteractionHandler handler) => _handlers.Add(handler);
+			public IEnumerable<IInteractionHandler> All => _handlers;
+			public IInteractionHandler FindMatch(GameEntity e) => _handlers.FirstOrDefault(h => h.CanHandle(e));
+		}
+
+		private InteractionRegistry _registry;
+		private List<InteractionTarget> _usableEntities = new List<InteractionTarget>();
+		private Dictionary<Guid, InteractionTarget> _usableEntitiesById = new Dictionary<Guid, InteractionTarget>();
+		private List<InteractionTarget> _hiddenEntities = new List<InteractionTarget>();
+		private readonly MultiplayerRoundController _roundController;
 
 		public override void OnBehaviorInitialize()
 		{
 			base.OnBehaviorInitialize();
-			_usableEntities = Mission.Current.Scene.FindEntitiesWithTag(AllianceTags.InteractiveTag).ToList();
+
+			_registry = new InteractionRegistry();
+
+			_registry.Register(new PickUpItemHandler());
+			_registry.Register(new EditableTextHandler());
+
+			List<GameEntity> entitiesInScene = new();
+			Mission.Current.Scene.GetEntities(ref entitiesInScene);
+			foreach (GameEntity entity in entitiesInScene)
+			{
+				IInteractionHandler handler = _registry.FindMatch(entity);
+				if (handler != null)
+				{
+					// Generate a unique ID for the entity
+					Guid id = entity.GetDeterministicID();
+					InteractionTarget target = new InteractionTarget(id, entity, handler);
+					_usableEntities.Add(target);
+					_usableEntitiesById[id] = target;
+				}
+			}
+
 			MultiplayerRoundController roundController = Mission.GetMissionBehavior<MultiplayerRoundController>();
 
 			if (roundController != null)
@@ -32,52 +73,59 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 			}
 		}
 
-		public void UseEntity(GameEntity entity, Agent agent)
+		protected override void HandleLateNewClientAfterSynchronized(NetworkCommunicator networkPeer)
 		{
-			string itemName = entity.GetTagValue(AllianceTags.InteractiveItemTag);
-			ItemObject itemObject = MBObjectManager.Instance.GetObject<ItemObject>(itemName);
-			MissionWeapon missionWeapon = new MissionWeapon(itemObject, null, agent.Team.Banner);
-			if (itemObject.IsBannerItem)
+			// When a new player connects, send him the hidden entities
+			foreach (InteractionTarget entity in _hiddenEntities)
 			{
-				agent.EquipWeaponToExtraSlotAndWield(ref missionWeapon);
+				UsableEntityMsg.SyncHideEntity(entity, networkPeer);
 			}
-			else
-			{
-				EquipmentIndex slot = EquipmentIndex.WeaponItemBeginSlot;
-				while (!agent.Equipment[slot].IsEmpty && slot < EquipmentIndex.Weapon3)
-				{
-					slot++;
-				}
-				agent.EquipWeaponWithNewEntity(slot, ref missionWeapon);
-				agent.TryToWieldWeaponInSlot(slot, Agent.WeaponWieldActionType.WithAnimation, true);
-			}
-
-			HideEntity(entity);
-
-			Log($"Agent {agent.Name} ({agent.MissionPeer?.Name}) used entity {entity.Name} and equipped {itemName}", LogLevel.Debug);
 		}
 
 		public override void OnRemoveBehavior()
 		{
-			if (roundController != null)
+			if (_roundController != null)
 			{
-				roundController.OnRoundStarted -= ResetItemsWithTagRespawnEachRound;
+				_roundController.OnRoundStarted -= ResetItemsWithTagRespawnEachRound;
 			}
 			base.OnRemoveBehavior();
 		}
 
-		public void HideEntity(GameEntity entity)
+		public void InteractWithEntity(Guid entityId, Agent agent)
 		{
-			if (entity == null) return;
+			if (_usableEntitiesById.TryGetValue(entityId, out InteractionTarget target) && target.IsValid)
+			{
+				target.Handler.Interact(agent, target);
+			}
+		}
+
+		public void InteractWithTextPanel(NetworkCommunicator peer, Guid id, string text)
+		{
+			if (_usableEntitiesById.TryGetValue(id, out InteractionTarget target) && target.IsValid)
+			{
+				CS_TextPanel textPanel = target.Entity.GetFirstScriptOfType<CS_TextPanel>();
+				if (textPanel == null || !textPanel.IsEditable) return;
+				textPanel.UpdateText(text);
+				if (GameNetwork.IsServer)
+				{
+					GameNetwork.BeginBroadcastModuleEvent();
+					GameNetwork.WriteMessage(new SyncTextPanel(textPanel.Id, text));
+					GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				}
+			}
+		}
+
+		public void HideEntity(Guid entityID)
+		{
+			if (!_usableEntitiesById.TryGetValue(entityID, out InteractionTarget target)) return;
 
 			if (GameNetwork.IsServer)
 			{
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new RemoveEntity(entity.GlobalPosition));
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				UsableEntityMsg.SyncHideEntity(target);
 			}
 
-			entity.SetVisibilityExcludeParents(false);
+			target.Entity.SetVisibilityExcludeParents(false);
+			_hiddenEntities.Add(target);
 		}
 
 		public void ResetItemsWithTagRespawnEachRound()
@@ -86,10 +134,8 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 
 			if (GameNetwork.IsServer)
 			{
-				// As client to make them visible again (Code above in the foreach)
-				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new Reset());
-				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+				// Ask client to make them visible again (Code above in the foreach)
+				UsableEntityMsg.SyncResetEntityVisibility();
 			}
 
 			itemsToRespawnList.ForEach(gameEntity =>
@@ -99,41 +145,36 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 					gameEntity.SetVisibilityExcludeParents(true);
 				}
 			});
+
+			// Remove them from the hidden entities list
+			_hiddenEntities.RemoveAll(hiddenEntity => itemsToRespawnList.Contains(hiddenEntity.Entity));
 		}
 
-		public GameEntity FindClosestUsableEntity(Vec3 position, float range)
-		{
-			foreach (GameEntity gameEntity in _usableEntities)
-			{
-				if (gameEntity.GlobalPosition.NearlyEquals(position, range))
-				{
-					return gameEntity;
-				}
-			}
-			return null;
-		}
-
-		public GameEntity FindEntityUsableByAgent(Agent agent)
+		public InteractionTarget? FindEntityUsableByAgent(Agent agent)
 		{
 			Vec3 eyePosition = agent.GetEyeGlobalPosition();
 			Vec3 lookDirection = agent.LookDirection;
+			float lookLenSq = lookDirection.LengthSquared;
+			lookDirection /= (float)Math.Sqrt(lookLenSq);
 
-			GameEntity closestEntity = null;
+			InteractionTarget? closestTarget = null;
 			float closestDistanceSquared = 2f;
 
-			foreach (GameEntity entity in _usableEntities)
+			foreach (InteractionTarget target in _usableEntities)
 			{
 				// Check if the entity is in the direction the agent is looking
-				if (IsEntityInLookDirection(entity, eyePosition, lookDirection, out float distanceSquared) && entity.IsVisibleIncludeParents())
+				if (target.Handler.CanInteract(agent, target.Entity)
+					&& IsEntityInLookDirection(target.Entity, eyePosition, lookDirection, out float distanceSquared)
+					&& target.Entity.IsVisibleIncludeParents())
 				{
 					if (distanceSquared < closestDistanceSquared)
 					{
 						closestDistanceSquared = distanceSquared;
-						closestEntity = entity;
+						closestTarget = target;
 					}
 				}
 			}
-			return closestEntity;
+			return closestTarget;
 		}
 
 		private bool IsEntityInLookDirection(GameEntity entity, Vec3 eyePosition, Vec3 lookDirection, out float distanceSquared)

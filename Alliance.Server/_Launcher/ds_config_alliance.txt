@@ -1,9 +1,8 @@
-ServerName Alliance - Test Server 1
+ServerName [Alliance] Test Server 1
 GameType Lobby
-AdminPassword test123
-Map mp_beefbacon_craglowe
-CultureTeam1 isengard
-CultureTeam2 rohan
+Map proto_zevent
+CultureTeam1 vlandia
+CultureTeam2 empire
 MaxNumberOfPlayers 500
 MinNumberOfPlayersForMatchStart 0
 NumberOfBotsPerFormation 150
@@ -13,7 +12,7 @@ FriendlyFireDamageMeleeFriendPercent 75
 FriendlyFireDamageMeleeSelfPercent 0
 FriendlyFireDamageRangedFriendPercent 75
 FriendlyFireDamageRangedSelfPercent 0
-RoundPreparationTimeLimit 20
+RoundPreparationTimeLimit 10
 RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360

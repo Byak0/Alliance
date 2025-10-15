@@ -4,6 +4,7 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
 using static Alliance.Common.Utilities.Logger;
@@ -15,6 +16,8 @@ namespace Alliance.Common.GameModes.Story
 	/// </summary>
 	public class ScenarioManager
 	{
+		public static readonly string SCENARIO_FOLDER_NAME = "Scenarios";
+
 		private static ScenarioManager _instance;
 		public static ScenarioManager Instance
 		{
@@ -72,6 +75,10 @@ namespace Alliance.Common.GameModes.Story
 		/// </summary>
 		public virtual void SetActState(ActState newState)
 		{
+			Log($"==================================================", LogLevel.Debug);
+			Log($"{CurrentScenario?.Name?.LocalizedText} - {CurrentActIndex + 1} - {CurrentAct?.Name?.LocalizedText} - {newState}", LogLevel.Debug);
+			Log($"==================================================", LogLevel.Debug);
+
 			ActState = newState;
 			switch (newState)
 			{
@@ -87,6 +94,7 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateInProgress?.Invoke();
 					break;
 				case ActState.DisplayingResults:
+					CurrentAct.VictoryLogic.OnDisplayResults(CurrentWinner);
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
@@ -112,8 +120,8 @@ namespace Alliance.Common.GameModes.Story
 		/// </summary>
 		public virtual void SetWinner(BattleSideEnum winner)
 		{
+			UnregisterObjectives();
 			CurrentWinner = winner;
-			CurrentAct.VictoryLogic.OnDisplayResults(winner);
 		}
 
 		/// <summary>
@@ -166,7 +174,7 @@ namespace Alliance.Common.GameModes.Story
 				return false;
 			}
 
-			bool sideWin = false;
+			bool sideWin = true;
 
 			foreach (ObjectiveBase objective in objectives)
 			{
@@ -180,7 +188,6 @@ namespace Alliance.Common.GameModes.Story
 					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
-						UnregisterObjectives();
 						SetWinner(objective.Side);
 						return true;
 					}
@@ -188,7 +195,6 @@ namespace Alliance.Common.GameModes.Story
 
 				if (objective.RequiredForActWin)
 				{
-					sideWin = true;
 					sideWin &= objectiveCompleted;
 				}
 			}
@@ -196,7 +202,6 @@ namespace Alliance.Common.GameModes.Story
 			// If all objectives for the side are completed, the side wins
 			if (sideWin)
 			{
-				UnregisterObjectives();
 				SetWinner(side);
 				return true;
 			}
@@ -220,8 +225,31 @@ namespace Alliance.Common.GameModes.Story
 
 		public void RefreshAvailableScenarios()
 		{
+			List<ModuleInfo> selectedModules = TaleWorlds.Engine.Utilities.GetModulesNames().Select(ModuleHelper.GetModuleInfo).ToList();
+
+			List<Scenario> scenarios = new List<Scenario>();
+
+			// Check each multiplayer module for scenarios
+			foreach (ModuleInfo module in selectedModules)
+			{
+				string scenarioPath = Path.Combine(ModuleHelper.GetModuleFullPath(module.Id), SCENARIO_FOLDER_NAME);
+				if (Directory.Exists(scenarioPath))
+				{
+					try
+					{
+						var moduleScenarios = ScenarioSerializer.DeserializeAllScenarios(scenarioPath);
+						scenarios.AddRange(moduleScenarios);
+					}
+					catch (Exception ex)
+					{
+						Log($"Failed to deserialize scenarios from module {module.Name}: {ex.Message}", LogLevel.Error);
+						continue;
+					}
+				}
+			}
+
 			AvailableScenario = new List<Scenario>();
-			AvailableScenario.AddRange(ScenarioSerializer.DeserializeAllScenarios(Path.Combine(ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName), "Scenarios")));
+			AvailableScenario.AddRange(scenarios);
 		}
 	}
 }

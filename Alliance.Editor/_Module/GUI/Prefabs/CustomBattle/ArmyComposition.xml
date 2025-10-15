@@ -1,0 +1,118 @@
+<Prefab>
+	<Parameters>
+		<Parameter Name="TitleText" DefaultValue="Player" />
+		<Parameter Name="FactionText" DefaultValue="Player Faction" />
+	</Parameters>
+	<Window>
+		<!--_______Side Panel_______-->
+		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Left">
+			<Children>
+
+				<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="30" Brush="CustomBattle.Character.Title.Text" Text="@Name" />
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="265" MarginTop="140" ClipContents="true">
+					<Children>
+
+						<!--Selected Character Tableau-->
+						<CharacterTableauWidget DataSource="{CurrentSelectedCharacter}" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedWidth="400" SuggestedHeight="400" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText"  PositionYOffset="-30" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IsBannerShownInBackground="true"/>
+
+						<ListPanel DataSource="{ArmorsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" PositionYOffset="5" MarginLeft="25" LayoutImp.LayoutMethod="VerticalBottomToTop">
+							<ItemTemplate>
+								<EquipmentTypeVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="35" HorizontalAlignment="Left" MarginLeft="5" MarginBottom="5" Brush="EquipmentType.Image" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsVisible="@HasItem" Type="@Type" />
+							</ItemTemplate>
+						</ListPanel>
+
+						<ListPanel DataSource="{WeaponsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" PositionYOffset="5"  MarginRight="25" LayoutImp.LayoutMethod="VerticalBottomToTop">
+							<ItemTemplate>
+								<EquipmentTypeVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="35" HorizontalAlignment="Right" MarginRight="5" MarginBottom="5" Brush="EquipmentType.Image" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsVisible="@HasItem" Type="@Type" />
+							</ItemTemplate>
+						</ListPanel>
+
+					</Children>
+				</Widget>
+
+				<NavigationScopeTargeter ScopeID="ArmyCompositionCharacterSelectionScope" ScopeParent="..\CharacterSelectionDropdown" />
+				<Standard.DropdownWithHorizontalControl Id="CharacterSelectionDropdown" HorizontalAlignment="Center" Parameter.SelectorDataSource="{CharacterSelectionGroup}" MarginTop="85" GamepadNavigationIndex="0"/>
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="12" Sprite="StdAssets\subpage_divider" MarginTop="400"/>
+
+				<!--_____Faction Selection_______-->
+				<RichTextWidget DataSource="{FactionSelectionGroup}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="420" Brush="CustomBattle.Character.Title.Text" Text="@SelectedFactionName" />
+
+				<!-- ScrollablePanel for factions -->
+				<NavigationScopeTargeter ScopeID="ArmyCompositionFactionSelectionScope" ScopeParent="..\FactionSelectionList" ScopeMovements="Horizontal" />
+				<ScrollablePanel Id="ScrollablePanelFactions" HeightSizePolicy="CoverChildren" WidthSizePolicy="StretchToParent" InnerPanel="MyClipRectFactions\FactionSelectionList" ClipRect="MyClipRectFactions" MarginLeft="30" MarginRight="30" MarginTop="480" HorizontalScrollbar="..\ScrollbarContainerFactions\Scrollbar" AutoHideScrollBars="true">
+					<Children>
+						<Widget Id="MyClipRectFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" AlphaFactor="0.75">
+							<Children>
+								<NavigatableListPanel Id="FactionSelectionList" DataSource="{FactionSelectionGroup\Factions}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" >
+									<ItemTemplate>
+										<!-- Display nothing in this native widget (transparent brush) -->
+										<MultiplayerLobbyClassFilterFactionItemButtonWidget ButtonType="Radio" IsEnabled="true" IsSelected="@IsSelected" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="52" SuggestedHeight="52" MarginLeft="9" MarginRight="9" Brush="Alliance.TransparentBrush">
+											<Children>
+												<HintWidget DataSource="{Hint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+												<!-- Display faction icon using our custom BannerWidget -->
+												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode"/>
+											</Children>
+										</MultiplayerLobbyClassFilterFactionItemButtonWidget>
+									</ItemTemplate>
+								</NavigatableListPanel>
+							</Children>
+						</Widget>
+					</Children>
+				</ScrollablePanel>
+
+				<!-- Horizontal scrollbar for factions-->
+				<Widget Id="ScrollbarContainerFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedWidth="380" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" >
+					<Children>
+						<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Horizontal" Handle="ScrollbarHandleFactions" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
+							<Children>
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+								<ImageWidget Id="ScrollbarHandleFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinWidth="50" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+
+				<!--_____Army Composition_______-->
+				<ListPanel DataSource="{CompositionGroup}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="560" LayoutImp.LayoutMethod="VerticalBottomToTop">
+					<Children>
+						<CompositionSlider MarginBottom="5" MarginLeft="20" Parameter.SliderImage="General\compass\Infantry_Light" Parameter.CompositionDataSource="{MeleeInfantryComposition}"/>
+						<CompositionSlider MarginBottom="5" MarginLeft="20" Parameter.SliderImage="General\compass\Archer_Light" Parameter.CompositionDataSource="{RangedInfantryComposition}"/>
+						<CompositionSlider MarginBottom="5" MarginLeft="20" Parameter.SliderImage="General\compass\Cavalry_Light" Parameter.CompositionDataSource="{MeleeCavalryComposition}"/>
+						<CompositionSlider MarginLeft="20" Parameter.SliderImage="General\compass\HorseArcher_Light" Parameter.CompositionDataSource="{RangedCavalryComposition}"/>
+						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Character.Title.Text" Text="@ArmySizeTitle" />
+					</Children>
+				</ListPanel>
+
+				<!--Army Size Slider-->
+				<NavigationScopeTargeter ScopeID="ArmyCompositionSizeSliderScope" ScopeParent="..\CompositionGroup" ScopeMovements="Horizontal" />
+				<Widget Id="CompositionGroup" DataSource="{CompositionGroup}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Bottom" SuggestedWidth="450" SuggestedHeight="38" MarginBottom="40" MarginLeft="80" >
+					<Children>
+
+						<SliderWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="338" SuggestedHeight="42" VerticalAlignment="Center" Filler="Filler" Handle="SliderHandle" Locked="false" MaxValueInt="@MaxArmySize" MinValueInt="@MinArmySize" ValueInt="@ArmySize" IsDisabled="false" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" IsDiscrete="true" DoNotUpdateHandleSize="true">
+							<Children>
+								<ImageWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="362" SuggestedHeight="38" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Slider.Canvas"/>
+								<ImageWidget Id="Filler" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" VerticalAlignment="Center" Brush="CustomBattle.Slider.Fill" ClipContents="true" UpdateChildrenStates="true">
+									<Children>
+										<ImageWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="345" SuggestedHeight="35" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="CustomBattle.Slider.Fill"/>
+									</Children>
+								</ImageWidget>
+								<ImageWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="400" SuggestedHeight="65" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="CustomBattle.Slider.Frame"/>
+								<ImageWidget Id="SliderHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="14" SuggestedHeight="38" HorizontalAlignment="Left" VerticalAlignment="Center" Brush="CustomBattle.Slider.Handle" DoNotAcceptEvents="true" GamepadNavigationIndex="0"/>
+							</Children>
+						</SliderWidget>
+
+						<IntegerInputTextWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="70" SuggestedHeight="30" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="CustomBattle.SliderValue.Text" IntText="@ArmySize" MaxInt="@MaxArmySize" MinInt="@MinArmySize" EnableClamp="true" ClipContents="false" IsDisabled="false" UpdateChildrenStates="true" DoNotPassEventsToChildren="true" MaxLength="4" GamepadNavigationIndex="1">
+							<Children>
+								<BrushWidget  WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="CustomBattle.SliderValue.Input" ClipContents="false"/>
+							</Children>
+						</IntegerInputTextWidget>
+
+					</Children>
+				</Widget>
+
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

@@ -18,10 +18,12 @@ namespace Alliance.Common.Core.ExtendedXML
 		public static void Init()
 		{
 			MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
-			MBObjectManager.Instance.LoadXML("CharactersExtended", false);
+			XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("CharactersExtended", true);
+			MBObjectManager.Instance.LoadXml(xmlDocument);
 
 			MBObjectManager.Instance.RegisterType<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, true, false);
-			MBObjectManager.Instance.LoadXML("ItemsExtended", false);
+			xmlDocument = MBObjectManager.GetMergedXmlForManaged("ItemsExtended", true);
+			MBObjectManager.Instance.LoadXml(xmlDocument);
 		}
 
 		// Test to auto generate XML

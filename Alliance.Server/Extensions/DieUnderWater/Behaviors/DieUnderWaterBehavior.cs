@@ -1,5 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -240,9 +240,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 
 					if (agent.MissionPeer != null)
 					{
-						GameNetwork.BeginModuleEventAsServer(agent.MissionPeer.GetNetworkPeer());
-						GameNetwork.WriteMessage(new SendNotification("You are drowning !", 0));
-						GameNetwork.EndModuleEventAsServer();
+						CommonAdminMsg.SendNotificationToPeerAsServer(agent.MissionPeer.GetNetworkPeer(), "You are drowning !");
 					}
 
 					CoreUtils.TakeDamage(agent, 10);

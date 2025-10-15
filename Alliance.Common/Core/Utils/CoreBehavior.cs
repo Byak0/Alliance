@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Alliance.Common.Core.Configuration;
+using Alliance.Common.Core.Configuration.Models;
+using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -10,10 +12,21 @@ namespace Alliance.Common.Core.Utils
 	{
 		public override MissionBehaviorType BehaviorType => MissionBehaviorType.Other;
 
+		public override void OnBehaviorInitialize()
+		{
+			base.OnBehaviorInitialize();
+
+			if (GameNetwork.IsClient) ConfigManager.Instance.SendMyConfigToServer(UserConfig.Instance);
+		}
+
 		public override void OnMissionTick(float dt)
 		{
 			if (Mission.Current != null)
 			{
+#if !SERVER
+				EntityUtils.Tick(dt);
+#endif
+
 				SpatialGrid.UpdateGrid(Mission.Current.AllAgents);
 
 #if DEBUG

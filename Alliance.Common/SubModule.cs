@@ -24,10 +24,6 @@ namespace Alliance.Common
 		{
 		}
 
-		protected override void OnApplicationTick(float dt)
-		{
-		}
-
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
 		{
 			mission.AddMissionBehavior(new BehaviorTreeMissionLogic());

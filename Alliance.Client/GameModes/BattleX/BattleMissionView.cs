@@ -1,5 +1,5 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
-using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
+using Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -21,8 +21,8 @@ namespace Alliance.Client.GameModes.BattleX
 			views.AppendList(new List<MissionView>
 			{
 				// Custom views
-				new EquipmentSelectionView(),
 				new FormationStatusView(),
+				new HUDExtensionUIHandlerView(),
 				new AgentStatusView(),
 
 				// Native battle views
@@ -34,9 +34,7 @@ namespace Alliance.Client.GameModes.BattleX
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerEndOfBattleUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(null),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler(),
 				new SpectatorCameraView()
 			});
 			return views.ToArray();

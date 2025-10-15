@@ -1,0 +1,867 @@
+<Brushes>
+  <Brush Name="Encyclopedia.SoundBrush">
+    <Layers>
+    </Layers>
+    <Styles>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="ConnectedToRoot" Audio="panels/encyclopedia_open" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Encyclopedia.Page.SoundBrush">
+    <Layers>
+    </Layers>
+    <Styles>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="ConnectedToRoot" Audio="panels/encyclopedia_page" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Encyclopedia.Frame">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\standart_popup" />
+      <BrushLayer Name="Canvas" Sprite="Encyclopedia\canvas" />
+      <BrushLayer Name="Frame" ExtendLeft="5" ExtendRight="5" ExtendTop="5" ExtendBottom="5" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Canvas" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Canvas">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\canvas" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Scroll.Shadow">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\CharacterCreation\character_creation_scroll_gradient" VerticalFlip="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.ListButton" TransitionDuration="0.1">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\list_hover" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.3" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Element">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\subpage_notable_portrait" />
+      <BrushLayer Name="Frame" ExtendLeft="11" ExtendRight="12" ExtendTop="12" ExtendBottom="12" Sprite="subpage_slick_frame_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="ConnectedToRoot" Audio="empty" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Element.Dead" BaseBrush="Encyclopedia.SubPage.Element">
+    <Layers>
+      <BrushLayer Name="Default" SaturationFactor="-100"/>
+      <BrushLayer Name="Frame" SaturationFactor="-100"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Settlement.Image">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\subpage_notable_portrait" />
+      <BrushLayer Name="Frame" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" Sprite="slick_frame_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.FilterListButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\list_hover" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.3" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaButtonCharacters" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\hero" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Scrollbar.Flat.Bed">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#573524FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.4"/>
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Scrollbar.Flat.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#573524FF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.9" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Scroll.Handle.Vertical">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_thin_vertical_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Scroll.Handle.Horizontal">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="slider_thin_horizontal_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.List.Collapse">
+    <Layers>
+      <BrushLayer Name="Collapsed" Sprite="list_closed_divider_9" IsHidden="true" AlphaFactor="0.8" />
+      <BrushLayer Name="Expanded" Sprite="list_open_divider_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Collapsed">
+        <BrushLayer Name="Collapsed" IsHidden="false" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Expanded">
+        <BrushLayer Name="Expanded" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaButtonPlaces" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\settlements" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Settlement.TrackButton">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\Nameplates\hover_ring" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="checkbox" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="EncyclopediaButtonKingdoms" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\faction" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Faction.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\banner" OverlayXOffset="0" OverlayYOffset="0" />
+    </Layers>
+  </Brush>
+  <Brush Name="Encyclopedia.Clan.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\banner" OverlayXOffset="0" OverlayYOffset="0" />
+    </Layers>
+  </Brush>
+  <Brush Name="Encyclopedia.Clan.SubElement.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.35" />
+    </Layers>
+  </Brush>
+  <Brush Name="Encyclopedia.Clan.SubElement.Banner.Big">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.35" />
+    </Layers>
+  </Brush>
+  <Brush Name="EncyclopediaButtonTroops" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\units" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaButtonConcepts" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\journal" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.70" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaClan" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\clan" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.70" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.0" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.3" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaConcept" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\concept" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaKingdom" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\kingdom" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaHero" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\hero" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaSettlement" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\settlements" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaUnit" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\units" Color="#FFFFFFFF" />
+      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Frame" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Frame" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Search.TextBox" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="DefaultHighlightableTextBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" />
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextColorFactor="0.9" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="22">
+        <BrushLayer Name="Default" Color="#CCCCCC00" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#CCCCCC11" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#CCCCCC11" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" Color="#CCCCCC22" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" Color="#00000022" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.CharacterTree.Line">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\troop_tree_straight" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Left">
+        <BrushLayer Name="Default" Sprite="troop_tree_side_9" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Right">
+        <BrushLayer Name="Default" Sprite="troop_tree_side_9" />
+      </Style>
+      <Style Name="Straight">
+        <BrushLayer Name="Default" Sprite="Encyclopedia\troop_tree_straight" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.CharacterTree.Line.Alternative">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\troop_tree_straight" HueFactor="-30" ColorFactor="0.8" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Left">
+        <BrushLayer Name="Default" Sprite="troop_tree_side_9" HorizontalFlip="true" />
+      </Style>
+      <Style Name="Right">
+        <BrushLayer Name="Default" Sprite="troop_tree_side_9" />
+      </Style>
+      <Style Name="Straight">
+        <BrushLayer Name="Default" Sprite="Encyclopedia\troop_tree_straight" />
+      </Style>
+    </Styles>
+  </Brush>
+	<Brush Name="Encyclopedia.Previous.Page.Navigation.Button">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="StdAssets\arrow_large_pointing_left" Color="#FFFFFFFF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" ColorFactor="1.0" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" ColorFactor="1.3" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" ColorFactor="0.85" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.8" />
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Encyclopedia.Next.Page.Navigation.Button">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="StdAssets\arrow_large_pointing_left" Color="#FFFFFFFF" HorizontalFlip="true"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" ColorFactor="1.0" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Default" ColorFactor="1.3" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Default" ColorFactor="0.85" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" ColorFactor="0.8" AlphaFactor="0.8" />
+			</Style>
+		</Styles>
+	</Brush>
+  <Brush Name="Encyclopedia.PerkInfo.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\upgrade_perk_missing_icon" Color="#F4E1C4FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default" >
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered" >
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>      
+    </Styles>
+  </Brush>    
+  <Brush Name="Encyclopedia.Character.Smoke">
+    <Layers>
+      <BrushLayer Name="Default"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Encyclopedia\smoke" Color="#000000FF" AlphaFactor="0.6" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Character.Smoke2">
+    <Layers>
+      <BrushLayer Name="Default"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="Encyclopedia\smoke2" Color="#000000FF" AlphaFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.TroopTypeIcon.Brush">
+    <Layers>
+      <BrushLayer Name="Default"  />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Color="#A7936CFF" AlphaFactor="1" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Error.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DB0D0DFF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaHome.Type.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="36" />
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaList.FilterType.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#A99A82FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaList.Filter.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="EncyclopediaList.Item.InfoUnavailable.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextAlphaFactor="0.6" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.QuickNavigation.Button.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" TextColorFactor="1"/>
+      <Style Name="Disabled" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" TextColorFactor="0.6"/>
+      <Style Name="Hovered" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" TextColorFactor="1.2"/>
+      <Style Name="Pressed" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" TextColorFactor="0.7"/>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.EquipmentSet.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="22"/>
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Skill.Text" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#00000000" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaSearchResult.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+    </Styles>
+  </Brush>
+  <Brush Name="EncyclopediaNavBar.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="30" />
+      <Style Name="Link" FontColor="#6B3C2FFF" TextGlowColor="#111111FF" />
+      <Style Name="Link.MouseOver" FontColor="#AF624DFF" TextGlowColor="#111111FF" />
+      <Style Name="Link.MouseDown" FontColor="#75493EFF" TextGlowColor="#111111FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Header.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="38" />
+      <Style Name="Hovered" TextAlphaFactor="1" />
+      <Style Name="Pressed" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" TextAlphaFactor="0.1" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Element.Properties.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.History.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Element.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="16" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Info.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.SubPage.Hero.Deceased.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C21919FF" TextGlowColor="#000000FF" TextOutlineColor="#00000000" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.01" FontSize="70" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Encyclopedia.SubPage.Title.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+      <Style Name="Hovered" TextAlphaFactor="1" />
+      <Style Name="Pressed" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" TextAlphaFactor="0.1" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.TrackInfoText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="16" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Settlement.Properties" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Bottom">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Hero.RankText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Bottom">
+    <Styles>
+      <Style Name="Default" FontColor="#DFA84FCC" TextAlphaFactor="0.8" TextOutlineAmount="0.001" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Stat.DefinitionText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Bottom">
+    <Styles>
+      <Style Name="Default" FontColor="#EED4A9CC" TextAlphaFactor="0.8" TextOutlineAmount="0.001" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="0" FontSize="22" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.Stat.ValueText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Bottom">
+    <Styles>
+      <Style Name="Default" FontColor="#DFA84FCC" TextAlphaFactor="0.8" TextOutlineAmount="0.001" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="0" FontSize="20" />
+    </Styles>
+  </Brush>
+  <Brush Name="Encyclopedia.TroopTypeIcon.Text" Font="FiraSansExtraCondensed-Regular" >
+    <Styles>
+      <Style Name="Default" FontColor="#A7936CFF" TextAlphaFactor="0.8" TextOutlineAmount="0.001" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.Bookmark.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Encyclopedia\star_outline" IsHidden="true" Color="#FEC157FF"/>
+      <BrushLayer Name="Selected" Sprite="Encyclopedia\star_without_glow" IsHidden="true" Color="#FEC157FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default" >
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="0.7"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" IsHidden="false" AlphaFactor="0.5" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.SortArrow">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\expanded" IsHidden="true" />
+      <BrushLayer Name="Ascending" Sprite="StdAssets\expanded" VerticalFlip="true" IsHidden="true" />
+      <BrushLayer Name="Descending" Sprite="StdAssets\expanded" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Ascending">
+        <BrushLayer Name="Ascending" IsHidden="false" />
+      </Style>
+      <Style Name="Descending">
+        <BrushLayer Name="Descending" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.Dropdown.Arrow">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\expanded" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.ItemList.NameTitle" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Top" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+      <Style Name="Disabled" TextAlphaFactor="0.6" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.ItemList.SortedTitle" Font="FiraSansExtraCondensed-Regular" TextVerticalAlignment="Top" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#D69846FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="32" />
+      <Style Name="Hovered" TextAlphaFactor="1" />
+      <Style Name="Pressed" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" TextAlphaFactor="0.6" />
+    </Styles>
+  </Brush>
+
+</Brushes>

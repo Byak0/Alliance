@@ -1,0 +1,1024 @@
+<Brushes>
+  <Brush Name="Kingdom.TornBanner.Big">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_new" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.TornBanner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_new" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.OtherWars.Faction.Small.Banner">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\banner_tuple" OverlayXOffset="0" OverlayYOffset="-3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Header.Policies">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\header_policies" ExtendTop="21" ExtendRight="13" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\kingdom_tuple" Color="#FFEBC1FF" ColorFactor="1.3"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.9" SaturationFactor="-70"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Policy.ActionItem.Tuple" BaseBrush="Kingdom.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\kingdom_tuple" ColorFactor="1"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Policy.Other.Tuple" BaseBrush="Kingdom.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\kingdom_tuple" ColorFactor="1"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Policy.Active.Tuple" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\policy_active_tuple_default" ExtendBottom="2" ExtendTop="2" ColorFactor="1"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5"  />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.AtWar.Tuple" BaseBrush="Kingdom.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Diplomacy\wars_at_war_tuple" ColorFactor="1"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.AtPeace.Tuple" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Diplomacy\wars_at_peace_tuple" ColorFactor="1"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.6"  />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.CompareStats.Button" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Diplomacy\stats_compare_icon" Color="#ECC79BFF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.4"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.7"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.5"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.WarLog.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\history_button" ExtendLeft="15" ExtendRight="15" ExtendTop="15" ExtendBottom="15" Color="#ECC79BFF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.6"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="0.9"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.5"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="1.0"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.3"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.BehaviorSelection">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="role_selection_dropdown_canvas_9" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.7" IsHidden="false" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" IsHidden="false" AlphaFactor="0" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="dropdown" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.Scrollbar.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#ECC79BFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="0.8" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Policy.Toggle.Tuple" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\policy_collapser_default" ExtendBottom="8" ExtendTop="3" SaturationFactor="20" HueFactor="-10"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"  />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" Color="#FFC349FF" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.Tuple" TransitionDuration="0.2">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Decision\option" />
+      <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\option_selected" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.8"  />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.0"  />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="Selected" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.6" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="reign/vote"/>
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.Abstain.Tuple" TransitionDuration="0.2">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Decision\option"  />
+      <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\option_selected" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true" ColorFactor="1.2" />
+        <BrushLayer Name="Selected" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.8" SaturationFactor="-50" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="reign/vote"/>
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.DoneButton" FontColor="#FAF4DEFF">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="General\Button\main_button_done" ExtendLeft="22" ExtendTop="22" ExtendRight="22" ExtendBottom="22" />
+      <BrushLayer Name="HoverLayer" Sprite="General\Button\main_button_done_hover" ExtendLeft="22" ExtendTop="22" ExtendRight="22" ExtendBottom="22" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.0" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="HoverLayer" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.8" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" SaturationFactor="-50" ValueFactor="-50" />
+        <BrushLayer Name="HoverLayer" IsHidden="true" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="reign/decision"/>
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+
+  <Brush Name="Kingdom.CreateArmy.Tuple" BaseBrush="Kingdom.Item.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\kingdom_tuple" Color="#FFD1BBFF" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.VoteStrength1.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Decision\vote_strenght_1_default" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\vote_strenght_1_selected" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" Color="#4E1503FF" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#77290FFF" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#270800FF" IsHidden="false"/>      
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1.2" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.8" Color="#89726AFF" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoteStrength2.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Decision\vote_strenght_2_default" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\vote_strenght_2_selected" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer AlphaFactor="0.7" Name="Default" Color="#4E1503FF" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#77290FFF" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#270800FF" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1.2" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.8" Color="#89726AFF" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoteStrengthInfluence.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\influence_icon_small" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="-150" AlphaFactor="0.6" Color="#89726AFF" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoteStrength3.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Decision\vote_strenght_3_default" IsHidden="true"/>
+      <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\vote_strenght_3_selected" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer AlphaFactor="0.7" Name="Default" Color="#4E1503FF" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" Color="#77290FFF" ColorFactor="1.5" IsHidden="false"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" Color="#270800FF" IsHidden="false"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Selected" ColorFactor="1.2" IsHidden="false"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.8" Color="#89726AFF" IsHidden="false"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoterStrength.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_strength_button" />
+      <BrushLayer Name="Selected" Sprite="SPKingdom\voter_strength_button_pressed" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.75" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="1.2" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+        <BrushLayer Name="Selected" AlphaFactor="1" HueFactor="-10" SaturationFactor="40" ColorFactor="1.4" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="1" SaturationFactor="-65" ValueFactor="-25" />
+        <BrushLayer Name="Selected" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoterStrength.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_strength_button" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.75" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" SaturationFactor="-65" ValueFactor="-25" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.VoterStrength.Icon.1" BaseBrush="Kingdom.VoterStrength.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_strength1" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.VoterStrength.Icon.2" BaseBrush="Kingdom.VoterStrength.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_strength2" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.VoterStrength.Icon.3" BaseBrush="Kingdom.VoterStrength.Icon.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_strength3" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Collapser.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\kingdom_collapser" ExtendLeft="19" ExtendBottom="21" ExtendTop="19" ExtendRight="16" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Sort.Base" TransitionDuration="0">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\header_fiefs_1" />
+    </Layers>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="sort" />
+      </EventSounds>
+    </SoundProperties>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Fiefs.Sort.1" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Fiefs\header_fiefs_1" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Fiefs.Sort.2" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Fiefs\header_fiefs_2" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Fiefs.Sort.3" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Fiefs\header_fiefs_3" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Fiefs.Sort.4" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Fiefs\header_fiefs_4" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Fiefs.Sort.5" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Fiefs\header_fiefs_5" ExtendTop="21" ExtendBottom="20" ExtendRight="13"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.1" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_1" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.2" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_2" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.3" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_3" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.4" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_4" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.5" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_5" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Clans.Sort.6" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Clans\header_clans_6" ExtendTop="21" ExtendBottom="20" ExtendRight="13"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Armies.Sort.1" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Armies\header_armies_1" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Armies.Sort.2" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Armies\header_armies_2" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Armies.Sort.3" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Armies\header_armies_3" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Armies.Sort.4" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Armies\header_armies_4" ExtendTop="21" ExtendBottom="20"/>
+    </Layers>
+  </Brush>
+  <Brush Name="Kingdom.Armies.Sort.5" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\Armies\header_armies_5" ExtendTop="21" ExtendBottom="20" ExtendRight="13"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Armies.Sort.6" BaseBrush="Kingdom.Sort.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\scroll_header"  ExtendRight="3" ExtendTop="5" ExtendLeft="3" ExtendBottom="4"/>
+      <BrushLayer Name="Disabled" Sprite="SPKingdom\scroll_header" ExtendRight="3" ExtendTop="5" ExtendLeft="3" ExtendBottom="4"/>
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Clan.Type">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\ClanTypes\leader_clan"/>
+    </Layers>
+    <Styles>
+      <Style Name="Leader">
+        <BrushLayer Name="Default" Sprite="SPKingdom\ClanTypes\leader_clan"/>
+      </Style>
+      <Style Name="Mercenary">
+        <BrushLayer Name="Default" Sprite="SPKingdom\ClanTypes\mercenary_clan" />
+      </Style>
+      <Style Name="Normal">
+        <BrushLayer Name="Default" Sprite="SPKingdom\ClanTypes\normal_clan" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Divider.White" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="GradientDivider_9" AlphaFactor="0.4" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Voter.PercentageSeperator">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\voter_progress_bar_change_divider" ExtendLeft="4" ExtendBottom="5" ExtendTop="4" ExtendRight="5" />
+    </Layers>
+    <Styles>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Voter.PercentageIndicator">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="progress_bar_indicator_9" ExtendLeft="6" ExtendBottom="5" ExtendTop="5" ExtendRight="6" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Kingdom.Name.Edit.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\tabbar_long_namebox" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.6" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Name.Edit.Icon">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Clan\edit_name_icon" Color="#C6AC8DFF" IsHidden="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" IsHidden="false"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.4" IsHidden="false" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" IsHidden="false" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Kingdom.GeneralTupleValues.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
+      <Style Name="Hovered" FontColor="#FFD77CFF" />
+      <Style Name="Pressed" FontColor="#D8BA77FF" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Empty.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF"  TextAlphaFactor="0.0" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.GeneralButtons.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
+      <Style Name="Hovered" FontColor="#FFD77CFF" />
+      <Style Name="Pressed" FontColor="#D8BA77FF" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" TextAlphaFactor="0.8" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.SortButtons.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="20" />
+      <Style Name="Hovered" FontColor="#FFC750FF" />
+      <Style Name="Pressed" FontColor="#FFC750FF" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Support.Fill">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\progress_bar_fill" HorizontalFlip="true"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Support.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPKingdom\progress_bar_indicator" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Scrollbar.Handle">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#ECC79BFF" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.7" AlphaFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.9" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.GeneralTitle.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="42" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.PoliciesCollapserTitle.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DDC3A1FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="0" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.CurrentArmyValues.Text" Font="FiraSansExtraCondensed-Light" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.ParagraphSmall.Text" Font="FiraSansExtraCondensed-Light" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Tribute.Text.Left" Font="FiraSansExtraCondensed-Light" TextVerticalAlignment="Center" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Tribute.Text.Right" Font="FiraSansExtraCondensed-Light" TextVerticalAlignment="Center" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.TitleSmall.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#ECC79BFF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.3" TextShadowOffset="0" TextShadowAngle="60" FontSize="28"/>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.TitleMedium.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#ECC79BFF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0.3" TextShadowOffset="0" TextShadowAngle="60" FontSize="42" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.ArmyManage.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.PolicyDescription.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Policy.Effect.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
+      <Style Name="Hovered" FontColor="#EDC995FF" />
+      <Style Name="Pressed" FontColor="#EDC995FF" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.PoliciesItem.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E1E1E1FF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="28" />
+      <Style Name="Hovered" FontColor="#EDC995FF" />
+      <Style Name="Pressed" FontColor="#EDC995FF" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Policies.Action.Item.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4BC97FF" TextAlphaFactor="0.8" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="28" />
+      <Style Name="Hovered" FontColor="#F4BC97FF" TextAlphaFactor="1"/>
+      <Style Name="Pressed" FontColor="#F4BC97FF" TextAlphaFactor="0.7" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" TextAlphaFactor="0.7"/>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Fiefs.Village.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Fiefs.Owner.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F3DBBCFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.Title" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.NameTitle.Text" Font="Galahad">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0.1" TextShadowOffset="1" TextShadowAngle="60" FontSize="36" />
+      <Style Name="Hovered" FontColor="#C6AC8DFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0.1" TextShadowOffset="1" TextShadowAngle="60" TextColorFactor="1.4" FontSize="36" />
+      <Style Name="Pressed" FontColor="#C6AC8DFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0.1" TextShadowOffset="1" TextShadowAngle="60" TextColorFactor="0.8" FontSize="36" />
+      <Style Name="Disabled" FontColor="#C6AC8DFF" TextOutlineAmount="0.5" TextGlowRadius="0" TextBlur="0.1" TextShadowOffset="1" TextShadowAngle="60" TextColorFactor="1" FontSize="36"/>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.TupleName.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#4E1503FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="35" />
+      <Style Name="Selected" FontColor="#4E1503FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="35" />
+      <Style Name="Disabled" FontColor="#4E1503FF" TextColorFactor="0.8" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="35" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.TupleDescription.Text" Font="Galahad" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#4E1503FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="28" />
+      <Style Name="Selected" FontColor="#4E1503FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="35" />
+      <Style Name="Disabled" FontColor="#4E1503FF" TextColorFactor="0.8" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="35" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.Totals.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E2CEA8FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Voter.Abstain.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#DBBB8DFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="26" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.Stat.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4CE87FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="26" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.Stat.Value.Text.Left" Font="Galahad_Numbers_Bold" TextHorizontalAlignment="Right">
+    <Styles>
+      <Style Name="Default" FontColor="#F7CB8AFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="28" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Wars.Stat.Value.Text.Right" Font="Galahad_Numbers_Bold" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F7CB8AFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="28" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Army.Location.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" BaseBrush="Info.Text">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F6CC89FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" AlphaFactor="0.7"/>
+      <Style Name="Hovered" FontColor="#F6CC89FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" AlphaFactor="1"/>
+      <Style Name="Pressed" FontColor="#F6CC89FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" AlphaFactor="0.5"/>
+      <Style Name="Selected" FontColor="#F6CC89FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" AlphaFactor="1"/>
+      <Style Name="Disabled" FontColor="#F6CC89FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" AlphaFactor="0.3"/>
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.Voter.SupportAmount.Text" Font="Galahad_Numbers_Bold" TextHorizontalAlignment="Center"  FontSize="22">
+    <Styles>
+      <Style Name="Default" FontColor="#4E1503FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.0" TextGlowRadius="0.0" TextBlur="0.0" TextShadowOffset="0" TextShadowAngle="60" />
+      <Style Name="Hovered" FontColor="#77290FFF" TextColorFactor="1.2" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.0" TextGlowRadius="0.0" TextBlur="0.0" TextShadowOffset="0" TextShadowAngle="60"  />
+      <Style Name="Pressed" FontColor="#270800FF" TextColorFactor="1.2" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.0" TextGlowRadius="0.0" TextBlur="0.0" TextShadowOffset="0" TextShadowAngle="60"  />
+      <Style Name="Selected" FontColor="#FCA060FF"  TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.1" TextGlowRadius="0.1" TextBlur="0.3" TextShadowOffset="0" TextShadowAngle="60"  />
+      <Style Name="Disabled" FontColor="#89726AFF" TextAlphaFactor="0.8"  TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.0" TextGlowRadius="0.0" TextBlur="0.0" TextShadowOffset="0" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.DecisionTitleBig.Text" Font="Galahad" FontSize="38" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineColor="#251D13FF" TextOutlineAmount="0.01" TextGlowRadius="0.1" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="0" />
+    </Styles>
+  </Brush>
+  <Brush Name="Kingdom.DecisionTitleMedium.Text" Font="Galahad" FontSize="28" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#C6AC8DFF" TextOutlineColor="#251D13FF" TextOutlineAmount="0.01" TextGlowRadius="0.1" TextBlur="0.5" TextShadowOffset="0" TextShadowAngle="0" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.DecisionParagraph.Text" Font="FiraSansExtraCondensed-Regular" FontSize="20" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.DecisionParagraph.Link.Text" Font="FiraSansExtraCondensed-Regular" FontSize="20" TextHorizontalAlignment="Center" >
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+
+
+  <Brush Name="Kingdom.DecisionParagraph.SettlementLink.Text" Font="FiraSansExtraCondensed-Regular" FontSize="20" TextHorizontalAlignment="Center" TextVerticalAlignment="Top" >
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Decision.RelationChange.Text" Font="FiraSansExtraCondensed-Regular" FontSize="20" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+      <Style Name="IncreaseStyle" FontColor="#ADAD49FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+      <Style Name="IncreaseStyle.MouseOver" FontColor="#ADAD49FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+      <Style Name="DecreaseStyle" FontColor="#BD1D1DFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+      <Style Name="DecreaseStyle.MouseOver" FontColor="#BD1D1DFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.DecisionParagraph2.Text" Font="FiraSansExtraCondensed-Regular" FontSize="20" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#D9A44FFF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Kingdom.Decision.Faction.Type.Image">
+    <Layers>
+      <BrushLayer Name="Default" IsHidden="true" />
+      <BrushLayer Name="Aserai" Sprite="aserai_keep" IsHidden="true" />
+      <BrushLayer Name="Sturgia" Sprite="sturgia_keep" IsHidden="true" />
+      <BrushLayer Name="Vlandia" Sprite="vlandia_keep" IsHidden="true" />
+      <BrushLayer Name="Battania" Sprite="battania_keep" IsHidden="true" />
+      <BrushLayer Name="Empire" Sprite="empire_keep" IsHidden="true" />
+      <BrushLayer Name="Khuzait" Sprite="khuzait_keep" IsHidden="true" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" IsHidden="true" />
+      </Style>
+      <Style Name="Aserai">
+        <BrushLayer Name="Aserai" IsHidden="false" />
+      </Style>
+      <Style Name="Sturgia">
+        <BrushLayer Name="Sturgia" IsHidden="false" />
+      </Style>
+      <Style Name="Vlandia">
+        <BrushLayer Name="Vlandia" IsHidden="false" />
+      </Style>
+      <Style Name="Battania">
+        <BrushLayer Name="Battania" IsHidden="false" />
+      </Style>
+      <Style Name="Empire">
+        <BrushLayer Name="Empire" IsHidden="false" />
+      </Style>
+      <Style Name="Khuzait">
+        <BrushLayer Name="Khuzait" IsHidden="false" />
+      </Style>
+    </Styles>
+  </Brush>
+</Brushes>

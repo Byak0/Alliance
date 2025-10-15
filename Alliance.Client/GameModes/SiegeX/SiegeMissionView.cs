@@ -1,6 +1,4 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
-using Alliance.Client.Extensions.ExNativeUI.LobbyEquipment.Views;
-using Alliance.Client.Extensions.ExNativeUI.MissionMainAgentEquipmentController.MissionViews;
 using Alliance.Client.Extensions.FormationEnforcer.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -22,7 +20,6 @@ namespace Alliance.Client.GameModes.SiegeX
 			views.AppendList(new List<MissionView>
 			{
                 // Custom views
-                new EquipmentSelectionView(),
 				new FormationStatusView(),
 				new AgentStatusView(),
 
@@ -33,8 +30,7 @@ namespace Alliance.Client.GameModes.SiegeX
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionHUDExtensionUIHandler(),
-				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler(),
-				MultiplayerViewCreator.CreateMissionFlagMarkerUIHandler()
+				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});
 			return views.ToArray();
 		}

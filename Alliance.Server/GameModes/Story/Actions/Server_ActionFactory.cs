@@ -39,6 +39,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			return new Server_DamageAgentInZoneAction();
 		}
 
+		public override MortalityStateZoneAction MortalityStateZoneAction()
+		{
+			return new Server_MortalityStateZoneAction();
+		}
+
 		public override ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
 		{
 			return new Server_ShowOrHideEntitiesAction();
@@ -47,6 +52,16 @@ namespace Alliance.Server.GameModes.Story.Actions
 		public override TeleportAgentAction TeleportAgentAction()
 		{
 			return new Server_TeleportAgentAction();
+		}
+
+		public override VOIPRangeInZoneAction VOIPRangeInZoneAction()
+		{
+			return new Server_VOIPRangeInZoneAction();
+		}
+
+		public override ZEventAction ZEventAction()
+		{
+			return new Server_ZEventAction();
 		}
 	}
 }

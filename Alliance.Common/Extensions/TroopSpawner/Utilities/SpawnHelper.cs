@@ -1,7 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.ClassLimiter.Models;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Patch.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,6 +12,8 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
+using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Core.Configuration.Models.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MPPerkObject;
 using Debug = TaleWorlds.Library.Debug;
@@ -19,16 +22,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 {
 	public static class SpawnHelper
 	{
-		public enum Difficulty
-		{
-			PlayerChoice = -1,
-			Easy = 0,
-			Normal = 1,
-			Hard = 2,
-			VeryHard = 3,
-			Bannerlord = 4
-		}
-
 		public static int TotalBots = 0;
 		public const int MaxBotsPerSpawn = 200;
 
@@ -40,7 +33,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// <summary>
 		/// Use this method if you want to spawn a bot from multi-threaded/async code.
 		/// </summary>
-		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static Task<Agent> SpawnBotAsync(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			var spawnRequest = new SpawnRequest
 			{
@@ -78,7 +71,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			}
 		}
 
-		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static bool SpawnBot(Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			return SpawnBot(out _, team, culture, character, position, onSpawnPerkHandler, selectedFormation, botDifficulty, mortalityState, healthMultiplier);
 		}
@@ -88,7 +81,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		/// <param name="agent">Return the agent instance after spawn.</param>
 		/// <returns>True if spawn successful, false otherwise.</returns>
-		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = 1f, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
+		public static bool SpawnBot(out Agent agent, Team team, BasicCultureObject culture, BasicCharacterObject character, MatrixFrame? position = null, MPOnSpawnPerkHandler onSpawnPerkHandler = null, int selectedFormation = -1, float botDifficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f)
 		{
 			agent = null;
 			try
@@ -122,6 +115,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 						equipment[item.Item1] = item.Item2;
 					}
 				}
+
+				// Check if custom culture is provided, otherwise use the one from multiplayer options
+				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				AgentBuildData agentBuildData2 = agentBuildData.InitialDirection(initialDirection).TroopOrigin(new BasicBattleAgentOrigin(character))
@@ -159,6 +155,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent = Mission.Current.SpawnAgent(agentBuildData2, false);
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
+
+				// Calculate health limit
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
@@ -174,8 +172,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 
 				agent.AIStateFlags |= Agent.AIStateFlag.Alarmed;
-				AgentsInfoModel.Instance.AddAgentInfo(agent, botDifficulty, synchronize: true);
-				if (hasMount) AgentsInfoModel.Instance.AddAgentInfo(agent.MountAgent, botDifficulty, synchronize: true);
+
+				// Update Alliance custom agent properties
+				agent.AddAgentInfo(difficulty: botDifficulty, synchronize: true);
+				if (hasMount) agent.MountAgent.AddAgentInfo(difficulty: botDifficulty, synchronize: true);
+
 				agent.UpdateAgentProperties();
 				agent.WieldInitialWeapons();
 
@@ -190,7 +191,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			}
 		}
 
-		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, BasicCultureObject customCulture = null)
+		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float difficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f, BasicCultureObject customCulture = null)
 		{
 			try
 			{
@@ -212,12 +213,15 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				}
 
 				BasicCultureObject culture = customCulture != null ? customCulture : component.Culture;
+				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+
 				uint color = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
 				uint color2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
 				uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
 				uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-				Banner banner = component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner;
+				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, culture.BackgroundColor1, culture.ForegroundColor1);
+
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
 				AgentBuildData agentBuildData = new AgentBuildData(character)
@@ -227,7 +231,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Formation(form)
 					.ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
 					.ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
-					.Banner(component.Team == Mission.Current.AttackerTeam ? Mission.Current.AttackerTeam.Banner : Mission.Current.DefenderTeam.Banner);
+					.Banner(banner);
 				agentBuildData.MissionPeer(component);
 				bool randomEquipement = true;
 				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
@@ -281,16 +285,20 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				Agent agent = Mission.Current.SpawnAgent(agentBuildData, spawnFromAgentVisuals: true);
 				agent.AddComponent(new MPPerksAgentComponent(agent));
 				agent.MountAgent?.UpdateAgentProperties();
+
+				// Calculate health limit
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
 				agent.HealthLimit += bonusHealth;
 				// Additional health for officers
-				if (networkPeer.IsOfficer())
-				{
-					agent.HealthLimit *= Config.Instance.OfficerHPMultip;
-				}
+				if (networkPeer.IsOfficer()) agent.HealthLimit *= Config.Instance.OfficerHPMultip;
+				agent.HealthLimit *= healthMultiplier;
 				agent.Health = agent.HealthLimit;
+
+				// Update Alliance custom agent properties
+				agent.AddAgentInfo(difficulty: difficulty, synchronize: true);
+				agent.MountAgent?.AddAgentInfo(difficulty: difficulty, synchronize: true);
 
 				agent.WieldInitialWeapons();
 
@@ -428,28 +436,21 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{
-					// Get a random hero from the available classes
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.HeroCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.HeroCharacter]).GetRandomElementInefficiently()?.HeroCharacter;
-					// If no hero is available, try again without class limitation
-					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().HeroCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().HeroCharacter;
 				}
 				// Every 50 agents, spawn a banner bearer
 				else if (nbAgents % 50 == 0)
 				{
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => troop.BannerBearerCharacter != null && ClassLimiterModel.Instance.CharactersAvailable[troop.BannerBearerCharacter]).GetRandomElementInefficiently()?.BannerBearerCharacter;
-					bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().BannerBearerCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().BannerBearerCharacter;
 				}
+				// Else spawn a random troop
 				else
 				{
-					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().Where(troop => ClassLimiterModel.Instance.CharactersAvailable[troop.TroopCharacter]).GetRandomElementInefficiently()?.TroopCharacter;
+					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 				}
-
-				// If no troop is available, try again without class limitation
-				bco ??= MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 
 				goldToUse -= GetTroopCost(bco, difficulty);
 				agentsToSpawn.Add(bco);
-				ClassLimiterModel.Instance.ReserveCharacterSlot(bco);
 				nbAgents++;
 			}
 
@@ -489,6 +490,26 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
 		{
 			MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
+			int i = 0;
+			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
+			{
+				IReadOnlyPerkObject selectedPerk = perkList.ElementAtOrValue(indices.ElementAtOrValue(i, 0), null);
+				if (selectedPerk != null)
+				{
+					selectedPerks.Add(selectedPerk);
+				}
+				i++;
+			}
+			return selectedPerks;
+		}
+
+		/// <summary>
+		/// Get corresponding perks from a hero class and a list of perks indices.
+		/// </summary>
+		public static List<IReadOnlyPerkObject> GetPerks(MultiplayerClassDivisions.MPHeroClass heroClass, List<int> indices)
+		{
 			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;

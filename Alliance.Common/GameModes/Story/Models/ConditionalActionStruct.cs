@@ -1,6 +1,6 @@
-﻿using Alliance.Common.GameModes.Story.Actions;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
-using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using TaleWorlds.Engine;
@@ -13,25 +13,25 @@ namespace Alliance.Common.GameModes.Story.Models
 	public class ConditionalActionStruct
 	{
 		public string Name = "Conditional Action";
-		[ScenarioEditor(label: "Conditions", tooltip: "If multiple conditions are set, they must all be true to trigger the actions.")]
+		[ConfigProperty(label: "Conditions", tooltip: "If multiple conditions are set, they must all be true to trigger the actions.")]
 		public List<Condition> Conditions = new List<Condition>();
-		[ScenarioEditor(label: "Actions", tooltip: "Actions triggered when conditions are met.")]
+		[ConfigProperty(label: "Actions", tooltip: "Actions triggered when conditions are met.")]
 		public List<ActionBase> Actions = new List<ActionBase>();
-		[ScenarioEditor(label: "Enabled", tooltip: "Enable or disable the conditional action.")]
+		[ConfigProperty(label: "Enabled", tooltip: "Enable or disable the conditional action.")]
 		public bool Enabled = true;
-		[ScenarioEditor(label: "One Time Only", tooltip: "If true, the conditional action will only trigger once.")]
+		[ConfigProperty(label: "One Time Only", tooltip: "If true, the conditional action will only trigger once.")]
 		public bool OneTimeOnly = false;
-		[ScenarioEditor(label: "Refresh Delay", tooltip: "Delay between condition checks in seconds. Longer delays are preferable for performance.")]
+		[ConfigProperty(label: "Refresh Delay", tooltip: "Delay between condition checks in seconds. Longer delays are preferable for performance.")]
 		public float RefreshDelay = 1f;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
 		internal float _refreshTimer = 0f;
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
 		internal bool _enabled = false;
 
-		[ScenarioEditor(isEditable: false)]
+		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
 		public GameEntity ParentEntity = null;
 

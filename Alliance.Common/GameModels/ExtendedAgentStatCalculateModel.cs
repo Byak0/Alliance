@@ -1,10 +1,14 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using System;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using static TaleWorlds.MountAndBlade.MPPerkObject;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.GameModels
@@ -447,7 +451,18 @@ namespace Alliance.Common.GameModels
 			MissionPeer missionPeer2 = missionPeer ?? owningMissionPeer;
 			if (missionPeer2 != null)
 			{
-				MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler = MPPerkObject.GetOnSpawnPerkHandler(missionPeer2);
+				MPPerkObject.MPOnSpawnPerkHandler onSpawnPerkHandler;
+
+				List<int> selectedPerks = PlayerSpawnMenu.Instance.GetPlayerAssignment(missionPeer2.GetNetworkPeer()).Perks;
+				if (selectedPerks != null)
+				{
+					onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(heroClass, selectedPerks));
+				}
+				else
+				{
+					onSpawnPerkHandler = GetOnSpawnPerkHandler(missionPeer2);
+				}
+
 				bool isPlayer = missionPeer != null;
 				for (int i = 0; i < 55; i++)
 				{

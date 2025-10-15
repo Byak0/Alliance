@@ -66,6 +66,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new DamageAgentInZoneAction();
 		}
 
+		public virtual MortalityStateZoneAction MortalityStateZoneAction()
+		{
+			return new MortalityStateZoneAction();
+		}
+
+
 		public virtual ShowOrHideEntitiesAction ShowOrHideEntitiesAction()
 		{
 			return new ShowOrHideEntitiesAction();
@@ -76,9 +82,19 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new TeleportAgentAction();
 		}
 
+		public virtual VOIPRangeInZoneAction VOIPRangeInZoneAction()
+		{
+			return new VOIPRangeInZoneAction();
+		}
+
 		public virtual PlaySoundAction PlaySoundAction()
 		{
 			return new PlaySoundAction();
+		}
+
+		public virtual ZEventAction ZEventAction()
+		{
+			return new ZEventAction();
 		}
 
 		// Add more actions here, aswell as in the Client and Server Factories for specific behaviors.

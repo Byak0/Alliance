@@ -3,7 +3,7 @@ using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.Audio.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.FakeArmy.NetworkMessages.FromClient;
-using Alliance.Common.Extensions.ToggleEntities.NetworkMessages.FromClient;
+using Alliance.Common.Extensions.ToggleEntities.NetworkMessages;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromClient;
 using System.Collections.Generic;
 using System.Linq;
@@ -261,9 +261,7 @@ namespace Alliance.Client.Core.Console
 			}
 			string entities_tag = args[0];
 
-			GameNetwork.BeginModuleEventAsClient();
-			GameNetwork.WriteMessage(new RequestToggleEntities(entities_tag, show));
-			GameNetwork.EndModuleEventAsClient();
+			ToggleEntitiesMsg.RequestToggleEntities(entities_tag, show);
 
 			return $"Requested server to {(show ? "show" : "hide")} entities with tag {entities_tag}";
 		}
