@@ -15,6 +15,9 @@ namespace Alliance.Common.Core.Utils
 		public static readonly CompressionInfo.Float DefaultFloatValueCompressionInfo = new(0f, 10, 0.01f);
 		public static readonly CompressionInfo.Integer LanguageCompressionInfo = new(0, LocalizationHelper.GetAvailableLanguages().Count - 1);
 		public static readonly CompressionInfo.Integer AgentDataTypeCompressionInfo = new(0, (int)AgentDataType.All);
+		public static readonly CompressionInfo.Integer TeamIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
+		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
+		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
 		public static readonly int StringMaxLength = 512;
 	}
 }

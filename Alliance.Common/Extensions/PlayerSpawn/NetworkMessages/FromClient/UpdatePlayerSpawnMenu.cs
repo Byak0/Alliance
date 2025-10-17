@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
@@ -71,15 +72,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 				case PlayerSpawnMenuOperation.AddFormation:
 				case PlayerSpawnMenuOperation.UpdateFormation:
 				case PlayerSpawnMenuOperation.RemoveFormation:
-					WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
+					WriteIntToPacket(TeamIndex, CompressionHelper.TeamIndexCompressionInfo);
 					WritePlayerFormationToPacket(PlayerFormation);
 					break;
 
 				case PlayerSpawnMenuOperation.AddCharacter:
 				case PlayerSpawnMenuOperation.UpdateCharacter:
 				case PlayerSpawnMenuOperation.RemoveCharacter:
-					WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
-					WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
+					WriteIntToPacket(TeamIndex, CompressionHelper.TeamIndexCompressionInfo);
+					WriteIntToPacket(FormationIndex, CompressionHelper.FormationIndexCompressionInfo);
 					WriteAvailableCharacterToPacket(AvailableCharacter);
 					break;
 
@@ -110,14 +111,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient
 				case PlayerSpawnMenuOperation.AddFormation:
 				case PlayerSpawnMenuOperation.UpdateFormation:
 				case PlayerSpawnMenuOperation.RemoveFormation:
-					TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+					TeamIndex = ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
 					PlayerFormation = ReadPlayerFormationFromPacket(ref bufferReadValid);
 					break;
 				case PlayerSpawnMenuOperation.AddCharacter:
 				case PlayerSpawnMenuOperation.UpdateCharacter:
 				case PlayerSpawnMenuOperation.RemoveCharacter:
-					TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
-					FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
+					TeamIndex = ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
+					FormationIndex = ReadIntFromPacket(CompressionHelper.FormationIndexCompressionInfo, ref bufferReadValid);
 					AvailableCharacter = ReadAvailableCharacterFromPacket(ref bufferReadValid);
 					break;
 				case PlayerSpawnMenuOperation.EndMenuSync:

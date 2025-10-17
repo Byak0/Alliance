@@ -2,7 +2,6 @@
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
@@ -29,16 +28,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 
 		protected override void OnWrite()
 		{
-			WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
-			WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
+			WriteIntToPacket(TeamIndex, CompressionHelper.TeamIndexCompressionInfo);
+			WriteIntToPacket(FormationIndex, CompressionHelper.FormationIndexCompressionInfo);
 			WriteIntToPacket(MainLanguageIndex, CompressionHelper.LanguageCompressionInfo);
 		}
 
 		protected override bool OnRead()
 		{
 			bool bufferReadValid = true;
-			TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
-			FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
+			TeamIndex = ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
+			FormationIndex = ReadIntFromPacket(CompressionHelper.FormationIndexCompressionInfo, ref bufferReadValid);
 			MainLanguageIndex = ReadIntFromPacket(CompressionHelper.LanguageCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
 		}
