@@ -77,24 +77,24 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		private float _volumeDisplayed = 0f;
 
 		// ----- Entities -----
-		private GameEntity _coneEntity;
+		private WeakGameEntity _coneEntity;
 		private MatrixFrame _initialConeFrame;
 		private float _initialConeZ;
 		private float _currentConeZ;
 
-		private GameEntity _cone2Entity;
+		private WeakGameEntity _cone2Entity;
 		private MatrixFrame _initialCone2Frame;
 		private float _initialCone2Z;
 		private float _currentCone2Z;
 
-		private GameEntity _particleEntity;
+		private WeakGameEntity _particleEntity;
 		private ParticleSystem _particleSystem;
 		private MatrixFrame _initialParticleFrame;
 
-		private GameEntity _heartEntity;
+		private WeakGameEntity _heartEntity;
 		private MatrixFrame _initialHeartFrame;
 
-		private List<GameEntity> _entitiesToSweep;
+		private List<WeakGameEntity> _entitiesToSweep;
 
 		private CS_TextPanel _textPanel;
 		private NumberFormatInfo _labelFormat;
@@ -203,7 +203,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			if (_particleEntity != null)
 			{
 				_initialParticleFrame = _particleEntity.GetGlobalFrame();
-				var comp = _particleEntity.GetComponentAtIndex(0, GameEntity.ComponentType.ParticleSystemInstanced);
+				var comp = _particleEntity.GetComponentAtIndex(0, TaleWorlds.Engine.GameEntity.ComponentType.ParticleSystemInstanced);
 				if (comp is ParticleSystem ps)
 				{
 					_particleSystem = ps;
@@ -367,7 +367,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			float sp = MathF.Lerp(initScaleP, .5f, t);
 			particleFrame = EntityUtils.SetScale(particleFrame, new Vec3(sp, sp, sp));
 			particleFrame.Rotate(_heartSpinAng, Vec3.Up);
-			_particleEntity?.SetGlobalFrame(in particleFrame);
+			if (_particleEntity.IsValid) _particleEntity.SetGlobalFrame(in particleFrame);
 
 			// Heart
 			if (_heartEntity != null)
@@ -441,7 +441,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			// Map to [Min..Max]
 			float sweepX = SweepOffsetX + MathF.Lerp(SweepMin, SweepMax, _beatPhase);
 
-			foreach (GameEntity entity in _entitiesToSweep)
+			foreach (WeakGameEntity entity in _entitiesToSweep)
 			{
 				MetaMesh mm = entity.GetMetaMesh(0);
 				mm?.SetVectorArgument2(SweepScaleX, SweepScaleY, sweepX, SweepOffsetY);
