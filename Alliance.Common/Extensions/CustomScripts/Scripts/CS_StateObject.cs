@@ -20,7 +20,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// NavigationMeshIdEnabledOnFinalState is disabled at first, and enabled on final state (e.g. for NavMesh under the wall).
 	/// NavigationMeshIdDisabledOnFinalState is enabled at first, and disabled on final state (e.g. for NavMesh ON the wall).
 	/// </summary>
-	public class CS_StateObject : SynchedMissionObject, IFocusable
+	public class CS_StateObject : SynchedMissionObject
 	{
 		public string States;
 		public string SoundEffectOnFinalState = "";
@@ -29,13 +29,13 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		public int NavigationMeshIdDisabledOnFinalState = -1;
 		public int LastStateDelay = 0;
 
-		private GameEntity[] _states;
-		private GameEntity _previousState;
-		private GameEntity _originalState;
+		private WeakGameEntity[] _states;
+		private WeakGameEntity _previousState;
+		private WeakGameEntity _originalState;
 		private string[] _statesNames;
 
 		public FocusableObjectType FocusableObjectType => FocusableObjectType.None;
-		public GameEntity CurrentState { get; private set; }
+		public WeakGameEntity CurrentState { get; private set; }
 		public int CurrentStateIndex { get; private set; }
 
 		public bool HasState => _statesNames != null && !_statesNames.IsEmpty();
@@ -56,10 +56,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			CurrentState = _originalState;
 
 			// Init the children of current state 
-			List<GameEntity> originalChildren = new List<GameEntity>();
+			List<WeakGameEntity> originalChildren = new List<WeakGameEntity>();
 			GameEntity.GetChildrenRecursive(ref originalChildren);
-			IEnumerable<GameEntity> dynamicOriginalChildren = originalChildren.Where((child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic));
-			foreach (GameEntity gameEntity4 in dynamicOriginalChildren)
+			IEnumerable<WeakGameEntity> dynamicOriginalChildren = originalChildren.Where((child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic));
+			foreach (WeakGameEntity gameEntity4 in dynamicOriginalChildren)
 			{
 				gameEntity4.SetPhysicsState(false, true);
 				gameEntity4.SetFrameChanged();
@@ -77,7 +77,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				// Extract states names
 				_statesNames = States.Replace(" ", string.Empty).Split(new char[] { ',' });
 				bool hasPhysic = false;
-				_states = new GameEntity[_statesNames.Length];
+				_states = new WeakGameEntity[_statesNames.Length];
 
 				// Iterate over states names and assign GameEntity to _states
 				for (int i = 0; i < _statesNames.Length; i++)
@@ -85,7 +85,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					string stateName = _statesNames[i];
 					if (!string.IsNullOrEmpty(stateName))
 					{
-						GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == stateName);
+						WeakGameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == stateName);
 						if (gameEntity != null)
 						{
 							_states[i] = gameEntity;
@@ -106,7 +106,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			}
 		}
 
-		public GameEntity GetOriginalState()
+		public WeakGameEntity GetOriginalState()
 		{
 			return _states.ElementAtOrDefault(0) != null ? _states[0] : GameEntity;
 		}
@@ -137,13 +137,14 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			if (_states != null)
 			{
-				int j;
 				int i;
-				for (i = 0; i < _states.Count(); i = j + 1)
+				for (i = 0; i < _states.Count(); i++)
 				{
-					GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == _states[i].ToString());
-					gameEntity?.Skeleton?.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
-					j = i;
+					WeakGameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == _states[i].ToString());
+					if (gameEntity.IsValid)
+					{
+						gameEntity.Skeleton?.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
+					}
 				}
 			}
 			if (CurrentState != _originalState)
@@ -193,9 +194,9 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			if (CurrentState != null)
 			{
 				_previousState = CurrentState;
-				foreach (GameEntity gameEntity in from child in CurrentState.GetChildren()
-												  where child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic)
-												  select child)
+				foreach (WeakGameEntity gameEntity in from child in CurrentState.GetChildren()
+													  where child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic)
+													  select child)
 				{
 					gameEntity.SetPhysicsState(false, true);
 					gameEntity.SetFrameChanged();
@@ -206,9 +207,9 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			// Show new state
 			CurrentState = _states[stateIndex];
 			CurrentState.SetVisibilityExcludeParents(true);
-			foreach (GameEntity gameEntity in from child in CurrentState.GetChildren()
-											  where child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic)
-											  select child)
+			foreach (WeakGameEntity gameEntity in from child in CurrentState.GetChildren()
+												  where child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic)
+												  select child)
 			{
 				gameEntity.SetPhysicsState(true, true);
 				gameEntity.SetFrameChanged();
@@ -303,10 +304,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			if (CurrentState != null)
 			{
-				CurrentState.AddChild(missileEntity, false);
+				CurrentState.AddChild(missileEntity.WeakEntity, false);
 				return;
 			}
-			GameEntity.AddChild(missileEntity, false);
+			GameEntity.AddChild(missileEntity.WeakEntity, false);
 		}
 
 		protected override bool OnCheckForProblems()
@@ -336,10 +337,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public TextObject GetInfoTextForBeingNotInteractable(Agent userAgent)
 		{
-			return new TextObject();
+			return new TextObject("");
 		}
 
-		public string GetDescriptionText(GameEntity gameEntity = null)
+		public TextObject GetDescriptionText(WeakGameEntity gameEntity)
 		{
 			if (int.TryParse(gameEntity.Name.Split(new char[] { '_' }).Last(), out int num))
 			{
@@ -347,20 +348,14 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				text = text.Remove(text.Count() - num.ToString().Count());
 				text += "x";
 				TextObject textObject;
-				if (GameTexts.TryGetText("str_destructible_component", out textObject, text))
-				{
-					return textObject.ToString();
-				}
-				return "";
+				GameTexts.TryGetText("str_destructible_component", out textObject, text);
+				return textObject;
 			}
 			else
 			{
 				TextObject textObject2;
-				if (GameTexts.TryGetText("str_destructible_component", out textObject2, gameEntity.Name))
-				{
-					return textObject2.ToString();
-				}
-				return "";
+				GameTexts.TryGetText("str_destructible_component", out textObject2, gameEntity.Name);
+				return textObject2;
 			}
 		}
 	}

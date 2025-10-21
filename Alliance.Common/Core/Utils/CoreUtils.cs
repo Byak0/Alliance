@@ -157,7 +157,7 @@ namespace Alliance.Common.Core.Utils
 				Vec3.Up
 			);
 
-			CombatLogData combatLogData = new CombatLogData(false, attacker.IsHuman, attacker.IsMine, attacker.RiderAgent != null, attacker.RiderAgent != null && attacker.RiderAgent.IsMine, attacker.IsMount, victim.IsHuman, victim.IsMine, victim.Health <= 0f, victim.HasMount, victim.RiderAgent != null && victim.RiderAgent.IsMine, victim.IsMount, false, victim.RiderAgent == victim, knockDown, false, 0f);
+			CombatLogData combatLogData = new CombatLogData(false, attacker.IsHuman, attacker.IsMine, attacker.RiderAgent != null, attacker.RiderAgent != null && attacker.RiderAgent.IsMine, attacker.IsMount, victim.IsHuman, victim.IsMine, victim.Health <= 0f, victim.HasMount, victim.RiderAgent != null && victim.RiderAgent.IsMine, victim.IsMount, null, victim.RiderAgent == victim, knockDown, false, 0f);
 			RegisterBlow(attacker, victim, null, blow, ref attackCollisionDataForDebugPurpose, MissionWeapon.Invalid, ref combatLogData);
 		}
 

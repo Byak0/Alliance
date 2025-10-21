@@ -136,9 +136,9 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			return textObject;
 		}
 
-		public override string GetDescriptionText(GameEntity gameEntity = null)
+		public override TextObject GetDescriptionText(WeakGameEntity gameEntity)
 		{
-			return new TextObject("{TEXT}", null).SetTextVariable("TEXT", DefaultText).ToString();
+			return new TextObject(DefaultText, null);
 		}
 
 		public override TickRequirement GetTickRequirement()

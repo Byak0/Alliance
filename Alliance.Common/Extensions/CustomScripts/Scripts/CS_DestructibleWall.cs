@@ -21,7 +21,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// NavigationMeshIdEnabledOnDestroy is disabled at first, and enabled after destruction(e.g. for NavMesh under the wall).
 	/// NavigationMeshIdDisabledOnDestroy is enabled at first, and disabled after destruction(e.g. for NavMesh ON the wall).
 	/// </summary>
-	public class CS_DestructibleWall : SynchedMissionObject, IFocusable
+	public class CS_DestructibleWall : SynchedMissionObject
 	{
 		public delegate void OnHitTakenAndDestroyedDelegate(CS_DestructibleWall target, Agent attackerAgent, in MissionWeapon weapon, ScriptComponentBehavior attackerScriptComponentBehavior, int inflictedDamage);
 
@@ -129,7 +129,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			base.OnInit();
 			//_hitPoint = MaxHitPoint;
-			_referenceEntity = string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetChildren().FirstOrDefault((x) => x.HasTag(ReferenceEntityTag));
+			_referenceEntity = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetFirstChildEntityWithTag(ReferenceEntityTag));
 			if (!string.IsNullOrEmpty(DestructionStates))
 			{
 				_destructionStates = DestructionStates.Replace(" ", string.Empty).Split(new char[] { ',' });
@@ -140,8 +140,8 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					string item = destructionStates[i];
 					if (!string.IsNullOrEmpty(item))
 					{
-						GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == item);
-						if (gameEntity != null)
+						WeakGameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == item);
+						if (gameEntity.IsValid)
 						{
 							gameEntity.AddBodyFlags(BodyFlags.Moveable, true);
 							PhysicsShape bodyShape = gameEntity.GetBodyShape();
@@ -153,7 +153,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 						}
 						else
 						{
-							GameEntity gameEntity2 = GameEntity.Instantiate(null, item, false);
+							GameEntity gameEntity2 = TaleWorlds.Engine.GameEntity.Instantiate(null, item, false, true, "");
 							List<GameEntity> list = new List<GameEntity>();
 							gameEntity2.GetChildrenRecursive(ref list);
 							list.Add(gameEntity2);
@@ -182,55 +182,50 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					PhysicsShape.ProcessPreloadQueue();
 				}
 			}
-			_originalState = GetOriginalState(GameEntity);
-			if (_originalState == null)
-			{
-				_originalState = GameEntity;
-			}
+			WeakGameEntity originalState = this.GetOriginalState(GameEntity);
+			_originalState = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(originalState.IsValid ? originalState : GameEntity);
 			CurrentState = _originalState;
 			_originalState.AddBodyFlags(BodyFlags.Moveable, true);
-			List<GameEntity> list2 = new List<GameEntity>();
+			List<WeakGameEntity> list2 = new List<WeakGameEntity>();
 			GameEntity.GetChildrenRecursive(ref list2);
-			IEnumerable<GameEntity> enumerable = list2.Where((child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic));
-			enumerable.Count();
-			foreach (GameEntity gameEntity4 in enumerable)
+			foreach (WeakGameEntity weakGameEntity2 in Enumerable.Where<WeakGameEntity>(list2, (WeakGameEntity child) => child.BodyFlag.HasAnyFlag(BodyFlags.Dynamic)))
 			{
-				gameEntity4.SetPhysicsState(false, true);
-				gameEntity4.SetFrameChanged();
+				GameEntityPhysicsExtensions.SetPhysicsState(weakGameEntity2, false, true);
+				weakGameEntity2.SetFrameChanged();
 			}
-			_heavyHitParticles = GameEntity.CollectChildrenEntitiesWithTag(HeavyHitParticlesTag);
+			_heavyHitParticles = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(GameEntity).CollectChildrenEntitiesWithTag(HeavyHitParticlesTag);
 			GameEntity.SetAnimationSoundActivation(true);
 
 			// At start, disable NavigationMeshIdEnabledOnDestroy
 			SetAbilityOfNavmesh(false, true);
 		}
 
-		public GameEntity GetOriginalState(GameEntity parent)
+		public WeakGameEntity GetOriginalState(WeakGameEntity parent)
 		{
 			int childCount = parent.ChildCount;
 			for (int i = 0; i < childCount; i++)
 			{
-				GameEntity child = parent.GetChild(i);
+				WeakGameEntity child = parent.GetChild(i);
 				if (!child.HasScriptOfType<DestructableComponent>())
 				{
 					if (child.HasTag(OriginalStateTag))
 					{
 						return child;
 					}
-					GameEntity originalState = GetOriginalState(child);
+					WeakGameEntity originalState = GetOriginalState(child);
 					if (originalState != null)
 					{
 						return originalState;
 					}
 				}
 			}
-			return null;
+			return WeakGameEntity.Invalid;
 		}
 
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
-			_referenceEntity = string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetChildren().FirstOrDefault((x) => x.HasTag(ReferenceEntityTag));
+			_referenceEntity = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetFirstChildEntityWithTag(ReferenceEntityTag));
 		}
 
 		protected override void OnEditorVariableChanged(string variableName)
@@ -238,7 +233,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			base.OnEditorVariableChanged(variableName);
 			if (variableName.Equals(ReferenceEntityTag))
 			{
-				_referenceEntity = string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetChildren().SingleOrDefault((x) => x.HasTag(ReferenceEntityTag));
+				_referenceEntity = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(string.IsNullOrEmpty(ReferenceEntityTag) ? GameEntity : GameEntity.GetFirstChildEntityWithTag(ReferenceEntityTag));
 			}
 		}
 
@@ -259,20 +254,14 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			if (_destructionStates != null)
 			{
-				int j;
-				int i;
-				for (i = 0; i < _destructionStates.Count(); i = j + 1)
+				for (int i = 0; i < _destructionStates.Length; i++)
 				{
-					GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == _destructionStates[i].ToString());
-					if (gameEntity != null)
+					WeakGameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == _destructionStates[i].ToString());
+					if (gameEntity.IsValid)
 					{
 						Skeleton skeleton = gameEntity.Skeleton;
-						if (skeleton != null)
-						{
-							skeleton.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
-						}
+						skeleton?.SetAnimationAtChannel(-1, 0, 1f, -1f, 0f);
 					}
-					j = i;
 				}
 			}
 			if (CurrentState != _originalState)
@@ -306,15 +295,15 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			}
 		}
 
-		public void TriggerOnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, ScriptComponentBehavior attackerScriptComponentBehavior)
+		public void TriggerOnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, int affectorWeaponSlotOrMissileIndex, ScriptComponentBehavior attackerScriptComponentBehavior)
 		{
-			bool flag;
-			OnHit(attackerAgent, inflictedDamage, impactPosition, impactDirection, weapon, attackerScriptComponentBehavior, out flag);
+			OnHit(attackerAgent, inflictedDamage, impactPosition, impactDirection, weapon, affectorWeaponSlotOrMissileIndex, attackerScriptComponentBehavior, out bool flag, out float num);
 		}
 
-		protected override bool OnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, ScriptComponentBehavior attackerScriptComponentBehavior, out bool reportDamage)
+		protected override bool OnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, int affectorWeaponSlotOrMissileIndex, ScriptComponentBehavior attackerScriptComponentBehavior, out bool reportDamage, out float modifiedDamage)
 		{
 			reportDamage = false;
+			modifiedDamage = (float)inflictedDamage;
 			if (IsDisabled)
 			{
 				return true;
@@ -547,7 +536,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				{
 					if (_originalState != GameEntity)
 					{
-						GameEntity.AddChild(CurrentState, true);
+						GameEntity.AddChild(CurrentState.WeakEntity, true);
 					}
 					if (forcedId != -1)
 					{
@@ -600,13 +589,29 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			if (!string.IsNullOrEmpty(prefab))
 			{
-				GameEntity gameEntity = GameEntity.GetChildren().FirstOrDefault((x) => x.Name == prefab);
-				if (gameEntity != null)
+				int childCount = base.GameEntity.ChildCount;
+				int num = 0;
+				WeakGameEntity weakGameEntity = WeakGameEntity.Invalid;
+				for (int i = 0; i < childCount; i++)
 				{
-					gameEntity.SetVisibilityExcludeParents(true);
+					WeakGameEntity child = base.GameEntity.GetChild(i);
+					if (child.Name == prefab)
+					{
+						num++;
+						if (MBRandom.RandomInt(num) == 0)
+						{
+							weakGameEntity = child;
+						}
+					}
+				}
+				GameEntity gameEntity;
+				if (weakGameEntity.IsValid)
+				{
+					gameEntity = TaleWorlds.Engine.GameEntity.CreateFromWeakEntity(weakGameEntity);
+					weakGameEntity.SetVisibilityExcludeParents(true);
 					if (!GameNetwork.IsClientOrReplay)
 					{
-						MissionObject missionObject = gameEntity.GetScriptComponents<MissionObject>().FirstOrDefault();
+						MissionObject missionObject = Enumerable.FirstOrDefault<MissionObject>(weakGameEntity.GetScriptComponents<MissionObject>());
 						if (missionObject != null)
 						{
 							missionObject.SetAbilityOfFaces(true);
@@ -616,20 +621,20 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 				else
 				{
-					gameEntity = GameEntity.Instantiate(Mission.Current.Scene, prefab, _referenceEntity.GetGlobalFrame());
+					gameEntity = TaleWorlds.Engine.GameEntity.Instantiate(Mission.Current.Scene, prefab, this._referenceEntity.GetGlobalFrame(), true, "");
 					if (gameEntity != null)
 					{
-						gameEntity.SetMobility(GameEntity.Mobility.stationary);
+						gameEntity.SetMobility(TaleWorlds.Engine.GameEntity.Mobility.Stationary);
 					}
-					if (GameEntity.Parent != null)
+					if (base.GameEntity.Parent.IsValid)
 					{
-						GameEntity.Parent.AddChild(gameEntity, true);
+						base.GameEntity.Parent.AddChild(gameEntity.WeakEntity, true);
 					}
 					newCreated = true;
 				}
-				if (_referenceEntity.Skeleton != null && gameEntity.Skeleton != null)
+				if (this._referenceEntity.Skeleton != null && gameEntity.Skeleton != null)
 				{
-					Skeleton skeleton = (CurrentState != _originalState ? CurrentState : _referenceEntity).Skeleton;
+					Skeleton skeleton = ((this.CurrentState != this._originalState) ? this.CurrentState : this._referenceEntity).Skeleton;
 					int animationIndexAtChannel = skeleton.GetAnimationIndexAtChannel(0);
 					float animationParameterAtChannel = skeleton.GetAnimationParameterAtChannel(0);
 					if (animationIndexAtChannel != -1)
@@ -638,6 +643,18 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 						gameEntity.ResumeSkeletonAnimation();
 					}
 				}
+				// new 1.3 script for coloring ships ? Not useful here
+				//WeakGameEntity weakGameEntity2 = base.GameEntity;
+				//while (weakGameEntity2 != null)
+				//{
+				//	ColorAssigner firstScriptOfType = weakGameEntity2.GetFirstScriptOfType<ColorAssigner>();
+				//	if (firstScriptOfType != null)
+				//	{
+				//		firstScriptOfType.SetColor(gameEntity.WeakEntity);
+				//		break;
+				//	}
+				//	weakGameEntity2 = weakGameEntity2.Parent;
+				//}
 				return gameEntity;
 			}
 			newCreated = false;
@@ -718,7 +735,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				CurrentState.AddChild(missileEntity, false);
 				return;
 			}
-			GameEntity.AddChild(missileEntity, false);
+			GameEntity.AddChild(missileEntity.WeakEntity, false);
 		}
 
 		protected override bool OnCheckForProblems()
@@ -734,7 +751,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			int i;
 			for (i = 0; i < destructionStates.Count(); i++)
 			{
-				if (!string.IsNullOrEmpty(destructionStates[i]) && !(GameEntity.GetChildren().FirstOrDefault((x) => x.Name == destructionStates[i]) != null) && GameEntity.Instantiate(null, destructionStates[i], callScriptCallbacks: false) == null)
+				if (!string.IsNullOrEmpty(destructionStates[i]) && !(GameEntity.GetChildren().FirstOrDefault((x) => x.Name == destructionStates[i]) != null) && TaleWorlds.Engine.GameEntity.Instantiate(null, destructionStates[i], callScriptCallbacks: false) == null)
 				{
 					MBEditor.AddEntityWarning(GameEntity, "Destruction state '" + destructionStates[i] + "' is not valid.");
 					result = true;
@@ -754,7 +771,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public TextObject GetInfoTextForBeingNotInteractable(Agent userAgent)
 		{
-			return new TextObject();
+			return null;
 		}
 
 		public string GetDescriptionText(GameEntity gameEntity = null)
@@ -781,6 +798,27 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 				return "";
 			}
+		}
+
+		public TextObject GetDescriptionText(WeakGameEntity gameEntity)
+		{
+			int num;
+			TextObject textObject;
+			if (int.TryParse(Enumerable.Last<string>(gameEntity.Name.Split(new char[] { '_' })), out num))
+			{
+				string text = gameEntity.Name;
+				text = text.Remove(text.Length - num.ToString().Length);
+				text += "x";
+				if (GameTexts.TryGetText("str_destructible_component", out textObject, text))
+				{
+					return textObject;
+				}
+			}
+			if (GameTexts.TryGetText("str_destructible_component", out textObject, gameEntity.Name))
+			{
+				return textObject;
+			}
+			return null;
 		}
 	}
 }

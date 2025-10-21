@@ -2,7 +2,6 @@
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;
 using TaleWorlds.DotNet;
-using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.MountAndBlade.Agent;
 
@@ -48,7 +47,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			//}
 		}
 
-		public override void OnUse(Agent userAgent)
+		public override void OnUse(Agent userAgent, sbyte agentBoneIndex)
 		{
 			if (!_init) Init();
 
@@ -65,7 +64,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 			OnUseEvent?.Invoke(userAgent);
 
-			base.OnUse(userAgent);
+			base.OnUse(userAgent, agentBoneIndex);
 		}
 
 		public override void OnUseStopped(Agent userAgent, bool isSuccessful, int preferenceIndex)
