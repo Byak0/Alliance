@@ -44,10 +44,11 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
 				_patched = true;
 
-				Harmony.Patch(
-					AccessTools.Method(typeof(Mission), "DecideWeaponCollisionReaction"),
-					postfix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(DecideWeaponCollisionReactionPostfix))
-				);
+				// todo : disabled for 1.3, move logic elsewhere ?
+				//Harmony.Patch(
+				//	AccessTools.Method(typeof(Mission), "DecideWeaponCollisionReaction"),
+				//	postfix: new HarmonyMethod(typeof(Patch_AdvancedCombat), nameof(DecideWeaponCollisionReactionPostfix))
+				//);
 
 				Harmony.Patch(
 					AccessTools.Method(typeof(Mission), "MeleeHitCallback"),
