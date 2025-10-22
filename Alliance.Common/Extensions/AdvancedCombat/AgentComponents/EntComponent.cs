@@ -24,10 +24,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			_isBoneStomping = new bool[EntConstants.StompCollisionBoneIds.Count];
 		}
 
-		public override void OnTickAsAI(float dt)
-		{
-		}
-
 		public override void OnTick(float dt)
 		{
 			UpdateStompState();

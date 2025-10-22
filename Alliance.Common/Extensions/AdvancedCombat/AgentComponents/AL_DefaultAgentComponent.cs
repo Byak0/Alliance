@@ -22,11 +22,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			AgentNavigator?.OnAgentRemoved(agent);
 		}
 
-		public virtual void OnTick(float dt)
-		{
-		}
-
-		public override void OnTickAsAI(float dt)
+		public override void OnTick(float dt)
 		{
 			AgentNavigator?.Tick(dt, false);
 		}
