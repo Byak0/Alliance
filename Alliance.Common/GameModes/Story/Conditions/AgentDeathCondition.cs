@@ -20,7 +20,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		private int _deathCount = 0;
 
-		public override void Register(GameEntity gameEntity = null)
+		public override void Register(WeakGameEntity gameEntity)
 		{
 			ConditionsBehavior cdtBehavior = Mission.Current.GetMissionBehavior<ConditionsBehavior>();
 			if (cdtBehavior == null) return;

@@ -20,11 +20,11 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public bool ParentEntityOnly;
 
 		private bool _used;
-		private GameEntity _gameEntity;
+		private WeakGameEntity _gameEntity;
 
 		public ObjectUsedCondition() { }
 
-		public override void Register(GameEntity gameEntity = null)
+		public override void Register(WeakGameEntity gameEntity)
 		{
 			if (Mission.Current == null) return;
 
@@ -57,14 +57,14 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		{
 			List<CS_UsableObject> usableObjects = new List<CS_UsableObject>();
 
-			if (ParentEntityOnly && _gameEntity != null)
+			if (ParentEntityOnly && _gameEntity.IsValid)
 			{
 				if (_gameEntity.GetFirstScriptOfType<CS_UsableObject>()?.ObjectId == ObjectId)
 				{
 					usableObjects.Add(_gameEntity.GetFirstScriptOfType<CS_UsableObject>());
 				}
 				// Retrieve all usable objects with the correct ObjectId among entity children
-				foreach (GameEntity entity in _gameEntity.GetChildren())
+				foreach (WeakGameEntity entity in _gameEntity.GetChildren())
 				{
 					CS_UsableObject cs_UsableObject = entity.GetFirstScriptOfType<CS_UsableObject>();
 					if (cs_UsableObject?.ObjectId == ObjectId)
