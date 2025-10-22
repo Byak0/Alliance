@@ -21,11 +21,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		{
 		}
 
-		public override void OnTickAsAI(float dt)
+		public override void OnTick(float dt)
 		{
 			if (_threat == null)
 			{
-				base.OnTickAsAI(dt);
+				base.OnTick(dt);
 				return;
 			}
 
@@ -70,14 +70,15 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			if (target.IsMount)
 			{
 				WorldPosition pos = Agent.GetWorldPosition();
+				WeakGameEntity targetEntity = target.AgentVisuals?.GetEntity()?.WeakEntity ?? WeakGameEntity.Invalid;
 				if (Agent.HasRangedWeapon(true))
 				{
-					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+					Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
 				}
 				else
 				{
-					Agent.SetScriptedTargetEntityAndPosition(target.AgentVisuals.GetEntity(), pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
+					Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
 					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
 				}
 			}
