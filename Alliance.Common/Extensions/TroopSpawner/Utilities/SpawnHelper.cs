@@ -106,7 +106,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				initialDirection = initialDirection.Normalized();
 
 				// Define perks                
-				Equipment equipment = Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt());
+				Equipment equipment = Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, equipmentType: Equipment.EquipmentType.Battle, MBRandom.RandomInt());
 				IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
 				if (perkAlternativeEquipment != null)
 				{
@@ -129,7 +129,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Formation(form)
 					.IsFemale(character.IsFemale);
 				agentBuildData2.Equipment(equipment);
-				agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
+				agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 				agentBuildData2.Age((int)agentBuildData2.AgentBodyProperties.Age);
 
 				// Whether the agent has a mount or not
@@ -234,7 +234,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Banner(banner);
 				agentBuildData.MissionPeer(component);
 				bool randomEquipement = true;
-				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
+				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, equipmentType: Equipment.EquipmentType.Battle, MBRandom.RandomInt()) : character.Equipment.Clone();
 				IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: true);
 				if (perkAlternativeEquipment != null)
 				{
@@ -266,7 +266,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				else
 				{
 					agentBuildData.EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex));
-					agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyProperties(agentBuildData.AgentOverridenSpawnEquipment), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
+					agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyProperties(agentBuildData.AgentOverridenSpawnEquipment), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 					agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
 					agentBuildData.IsFemale(character.IsFemale);
 				}
@@ -416,8 +416,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				.ClothingColor1(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
 				.ClothingColor2(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2)
 				.IsFemale(troopCharacter.IsFemale);
-			agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
-			agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.HairTags, troopCharacter.BeardTags, troopCharacter.TattooTags));
+			agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, equipmentType: Equipment.EquipmentType.Battle, agentBuildData2.AgentEquipmentSeed));
+			agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.BodyPropertyRange.HairTags, troopCharacter.BodyPropertyRange.BeardTags, troopCharacter.BodyPropertyRange.TattooTags));
 			return agentBuildData2.AgentBodyProperties;
 		}
 
