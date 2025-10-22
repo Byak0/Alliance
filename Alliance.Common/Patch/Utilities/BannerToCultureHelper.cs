@@ -28,7 +28,7 @@ namespace Alliance.Common.Patch.Utilities
 																			// Find the culture that has this banner
 			foreach (KeyValuePair<string, BasicCultureObject> kvpCulture in Factions.Instance.AvailableCultures)
 			{
-				Banner bannerToCompare = new Banner(kvpCulture.Value.BannerKey, 4286777352, 4286777352);
+				Banner bannerToCompare = new Banner(kvpCulture.Value.Banner.BannerCode, 4286777352, 4286777352);
 				if (banner.IsContentsSameWith(bannerToCompare))
 				{
 					matchingCulture = kvpCulture.Key;
@@ -53,7 +53,7 @@ namespace Alliance.Common.Patch.Utilities
 
 			if (Factions.Instance.AvailableCultures.TryGetValue(cultureName, out BasicCultureObject culture))
 			{
-				Banner cultureBanner = new Banner(culture.BannerKey);
+				Banner cultureBanner = new Banner(culture.Banner.BannerCode);
 				// Only change color if the culture has defined color variation
 				// Otherwise we assume it wants to preserve color integrity
 				if (culture.BackgroundColor1 != culture.BackgroundColor2)
@@ -80,7 +80,7 @@ namespace Alliance.Common.Patch.Utilities
 
 			if (Factions.Instance.AvailableCultures.TryGetValue(cultureName, out BasicCultureObject culture))
 			{
-				Banner cultureBanner = new Banner(culture.BannerKey);
+				Banner cultureBanner = new Banner(culture.Banner.BannerCode);
 				// Only change color if the culture has defined color variation
 				// Otherwise we assume it wants to preserve color integrity
 				if (culture.BackgroundColor1 != culture.BackgroundColor2)
