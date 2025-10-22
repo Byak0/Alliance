@@ -2,6 +2,7 @@
 using Alliance.Common.Patch.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.GauntletUI.Widgets;
 using TaleWorlds.ObjectSystem;
 
@@ -47,9 +48,8 @@ namespace Alliance.Common.Core.UI.Widgets
 
 			uint color = basicCultureObject.BackgroundColor1;
 			uint color2 = basicCultureObject.ForegroundColor1;
-			BannerCode bannerCode = BannerCode.CreateFrom(BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2));
-			ImageTypeCode = (int)ImageIdentifierType.BannerCode;
-			ImageId = bannerCode != null ? bannerCode.Code : "";
+			string bannerCode = BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2);
+			ImageId = bannerCode ?? "";
 			AdditionalArgs = "";
 		}
 	}
