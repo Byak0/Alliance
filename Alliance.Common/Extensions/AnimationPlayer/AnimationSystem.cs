@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -67,11 +68,12 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			IndexToActionSetDictionary.Add(uniqueAnimationIndex, allActionSets);
 			uniqueAnimationIndex++;
 
+			ConstructorInfo actionCtor = typeof(ActionIndexCache).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(int) }, null);
+
 			// Add other actions and their compatible action_sets
 			for (int i = 0; i < totalActions; i++)
 			{
-				string actionName = MBAnimation.GetActionNameWithCode(i);
-				ActionIndexCache actionIndex = ActionIndexCache.Create(actionName);
+				ActionIndexCache actionIndex = (ActionIndexCache)actionCtor.Invoke(new object[] { i });
 				List<MBActionSet> actionSets = new List<MBActionSet>();
 				for (int j = 0; j < MBActionSet.GetNumberOfActionSets(); j++)
 				{
@@ -182,7 +184,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				}
 				catch (Exception ex)
 				{
-					Log($"Alliance - Failed to play animation {animation.Action?.Name} on agent {agent.Name}", LogLevel.Error);
+					Log($"Alliance - Failed to play animation {animation?.Action.GetName()} on agent {agent?.Name}", LogLevel.Error);
 					Log(ex.Message, LogLevel.Error);
 				}
 			}
