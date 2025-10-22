@@ -51,6 +51,7 @@ namespace Alliance.Common.GameModes.Battle
 				OptionType.RoundTimeLimit,
 				OptionType.RoundTotal,
 				OptionType.UnlimitedGold,
+				OptionType.AutoTeamBalanceThreshold,
 				OptionType.FriendlyFireDamageMeleeFriendPercent,
 				OptionType.FriendlyFireDamageMeleeSelfPercent,
 				OptionType.FriendlyFireDamageRangedFriendPercent,
