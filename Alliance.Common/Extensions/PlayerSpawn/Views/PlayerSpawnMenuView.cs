@@ -145,12 +145,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("PlayerSpawnMenu", _dataSource);
 
-				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_kingdom"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_facegen"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_conversation"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_kingdom"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_facegen"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_conversation"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
 
 				ScreenManager.TopScreen?.AddLayer(_layer);
 				ScreenManager.TrySetFocus(_layer);

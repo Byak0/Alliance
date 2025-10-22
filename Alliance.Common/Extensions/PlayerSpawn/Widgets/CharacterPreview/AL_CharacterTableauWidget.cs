@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
+using TaleWorlds.Library;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
@@ -659,35 +660,35 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_isRenderRequestedPreviousFrame = true;
 			if (TextureProvider != null)
 			{
-				Texture = TextureProvider.GetTexture(twoDimensionContext, string.Empty);
+				Texture = TextureProvider.GetTextureForRender(twoDimensionContext, null, true);
 				SimpleMaterial simpleMaterial = drawContext.CreateSimpleMaterial();
-				StyleLayer styleLayer = ReadOnlyBrush?.GetStyleOrDefault(CurrentState).GetLayers()?.FirstOrDefault() ?? null;
+				Brush readOnlyBrush = ReadOnlyBrush;
+				StyleLayer styleLayer;
+				if (readOnlyBrush == null)
+				{
+					styleLayer = null;
+				}
+				else
+				{
+					StyleLayer[] layers = readOnlyBrush.GetStyleOrDefault(CurrentState).GetLayers();
+					styleLayer = ((layers != null) ? Enumerable.FirstOrDefault<StyleLayer>(layers) : null);
+				}
+				StyleLayer styleLayer2 = styleLayer ?? null;
 				simpleMaterial.OverlayEnabled = false;
 				simpleMaterial.CircularMaskingEnabled = false;
 				simpleMaterial.Texture = Texture;
-				simpleMaterial.AlphaFactor = (styleLayer?.AlphaFactor ?? 1f) * ReadOnlyBrush.GlobalAlphaFactor * Context.ContextAlpha;
-				simpleMaterial.ColorFactor = (styleLayer?.ColorFactor ?? 1f) * ReadOnlyBrush.GlobalColorFactor;
-				simpleMaterial.HueFactor = styleLayer?.HueFactor ?? 0f;
-				simpleMaterial.SaturationFactor = styleLayer?.SaturationFactor ?? 0f;
-				simpleMaterial.ValueFactor = styleLayer?.ValueFactor ?? 0f;
-				simpleMaterial.Color = (styleLayer?.Color ?? TaleWorlds.Library.Color.White) * ReadOnlyBrush.GlobalColor;
+				simpleMaterial.NinePatchParameters = SpriteNinePatchParameters.Empty;
+				simpleMaterial.AlphaFactor = ((styleLayer2 != null) ? styleLayer2.AlphaFactor : 1f) * ReadOnlyBrush.GlobalAlphaFactor * Context.ContextAlpha;
+				simpleMaterial.ColorFactor = ((styleLayer2 != null) ? styleLayer2.ColorFactor : 1f) * ReadOnlyBrush.GlobalColorFactor;
+				simpleMaterial.HueFactor = ((styleLayer2 != null) ? styleLayer2.HueFactor : 0f);
+				simpleMaterial.SaturationFactor = ((styleLayer2 != null) ? styleLayer2.SaturationFactor : 0f);
+				simpleMaterial.ValueFactor = ((styleLayer2 != null) ? styleLayer2.ValueFactor : 0f);
+				simpleMaterial.Color = ((styleLayer2 != null) ? styleLayer2.Color : Color.White) * ReadOnlyBrush.GlobalColor;
 				Vector2 globalPosition = GlobalPosition;
-				float x = globalPosition.X;
-				float y = globalPosition.Y;
-				_ = Size;
-				_ = Size;
-				DrawObject2D drawObject2D = null;
-				if (_cachedQuad != null && _cachedQuadSize == Size)
-				{
-					drawObject2D = _cachedQuad;
-				}
-
-				if (drawObject2D == null)
-				{
-					drawObject2D = (_cachedQuad = DrawObject2D.CreateQuad(Size));
-					_cachedQuadSize = Size;
-				}
-
+				Vector2 size = Size;
+				Vector2 size2 = Size;
+				ImageDrawObject imageDrawObject = ImageDrawObject.Create(AreaRect, Vec2.Zero, Vec2.One);
+				imageDrawObject.Scale = _scaleToUse;
 				if (drawContext.CircularMaskEnabled)
 				{
 					simpleMaterial.CircularMaskingEnabled = true;
@@ -695,8 +696,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					simpleMaterial.CircularMaskingRadius = drawContext.CircularMaskRadius;
 					simpleMaterial.CircularMaskingSmoothingRadius = drawContext.CircularMaskSmoothingRadius;
 				}
-
-				drawContext.Draw(x, y, simpleMaterial, drawObject2D, Size.X, Size.Y);
+				drawContext.Draw(simpleMaterial, imageDrawObject);
 			}
 		}
 	}

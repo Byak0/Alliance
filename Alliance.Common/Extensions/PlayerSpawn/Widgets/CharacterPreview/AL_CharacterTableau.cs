@@ -9,6 +9,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.Tableaus;
+using TaleWorlds.MountAndBlade.View.Tableaus.Thumbnails;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 {
@@ -300,17 +301,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private void StopCustomAnimationIfCantContinue()
 		{
 			bool flag = false;
-			if (_agentVisuals != null && _customAnimation != null && _customAnimation.Index >= 0)
+			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none)
 			{
-				ActionIndexValueCache actionAnimationContinueToAction = MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, ActionIndexValueCache.Create(_customAnimation));
+				ActionIndexCache actionAnimationContinueToAction = MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, in _customAnimation);
 				if (actionAnimationContinueToAction.Index >= 0)
 				{
-					_customAnimationName = actionAnimationContinueToAction.Name;
+					_customAnimationName = actionAnimationContinueToAction.GetName();
 					StartCustomAnimation();
 					flag = true;
 				}
 			}
-
 			if (!flag)
 			{
 				StopCustomAnimation();
@@ -408,8 +408,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				}
 				else
 				{
-					TableauCacheManager.Current.ReturnCachedInventoryTableauScene();
-					TableauCacheManager.Current.ReturnCachedInventoryTableauScene();
+					ThumbnailCacheManager.Current.ReturnCachedInventoryTableauScene();
+					ThumbnailCacheManager.Current.ReturnCachedInventoryTableauScene();
 					view?.AddClearTask(clearOnlySceneview: true);
 					_tableauScene = null;
 				}
@@ -616,14 +616,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void StopCustomAnimation()
 		{
-			if (_agentVisuals != null && _customAnimation != null)
+			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none)
 			{
-				if (MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, ActionIndexValueCache.Create(_customAnimation)).Index < 0)
+				if (MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, in _customAnimation).Index < 0)
 				{
-					_agentVisuals.SetAction(GetIdleAction());
+					AgentVisuals agentVisuals = _agentVisuals;
+					ActionIndexCache idleAction = GetIdleAction();
+					agentVisuals.SetAction(idleAction, 0f, true);
 				}
-
-				_customAnimation = null;
+				_customAnimation = ActionIndexCache.act_none;
 			}
 		}
 
@@ -665,15 +666,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void SetBannerCode(string value)
 		{
-			if (string.IsNullOrEmpty(value))
-			{
-				_banner = null;
-			}
-			else
-			{
-				_banner = BannerCode.CreateFrom(value).CalculateBanner();
-			}
-
+			_banner = (string.IsNullOrEmpty(value) ? null : new Banner(value));
 			_isVisualsDirty = true;
 		}
 
@@ -697,7 +690,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private ActionIndexCache GetIdleAction()
 		{
-			return _idleAction ?? act_inventory_idle_start;
+			if (!(_idleAction != ActionIndexCache.act_none))
+			{
+				return ActionIndexCache.act_inventory_idle_start;
+			}
+			return _idleAction;
 		}
 
 		private void RefreshCharacterTableau(Equipment oldEquipment = null)
@@ -823,13 +820,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			if (_tableauScene == null)
 			{
-				if (TableauCacheManager.Current.IsCachedInventoryTableauSceneUsed())
+				if (ThumbnailCacheManager.Current.IsCachedInventoryTableauSceneUsed())
 				{
 					_tableauScene = Scene.CreateNewScene(initialize_physics: true, enable_decals: false);
 					_tableauScene.SetName("CharacterTableau");
 					_tableauScene.DisableStaticShadows(value: true);
 					_tableauScene.SetClothSimulationState(state: true);
-					_agentRendererSceneController = MBAgentRendererSceneController.CreateNewAgentRendererSceneController(_tableauScene, 32);
+					_agentRendererSceneController = MBAgentRendererSceneController.CreateNewAgentRendererSceneController(_tableauScene);
 					SceneInitializationData initData = new SceneInitializationData(initializeWithDefaults: true);
 					initData.InitPhysicsWorld = false;
 					initData.DoNotUseLoadingScreen = true;
@@ -837,12 +834,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				}
 				else
 				{
-					_tableauScene = TableauCacheManager.Current.GetCachedInventoryTableauScene();
+					_tableauScene = ThumbnailCacheManager.Current.GetCachedInventoryTableauScene();
 				}
 
 				_tableauScene.SetShadow(shadowEnabled: true);
 				_tableauScene.SetClothSimulationState(state: true);
-				_camPos = (_camPosGatheredFromScene = TableauCacheManager.Current.InventorySceneCameraFrame);
+				_camPos = (_camPosGatheredFromScene = ThumbnailCacheManager.Current.InventorySceneCameraFrame);
 				_mountSpawnPoint = _tableauScene.FindEntityWithTag("horse_inv").GetGlobalFrame();
 				_bannerSpawnPoint = _tableauScene.FindEntityWithTag("banner_inv").GetGlobalFrame();
 				_initialSpawnFrame = _tableauScene.FindEntityWithTag("agent_inv").GetGlobalFrame();

@@ -560,7 +560,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public AL_CharacterViewModel(StanceTypes stance = StanceTypes.None)
 		{
-			_equipment = new Equipment(isCivilian: false);
+			_equipment = new Equipment(equipmentType: Equipment.EquipmentType.Battle);
 			EquipmentCode = _equipment.CalculateEquipmentCode();
 			StanceIndex = (int)stance;
 		}
