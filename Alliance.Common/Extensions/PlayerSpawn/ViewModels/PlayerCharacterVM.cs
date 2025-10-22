@@ -320,7 +320,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 
 			CharacterViewModel.EquipmentCode = equipment.CalculateEquipmentCode();
-			if (FormationVM.Formation.MainCulture != null) CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture.BannerKey;
+			if (FormationVM.Formation.MainCulture != null) CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture.Banner.BannerCode;
 		}
 
 

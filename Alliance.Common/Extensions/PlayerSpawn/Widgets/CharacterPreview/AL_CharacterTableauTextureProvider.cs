@@ -345,7 +345,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		public override TaleWorlds.TwoDimension.Texture GetTexture(TwoDimensionContext twoDimensionContext, string name)
+		protected override Texture OnGetTextureForRender(TwoDimensionContext twoDimensionContext, string name)
 		{
 			CheckTexture();
 			return _providedTexture;
