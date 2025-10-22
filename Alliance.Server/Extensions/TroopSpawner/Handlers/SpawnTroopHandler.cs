@@ -149,19 +149,14 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			for (int i = 0; i < nbTroopToSpawn; i++)
 			{
 				if (!model.SpawnAtExactPosition) spawnPos = SpawnFrame.GetClosestSpawnFrame(missionPeer.Team, troopToSpawn.HasMount(), false, spawnPos);
-				if (Config.Instance.UseTroopLimit && extendedTroopToSpawn.TroopLeft <= 0 && !peer.IsCommander())
-				{
-					lackingReason = " There are no troops left to recruit.";
-					break;
-				}
 				if (!SpawnHelper.SpawnBot(missionPeer.Team, missionPeer.Culture, troopToSpawn, spawnPos, perkHandler, model.Formation, difficulty))
 				{
 					Log($"Alliance : Can't spawn bot n.{SpawnHelper.TotalBots} (no slot available)", LogLevel.Error);
 					lackingReason = " (engine is lacking slots for additional spawn)";
 					break;
-				};
+				}
+				;
 				troopSpawned++;
-				if (Config.Instance.UseTroopLimit) extendedTroopToSpawn.TroopLeft--;
 			}
 
 			int finalTroopCost = SpawnHelper.GetTotalTroopCost(troopToSpawn, troopSpawned + (playerSpawned ? 1 : 0), difficulty);
@@ -213,7 +208,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			{
 				// Inform players of what just spawned
 				GameNetwork.BeginBroadcastModuleEvent();
-				GameNetwork.WriteMessage(new SpawnInfoMessage(troopToSpawn, troopSpawned, extendedTroopToSpawn.TroopLeft));
+				GameNetwork.WriteMessage(new SpawnInfoMessage(troopToSpawn, troopSpawned));
 				GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 
 				// Send report to player who made the spawn request
@@ -271,12 +266,6 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			if (!model.SpawnAtExactPosition && isCommander && Config.Instance.UseTroopCost && goldRemaining < 0)
 			{
 				refuseReason = "You need more gold.";
-				return false;
-			}
-			// If troop limit is reached
-			if (!model.SpawnAtExactPosition && isCommander && Config.Instance.UseTroopLimit && troopToSpawn.TroopLeft <= 0)
-			{
-				refuseReason = "There are no more troops available.";
 				return false;
 			}
 			// If troop limit is reached

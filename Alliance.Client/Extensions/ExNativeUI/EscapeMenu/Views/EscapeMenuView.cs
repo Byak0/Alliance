@@ -80,7 +80,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			// Propositions de vote
 			if (GameNetwork.MyPeer.IsAdmin() || (gameType == "Lobby" && Config.Instance.AuthorizePoll))
 			{
-				list.Add(new EscapeMenuItemVM(new TextObject("{=lobby_vote_esc_menu}Propositions de vote", null), delegate (object o)
+				list.Add(new EscapeMenuItemVM(new TextObject("{=lobby_vote_esc_menu}Vote", null), delegate (object o)
 				{
 					OnEscapeMenuToggled(false);
 					Mission.Current.GetMissionBehavior<GameModeMenuView>()?.OpenMenu();

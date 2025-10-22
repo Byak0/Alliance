@@ -10,7 +10,6 @@ using Alliance.Server.Core.Security.Behaviors;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using Alliance.Server.Extensions.AIBehavior.Behaviors;
 using Alliance.Server.Extensions.Animals.Behaviors;
-using Alliance.Server.Extensions.ClassLimiter.Behaviors;
 using Alliance.Server.Extensions.DieUnderWater.Behaviors;
 using Alliance.Server.Extensions.FakeArmy.Behaviors;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
@@ -58,7 +57,6 @@ namespace Alliance.Server.GameModes
 				new PlayerSpawnBehavior(),
 				new UsableEntityBehavior(),
 				new TroopSpawnerBehavior(),
-				new ClassLimiterBehavior(),
 				new BattlePowerCalculationLogic(),
 				new ALGlobalAIBehavior(),
 				new DieUnderWaterBehavior(),

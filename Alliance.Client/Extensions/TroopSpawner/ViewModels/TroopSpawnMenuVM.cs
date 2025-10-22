@@ -1,7 +1,6 @@
 ﻿using Alliance.Client.Extensions.TroopSpawner.Models;
 using Alliance.Client.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Core.ExtendedXML.Extension;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
@@ -373,9 +372,6 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 		private void RefreshGold()
 		{
-			// Check if we exceeded troop limit
-			bool troopOverLimit = Config.Instance.UseTroopLimit && SpawnTroopsModel.Instance.SelectedTroop.GetExtendedCharacterObject().TroopLeft <= 0;
-
 			// Check if we can afford the troops 
 			bool troopTooCostly = false;
 			if (Config.Instance.UseTroopCost)
@@ -396,7 +392,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 				TotalGold = totalGold;
 			}
 
-			CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !(troopOverLimit || troopTooCostly);
+			CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !troopTooCostly;
 		}
 
 		private void RefreshCommanderVisual(Formation formation, Agent agent)

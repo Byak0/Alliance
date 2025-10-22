@@ -1,9 +1,7 @@
-﻿using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Extensions.TroopSpawner.Interfaces;
+﻿using Alliance.Common.Extensions.TroopSpawner.Interfaces;
 using System;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.MissionRepresentatives;
-using TaleWorlds.ObjectSystem;
 using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.GameModes.Story.Behaviors
@@ -33,12 +31,6 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 		{
 			base.OnRemoveBehavior();
 			MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
-
-			// Reset troop spawn limit
-			foreach (ExtendedCharacter extChar in MBObjectManager.Instance.GetObjectTypeList<ExtendedCharacter>())
-			{
-				extChar.TroopLeft = extChar.TroopLimit;
-			}
 		}
 
 		public override void OnMissionTick(float dt)

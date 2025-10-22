@@ -30,8 +30,6 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int SAERange = 30;
 		[ConfigProperty(true, "Toggle formation", "Activate or not the formation system (debuff isolated players).")]
 		public bool EnableFormation = false;
-		[ConfigProperty(true, "Enable player limits", "Limit the number of characters available to players. Limits are defined in CharactersExtended.xml.")]
-		public bool UsePlayerLimit = false;
 
 		[ConfigProperty(true, "Use gold to recruit troops", "Use gold system to recruit troops.")]
 		public bool UseTroopCost = false;
@@ -87,9 +85,6 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int GoldPerAssist = 5;
 		[ConfigProperty(true, "Gold on lost ally", "Gold gained when an ally died.", 0, 200)]
 		public int GoldPerAllyDead = 5;
-
-		[ConfigProperty(true, "Enable troop limits", "Limit the number of troops a commander can recruit. Limits are defined in CharactersExtended.xml.")]
-		public bool UseTroopLimit = false;
 
 		[ConfigProperty(true, "Commander side", "Commander side for Alliance.", dataType: DataTypes.BattleSide)]
 		public string CommanderSide = nameof(BattleSideEnum.Defender);
