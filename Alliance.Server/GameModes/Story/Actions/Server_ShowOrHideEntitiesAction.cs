@@ -8,9 +8,9 @@ namespace Alliance.Server.GameModes.Story.Actions
 {
 	public class Server_ShowOrHideEntitiesAction : ShowOrHideEntitiesAction
 	{
-		private GameEntity _gameEntity = null;
+		private WeakGameEntity _gameEntity = WeakGameEntity.Invalid;
 
-		public override void Register(GameEntity entity = null)
+		public override void Register(WeakGameEntity entity)
 		{
 			_gameEntity = entity;
 		}
@@ -23,7 +23,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			}
 
 			ToggleEntitiesBehavior toggleBehavior = Mission.Current.GetMissionBehavior<ToggleEntitiesBehavior>();
-			if (ParentEntityOnly && _gameEntity != null)
+			if (ParentEntityOnly && _gameEntity != WeakGameEntity.Invalid)
 			{
 				// TODO: Add support for any entity. For now, we rely on MissionObjectId to sync with clients.
 				MissionObject missionObject = _gameEntity.GetFirstScriptOfType<MissionObject>();
