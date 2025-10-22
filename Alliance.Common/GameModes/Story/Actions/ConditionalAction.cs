@@ -38,7 +38,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			Delay = 0f;
 		}
 
-		public override void Register(GameEntity entity = null)
+		public override void Register(WeakGameEntity entity)
 		{
 			Condition.ForEach(c => c.Register(entity));
 			ActionIfTrue.ForEach(a => a.Register(entity));

@@ -158,7 +158,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow(obj, scenarioEditorViewModel, parentViewModel.Title, parentViewModel.GameEntity);
+			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, scenarioEditorViewModel, parentViewModel.Title);
 			editorWindow.Show();
 
 			// Update DisplayName when the editor window is closed

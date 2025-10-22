@@ -4,6 +4,7 @@ using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -63,7 +64,7 @@ namespace Alliance.Common.GameModes.Story.Models
 			}
 			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
 			{
-				conditionalAction.Register();
+				conditionalAction.Register(WeakGameEntity.Invalid);
 			}
 		}
 
