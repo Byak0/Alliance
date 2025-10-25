@@ -155,6 +155,12 @@ namespace Alliance.Common.Patch.HarmonyPatch
 				if (!string.IsNullOrEmpty(element1.Value) && !string.IsNullOrEmpty(element2.Value))
 					element1.Value = element2.Value;
 
+				if (!XmlResource.XsdElementDictionary.ContainsKey(xsdPath))
+				{
+					Log($"No schema found for {xsdPath}", LogLevel.Warning);
+					element1.Add(element2.Elements());
+					return false;
+				}
 				var elementSchema = XmlResource.XsdElementDictionary[xsdPath];
 				var obj = element2.Elements() ?? Enumerable.Empty<XElement>();
 
