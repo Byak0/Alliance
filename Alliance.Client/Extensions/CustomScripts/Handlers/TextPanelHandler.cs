@@ -15,7 +15,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 		public void HandleSyncTextPanel(SyncTextPanel message)
 		{
 			MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-			CS_TextPanel script = missionObject?.GameEntity?.GetFirstScriptOfType<CS_TextPanel>();
+			CS_TextPanel script = missionObject?.GameEntity.GetFirstScriptOfType<CS_TextPanel>();
 			if (script != null)
 			{
 				script.UpdateText(message.Text);

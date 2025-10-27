@@ -41,7 +41,7 @@ namespace Alliance.Client.Extensions.BrushPicker
 		{
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-			ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+			ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 			// LOAD EVERYTHING
 			foreach (KeyValuePair<string, SpriteCategory> sc in spriteData.SpriteCategories)
 			{

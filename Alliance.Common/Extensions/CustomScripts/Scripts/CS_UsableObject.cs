@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.DotNet;
 using TaleWorlds.Engine;
@@ -117,10 +116,9 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			stdPointsAnimDuration = new Dictionary<StandingPoint, float[]>();
 			if (StandingPoints != null)
 			{
-				PropertyInfo finfo = typeof(UsableMissionObject).GetProperty("LockUserFrames", BindingFlags.Instance | BindingFlags.NonPublic);
 				foreach (StandingPoint standingPoint in StandingPoints)
 				{
-					finfo.SetValue(standingPoint, true);
+					standingPoint.LockUserFrames = true;
 					standingPointsState.Add(standingPoint, new AnimState[_lastAction == -1 ? 0 : _lastAction + 1]);
 					stdPointsAnimDuration.Add(standingPoint, new float[_lastAction == -1 ? 0 : _lastAction + 1]);
 				}

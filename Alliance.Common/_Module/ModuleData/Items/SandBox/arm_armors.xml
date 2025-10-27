@@ -14,10 +14,12 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="9"
+				stealth_factor="10"
 				modifier_group="cloth"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<!-- #endregion -->
@@ -57,10 +59,12 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="3"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -75,10 +79,12 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="7"
+				stealth_factor="5"
 				modifier_group="cloth"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -128,11 +134,13 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="5"
+				stealth_factor="5"
 				covers_hands="false"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -184,11 +192,13 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="8"
+				stealth_factor="10"
 				covers_hands="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<!-- #region Battania Medium Arm Armors -->
@@ -223,11 +233,13 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="3"
+				stealth_factor="5"
 				covers_hands="false"
 				modifier_group="cloth"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -295,12 +307,14 @@
 		Type="HandArmor">
 		<ItemComponent>
 			<Armor
+				stealth_factor="10"
 				arm_armor="24"
 				covers_hands="false"
 				modifier_group="plate"
 				material_type="Plate" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #endregion -->
@@ -384,7 +398,7 @@
 		id="khuzait_heavy_armor_bracer"
 		name="{=NfFAgMUE}Khan's Plated Bracers"
 		mesh="khuzait_heavy_armor_bracer"
-		culture="Culture.vlandia"
+		culture="Culture.khuzait"
 		weight="2.2"
 		appearance="7"
 		Type="HandArmor">
@@ -582,11 +596,13 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="4"
+				stealth_factor="5"
 				covers_hands="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -601,10 +617,12 @@
 		<ItemComponent>
 			<Armor
 				arm_armor="7"
+				stealth_factor="10"
 				modifier_group="cloth"
 				material_type="Cloth" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 </Items>

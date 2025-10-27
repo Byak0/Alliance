@@ -65,7 +65,7 @@
 	<Item
 		id="leopard_pelt"
 		name="{=QxzcuhmA}Leopard Pelt"
-		mesh="leopard_pelt"
+		mesh="leopard_pelt_a"
 		culture="Culture.aserai"
 		weight="2.0"
 		appearance="7"
@@ -92,10 +92,12 @@
 			<Armor
 				body_armor="4"
 				arm_armor="2"
+				stealth_factor="10"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #region Aserai Heavy Shoulder Armors -->
@@ -338,11 +340,13 @@
 		<ItemComponent>
 			<Armor
 				body_armor="2"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -356,11 +360,13 @@
 		<ItemComponent>
 			<Armor
 				body_armor="2"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -395,10 +401,12 @@
 			<Armor
 				body_armor="5"
 				arm_armor="2"
+				stealth_factor="5"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="bearskin"
@@ -487,10 +495,12 @@
 			<Armor
 				body_armor="2"
 				arm_armor="2"
+				stealth_factor="10"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -507,10 +517,12 @@
 			<Armor
 				body_armor="2"
 				arm_armor="1"
+				stealth_factor="10"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -527,10 +539,12 @@
 			<Armor
 				body_armor="3"
 				arm_armor="1"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<!-- #endregion -->
@@ -584,10 +598,12 @@
 			<Armor
 				body_armor="5"
 				arm_armor="3"
+				stealth_factor="10"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="battanian_chainmail_shoulder_b"
@@ -642,10 +658,12 @@
 			<Armor
 				body_armor="4"
 				arm_armor="2"
+				stealth_factor="5"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #endregion -->
@@ -934,10 +952,12 @@
 			<Armor
 				body_armor="3"
 				arm_armor="1"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -988,11 +1008,13 @@
 			<Armor
 				body_armor="3"
 				arm_armor="1"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -1151,10 +1173,12 @@
 			<Armor
 				body_armor="1"
 				arm_armor="4"
+				stealth_factor="10"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="mail_shoulders"
@@ -1529,11 +1553,13 @@
 		<ItemComponent>
 			<Armor
 				body_armor="3"
+				stealth_factor="10"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -1549,11 +1575,13 @@
 		<ItemComponent>
 			<Armor
 				body_armor="3"
+				stealth_factor="10"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -1569,11 +1597,13 @@
 		<ItemComponent>
 			<Armor
 				body_armor="2"
+				stealth_factor="5"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -1647,6 +1677,28 @@
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags />
+	</Item>
+	<!-- #Stealth -->
+	<Item
+		id="assassin_shoulder"
+		name="{=6CMYwYai}Blackened Cape"
+		mesh="assassin_shoulder"
+		culture="Culture.nord"
+		subtype="body_armor"
+		weight="0.85"
+		appearance="5"
+		Type="Cape">
+		<ItemComponent>
+			<Armor
+				body_armor="4"
+				arm_armor="2"
+				stealth_factor="15"
+				modifier_group="leather"
+				material_type="Leather" />
+		</ItemComponent>
+		<Flags
+			Civilian="true"
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 </Items>

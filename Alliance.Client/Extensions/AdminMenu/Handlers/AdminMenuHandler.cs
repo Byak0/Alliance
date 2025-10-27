@@ -25,7 +25,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
 					InformationManager.AddSystemNotification(notification.Text);
 					break;
 				case 1:
-					MBInformationManager.AddQuickInformation(new TextObject(notification.Text, null), 0, null, "");
+					MBInformationManager.AddQuickInformation(new TextObject(notification.Text, null), 0, null);
 					break;
 				case 2:
 					InformationManager.DisplayMessage(new InformationMessage(notification.Text, Color.White));

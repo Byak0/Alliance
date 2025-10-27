@@ -66,9 +66,9 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 		public override void EarlyStart()
 		{
-			getPlayerKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_getplayermouse");
-			openMenuKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_openmenu");
-			teleportKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_teleport");
+			getPlayerKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_getplayermouse");
+			openMenuKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_openmenu");
+			teleportKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_teleport");
 		}
 
 		private void InitLayer()
@@ -77,7 +77,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			{
 				AdminInstance.GetInstance().IsVisible = false;
 				_layerLoaded ??= new GauntletLayer(2, "AdminSys", false);
-				_movie ??= _layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
+				_movie ??= (IGauntletMovie)_layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
 				_layerLoaded.InputRestrictions.SetInputRestrictions();
 				_layerLoaded.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				MissionScreen.AddLayer(_layerLoaded);
@@ -118,7 +118,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			_layerLoaded.InputRestrictions.SetInputRestrictions();
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-			ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+			ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 			spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 			adminVM.RefreshPlayerList();
 			adminVM.IsVisible = true;
@@ -140,56 +140,56 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 		public override void OnMissionScreenTick(float dt)
 		{
-			if (_isMenuOpen)
-			{
-				if (
-					Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
-					|| Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey)
-					|| _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton)
-					|| _layerLoaded.Input.IsKeyPressed(InputKey.Escape)
-					)
-				{
-					CloseAdminPanel();
-				}
-			}
-			else
-			{
-				if (GameNetwork.MyPeer.IsAdmin())
-				{
-					if (IsModoModeActive)
-					{
-						if ((_layerLoaded.Input.IsKeyPressed(InputKey.LeftMouseButton) || Input.IsKeyPressed(InputKey.LeftMouseButton)) && !_isMenuOpen)
-						{
-							GetPlayerByMouse();
-						}
-						if (
-							Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
-							|| Input.IsKeyPressed(InputKey.RightMouseButton)
-							)
-						{
-							StopModoMode();
-						}
-					}
-					else
-					{
-						if (Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || Input.IsKeyPressed(getPlayerKey.ControllerKey.InputKey))
-						{
-							StartModoMode();
-						}
+			//if (_isMenuOpen)
+			//{
+			//	if (
+			//		Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
+			//		|| Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey)
+			//		|| _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton)
+			//		|| _layerLoaded.Input.IsKeyPressed(InputKey.Escape)
+			//		)
+			//	{
+			//		CloseAdminPanel();
+			//	}
+			//}
+			//else
+			//{
+			//	if (GameNetwork.MyPeer.IsAdmin())
+			//	{
+			//		if (IsModoModeActive)
+			//		{
+			//			if ((_layerLoaded.Input.IsKeyPressed(InputKey.LeftMouseButton) || Input.IsKeyPressed(InputKey.LeftMouseButton)) && !_isMenuOpen)
+			//			{
+			//				GetPlayerByMouse();
+			//			}
+			//			if (
+			//				Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
+			//				|| Input.IsKeyPressed(InputKey.RightMouseButton)
+			//				)
+			//			{
+			//				StopModoMode();
+			//			}
+			//		}
+			//		else
+			//		{
+			//			if (Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || Input.IsKeyPressed(getPlayerKey.ControllerKey.InputKey))
+			//			{
+			//				StartModoMode();
+			//			}
 
-						if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
-						{
-							AdminInstance.GetInstance().RefreshPlayerList();
-							OpenAdminPanel(AdminInstance.GetInstance());
-						}
-					}
+			//			if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
+			//			{
+			//				AdminInstance.GetInstance().RefreshPlayerList();
+			//				OpenAdminPanel(AdminInstance.GetInstance());
+			//			}
+			//		}
 
-					if (Input.IsKeyPressed(teleportKey.KeyboardKey.InputKey) || Input.IsKeyPressed(teleportKey.ControllerKey.InputKey))
-					{
-						TeleportToMouse();
-					}
-				}
-			}
+			//		if (Input.IsKeyPressed(teleportKey.KeyboardKey.InputKey) || Input.IsKeyPressed(teleportKey.ControllerKey.InputKey))
+			//		{
+			//			TeleportToMouse();
+			//		}
+			//	}
+			//}
 		}
 
 		public override void OnMissionTick(float dt)
@@ -202,7 +202,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 				{
 					// Manage border color and 3d text
 					MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
-					Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out var distance, -1, 0.1f);
+					Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out float distance);
 
 					if (agent != null)
 					{
@@ -256,7 +256,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 		{
 			MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
 
-			Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out var distance, -1, 0.1f);
+			Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out float distance);
 
 			if (agent != null)
 			{

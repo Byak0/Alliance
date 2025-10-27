@@ -10,7 +10,6 @@ using Alliance.Server.Core.Security;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -401,7 +400,7 @@ File creation date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 
 				foreach (NetworkCommunicator adminPeer in GameNetwork.NetworkPeers.Where(p => p.IsAdmin()))
 				{
-						ServerAdminMenuMsg.SendMessageToClient(adminPeer, notificationMessage, AdminServerLog.ColorList.Success, true);
+					ServerAdminMenuMsg.SendMessageToClient(adminPeer, notificationMessage, AdminServerLog.ColorList.Success, true);
 				}
 
 				//ServerAdminMenuMsg.SendMessageToClient(peer, $"Joueur {playerSelected.UserName} banni avec succès.", AdminServerLog.ColorList.Success, true);
@@ -535,25 +534,25 @@ File creation date: {DateTime.Now:yyyy-MM-dd HH:mm:ss}
 						continue;
 
 					// Vérifie si l'agent est contrôlé par l'IA (donc pas un joueur)
-					if (!agent.IsPlayerControlled && agent.Controller == Agent.ControllerType.AI)
+					if (!agent.IsPlayerControlled && agent.Controller == AgentControllerType.AI)
 					{
-						if(!agent.IsMount && agent.Team != null)
+						if (!agent.IsMount && agent.Team != null)
 						{
 							agentsToKill.Add(agent);
 						}
-						else if(agent.IsMount && agent.RiderAgent?.MissionPeer == null)
+						else if (agent.IsMount && agent.RiderAgent?.MissionPeer == null)
 						{
 							mountsToKill.Add(agent);
 						}
 					}
 				}
 
-				foreach(var agent in agentsToKill)
+				foreach (var agent in agentsToKill)
 				{
 					CoreUtils.TakeDamage(agent, 2000, 2000f);
 				}
 
-				if(agentsToKill.Count == 0)
+				if (agentsToKill.Count == 0)
 				{
 					foreach (var agent in mountsToKill)
 					{

@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>	
+<Items>
 	<!-- #region Armors -->
 	<!-- #region Aserai Armors -->
 	<!-- #region Aserai Head Armors -->
-	<!-- #region Weapons -->	
 	<Item
 		multiplayer_item="true"
 		id="mp_pointed_skullcap_over_cloth_headwrap"
@@ -885,18 +884,13 @@
 		<Flags />
 	</Item>
 	<!-- #endregion -->
-	<!-- #region Looters Armors -->
-	<!-- #region Looters Head Armors -->
-	<!-- #endregion -->
-	<!-- #region Looters Shoulder Armors -->
-	<!-- #endregion -->
 	<!-- #region Looters Body Armors -->
 	<Item
 		multiplayer_item="true"
 		id="mp_dummy_armor_min"
-		name="{=Zx4h7jDy}Dummy Min Armor"
+		name="{=!}Dummy Min Armor"
 		mesh="gambeson_b"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="10"
@@ -918,9 +912,9 @@
 	<Item
 		multiplayer_item="true"
 		id="mp_dummy_armor_lower_average"
-		name="{=K2xGw3Oo}Dummy Lower Average"
+		name="{=!}Dummy Lower Average"
 		mesh="sturgia_costume_m"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="20"
@@ -942,9 +936,9 @@
 	<Item
 		multiplayer_item="true"
 		id="mp_dummy_armor_higher_average"
-		name="{=gT8WENO3}Dummy Higher Average"
+		name="{=!}Dummy Higher Average"
 		mesh="vlandia_leather_armor"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="30"
@@ -965,9 +959,9 @@
 	<Item
 		multiplayer_item="true"
 		id="mp_dummy_armor_max"
-		name="{=wSUN0Dmo}Dummy Max Armor"
+		name="{=!}Dummy Max Armor"
 		mesh="vlandia_scale_armor"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="40"
@@ -1018,7 +1012,7 @@
 		name="{=tXbRb3QO}Studded Fur Armor"
 		mesh="bandit_1_d"
 		subtype="body_armor"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="0.6"
@@ -1042,7 +1036,7 @@
 		id="mp_vlandia_bandit_b"
 		name="{=BavVxSoC}Cheap Colored Clothes"
 		mesh="vlandia_bandit_b"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.8"
@@ -1066,7 +1060,7 @@
 		id="mp_bandit_fur_a"
 		name="{=TfDFlmpb}Loathsome Fur Armor"
 		mesh="bandit_fur_a"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="0.9"
@@ -1092,7 +1086,7 @@
 		name="{=8oKVhtth}Buckled Brigandine Armor"
 		mesh="bandit_2"
 		subtype="body_armor"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="12.3"
@@ -1111,11 +1105,6 @@
 		<Flags
 			UseTeamColor="true" />
 	</Item>
-	<!-- #endregion -->
-	<!-- #region Looters Arm Armors -->
-	<!-- #endregion -->
-	<!-- #region Looters Leg Armors -->
-	<!-- #endregion -->
 	<!-- #endregion -->
 	<!-- #region NeutralCulture Armors -->
 	<!-- #region NeutralCulture Head Armors -->
@@ -2647,7 +2636,7 @@
 		name="{=ewSpZ10R}Rough Padded Cap"
 		subtype="head_armor"
 		mesh="vlandia_bandit_cape_a"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.5"
@@ -2671,7 +2660,7 @@
 		name="{=7D3jvAfS}Hide Cap"
 		subtype="head_armor"
 		mesh="vlandia_bandit_cape_b"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.5"
@@ -4323,7 +4312,7 @@
 		multiplayer_item="true"
 		id="mp_leopard_pelt"
 		name="{=QxzcuhmA}Leopard Pelt"
-		mesh="leopard_pelt"
+		mesh="leopard_pelt_a"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -5283,7 +5272,7 @@
 		name="{=XH9f3yOX}Fur Waistcoat over Tunic"
 		subtype="body_armor"
 		mesh="fur_vaegir_short"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.3"
@@ -5528,7 +5517,7 @@
 		id="mp_rough_fur_over_chain"
 		name="{=KIxX6dH2}Rough Fur over Chain"
 		mesh="bandit_3_b"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="12.0"
@@ -5548,7 +5537,7 @@
 		id="mp_padded_leather_overcoat"
 		name="{=CtJPuRDa}Padded Leather Overcoat"
 		mesh="bandit_10"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="3.2"
@@ -5571,7 +5560,7 @@
 		id="mp_burlap_sack_dress"
 		name="{=IuD9SaQM}Burlap Dress"
 		mesh="burlap_sack_dress"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="0.5"
@@ -5649,7 +5638,7 @@
 		name="{=1cYka5tR}Sleeveless Fur Coat"
 		mesh="fur_vaegir_waistcoat"
 		subtype="body_armor"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.8"
@@ -6198,7 +6187,7 @@
 		id="mp_bandit_gambeson"
 		name="{=bTUGfbH5}Rugged Gambeson"
 		mesh="bandit_gambeson"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.2"
@@ -6248,7 +6237,7 @@
 		id="mp_vlandia_bandit_a"
 		name="{=AobNdBBU}Cheap Paddings"
 		mesh="vlandia_bandit_a"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.9"
@@ -7056,7 +7045,7 @@
 		id="mp_bandit_fur_b"
 		name="{=8nuXQ9F9}Fur Coat"
 		mesh="bandit_fur_b"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1"
@@ -7080,7 +7069,7 @@
 		id="mp_rough_fur_armor"
 		name="{=qo8hwDNU}Rough Fur Armor"
 		mesh="bandit_3_a"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="3.3"
@@ -7556,7 +7545,7 @@
 				body_armor="43"
 				leg_armor="18"
 				arm_armor="11"
-				has_gender_variations="false"
+				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="chain"
 				material_type="Chainmail" />
@@ -7720,7 +7709,7 @@
 				body_armor="37"
 				leg_armor="12"
 				arm_armor="4"
-				has_gender_variations="false"
+				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="chain"
 				material_type="Chainmail" />
@@ -7757,7 +7746,7 @@
 		name="{=qT6jIu3v}Fur Skirt with Tunic"
 		subtype="body_armor"
 		mesh="fur_vaegir_half_tunic"
-		culture="Culture.looters"
+		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="0.9"
@@ -13915,15 +13904,17 @@
 	<Item
 		id="mp_steppe_short_bow"
 		name="{=RJ8CcdJn}Steppe Short Bow"
-		body_name="bo_composite_shotbow_g"
+		body_name="bo_shortbow_g"
 		mesh="shortbow_g"
+		holster_mesh="shortbow_g_holster"
+		holster_mesh_with_weapon="shortbow_g_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.1"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -13955,15 +13946,17 @@
 	<Item
 		id="mp_steppe_fast_short_bow"
 		name="{=aKIqpIf0}Steppe Fast Short Bow"
-		body_name="bo_composite_shotbow_f"
+		body_name="bo_shortbow_f"
 		mesh="shortbow_f"
+		holster_mesh="shortbow_f_holster"
+		holster_mesh_with_weapon="shortbow_f_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.2"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -13995,14 +13988,15 @@
 	<Item
 		id="mp_steppe_superior_bow"
 		name="{=0h7l0uK3}Steppe Superior Bow"
-		body_name="bo_composite_longbow_a"
+		body_name="bo_longbow_a"
 		mesh="bow_roman_a"
+		holster_mesh_with_weapon="longbow_a_holster"
 		weight="1.4"
 		value="1"
 		is_merchandise="false"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14034,15 +14028,17 @@
 	<Item
 		id="mp_hunting_bow"
 		name="{=wltdyF2j}Hunting Bow"
-		body_name="bo_composite_shotbow_h"
+		body_name="bo_shortbow_h"
 		mesh="shortbow_h"
+		holster_mesh="shortbow_h_holster"
+		holster_mesh_with_weapon="shortbow_h_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14074,15 +14070,17 @@
 	<Item
 		id="mp_hunting_bow_faster_arrows"
 		name="{=wltdyF2j}Hunting Bow"
-		body_name="bo_composite_shotbow_h"
+		body_name="bo_shortbow_h"
 		mesh="shortbow_h"
+		holster_mesh="shortbow_h_holster"
+		holster_mesh_with_weapon="shortbow_h_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14114,15 +14112,17 @@
 	<Item
 		id="mp_fast_hunting_bow"
 		name="{=9GCPcCss}Fast Hunting Bow"
-		body_name="bo_composite_shotbow_h"
+		body_name="bo_shortbow_h"
 		mesh="shortbow_h"
+		holster_mesh="shortbow_h_holster"
+		holster_mesh_with_weapon="shortbow_h_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14154,15 +14154,17 @@
 	<Item
 		id="mp_nomad_bow"
 		name="{=rq5FMLVI}Nomad Short Bow"
-		body_name="bo_composite_shotbow_c"
+		body_name="bo_shortbow_c"
 		mesh="shortbow_c"
+		holster_mesh="shortbow_c_holster"
+		holster_mesh_with_weapon="shortbow_c_holster_weapon"
 		value="1"
 		is_merchandise="false"
 		weight="0.7"
 		difficulty="30"
 		appearance="0.5"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14195,15 +14197,17 @@
 	<Item
 		id="mp_short_bow"
 		name="{=xb2tMFSz}Short Bow"
-		body_name="bo_composite_shotbow_g"
+		body_name="bo_shortbow_g"
 		mesh="shortbow_g"
+		holster_mesh="shortbow_g_holster"
+		holster_mesh_with_weapon="shortbow_g_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.2"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14235,15 +14239,16 @@
 	<Item
 		id="mp_hunting_long_bow"
 		name="{=7rhZlXdO}Hunting Longbow"
-		body_name="bo_composite_longbow_e"
+		body_name="bo_longbow_f"
 		mesh="longbow_f"
+		holster_mesh_with_weapon="longbow_f_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14275,15 +14280,17 @@
 	<Item
 		id="mp_recurve_bow"
 		name="{=IJjrSbiV}Recurve Bow"
-		body_name="bo_composite_shotbow_c"
+		body_name="bo_shortbow_d"
 		mesh="shortbow_d"
+		holster_mesh="shortbow_d_holster"
+		holster_mesh_with_weapon="shortbow_d_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.6"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14315,15 +14322,17 @@
 	<Item
 		id="mp_guards_bow"
 		name="{=iauvbwL3}Guard's Bow"
-		body_name="bo_composite_shotbow_c"
+		body_name="bo_shortbow_d"
 		mesh="shortbow_d"
+		holster_mesh="shortbow_d_holster"
+		holster_mesh_with_weapon="shortbow_d_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.6"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14355,15 +14364,16 @@
 	<Item
 		id="mp_superior_bow"
 		name="{=3eb3ZyiU}Superior Bow"
-		body_name="bo_composite_longbow_a"
+		body_name="bo_longbow_a"
 		mesh="bow_roman_a"
+		holster_mesh_with_weapon="longbow_a_holster"
 		weight="1.5"
 		value="1"
 		is_merchandise="false"
 		difficulty="0"
 		appearance="0.5"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14395,8 +14405,10 @@
 	<Item
 		id="mp_mountain_hunting_bow"
 		name="{=YGQ6UXCo}Mountain Hunting Bow"
-		body_name="bo_composite_shotbow_h"
+		body_name="bo_shortbow_i"
 		mesh="shortbow_i"
+		holster_mesh="shortbow_i_holster"
+		holster_mesh_with_weapon="shortbow_i_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14404,7 +14416,7 @@
 		difficulty="0"
 		appearance="1"
 		Type="Bow"
-		item_holsters="bow_back_2:bow_hip:bow_hip_2:bow_back">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14437,8 +14449,10 @@
 	<Item
 		id="mp_nordic_short_bow"
 		name="{=tEimkEsU}Nordic Shortbow"
-		body_name="bo_composite_shotbow_c"
+		body_name="bo_shortbow_e"
 		mesh="shortbow_e"
+		holster_mesh="shortbow_e_holster"
+		holster_mesh_with_weapon="shortbow_e_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14446,7 +14460,7 @@
 		difficulty="0"
 		appearance="0.6"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14479,15 +14493,17 @@
 	<Item
 		id="mp_fast_short_bow"
 		name="{=WsUvpBwM}Fast Short Bow"
-		body_name="bo_composite_shotbow_f"
+		body_name="bo_shortbow_f"
 		mesh="shortbow_f"
+		holster_mesh="shortbow_f_holster"
+		holster_mesh_with_weapon="shortbow_f_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.2"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14519,15 +14535,17 @@
 	<Item
 		id="mp_strong_recurve_bow"
 		name="{=xODbCO6k}Composite Bow"
-		body_name="bo_composite_shotbow_a"
+		body_name="bo_shortbow_a"
 		mesh="shortbow_a"
+		holster_mesh="shortbow_a_holster"
+		holster_mesh_with_weapon="shortbow_a_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.8"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14559,15 +14577,16 @@
 	<Item
 		id="mp_long_bow"
 		name="{=KTegaNPW}Longbow"
-		body_name="bo_composite_longbow_a"
+		body_name="bo_longbow_b"
 		mesh="longbow_b"
+		holster_mesh_with_weapon="longbow_b_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14599,8 +14618,10 @@
 	<Item
 		id="mp_imperial_recurve_bow"
 		name="{=OuD7PfvY}Imperial Recurve Bow"
-		body_name="bo_composite_shotbow_b"
+		body_name="bo_shortbow_b"
 		mesh="shortbow_b"
+		holster_mesh="shortbow_b_holster"
+		holster_mesh_with_weapon="shortbow_b_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14608,7 +14629,7 @@
 		difficulty="0"
 		appearance="0.4"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14641,8 +14662,9 @@
 	<Item
 		id="mp_lowland_long_bow"
 		name="{=A6llHL9s}Lowland Longbow"
-		body_name="bo_composite_longbow_a"
+		body_name="bo_longbow_a"
 		mesh="longbow_a"
+		holster_mesh_with_weapon="longbow_a_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14651,7 +14673,7 @@
 		difficulty="0"
 		appearance="0.4"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14684,8 +14706,9 @@
 	<Item
 		id="mp_woodland_long_bow"
 		name="{=ZFwKlHIJ}Woodland Longbow"
-		body_name="bo_composite_longbow_a"
+		body_name="bo_longbow_d"
 		mesh="longbow_d"
+		holster_mesh_with_weapon="longbow_d_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14693,7 +14716,7 @@
 		difficulty="0"
 		appearance="0.3"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14726,8 +14749,9 @@
 	<Item
 		id="mp_tribesman_long_bow"
 		name="{=XiI81DUa}Tribesman Longbow"
-		body_name="bo_composite_longbow_g"
+		body_name="bo_longbow_h"
 		mesh="longbow_h"
+		holster_mesh_with_weapon="longbow_h_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
@@ -14735,7 +14759,7 @@
 		difficulty="0"
 		appearance="0.6"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14768,15 +14792,16 @@
 	<Item
 		id="mp_yeow_long_bow"
 		name="{=3XSuOAYT}Yeow Longbow"
-		body_name="bo_composite_longbow_g"
+		body_name="bo_longbow_j"
 		mesh="longbow_j"
+		holster_mesh_with_weapon="longbow_j_holster"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="2.4"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_back:bow_back_2:bow_hip:bow_hip_2">
+		item_holsters="bow_back_longbow:bow_back_longbow_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14808,15 +14833,17 @@
 	<Item
 		id="mp_hunting_bow_captain"
 		name="{=wltdyF2j}Hunting Bow"
-		body_name="bo_composite_shotbow_h"
+		body_name="bo_shortbow_h"
 		mesh="shortbow_h"
+		holster_mesh="shortbow_h_holster"
+		holster_mesh_with_weapon="shortbow_h_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.0"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -14848,15 +14875,17 @@
 	<Item
 		id="mp_recurve_bow_captain"
 		name="{=IJjrSbiV}Recurve Bow"
-		body_name="bo_composite_shotbow_c"
+		body_name="bo_shortbow_d"
 		mesh="shortbow_d"
+		holster_mesh="shortbow_d_holster"
+		holster_mesh_with_weapon="shortbow_d_holster_weapon"
 		culture="Culture.neutral_culture"
 		value="1"
 		is_merchandise="false"
 		weight="1.6"
 		difficulty="0"
 		Type="Bow"
-		item_holsters="bow_hip:bow_hip_2:bow_back:bow_back_2">
+		item_holsters="bow_hip:bow_hip_2">
 		<ItemComponent>
 			<Weapon
 				weapon_class="Bow"
@@ -15506,7 +15535,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="spear_pommel_12"
+				id="mp_spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15529,7 +15558,7 @@
 				Type="Handle"
 				scale_factor="90" />
 			<Piece
-				id="spear_pommel_12"
+				id="mp_spear_pommel_12"
 				Type="Pommel" />
 		</Pieces>
 		<!-- Length: 110 Weight: 1.25 SwingSpeed: 94 ThrustSpeed: 101 -->
@@ -15548,7 +15577,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="spear_handle_11"
+				id="mp_battania_javelin_handle"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15572,7 +15601,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="spear_handle_11"
+				id="mp_battania_javelin_handle"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15596,7 +15625,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="spear_handle_11"
+				id="mp_battania_javelin_handle"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15620,7 +15649,7 @@
 				Type="Blade"
 				scale_factor="105"></Piece>
 			<Piece
-				id="spear_handle_11"
+				id="mp_battania_javelin_handle"
 				Type="Handle"
 				scale_factor="102"></Piece>
 			<Piece
@@ -15642,7 +15671,7 @@
 		is_merchandise="false"
 		holster_mesh="bolt_bl_c_quiver"
 		holster_mesh_with_weapon="bolt_bl_c_quiver"
-		flying_mesh="bolt_bl_c"
+		flying_mesh="bolt_bl_flying"
 		weight="0.05"
 		appearance="1"
 		Type="Bolts"
@@ -15685,7 +15714,7 @@
 		is_merchandise="false"
 		holster_mesh="bolt_bl_c_quiver"
 		holster_mesh_with_weapon="bolt_bl_c_quiver"
-		flying_mesh="bolt_bl_c"
+		flying_mesh="bolt_bl_flying"
 		weight="0.05"
 		appearance="1"
 		Type="Bolts"
@@ -15728,7 +15757,7 @@
 		is_merchandise="false"
 		holster_mesh="bolt_bl_c_quiver"
 		holster_mesh_with_weapon="bolt_bl_c_quiver"
-		flying_mesh="bolt_bl_c"
+		flying_mesh="bolt_bl_flying"
 		weight="0.05"
 		appearance="1"
 		Type="Bolts"
@@ -15770,7 +15799,7 @@
 		value="1"
 		is_merchandise="false"
 		holster_mesh="bolt_bl_a_quiver"
-		flying_mesh="bolt_bl_a"
+		flying_mesh="bolt_bl_flying"
 		holster_mesh_with_weapon="bolt_bl_a_quiver"
 		weight="0.06"
 		appearance="1"
@@ -15814,7 +15843,7 @@
 		is_merchandise="false"
 		holster_mesh="bolt_bl_e_quiver"
 		holster_mesh_with_weapon="bolt_bl_e_quiver"
-		flying_mesh="bolt_bl_e"
+		flying_mesh="bolt_bl_flying"
 		weight="0.05"
 		appearance="1"
 		Type="Bolts"
@@ -15858,7 +15887,7 @@
 		culture="Culture.khuzait"
 		weight="0.05"
 		appearance="0.5"
-		flying_mesh="arrow_bl_f"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_f_quiver"
 		holster_mesh_with_weapon="arrow_bl_f_quiver"
 		Type="Arrows"
@@ -15899,7 +15928,7 @@
 		culture="Culture.khuzait"
 		weight="0.05"
 		appearance="0.5"
-		flying_mesh="arrow_bl_f"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_f_quiver"
 		holster_mesh_with_weapon="arrow_bl_f_quiver"
 		Type="Arrows"
@@ -15940,7 +15969,7 @@
 		culture="Culture.khuzait"
 		weight="0.06"
 		appearance="1"
-		flying_mesh="arrow_bl_e"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_e_quiver"
 		holster_mesh_with_weapon="arrow_bl_e_quiver"
 		Type="Arrows"
@@ -15983,7 +16012,7 @@
 		culture="Culture.khuzait"
 		weight="0.05"
 		appearance="0.5"
-		flying_mesh="arrow_bl_f"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_f_quiver"
 		holster_mesh_with_weapon="arrow_bl_f_quiver"
 		Type="Arrows"
@@ -16024,7 +16053,7 @@
 		culture="Culture.khuzait"
 		weight="0.05"
 		appearance="0.5"
-		flying_mesh="arrow_bl_f"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_f_quiver"
 		holster_mesh_with_weapon="arrow_bl_f_quiver"
 		Type="Arrows"
@@ -16065,7 +16094,7 @@
 		culture="Culture.khuzait"
 		weight="0.06"
 		appearance="1"
-		flying_mesh="arrow_bl_e"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_e_quiver"
 		holster_mesh_with_weapon="arrow_bl_e_quiver"
 		Type="Arrows"
@@ -16107,7 +16136,7 @@
 		is_merchandise="false"
 		weight="0.05"
 		appearance="1"
-		flying_mesh="arrow_bl_g"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_h_quiver"
 		holster_mesh_with_weapon="arrow_bl_h_quiver"
 		Type="Arrows"
@@ -16149,7 +16178,7 @@
 		is_merchandise="false"
 		weight="0.05"
 		appearance="1"
-		flying_mesh="arrow_bl_g"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_h_quiver"
 		holster_mesh_with_weapon="arrow_bl_h_quiver"
 		Type="Arrows"
@@ -16190,7 +16219,7 @@
 		is_merchandise="false"
 		weight="0.06"
 		appearance="1"
-		flying_mesh="arrow_bl_i"
+		flying_mesh="arrow_bl_flying"
 		holster_mesh="arrow_bl_i_quiver"
 		holster_mesh_with_weapon="arrow_bl_i_quiver"
 		Type="Arrows"
@@ -16231,7 +16260,7 @@
 		holster_mesh="arrow_bl_g_quiver"
 		holster_mesh_with_weapon="arrow_bl_g_quiver"
 		subtype="arrows"
-		flying_mesh="arrow_bl_g"
+		flying_mesh="arrow_bl_flying"
 		weight="0.05"
 		difficulty="0"
 		appearance="1"
@@ -16275,7 +16304,7 @@
 		holster_mesh="arrow_bl_g_quiver"
 		holster_mesh_with_weapon="arrow_bl_g_quiver"
 		subtype="arrows"
-		flying_mesh="arrow_bl_g"
+		flying_mesh="arrow_bl_flying"
 		weight="0.05"
 		difficulty="0"
 		appearance="1"
@@ -16318,7 +16347,7 @@
 		holster_mesh="arrow_bl_g_quiver"
 		holster_mesh_with_weapon="arrow_bl_g_quiver"
 		subtype="arrows"
-		flying_mesh="arrow_bl_g"
+		flying_mesh="arrow_bl_flying"
 		weight="0.05"
 		difficulty="0"
 		appearance="1"
@@ -16362,7 +16391,7 @@
 		holster_mesh="arrow_bl_c_quiver"
 		holster_mesh_with_weapon="arrow_bl_c_quiver"
 		weight="0.06"
-		flying_mesh="arrow_bl_c"
+		flying_mesh="arrow_bl_flying"
 		appearance="1"
 		Type="Arrows"
 		item_holsters="quiver_back_middle:quiver_bolts_2:quiver_bolts"
@@ -20452,6 +20481,7 @@
 				charge_bonus="0"
 				family_type="1"
 				modifier_group="leather"
+				reins_mesh="horse_harness_b_rein"
 				material_type="Leather" />
 		</ItemComponent>
 	</Item>
@@ -20997,7 +21027,7 @@
 				speed_rating="0"
 				missile_speed="80"
 				weapon_length="95"
-				thrust_damage="400"
+				thrust_damage="2000"
 				thrust_damage_type="Pierce"
 				item_usage=""
 				flying_sound_code="event:/mission/combat/missile/foley/passby"
@@ -21040,7 +21070,7 @@
 				speed_rating="0"
 				missile_speed="80"
 				weapon_length="95"
-				thrust_damage="400"
+				thrust_damage="2000"
 				thrust_damage_type="Pierce"
 				item_usage=""
 				flying_sound_code="event:/mission/combat/missile/foley/passby"
@@ -21088,7 +21118,58 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="70"
+				thrust_damage="130"
+				item_usage="heavy_stone"
+				flying_sound_code="event:/mission/combat/boulder/passby"
+				rotation_speed="2, 0.5, 0">
+				<WeaponFlags
+					RangedWeapon="true"
+					Consumable="true"
+					NotUsableWithOneHand="true"
+					TwoHandIdleOnMount="true"
+					CanPenetrateShield="true"
+					MissileWithPhysics="true"
+					UseHandAsThrowBase="true"
+					LeavesTrail="true"
+					AmmoCanBreakOnBounceBack="true"
+					CanKillEvenIfBlunt="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			QuickFadeOut="true"
+			CannotBePickedUp="true"
+			DropOnWeaponChange="true"
+			DropOnAnyAction="true" />
+	</Item>
+	<Item
+		multiplayer_item="true"
+		id="boulder_projectile"
+		name="{=pzfbPbWW}Boulder"
+		is_merchandise="false"
+		body_name="bo_projectile_rock"
+		holster_body_name="bo_axe_short"
+		mesh="projectile_rock"
+		holster_mesh=""
+		subtype="arrows"
+		value="1"
+		weight="15"
+		difficulty="0"
+		appearance="0.5"
+		Type="Thrown"
+		item_holsters="">
+		<ItemComponent>
+			<Weapon
+				weapon_class="Boulder"
+				ammo_class="Boulder"
+				stack_amount="1"
+				position="0.05, -0.15, 0"
+				center_of_mass="0,0,0"
+				physics_material="boulder_stone"
+				thrust_speed="100"
+				speed_rating="0"
+				missile_speed="8"
+				weapon_length="95"
+				thrust_damage="3250"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				rotation_speed="2, 0.5, 0">
@@ -21139,7 +21220,60 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="70"
+				thrust_damage="200"
+				item_usage="heavy_stone"
+				flying_sound_code="event:/mission/combat/boulder/passby"
+				trail_particle_name="psys_game_burning_jar_trail"
+				rotation_speed="2, 0.5, 0">
+				<WeaponFlags
+					RangedWeapon="true"
+					NotUsableWithOneHand="true"
+					TwoHandIdleOnMount="true"
+					CanPenetrateShield="true"
+					MissileWithPhysics="true"
+					Consumable="true"
+					LeavesTrail="true"
+					Burning="true"
+					AffectsAreaBig="true"
+					AmmoBreaksOnBounceBack="true"
+					CanKillEvenIfBlunt="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags
+			QuickFadeOut="true"
+			CannotBePickedUp="true"
+			DropOnWeaponChange="true"
+			DropOnAnyAction="true" />
+	</Item>
+	<Item
+		multiplayer_item="true"
+		id="pot_projectile"
+		name="{=3Wzhxkn1}Pot"
+		is_merchandise="false"
+		body_name="bo_projectile_rock"
+		holster_body_name="bo_axe_short"
+		flying_mesh="projectile_pot"
+		mesh="projectile_pot"
+		holster_mesh=""
+		subtype="arrows"
+		value="1"
+		weight="15"
+		difficulty="0"
+		appearance="0.5"
+		Type="Thrown"
+		item_holsters="">
+		<ItemComponent>
+			<Weapon
+				weapon_class="Boulder"
+				ammo_class="Boulder"
+				stack_amount="1"
+				position="0.05, -0.15, 0"
+				physics_material="burning_jar"
+				thrust_speed="100"
+				speed_rating="0"
+				missile_speed="8"
+				weapon_length="95"
+				thrust_damage="2300"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				trail_particle_name="psys_game_burning_jar_trail"
@@ -21192,7 +21326,7 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="70"
+				thrust_damage="120"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				rotation_speed="2, 0.5, 0">
@@ -21244,7 +21378,7 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="70"
+				thrust_damage="120"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				rotation_speed="2, 0.5, 0">
@@ -21296,7 +21430,7 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="25"
+				thrust_damage="570"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				rotation_speed="2, 0.5, 0">
@@ -21348,7 +21482,7 @@
 				speed_rating="0"
 				missile_speed="8"
 				weapon_length="95"
-				thrust_damage="25"
+				thrust_damage="570"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				trail_particle_name="mangonel_grapeshot_burning_projectile"
@@ -21383,6 +21517,7 @@
 		holster_mesh="stone_holster"
 		holster_mesh_with_weapon="stone_holster"
 		mesh="throwing_stone"
+		flying_mesh="sling_ammo_flying"
 		value="1"
 		is_merchandise="false"
 		weight="0.1"

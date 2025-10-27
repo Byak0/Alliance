@@ -68,7 +68,7 @@
       <XmlName id="CraftingPieces" path="CraftingPieces/LOTR" />
     </XmlNode>
     <XmlNode>
-      <XmlName id="CraftingPieces" path="CraftingPieces/Native" />
+      <XmlName id="CraftingPieces" path="CraftingPieces/NativeMP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="WeaponDescriptions" path="WeaponDescriptions/LOTR" />
@@ -84,9 +84,6 @@
     </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items/NativeMP" />
-    </XmlNode>
-    <XmlNode>
-      <XmlName id="Items" path="Items/SOP" />
     </XmlNode>
     <XmlNode>
       <XmlName id="ItemsExtended" path="ItemsExtended/LOTR" />

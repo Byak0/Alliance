@@ -69,9 +69,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 
 		public override void EarlyStart()
 		{
-			menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_menu");
-			spawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_spawn");
-			siegeSpawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_siege_spawn");
+			//menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_menu");
+			//spawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_spawn");
+			//siegeSpawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_siege_spawn");
 		}
 
 		public override void OnMissionScreenFinalize()
@@ -100,7 +100,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 				_layer.LoadMovie("TroopSpawnMenu", _dataSource);
 				SpriteData spriteData = UIResourceManager.SpriteData;
 				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-				ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+				ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 				spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 				spriteData.SpriteCategories["ui_order"].Load(resourceContext, uiResourceDepot);
 				MissionScreen.AddLayer(_layer);
@@ -145,33 +145,33 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 
 		private void TickInputs()
 		{
-			if (IsMenuOpen)
-			{
-				if (Input.IsKeyPressed(menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
-				{
-					CloseMenu();
-				}
-			}
-			else
-			{
-				if (Input.IsKeyPressed(menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(menuKey.ControllerKey.InputKey))
-				{
-					OpenMenu();
-				}
-				if (Input.IsKeyDown(spawnKey.KeyboardKey.InputKey) || Input.IsKeyDown(spawnKey.ControllerKey.InputKey))
-				{
-					// Spawn every 0.15sec max
-					if (Input.IsKeyDown(InputKey.LeftShift) || Mission.CurrentTime > _lastSpawnCommand + 0.15f)
-					{
-						_lastSpawnCommand = Mission.CurrentTime;
-						SpawnTroop();
-					}
-				}
-				if (Input.IsKeyDown(InputKey.LeftShift) && Input.IsKeyPressed(siegeSpawnKey.KeyboardKey.InputKey) || Input.IsKeyPressed(siegeSpawnKey.ControllerKey.InputKey))
-				{
-					SpawnTheThing();
-				}
-			}
+			//if (IsMenuOpen)
+			//{
+			//	if (Input.IsKeyPressed(menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
+			//	{
+			//		CloseMenu();
+			//	}
+			//}
+			//else
+			//{
+			//	if (Input.IsKeyPressed(menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(menuKey.ControllerKey.InputKey))
+			//	{
+			//		OpenMenu();
+			//	}
+			//	if (Input.IsKeyDown(spawnKey.KeyboardKey.InputKey) || Input.IsKeyDown(spawnKey.ControllerKey.InputKey))
+			//	{
+			//		// Spawn every 0.15sec max
+			//		if (Input.IsKeyDown(InputKey.LeftShift) || Mission.CurrentTime > _lastSpawnCommand + 0.15f)
+			//		{
+			//			_lastSpawnCommand = Mission.CurrentTime;
+			//			SpawnTroop();
+			//		}
+			//	}
+			//	if (Input.IsKeyDown(InputKey.LeftShift) && Input.IsKeyPressed(siegeSpawnKey.KeyboardKey.InputKey) || Input.IsKeyPressed(siegeSpawnKey.ControllerKey.InputKey))
+			//	{
+			//		SpawnTheThing();
+			//	}
+			//}
 		}
 
 		// Admin command - Spawn troop at exact location

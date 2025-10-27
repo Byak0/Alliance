@@ -1,11 +1,9 @@
 ﻿using Alliance.Client.Extensions.AnimationPlayer.ViewModels;
 using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.KeyBinder.Models;
-using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -130,11 +128,11 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 
 		private GauntletLayer _layer;
 		private AnimationVM _dataSource;
-		private GameKey _menuKey;
-		private GameKey _selfKey;
-		private GameKey _targetKey;
-		private GameKey _formationKey;
-		private List<GameKey> _animationKeys;
+		private HotKey _menuKey;
+		private HotKey _selfKey;
+		private HotKey _targetKey;
+		private HotKey _formationKey;
+		private List<HotKey> _animationKeys;
 		private bool _initialized;
 
 		public AnimationView()
@@ -144,14 +142,14 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 		public override void EarlyStart()
 		{
 			AnimationRequestEmitter.Instance.LastRequest = 0;
-			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_menu");
-			_selfKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_self");
-			_targetKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_target");
-			_formationKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_formation");
-			_animationKeys = new List<GameKey>();
+			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetHotKey("key_anim_menu");
+			_selfKey = HotKeyManager.GetCategory(KeyCategoryId).GetHotKey("key_anim_self");
+			_targetKey = HotKeyManager.GetCategory(KeyCategoryId).GetHotKey("key_anim_target");
+			_formationKey = HotKeyManager.GetCategory(KeyCategoryId).GetHotKey("key_anim_formation");
+			_animationKeys = new List<HotKey>();
 			for (int i = 1; i <= 9; i++)
 			{
-				_animationKeys.Add(HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_shortcut" + i));
+				_animationKeys.Add(HotKeyManager.GetCategory(KeyCategoryId).GetHotKey("key_anim_shortcut" + i));
 			}
 		}
 
@@ -182,7 +180,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 				_layer.LoadMovie("AnimationMenu", _dataSource);
 				SpriteData spriteData = UIResourceManager.SpriteData;
 				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-				ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+				ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 				spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 				MissionScreen.AddLayer(_layer);
 				_initialized = true;
@@ -236,99 +234,98 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 
 		private void TickInputs()
 		{
-			if (IsMenuOpen)
-			{
-				if (Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
-				{
-					CloseMenu();
-				}
-			}
-			else
-			{
-				if (Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey))
-				{
-					if (Input.IsKeyPressed(InputKey.LeftControl) || Input.IsKeyDown(InputKey.LeftControl))
-					{
-						if (GameNetwork.MyPeer.IsAdmin())
-						{
-							OpenMenu(editMode: true);
-						}
-					}
-					else
-					{
-						OpenMenu();
-					}
-				}
-			}
+			//if (IsMenuOpen)
+			//{
+			//	if (Input.IsKeyPressed(_menuKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
+			//	{
+			//		CloseMenu();
+			//	}
+			//}
+			//else
+			//{
+			//	if (Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey))
+			//	{
+			//		if (Input.IsKeyPressed(InputKey.LeftControl) || Input.IsKeyDown(InputKey.LeftControl))
+			//		{
+			//			if (GameNetwork.MyPeer.IsAdmin())
+			//			{
+			//				OpenMenu(editMode: true);
+			//			}
+			//		}
+			//		else
+			//		{
+			//			OpenMenu();
+			//		}
+			//	}
+			//}
 
-			CheckTargetShortcuts();
+			//CheckTargetShortcuts();
 		}
 
 		private void CheckTargetShortcuts()
 		{
-			TargetType targetType = TargetType.None;
+			//TargetType targetType = TargetType.None;
 
-			if (Input.IsKeyDown(_selfKey.KeyboardKey.InputKey) || Input.IsKeyDown(_selfKey.ControllerKey.InputKey))
-			{
-				targetType = TargetType.Self;
-			}
-			else if (Input.IsKeyDown(_targetKey.KeyboardKey.InputKey) || Input.IsKeyDown(_targetKey.ControllerKey.InputKey))
-			{
-				targetType = TargetType.Target;
-			}
-			else if (Input.IsKeyDown(_formationKey.KeyboardKey.InputKey) || Input.IsKeyDown(_formationKey.ControllerKey.InputKey))
-			{
-				targetType = TargetType.Formation;
-			}
+			//if (Input.IsKeyDown(_selfKey.KeyboardKey.InputKey) || Input.IsKeyDown(_selfKey.ControllerKey.InputKey))
+			//{
+			//	targetType = TargetType.Self;
+			//}
+			//else if (Input.IsKeyDown(_targetKey.KeyboardKey.InputKey) || Input.IsKeyDown(_targetKey.ControllerKey.InputKey))
+			//{
+			//	targetType = TargetType.Target;
+			//}
+			//else if (Input.IsKeyDown(_formationKey.KeyboardKey.InputKey) || Input.IsKeyDown(_formationKey.ControllerKey.InputKey))
+			//{
+			//	targetType = TargetType.Formation;
+			//}
 
-			if (targetType != TargetType.None)
-			{
-				CheckAnimationShortcuts(targetType);
-			}
+			//if (targetType != TargetType.None)
+			//{
+			//	CheckAnimationShortcuts(targetType);
+			//}
 		}
 
 		private void CheckAnimationShortcuts(TargetType targetType)
 		{
-			//AnimationSet animSet = AnimationUserStore.Instance.AnimationSets.ElementAtOrDefault(_dataSource != null ? _dataSource.SelectedSet : 0);
-			AnimationSet animSet = _dataSource != null ? _dataSource.SelectedAnimSet : AnimationUserStore.Instance.AnimationSets?.ElementAtOrDefault(0);
+			//AnimationSet animSet = _dataSource != null ? _dataSource.SelectedAnimSet : AnimationUserStore.Instance.AnimationSets?.ElementAtOrDefault(0);
 
-			if (_dataSource == null || animSet == null) return;
+			//if (_dataSource == null || animSet == null) return;
 
-			for (int i = 0; i < _animationKeys.Count; i++)
-			{
-				GameKey animationKey = _animationKeys[i];
-				if (Input.IsKeyPressed(animationKey.KeyboardKey.InputKey) || Input.IsKeyPressed(animationKey.ControllerKey.InputKey))
-				{
-					if (IsMenuOpen)
-					{
-						CloseMenu();
-					}
-					AnimationSequence animationSequence = AnimationUserStore.Instance.AnimationSequences.Find(x => x.Index == animSet.BindedAnimSequence[i]?.AnimSequenceIndex);
-					switch (targetType)
-					{
-						case TargetType.Self:
-							AnimationRequestEmitter.Instance.RequestAnimationSequenceForTarget(animationSequence, Agent.Main);
-							break;
-						case TargetType.Target:
-							AnimationRequestEmitter.Instance.RequestAnimationSequenceForTarget(animationSequence, GetTargettedAgent());
-							break;
-						case TargetType.Formation:
-							MBReadOnlyList<Formation> formations = Mission.Current.PlayerTeam?.PlayerOrderController?.SelectedFormations;
-							if (formations != null && formations.Count > 0)
-							{
-								foreach (Formation formation in formations)
-								{
-									AnimationRequestEmitter.Instance.RequestAnimationSequenceForFormation(animationSequence, formation);
-								}
-							}
-							else if (Agent.Main?.Formation != null)
-							{
-								AnimationRequestEmitter.Instance.RequestAnimationSequenceForFormation(animationSequence, Agent.Main.Formation);
-							}
-							break;
-					}
-				}
-			}
+			//for (int i = 0; i < _animationKeys.Count; i++)
+			//{
+			//	GameKey animationKey = _animationKeys[i];
+			//	if (Input.IsKeyPressed(animationKey.KeyboardKey.InputKey) || Input.IsKeyPressed(animationKey.ControllerKey.InputKey))
+			//	{
+			//		if (IsMenuOpen)
+			//		{
+			//			CloseMenu();
+			//		}
+			//		AnimationSequence animationSequence = AnimationUserStore.Instance.AnimationSequences.Find(x => x.Index == animSet.BindedAnimSequence[i]?.AnimSequenceIndex);
+			//		switch (targetType)
+			//		{
+			//			case TargetType.Self:
+			//				AnimationRequestEmitter.Instance.RequestAnimationSequenceForTarget(animationSequence, Agent.Main);
+			//				break;
+			//			case TargetType.Target:
+			//				AnimationRequestEmitter.Instance.RequestAnimationSequenceForTarget(animationSequence, GetTargettedAgent());
+			//				break;
+			//			case TargetType.Formation:
+			//				MBReadOnlyList<Formation> formations = Mission.Current.PlayerTeam?.PlayerOrderController?.SelectedFormations;
+			//				if (formations != null && formations.Count > 0)
+			//				{
+			//					foreach (Formation formation in formations)
+			//					{
+			//						AnimationRequestEmitter.Instance.RequestAnimationSequenceForFormation(animationSequence, formation);
+			//					}
+			//				}
+			//				else if (Agent.Main?.Formation != null)
+			//				{
+			//					AnimationRequestEmitter.Instance.RequestAnimationSequenceForFormation(animationSequence, Agent.Main.Formation);
+			//				}
+			//				break;
+			//		}
+			//	}
+			//}
 		}
 
 		/// <summary>
@@ -337,7 +334,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 		private Agent GetTargettedAgent()
 		{
 			MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
-			return Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out _, -1, 0.1f);
+			return Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out _);
 		}
 	}
 

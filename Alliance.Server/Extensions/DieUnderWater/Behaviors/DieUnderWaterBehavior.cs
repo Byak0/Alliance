@@ -3,25 +3,23 @@ using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 {
 	public class DieUnderWaterBehavior : MissionNetwork, IMissionBehavior
 	{
-		private float waterLevel;
+		//private float waterLevel;
 		private List<Agent> allAgentList = new();
 		private DieAgentManager agentManager = new();
 		private MultiplayerRoundController roundController;
 
-		public override void AfterStart()
-		{
-			base.AfterStart();
-			waterLevel = Mission.Current.GetWaterLevelAtPosition(Vec2.Zero);
-			Log("Water level is " + waterLevel, LogLevel.Information);
-		}
+		//public override void AfterStart()
+		//{
+		//	base.AfterStart();
+		//	waterLevel = Mission.Current.GetWaterLevelAtPosition(Vec2.Zero);
+		//	Log("Water level is " + waterLevel, LogLevel.Information);
+		//}
 
 		public override void OnBehaviorInitialize()
 		{
@@ -68,7 +66,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 			{
 				if (IsAgentEligible(agent))
 				{
-					if (agent.GetEyeGlobalPosition().Z < waterLevel)
+					if (agent.IsInWater()) // todo check this new method from 1.3
 					{
 						agentManager.SendDeathSignal(agent);
 					}

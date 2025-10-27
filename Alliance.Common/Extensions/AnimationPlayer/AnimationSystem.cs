@@ -103,9 +103,11 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				if (refreshDefaultDurations)
 				{
 					//!\\ This call is randomly prone to AccessViolationException
-					float duration = MBActionSet.GetActionAnimationDuration(IndexToActionSetDictionary[i].First(), IndexToActionDictionary[i]);
+					//float duration = MBActionSet.GetActionAnimationDuration(IndexToActionSetDictionary[i].First(), IndexToActionDictionary[i]);
+					float duration = MBAnimation.GetAnimationDuration(i);
 					AnimationDefaultStore.Instance.DefaultDurations.Add(duration);
 				}
+
 				IndexToDurationDictionary.Add(i, AnimationDefaultStore.Instance.DefaultDurations[i]);
 				DefaultAnimations.Add(new Animation(i, IndexToActionDictionary[i], IndexToActionSetDictionary[i], "", 1f, AnimationDefaultStore.Instance.DefaultDurations[i]));
 			}
