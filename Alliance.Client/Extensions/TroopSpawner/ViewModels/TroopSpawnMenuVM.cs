@@ -469,7 +469,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 			TroopPreview.FillFrom(SelectedTroopVM.Troop);
 			TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
-			TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode?.Code ?? String.Empty;
+			TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode;
 		}
 
 		private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)

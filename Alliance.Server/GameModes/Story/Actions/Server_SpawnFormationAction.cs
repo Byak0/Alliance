@@ -148,28 +148,28 @@ namespace Alliance.Server.GameModes.Story.Actions
 				switch (Disposition)
 				{
 					case ArrangementOrder.ArrangementOrderEnum.Line:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderLine;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderLine);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Loose:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderLoose;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderLoose);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.ShieldWall:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderShieldWall;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderShieldWall);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Square:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderSquare;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderSquare);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Scatter:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderScatter;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderScatter);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Circle:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderCircle;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderCircle);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Column:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderColumn;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderColumn);
 						break;
 					case ArrangementOrder.ArrangementOrderEnum.Skein:
-						formation.ArrangementOrder = ArrangementOrder.ArrangementOrderSkein;
+						formation.SetArrangementOrder(ArrangementOrder.ArrangementOrderSkein);
 						break;
 				}
 			}

@@ -1,38 +1,41 @@
-﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels;
-using Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.MissionViews;
+﻿using Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.MissionViews;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.GauntletUI.Mission;
-using TaleWorlds.MountAndBlade.Missions.Handlers;
+using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.MissionViews.Singleplayer;
+using TaleWorlds.MountAndBlade.ViewModelCollection;
+using TaleWorlds.ScreenSystem;
 
 namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 {
-	//[OverrideView(typeof(MissionAgentStatusUIHandler))]
-	public class AgentStatusView : MissionGauntletBattleUIBase
+	[OverrideView(typeof(MissionAgentStatusUIHandler))]
+	public class AgentStatusView : MissionAgentStatusUIHandler
 	{
+		public MissionAgentStatusVM DataSource
+		{
+			get
+			{
+				return _dataSource;
+			}
+		}
+
 		public AgentStatusView()
 		{
 		}
 
-		public override void OnMissionScreenActivate()
+		public override void OnMissionStateActivated()
 		{
-			base.OnMissionScreenActivate();
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnMainAgentWeaponChange();
+			base.OnMissionStateActivated();
+			_dataSource?.OnMainAgentWeaponChange();
 		}
 
 		public override void EarlyStart()
 		{
 			base.EarlyStart();
-			_dataSource = new AgentStatusVM(Mission, MissionScreen.CombatCamera, new Func<float>(MissionScreen.GetCameraToggleProgress));
+			_dataSource = new MissionAgentStatusVM(Mission, MissionScreen.CombatCamera, new Func<float>(MissionScreen.GetCameraToggleProgress));
 			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
 			_gauntletLayer.LoadMovie("MainAgentHUD", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
@@ -52,50 +55,40 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 			_dataSource.IsAgentStatusAvailable = false;
 		}
 
+		protected override void OnSuspendView()
+		{
+			ScreenManager.SetSuspendLayer(_gauntletLayer, true);
+		}
+
+		protected override void OnResumeView()
+		{
+			ScreenManager.SetSuspendLayer(_gauntletLayer, false);
+		}
+
 		private void OnManagedOptionChanged(ManagedOptions.ManagedOptionsType changedManagedOptionsType)
 		{
 			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.EnableDamageTakenVisuals)
 			{
-				AgentStatusVM dataSource = _dataSource;
-				if (dataSource == null)
-				{
-					return;
-				}
-				dataSource.TakenDamageController.SetIsEnabled(BannerlordConfig.EnableDamageTakenVisuals);
+				_dataSource?.TakenDamageController.SetIsEnabled(BannerlordConfig.EnableDamageTakenVisuals);
 			}
 		}
 
 		public override void AfterStart()
 		{
 			base.AfterStart();
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.InitializeMainAgentPropterties();
+			_dataSource?.InitializeMainAgentPropterties();
 		}
 
 		public override void OnMissionScreenInitialize()
 		{
 			base.OnMissionScreenInitialize();
-			_isInDeployement = Mission.GetMissionBehavior<BattleDeploymentHandler>() != null;
-			if (_isInDeployement)
-			{
-				_deploymentMissionView = Mission.GetMissionBehavior<DeploymentMissionView>();
-				if (_deploymentMissionView != null)
-				{
-					DeploymentMissionView deploymentMissionView = _deploymentMissionView;
-					deploymentMissionView.OnDeploymentFinish = (OnPlayerDeploymentFinishDelegate)Delegate.Combine(deploymentMissionView.OnDeploymentFinish, new OnPlayerDeploymentFinishDelegate(OnDeploymentFinish));
-				}
-			}
+			_isInDeployment = Mission.Mode == MissionMode.Deployment;
 		}
 
-		private void OnDeploymentFinish()
+		public override void OnDeploymentFinished()
 		{
-			_isInDeployement = false;
-			DeploymentMissionView deploymentMissionView = _deploymentMissionView;
-			deploymentMissionView.OnDeploymentFinish = (OnPlayerDeploymentFinishDelegate)Delegate.Remove(deploymentMissionView.OnDeploymentFinish, new OnPlayerDeploymentFinishDelegate(OnDeploymentFinish));
+			base.OnDeploymentFinished();
+			_isInDeployment = false;
 		}
 
 		public override void OnMissionScreenFinalize()
@@ -106,11 +99,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 			CombatLogManager.OnGenerateCombatLog -= OnGenerateCombatLog;
 			MissionScreen.RemoveLayer(_gauntletLayer);
 			_gauntletLayer = null;
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource != null)
-			{
-				dataSource.OnFinalize();
-			}
+			_dataSource?.OnFinalize();
 			_dataSource = null;
 			_missionMainAgentController = null;
 		}
@@ -118,73 +107,44 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 		public override void OnMissionScreenTick(float dt)
 		{
 			base.OnMissionScreenTick(dt);
-			_dataSource.IsInDeployement = _isInDeployement;
+			_dataSource.IsInDeployement = _isInDeployment;
 			_dataSource.Tick(dt);
+			_dataSource.InteractionInterface.DisplayInteractionText = !MissionScreen.IsRadialMenuActive && !Mission.IsOrderMenuOpen;
 		}
 
 		public override void OnFocusGained(Agent mainAgent, IFocusable focusableObject, bool isInteractable)
 		{
 			base.OnFocusGained(mainAgent, focusableObject, isInteractable);
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnFocusGained(mainAgent, focusableObject, isInteractable);
+			_dataSource?.OnFocusGained(mainAgent, focusableObject, isInteractable);
 		}
 
-		public override void OnAgentInteraction(Agent userAgent, Agent agent)
+		public override void OnAgentInteraction(Agent userAgent, Agent agent, sbyte agentBoneIndex)
 		{
-			base.OnAgentInteraction(userAgent, agent);
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnAgentInteraction(userAgent, agent);
+			base.OnAgentInteraction(userAgent, agent, agentBoneIndex);
+			_dataSource?.OnAgentInteraction(userAgent, agent, agentBoneIndex);
 		}
 
 		public override void OnFocusLost(Agent agent, IFocusable focusableObject)
 		{
 			base.OnFocusLost(agent, focusableObject);
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnFocusLost(agent, focusableObject);
+			_dataSource?.OnFocusLost(agent, focusableObject);
 		}
 
 		public override void OnAgentDeleted(Agent affectedAgent)
 		{
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnAgentDeleted(affectedAgent);
+			_dataSource?.OnAgentDeleted(affectedAgent);
 		}
 
 		public override void OnAgentRemoved(Agent affectedAgent, Agent affectorAgent, AgentState agentState, KillingBlow killingBlow)
 		{
-			AgentStatusVM dataSource = _dataSource;
-			if (dataSource == null)
-			{
-				return;
-			}
-			dataSource.OnAgentRemoved(affectedAgent);
+			_dataSource?.OnAgentRemoved(affectedAgent);
 		}
 
 		private void OnGenerateCombatLog(CombatLogData logData)
 		{
 			if (logData.IsVictimAgentMine && logData.TotalDamage > 0 && logData.BodyPartHit != BoneBodyPartType.None)
 			{
-				AgentStatusVM dataSource = _dataSource;
-				if (dataSource == null)
-				{
-					return;
-				}
-				dataSource.OnMainAgentHit(logData.TotalDamage, logData.IsRangedAttack ? 1 : 0);
+				_dataSource?.OnMainAgentHit(logData.TotalDamage, logData.IsRangedAttack ? 1 : 0);
 			}
 		}
 
@@ -223,18 +183,26 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 		public override void OnPhotoModeActivated()
 		{
 			base.OnPhotoModeActivated();
-			_gauntletLayer.UIContext.ContextAlpha = 0f;
+			if (_gauntletLayer != null)
+			{
+				_gauntletLayer.UIContext.ContextAlpha = 0f;
+			}
+			UnregisterInteractionEvents();
 		}
 
 		public override void OnPhotoModeDeactivated()
 		{
 			base.OnPhotoModeDeactivated();
-			_gauntletLayer.UIContext.ContextAlpha = 1f;
+			if (_gauntletLayer != null)
+			{
+				_gauntletLayer.UIContext.ContextAlpha = 1f;
+			}
+			RegisterInteractionEvents();
 		}
 
 		private GauntletLayer _gauntletLayer;
 
-		private AgentStatusVM _dataSource;
+		private MissionAgentStatusVM _dataSource;
 
 		private MissionMainAgentController _missionMainAgentController;
 
@@ -242,6 +210,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 
 		private DeploymentMissionView _deploymentMissionView;
 
-		private bool _isInDeployement;
+		protected bool _isInDeployment;
 	}
 }

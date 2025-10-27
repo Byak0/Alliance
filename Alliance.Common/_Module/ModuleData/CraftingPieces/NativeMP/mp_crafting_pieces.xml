@@ -1424,7 +1424,7 @@
 		mesh="vlandian_grip_2"
 		length="15.05"
 		weight="0.35"
-		item_holster_pos_shift="0,0,0.1">
+		item_holster_pos_shift="0,0,-0.06">
 		<!--l="15.05" w="0.1"-->
 		<BuildData
 			piece_offset="-0.02"
@@ -1439,7 +1439,7 @@
 		mesh="vlandian_grip_4"
 		length="15.2"
 		weight="0.1"
-		item_holster_pos_shift="0,0,0.1">
+		item_holster_pos_shift="0,0,-0.02">
 		<BuildData
 			piece_offset="-0.09"
 			previous_piece_offset="0" />
@@ -1452,7 +1452,7 @@
 		mesh="vlandian_grip_4"
 		length="15.2"
 		weight="0.2"
-		item_holster_pos_shift="0,0,0.1">
+		item_holster_pos_shift="0,0,-0.03">
 		<BuildData
 			piece_offset="-0.09"
 			previous_piece_offset="0" />
@@ -1477,7 +1477,8 @@
 		piece_type="Handle"
 		mesh="empire_grip_1"
 		length="15.4"
-		weight="0.20">
+		weight="0.20"
+		item_holster_pos_shift="0,0,-0.1">
 		<BuildData
 			piece_offset="-0.18"
 			next_piece_offset="-0.15"
@@ -1529,7 +1530,8 @@
 		piece_type="Handle"
 		mesh="empire_grip_11"
 		length="25"
-		weight="0.1">
+		weight="0.1"
+		item_holster_pos_shift="0,0,-0.14">
 		<BuildData
 			piece_offset="-0.18"
 			next_piece_offset="-0.3"
@@ -1597,7 +1599,8 @@
 		mesh="vlandian_grip_14"
 		culture="Culture.vlandia"
 		length="25.2"
-		weight="0.1">
+		weight="0.1"
+		item_holster_pos_shift="0,0,-0.1">
 		<BuildData
 			piece_offset="-0.02"
 			previous_piece_offset="0.2"
@@ -1703,7 +1706,8 @@
 		piece_type="Handle"
 		mesh="khuzait_grip_15"
 		length="25.5"
-		weight="0.150">
+		weight="0.150"
+		item_holster_pos_shift="0,0,-0.07">
 		<BuildData
 			piece_offset="-1.98"
 			previous_piece_offset="0.2"
@@ -3246,7 +3250,8 @@
 		piece_type="Handle"
 		mesh="mace_handle_6"
 		length="56.2"
-		weight="0.7">
+		weight="0.7"
+		item_holster_pos_shift="0,0,0.2">
 		<BuildData
 			piece_offset="15" />
 	</CraftingPiece>
@@ -3478,7 +3483,8 @@
 		piece_type="Handle"
 		mesh="axe_craft_22_handle"
 		length="96"
-		weight="0.4">
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.1">
 		<BuildData
 			piece_offset="28"
 			next_piece_offset="2.44" />
@@ -3491,7 +3497,7 @@
 		mesh="axe_craft_24_handle"
 		length="110"
 		weight="0.45"
-		item_holster_pos_shift="0,0,-0.15">
+		item_holster_pos_shift="0,0,-0.2">
 		<BuildData
 			piece_offset="31"
 			next_piece_offset="2" />
@@ -3503,7 +3509,8 @@
 		piece_type="Handle"
 		mesh="axe_craft_23_handle"
 		length="98"
-		weight="0.35">
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.2">
 		<BuildData
 			piece_offset="33"
 			next_piece_offset="1.835" />
@@ -6752,7 +6759,7 @@
 		mesh="mace_handle_15"
 		length="80"
 		weight="0.5"
-		item_holster_pos_shift="0,0,0.05">
+		item_holster_pos_shift="0,0,-0.15">
 		<BuildData
 			piece_offset="23.7" />
 	</CraftingPiece>
@@ -6786,7 +6793,7 @@
 		mesh="mace_handle_12"
 		length="78"
 		weight="0.4"
-		item_holster_pos_shift="0,0,-0.05">
+		item_holster_pos_shift="0,0,-0.1">
 		<BuildData
 			piece_offset="28.5" />
 	</CraftingPiece>
@@ -6813,7 +6820,7 @@
 		mesh="mace_handle_13"
 		length="65"
 		weight="0.55"
-		item_holster_pos_shift="0,0,0.05">
+		item_holster_pos_shift="0,0,-0.05">
 		<BuildData
 			piece_offset="15.7" />
 	</CraftingPiece>
@@ -6835,7 +6842,8 @@
 		piece_type="Handle"
 		mesh="mace_handle_17"
 		length="80"
-		weight="0.4">
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.1">
 		<BuildData
 			piece_offset="25.5" />
 	</CraftingPiece>

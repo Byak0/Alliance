@@ -2,7 +2,6 @@
 using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -150,11 +149,11 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 		public void InitializeMainAgentPropterties()
 		{
 			Mission.Current.OnMainAgentChanged += OnMainAgentChanged;
-			OnMainAgentChanged(null, null);
+			OnMainAgentChanged(null);
 			OnMainAgentWeaponChange();
 		}
 
-		private void OnMainAgentChanged(object sender, PropertyChangedEventArgs e)
+		private void OnMainAgentChanged(Agent oldAgent)
 		{
 			if (Agent.Main != null)
 			{
@@ -187,7 +186,7 @@ namespace Alliance.Client.Extensions.ExtendedItems.Views
 		{
 			if (Agent.Main != null)
 			{
-				EquipmentIndex offHandItemIndex = Agent.Main.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+				EquipmentIndex offHandItemIndex = Agent.Main.GetOffhandWieldedItemIndex();
 				if (offHandItemIndex > EquipmentIndex.None && offHandItemIndex < EquipmentIndex.NumAllWeaponSlots)
 				{
 					MissionWeapon offHandWeapon = Agent.Main.Equipment[offHandItemIndex];

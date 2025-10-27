@@ -130,13 +130,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
 				if (_selectedTeam != value)
 				{
 					_selectedTeam = value;
-					BannerCode = BannerCode.CreateFrom(value.Banner);
+					BannerCode = value.Banner.BannerCode;
 					OnFactionSelected?.Invoke();
 				}
 			}
 		}
 
-		public BannerCode BannerCode;
+		public string BannerCode;
 
 		public BasicCharacterObject SelectedTroop
 		{

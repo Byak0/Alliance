@@ -133,7 +133,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(Zone.GlobalPosition.AsVec2, Zone.Radius * 2f, agents);
-			Log($"{Zone.Position} - {Zone.GlobalPosition} - {Zone.Radius} - {Zone.LocalEntity?.GlobalPosition}", LogLevel.Debug);
+			Log($"{Zone.Position} - {Zone.GlobalPosition} - {Zone.Radius} - {Zone.LocalEntity.GlobalPosition}", LogLevel.Debug);
 			Log($"NB agents : {agents.Count}", LogLevel.Debug);
 			agents.RemoveAll(agent => !IsValidTarget(agent));
 			return agents;

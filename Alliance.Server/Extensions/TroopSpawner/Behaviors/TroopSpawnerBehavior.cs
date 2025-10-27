@@ -72,9 +72,9 @@ namespace Alliance.Server.Extensions.TroopSpawner.Behaviors
 			AgentsInfoModel.Instance.MarkAgentInfoAsExpiredWithDelay(affectedAgent);
 		}
 
-		protected override void OnAgentControllerChanged(Agent agent, Agent.ControllerType oldController)
+		protected override void OnAgentControllerChanged(Agent agent, AgentControllerType oldController)
 		{
-			if (oldController != Agent.ControllerType.Player && agent.IsPlayerControlled)
+			if (oldController != AgentControllerType.Player && agent.IsPlayerControlled)
 			{
 				FormationControlModel.Instance.ReassignControlToAgent(agent);
 			}

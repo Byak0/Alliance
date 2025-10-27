@@ -158,7 +158,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					botAgent.Formation.PlayerOwner = botAgent;
 				}
 
-				botAgent.OwningAgentMissionPeer = null;
+				botAgent.SetOwningAgentMissionPeer(null);
 				botAgent.MissionPeer = missionPeer;
 				botAgent.Formation = missionPeer.ControlledFormation;
 				AgentFlag agentFlags = botAgent.GetAgentFlags();

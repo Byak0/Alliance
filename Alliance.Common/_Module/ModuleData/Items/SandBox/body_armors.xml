@@ -1094,6 +1094,7 @@
 				body_armor="14"
 				leg_armor="6"
 				arm_armor="4"
+				stealth_factor="15"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
@@ -1101,7 +1102,8 @@
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
-			Civilian="true" />
+			Civilian="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="battania_dress_a"
@@ -1205,12 +1207,14 @@
 				body_armor="10"
 				leg_armor="4"
 				arm_armor="2"
+				stealth_factor="15"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -2107,13 +2111,15 @@
 				body_armor="19"
 				leg_armor="4"
 				arm_armor="3"
+				stealth_factor="5"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="crude_leather_armor"
@@ -2216,12 +2222,14 @@
 				body_armor="20"
 				leg_armor="10"
 				arm_armor="6"
+				stealth_factor="5"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="leather_lamellar_armor"
@@ -2650,6 +2658,7 @@
 				body_armor="18"
 				leg_armor="9"
 				arm_armor="9"
+				stealth_factor="5"
 				has_gender_variations="false"
 				covers_body="true"
 				modifier_group="cloth"
@@ -2657,6 +2666,7 @@
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -2694,6 +2704,7 @@
 				body_armor="10"
 				leg_armor="5"
 				arm_armor="3"
+				stealth_factor="15"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
@@ -2701,6 +2712,7 @@
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -2718,6 +2730,7 @@
 				body_armor="15"
 				leg_armor="7"
 				arm_armor="2"
+				stealth_factor="15"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="cloth"
@@ -2725,6 +2738,7 @@
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -2763,13 +2777,15 @@
 				body_armor="15"
 				leg_armor="2"
 				arm_armor="7"
+				stealth_factor="10"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="cloth"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #region Vlandia Medium Body Armors -->
@@ -2789,12 +2805,14 @@
 				body_armor="16"
 				leg_armor="6"
 				arm_armor="6"
+				stealth_factor="15"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -2812,13 +2830,15 @@
 				body_armor="11"
 				leg_armor="5"
 				arm_armor="3"
+				stealth_factor="10"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="vlandia_chainmail"
@@ -2833,7 +2853,7 @@
 				body_armor="28"
 				leg_armor="14"
 				arm_armor="14"
-				has_gender_variations="false"
+				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="chain"
 				material_type="Chainmail" />
@@ -2879,7 +2899,7 @@
 				body_armor="34"
 				leg_armor="12"
 				arm_armor="12"
-				has_gender_variations="false"
+				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="chain"
 				material_type="Chainmail" />
@@ -2923,13 +2943,15 @@
 				body_armor="24"
 				leg_armor="13"
 				arm_armor="12"
+				stealth_factor="15"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="chain"
 				material_type="Chainmail" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #region Vlandia Heavy Body Armors -->
@@ -3409,13 +3431,15 @@
 				body_armor="12"
 				leg_armor="4"
 				arm_armor="3"
+				stealth_factor="20"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="heavy_nordic_coat"
@@ -3569,6 +3593,7 @@
 				body_armor="11"
 				leg_armor="3"
 				arm_armor="3"
+				stealth_factor="20"
 				has_gender_variations="true"
 				covers_body="true"
 				modifier_group="leather"
@@ -3576,6 +3601,7 @@
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -3593,13 +3619,15 @@
 				body_armor="11"
 				leg_armor="6"
 				arm_armor="2"
+				stealth_factor="15"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
-			Civilian="true" />
+			Civilian="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="northern_leather_tabard"
@@ -4330,6 +4358,7 @@
 		</ItemComponent>
 		<Flags
 			UseTeamColor="true"
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -4805,7 +4834,7 @@
 	<!-- #region Looters Light Body Armors -->
 	<Item
 		id="dummy_armor_min"
-		name="{=Zx4h7jDy}Dummy Min Armor"
+		name="{=!}Dummy Min Armor"
 		mesh="gambeson_b"
 		culture="Culture.looters"
 		is_merchandise="false"
@@ -4827,7 +4856,7 @@
 	</Item>
 	<Item
 		id="dummy_armor_lower_average"
-		name="{=K2xGw3Oo}Dummy Lower Average"
+		name="{=!}Dummy Lower Average"
 		mesh="sturgia_costume_m"
 		culture="Culture.looters"
 		is_merchandise="false"
@@ -4849,7 +4878,7 @@
 	</Item>
 	<Item
 		id="dummy_armor_higher_average"
-		name="{=gT8WENO3}Dummy Higher Average"
+		name="{=!}Dummy Higher Average"
 		mesh="vlandia_leather_armor"
 		culture="Culture.looters"
 		is_merchandise="false"
@@ -4870,7 +4899,7 @@
 	</Item>
 	<Item
 		id="dummy_armor_max"
-		name="{=wSUN0Dmo}Dummy Max Armor"
+		name="{=!}Dummy Max Armor"
 		mesh="vlandia_scale_armor"
 		culture="Culture.looters"
 		is_merchandise="false"
@@ -5273,12 +5302,14 @@
 				body_armor="14"
 				leg_armor="5"
 				arm_armor="3"
+				stealth_factor="10"
 				covers_body="true"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
-			UseTeamColor="true" />
+			UseTeamColor="true"
+			Stealth="true" />
 	</Item>
 	<Item
 		id="padded_leather_overcoat"
@@ -5498,6 +5529,29 @@
 			UseTeamColor="true"
 			Civilian="true" />
 	</Item>
-	<!-- #endregion -->
+	<!-- Stealth -->
+	<Item
+		id="assassin_armor"
+		name="{=uZYqmBST}Blackened Armor"
+		subtype="body_armor"
+		mesh="assassin_armor"
+		culture="Culture.nord"
+		weight="5"
+		appearance="4"
+		Type="BodyArmor">
+		<ItemComponent>
+			<Armor
+				body_armor="18"
+				leg_armor="6"
+				arm_armor="4"
+				stealth_factor="30"
+				has_gender_variations="true"
+				covers_body="true"
+				modifier_group="leather"
+				material_type="Leather" />
+		</ItemComponent>
+		<Flags
+			Stealth="true" />
+	</Item>
 	<!-- #endregion -->
 </Items>

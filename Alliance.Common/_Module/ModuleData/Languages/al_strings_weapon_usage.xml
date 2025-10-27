@@ -12,4 +12,16 @@
 	<string id="str_weapon_usage.lotr_TwoHandedAxe" text="{=desc_lotr_TwoHandedAxe}Two Handed"/>
 	<string id="str_weapon_usage.lotr_Dagger" text="{=desc_lotr_Dagger}One Handed"/>
 	<string id="str_weapon_usage.lotr_ThrowingKnife" text="{=desc_lotr_ThrowingKnife}Thrown"/>
+	<!-- Crafting templates -->
+	<string id="str_crafting_template.lotr_OneHandedSword" text="{=desc_lotr_OneHandedSword}One Handed"/>
+	<string id="str_crafting_template.lotr_BastardSword" text="{=desc_lotr_BastardSword}Bastard"/>
+	<string id="str_crafting_template.lotr_TwoHandedSword" text="{=desc_lotr_TwoHandedSword}Two Handed"/>
+	<string id="str_crafting_template.lotr_TwoHandedPolearm" text="{=desc_lotr_TwoHandedPolearm}Two Handed"/>
+	<string id="str_crafting_template.lotr_TwoHandedPolearm_Bracing" text="{=desc_lotr_TwoHandedPolearm_Bracing}Spear Brace"/>
+	<string id="str_crafting_template.lotr_TwoHandedPolearm_Couchable" text="{=desc_lotr_TwoHandedPolearm_Couchable}Couch Lance"/>
+	<string id="str_crafting_template.lotr_TwoHandedPolearm_Thrown" text="{=desc_lotr_TwoHandedPolearm_Thrown}Thrown"/>
+	<string id="str_crafting_template.lotr_OneHandedAxe" text="{=desc_lotr_OneHandedAxe}One Handed"/>
+	<string id="str_crafting_template.lotr_TwoHandedAxe" text="{=desc_lotr_TwoHandedAxe}Two Handed"/>
+	<string id="str_crafting_template.lotr_Dagger" text="{=desc_lotr_Dagger}One Handed"/>
+	<string id="str_crafting_template.lotr_ThrowingKnife" text="{=desc_lotr_ThrowingKnife}Thrown"/>
 </strings>

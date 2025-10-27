@@ -145,19 +145,17 @@
 			<Piece
 				id="spear_blade_19_blunt"
 				Type="Blade"
-				scale_factor="100" />
+				scale_factor="110" />
 			<Piece
 				id="default_polearm_guard"
-				Type="Guard"
-				scale_factor="100" />
+				Type="Guard" />
 			<Piece
 				id="spear_handle_15"
 				Type="Handle"
-				scale_factor="100" />
+				scale_factor="93" />
 			<Piece
 				id="default_polearm_pommel"
-				Type="Pommel"
-				scale_factor="100" />
+				Type="Pommel" />
 		</Pieces>
 	</CraftedItem>
 	<CraftedItem
@@ -359,11 +357,39 @@
 			<Piece
 				id="spear_blade_23_blunt"
 				Type="Blade"
-				scale_factor="100" />
+				scale_factor="101" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard" />
 			<Piece
 				id="spear_handle_13"
 				Type="Handle"
-				scale_factor="100" />
+				scale_factor="97" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="empire_menavlion_1_t3_blunt"
+		name="{=AB2lD2JQ}Sparring Menavlion"
+		crafting_template="TwoHandedPolearm"
+		is_merchandise="false"
+		culture="Culture.empire"
+		has_modifier="false">
+		<Pieces>
+			<Piece
+				id="spear_blade_7_blunt"
+				Type="Blade" />
+			<Piece
+				id="spear_banner_2"
+				Type="Guard" />
+			<Piece
+				id="spear_handle_15"
+				Type="Handle" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel" />
 		</Pieces>
 	</CraftedItem>
 	<CraftedItem

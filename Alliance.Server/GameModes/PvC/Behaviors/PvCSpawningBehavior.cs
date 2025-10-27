@@ -516,7 +516,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 				.IsFemale(@object.IsFemale)
 				.ClothingColor1(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
 				.ClothingColor2(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2);
-			Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, false, false, MBRandom.RandomInt());
+			Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, false, Equipment.EquipmentType.Battle, MBRandom.RandomInt());
 			if (alternativeEquipments != null)
 			{
 				foreach (ValueTuple<EquipmentIndex, EquipmentElement> valueTuple in alternativeEquipments)
@@ -525,7 +525,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 				}
 			}
 			agentBuildData.Equipment(randomEquipmentElements);
-			agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, @object.GetBodyPropertiesMin(false), @object.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, @object.HairTags, @object.BeardTags, @object.TattooTags));
+			agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, @object.GetBodyPropertiesMin(false), @object.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, @object.BodyPropertyRange.HairTags, @object.BodyPropertyRange.BeardTags, @object.BodyPropertyRange.TattooTags));
 			NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
 			if (GameMode.ShouldSpawnVisualsForServer(networkPeer) && agentBuildData.AgentVisualsIndex == 0)
 			{

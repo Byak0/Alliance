@@ -22,6 +22,7 @@
 				beard_cover_type="type3" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true"
 			UseTeamColor="true" />
 	</Item>
@@ -143,7 +144,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="3"
-				hair_cover_type="all"
+				hair_cover_type="type2"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
@@ -303,6 +304,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="5"
+				stealth_factor="10"
 				has_gender_variations="true"
 				hair_cover_type="type2"
 				beard_cover_type="type3"
@@ -310,6 +312,7 @@
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true"
 			UseTeamColor="true" />
 	</Item>
@@ -364,6 +367,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="6"
+				stealth_factor="5"
 				has_gender_variations="true"
 				hair_cover_type="all"
 				beard_cover_type="type3"
@@ -371,6 +375,7 @@
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true"
 			UseTeamColor="true" />
 	</Item>
@@ -432,6 +437,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="7"
+				stealth_factor="15"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="cloth_unarmoured"
@@ -439,6 +445,7 @@
 				beard_cover_type="all" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -454,6 +461,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="6"
+				stealth_factor="10"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="cloth_unarmoured"
@@ -461,6 +469,7 @@
 				beard_cover_type="all" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -761,7 +770,7 @@
 		name="{=VBrLhqiJ}Noble Crowned Lord Helmet"
 		mesh="aserai_lord_helmet_a"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		subtype="head_armor"
 		weight="3.4"
 		difficulty="0"
@@ -851,7 +860,7 @@
 		subtype="head_armor"
 		mesh="aserai_battle_crown"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="2.8"
 		difficulty="0"
 		appearance="9"
@@ -874,7 +883,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_closed"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="2.5"
 		difficulty="0"
 		appearance="7"
@@ -896,7 +905,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_b_closed"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="2.55"
 		difficulty="0"
 		appearance="8"
@@ -919,7 +928,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_open"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="2.2"
 		difficulty="0"
 		appearance="7"
@@ -941,7 +950,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_b_open"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="2.3"
 		difficulty="0"
 		appearance="8"
@@ -964,7 +973,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_leather"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="1.8"
 		difficulty="0"
 		appearance="6"
@@ -987,7 +996,7 @@
 		subtype="head_armor"
 		mesh="brass_aserai_helmet_b_leather"
 		culture="Culture.aserai"
-		is_merchandise="false"
+		is_merchandise="true"
 		weight="1.9"
 		difficulty="0"
 		appearance="7"
@@ -1020,12 +1029,14 @@
 		<ItemComponent>
 			<Armor
 				head_armor="9"
+				stealth_factor="5"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true" />
 	</Item>
 	<Item
@@ -1083,12 +1094,14 @@
 		<ItemComponent>
 			<Armor
 				head_armor="6"
+				stealth_factor="5"
 				has_gender_variations="false"
 				hair_cover_type="type3"
 				modifier_group="cloth_unarmoured"
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -1103,13 +1116,15 @@
 		Type="HeadArmor">
 		<ItemComponent>
 			<Armor
+				stealth_factor="10"
 				head_armor="16"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<!-- #endregion -->
 	<!-- #region Battania Medium Head Armors -->
@@ -1599,12 +1614,14 @@
 		<ItemComponent>
 			<Armor
 				head_armor="12"
+				stealth_factor="10"
 				has_gender_variations="false"
 				hair_cover_type="type3"
 				modifier_group="leather"
 				material_type="Leather" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="peaked_fur_hood"
@@ -2025,13 +2042,15 @@
 		<ItemComponent>
 			<Armor
 				head_armor="18"
+				stealth_factor="5"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="cloth"
 				material_type="Cloth"
 				beard_cover_type="type3" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="padded_coif"
@@ -2068,6 +2087,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="14"
+				stealth_factor="5"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				modifier_group="cloth"
@@ -2076,6 +2096,7 @@
 		</ItemComponent>
 		<Flags
 			Civilian="true"
+			Stealth="true"
 			UseTeamColor="true" />
 	</Item>
 	<Item
@@ -2841,12 +2862,14 @@
 		<ItemComponent>
 			<Armor
 				head_armor="11"
+				stealth_factor="10"
 				has_gender_variations="false"
 				hair_cover_type="type2"
 				modifier_group="plate"
 				material_type="Plate" />
 		</ItemComponent>
-		<Flags />
+		<Flags
+			Stealth="true" />
 	</Item>
 	<Item
 		id="kettle_helmet_over_arming_coif"
@@ -4283,6 +4306,7 @@
 		<ItemComponent>
 			<Armor
 				head_armor="3"
+				stealth_factor="10"
 				has_gender_variations="false"
 				hair_cover_type="all"
 				beard_cover_type="type3"
@@ -4290,6 +4314,7 @@
 				material_type="Cloth" />
 		</ItemComponent>
 		<Flags
+			Stealth="true"
 			Civilian="true"
 			UseTeamColor="true" />
 	</Item>
@@ -5395,6 +5420,29 @@
 		<Flags
 			Civilian="true" />
 	</Item>
-	<!-- #endregion -->
+	<!-- #Stealth -->
+	<Item
+		id="assassin_hood"
+		name="{=XrsKuPT5}Blackened Hood"
+		subtype="head_armor"
+		mesh="assassin_hood"
+		culture="Culture.nord"
+		weight="0.4"
+		appearance="4"
+		Type="HeadArmor">
+		<ItemComponent>
+			<Armor
+				head_armor="4"
+				stealth_factor="25"
+				has_gender_variations="false"
+				hair_cover_type="all"
+				beard_cover_type="all"
+				modifier_group="leather"
+				material_type="Leather" />
+		</ItemComponent>
+		<Flags
+			Civilian="true"
+			Stealth="true" />
+	</Item>
 	<!-- #endregion -->
 </Items>

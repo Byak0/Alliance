@@ -46,6 +46,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 			return true;
 		}
 
+		// todo check : method was updated in 1.3, maybe no longer needed
 		/// <summary>
 		/// Prefix for the SendAgentsToPeer method to separate animal agents and human agents during synchronization.
 		/// </summary>
@@ -75,11 +76,11 @@ namespace Alliance.Server.Patch.HarmonyPatch
 						bool hasAttachedWeapons = agent.GetAttachedWeaponsCount() > 0;
 						bool isHoldingWeapon = !isMount && !isAnimal &&
 							(
-								agent.GetWieldedItemIndex(Agent.HandIndex.MainHand) >= EquipmentIndex.WeaponItemBeginSlot ||
-								agent.GetWieldedItemIndex(Agent.HandIndex.OffHand) >= EquipmentIndex.WeaponItemBeginSlot
+								agent.GetPrimaryWieldedItemIndex() >= EquipmentIndex.WeaponItemBeginSlot ||
+								agent.GetOffhandWieldedItemIndex() >= EquipmentIndex.WeaponItemBeginSlot
 							);
 						bool isInProximityMap = Mission.Current.IsAgentInProximityMap(agent);
-						bool hasMissilesInFlight = state != AgentState.Active && Mission.Current.Missiles.Any((Mission.Missile m) => m.ShooterAgent == agent);
+						bool hasMissilesInFlight = state != AgentState.Active && Mission.Current.MissilesList.Any((Mission.Missile m) => m.ShooterAgent == agent);
 
 						bool shouldSendInfo =
 							isAgentActive ||
@@ -114,7 +115,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 							if (!agent.IsActive())
 							{
 								// Access Violation Exception when accessing Action of killed agent ?
-								ActionIndexValueCache actionIndex = agent.State != AgentState.Killed ? agent.GetCurrentActionValue(0) : ActionIndexValueCache.act_none;
+								ActionIndexCache actionIndex = agent.State != AgentState.Killed ? agent.GetCurrentAction(0) : ActionIndexCache.act_none;
 								GameNetwork.BeginModuleEventAsServer(networkPeer);
 								GameNetwork.WriteMessage(new MakeAgentDead(agent.Index, agent.State == AgentState.Killed, actionIndex));
 								GameNetwork.EndModuleEventAsServer();
@@ -192,13 +193,13 @@ namespace Alliance.Server.Patch.HarmonyPatch
 								}
 							}
 
-							EquipmentIndex wieldedItemIndex = agent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
+							EquipmentIndex wieldedItemIndex = agent.GetPrimaryWieldedItemIndex();
 							int num5 = ((wieldedItemIndex != EquipmentIndex.None) ? agent.Equipment[wieldedItemIndex].CurrentUsageIndex : 0);
 							GameNetwork.BeginModuleEventAsServer(networkPeer);
 							GameNetwork.WriteMessage(new SetWieldedItemIndex(agent.Index, false, true, true, wieldedItemIndex, num5));
 							GameNetwork.EndModuleEventAsServer();
 							GameNetwork.BeginModuleEventAsServer(networkPeer);
-							GameNetwork.WriteMessage(new SetWieldedItemIndex(agent.Index, true, true, true, agent.GetWieldedItemIndex(Agent.HandIndex.OffHand), num5));
+							GameNetwork.WriteMessage(new SetWieldedItemIndex(agent.Index, true, true, true, agent.GetOffhandWieldedItemIndex(), num5));
 							GameNetwork.EndModuleEventAsServer();
 							MBActionSet actionSet = agent.ActionSet;
 							if (actionSet.IsValid)
@@ -210,7 +211,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 								if (!agent.IsActive())
 								{
 									GameNetwork.BeginModuleEventAsServer(networkPeer);
-									GameNetwork.WriteMessage(new MakeAgentDead(agent.Index, state == AgentState.Killed, agent.GetCurrentActionValue(0)));
+									GameNetwork.WriteMessage(new MakeAgentDead(agent.Index, state == AgentState.Killed, agent.GetCurrentAction(0)));
 									GameNetwork.EndModuleEventAsServer();
 								}
 							}
@@ -218,7 +219,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 							{
 								Log($"ERROR in Prefix_SendAgentsToPeer: Agent {agent.Name} has invalid action set. Considering it dead.", LogLevel.Error);
 								GameNetwork.BeginModuleEventAsServer(networkPeer);
-								GameNetwork.WriteMessage(new MakeAgentDead(agent.Index, state == AgentState.Killed, ActionIndexValueCache.act_none));
+								GameNetwork.WriteMessage(new MakeAgentDead(agent.Index, state == AgentState.Killed, ActionIndexCache.act_none));
 								GameNetwork.EndModuleEventAsServer();
 							}
 							nbAgentsSent++;

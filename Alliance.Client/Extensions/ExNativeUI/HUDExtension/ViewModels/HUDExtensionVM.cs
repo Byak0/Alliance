@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using TaleWorlds.Core;
+using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
@@ -56,39 +57,39 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 		private bool _isGeneralWarningCountdownActive;
 		private BasicCultureObject _allyFaction;
 		private BasicCultureObject _enemyFaction;
-		private ImageIdentifierVM _bannerAlly;
-		private ImageIdentifierVM _bannerEnemy;
+		private BannerImageIdentifierVM _defenderBanner;
+		private BannerImageIdentifierVM _attackerBanner;
 
 		[DataSourceProperty]
-		public ImageIdentifierVM BannerAlly
+		public BannerImageIdentifierVM AllyBanner
 		{
 			get
 			{
-				return _bannerAlly;
+				return this._defenderBanner;
 			}
 			set
 			{
-				if (value != _bannerAlly && (value == null || _bannerAlly == null || _bannerAlly.Id != value.Id))
+				if (value != this._defenderBanner)
 				{
-					_bannerAlly = value;
-					OnPropertyChangedWithValue(value, "BannerAlly");
+					this._defenderBanner = value;
+					base.OnPropertyChangedWithValue<BannerImageIdentifierVM>(value, "AllyBanner");
 				}
 			}
 		}
 
 		[DataSourceProperty]
-		public ImageIdentifierVM BannerEnemy
+		public BannerImageIdentifierVM EnemyBanner
 		{
 			get
 			{
-				return _bannerEnemy;
+				return this._attackerBanner;
 			}
 			set
 			{
-				if (value != _bannerEnemy && (value == null || _bannerEnemy == null || _bannerEnemy.Id != value.Id))
+				if (value != this._attackerBanner)
 				{
-					_bannerEnemy = value;
-					OnPropertyChangedWithValue(value, "BannerEnemy");
+					this._attackerBanner = value;
+					base.OnPropertyChangedWithValue<BannerImageIdentifierVM>(value, "EnemyBanner");
 				}
 			}
 		}
@@ -744,11 +745,12 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.ViewModels
 
 		private void UpdateTeamBanners()
 		{
-			BannerCode attackerCode = BannerCode.CreateFrom(Mission.Current.AttackerTeam.Banner);
-			BannerCode defenderCode = BannerCode.CreateFrom(Mission.Current.DefenderTeam.Banner);
-
-			BannerAlly = new ImageIdentifierVM(_isAttackerTeamAlly ? attackerCode : defenderCode, true);
-			BannerEnemy = new ImageIdentifierVM(_isAttackerTeamAlly ? defenderCode : attackerCode, true);
+			Team attackerTeam = Mission.Current.AttackerTeam;
+			BannerImageIdentifierVM bannerImageIdentifierVM = new BannerImageIdentifierVM((attackerTeam != null) ? attackerTeam.Banner : null, true);
+			Team defenderTeam = Mission.Current.DefenderTeam;
+			BannerImageIdentifierVM bannerImageIdentifierVM2 = new BannerImageIdentifierVM((defenderTeam != null) ? defenderTeam.Banner : null, true);
+			this.AllyBanner = (this._isAttackerTeamAlly ? bannerImageIdentifierVM : bannerImageIdentifierVM2);
+			this.EnemyBanner = (this._isAttackerTeamAlly ? bannerImageIdentifierVM2 : bannerImageIdentifierVM);
 		}
 
 		private void OnTeamChanged(NetworkCommunicator peer, Team previousTeam, Team newTeam)

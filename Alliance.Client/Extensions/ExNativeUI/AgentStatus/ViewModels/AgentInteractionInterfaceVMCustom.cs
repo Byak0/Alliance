@@ -1,23 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.ExtendedXML.Extension;
+using Alliance.Common.Core.ExtendedXML.Models;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
-using TaleWorlds.MountAndBlade.MissionRepresentatives;
 using TaleWorlds.MountAndBlade;
-using Alliance.Common.Core.ExtendedXML.Models;
-using Alliance.Common.Core.ExtendedXML.Extension;
-using System.Data.SqlTypes;
-using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
-using TaleWorlds.LinQuick;
-using TaleWorlds.MountAndBlade.Network.Gameplay.Perks.Effects;
-using static TaleWorlds.MountAndBlade.UsableMissionObject;
-using Alliance.Common.Core.Configuration.Models;
+using TaleWorlds.MountAndBlade.MissionRepresentatives;
 
 
 namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
@@ -343,7 +333,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 						PrimaryInteractionMessage = ($"This item can only be used by {itemEx.Race_condition}");
 						// End of Custom Code 
 					}
-					else {
+					else
+					{
 						if (main != null && main.CanInteractableWeaponBePickedUp(item))
 						{
 
@@ -398,7 +389,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 				UsableMachine usableMachineFromPoint = GetUsableMachineFromPoint(usableObject);
 				if (usableMachineFromPoint != null)
 				{
-					PrimaryInteractionMessage = usableMachineFromPoint.GetDescriptionText(usableObject.GameEntity) ?? "";
+					PrimaryInteractionMessage = usableMachineFromPoint.GetDescriptionText(usableObject.GameEntity).ToString() ?? "";
 					SecondaryInteractionMessage = ((!isInteractable) ? "" : (usableMachineFromPoint.GetActionTextForStandingPoint(usableObject)?.ToString() ?? ""));
 				}
 			}
@@ -408,7 +399,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 		private void SetUsableMachine(UsableMachine machine, bool isInteractable)
 		{
-			PrimaryInteractionMessage = machine.GetDescriptionText(machine.GameEntity) ?? "";
+			PrimaryInteractionMessage = machine.GetDescriptionText(machine.GameEntity).ToString() ?? "";
 			SecondaryInteractionMessage = " ";
 			if (machine is CastleGate)
 			{
@@ -426,7 +417,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 		private void SetDestructibleComponent(DestructableComponent machine, bool isInteractable)
 		{
-			string descriptionText = machine.GetDescriptionText(machine.GameEntity);
+			string descriptionText = machine.GetDescriptionText(machine.GameEntity).ToString();
 			bool flag = descriptionText != "" && descriptionText != null;
 			PrimaryInteractionMessage = (flag ? descriptionText : "null");
 			SecondaryInteractionMessage = " ";
@@ -556,7 +547,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 		private UsableMachine GetUsableMachineFromPoint(UsableMissionObject standingPoint)
 		{
-			GameEntity gameEntity = standingPoint.GameEntity;
+			WeakGameEntity gameEntity = standingPoint.GameEntity;
 			while ((object)gameEntity != null && !gameEntity.HasScriptOfType<UsableMachine>())
 			{
 				gameEntity = gameEntity.Parent;
@@ -598,7 +589,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 		// Custom new fonction
 		private void IsRaceConditionRespected(Agent main, ExtendedItem itemEx)
 		{
-			if (itemEx == null || itemEx.Race_condition == "" )
+			if (itemEx == null || itemEx.Race_condition == "")
 			{
 				_IsRaceConditionRespected = false;
 				return;

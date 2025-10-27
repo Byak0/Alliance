@@ -18,7 +18,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views
 
 		public override void EarlyStart()
 		{
-			getPlayerKey = HotKeyManager.GetCategory("admin_sys").GetGameKey("key_adm_getplayermouse");
+			//getPlayerKey = HotKeyManager.GetCategory("admin_sys").GetGameKey("key_adm_getplayermouse");
 		}
 
 		public MarkerUIHandlerView()

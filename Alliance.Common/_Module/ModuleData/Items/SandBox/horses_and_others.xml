@@ -2908,6 +2908,7 @@
 				mane_cover_type="none"
 				maneuver_bonus="0"
 				speed_bonus="0"
+				reins_mesh="horse_harness_b_rein"
 				charge_bonus="0"
 				family_type="1"
 				material_type="Leather" />
@@ -2975,29 +2976,6 @@
 				maneuver_bonus="0"
 				speed_bonus="0"
 				reins_mesh="horse_harness_vlandia_a_rein"
-				charge_bonus="0"
-				family_type="1"
-				material_type="Chainmail" />
-		</ItemComponent>
-		<Flags
-			Civilian="true" />
-	</Item>
-	<Item
-		id="celtic_frost"
-		name="{=XkwOTdVQ}Celtic Frost"
-		mesh="horse_harness_saxon_new"
-		is_merchandise="false"
-		weight="26"
-		appearance="0.5"
-		Type="HorseHarness">
-		<ItemComponent>
-			<Armor
-				body_armor="78"
-				mane_cover_type="none"
-				tail_cover_type="none"
-				maneuver_bonus="0"
-				speed_bonus="0"
-				reins_mesh="horse_harness_saxon_new_rein"
 				charge_bonus="0"
 				family_type="1"
 				material_type="Chainmail" />
@@ -3166,7 +3144,7 @@
 	<Item
 		multiplayer_item="false"
 		id="studded_steppe_barding"
-		name="{=LzlQUcak}Reinforced Mail Barding"
+		name="{=LzlQUcak}Lamellar Barding"
 		mesh="horse_harness_khuzait_c_clotest"
 		culture="Culture.khuzait"
 		subtype="body_armor"
@@ -3357,7 +3335,7 @@
 		Type="HorseHarness">
 		<ItemComponent>
 			<Armor
-				body_armor="20"
+				body_armor="18"
 				mane_cover_type="none"
 				family_type="1"
 				reins_mesh="horse_harness_roman_b_new_rein"
@@ -3376,7 +3354,7 @@
 		Type="HorseHarness">
 		<ItemComponent>
 			<Armor
-				body_armor="15"
+				body_armor="25"
 				mane_cover_type="none"
 				family_type="1"
 				reins_mesh="horse_harness_sturgia_b_rein"
@@ -3739,7 +3717,7 @@
 		mesh="merchandise_fish_a"
 		item_category="fish"
 		IsFood="true"
-		value="15"
+		value="12"
 		weight="10"
 		Type="Goods">
 		<ItemComponent>
@@ -3803,7 +3781,7 @@
 		mesh="bd_barrel_a"
 		item_category="beer"
 		IsFood="true"
-		value="100"
+		value="50"
 		weight="10"
 		Type="Goods">
 		<ItemComponent>
@@ -3819,7 +3797,7 @@
 		mesh="amphora_slim"
 		item_category="wine"
 		IsFood="false"
-		value="75"
+		value="80"
 		weight="10"
 		Type="Goods">
 		<ItemComponent>
@@ -3967,7 +3945,7 @@
 		Type="Animal">
 		<ItemComponent>
 			<Horse
-				monster="Monster.cat"
+				monster="Monster.hog"
 				maneuver="70"
 				speed="18"
 				charge_damage="0"
@@ -3996,8 +3974,8 @@
 		Type="Animal">
 		<ItemComponent>
 			<Horse
-				monster="Monster.dog"
-				maneuver="40"
+				monster="Monster.hog"
+				maneuver="60"
 				speed="28"
 				charge_damage="0"
 				body_length="130">
@@ -4025,7 +4003,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.sheep"
-				maneuver="30"
+				maneuver="40"
 				speed="12"
 				charge_damage="0"
 				body_length="104" />
@@ -4044,7 +4022,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.cow"
-				maneuver="20"
+				maneuver="30"
 				speed="22"
 				charge_damage="5"
 				body_length="104">
@@ -4070,7 +4048,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.hog"
-				maneuver="30"
+				maneuver="40"
 				speed="10"
 				charge_damage="5"
 				body_length="104" />
@@ -4089,7 +4067,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.goose"
-				maneuver="30"
+				maneuver="50"
 				speed="10"
 				charge_damage="5"
 				body_length="120" />
@@ -4108,7 +4086,7 @@
 		<ItemComponent>
 			<Horse
 				monster="Monster.chicken"
-				maneuver="30"
+				maneuver="50"
 				speed="10"
 				charge_damage="5"
 				body_length="120" />
