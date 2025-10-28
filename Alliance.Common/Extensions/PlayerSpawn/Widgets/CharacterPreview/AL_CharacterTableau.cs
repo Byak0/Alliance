@@ -163,7 +163,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (_customAnimation != null && _characterActionSet.IsValid)
 			{
 				_customAnimationTimer += dt;
-				float duration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _customAnimation);
+				float duration = MBAnimation.GetAnimationDuration(_customAnimation.Index);
 
 				if (_customAnimationTimer > duration)
 				{
