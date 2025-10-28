@@ -548,7 +548,7 @@ namespace Alliance.Common.GameModels
 			agentDrivenProperties.AIHoldingReadyVariationPercentage = num;
 			agentDrivenProperties.AiRaiseShieldDelayTimeBase = -0.75f + 0.5f * num;
 			agentDrivenProperties.AiUseShieldAgainstEnemyMissileProbability = 0.1f + num * 0.6f + num3 * 0.2f;
-			agentDrivenProperties.AiCheckMovementIntervalFactor = 0.005f * (1.1f - num);
+			//agentDrivenProperties.AiCheckMovementIntervalFactor = 0.005f * (1.1f - num);
 			agentDrivenProperties.AiMovementDelayFactor = 4f / (3f + num2);
 			agentDrivenProperties.AiParryDecisionChangeValue = 0.05f + 0.7f * num;
 			agentDrivenProperties.AiDefendWithShieldDecisionChanceValue = MathF.Min(2f, 0.5f + num + 0.6f * num3);

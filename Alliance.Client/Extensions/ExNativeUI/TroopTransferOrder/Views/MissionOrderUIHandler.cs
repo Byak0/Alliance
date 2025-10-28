@@ -193,7 +193,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 
 		public void ValidateInADisgustingManner()
 		{
-			this._dataSource = new MissionOrderVM(false, true);
+			// todo refactor this class with 1.3 version
+			this._dataSource = new MissionOrderVM(base.Mission.PlayerTeam.PlayerOrderController, false, true);
 			this._dataSource.SetDeploymentParemeters(base.MissionScreen.CombatCamera, this.IsSiegeDeployment ? Enumerable.ToList<DeploymentPoint>(this._siegeDeploymentHandler.PlayerDeploymentPoints) : new List<DeploymentPoint>());
 			this._dataSource.SetCallbacks(new MissionOrderCallbacks
 			{
