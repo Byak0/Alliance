@@ -34,7 +34,6 @@ namespace Alliance.Common.Patch.HarmonyPatch
 					typeof(ManagedParameters).GetMethod("LoadFromXml", BindingFlags.Instance | BindingFlags.NonPublic),
 					prefix: new HarmonyMethod(typeof(Patch_MBObjectManager).GetMethod(nameof(Prefix_LoadFromXml), BindingFlags.Static | BindingFlags.Public)));
 
-
 				Harmony.Patch(
 					typeof(MBObjectManager).GetMethod("CreateDocumentFromXmlFile", BindingFlags.Static | BindingFlags.NonPublic),
 					prefix: new HarmonyMethod(typeof(Patch_MBObjectManager).GetMethod(
