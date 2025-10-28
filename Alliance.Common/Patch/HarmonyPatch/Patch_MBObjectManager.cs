@@ -150,7 +150,11 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		{
 			try
 			{
-				MBObjectManager.MergeElementAttributes(element1, element2);
+				bool merged = MBObjectManager.MergeElementAttributes(element1, element2);
+				if (element1.Value != "" && element2.Value != "")
+				{
+					element1.Value = element2.Value;
+				}
 
 				if (!string.IsNullOrEmpty(element1.Value) && !string.IsNullOrEmpty(element2.Value))
 					element1.Value = element2.Value;
@@ -161,8 +165,13 @@ namespace Alliance.Common.Patch.HarmonyPatch
 					element1.Add(element2.Elements());
 					return false;
 				}
-				var elementSchema = XmlResource.XsdElementDictionary[xsdPath];
-				var obj = element2.Elements() ?? Enumerable.Empty<XElement>();
+				else if (merged)
+				{
+					element1.Elements().Remove();
+				}
+
+				Dictionary<string, XmlResource.XsdElement> elementSchema = XmlResource.XsdElementDictionary[xsdPath];
+				IEnumerable<XElement> enumerable = element2.Elements() ?? Enumerable.Empty<XElement>();
 
 				var dictionary =
 					(from element in element1.Elements()
@@ -193,7 +202,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 							return dictionary2;
 						});
 
-				foreach (XElement element2Element in obj)
+				foreach (XElement element2Element in enumerable)
 				{
 					if (dictionary.TryGetValue(element2Element.Name, out var value))
 					{

@@ -73,7 +73,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			//}
 		}
 
-		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon)
+		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon, in Blow b, in AttackCollisionData collisionData)
 		{
 			if (affectorAgent != null && affectorAgent != Agent.RiderAgent)
 			{

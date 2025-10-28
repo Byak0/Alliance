@@ -81,7 +81,8 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 		{
 			target.Entity.SetContourColor(Colors.Green.ToUnsignedInteger(), true);
 			_dataSource.InteractionInterface.IsActive = true;
-			_dataSource.InteractionInterface.PrimaryInteractionMessage = target.Handler.GetInteractionText(Agent.Main, target.Entity).ToString();
+			// todo fix interaction text
+			//_dataSource.InteractionInterface.PrimaryInteractionMessages = target.Handler.GetInteractionText(Agent.Main, target.Entity).ToString();
 		}
 
 		private void DisableInteraction(InteractionTarget target)

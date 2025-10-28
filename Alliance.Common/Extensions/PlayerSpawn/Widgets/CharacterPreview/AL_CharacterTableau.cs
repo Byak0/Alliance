@@ -286,7 +286,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			if (_customAnimation != null && _characterActionSet.IsValid)
 			{
-				float actionAnimationDuration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _customAnimation);
+				float actionAnimationDuration = MBAnimation.GetAnimationDuration(_customAnimation.Index);
 				if (actionAnimationDuration == 0f)
 				{
 					return -1f;
@@ -968,7 +968,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_bannerEntity.AddMultiMesh(_bannerItem.GetMultiMeshCopy());
 			if (_banner != null)
 			{
-				_banner.GetTableauTextureLarge(delegate (Texture t)
+				BannerDebugInfo bannerDebugInfo = new BannerDebugInfo();
+				_banner.GetTableauTextureLarge(bannerDebugInfo, delegate (Texture t)
 				{
 					OnBannerTableauRenderDone(t);
 				});
