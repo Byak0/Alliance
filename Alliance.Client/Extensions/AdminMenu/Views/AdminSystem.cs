@@ -6,7 +6,6 @@ using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -59,7 +58,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 		GauntletLayer _layerLoaded;
 		private bool _isMenuOpen;
-		private IGauntletMovie _movie;
+		private GauntletMovieIdentifier _movie;
 		public Agent CurrentHoverAgent { get; private set; }
 
 		public bool IsModoModeActive { get; private set; }
@@ -77,7 +76,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			{
 				AdminInstance.GetInstance().IsVisible = false;
 				_layerLoaded ??= new GauntletLayer(2, "AdminSys", false);
-				_movie ??= (IGauntletMovie)_layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
+				_movie ??= _layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
 				_layerLoaded.InputRestrictions.SetInputRestrictions();
 				_layerLoaded.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				MissionScreen.AddLayer(_layerLoaded);
@@ -140,56 +139,56 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 		public override void OnMissionScreenTick(float dt)
 		{
-			//if (_isMenuOpen)
-			//{
-			//	if (
-			//		Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
-			//		|| Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey)
-			//		|| _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton)
-			//		|| _layerLoaded.Input.IsKeyPressed(InputKey.Escape)
-			//		)
-			//	{
-			//		CloseAdminPanel();
-			//	}
-			//}
-			//else
-			//{
-			//	if (GameNetwork.MyPeer.IsAdmin())
-			//	{
-			//		if (IsModoModeActive)
-			//		{
-			//			if ((_layerLoaded.Input.IsKeyPressed(InputKey.LeftMouseButton) || Input.IsKeyPressed(InputKey.LeftMouseButton)) && !_isMenuOpen)
-			//			{
-			//				GetPlayerByMouse();
-			//			}
-			//			if (
-			//				Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
-			//				|| Input.IsKeyPressed(InputKey.RightMouseButton)
-			//				)
-			//			{
-			//				StopModoMode();
-			//			}
-			//		}
-			//		else
-			//		{
-			//			if (Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || Input.IsKeyPressed(getPlayerKey.ControllerKey.InputKey))
-			//			{
-			//				StartModoMode();
-			//			}
+			if (_isMenuOpen)
+			{
+				if (
+					Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
+					|| Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey)
+					|| _layerLoaded.Input.IsKeyPressed(InputKey.RightMouseButton)
+					|| _layerLoaded.Input.IsKeyPressed(InputKey.Escape)
+					)
+				{
+					CloseAdminPanel();
+				}
+			}
+			else
+			{
+				if (GameNetwork.MyPeer.IsAdmin())
+				{
+					if (IsModoModeActive)
+					{
+						if ((_layerLoaded.Input.IsKeyPressed(InputKey.LeftMouseButton) || Input.IsKeyPressed(InputKey.LeftMouseButton)) && !_isMenuOpen)
+						{
+							GetPlayerByMouse();
+						}
+						if (
+							Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey)
+							|| Input.IsKeyPressed(InputKey.RightMouseButton)
+							)
+						{
+							StopModoMode();
+						}
+					}
+					else
+					{
+						if (Input.IsKeyPressed(getPlayerKey.KeyboardKey.InputKey) || Input.IsKeyPressed(getPlayerKey.ControllerKey.InputKey))
+						{
+							StartModoMode();
+						}
 
-			//			if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
-			//			{
-			//				AdminInstance.GetInstance().RefreshPlayerList();
-			//				OpenAdminPanel(AdminInstance.GetInstance());
-			//			}
-			//		}
+						if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
+						{
+							AdminInstance.GetInstance().RefreshPlayerList();
+							OpenAdminPanel(AdminInstance.GetInstance());
+						}
+					}
 
-			//		if (Input.IsKeyPressed(teleportKey.KeyboardKey.InputKey) || Input.IsKeyPressed(teleportKey.ControllerKey.InputKey))
-			//		{
-			//			TeleportToMouse();
-			//		}
-			//	}
-			//}
+					if (Input.IsKeyPressed(teleportKey.KeyboardKey.InputKey) || Input.IsKeyPressed(teleportKey.ControllerKey.InputKey))
+					{
+						TeleportToMouse();
+					}
+				}
+			}
 		}
 
 		public override void OnMissionTick(float dt)
