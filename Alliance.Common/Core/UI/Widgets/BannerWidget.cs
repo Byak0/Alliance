@@ -2,16 +2,18 @@
 using Alliance.Common.Patch.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.GauntletUI;
+using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.GauntletUI.Widgets;
 using TaleWorlds.ObjectSystem;
+using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Core.UI.Widgets
 {
 	/// <summary>
 	/// Simple widget that displays a banner based on the culture ID.
 	/// </summary>
-	public class BannerWidget : ImageIdentifierWidget
+	public class BannerWidget : MaskedTextureWidget
 	{
 		private string _cultureID;
 
@@ -49,8 +51,11 @@ namespace Alliance.Common.Core.UI.Widgets
 			uint color = basicCultureObject.BackgroundColor1;
 			uint color2 = basicCultureObject.ForegroundColor1;
 			string bannerCode = BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2);
-			ImageId = bannerCode ?? "";
-			AdditionalArgs = "";
+
+			Id = bannerCode ?? "";
+			TextureProviderName = "BannerImageTextureProvider";
+			AdditionalArgs = "ninegrid";
+			ImageId = Id;
 		}
 	}
 }
