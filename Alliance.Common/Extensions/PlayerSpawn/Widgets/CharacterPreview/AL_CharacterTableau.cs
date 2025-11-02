@@ -1,4 +1,5 @@
 ﻿#if !SERVER
+using Alliance.Common.Extensions.AnimationPlayer;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection;
@@ -57,7 +58,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private AgentVisuals _oldAgentVisuals;
 		private AgentVisuals _oldMountVisuals;
 		private int _initialLoadingCounter;
-		private ActionIndexCache _idleAction;
 		private string _idleFaceAnim;
 		private Scene _tableauScene;
 		private MBAgentRendererSceneController _agentRendererSceneController;
@@ -94,11 +94,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private int _leftHandEquipmentIndex;
 		private int _rightHandEquipmentIndex;
 		private bool _isEquipmentIndicesDirty;
+
+		private ActionIndexCache _idleAction = ActionIndexCache.act_none;
+		private float _idleAnimationTimer;
+
 		private bool _customAnimationStartScheduled;
 		private float _customAnimationTimer;
 		private string _customAnimationName;
-		private ActionIndexCache _customAnimation;
+		private ActionIndexCache _customAnimation = ActionIndexCache.act_none;
 		private MBActionSet _characterActionSet;
+
 		private bool _isVisualsDirty;
 		private Equipment _oldEquipment;
 		private Light _light;
@@ -115,12 +120,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			get
 			{
-				if (!(_customAnimation != null))
-				{
-					return _customAnimationStartScheduled;
-				}
-
-				return true;
+				return _customAnimation != ActionIndexCache.act_none || _customAnimationStartScheduled;
 			}
 		}
 
@@ -153,17 +153,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void OnTick(float dt)
 		{
+			if (_agentVisuals == null) return;
+
 			// Custom animation scheduling
 			if (_customAnimationStartScheduled)
 			{
 				StartCustomAnimation();
 			}
 
-			// Update custom animation timer and progress
-			if (_customAnimation != null && _characterActionSet.IsValid)
+			// Custom animation looping (except for act_none)
+			if (_customAnimation != ActionIndexCache.act_none && _characterActionSet.IsValid)
 			{
 				_customAnimationTimer += dt;
-				float duration = MBAnimation.GetAnimationDuration(_customAnimation.Index);
+				float duration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _customAnimation);
+				//float duration = MBAnimation.GetAnimationDuration(_customAnimation.Index);
 
 				if (_customAnimationTimer > duration)
 				{
@@ -176,7 +179,24 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					}
 					else
 					{
-						_agentVisuals?.SetAction(GetIdleAction());
+						AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
+					}
+				}
+			}
+			// Idle animation looping (except for act_none)
+			else if (_idleAction != ActionIndexCache.act_none)
+			{
+				// Only handle idle looping when no custom animation is playing
+				_idleAnimationTimer += dt;
+				float idleDuration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _idleAction);
+
+				if (idleDuration > 0 && _idleAnimationTimer >= idleDuration)
+				{
+					// Add optional wait delay between loops
+					if (_idleAnimationTimer > idleDuration)
+					{
+						AnimationSystem.Instance.PlayAnimation(_agentVisuals, _idleAction.GetName());
+						_idleAnimationTimer = 0f;
 					}
 				}
 			}
@@ -301,7 +321,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private void StopCustomAnimationIfCantContinue()
 		{
 			bool flag = false;
-			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none)
+			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none && !String.IsNullOrEmpty(_customAnimationName))
 			{
 				ActionIndexCache actionAnimationContinueToAction = MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, in _customAnimation);
 				if (actionAnimationContinueToAction.Index >= 0)
@@ -467,8 +487,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					_camPos = _camPosGatheredFromScene;
 					_camPos.Elevate(-2f);
 					_camPos.Advance(0.5f);
-					_agentVisuals?.SetAction(GetIdleAction());
-					_oldAgentVisuals?.SetAction(GetIdleAction());
+					AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
+					AnimationSystem.Instance.PlayAnimation(_oldAgentVisuals, GetIdleAction().GetName());
+					_idleAnimationTimer = 0f;
 					break;
 				case CharacterViewModel.StanceTypes.SideView:
 				case CharacterViewModel.StanceTypes.OnMount:
@@ -478,26 +499,31 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 						if (_equipment[10].Item != null)
 						{
 							_camPos.Advance(0.5f);
-							_agentVisuals.SetAction(_mountVisuals.GetEntity().Skeleton.GetActionAtChannel(0), _mountVisuals.GetEntity().Skeleton.GetAnimationParameterAtChannel(0));
-							_oldAgentVisuals.SetAction(_mountVisuals.GetEntity().Skeleton.GetActionAtChannel(0), _mountVisuals.GetEntity().Skeleton.GetAnimationParameterAtChannel(0));
+
+							AnimationSystem.Instance.PlayAnimation(_agentVisuals, _mountVisuals.GetEntity().Skeleton.GetActionAtChannel(0).GetName());
+							AnimationSystem.Instance.PlayAnimation(_oldAgentVisuals, _mountVisuals.GetEntity().Skeleton.GetActionAtChannel(0).GetName());
+							_idleAnimationTimer = 0f;
 						}
 						else
 						{
 							_camPos.Elevate(-2f);
 							_camPos.Advance(0.5f);
-							_agentVisuals.SetAction(GetIdleAction());
-							_oldAgentVisuals.SetAction(GetIdleAction());
+							AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
+							AnimationSystem.Instance.PlayAnimation(_oldAgentVisuals, GetIdleAction().GetName());
+							_idleAnimationTimer = 0f;
 						}
 					}
 
 					break;
 				case CharacterViewModel.StanceTypes.CelebrateVictory:
-					_agentVisuals?.SetAction(act_cheer_1);
-					_oldAgentVisuals?.SetAction(act_cheer_1);
+					AnimationSystem.Instance.PlayAnimation(_agentVisuals, act_cheer_1.GetName());
+					AnimationSystem.Instance.PlayAnimation(_oldAgentVisuals, act_cheer_1.GetName());
+					_idleAnimationTimer = 0f;
 					break;
 				case CharacterViewModel.StanceTypes.None:
-					_agentVisuals?.SetAction(GetIdleAction());
-					_oldAgentVisuals?.SetAction(GetIdleAction());
+					AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
+					AnimationSystem.Instance.PlayAnimation(_oldAgentVisuals, GetIdleAction().GetName());
+					_idleAnimationTimer = 0f;
 					break;
 			}
 
@@ -604,7 +630,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_customAnimation = ActionIndexCache.Create(_customAnimationName);
 			if (_customAnimation.Index >= 0)
 			{
-				_agentVisuals.SetAction(_customAnimation);
+				AnimationSystem.Instance.PlayAnimation(_agentVisuals, _customAnimationName);
 				_customAnimationStartScheduled = false;
 				_customAnimationTimer = 0f;
 			}
@@ -622,7 +648,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				{
 					AgentVisuals agentVisuals = _agentVisuals;
 					ActionIndexCache idleAction = GetIdleAction();
-					agentVisuals.SetAction(idleAction, 0f, true);
+					AnimationSystem.Instance.PlayAnimation(agentVisuals, idleAction.GetName());
 				}
 				_customAnimation = ActionIndexCache.act_none;
 			}
@@ -690,7 +716,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private ActionIndexCache GetIdleAction()
 		{
-			if (!(_idleAction != ActionIndexCache.act_none))
+			if (_idleAction == ActionIndexCache.act_none)
 			{
 				return ActionIndexCache.act_inventory_idle_start;
 			}

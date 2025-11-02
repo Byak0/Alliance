@@ -54,12 +54,13 @@ namespace Alliance.Client
 			// TODO : Check which limits still need to be increased after 1.2
 			// Increase native network compression limits to prevent crashes
 			DirtyCommonPatcher.IncreaseNativeLimits();
+
+			// Initialize animation system and all the game animations
+			AnimationSystem.Instance.Init();
 		}
 
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
 		{
-			// Initialize animation system and all the game animations
-			AnimationSystem.Instance.Init();
 		}
 
 		public override void OnGameInitializationFinished(Game game)

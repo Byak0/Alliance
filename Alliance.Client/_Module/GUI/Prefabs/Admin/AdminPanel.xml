@@ -59,7 +59,7 @@
 									</Children>
 								</ListPanel>
 
-								<CharacterTableauWidget DataSource="{UnitCharacter}" WidthSizePolicy="Fixed" SuggestedWidth="300" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Left" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" IsEnabled="false" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race"/>
+								<AL_CharacterTableauWidget DataSource="{UnitCharacter}" WidthSizePolicy="Fixed" SuggestedWidth="300" HeightSizePolicy ="Fixed" SuggestedHeight="400" HorizontalAlignment="Left" VerticalAlignment="Center" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText" MountCreationKey="@MountCreationKey" IsEnabled="false" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race"/>
 
 							</Children>
 						</ListPanel>

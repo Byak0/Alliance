@@ -17,8 +17,8 @@ namespace Alliance.Client.Patch
 			//patchSuccess &= Patch_MissionMultiplayerGameModeFlagDominationClient.Patch();
 			patchSuccess &= Patch_MissionNetworkComponent.Patch();
 			patchSuccess &= Patch_DefaultAdminPanelOptionProvider.Patch();
-			patchSuccess &= Patch_AllianceAgentVisualSpawnComponent.Patch();
-			patchSuccess &= Patch_MPArmoryVM.Patch();
+			patchSuccess &= Patch_MPLobby.Patch();
+			//patchSuccess &= Patch_AllianceAgentVisualSpawnComponent.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;
