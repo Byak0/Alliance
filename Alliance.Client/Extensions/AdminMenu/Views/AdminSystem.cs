@@ -12,6 +12,7 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
+using TaleWorlds.PlayerServices;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
 using static Alliance.Common.Utilities.Logger;
@@ -178,7 +179,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 						if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
 						{
-							AdminInstance.GetInstance().RefreshPlayerList();
 							OpenAdminPanel(AdminInstance.GetInstance());
 						}
 					}
@@ -274,7 +274,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			{
 				Username = agent.MissionPeer?.Name ?? agent.Name,
 				AgentIndex = agent.Index,
-				PeerId = agent.MissionPeer?.Peer?.Id.ToString()
+				PlayerId = agent.MissionPeer?.Peer?.Id ?? PlayerId.Empty
 			};
 			adminVM.SelectTarget(agent);
 			OpenAdminPanel(adminVM);

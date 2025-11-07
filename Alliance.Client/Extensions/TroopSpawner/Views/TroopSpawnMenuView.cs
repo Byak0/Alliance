@@ -195,7 +195,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 		// Dev command - Spawn the thing at exact location
 		private void SpawnTheThing()
 		{
-			if (!GameNetwork.MyPeer.IsDev()) return;
+			if (!GameNetwork.MyPeer.IsSudo()) return;
 
 			bool validTargetArea = MissionScreen.GetProjectedMousePositionOnGround(out var groundPos, out _, BodyFlags.BodyOwnerFlora, true);
 			if (!validTargetArea)

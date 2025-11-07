@@ -11,6 +11,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.PlayerServices;
 
 namespace Alliance.Client.Core.Console
 {
@@ -145,16 +146,16 @@ namespace Alliance.Client.Core.Console
 			else if (args.Count() == 0)
 			{
 				GameNetwork.BeginModuleEventAsClient();
-				GameNetwork.WriteMessage(new AdminClient() { ToggleInvulnerable = true, PlayerSelected = "" });
+				GameNetwork.WriteMessage(new AdminClient() { ToggleInvulnerable = true, PlayerSelected = PlayerId.Empty });
 				GameNetwork.EndModuleEventAsClient();
 				return "Requested server to toggle invulnerable for all";
 			}
 
 			string name = ConcatenateString(args);
 			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.UserName.ToString() == name).FirstOrDefault();
-			if (playerSelected == null) return "No player found with name " + name;
+			if (playerSelected?.VirtualPlayer == null) return "No valid player found with name " + name;
 
-			string playerId = playerSelected.VirtualPlayer?.Id.ToString();
+			PlayerId playerId = playerSelected.VirtualPlayer.Id;
 
 			GameNetwork.BeginModuleEventAsClient();
 			GameNetwork.WriteMessage(new AdminClient() { ToggleInvulnerable = true, PlayerSelected = playerId });

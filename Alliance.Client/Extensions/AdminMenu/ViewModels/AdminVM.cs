@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Security;
 using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Security.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System;
@@ -8,6 +10,7 @@ using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
@@ -21,26 +24,38 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private string _Death;
 		private string _Assist;
 		private string _Score;
-		private string _KickCounter;
-		private string _BanCounter;
-		private string _WarningCounter;
+		private string _kickCounter;
+		private string _banCounter;
+		private string _warningCounter;
 		private string _filterText;
 		private CharacterViewModel _unitCharacter;
 		private MBBindingList<NetworkPeerVM> _networkCommunicators;
 		private MBBindingList<ServerMessageVM> _serverMessage;
+		private MBBindingList<PlayerDataVM> _playersData;
 		private RolesVM _roles;
 		private NetworkPeerVM _selectedPeer;
 		private bool _isSudo;
 		private bool _isVisible;
+		private bool _showAdminTab;
+		private bool _showPlayerTab;
+		private bool _showToolsTab;
 		private string _banReason = "";
 
 		public AdminVM()
 		{
-			_isSudo = GameNetwork.MyPeer.IsDev();
+			_isSudo = GameNetwork.MyPeer.IsSudo();
 			_unitCharacter = new CharacterViewModel();
 			_serverMessage = new MBBindingList<ServerMessageVM>();
 			_roles = new RolesVM();
+			_showAdminTab = true;
 			RefreshPlayerList();
+
+			PlayerService.PlayerDataUpdated += OnPlayerDataUpdated;
+		}
+
+		~AdminVM()
+		{
+			PlayerService.PlayerDataUpdated -= OnPlayerDataUpdated;
 		}
 
 		[DataSourceProperty]
@@ -76,6 +91,58 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				}
 			}
 		}
+
+		[DataSourceProperty]
+		public bool ShowAdminTab
+		{
+			get
+			{
+				return _showAdminTab;
+			}
+			set
+			{
+				if (value != _showAdminTab)
+				{
+					_showAdminTab = value;
+					OnPropertyChangedWithValue(value, "ShowAdminTab");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool ShowPlayerTab
+		{
+			get
+			{
+				return _showPlayerTab;
+			}
+			set
+			{
+				if (value != _showPlayerTab)
+				{
+					_showPlayerTab = value;
+					OnPropertyChangedWithValue(value, "ShowPlayerTab");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool ShowOptionsTab
+		{
+			get
+			{
+				return _showToolsTab;
+			}
+			set
+			{
+				if (value != _showToolsTab)
+				{
+					_showToolsTab = value;
+					OnPropertyChangedWithValue(value, "ShowToolsTab");
+				}
+			}
+		}
+
 
 		[DataSourceProperty]
 		public string Username
@@ -144,6 +211,24 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				}
 			}
 		}
+
+		[DataSourceProperty]
+		public MBBindingList<PlayerDataVM> PlayersData
+		{
+			get
+			{
+				return _playersData;
+			}
+			set
+			{
+				if (value != _playersData)
+				{
+					_playersData = value;
+					OnPropertyChangedWithValue(value, "PlayersData");
+				}
+			}
+		}
+
 
 		[DataSourceProperty]
 		public CharacterViewModel UnitCharacter
@@ -265,6 +350,57 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		}
 
 		[DataSourceProperty]
+		public string KickCounter
+		{
+			get
+			{
+				return _kickCounter;
+			}
+			set
+			{
+				if (value != _kickCounter)
+				{
+					_kickCounter = value;
+					OnPropertyChangedWithValue(value, "KickCounter");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string BanCounter
+		{
+			get
+			{
+				return _banCounter;
+			}
+			set
+			{
+				if (value != _banCounter)
+				{
+					_banCounter = value;
+					OnPropertyChangedWithValue(value, "BanCounter");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WarningCounter
+		{
+			get
+			{
+				return _warningCounter;
+			}
+			set
+			{
+				if (value != _warningCounter)
+				{
+					_warningCounter = value;
+					OnPropertyChangedWithValue(value, "WarningCounter");
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public string FilterText
 		{
 			get
@@ -296,6 +432,27 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
+		public void OpenAdminTab()
+		{
+			ShowAdminTab = true;
+			ShowPlayerTab = false;
+			ShowOptionsTab = false;
+		}
+
+		public void OpenPlayerTab()
+		{
+			ShowAdminTab = false;
+			ShowPlayerTab = true;
+			ShowOptionsTab = false;
+		}
+
+		public void OpenToolsTab()
+		{
+			ShowAdminTab = false;
+			ShowPlayerTab = false;
+			ShowOptionsTab = true;
+		}
+
 		/// <summary>
 		/// Filter list of players with given text filter
 		/// </summary>
@@ -308,56 +465,61 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 					networkPeerVM.IsFiltered = !networkPeerVM.Username.ToLower().Contains(filterText);
 				}
 			}
+
+			foreach (PlayerDataVM playerDataVM in _playersData)
+			{
+				playerDataVM.IsFiltered = !playerDataVM.Username.ToLower().Contains(filterText);
+			}
 		}
 
 		public void Heal()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Heal = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Heal = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void HealAll()
 		{
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { HealAll = true, PlayerSelected = null });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { HealAll = true, PlayerSelected = PlayerId.Empty });
 		}
 
 		public void GodMod()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodMod = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodMod = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void GodModAll()
 		{
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodModAll = true, PlayerSelected = null });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodModAll = true, PlayerSelected = PlayerId.Empty });
 		}
 
 		public void KillPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void KillPlayers()
 		{
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillPlayers = true, PlayerSelected = null });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillPlayers = true, PlayerSelected = PlayerId.Empty });
 		}
 
 		public void KillBots()
 		{
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillBots = true, PlayerSelected = null });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillBots = true, PlayerSelected = PlayerId.Empty });
 		}
 
 		public void KickPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kick = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kick = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void SendWarningToPlayer(string customWarning)
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PeerId, WarningMessageToPlayer = customWarning });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PlayerId, WarningMessageToPlayer = customWarning });
 		}
 
 		public void PrompWarningMessageSelection()
@@ -428,7 +590,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				ClientAdminMenuMsg.SendMessageToServer(new AdminClient()
 				{
 					Ban = true,
-					PlayerSelected = _selectedPeer.PeerId,
+					PlayerSelected = _selectedPeer.PlayerId,
 					BanReason = reason
 				});
 			}
@@ -441,32 +603,32 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		public void ToggleMutePlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { ToggleMutePlayer = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { ToggleMutePlayer = true, PlayerSelected = _selectedPeer.PlayerId });
 			_selectedPeer.IsMuted = !_selectedPeer.IsMuted;
 		}
 
 		public void Respawn()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Respawn = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Respawn = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 
 		public void TeleportToPlayer()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportToPlayer = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportToPlayer = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void TeleportPlayerToYou()
 		{
 			if (_selectedPeer == null) { return; }
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PeerId });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
 		public void TeleportAllPlayerToYou()
 		{
-			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = null });
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = PlayerId.Empty });
 		}
 
 		public void ToggleModoVision()
@@ -480,9 +642,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		public void SetAdmin()
 		{
 			if (_selectedPeer == null) { return; }
-			if (GameNetwork.MyPeer.IsDev())
+			if (GameNetwork.MyPeer.IsSudo())
 			{
-				ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SetAdmin = true, PlayerSelected = _selectedPeer.PeerId });
+				ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SetAdmin = true, PlayerSelected = _selectedPeer.PlayerId });
 			}
 		}
 
@@ -495,13 +657,39 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					Username = x.UserName,
 					AgentIndex = x.ControlledAgent?.Index ?? -1,
-					PeerId = x.VirtualPlayer.Id.ToString(),
-					IsSelected = x.VirtualPlayer.Id.ToString() == _selectedPeer?.PeerId,
+					PlayerId = x.VirtualPlayer?.Id ?? PlayerId.Empty,
+					IsSelected = x.VirtualPlayer.Id == _selectedPeer?.PlayerId,
 					OnSelect = OnNetworkPeerSelected,
 					IsMuted = x.IsMuted()
 				});
 			});
 			_selectedPeer = NetworkPeers.FirstOrDefault(x => x.PeerId == _selectedPeer?.PeerId);
+
+			PlayersData = new MBBindingList<PlayerDataVM>();
+			// Populate from stored players data
+			foreach (AL_PlayerData playerData in PlayerStore.Instance.AllPlayersData.Values)
+			{
+				PlayersData.Add(new PlayerDataVM(playerData) { IsOnline = PlayerStore.Instance.PlayerIdToCommunicator.ContainsKey(playerData.Id) });
+			}
+			// Add missing online players (not in the stored data)
+			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
+			{
+				if (PlayerStore.Instance.AllPlayersData.ContainsKey(player.VirtualPlayer.Id)) continue;
+				PlayersData.Add(new PlayerDataVM(player));
+			}
+		}
+
+		private void OnPlayerDataUpdated(AL_PlayerData updatedData, NetworkCommunicator player)
+		{
+			if (updatedData == null)
+				return;
+
+			// Find the matching PlayerDataVM by PlayerId
+			PlayerDataVM vm = PlayersData?.FirstOrDefault(x => x.PlayerStringId == updatedData.Id.ToString());
+			if (vm != null)
+				vm.UpdateFrom(updatedData);
+			else
+				PlayersData?.Add(new PlayerDataVM(updatedData) { IsOnline = player != null });
 		}
 
 		public void SelectTarget(Agent agent)
@@ -518,7 +706,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					Username = agent.MissionPeer?.Name ?? agent.Name,
 					AgentIndex = agent.Index,
-					PeerId = agent.MissionPeer?.Peer?.Id.ToString(),
+					PlayerId = agent.MissionPeer?.Peer?.Id ?? PlayerId.Empty,
 					IsSelected = false,
 					OnSelect = OnNetworkPeerSelected
 				};
@@ -538,6 +726,10 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				Assist = peer.AssistCount.ToString();
 				Death = peer.DeathCount.ToString();
 				Score = peer.Score.ToString();
+				PlayerStore.Instance.OnlinePlayersData.TryGetValue(networkCommunicator, out AL_PlayerData playerData);
+				KickCounter = playerData?.KickCount.ToString() ?? "0";
+				BanCounter = playerData?.BanCount.ToString() ?? "0";
+				WarningCounter = playerData?.WarningCount.ToString() ?? "0";
 			}
 			if (networkCommunicator?.ControlledAgent != null)
 			{
