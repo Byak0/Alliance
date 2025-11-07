@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.ExtendedXML;
+using Alliance.Common.Core.Security;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModels;
@@ -31,7 +32,7 @@ namespace Alliance.Server
 	public class SubModule : MBSubModuleBase
 	{
 		public const string ModuleId = "Alliance.Server";
-		public const string RolesFilePath = "./alliance_roles.txt";
+		public const string PlayerStorePath = "./alliance_players.txt";
 		public const string ConfigFilePath = "./alliance_config.txt";
 		public const string PlayerSpawnMenuFilePath = "spawn_preset_lobby_inf.xml";
 		public const string BanHistoryFilePath = "./alliance_AllBans.txt";
@@ -39,7 +40,7 @@ namespace Alliance.Server
 		protected override void OnSubModuleLoad()
 		{
 			// Initialize player roles and access level
-			SecurityInitializer.Init();
+			PlayerStore.Instance.InitFromFile(PlayerStorePath);
 
 			Server_ActionFactory.Initialize();
 

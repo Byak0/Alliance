@@ -46,7 +46,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 
 		public bool HandleRequestSpawnThing(NetworkCommunicator peer, RequestSpawnThing model)
 		{
-			if (!peer.IsDev()) return false;
+			if (!peer.IsSudo()) return false;
 
 			MatrixFrame spawnPos = model.SpawnPosition;
 
