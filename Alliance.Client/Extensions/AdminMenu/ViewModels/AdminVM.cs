@@ -1,17 +1,23 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿using Alliance.Common.Core.Configuration;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Security.Models;
+using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
+using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 {
@@ -32,7 +38,10 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private MBBindingList<NetworkPeerVM> _networkCommunicators;
 		private MBBindingList<ServerMessageVM> _serverMessage;
 		private MBBindingList<PlayerDataVM> _playersData;
-		private RolesVM _roles;
+		private MBBindingList<OptionVM> _nativeOptions;
+		private TWConfig _newNativeOptions;
+		private MBBindingList<OptionVM> _modOptions;
+		private Config _newModOptions;
 		private NetworkPeerVM _selectedPeer;
 		private bool _isSudo;
 		private bool _isVisible;
@@ -46,9 +55,10 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			_isSudo = GameNetwork.MyPeer.IsSudo();
 			_unitCharacter = new CharacterViewModel();
 			_serverMessage = new MBBindingList<ServerMessageVM>();
-			_roles = new RolesVM();
 			_showAdminTab = true;
 			RefreshPlayerList();
+			RefreshNativeOptions();
+			RefreshModOptions();
 
 			PlayerService.PlayerDataUpdated += OnPlayerDataUpdated;
 		}
@@ -138,7 +148,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				if (value != _showToolsTab)
 				{
 					_showToolsTab = value;
-					OnPropertyChangedWithValue(value, "ShowToolsTab");
+					OnPropertyChangedWithValue(value, "ShowOptionsTab");
 				}
 			}
 		}
@@ -157,23 +167,6 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					_Username = value;
 					OnPropertyChangedWithValue(value, "Username");
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public RolesVM Roles
-		{
-			get
-			{
-				return _roles;
-			}
-			set
-			{
-				if (value != _roles)
-				{
-					_roles = value;
-					OnPropertyChangedWithValue(value, "Roles");
 				}
 			}
 		}
@@ -229,6 +222,39 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
+		[DataSourceProperty]
+		public MBBindingList<OptionVM> NativeOptions
+		{
+			get
+			{
+				return _nativeOptions;
+			}
+			set
+			{
+				if (value != _nativeOptions)
+				{
+					_nativeOptions = value;
+					OnPropertyChangedWithValue(value, nameof(NativeOptions));
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public MBBindingList<OptionVM> ModOptions
+		{
+			get
+			{
+				return _modOptions;
+			}
+			set
+			{
+				if (value != _modOptions)
+				{
+					_modOptions = value;
+					OnPropertyChangedWithValue(value, nameof(ModOptions));
+				}
+			}
+		}
 
 		[DataSourceProperty]
 		public CharacterViewModel UnitCharacter
@@ -472,44 +498,52 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
+		[UsedImplicitly]
 		public void Heal()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Heal = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
+		[UsedImplicitly]
 		public void HealAll()
 		{
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { HealAll = true, PlayerSelected = PlayerId.Empty });
 		}
 
+		[UsedImplicitly]
 		public void GodMod()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodMod = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
+		[UsedImplicitly]
 		public void GodModAll()
 		{
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { GodModAll = true, PlayerSelected = PlayerId.Empty });
 		}
 
+		[UsedImplicitly]
 		public void KillPlayer()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Kill = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
+		[UsedImplicitly]
 		public void KillPlayers()
 		{
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillPlayers = true, PlayerSelected = PlayerId.Empty });
 		}
 
+		[UsedImplicitly]
 		public void KillBots()
 		{
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { KillBots = true, PlayerSelected = PlayerId.Empty });
 		}
 
+		[UsedImplicitly]
 		public void KickPlayer()
 		{
 			if (_selectedPeer == null) { return; }
@@ -522,6 +556,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SendWarningToPlayer = true, PlayerSelected = _selectedPeer.PlayerId, WarningMessageToPlayer = customWarning });
 		}
 
+		[UsedImplicitly]
 		public void PrompWarningMessageSelection()
 		{
 			if (_selectedPeer == null) { return; }
@@ -542,6 +577,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				false);
 		}
 
+		[UsedImplicitly]
 		public void BanPlayer()
 		{
 			if (_selectedPeer == null)
@@ -600,6 +636,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
+		[UsedImplicitly]
 		public void ToggleMutePlayer()
 		{
 			if (_selectedPeer == null) { return; }
@@ -607,45 +644,40 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			_selectedPeer.IsMuted = !_selectedPeer.IsMuted;
 		}
 
+		[UsedImplicitly]
 		public void Respawn()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { Respawn = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
-
+		[UsedImplicitly]
 		public void TeleportToPlayer()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportToPlayer = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
+		[UsedImplicitly]
 		public void TeleportPlayerToYou()
 		{
 			if (_selectedPeer == null) { return; }
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportPlayerToYou = true, PlayerSelected = _selectedPeer.PlayerId });
 		}
 
+		[UsedImplicitly]
 		public void TeleportAllPlayerToYou()
 		{
 			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { TeleportAllPlayerToYou = true, PlayerSelected = PlayerId.Empty });
 		}
 
+		[UsedImplicitly]
 		public void ToggleModoVision()
 		{
 			bool isModoVisionActivated = !UserConfig.Instance.CanSeeAllPlayersNames;
 			UserConfig.Instance.CanSeeAllPlayersNames = isModoVisionActivated;
 			UserConfig.Instance.Save();
 			Log("Modo vision is now : " + (isModoVisionActivated ? "ON" : "OFF"));
-		}
-
-		public void SetAdmin()
-		{
-			if (_selectedPeer == null) { return; }
-			if (GameNetwork.MyPeer.IsSudo())
-			{
-				ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { SetAdmin = true, PlayerSelected = _selectedPeer.PlayerId });
-			}
 		}
 
 		public void RefreshPlayerList()
@@ -771,6 +803,166 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 			peer.IsSelected = true;
 			_selectedPeer = peer;
+		}
+
+		[UsedImplicitly]
+		public void ResetOptions()
+		{
+			RefreshModOptions();
+			RefreshNativeOptions();
+		}
+
+		[UsedImplicitly]
+		public void ApplyOptions()
+		{
+			ClientAdminMenuMsg.RequestUpdateOptionsToServer(_newNativeOptions, _newModOptions);
+		}
+
+		private void RefreshNativeOptions()
+		{
+			NativeOptions = new MBBindingList<OptionVM>();
+			_newNativeOptions = ConfigManager.Instance.GetNativeOptionsCopy();
+
+			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
+			{
+				OptionType currentType = optionType;
+				MultiplayerOption option = MultiplayerOption.CreateMultiplayerOption(currentType);
+				MultiplayerOptionsProperty optionProperty = currentType.GetOptionProperty();
+
+				FieldInfo fi = typeof(TWConfig).GetField(currentType.ToString());
+				if (fi == null) continue; // Skip if option type is not found
+
+				// Retrieve attribute for option type
+				ConfigPropertyAttribute attribute = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+				if (attribute != null && !attribute.IsEditable) continue; // Skip if option is not editable
+
+				switch (optionProperty.OptionValueType)
+				{
+					case OptionValueType.Bool:
+						NativeOptions.Add(new BoolOptionVM(
+							new TextObject(attribute.Label ?? currentType.ToString()),
+							new TextObject(attribute.Tooltip ?? currentType.ToString()),
+							() => (bool)_newNativeOptions[currentType],
+							newValue => _newNativeOptions[currentType] = newValue));
+						break;
+					case OptionValueType.Integer:
+						NativeOptions.Add(new NumericOptionVM(
+							new TextObject(attribute.Label ?? currentType.ToString()),
+							new TextObject(attribute.Tooltip ?? currentType.ToString()),
+							() => (int)_newNativeOptions[currentType],
+							newValue => _newNativeOptions[currentType] = (int)newValue,
+							optionProperty.BoundsMin,
+							optionProperty.BoundsMax,
+							true, true));
+						break;
+					case OptionValueType.String:
+						if (currentType == OptionType.CultureTeam1 || currentType == OptionType.CultureTeam2)
+						{
+							NativeOptions.Add(new SelectionOptionVM(
+								new TextObject(attribute.Label ?? currentType.ToString()),
+								new TextObject(attribute.Tooltip ?? currentType.ToString()),
+								new SelectionOptionData(
+									() => GetFactionChoices().FindIndex(item => item.Data == (string)_newNativeOptions[currentType]),
+									newValue => _newNativeOptions[currentType] = GetFactionChoices().ElementAtOrDefault(newValue).Data,
+									2,
+									GetFactionChoices()),
+								false));
+						}
+						break;
+				}
+			}
+		}
+
+		private void RefreshModOptions()
+		{
+			ModOptions = new MBBindingList<OptionVM>();
+			_newModOptions = ConfigManager.Instance.GetModOptionsCopy();
+
+			List<string> availableOptions = typeof(Config)
+											.GetFields(BindingFlags.Public | BindingFlags.Instance)
+											.Select(field => field.Name)
+											.ToList();
+
+			foreach (var field in ConfigManager.Instance.ConfigFields.Where(field => availableOptions.Contains(field.Value.Name)))
+			{
+				FieldInfo fieldInfo = field.Value;
+				object fieldValue = fieldInfo.GetValue(_newModOptions);
+				ConfigPropertyAttribute configPropertyAttribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+
+				if (fieldInfo.FieldType == typeof(bool))
+				{
+					ModOptions.Add(
+						new BoolOptionVM(
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
+							() => (bool)fieldInfo.GetValue(_newModOptions),
+							newValue => fieldInfo.SetValue(_newModOptions, newValue))
+						);
+				}
+				else if (fieldInfo.FieldType == typeof(int))
+				{
+					ModOptions.Add(
+						new NumericOptionVM(
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
+							() => (int)fieldInfo.GetValue(_newModOptions),
+							newValue => fieldInfo.SetValue(_newModOptions, (int)newValue),
+							configPropertyAttribute.MinValue,
+							configPropertyAttribute.MaxValue,
+							true, true)
+						);
+				}
+				else if (fieldInfo.FieldType == typeof(float))
+				{
+					ModOptions.Add(
+						new NumericOptionVM(
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
+							() => (float)fieldInfo.GetValue(_newModOptions),
+							newValue => fieldInfo.SetValue(_newModOptions, newValue),
+							configPropertyAttribute.MinValue,
+							configPropertyAttribute.MaxValue,
+							false, true)
+						);
+				}
+				// TODO : add an option for string ? (other than enums)
+				else if (fieldInfo.FieldType == typeof(string) && configPropertyAttribute.DataType != AllianceData.DataTypes.None)
+				{
+					List<SelectionItem> selectionItems = GetSelectionItemsFromValues(configPropertyAttribute.PossibleValues.ToList());
+					ModOptions.Add(
+						new SelectionOptionVM(
+							new TextObject(configPropertyAttribute.Label),
+							new TextObject(configPropertyAttribute.Tooltip),
+							new SelectionOptionData(
+								() => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(_newModOptions)),
+								newValue => fieldInfo.SetValue(_newModOptions, selectionItems.ElementAtOrDefault(newValue).Data),
+								2,
+								selectionItems),
+							false)
+						);
+				}
+			}
+		}
+
+		private List<SelectionItem> GetSelectionItemsFromValues(List<string> values)
+		{
+			List<SelectionItem> optionValues = new List<SelectionItem>();
+			foreach (string value in values)
+			{
+				optionValues.Add(new SelectionItem(false, value));
+			}
+			return optionValues;
+		}
+
+		private List<SelectionItem> GetFactionChoices()
+		{
+			List<SelectionItem> choices = new List<SelectionItem>();
+			foreach (string faction in Factions.Instance.AvailableCultures.Keys)
+			{
+				choices.Add(new SelectionItem(false, faction));
+			}
+
+			return choices;
 		}
 	}
 }

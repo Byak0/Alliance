@@ -9,7 +9,7 @@
 	<VisualDefinitions>
 	</VisualDefinitions>
 	<Window>
-		
+
 		<Widget IsVisible="@IsVisible" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 			<Children>
 				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="88" >
@@ -40,7 +40,7 @@
 
 				<!-- Permissions & bans View -->
 				<TabPlayers/>
-				
+
 				<!-- Options View -->
 				<TabOptions/>
 
