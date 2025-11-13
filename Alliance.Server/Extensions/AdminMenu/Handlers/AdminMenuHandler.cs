@@ -7,6 +7,7 @@ using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.RTSCamera.Extension;
+using Alliance.Common.GameModes;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Security;
 using Alliance.Server.Extensions.AdminMenu.Behaviors;
@@ -37,6 +38,22 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 			reg.Register<RequestNotification>(HandleNotificationRequest);
 			reg.Register<SpawnHorseRequest>(HandleSpawnHorseRequest);
 			reg.Register<TeleportRequest>(HandleTeleportRequest);
+			reg.Register<RequestUpdateOptions>(HandleUpdateOptionsRequest);
+		}
+
+		public bool HandleUpdateOptionsRequest(NetworkCommunicator peer, RequestUpdateOptions req)
+		{
+			if (!peer.IsAdmin())
+			{
+				Log($"[AdminPanel] Non-admin {peer.UserName} attempted to update server options.", LogLevel.Warning);
+				ServerAdminMenuMsg.SendMessageToAllAdmins($"[AdminPanel] Non-admin {peer.UserName} attempted to update server options.", AdminServerLog.ColorList.Danger);
+				return false;
+			}
+			GameModeSettings newSettings = new GameModeSettings() { ModOptions = req.ModOptions, TWOptions = req.NativeOptions };
+			GameModeStarter.Instance.ApplyGameModeSettings(newSettings);
+			Log($"[AdminPanel][OPTIONS] Admin {peer.UserName} updated server options.", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToAllAdmins($"[OPTIONS] Admin {peer.UserName} updated server options.", AdminServerLog.ColorList.Success);
+			return true;
 		}
 
 		public bool HandleSpawnHorseRequest(NetworkCommunicator peer, SpawnHorseRequest req)
@@ -137,6 +154,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return SetSudo(peer, admin);
 				if (admin.SetAdmin)
 					return SetAdmin(peer, admin);
+			}
+			if (!peer.IsAdmin() && !peer.IsSudo())
+			{
+				Log($"[AdminPanel] Non-admin {peer.UserName} attempted to use admin commands.", LogLevel.Warning);
+				ServerAdminMenuMsg.SendMessageToAllAdmins($"[AdminPanel] Non-admin {peer.UserName} attempted to use admin commands.", AdminServerLog.ColorList.Danger);
 			}
 
 			return false;
