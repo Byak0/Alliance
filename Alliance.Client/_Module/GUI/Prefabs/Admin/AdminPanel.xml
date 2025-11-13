@@ -27,7 +27,7 @@
 							</Children>
 						</ButtonWidget>
 						<!-- Tab to display current config -->
-						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenToolsTab" IsSelected="@ShowToolsTab">
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenToolsTab" IsSelected="@ShowOptionsTab">
 							<Children>
 								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="28" IsDisabled="true" Text="Game options" />
 							</Children>
