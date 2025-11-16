@@ -825,7 +825,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
 			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
 			{
-				OptionType currentType = optionType;
+				OptionType currentType = optionType; // Make a local copy, else lambdas will call the last value of the loop!
 				MultiplayerOption option = MultiplayerOption.CreateMultiplayerOption(currentType);
 				MultiplayerOptionsProperty optionProperty = currentType.GetOptionProperty();
 
