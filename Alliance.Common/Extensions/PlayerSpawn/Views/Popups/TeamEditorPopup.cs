@@ -32,7 +32,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views.Popups
 				_dataSource = new TeamEditorVM(team);
 				_dataSource.OnCloseMenu += (_, _) => CloseMenu();
 
-				_layer = new GauntletLayer(30, "GauntletLayer");
+				_layer = new GauntletLayer("TeamEditorPopup", 30);
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("TeamEditorPopup", _dataSource);
