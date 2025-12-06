@@ -55,9 +55,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private MatrixFrame _mountSpawnPoint;
 		private MatrixFrame _bannerSpawnPoint;
 		private float _animationFrequencyThreshold = 2.5f;
-		private MatrixFrame _initialSpawnFrame;
-		private MatrixFrame _characterMountPositionFrame;
-		private MatrixFrame _mountCharacterPositionFrame;
+		private MatrixFrame _characterSpawnPoint;
+		private MatrixFrame _mountSpawnPointSwapped;
+		private MatrixFrame _characterSpawnPointSwapped;
 		private AgentVisuals _agentVisuals;
 		private AgentVisuals _mountVisuals;
 		private int _agentVisualLoadingCounter;
@@ -431,7 +431,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			Texture?.Release();
 			Texture = TableauView.AddTableau("AL_CharacterTableau_" + _lastTableauIndex++, new RenderTargetComponent.TextureUpdateEventHandler(CharacterTableauContinuousRenderFunction), _tableauScene, _tableauSizeX, _tableauSizeY);
 			Texture.TableauView.SetSceneUsesContour(value: false);
-			Texture.TableauView.SetFocusedShadowmap(enable: true, ref _initialSpawnFrame.origin, 2.55f);
+			Texture.TableauView.SetFocusedShadowmap(enable: true, ref _characterSpawnPoint.origin, 2.55f);
 
 			View.SetCamera(_continuousRenderCamera);
 			View.SetScene(_tableauScene);
@@ -725,7 +725,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				AgentVisuals agentVisuals = _agentVisuals;
 				_agentVisualLoadingCounter = 1;
 				AgentVisualsData copyAgentVisualsData = _agentVisuals.GetCopyAgentVisualsData();
-				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _characterMountPositionFrame : _initialSpawnFrame;
+				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _characterSpawnPointSwapped : _characterSpawnPoint;
 				if (!_isCharacterMountPlacesSwapped)
 				{
 					frame.rotation.RotateAboutUp(_mainCharacterRotation);
@@ -830,10 +830,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				_slotIndex = slot.Index;
 				_tableauScene = ALCharacterTableauSceneCache.GetScene();
 
-				_initialSpawnFrame = slot.CharacterFrame;
+				_characterSpawnPoint = slot.CharacterFrame;
 				_mountSpawnPoint = slot.MountFrame;
 				_bannerSpawnPoint = slot.BannerFrame;
 				_bannerSpawnPoint.Strafe(-1f);
+				_mountSpawnPointSwapped = new MatrixFrame(_mountSpawnPoint.rotation, _characterSpawnPoint.origin);
+				_mountSpawnPointSwapped.Strafe(-0.25f);
+				_characterSpawnPointSwapped = new MatrixFrame(_characterSpawnPoint.rotation, _mountSpawnPoint.origin);
+				_characterSpawnPointSwapped.Strafe(0.25f);
 				_initialCamPos = slot.CameraFrame;
 				_camPos = slot.CameraFrame;
 				_camTargetFrame = slot.CameraFrame;
@@ -850,7 +854,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			_agentVisuals = AgentVisuals.Create(new AgentVisualsData().Banner(_banner).Equipment(_equipment).BodyProperties(_bodyProperties)
 				.Race(_race)
-				.Frame(_initialSpawnFrame)
+				.Frame(_characterSpawnPoint)
 				.UseMorphAnims(useMorphAnims: true)
 				.ActionSet(_characterActionSet)
 				.ActionCode(GetIdleAction())
@@ -888,14 +892,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					[EquipmentIndex.ArmorItemEndSlot] = _equipment[EquipmentIndex.ArmorItemEndSlot],
 					[EquipmentIndex.HorseHarness] = _equipment[EquipmentIndex.HorseHarness]
 				};
-				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _mountCharacterPositionFrame : _mountSpawnPoint;
+				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _mountSpawnPointSwapped : _mountSpawnPoint;
 				if (_isCharacterMountPlacesSwapped)
 				{
 					frame.rotation.RotateAboutUp(_mainCharacterRotation);
 				}
 
 				_mountVisualLoadingCounter = 3;
-				ActionIndexCache idleAction = monster.StringId == "camel" ? act_camel_stand : act_horse_stand;
+				_characterActionSet = MBGlobals.GetActionSet(monster.ActionSetCode);
+				ActionIndexCache idleAction = ActionIndexCache.act_none;
 				AgentVisualsData agentVisualsData = new AgentVisualsData();
 				agentVisualsData.Banner(_banner).Equipment(equipment).Frame(frame)
 					.Scale(item.ScaleFactor)
@@ -1017,7 +1022,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				tableauView.SetDeleteAfterRendering(value: false);
 				tableauView.SetDoNotRenderThisFrame(value: true);
 				tableauView.SetClearColor(0u);
-				tableauView.SetFocusedShadowmap(enable: true, ref _initialSpawnFrame.origin, 1.55f);
+				tableauView.SetFocusedShadowmap(enable: true, ref _characterSpawnPoint.origin, 1.55f);
 			}
 		}
 
