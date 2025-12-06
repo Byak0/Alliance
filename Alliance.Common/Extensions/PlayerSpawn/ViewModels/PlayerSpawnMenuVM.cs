@@ -851,6 +851,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private void RefreshCharacters()
 		{
 			Characters.Clear();
+			ClearCharacterSelection();
 			PlayerCharacterVM characterToSelect = null;
 			if (SelectedFormationVM != null)
 			{
@@ -861,12 +862,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedTeamVM, SelectedFormationVM, availableCharacter, TrySelectCharacter, UpdateCharacterPerks, EditCharacter, DeleteCharacter, EditMode);
 					characterVM.Width = width;
 					characterVM.MarginLeft = marginLeft;
-					characterVM.Idle();
-					Characters.Add(characterVM);
 					if (PlayerSpawnMenu.Instance.MyAssignment != null && availableCharacter == PlayerSpawnMenu.Instance.MyAssignment.Character)
 					{
 						characterToSelect = characterVM;
 					}
+					else
+					{
+						characterVM.Idle();
+					}
+					Characters.Add(characterVM);
 
 					marginLeft += width;
 				}

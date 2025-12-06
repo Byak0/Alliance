@@ -1,8 +1,6 @@
 ﻿#if !SERVER
-using System;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI;
-using TaleWorlds.Library;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
@@ -11,16 +9,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 	{
 		private AL_CharacterTableau _characterTableau;
 		private TaleWorlds.Engine.Texture _texture;
-		private TaleWorlds.TwoDimension.Texture _providedTexture;
-		private bool _isHidden;
-		private float _cameraZoom, _cameraElevation, _cameraStrafe, _cameraYaw, _cameraPitch, _cameraRoll;
+		private Texture _providedTexture;
+		private bool _isVisible;
+		private float _cameraElevation, _cameraStrafe, _cameraYaw, _cameraPitch, _cameraRoll;
 
 		public AL_CharacterTableau CharacterTableau => _characterTableau;
 
-		public float CameraZoom
-		{
-			set => _cameraZoom = value;
-		}
+		public float CameraZoom { get; set; }
 
 		public float CameraElevation
 		{
@@ -54,25 +49,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			set
 			{
 				if (!value) return;
-
-				MatrixFrame newCameraFrame = CameraFrame;
-				newCameraFrame.Advance(_cameraElevation);
-				newCameraFrame.Strafe(_cameraStrafe);
-				newCameraFrame.Elevate(_cameraZoom);
-				newCameraFrame.rotation.ApplyEulerAngles(new Vec3(_cameraPitch, _cameraYaw, _cameraRoll));
-				AnimateCamera(newCameraFrame, CameraFov, CameraAnimDuration);
+				ApplyCamera();
 			}
 		}
 
-		public void AnimateCamera(MatrixFrame targetFrame, float targetFov, float duration)
+		private void ApplyCamera()
 		{
-			_characterTableau.AnimateCamera(targetFrame, targetFov, duration);
-		}
-
-		public MatrixFrame CameraFrame
-		{
-			get => _characterTableau.CameraFrame;
-			set => _characterTableau.CameraFrame = value;
+			_characterTableau.AnimateCamera(_cameraElevation, _cameraStrafe, CameraZoom, _cameraPitch, _cameraYaw, _cameraRoll, CameraFov, CameraAnimDuration);
 		}
 
 		public float CameraFov
@@ -302,17 +285,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		public bool IsHidden
+		public bool IsVisible
 		{
 			get
 			{
-				return _isHidden;
+				return _isVisible;
 			}
 			set
 			{
-				if (_isHidden != value)
+				if (_isVisible != value)
 				{
-					_isHidden = value;
+					_isVisible = value;
+					_characterTableau.SetEnabled(value);
 				}
 			}
 		}
@@ -336,7 +320,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				if (_texture != null)
 				{
 					EngineTexture platformTexture = new EngineTexture(_texture);
-					_providedTexture = new TaleWorlds.TwoDimension.Texture(platformTexture);
+					_providedTexture = new Texture(platformTexture);
 				}
 				else
 				{

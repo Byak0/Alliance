@@ -32,7 +32,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views.Popups
 				_dataSource = new FormationEditorVM(formation);
 				_dataSource.OnCloseMenu += OnCloseMenu;
 
-				_layer = new GauntletLayer(30, "GauntletLayer");
+				_layer = new GauntletLayer("FormationEditorPopup", 30);
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("FormationEditorPopup", _dataSource);
