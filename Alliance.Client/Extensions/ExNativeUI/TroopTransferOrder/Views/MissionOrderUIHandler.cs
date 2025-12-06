@@ -222,7 +222,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 			this._dataSource.SetOrderIndexKey(7, category.GetGameKey(76));
 			this._dataSource.SetOrderIndexKey(8, category.GetGameKey(77));
 			this._dataSource.SetReturnKey(category.GetGameKey(77));
-			this._gauntletLayer = new GauntletLayer(this.ViewOrderPriority, "GauntletLayer", false);
+			this._gauntletLayer = new GauntletLayer("OrderUI", ViewOrderPriority);
 			this._spriteCategory = UIResourceManager.LoadSpriteCategory("ui_order");
 			string text = ((BannerlordConfig.OrderType == 0) ? this._barOrderMovieName : this._radialOrderMovieName);
 			this._movie = this._gauntletLayer.LoadMovie(text, this._dataSource);

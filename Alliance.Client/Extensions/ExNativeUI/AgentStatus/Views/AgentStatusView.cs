@@ -36,7 +36,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views
 		{
 			base.EarlyStart();
 			_dataSource = new MissionAgentStatusVM(Mission, MissionScreen.CombatCamera, new Func<float>(MissionScreen.GetCameraToggleProgress));
-			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MainAgentHUD", ViewOrderPriority);
 			_gauntletLayer.LoadMovie("MainAgentHUD", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 			_dataSource.TakenDamageController.SetIsEnabled(BannerlordConfig.EnableDamageTakenVisuals);

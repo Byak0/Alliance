@@ -80,7 +80,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 
 		private ListPanel _listPanel;
 
-		private int _currentSelectedIndex;
+		private int _currentSelectedIndex = -1;
 
 		private bool _closeNextFrame;
 
@@ -88,7 +88,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 
 		private bool _buttonClicked;
 
-		private bool _updateSelectedItem = true;
+		private bool _updateSelectedItem;
 
 		private Vector2 ListPanelPositionInsideUsableArea => ListPanel.GlobalPosition - new Vector2(EventManager.LeftUsableAreaStart, EventManager.TopUsableAreaStart);
 
@@ -117,8 +117,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 				{
 					_button.ClickEventHandlers.Add(_clickHandler);
 				}
-
-				RefreshSelectedItem();
 			}
 		}
 
@@ -152,8 +150,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 					_listPanel.ItemAddEventHandlers.Add(_listItemAddedHandler);
 					_listPanel.ItemRemoveEventHandlers.Add(_listItemRemovedHandler);
 				}
-
-				RefreshSelectedItem();
 			}
 		}
 
@@ -190,22 +186,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 				if (_currentSelectedIndex != value)
 				{
 					_currentSelectedIndex = value;
-				}
-			}
-		}
-
-		[Editor(false)]
-		public bool UpdateSelectedItem
-		{
-			get
-			{
-				return _updateSelectedItem;
-			}
-			set
-			{
-				if (_updateSelectedItem != value)
-				{
-					_updateSelectedItem = value;
+					_updateSelectedItem = true;
 				}
 			}
 		}
@@ -308,7 +289,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 						CurrentSelectedIndex = ListPanel.ChildCount - 1;
 					}
 
-					RefreshSelectedItem();
 					_changedByControllerNavigation = true;
 				}
 				else if (Input.IsKeyReleased(InputKey.ControllerLRight))
@@ -322,7 +302,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 						CurrentSelectedIndex = 0;
 					}
 
-					RefreshSelectedItem();
 					_changedByControllerNavigation = true;
 				}
 
@@ -475,30 +454,26 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 
 		public void OnListItemAdded(Widget parentWidget, Widget newChild)
 		{
-			RefreshSelectedItem();
 		}
 
 		public void OnListItemRemoved(Widget removedItem, Widget removedChild)
 		{
-			RefreshSelectedItem();
 		}
 
 		public void OnSelectionChanged(Widget widget)
 		{
-			if (UpdateSelectedItem)
-			{
-				CurrentSelectedIndex = ListPanelValue;
-				RefreshSelectedItem();
-				OnPropertyChanged(CurrentSelectedIndex, "CurrentSelectedIndex");
-			}
+			CurrentSelectedIndex = ListPanelValue;
+			OnPropertyChanged(CurrentSelectedIndex, "CurrentSelectedIndex");
 		}
 
 		private void RefreshSelectedItem()
 		{
-			if (!UpdateSelectedItem)
+			if (!_updateSelectedItem)
 			{
 				return;
 			}
+
+			_updateSelectedItem = false;
 
 			string text = "";
 
@@ -510,7 +485,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Widgets
 					Widget child = ListPanel.GetChild(ListPanelValue);
 					if (child != null)
 					{
-						foreach (Widget allChild in child.Children)
+						foreach (Widget allChild in child.GetAllChildrenRecursive())
 						{
 							RichTextWidget richTextWidget;
 							if ((richTextWidget = allChild as RichTextWidget) != null)

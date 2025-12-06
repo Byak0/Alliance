@@ -59,7 +59,7 @@ namespace Alliance.Client.GameModes.Story.Views
 			{
 				_dataSource = new GameModeMenuVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("GameModeRequestMenu", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("GameModeRequestMenu", _dataSource);

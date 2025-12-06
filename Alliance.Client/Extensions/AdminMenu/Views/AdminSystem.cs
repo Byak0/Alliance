@@ -76,7 +76,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			if (_layerLoaded == null)
 			{
 				AdminInstance.GetInstance().IsVisible = false;
-				_layerLoaded ??= new GauntletLayer(2, "AdminSys", false);
+				_layerLoaded ??= new GauntletLayer("AdminSys", 2);
 				_movie ??= _layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
 				_layerLoaded.InputRestrictions.SetInputRestrictions();
 				_layerLoaded.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));

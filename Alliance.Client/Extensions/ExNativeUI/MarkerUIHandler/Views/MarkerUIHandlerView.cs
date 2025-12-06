@@ -29,7 +29,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views
 		{
 			base.OnMissionScreenInitialize();
 			_dataSource = new MarkerUIHandlerVM(MissionScreen.CombatCamera);
-			_gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MPMissionMarkers", 1);
 			_gauntletLayer.LoadMovie("MPMissionMarkers", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 			adminSystemView = Mission.GetMissionBehavior<AdminSystem>();

@@ -140,7 +140,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 				_onMenuClosed += onCloseCallback;
 				_dataSource.OnCloseMenu += CloseMenu;
 
-				_layer = new GauntletLayer(26, "GauntletLayer");
+				_layer = new GauntletLayer("PlayerSpawnMenu", 26);
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("PlayerSpawnMenu", _dataSource);

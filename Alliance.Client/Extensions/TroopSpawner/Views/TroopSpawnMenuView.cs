@@ -94,7 +94,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 			{
 				_dataSource = new TroopSpawnMenuVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("TroopSpawnMenu", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("TroopSpawnMenu", _dataSource);
