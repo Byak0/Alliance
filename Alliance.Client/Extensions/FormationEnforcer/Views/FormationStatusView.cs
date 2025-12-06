@@ -26,7 +26,7 @@ namespace Alliance.Client.Extensions.FormationEnforcer.Views
 		{
 			ViewOrderPriority = 20;
 			_dataSource = new FormationStatusVM();
-			_layer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_layer = new GauntletLayer("FormationStatusHUD", ViewOrderPriority);
 			_layer.LoadMovie("FormationStatusHUD", _dataSource);
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;

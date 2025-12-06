@@ -121,7 +121,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 			ResourceDepot uiresourceDepot = UIResourceManager.ResourceDepot;
 			_dataSource = new TeamSelectVM(Mission, new Action<Team>(OnChangeTeamTo), new Action(OnAutoassign), new Action(OnClose), Mission.Teams, strValue);
 			_dataSource.RefreshDisabledTeams(_disabledTeams);
-			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("AL_MultiplayerTeamSelection", ViewOrderPriority);
 			_gauntletLayer.LoadMovie("AL_MultiplayerTeamSelection", _dataSource);
 			_gauntletLayer.InputRestrictions.SetInputRestrictions(true, InputUsageMask.Mouse);
 			MissionScreen.AddLayer(_gauntletLayer);

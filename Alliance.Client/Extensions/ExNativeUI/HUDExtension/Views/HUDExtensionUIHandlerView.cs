@@ -27,7 +27,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.HUDExtension.Views
 			_mpMissionCategory = spriteData.SpriteCategories["ui_mpmission"];
 			_mpMissionCategory.Load(resourceContext, uiresourceDepot);
 			_dataSource = new HUDExtensionVM(Mission);
-			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("HUDExtension", ViewOrderPriority);
 			_gauntletLayer.LoadMovie("HUDExtension", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 			MissionScreen.OnSpectateAgentFocusIn += _dataSource.OnSpectatedAgentFocusIn;

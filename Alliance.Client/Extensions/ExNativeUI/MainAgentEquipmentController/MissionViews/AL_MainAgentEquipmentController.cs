@@ -105,7 +105,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 		public override void OnMissionScreenInitialize()
 		{
 			base.OnMissionScreenInitialize();
-			_gauntletLayer = new GauntletLayer(2, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MainAgentEquipmentController", 2);
 			_dataSource = new MissionMainAgentEquipmentControllerVM(new Action<EquipmentIndex>(OnDropEquipment), new Action<SpawnedItemEntity, EquipmentIndex>(OnEquipItem));
 			_gauntletLayer.LoadMovie("MainAgentEquipmentController", _dataSource);
 			_gauntletLayer.InputRestrictions.SetInputRestrictions(false, InputUsageMask.Invalid);

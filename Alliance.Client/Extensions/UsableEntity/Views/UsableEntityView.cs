@@ -28,7 +28,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 		{
 			_entityInteractionBehavior = Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
 			_dataSource = new EntityInteractionVM();
-			_gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("EntityInteractionHUD", 1);
 			_gauntletLayer.LoadMovie("EntityInteractionHUD", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 		}

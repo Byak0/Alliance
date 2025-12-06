@@ -53,7 +53,7 @@ namespace Alliance.Client.Extensions.BrushPicker.Views
 			{
 				_dataSource = new BrushPickerVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("BrushPicker", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("BrushPicker", _dataSource);

@@ -176,7 +176,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 				AnimationUserStore.Instance.Init();
 				_dataSource = new AnimationVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("AnimationMenu", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("AnimationMenu", _dataSource);
