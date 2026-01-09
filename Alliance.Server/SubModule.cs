@@ -2,7 +2,6 @@
 using Alliance.Common.Core.Security;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
@@ -102,8 +101,8 @@ namespace Alliance.Server
 			Patch_AdvancedCombat.LatePatch();
 
 			// Add our custom GameModels 
-			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
+			//gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		public override void OnGameEnd(Game game)

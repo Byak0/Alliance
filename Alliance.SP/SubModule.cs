@@ -22,6 +22,8 @@ namespace Alliance.SP
 
 		protected override void OnSubModuleLoad()
 		{
+			Common.SubModule.CurrentModuleName = ModuleId;
+
 			// Register and initialize Key Binder
 			List<Assembly> assemblies = new List<Assembly>
 			{

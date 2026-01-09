@@ -78,7 +78,7 @@ namespace Alliance.Client
 			Patch_AdvancedCombat.LatePatch();
 
 			// Add our custom GameModels 
-			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
+			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
