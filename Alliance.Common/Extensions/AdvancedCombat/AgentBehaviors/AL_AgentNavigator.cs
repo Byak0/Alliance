@@ -207,7 +207,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 			}
 
 			WorldPosition pos = OwnerAgent.GetWorldPosition();
-			OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity().WeakEntity, pos, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+			OwnerAgent.SetScriptedTargetEntity(TargetAgent.AgentVisuals.GetEntity().WeakEntity, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+			//OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity().WeakEntity, pos, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 			if (OwnerAgent.HasRangedWeapon())
 			{
 				OwnerAgent.SetScriptedPosition(ref pos, false, TaleWorlds.MountAndBlade.Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);

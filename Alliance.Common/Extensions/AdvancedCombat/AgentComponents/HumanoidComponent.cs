@@ -73,12 +73,14 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 				WeakGameEntity targetEntity = target.AgentVisuals?.GetEntity()?.WeakEntity ?? WeakGameEntity.Invalid;
 				if (Agent.HasRangedWeapon(true))
 				{
-					Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+					Agent.SetScriptedTargetEntity(targetEntity, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+					//Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 					Agent.SetScriptedPosition(ref pos, false, Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
 				}
 				else
 				{
-					Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
+					Agent.SetScriptedTargetEntity(targetEntity, Agent.AISpecialCombatModeFlags.AttackEntity, false);
+					//Agent.SetScriptedTargetEntityAndPosition(targetEntity, pos, Agent.AISpecialCombatModeFlags.AttackEntity, false);
 					Agent.SetMaximumSpeedLimit(Agent.Monster.WalkingSpeedLimit * 3f, false);
 				}
 			}
