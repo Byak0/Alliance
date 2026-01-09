@@ -66,8 +66,8 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int FriendlyFireDamageRangedFriendPercent;
 		[ConfigProperty(label: "Who can spectators look at, and how.")]
 		public SpectatorCameraTypes SpectatorCamera;
-		[ConfigProperty(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In minutes.")]
-		public int WarmupTimeLimit;
+		[ConfigProperty(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In seconds.")]
+		public int WarmupTimeLimitInSeconds;
 		[ConfigProperty(label: "Map max duration", tooltip: "Maximum duration for the map. In minutes.")]
 		public int MapTimeLimit;
 		[ConfigProperty(label: "Round max duration", tooltip: "Maximum duration for each round. In seconds.")]
