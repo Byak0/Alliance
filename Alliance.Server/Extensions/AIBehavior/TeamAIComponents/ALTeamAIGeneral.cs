@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Alliance.Server.Extensions.AIBehavior.BehaviorComponents;
+using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
@@ -126,7 +127,7 @@ namespace Alliance.Server.Extensions.AIBehavior.TeamAIComponents
 				formation.AI.AddAiBehavior(new BehaviorFireFromInfantryCover(formation));
 				formation.AI.AddAiBehavior(new BehaviorFlank(formation));
 				formation.AI.AddAiBehavior(new BehaviorHoldHighGround(formation));
-				formation.AI.AddAiBehavior(new BehaviorHorseArcherSkirmish(formation));
+				//formation.AI.AddAiBehavior(new BehaviorHorseArcherSkirmish(formation));
 				formation.AI.AddAiBehavior(new BehaviorMountedSkirmish(formation));
 				formation.AI.AddAiBehavior(new BehaviorProtectFlank(formation));
 				formation.AI.AddAiBehavior(new BehaviorScreenedSkirmish(formation));
@@ -135,11 +136,11 @@ namespace Alliance.Server.Extensions.AIBehavior.TeamAIComponents
 				formation.AI.AddAiBehavior(new BehaviorSkirmishLine(formation));
 				formation.AI.AddAiBehavior(new BehaviorVanguard(formation));
 
-				formation.AI.AddAiBehavior(new BehaviorSergeantMPInfantry(formation));
-				formation.AI.AddAiBehavior(new BehaviorSergeantMPLastFlagLastStand(formation));
-				formation.AI.AddAiBehavior(new BehaviorSergeantMPMounted(formation));
-				formation.AI.AddAiBehavior(new BehaviorSergeantMPMountedRanged(formation));
-				formation.AI.AddAiBehavior(new BehaviorSergeantMPRanged(formation));
+				formation.AI.AddAiBehavior(new ALBehaviorSergeantMPInfantry(formation));
+				formation.AI.AddAiBehavior(new ALBehaviorSergeantMPLastFlagLastStand(formation));
+				formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMounted(formation));
+				formation.AI.AddAiBehavior(new ALBehaviorSergeantMPMountedRanged(formation));
+				formation.AI.AddAiBehavior(new ALBehaviorSergeantMPRanged(formation));
 			}
 		}
 	}
