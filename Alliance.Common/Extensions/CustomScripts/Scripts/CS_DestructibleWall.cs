@@ -677,7 +677,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			}
 		}
 
-		public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
+		public override void OnAfterReadFromNetwork((BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord) synchedMissionObjectReadableRecord, bool allowVisibilityUpdate = true)
 		{
 			base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
 			CS_DestructibleWallRecord destructableComponentRecord = (CS_DestructibleWallRecord)synchedMissionObjectReadableRecord.Item2;
