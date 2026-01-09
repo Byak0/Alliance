@@ -273,7 +273,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			GameNetworkMessage.WriteIntToPacket(CurrentStateIndex, CompressionMission.UsableGameObjectDestructionStateCompressionInfo);
 		}
 
-		public override void OnAfterReadFromNetwork(ValueTuple<BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord> synchedMissionObjectReadableRecord)
+		public override void OnAfterReadFromNetwork((BaseSynchedMissionObjectReadableRecord, ISynchedMissionObjectReadableRecord) synchedMissionObjectReadableRecord, bool allowVisibilityUpdate = true)
 		{
 			base.OnAfterReadFromNetwork(synchedMissionObjectReadableRecord);
 			CS_StateObjectRecord stateObjRecord = (CS_StateObjectRecord)synchedMissionObjectReadableRecord.Item2;
