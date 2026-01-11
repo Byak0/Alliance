@@ -42,6 +42,17 @@
 
 								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
 									<Children>
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="TK number :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@TkCount" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="TK damage :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@TkDamage" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="TK Kill :" />
+										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@TkKill" />
+									</Children>
+								</ListPanel>
+
+								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
+									<Children>
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Kick :" />
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="20" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="@KickCounter" />
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left"  MarginRight="5" VerticalAlignment="Center" Brush.FontSize="24" IsDisabled="true" Text="Ban :" />

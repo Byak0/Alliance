@@ -55,6 +55,7 @@ namespace Alliance.Server.GameModes
 				new SyncPlayerStoreBehavior(),
 				new SyncConfigBehavior(),
 				new PlayerSpawnBehavior(),
+				new TeamKillCountBehavior(),
 				new UsableEntityBehavior(),
 				new TroopSpawnerBehavior(),
 				new BattlePowerCalculationLogic(),
