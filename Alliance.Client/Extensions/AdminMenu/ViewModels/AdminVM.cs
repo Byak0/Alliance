@@ -824,6 +824,12 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 					TkDamage = data.Item2.ToString();
 					TkKill = data.Item3.ToString();
 				}
+				else
+				{
+					TkCount = "0";
+					TkDamage = "0";
+					TkKill = "0";
+				}
 			}
 			if (networkCommunicator?.ControlledAgent != null)
 			{
