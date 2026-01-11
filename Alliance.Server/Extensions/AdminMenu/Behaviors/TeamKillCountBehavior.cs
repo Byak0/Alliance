@@ -54,39 +54,12 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 				var (TkCount, TkDamage, TkKill) = _AgentTkCount[_AgentNetworkCommunicator];
 				_AgentTkCount[_AgentNetworkCommunicator] = (TkCount + 1, TkDamage + blow.InflictedDamage, TkKill + _TkKill );
 
-				
-
-//				if(victim.Health <= 0)
-//					_AgentTkCount[_AgentNetworkCommunicator] = (TkCount, TkDamage, TkKill + 1);
-
 				//Send info to client
 				var singleEntry = new Dictionary<NetworkCommunicator, (int, int, int)> { [_AgentNetworkCommunicator] = (TkCount, TkDamage, TkKill) };
 				NotifyClientsOfTeamKill(singleEntry);
 				Log($"[AdminPanel][TP] Player {affectorAgent.Name} hit teammate {victim.Name} for {blow.InflictedDamage} damage!", LogLevel.Information);
 			}
 		}
-
-		//public override void OnAgentRemoved(Agent victim, Agent affectorAgent, AgentState agentState, KillingBlow killingBlow)
-		//{
-		//	// Ignore invalid cases
-		//	if (agentState != AgentState.Killed || affectorAgent == null || victim == null || affectorAgent.MissionPeer?.GetNetworkPeer() == null)
-		//		return;
-		//	NetworkCommunicator _AgentNetworkCommunicator = affectorAgent.MissionPeer.GetNetworkPeer();
-		//
-		//	if (victim.Team != null && affectorAgent != victim && !affectorAgent.Team.IsEnemyOf(victim.Team))
-		//	{
-		//		// Add Agent in dictionary if not already in
-		//		if (!_AgentTkCount.ContainsKey(_AgentNetworkCommunicator))
-		//			_AgentTkCount[_AgentNetworkCommunicator] = (0, 0, 0);
-		//
-		//		var (TkCount, TkDamage, TkKill) = _AgentTkCount[_AgentNetworkCommunicator];
-		//		_AgentTkCount[_AgentNetworkCommunicator] = (TkCount, TkDamage, TkKill + 1);
-		//
-		//		//Send info to client
-		//		NotifyClientsOfTeamKill();
-		//		Log($"[AdminPanel][TP] Player {affectorAgent.Name} Killed teammate {victim.Name} ", LogLevel.Information);
-		//	}
-		//}
 
 		protected override void HandleNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
 		{
