@@ -486,7 +486,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		public void AddTeam()
 		{
 			// todo check if setting default side to defender is pertinent
-			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(TaleWorlds.Core.BattleSideEnum.Defender, "New Team");
+			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(BattleSideEnum.Defender, "New Team");
 			if (newTeam != null)
 			{
 				PlayerTeamVM newTeamVM = new PlayerTeamVM(newTeam, SelectTeam, EditTeam, DeleteTeam, EditMode);

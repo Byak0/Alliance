@@ -207,7 +207,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture.Color;
 				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture.Color2;
 				_heroClass = AvailableCharacter.Character.GetHeroClass();
-				_heroClassIndex = MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass);
+				_heroClassIndex = _heroClass != null ? MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass) : -1;
 			}
 			_onCharacterSelected = onCharacterSelected;
 			_onCharacterPerksUpdated = onCharacterPerksUpdated;

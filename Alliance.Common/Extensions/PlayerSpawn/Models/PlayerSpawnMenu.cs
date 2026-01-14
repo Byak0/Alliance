@@ -523,5 +523,17 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			}
 			return false;
 		}
+
+		public void GenerateDefaultMenu(List<KeyValuePair<BattleSideEnum, BasicCultureObject>> teamList)
+		{
+			Clear();
+			foreach (var teamInfo in teamList)
+			{
+				BattleSideEnum side = teamInfo.Key;
+				BasicCultureObject culture = teamInfo.Value;
+				PlayerTeam team = AddTeam(side, culture.StringId);
+				team.AutoFillFromCulture(culture);
+			}
+		}
 	}
 }

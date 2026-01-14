@@ -24,9 +24,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		// Runtime properties
 		[XmlIgnore]
-		public BasicCharacterObject Character => Instance.GetCharacterObject(CharacterId);
+		public BasicCharacterObject Character => Characters.Instance.GetCharacterObject(CharacterId);
 		[XmlIgnore]
-		public BasicCharacterStub CharacterStub => Instance.GetCharacterStub(CharacterId);
+		public BasicCharacterStub CharacterStub => Characters.Instance.GetCharacterStub(CharacterId);
 		[XmlIgnore]
 		public string Name => Character?.Name.ToString() ?? CharacterStub?.Name.ToString() ?? "";
 		[XmlIgnore]
