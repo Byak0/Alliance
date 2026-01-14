@@ -13,12 +13,20 @@ namespace Alliance.Common.Core.Utils
 	/// </summary>
 	public class Characters
 	{
-		public List<BasicCharacterObject> CharacterObjects;
-		public List<BasicCharacterStub> CharacterStubs;
-		public Dictionary<string, BasicCharacterObject> CharacterDictionary;
-		public Dictionary<string, BasicCharacterStub> CharacterStubDictionary;
+		public List<BasicCharacterObject> CharacterObjects => _characterObjects;
+		public List<BasicCharacterStub> CharacterStubs => _characterStubs;
+		public Dictionary<string, BasicCharacterObject> CharacterDictionary => _characterDictionary;
+		public Dictionary<string, BasicCharacterStub> CharacterStubDictionary => _characterStubDictionary;
+		public Dictionary<BasicCultureObject, List<BasicCharacterObject>> MPCharactersByCulture => _charactersByCulture;
+
+		private List<BasicCharacterObject> _characterObjects;
+		private List<BasicCharacterStub> _characterStubs;
+		private Dictionary<string, BasicCharacterObject> _characterDictionary;
+		private Dictionary<string, BasicCharacterStub> _characterStubDictionary;
+		private Dictionary<BasicCultureObject, List<BasicCharacterObject>> _charactersByCulture;
 
 		private bool _trueCharactersLoaded = false;
+
 		public bool TrueCharactersLoaded { get { return _trueCharactersLoaded; } }
 
 		private static readonly Characters instance = new Characters();
@@ -60,16 +68,17 @@ namespace Alliance.Common.Core.Utils
 		public void RefreshAvailableCharacters()
 		{
 			// Clear existing lists and dictionaries
-			CharacterObjects = new List<BasicCharacterObject>();
-			CharacterStubs = new List<BasicCharacterStub>();
-			CharacterDictionary = new Dictionary<string, BasicCharacterObject>();
-			CharacterStubDictionary = new Dictionary<string, BasicCharacterStub>();
+			_characterObjects = new List<BasicCharacterObject>();
+			_characterStubs = new List<BasicCharacterStub>();
+			_characterDictionary = new Dictionary<string, BasicCharacterObject>();
+			_characterStubDictionary = new Dictionary<string, BasicCharacterStub>();
+			_charactersByCulture = new Dictionary<BasicCultureObject, List<BasicCharacterObject>>();
 
 			if (MBObjectManager.Instance != null && MBObjectManager.Instance.HasType(typeof(BasicCharacterObject)))
 			{
 				// Retrieve the list of available characters from MBObjectManager
-				CharacterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>().ToList();
-				CharacterDictionary = CharacterObjects.ToDictionary(x => x.StringId);
+				_characterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>().ToList();
+				_characterDictionary = CharacterObjects.ToDictionary(x => x.StringId);
 				_trueCharactersLoaded = true;
 
 				// Ensure MPClassDivisions are loaded
@@ -101,7 +110,18 @@ namespace Alliance.Common.Core.Utils
 					CharacterStubDictionary[stringId] = new BasicCharacterStub(stringId, new TextObject(name), culture);
 				}
 			}
-			CharacterStubs = CharacterStubDictionary.Values.ToList();
+			_characterStubs = CharacterStubDictionary.Values.ToList();
+
+			// Organize characters by culture
+			foreach (BasicCharacterObject character in CharacterObjects)
+			{
+				if (character?.Culture == null || character.GetHeroClass() == null) continue; // Skip characters without a culture or a hero class
+				if (!MPCharactersByCulture.ContainsKey(character.Culture))
+				{
+					MPCharactersByCulture[character.Culture] = new List<BasicCharacterObject>();
+				}
+				MPCharactersByCulture[character.Culture].Add(character);
+			}
 		}
 
 		public class BasicCharacterStub

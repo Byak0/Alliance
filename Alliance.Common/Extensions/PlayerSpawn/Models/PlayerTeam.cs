@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Alliance.Common.Core.Utils;
+using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 
@@ -34,6 +35,23 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (formation == null || !Formations.Contains(formation)) return;
 
 			Formations.Remove(formation);
+		}
+
+		public void AutoFillFromCulture(BasicCultureObject culture)
+		{
+			PlayerFormation infFormation = AddFormation("Infantry");
+			PlayerFormation arcFormation = AddFormation("Archers");
+			PlayerFormation cavFormation = AddFormation("Cavalry");
+			infFormation.MainCultureId = culture.StringId;
+			arcFormation.MainCultureId = culture.StringId;
+			cavFormation.MainCultureId = culture.StringId;
+			foreach (BasicCharacterObject character in Characters.Instance.MPCharactersByCulture[infFormation.MainCulture])
+			{
+				AvailableCharacter availableCharacter = new AvailableCharacter() { CharacterId = character.StringId };
+				if (character.IsMounted) cavFormation.AddCharacter(availableCharacter);
+				else if (character.IsRanged) arcFormation.AddCharacter(availableCharacter);
+				else if (character.IsInfantry) infFormation.AddCharacter(availableCharacter);
+			}
 		}
 	}
 }

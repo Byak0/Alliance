@@ -1,6 +1,8 @@
 ﻿using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
@@ -215,6 +217,19 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 		public virtual void InitPlayerSpawnMenu()
 		{
+			// Generate default spawn menu if none exists
+			if (PlayerSpawnMenu.Instance.Teams.IsEmpty())
+			{
+				PlayerSpawnMenu.Instance.GenerateDefaultMenu(new List<KeyValuePair<BattleSideEnum, BasicCultureObject>>
+				{
+					new(BattleSideEnum.Attacker, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue())),
+					new(BattleSideEnum.Defender, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue()))
+				});
+
+				// Broadcast the updated player spawn menu to all players
+				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+			}
+
 			// Make use of the warmup to let players elect their officers
 			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimitInSeconds.GetIntValue());
 		}
