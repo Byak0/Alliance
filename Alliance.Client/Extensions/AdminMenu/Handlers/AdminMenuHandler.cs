@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using Alliance.Client.Extensions.AdminMenu.ViewModels;
+﻿using Alliance.Client.Extensions.AdminMenu.ViewModels;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
-using JetBrains.Annotations;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 using Color = TaleWorlds.Library.Color;
 
 namespace Alliance.Client.Extensions.AdminMenu.Handlers
@@ -51,9 +51,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
 				NetworkCommunicator peer = kvp.Key;
 				var (tkCount, tkDamage, tkKill) = kvp.Value;
 
-				InformationManager.DisplayMessage(new InformationMessage(
-					$"Receive agents with TK : network communicator, tkCount, tkDamage, tkKill"
-				));
+				Log($"Receive agents with TK : network communicator, tkCount, tkDamage, tkKill", LogLevel.Debug);
 
 				// Recreate dictionnary on client side :
 				AgentTkCount[peer] = (tkCount, tkDamage, tkKill);

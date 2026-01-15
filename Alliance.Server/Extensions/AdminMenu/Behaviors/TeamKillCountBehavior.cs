@@ -1,17 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Alliance.Common.Core.Security.Extension;
-using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.Extensions.TroopSpawner.Utilities;
-using TaleWorlds.Core;
-using TaleWorlds.Library;
+﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.ObjectSystem;
-using static System.Net.Mime.MediaTypeNames;
 using static Alliance.Common.Utilities.Logger;
-using  Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
-using static TaleWorlds.MountAndBlade.MPPerkObject;
-using static TaleWorlds.MountAndBlade.MultiplayerClassDivisions;
 
 namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 {
@@ -52,7 +43,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 				if (victim.Health <= 0) _TkKill++;
 
 				var (TkCount, TkDamage, TkKill) = _AgentTkCount[_AgentNetworkCommunicator];
-				_AgentTkCount[_AgentNetworkCommunicator] = (TkCount + 1, TkDamage + blow.InflictedDamage, TkKill + _TkKill );
+				_AgentTkCount[_AgentNetworkCommunicator] = (TkCount + 1, TkDamage + blow.InflictedDamage, TkKill + _TkKill);
 
 				//Send info to client
 				var singleEntry = new Dictionary<NetworkCommunicator, (int, int, int)> { [_AgentNetworkCommunicator] = (TkCount, TkDamage, TkKill) };
@@ -63,19 +54,52 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 
 		protected override void HandleNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
 		{
-			if (networkPeer.IsAdmin())
+			if (!networkPeer.IsAdmin()) return;
+
+			// Split the dictionary if necessary
+			if (_AgentTkCount.Count > 100)
+			{
+				Dictionary<NetworkCommunicator, (int TkCount, int TkDamage, int TkKill)> partialDict = new();
+				int counter = 0;
+				foreach (var kvp in _AgentTkCount)
+				{
+					partialDict[kvp.Key] = kvp.Value;
+					counter++;
+					if (counter >= 100)
+					{
+						GameNetwork.BeginModuleEventAsServer(networkPeer);
+						GameNetwork.WriteMessage(new SyncTk(partialDict));
+						GameNetwork.EndModuleEventAsServer();
+						partialDict.Clear();
+						counter = 0;
+					}
+				}
+				// Send remaining entries
+				if (partialDict.Count > 0)
+				{
+					GameNetwork.BeginModuleEventAsServer(networkPeer);
+					GameNetwork.WriteMessage(new SyncTk(partialDict));
+					GameNetwork.EndModuleEventAsServer();
+				}
+			}
+			else
+			{
 				GameNetwork.BeginModuleEventAsServer(networkPeer);
 				GameNetwork.WriteMessage(new SyncTk(_AgentTkCount));
 				GameNetwork.EndModuleEventAsServer();
+			}
 		}
+
 		public void NotifyClientsOfTeamKill(Dictionary<NetworkCommunicator, (int TkCount, int TkDamage, int TkKill)> AgentTkCountToSend)
 		{
-			foreach( var kvp in GameNetwork.NetworkPeers )
+			foreach (var kvp in GameNetwork.NetworkPeers)
 			{
 				if (kvp.IsAdmin())
+				{
 					GameNetwork.BeginModuleEventAsServer(kvp);
-					GameNetwork.WriteMessage(new SyncTk(_AgentTkCount));
+					GameNetwork.WriteMessage(new SyncTk(AgentTkCountToSend));
 					GameNetwork.EndModuleEventAsServer();
+				}
 			}
 		}
 	}

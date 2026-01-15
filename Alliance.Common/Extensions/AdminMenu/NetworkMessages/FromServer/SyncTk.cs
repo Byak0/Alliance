@@ -1,21 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using Alliance.Common.Core.Utils;
-using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
 
 namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 {
-    [DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
-    public sealed class SyncTk : GameNetworkMessage
-    {
+	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
+	public sealed class SyncTk : GameNetworkMessage
+	{
 
 		public Dictionary<NetworkCommunicator, (int TkCount, int TkDamage, int TkKill)> AgentTkData { get; set; } = new();
 		static readonly CompressionInfo.Integer IntTkCountIndexCompressionInfo = new CompressionInfo.Integer(0, 2000, true);
 		static readonly CompressionInfo.Integer IntTkDamageIndexCompressionInfo = new CompressionInfo.Integer(0, 260000, true);
-		
+
 
 		public SyncTk() { }
 
@@ -24,10 +22,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 			AgentTkData = dict;
 		}
 
-        protected override void OnWrite()
-        {
-
-
+		protected override void OnWrite()
+		{
 			// Write number of entry
 			WriteIntToPacket(AgentTkData.Count, IntTkCountIndexCompressionInfo);
 
@@ -38,8 +34,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 				int tkCount = Math.Min(kvp.Value.TkCount, IntTkCountIndexCompressionInfo.GetMaximumValue());
 				int tkDamage = Math.Min(kvp.Value.TkDamage, IntTkDamageIndexCompressionInfo.GetMaximumValue());
 				int tkKill = Math.Min(kvp.Value.TkKill, IntTkCountIndexCompressionInfo.GetMaximumValue());
-				
-				
+
+
 				//WriteAgentIndexToPacket(agentIndex);
 				WriteNetworkPeerReferenceToPacket(kvp.Key);
 				WriteIntToPacket(tkCount, IntTkCountIndexCompressionInfo);
@@ -48,8 +44,8 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 			}
 		}
 
-        protected override bool OnRead()
-        {
+		protected override bool OnRead()
+		{
 			bool bufferReadValid = true;
 			AgentTkData.Clear();
 
@@ -68,14 +64,14 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer
 			return bufferReadValid;
 		}
 
-        protected override MultiplayerMessageFilter OnGetLogFilter()
-        {
-            return MultiplayerMessageFilter.Mission;
-        }
-
-        protected override string OnGetLogFormat()
-        {
-            return "SyncTk - Send agents with TK : network communicator, tkCount, tkDamage, tkKill";
+		protected override MultiplayerMessageFilter OnGetLogFilter()
+		{
+			return MultiplayerMessageFilter.Mission;
 		}
-    }
+
+		protected override string OnGetLogFormat()
+		{
+			return "SyncTk - Send agents with TK : network communicator, tkCount, tkDamage, tkKill";
+		}
+	}
 }
