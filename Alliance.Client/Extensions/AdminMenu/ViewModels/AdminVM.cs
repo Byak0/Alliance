@@ -17,6 +17,7 @@ using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
+using Alliance.Client.Extensions.AdminMenu.Handlers;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
@@ -30,6 +31,9 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private string _Death;
 		private string _Assist;
 		private string _Score;
+		private string _TkCount = "0";
+		private string _TkDamage = "0";
+		private string _TkKill = "0";
 		private string _kickCounter;
 		private string _banCounter;
 		private string _warningCounter;
@@ -371,6 +375,57 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					_Score = value;
 					OnPropertyChangedWithValue(value, "Score");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string TkCount
+		{
+			get
+			{
+				return _TkCount;
+			}
+			set
+			{
+				if (value != _TkCount)
+				{
+					_TkCount = value;
+					OnPropertyChangedWithValue(value, "TkCount");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string TkDamage
+		{
+			get
+			{
+				return _TkDamage;
+			}
+			set
+			{
+				if (value != _TkDamage)
+				{
+					_TkDamage = value;
+					OnPropertyChangedWithValue(value, "TkDamage");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string TkKill
+		{
+			get
+			{
+				return _TkKill;
+			}
+			set
+			{
+				if (value != _TkKill)
+				{
+					_TkKill = value;
+					OnPropertyChangedWithValue(value, "TkKill");
 				}
 			}
 		}
@@ -762,6 +817,19 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				KickCounter = playerData?.KickCount.ToString() ?? "0";
 				BanCounter = playerData?.BanCount.ToString() ?? "0";
 				WarningCounter = playerData?.WarningCount.ToString() ?? "0";
+
+				if (AdminMenuHandler.AgentTkCount.TryGetValue(networkCommunicator, out var data))
+				{
+					TkCount = data.Item1.ToString();
+					TkDamage = data.Item2.ToString();
+					TkKill = data.Item3.ToString();
+				}
+				else
+				{
+					TkCount = "0";
+					TkDamage = "0";
+					TkKill = "0";
+				}
 			}
 			if (networkCommunicator?.ControlledAgent != null)
 			{
