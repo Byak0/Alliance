@@ -914,13 +914,16 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 							newValue => _newNativeOptions[currentType] = newValue));
 						break;
 					case OptionValueType.Integer:
+						int boundMin = optionProperty.BoundsMin;
+						int boundMax = optionProperty.BoundsMax;
+						TWConfig.GetAdjustedBounds(optionType, ref boundMin, ref boundMax);
 						NativeOptions.Add(new NumericOptionVM(
 							new TextObject(attribute.Label ?? currentType.ToString()),
 							new TextObject(attribute.Tooltip ?? currentType.ToString()),
 							() => (int)_newNativeOptions[currentType],
 							newValue => _newNativeOptions[currentType] = (int)newValue,
-							optionProperty.BoundsMin,
-							optionProperty.BoundsMax,
+							boundMin,
+							boundMax,
 							true, true));
 						break;
 					case OptionValueType.String:
