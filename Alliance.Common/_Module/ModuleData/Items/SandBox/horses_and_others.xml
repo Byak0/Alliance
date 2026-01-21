@@ -3553,7 +3553,7 @@
 		name="{=WVqaRKUm}Wool{@Plural}loads of wool{\@}"
 		mesh="merchandise_wool"
 		item_category="wool"
-		value="40"
+		value="22"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3564,7 +3564,7 @@
 		name="{=9X2l53vY}Silver Ore{@Plural}loads of silver ore{\@}"
 		mesh="silver_ore"
 		item_category="silver"
-		value="130"
+		value="100"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3575,7 +3575,7 @@
 		name="{=yQTBY9ie}Jewelry{@Plural}items of jewelry{\@}"
 		mesh="bd_sturgia_statue"
 		item_category="jewelry"
-		value="600"
+		value="675"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3640,7 +3640,7 @@
 		name="{=awQrcrt2}Pottery{@Plural}crates of pottery{\@}"
 		mesh="merchandise_pottery"
 		item_category="pottery"
-		value="200"
+		value="210"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3651,7 +3651,7 @@
 		name="{=DvGueBrU}Linen{@Plural}rolls of linen{\@}"
 		mesh="merchandise_linen"
 		item_category="linen"
-		value="200"
+		value="245"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3662,7 +3662,7 @@
 		name="{=ufnnUxKb}Leather{@Plural}crates of leather{\@}"
 		mesh="merchandise_leather_a"
 		item_category="leather"
-		value="250"
+		value="230"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3673,7 +3673,7 @@
 		name="{=O8TpGSDA}Velvet{@Plural}rolls of velvet{\@}"
 		mesh="merchandise_velvet"
 		item_category="velvet"
-		value="500"
+		value="575"
 		weight="10"
 		Type="Goods">
 		<Flags
@@ -3797,7 +3797,7 @@
 		mesh="amphora_slim"
 		item_category="wine"
 		IsFood="false"
-		value="80"
+		value="90"
 		weight="10"
 		Type="Goods">
 		<ItemComponent>
@@ -3813,7 +3813,7 @@
 		mesh="amphora_slim"
 		item_category="oil"
 		IsFood="false"
-		value="210"
+		value="290"
 		weight="10"
 		Type="Goods">
 		<Flags
