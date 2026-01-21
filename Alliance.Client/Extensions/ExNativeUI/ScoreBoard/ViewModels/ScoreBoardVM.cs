@@ -743,7 +743,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.ScoreBoard.ViewModels
 			{
 				if (_missionScoreboardComponent != null && side != BattleSideEnum.None)
 				{
-					return side != BattleSideEnum.NumSides;
+					return _missionSides.ContainsKey(side);
 				}
 
 				return false;
@@ -763,7 +763,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.ScoreBoard.ViewModels
 			_missionSides.Clear();
 			if (IsSingleSide)
 			{
-				MissionScoreboardComponent.MissionScoreboardSide sideSafe = _missionScoreboardComponent.GetSideSafe(BattleSideEnum.Defender);
+				MissionScoreboardComponent.MissionScoreboardSide sideSafe = _missionScoreboardComponent.GetSideSafe(BattleSideEnum.Attacker);
 				ScoreBoardSideVM PvCScoreBoardSideVM = new ScoreBoardSideVM(sideSafe, ExecutePopulateActionList, IsSingleSide, isSecondSide: false);
 				Sides.Add(PvCScoreBoardSideVM);
 				_missionSides.Add(sideSafe.Side, PvCScoreBoardSideVM);
