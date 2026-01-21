@@ -16,6 +16,6 @@ RoundPreparationTimeLimit 10
 RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360
-WarmupTimeLimit 1
+WarmupTimeLimitInSeconds 20
 SingleSpawn true
 start_game_and_mission
