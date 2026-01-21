@@ -101,6 +101,8 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(label: "Disables the inactivity kick timer.")]
 		public bool DisableInactivityKick;
 
+		private static readonly System.Reflection.FieldInfo _minimumValueField = typeof(CompressionInfo.Integer).GetField("minimumValue", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
 		public TWConfig() { }
 
 		/// <summary>
@@ -116,6 +118,41 @@ namespace Alliance.Common.Core.Configuration.Models
 		}
 
 		/// <summary>
+		/// Get the custom CompressionInfo for options that use extended bounds beyond native limits.
+		/// Returns null if the option should use standard compression.
+		/// </summary>
+		public static CompressionInfo.Integer? GetCustomCompressionInfo(OptionType optionType)
+		{
+			return optionType switch
+			{
+				OptionType.MaxNumberOfPlayers => CompressionBasic.MaxNumberOfPlayersCompressionInfo,
+				OptionType.RoundTimeLimit => CompressionMission.RoundTimeCompressionInfo,
+				OptionType.MapTimeLimit => CompressionBasic.MapTimeLimitCompressionInfo,
+				OptionType.NumberOfBotsPerFormation => CompressionBasic.NumberOfBotsPerFormationCompressionInfo,
+				OptionType.WarmupTimeLimitInSeconds => new CompressionInfo.Integer(0, 3600, true),
+				_ => null
+			};
+		}
+
+		/// <summary>
+		/// Adjusts the min/max bounds for specific options that need custom limits.
+		/// </summary>
+		public static void GetAdjustedBounds(OptionType option, ref int min, ref int max)
+		{
+			CompressionInfo.Integer? customCompression = GetCustomCompressionInfo(option);
+			if (customCompression.HasValue)
+			{
+				min = (int)_minimumValueField.GetValue(customCompression.Value);
+				max = customCompression.Value.GetMaximumValue();
+			}
+			else
+			{
+				min = option.GetMinimumValue();
+				max = option.GetMaximumValue();
+			}
+		}
+
+		/// <summary>
 		/// Ensure the value is within the bounds of the option.
 		/// </summary>
 		private void SetBoundedOption(OptionType option, object value)
@@ -126,24 +163,8 @@ namespace Alliance.Common.Core.Configuration.Models
 				{
 					if (value is int val)
 					{
-						// Override max value for some options
-						switch (option)
-						{
-							case OptionType.MaxNumberOfPlayers:
-								max = CompressionBasic.MaxNumberOfPlayersCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.RoundTimeLimit:
-								max = CompressionMission.RoundTimeCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.MapTimeLimit:
-								max = CompressionBasic.MapTimeLimitCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.NumberOfBotsPerFormation:
-								max = CompressionBasic.NumberOfBotsPerFormationCompressionInfo.GetMaximumValue();
-								break;
-							default:
-								break;
-						}
+						GetAdjustedBounds(option, ref min, ref max);
+
 						if (val > max)
 						{
 							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
@@ -171,6 +192,8 @@ namespace Alliance.Common.Core.Configuration.Models
 				{
 					if (value is int val)
 					{
+						GetAdjustedBounds(option, ref min, ref max);
+
 						if (val > max)
 						{
 							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
