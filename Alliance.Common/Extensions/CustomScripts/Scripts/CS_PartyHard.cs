@@ -82,6 +82,13 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			int randomIndex = MBRandom.RandomInt(0, _sounds.Count);
 			int soundIndex = SoundEvent.GetEventIdFromString(_sounds[randomIndex]);
 			int soundDuration = _soundsDurations[randomIndex];
+
+			if(soundIndex == -1)
+			{
+				Log("Party hard : Sound " + _sounds[randomIndex] + " not found!", LogLevel.Warning);
+				return;
+			}
+
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new SyncNativeSound(soundIndex, soundDuration));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
