@@ -5,6 +5,7 @@ using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
+using Alliance.Common.GameModels;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Database.Data;
@@ -102,7 +103,7 @@ namespace Alliance.Server
 
 			// Add our custom GameModels 
 			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			//gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		public override void OnGameEnd(Game game)
