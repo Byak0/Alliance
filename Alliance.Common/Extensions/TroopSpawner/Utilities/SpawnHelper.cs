@@ -193,6 +193,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
 		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float difficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f, BasicCultureObject customCulture = null)
 		{
+			if (character == null)
+			{
+				Log("Alliance : ERROR spawning player " + networkPeer.UserName + " - character is null", LogLevel.Error);
+				return;
+			}
+
 			try
 			{
 				MissionPeer component = networkPeer.GetComponent<MissionPeer>();
