@@ -11,6 +11,7 @@ using Alliance.Client.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
@@ -71,17 +72,6 @@ namespace Alliance.Client
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
 		}
-
-		protected override void OnGameStart(Game game, IGameStarter gameStarter)
-		{
-			// Late patching, patching earlier causes issues with Voice type
-			Patch_AdvancedCombat.LatePatch();
-
-			// Add our custom GameModels 
-			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
-		}
-
 		private void AddGameModes()
 		{
 			Module.CurrentModule.AddMultiplayerGameMode(new LobbyGameMode("Lobby"));

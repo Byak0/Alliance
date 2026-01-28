@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using TaleWorlds.Core;
@@ -315,7 +316,20 @@ namespace Alliance.Common.Core.Utils
 			// Return the new position (Z remains unchanged)
 			return new Vec3(x, y, center.z);
 		}
+		public static T? GetGameModel<T>(IGameStarter gameStarterObject) where T : GameModel
+		{
+			var models = gameStarterObject.Models.ToArray();
+
+			for (int index = models.Length - 1; index >= 0; --index)
+			{
+				if (models[index] is T gameModel1)
+					return gameModel1;
+			}
+			return default;
+		}
 	}
+
+
 
 	public static class SpatialGrid
 	{
@@ -389,5 +403,6 @@ namespace Alliance.Common.Core.Utils
 				}
 			}
 		}
+		
 	}
 }

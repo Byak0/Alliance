@@ -1,11 +1,13 @@
-﻿using Alliance.Common.Core.ExtendedXML;
+﻿using System.Linq;
+using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.Security;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
 using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
-using Alliance.Common.GameModels;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Database.Data;
@@ -94,16 +96,6 @@ namespace Alliance.Server
 				PlayerSpawnMenu.Instance = new PlayerSpawnMenu();
 				Log($"Alliance - Failed to load PlayerSpawnMenu from {PlayerSpawnMenuFilePath}. Using default menu.", LogLevel.Warning);
 			}
-		}
-
-		protected override void OnGameStart(Game game, IGameStarter gameStarter)
-		{
-			// Late patching, patching earlier causes issues with Voice type
-			Patch_AdvancedCombat.LatePatch();
-
-			// Add our custom GameModels 
-			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 		}
 
 		public override void OnGameEnd(Game game)
