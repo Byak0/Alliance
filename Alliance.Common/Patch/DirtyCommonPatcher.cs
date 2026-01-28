@@ -63,6 +63,7 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_ActionSetCode.Patch();
 			patchSuccess &= Patch_MBObjectManager.Patch();
 			patchSuccess &= Patch_Banner.Patch();
+			patchSuccess &= Patch_AgentStatCalculateModel.Patch();
 #if !SERVER && DEBUG
 			patchSuccess &= Patch_WidgetExtensions.Patch();
 #endif
