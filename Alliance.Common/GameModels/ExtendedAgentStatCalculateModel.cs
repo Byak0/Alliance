@@ -56,7 +56,7 @@ namespace Alliance.Common.GameModels
 			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 
 
-			if (Config.Instance.LocalizedArmor || missionPeer == null)
+			if (Config.Instance.LocalizedArmor)
 			{
 				// Localized armor values based on equipment (default singleplayer behavior)
 				agentDrivenProperties.ArmorHead = spawnEquipment.GetHeadArmorSum();
@@ -72,7 +72,8 @@ namespace Alliance.Common.GameModels
 				{
 					DrivenProperty drivenProperty = (DrivenProperty)i;
 					float stat = agentDrivenProperties.GetStat(drivenProperty);
-					agentDrivenProperties.SetStat(drivenProperty, stat + (float)mPHeroClassForCharacter.ArmorValue + onSpawnPerkHandler.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat));
+					float perkBonus = onSpawnPerkHandler?.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat) ?? 0;
+					agentDrivenProperties.SetStat(drivenProperty, stat + (float)mPHeroClassForCharacter.ArmorValue + perkBonus);
 				}
 			}
 		}
