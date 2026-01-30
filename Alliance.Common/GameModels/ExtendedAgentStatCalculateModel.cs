@@ -42,7 +42,6 @@ namespace Alliance.Common.GameModels
 			UpdateArmor(agent, agentDrivenProperties);
 
 			UpdateAgentFormationStats(agent, agentDrivenProperties);
-
 		}
 
 		private static void UpdateArmor(Agent agent, AgentDrivenProperties agentDrivenProperties)
@@ -71,9 +70,8 @@ namespace Alliance.Common.GameModels
 				for (int i = (int)DrivenProperty.ArmorHead; i < (int)DrivenProperty.ArmorArms; i++)
 				{
 					DrivenProperty drivenProperty = (DrivenProperty)i;
-					float stat = agentDrivenProperties.GetStat(drivenProperty);
-					float perkBonus = onSpawnPerkHandler?.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, stat) ?? 0;
-					agentDrivenProperties.SetStat(drivenProperty, stat + (float)mPHeroClassForCharacter.ArmorValue + perkBonus);
+					float perkBonus = onSpawnPerkHandler?.GetDrivenPropertyBonusOnSpawn(isPlayer, drivenProperty, 0) ?? 0;
+					agentDrivenProperties.SetStat(drivenProperty, (float)mPHeroClassForCharacter.ArmorValue + perkBonus);
 				}
 			}
 		}
