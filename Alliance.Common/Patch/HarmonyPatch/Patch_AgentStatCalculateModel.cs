@@ -46,7 +46,8 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		public static void Postfix_CalculateAILevel(Agent agent, int relevantSkillLevel, ref float __result)
 		{
 			Log($"Original AI Level for Agent {agent.Name}: {__result}", LogLevel.Debug);
-			__result *= AgentsInfoModel.Instance.Agents[agent.Index].Difficulty;
+			// Result is multiply by cubed of difficulty 
+			__result *= (float)Math.Pow(AgentsInfoModel.Instance.Agents[agent.Index].Difficulty, 3);
 			Log($"Modified AI Level for Agent {agent.Name}: {__result}", LogLevel.Debug);
 		}
 	}
