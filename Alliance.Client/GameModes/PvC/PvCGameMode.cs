@@ -29,7 +29,6 @@ namespace Alliance.Client.GameModes.PvC
 				new PvCGameModeClientBehavior(),
 
 				// Native behaviors
-				new MultiplayerWarmupComponent(),
 				new MultiplayerRoundComponent(),
 				new MultiplayerTeamSelectComponent()
 			});

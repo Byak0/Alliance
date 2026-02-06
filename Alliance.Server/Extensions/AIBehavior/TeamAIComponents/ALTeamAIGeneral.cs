@@ -99,10 +99,12 @@ namespace Alliance.Server.Extensions.AIBehavior.TeamAIComponents
 
 		public override void OnUnitAddedToFormationForTheFirstTime(Formation formation)
 		{
-			if (GameNetwork.IsServer && formation.AI.GetBehavior<BehaviorCharge>() == null
-				// else bug on position
-				&& formation.CountOfUnits > 0)
+			if (GameNetwork.IsServer)
 			{
+				// Forcer l'initialisation complète de la formation avant d'ajouter les comportements
+				formation.ForceCalculateCaches();
+				if (formation.AI.GetBehavior<BehaviorCharge>() != null) return;
+
 				if (formation.FormationIndex == FormationClass.NumberOfRegularFormations)
 				{
 					formation.AI.AddAiBehavior(new BehaviorGeneral(formation));
