@@ -70,10 +70,10 @@
 		</XmlNode>
 		<XmlNode>
 			<XmlName id="Items" path="Items/LOTR" />
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="Items" path="Items/Native" />
 		</XmlNode>-->
+    <XmlNode>
+      <XmlName id="Items" path="Items/Native" />
+    </XmlNode>
     <XmlNode>
       <XmlName id="Items" path="Items/SandBox" />
     </XmlNode>
