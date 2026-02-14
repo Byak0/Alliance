@@ -14,7 +14,7 @@ using TaleWorlds.MountAndBlade.ViewModelCollection.Order;
 namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 {
 	[OverrideView(typeof(MultiplayerMissionOrderUIHandler))]
-	public class MissionGauntletMultiplayerOrderUIHandler : GauntletOrderUIHandler
+	public class MissionOrderUIHandler_old : GauntletOrderUIHandler
 	{
 		public override bool IsDeployment
 		{
@@ -40,7 +40,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 			}
 		}
 
-		public MissionGauntletMultiplayerOrderUIHandler()
+		public MissionOrderUIHandler_old()
 		{
 			this.ViewOrderPriority = 19;
 		}
@@ -124,7 +124,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 
 		private void OnManagedOptionChanged(ManagedOptions.ManagedOptionsType changedManagedOptionsType)
 		{
-			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.OrderType)
+			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.OrderLayoutType)
 			{
 				if (this._gauntletLayer != null && this._movie != null)
 				{
@@ -134,7 +134,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 					return;
 				}
 			}
-			else if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.OrderLayoutType)
+			else if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.AutoTrackAttackedSettlements)
 			{
 				MissionOrderVM dataSource = this._dataSource;
 				if (dataSource == null)
@@ -193,6 +193,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 
 		public void ValidateInADisgustingManner()
 		{
+			// todo refactor this class with 1.3 version
 			this._dataSource = new MissionOrderVM(base.Mission.PlayerTeam.PlayerOrderController, false, true);
 			this._dataSource.SetDeploymentParemeters(base.MissionScreen.CombatCamera, this.IsSiegeDeployment ? Enumerable.ToList<DeploymentPoint>(this._siegeDeploymentHandler.PlayerDeploymentPoints) : new List<DeploymentPoint>());
 			this._dataSource.SetCallbacks(new MissionOrderCallbacks
@@ -221,7 +222,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TroopTransferOrder.Views
 			this._dataSource.SetOrderIndexKey(7, category.GetGameKey(76));
 			this._dataSource.SetOrderIndexKey(8, category.GetGameKey(77));
 			this._dataSource.SetReturnKey(category.GetGameKey(77));
-			this._gauntletLayer = new GauntletLayer("MultiplayerOrder", this.ViewOrderPriority, false);
+			this._gauntletLayer = new GauntletLayer("OrderUI", ViewOrderPriority);
 			this._spriteCategory = UIResourceManager.LoadSpriteCategory("ui_order");
 			string text = ((BannerlordConfig.OrderType == 0) ? this._barOrderMovieName : this._radialOrderMovieName);
 			this._movie = this._gauntletLayer.LoadMovie(text, this._dataSource);
