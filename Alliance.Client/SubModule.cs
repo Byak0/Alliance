@@ -1,4 +1,5 @@
-﻿using Alliance.Client.GameModes.BattleRoyale;
+﻿using Alliance.Client.Core.Providers;
+using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
 using Alliance.Client.GameModes.CvC;
@@ -11,16 +12,14 @@ using Alliance.Client.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
-using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
-using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
 using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Alliance.Client
@@ -48,6 +47,9 @@ namespace Alliance.Client
 			KeyBinder.RegisterContexts();
 
 			AddGameModes();
+
+			// Load our own list of orders for troop control (enable troop transfer)
+			VisualOrderFactory.RegisterProvider(new AllianceVisualOrderProvider());
 		}
 
 		protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
@@ -72,6 +74,7 @@ namespace Alliance.Client
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
 		}
+
 		private void AddGameModes()
 		{
 			Module.CurrentModule.AddMultiplayerGameMode(new LobbyGameMode("Lobby"));
