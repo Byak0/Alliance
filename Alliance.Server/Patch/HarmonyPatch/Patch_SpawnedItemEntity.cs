@@ -1,6 +1,13 @@
 ﻿using HarmonyLib;
+using NetworkMessages.FromServer;
 using System;
+using System.Reflection;
+using TaleWorlds.Core;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Server.Patch.HarmonyPatch
 {
@@ -16,11 +23,11 @@ namespace Alliance.Server.Patch.HarmonyPatch
 				if (_patched)
 					return false;
 				_patched = true;
-				//Harmony.Patch(
-				//	typeof(SpawnedItemEntity).GetMethod("OnTickParallel2",
-				//		BindingFlags.Instance | BindingFlags.NonPublic),
-				//	prefix: new HarmonyMethod(typeof(Patch_SpawnedItemEntity).GetMethod(
-				//		nameof(Prefix_OnTickParallel2), BindingFlags.Static | BindingFlags.Public)));
+				Harmony.Patch(
+					typeof(SpawnedItemEntity).GetMethod("OnTickParallel2",
+						BindingFlags.Instance | BindingFlags.NonPublic),
+					prefix: new HarmonyMethod(typeof(Patch_SpawnedItemEntity).GetMethod(
+						nameof(Prefix_OnTickParallel2), BindingFlags.Static | BindingFlags.Public)));
 			}
 			catch (Exception e)
 			{
@@ -32,205 +39,184 @@ namespace Alliance.Server.Patch.HarmonyPatch
 			return true;
 		}
 
-		// TODO check : native method modified in 1.3, maybe not needed anymore
 		// Fix banners flying above the ground when dropped
-		//public static bool Prefix_OnTickParallel2(SpawnedItemEntity __instance, float dt, int ____usedChannelIndex,
-		//	ActionIndexCache ____successActionIndex, ActionIndexCache ____progressActionIndex, Timer ____deletionTimer,
-		//	ref bool ____readyToBeDeleted, GameEntity ____ownerGameEntity, MissionWeapon ____weapon,
-		//	ref Vec3 ____fakeSimulationVelocity, Timer ____disablePhysicsTimer, GameEntity ____groundEntityWhenDisabled)
-		//{
-		//	for (int i = __instance.GetMovingAgentCount() - 1; i >= 0; i--)
-		//	{
-		//		if (!__instance.GetMovingAgentWithIndex(i).IsActive())
-		//		{
-		//			typeof(UsableMissionObject).GetField("_needsSingleThreadTickOnce", BindingFlags.Instance | BindingFlags.NonPublic)
-		//				.SetValue(__instance, true);
-		//		}
-		//	}
+		// As of 1.3 it also requires a client patch to make dropped banner focusable
+		public static bool Prefix_OnTickParallel2(
+			SpawnedItemEntity __instance, float dt,
+			// Accessing private fields of SpawnedItemEntity using Harmony
+			int ____usedChannelIndex, ActionIndexCache ____successActionIndex, ActionIndexCache ____progressActionIndex, Timer ____deletionTimer,
+			ref bool ____readyToBeDeleted, GameEntity ____ownerGameEntity, MissionWeapon ____weapon,
+			ref Vec3 ____fakeSimulationVelocity, Timer ____disablePhysicsTimer, ref GameEntity ____groundEntityWhenDisabled, ref bool ____alreadyMadeWaterDropSound, ref bool ____disableDynamicPhysicsNextFrame)
+		{
+			// Base method
+			for (int i = __instance.GetMovingAgentCount() - 1; i >= 0; i--)
+			{
+				if (!__instance.GetMovingAgentWithIndex(i).IsActive())
+				{
+					typeof(UsableMissionObject).GetField("_needsSingleThreadTickOnce", BindingFlags.Instance | BindingFlags.NonPublic)
+						.SetValue(__instance, true);
+				}
+			}
 
-		//	if (!GameNetwork.IsClientOrReplay)
-		//	{
-		//		if (__instance.HasUser)
-		//		{
-		//			ActionIndexValueCache currentActionValue = __instance.UserAgent.GetCurrentActionValue(____usedChannelIndex);
-		//			if (currentActionValue == ____successActionIndex)
-		//			{
-		//				__instance.UserAgent.StopUsingGameObjectMT(__instance.UserAgent.CanUseObject(__instance), Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
-		//			}
-		//			else if (currentActionValue != ____progressActionIndex)
-		//			{
-		//				__instance.UserAgent.StopUsingGameObjectMT(false, Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
-		//			}
-		//		}
-		//		else if (__instance.HasLifeTime && ____deletionTimer.Check(Mission.Current.CurrentTime))
-		//		{
-		//			____readyToBeDeleted = true;
-		//		}
-
-		//		Traverse PhysicsStoppedTraverse = Traverse.Create(__instance).Property("PhysicsStopped");
-
-		//		if (!(bool)PhysicsStoppedTraverse.GetValue())
-		//		{
-		//			if (____ownerGameEntity != null)
-		//			{
-		//				if (____weapon.IsBanner())
-		//				{
-		//					MatrixFrame globalFrame = ____ownerGameEntity.GetGlobalFrame();
-		//					____fakeSimulationVelocity.z = ____fakeSimulationVelocity.z - dt * 9.8f;
-		//					globalFrame.origin += ____fakeSimulationVelocity * dt;
-		//					____ownerGameEntity.SetGlobalFrameMT(globalFrame);
-		//					using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
-		//					{
-		//						if (____ownerGameEntity.Scene.GetGroundHeightAtPositionMT(globalFrame.origin, BodyFlags.CommonCollisionExcludeFlags) > globalFrame.origin.z + 0.3f)
-		//						{
-		//							PhysicsStoppedTraverse.SetValue(true);
-		//							Log($"Alliance - Synchronizing entity {____weapon.Item.Name}", LogLevel.Error);
-		//							// Synchronize physics with clients
-		//							//if (GameNetwork.IsServerOrRecorder)
-		//							//{
-		//							//    MissionObjectId id = __instance.Id;
-		//							//    GameNetwork.BeginBroadcastModuleEvent();
-		//							//    GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, null, ____ownerGameEntity.GetFrame()));
-		//							//    GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-		//							//}
-		//						}
-		//						else
-		//						{
-		//							// Synchronize banner position with clients when falling
-		//							if (GameNetwork.IsServerOrRecorder)
-		//							{
-		//								MatrixFrame frame = ____ownerGameEntity.GetFrame();
-		//								GameNetwork.BeginBroadcastModuleEvent();
-		//								GameNetwork.WriteMessage(new SetMissionObjectFrame(__instance.Id, ref frame));
-		//								GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-		//							}
-		//						}
-		//					}
-		//					return false;
-		//				}
-
-		//				Vec3 globalPosition = ____ownerGameEntity.GlobalPosition;
-		//				if (globalPosition.z <= CompressionBasic.PositionCompressionInfo.GetMinimumValue() + 5f)
-		//				{
-		//					____readyToBeDeleted = true;
-		//				}
-		//				if (!____ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Dynamic))
-		//				{
-		//					PhysicsStoppedTraverse.SetValue(true);
-		//					return false;
-		//				}
-		//				MatrixFrame globalFrame2 = ____ownerGameEntity.GetGlobalFrame();
-		//				if (!globalFrame2.rotation.IsUnit())
-		//				{
-		//					globalFrame2.rotation.Orthonormalize();
-		//					____ownerGameEntity.SetGlobalFrame(globalFrame2);
-		//				}
-		//				bool flag = ____disablePhysicsTimer.Check(Mission.Current.CurrentTime);
-		//				if (flag || ____disablePhysicsTimer.ElapsedTime() > 1f)
-		//				{
-		//					bool flag2;
-		//					using (new TWSharedMutexUpgradeableReadLock(Scene.PhysicsAndRayCastLock))
-		//					{
-		//						flag2 = flag || ____ownerGameEntity.IsDynamicBodyStationaryMT();
-		//						if (flag2)
-		//						{
-		//							____groundEntityWhenDisabled = (GameEntity)typeof(SpawnedItemEntity).GetMethod("TryFindProperGroundEntityForSpawnedEntity",
-		//																			BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { });
-
-		//							if (____groundEntityWhenDisabled != null)
-		//							{
-		//								____groundEntityWhenDisabled.AddChild(__instance.GameEntity, true);
-		//							}
-		//							using (new TWSharedMutexWriteLock(Scene.PhysicsAndRayCastLock))
-		//							{
-		//								if (!____weapon.IsEmpty && !____ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Disabled))
-		//								{
-		//									____ownerGameEntity.DisableDynamicBodySimulationMT();
-		//								}
-		//								else
-		//								{
-		//									____ownerGameEntity.RemovePhysicsMT(false);
-		//								}
-		//							}
-		//						}
-		//					}
-		//					if (flag2)
-		//					{
-		//						typeof(SpawnedItemEntity).GetMethod("ClampEntityPositionForStoppingIfNeeded", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { });
-
-		//						PhysicsStoppedTraverse.SetValue(true);
-		//						if ((!__instance.IsDeactivated || ____groundEntityWhenDisabled != null) && !____weapon.IsEmpty && GameNetwork.IsServerOrRecorder)
-		//						{
-		//							GameNetwork.BeginBroadcastModuleEvent();
-		//							MissionObjectId id = __instance.Id;
-		//							GameEntity groundEntityWhenDisabled = ____groundEntityWhenDisabled;
-		//							MissionObjectId idParent = groundEntityWhenDisabled != null ? groundEntityWhenDisabled.GetFirstScriptOfType<MissionObject>().Id : MissionObjectId.Invalid;
-		//							GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, idParent, ____ownerGameEntity.GetFrame()));
-		//							GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-		//						}
-		//					}
-		//				}
-		//				if (!(bool)PhysicsStoppedTraverse.GetValue())
-		//				{
-		//					Vec3 vec;
-		//					Vec3 vec2;
-		//					____ownerGameEntity.GetPhysicsMinMax(true, out vec, out vec2, true);
-		//					MatrixFrame globalFrame3 = ____ownerGameEntity.GetGlobalFrame();
-		//					MatrixFrame previousGlobalFrame = ____ownerGameEntity.GetPreviousGlobalFrame();
-		//					Vec3 vec3 = globalFrame3.TransformToParent(vec);
-		//					Vec3 vec4 = previousGlobalFrame.TransformToParent(vec);
-		//					Vec3 vec5 = globalFrame3.TransformToParent(vec2);
-		//					Vec3 vec6 = previousGlobalFrame.TransformToParent(vec2);
-		//					Vec3 vec7 = Vec3.Vec3Min(vec3, vec5);
-		//					Vec3 vec8 = Vec3.Vec3Min(vec4, vec6);
-		//					float waterLevelAtPositionMT;
-		//					using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
-		//					{
-		//						waterLevelAtPositionMT = Mission.Current.GetWaterLevelAtPositionMT(vec7.AsVec2, true);
-		//					}
-		//					bool flag3 = vec7.z < waterLevelAtPositionMT;
-		//					if (vec8.z >= waterLevelAtPositionMT && flag3)
-		//					{
-		//						Vec3 linearVelocityMT;
-		//						using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
-		//						{
-		//							linearVelocityMT = ____ownerGameEntity.GetLinearVelocityMT();
-		//						}
-		//						float num = ____ownerGameEntity.Mass * linearVelocityMT.Length;
-		//						if (num > 0f)
-		//						{
-		//							num *= 0.0625f;
-		//							num = MathF.Min(num, 1f);
-		//							Vec3 vec9 = globalPosition;
-		//							vec9.z = waterLevelAtPositionMT;
-		//							SoundEventParameter soundEventParameter = new SoundEventParameter("Size", num);
-		//							Mission.Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsWater, vec9, true, false, -1, -1, ref soundEventParameter);
-		//							return false;
-		//						}
-		//					}
-		//				}
-		//			}
-		//			else
-		//			{
-		//				PhysicsStoppedTraverse.SetValue(true);
-		//			}
-		//		}
-		//	}
-		//	return false;
-		//}
-
-		// Reverse patch to access base implementation of UsableMissionObject
-		//class ReversePatch_UsableMissionObject
-		//{
-		//    public static void OnTickParallel2(UsableMissionObject instance, float dt)
-		//    {
-		//        // Should never show if reverse patch works
-		//        Log("Vulcain - ReversePatch_UsableMissionObject failed!", 0, Debug.DebugColor.Red);
-		//    }
-		//}
+			// Native method
+			if (!GameNetwork.IsClientOrReplay)
+			{
+				if (__instance.HasUser)
+				{
+					ActionIndexCache currentActionValue = __instance.UserAgent.GetCurrentAction(____usedChannelIndex);
+					if (currentActionValue == ____successActionIndex)
+					{
+						__instance.UserAgent.StopUsingGameObjectMT(__instance.UserAgent.CanUseObject(__instance), Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
+					}
+					else if (currentActionValue != ____progressActionIndex)
+					{
+						__instance.UserAgent.StopUsingGameObjectMT(false, Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
+					}
+				}
+				else if (__instance.HasLifeTime && ____deletionTimer.Check(Mission.Current.CurrentTime))
+				{
+					____readyToBeDeleted = true;
+				}
+				Traverse PhysicsStoppedTraverse = Traverse.Create(__instance).Property("PhysicsStopped");
+				if (!(bool)PhysicsStoppedTraverse.GetValue())
+				{
+					if (____ownerGameEntity != null)
+					{
+						if (____weapon.IsBanner())
+						{
+							MatrixFrame globalFrame = ____ownerGameEntity.GetGlobalFrame();
+							____fakeSimulationVelocity.z = ____fakeSimulationVelocity.z - dt * 9.8f;
+							globalFrame.origin += ____fakeSimulationVelocity * dt;
+							____ownerGameEntity.SetGlobalFrame(globalFrame);
+							using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
+							{
+								if (____ownerGameEntity.Scene.GetGroundHeightAtPosition(globalFrame.origin, BodyFlags.CommonCollisionExcludeFlags) > globalFrame.origin.z + 0.3f)
+								{
+									// Prepare to disable physics on next frame (OnTick)
+									____groundEntityWhenDisabled = (GameEntity)typeof(SpawnedItemEntity).GetMethod("TryFindProperGroundEntityForSpawnedEntity",
+																					BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { });
+									____disableDynamicPhysicsNextFrame = true;
+								}
+								else
+								{
+									// Synchronize banner position with clients when falling
+									if (GameNetwork.IsServerOrRecorder)
+									{
+										MatrixFrame frame = ____ownerGameEntity.GetFrame();
+										GameNetwork.BeginBroadcastModuleEvent();
+										GameNetwork.WriteMessage(new SetMissionObjectFrame(__instance.Id, ref frame));
+										GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
+									}
+								}
+							}
+							return false;
+						}
+						Vec3 globalPosition = ____ownerGameEntity.GlobalPosition;
+						if (globalPosition.z <= CompressionBasic.PositionCompressionInfo.GetMinimumValue() + 5f)
+						{
+							____readyToBeDeleted = true;
+						}
+						if (!____ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Dynamic))
+						{
+							PhysicsStoppedTraverse.SetValue(true);
+							return false;
+						}
+						MatrixFrame globalFrame2 = ____ownerGameEntity.GetGlobalFrame();
+						if (!globalFrame2.rotation.IsUnit())
+						{
+							globalFrame2.rotation.Orthonormalize();
+							____ownerGameEntity.SetGlobalFrame(globalFrame2);
+						}
+						bool flag = ____disablePhysicsTimer.Check(Mission.Current.CurrentTime);
+						if (flag || ____disablePhysicsTimer.ElapsedTime() > 1f)
+						{
+							bool flag2;
+							flag2 = flag || ____ownerGameEntity.IsDynamicBodyStationaryMT();
+							if (flag2)
+							{
+								____groundEntityWhenDisabled = (GameEntity)typeof(SpawnedItemEntity).GetMethod("TryFindProperGroundEntityForSpawnedEntity",
+																				BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { });
+								if (____groundEntityWhenDisabled != null)
+								{
+									____groundEntityWhenDisabled.WeakEntity.AddChild(__instance.GameEntity, true);
+								}
+								using (new TWSharedMutexWriteLock(Scene.PhysicsAndRayCastLock))
+								{
+									if (!____weapon.IsEmpty && !____ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Disabled))
+									{
+										____ownerGameEntity.DisableDynamicBodySimulationMT();
+									}
+									else
+									{
+										____ownerGameEntity.RemovePhysics(false);
+									}
+								}
+							}
+							if (flag2)
+							{
+								typeof(SpawnedItemEntity).GetMethod("ClampEntityPositionForStoppingIfNeeded", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(__instance, new object[] { });
+								PhysicsStoppedTraverse.SetValue(true);
+								if ((!__instance.IsDeactivated || ____groundEntityWhenDisabled != null) && !____weapon.IsEmpty && GameNetwork.IsServerOrRecorder)
+								{
+									GameNetwork.BeginBroadcastModuleEvent();
+									MissionObjectId id = __instance.Id;
+									GameEntity groundEntityWhenDisabled = ____groundEntityWhenDisabled;
+									MissionObjectId idParent = groundEntityWhenDisabled != null ? groundEntityWhenDisabled.GetFirstScriptOfType<MissionObject>().Id : MissionObjectId.Invalid;
+									GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, idParent, ____ownerGameEntity.GetFrame()));
+									GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
+								}
+							}
+						}
+						if (!(bool)PhysicsStoppedTraverse.GetValue())
+						{
+							Vec3 vec;
+							Vec3 vec2;
+							____ownerGameEntity.GetPhysicsMinMax(true, out vec, out vec2, true);
+							MatrixFrame globalFrame3 = ____ownerGameEntity.GetGlobalFrame();
+							MatrixFrame previousGlobalFrame = ____ownerGameEntity.GetPreviousGlobalFrame();
+							Vec3 vec3 = globalFrame3.TransformToParent(vec);
+							Vec3 vec4 = previousGlobalFrame.TransformToParent(vec);
+							Vec3 vec5 = globalFrame3.TransformToParent(vec2);
+							Vec3 vec6 = previousGlobalFrame.TransformToParent(vec2);
+							Vec3 vec7 = Vec3.Vec3Min(vec3, vec5);
+							Vec3 vec8 = Vec3.Vec3Min(vec4, vec6);
+							float waterLevelAtPositionMT;
+							using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
+							{
+								waterLevelAtPositionMT = Mission.Current.GetWaterLevelAtPositionMT(vec7.AsVec2, true);
+							}
+							bool flag3 = vec7.z < waterLevelAtPositionMT;
+							if (vec8.z >= waterLevelAtPositionMT && flag3)
+							{
+								Vec3 linearVelocityMT;
+								using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
+								{
+									linearVelocityMT = ____ownerGameEntity.GetLinearVelocityMT();
+								}
+								float num = ____ownerGameEntity.Mass * linearVelocityMT.Length;
+								if (num > 0f)
+								{
+									num *= 0.0625f;
+									num = MathF.Min(num, 1f);
+									Vec3 vec9 = globalPosition;
+									vec9.z = waterLevelAtPositionMT;
+									SoundEventParameter soundEventParameter = new SoundEventParameter("Size", num);
+									Mission.Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsWater, vec9, true, false, -1, -1, ref soundEventParameter);
+									return false;
+								}
+							}
+						}
+					}
+					else
+					{
+						PhysicsStoppedTraverse.SetValue(true);
+					}
+				}
+			}
+			return false;
+		}
 
 		/* Original method 
-         * 
 		protected internal override void OnTickParallel2(float dt)
 		{
 			base.OnTickParallel2(dt);
@@ -238,12 +224,12 @@ namespace Alliance.Server.Patch.HarmonyPatch
 			{
 				if (base.HasUser)
 				{
-					ActionIndexValueCache currentActionValue = base.UserAgent.GetCurrentActionValue(this._usedChannelIndex);
-					if (currentActionValue == this._successActionIndex)
+					ActionIndexCache currentAction = base.UserAgent.GetCurrentAction(this._usedChannelIndex);
+					if (currentAction == this._successActionIndex)
 					{
-						base.UserAgent.StopUsingGameObjectMT(base.UserAgent.CanUseObject(this), Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
+						base.UserAgent.StopUsingGameObjectMT(base.UserAgent.CanUseObject(this) && !base.UserAgent.IsInWater(), Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
 					}
-					else if (currentActionValue != this._progressActionIndex)
+					else if (currentAction != this._progressActionIndex)
 					{
 						base.UserAgent.StopUsingGameObjectMT(false, Agent.StopUsingGameObjectFlags.AutoAttachAfterStoppingUsingGameObject);
 					}
@@ -261,108 +247,98 @@ namespace Alliance.Server.Patch.HarmonyPatch
 							MatrixFrame globalFrame = this._ownerGameEntity.GetGlobalFrame();
 							this._fakeSimulationVelocity.z = this._fakeSimulationVelocity.z - dt * 9.8f;
 							globalFrame.origin += this._fakeSimulationVelocity * dt;
-							this._ownerGameEntity.SetGlobalFrameMT(globalFrame);
-							using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
+							this._ownerGameEntity.SetGlobalFrame(globalFrame, true);
+							if (this._ownerGameEntity.Scene.GetGroundHeightAtPosition(globalFrame.origin, BodyFlags.CommonCollisionExcludeFlags) > globalFrame.origin.z + 0.3f)
 							{
-								if (this._ownerGameEntity.Scene.GetGroundHeightAtPositionMT(globalFrame.origin, BodyFlags.CommonCollisionExcludeFlags) > globalFrame.origin.z + 0.3f)
-								{
-									this.PhysicsStopped = true;
-								}
+								this.PhysicsStopped = true;
 								return;
 							}
 						}
-						Vec3 globalPosition = this._ownerGameEntity.GlobalPosition;
-						if (globalPosition.z <= CompressionBasic.PositionCompressionInfo.GetMinimumValue() + 5f)
+						else
 						{
-							this._readyToBeDeleted = true;
-						}
-						if (!this._ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Dynamic))
-						{
-							this.PhysicsStopped = true;
-							return;
-						}
-						MatrixFrame globalFrame2 = this._ownerGameEntity.GetGlobalFrame();
-						if (!globalFrame2.rotation.IsUnit())
-						{
-							globalFrame2.rotation.Orthonormalize();
-							this._ownerGameEntity.SetGlobalFrame(globalFrame2);
-						}
-						bool flag = this._disablePhysicsTimer.Check(Mission.Current.CurrentTime);
-						if (flag || this._disablePhysicsTimer.ElapsedTime() > 1f)
-						{
-							bool flag2;
-							using (new TWSharedMutexUpgradeableReadLock(Scene.PhysicsAndRayCastLock))
+							Vec3 globalPosition = this._ownerGameEntity.GlobalPosition;
+							if (globalPosition.z <= CompressionBasic.PositionCompressionInfo.GetMinimumValue() + 5f)
 							{
-								flag2 = flag || this._ownerGameEntity.IsDynamicBodyStationaryMT();
+								this._readyToBeDeleted = true;
+							}
+							if (!this._ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Dynamic))
+							{
+								this.PhysicsStopped = true;
+								return;
+							}
+							MatrixFrame globalFrame2 = this._ownerGameEntity.GetGlobalFrame();
+							if (!globalFrame2.rotation.IsUnit())
+							{
+								globalFrame2.rotation.Orthonormalize();
+								this._ownerGameEntity.SetGlobalFrame(globalFrame2, true);
+							}
+							bool flag = this._disablePhysicsTimer.Check(Mission.Current.CurrentTime);
+							if ((flag || this._disablePhysicsTimer.ElapsedTime() > 1f) && (flag || this._ownerGameEntity.IsDynamicBodyStationaryMT()))
+							{
+								this._groundEntityWhenDisabled = this.TryFindProperGroundEntityForSpawnedEntity();
+								this._disableDynamicPhysicsNextFrame = true;
+							}
+							if (!this.PhysicsStopped && this._disablePhysicsTimer.ElapsedTime() > 0.2f)
+							{
+								Vec3 vec;
+								Vec3 vec2;
+								this._ownerGameEntity.GetPhysicsMinMax(true, out vec, out vec2, true);
+								MatrixFrame globalFrame3 = this._ownerGameEntity.GetGlobalFrame();
+								MatrixFrame previousGlobalFrame = this._ownerGameEntity.GetPreviousGlobalFrame();
+								Vec3 vec3 = globalFrame3.TransformToParent(vec);
+								Vec3 vec4 = previousGlobalFrame.TransformToParent(vec);
+								Vec3 vec5 = globalFrame3.TransformToParent(vec2);
+								Vec3 vec6 = previousGlobalFrame.TransformToParent(vec2);
+								Vec3 vec7 = Vec3.Vec3Min(vec3, vec5);
+								Vec3 vec8 = Vec3.Vec3Min(vec4, vec6);
+								Vec3 vec9 = Vec3.Vec3Max(vec3, vec5);
+								float waterLevelAtPositionMT = Mission.Current.GetWaterLevelAtPositionMT(vec7.AsVec2, !GameNetwork.IsMultiplayer);
+								bool flag2 = vec7.z < waterLevelAtPositionMT;
+								bool flag3 = vec8.z < waterLevelAtPositionMT;
 								if (flag2)
 								{
-									this._groundEntityWhenDisabled = this.TryFindProperGroundEntityForSpawnedEntity();
-									if (this._groundEntityWhenDisabled != null)
+									this._disablePhysicsTimer.AdjustStartTime(dt * 0.8f);
+									float num = waterLevelAtPositionMT - 3.5f;
+									if (vec9.z < num)
 									{
-										this._groundEntityWhenDisabled.AddChild(base.GameEntity, true);
+										this._readyToBeDeleted = true;
 									}
-									using (new TWSharedMutexWriteLock(Scene.PhysicsAndRayCastLock))
+									if (!flag3)
 									{
-										if (!this._weapon.IsEmpty && !this._ownerGameEntity.BodyFlag.HasAnyFlag(BodyFlags.Disabled))
+										BodyFlags bodyFlags;
+										base.GameEntity.Scene.GetGroundHeightAndBodyFlagsAtPosition(globalFrame3.origin, out bodyFlags, BodyFlags.CommonCollisionExcludeFlagsForCombat);
+										if (!bodyFlags.HasAnyFlag(BodyFlags.Moveable))
 										{
-											this._ownerGameEntity.DisableDynamicBodySimulationMT();
-										}
-										else
-										{
-											this._ownerGameEntity.RemovePhysicsMT(false);
+											Vec3 linearVelocityMT = this._ownerGameEntity.GetLinearVelocityMT();
+											float num2 = this._ownerGameEntity.Mass * linearVelocityMT.Length;
+											if (!this._alreadyMadeWaterDropSound && num2 > 0f)
+											{
+												num2 *= 0.0625f;
+												num2 = MathF.Min(num2, 1f);
+												Vec3 vec10 = globalPosition;
+												vec10.z = waterLevelAtPositionMT;
+												SoundEventParameter soundEventParameter = new SoundEventParameter("Size", num2);
+												Mission.Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsWater, vec10, false, true, -1, -1, ref soundEventParameter);
+												this._alreadyMadeWaterDropSound = true;
+											}
 										}
 									}
 								}
-							}
-							if (flag2)
-							{
-								this.ClampEntityPositionForStoppingIfNeeded();
-								this.PhysicsStopped = true;
-								if ((!base.IsDeactivated || this._groundEntityWhenDisabled != null) && !this._weapon.IsEmpty && GameNetwork.IsServerOrRecorder)
+								if (flag2 != flag3)
 								{
-									GameNetwork.BeginBroadcastModuleEvent();
-									MissionObjectId id = base.Id;
-									GameEntity groundEntityWhenDisabled = this._groundEntityWhenDisabled;
-									GameNetwork.WriteMessage(new StopPhysicsAndSetFrameOfMissionObject(id, (groundEntityWhenDisabled != null) ? groundEntityWhenDisabled.GetFirstScriptOfType<MissionObject>() : null, this._ownerGameEntity.GetFrame()));
-									GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.AddToMissionRecord, null);
-								}
-							}
-						}
-						if (!this.PhysicsStopped)
-						{
-							Vec3 vec;
-							Vec3 vec2;
-							this._ownerGameEntity.GetPhysicsMinMax(true, out vec, out vec2, true);
-							MatrixFrame globalFrame3 = this._ownerGameEntity.GetGlobalFrame();
-							MatrixFrame previousGlobalFrame = this._ownerGameEntity.GetPreviousGlobalFrame();
-							Vec3 vec3 = globalFrame3.TransformToParent(vec);
-							Vec3 vec4 = previousGlobalFrame.TransformToParent(vec);
-							Vec3 vec5 = globalFrame3.TransformToParent(vec2);
-							Vec3 vec6 = previousGlobalFrame.TransformToParent(vec2);
-							Vec3 vec7 = Vec3.Vec3Min(vec3, vec5);
-							Vec3 vec8 = Vec3.Vec3Min(vec4, vec6);
-							float waterLevelAtPositionMT;
-							using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
-							{
-								waterLevelAtPositionMT = Mission.Current.GetWaterLevelAtPositionMT(vec7.AsVec2);
-							}
-							bool flag3 = vec7.z < waterLevelAtPositionMT;
-							if (vec8.z >= waterLevelAtPositionMT && flag3)
-							{
-								Vec3 linearVelocityMT;
-								using (new TWSharedMutexReadLock(Scene.PhysicsAndRayCastLock))
-								{
-									linearVelocityMT = this._ownerGameEntity.GetLinearVelocityMT();
-								}
-								float num = this._ownerGameEntity.Mass * linearVelocityMT.Length;
-								if (num > 0f)
-								{
-									num *= 0.0625f;
-									num = MathF.Min(num, 1f);
-									Vec3 vec9 = globalPosition;
-									vec9.z = waterLevelAtPositionMT;
-									SoundEventParameter soundEventParameter = new SoundEventParameter("Size", num);
-									Mission.Current.MakeSound(ItemPhysicsSoundContainer.SoundCodePhysicsWater, vec9, true, false, -1, -1, ref soundEventParameter);
+									float num3 = (flag2 ? 100f : 1f);
+									PhysicsMaterial physicsMaterial = base.GameEntity.GetPhysicsMaterial();
+									float num4 = physicsMaterial.GetLinearDamping() * num3;
+									float num5 = physicsMaterial.GetAngularDamping() * num3;
+									if (num4 > 15f)
+									{
+										num4 = 15f;
+									}
+									if (num5 > 15f)
+									{
+										num5 = 15f;
+									}
+									base.GameEntity.SetDampingMT(num4, num5);
 									return;
 								}
 							}
