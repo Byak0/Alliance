@@ -40,21 +40,13 @@
 
 													</ItemTemplate>
 												</GridWidget>
-
-												<!-- Morale Status-->
-												<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="15" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
-													<Children>
-														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" VerticalAlignment="Center" Sprite="General\Icons\Morale@2x"/>
-														<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MarginLeft="1" MarginTop="8" VerticalAlignment="Center" Brush="Order.Troop.CountText" Brush.FontSize="20" IntText="@Morale" IsVisible="@HaveTroops" />
-													</Children>
-												</ListPanel>
 												
 										        <!-- Shortcut Info -->
 										        <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" MarginTop="5" PositionXOffset="15" IsVisible="true">
 										          <Children>
 										            <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@HaveTroops">
 										              <Children>
-										                <InputKeyVisualWidget DataSource="{SelectionKey}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="60" KeyID="@KeyID" IsVisible="@IsVisible"/>
+										                <InputKeyVisualWidget DataSource="{ApplySelectionKey}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="60" KeyID="@KeyID" IsVisible="@IsVisible"/>
 										              </Children>
 										            </Widget>
 										          </Children>
