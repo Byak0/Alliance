@@ -57,6 +57,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="TW_References\BannerlordPDB\**" />
+	  <Compile Remove="TW_References\BannerlordSource\**" />
+	  <EmbeddedResource Remove="TW_References\BannerlordPDB\**" />
+	  <EmbeddedResource Remove="TW_References\BannerlordSource\**" />
+	  <None Remove="TW_References\BannerlordPDB\**" />
+	  <None Remove="TW_References\BannerlordSource\**" />
+	  <Reference Remove="TW_References\BannerlordPDB\**" />
+	  <Reference Remove="TW_References\BannerlordSource\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Resource Include="Resources\alliance_delete.png" />
 		<Resource Include="Resources\alliance_edit.png" />
 		<Resource Include="Resources\alliance_edit2.png" />

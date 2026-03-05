@@ -362,4 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+# DB Access
 /Alliance.Server/Core/Security/SetEnvVar.bat
+
+# Ignore TW decompiled classes (used for local reference only)
+/Alliance.Common/TW_References/BannerlordSource
