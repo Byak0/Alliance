@@ -158,7 +158,8 @@ namespace Alliance.Common.Core.Utils
 			}
 			else if (fieldInfo.FieldType == typeof(float))
 			{
-				fieldInfo.SetValue(modOptions, GameNetworkMessage.ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid));
+				float roundedValue = CompressionHelper.ReadRoundedFloat(CompressionHelper.DefaultFloatValueCompressionInfo, CompressionHelper.DefaultFloatValueDigits, ref bufferReadValid);
+				fieldInfo.SetValue(modOptions, roundedValue);
 			}
 			else if (fieldInfo.FieldType == typeof(string))
 			{
@@ -173,6 +174,36 @@ namespace Alliance.Common.Core.Utils
 					fieldInfo.SetValue(modOptions, attribute.PossibleValues.ElementAtOrDefault(index));
 				}
 			}
+		}
+
+		public static object ReadModOption(FieldInfo fieldInfo, ref bool bufferReadValid)
+		{
+			if (fieldInfo.FieldType == typeof(bool))
+			{
+				return GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
+			}
+			else if (fieldInfo.FieldType == typeof(int))
+			{
+				return GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+			}
+			else if (fieldInfo.FieldType == typeof(float))
+			{
+				return CompressionHelper.ReadRoundedFloat(CompressionHelper.DefaultFloatValueCompressionInfo, CompressionHelper.DefaultFloatValueDigits, ref bufferReadValid);				
+			}
+			else if (fieldInfo.FieldType == typeof(string))
+			{
+				ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+				if (attribute.DataType == AllianceData.DataTypes.None)
+				{
+					return GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
+				}
+				else
+				{
+					int index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
+					return attribute.PossibleValues.ElementAtOrDefault(index);
+				}
+			}
+			return null;
 		}
 	}
 }

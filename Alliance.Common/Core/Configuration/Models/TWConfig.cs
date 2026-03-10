@@ -16,8 +16,8 @@ namespace Alliance.Common.Core.Configuration.Models
 	{
 		//[ConfigProperty(isEditable: false)]
 		//public string ServerName;
-		[ConfigProperty(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
-		public string WelcomeMessage = "Hello";
+		//[ConfigProperty(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
+		//public string WelcomeMessage = "Hello";
 		//[ConfigProperty(isEditable: false)]
 		//public string GamePassword;
 		//[ConfigProperty(isEditable: false)]
@@ -113,7 +113,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		/// <returns>Value of the option.</returns>
 		public object this[OptionType option]
 		{
-			get => GetBoundedOption(option, typeof(TWConfig).GetField(option.ToString())?.GetValue(this) ?? GetDefaultValue(option));
+			get => GetBoundedOption(option, typeof(TWConfig).GetField(option.ToString())?.GetValue(this) ?? GetCurrentServerValue(option));
 			set => SetBoundedOption(option, value);
 		}
 
@@ -210,9 +210,8 @@ namespace Alliance.Common.Core.Configuration.Models
 			return value;
 		}
 
-		private object GetDefaultValue(OptionType key)
+		public static object GetCurrentServerValue(OptionType key)
 		{
-			Log($"No value set for option {key}, using server value : {key.GetValueText()}", LogLevel.Debug);
 			return key.GetOptionProperty().OptionValueType switch
 			{
 				OptionValueType.Bool => key.GetBoolValue(),

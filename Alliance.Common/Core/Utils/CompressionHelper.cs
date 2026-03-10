@@ -2,6 +2,8 @@
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Network.Messages;
+using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.Core.Utils
 {
@@ -17,9 +19,21 @@ namespace Alliance.Common.Core.Utils
 		public static readonly CompressionInfo.Integer DefaultIntValueCompressionInfo = new(-1, 15);
 		public static readonly CompressionInfo.Integer IntValueCompressionInfoMax255 = new(-1, 8);
 		public static readonly CompressionInfo.Float DefaultFloatValueCompressionInfo = new(0f, 10, 0.01f);
+		public static readonly int DefaultFloatValueDigits = 2;
 		public static readonly CompressionInfo.Integer LanguageCompressionInfo = new(0, LocalizationHelper.GetAvailableLanguages().Count - 1);
 		public static readonly CompressionInfo.Integer AgentDataTypeCompressionInfo = new(0, (int)AgentDataType.All);
 		public static readonly CompressionInfo.Integer AnimationCompressionInfo = new(-1, 10000, true);
 		public static readonly int StringMaxLength = 512;
+
+		/// <summary>
+		/// Read a float from network packet and round it to the compression precision.
+		/// Prevents floating-point precision errors after decompression.
+		/// </summary>
+		public static float ReadRoundedFloat(CompressionInfo.Float compressionInfo, int digits, ref bool bufferReadValid)
+		{
+			float rawValue = GameNetworkMessage.ReadFloatFromPacket(compressionInfo, ref bufferReadValid);
+
+			return MathF.Round(rawValue, digits);
+		}
 	}
 }
