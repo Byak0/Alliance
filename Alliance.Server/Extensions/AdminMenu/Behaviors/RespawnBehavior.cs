@@ -127,8 +127,6 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 					_cultureTeam = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
 					_defaultMpClassTeam = MultiplayerClassDivisions.GetMPHeroClasses(_cultureTeam).FirstOrDefault();
 
-					SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.HeroCharacter);
-
 					// If player is officer, spawn hero instead of standard troop
 					if (playerSelected.IsOfficer())
 					{
