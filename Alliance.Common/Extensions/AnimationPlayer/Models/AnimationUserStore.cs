@@ -113,7 +113,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 		}
 
 		/// <summary>
-		/// Deserialize file into current instance.
+		/// Deserialize file into current instance and fix animation indexes.
 		/// </summary>
 		public void Deserialize(string path)
 		{
@@ -123,9 +123,45 @@ namespace Alliance.Common.Extensions.AnimationPlayer.Models
 				{
 					XmlSerializer serializer = new XmlSerializer(typeof(AnimationUserStore));
 					AnimationUserStore deserializedStore = (AnimationUserStore)serializer.Deserialize(fs);
+					
 					FavoriteAnimations = new List<int>(deserializedStore.FavoriteAnimations);
-					AnimationSequences = new List<AnimationSequence>(deserializedStore.AnimationSequences);
 					AnimationSets = new List<AnimationSet>(deserializedStore.AnimationSets);
+					
+					// Recreate animations with runtime data (action index / actionsets can change between versions).
+					AnimationSequences = new List<AnimationSequence>();
+					foreach (AnimationSequence sequence in deserializedStore.AnimationSequences)
+					{
+						AnimationSequence fixedSequence = new AnimationSequence(sequence.Index, sequence.Name);
+						
+						foreach (Animation anim in sequence.Animations)
+						{
+							string actionName = anim.Name;
+							
+							if (AnimationSystem.Instance.ActionNameToAnimation.TryGetValue(actionName, out Animation correctAnim))
+							{
+								if (correctAnim.Index != anim.Index)
+								{
+									Log($"Alliance - Index update for '{actionName}': {anim.Index} -> {correctAnim.Index}", LogLevel.Warning);
+								}
+								
+								Animation fixedAnim = new Animation(
+									correctAnim.Index,
+									correctAnim.Action,
+									correctAnim.ActionSets,
+									anim.Name,
+									anim.Speed,
+									anim.MaxDuration
+								);
+								fixedSequence.Animations.Add(fixedAnim);
+							}
+							else
+							{
+								Log($"Alliance - Animation '{actionName}' not found in AnimationSystem, skipping", LogLevel.Warning);
+							}
+						}
+						
+						AnimationSequences.Add(fixedSequence);
+					}
 				}
 			}
 			catch (Exception ex)
