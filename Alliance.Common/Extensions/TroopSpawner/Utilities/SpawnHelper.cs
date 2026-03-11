@@ -221,12 +221,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				BasicCultureObject culture = customCulture != null ? customCulture : component.Culture;
 				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 
-				uint color = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
-				uint color2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
-				uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
-				uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
+				uint clothColor1 = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
+				uint clothColor2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
+				uint bannerBackgroundColor = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
+				uint bannerForegroundColor = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, culture.BackgroundColor1, culture.ForegroundColor1);
+				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, bannerBackgroundColor, bannerForegroundColor);
 
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
@@ -235,8 +235,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Team(component.Team)
 					.TroopOrigin(new BasicBattleAgentOrigin(character))
 					.Formation(form)
-					.ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
-					.ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
+					.ClothingColor1(clothColor1)
+					.ClothingColor2(clothColor2)
 					.Banner(banner);
 				agentBuildData.MissionPeer(component);
 				bool randomEquipement = true;
