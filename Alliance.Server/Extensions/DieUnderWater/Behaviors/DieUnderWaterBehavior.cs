@@ -3,6 +3,7 @@ using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
@@ -66,7 +67,7 @@ namespace Alliance.Server.Extensions.DieUnderWater.Behaviors
 			{
 				if (IsAgentEligible(agent))
 				{
-					if (agent.IsInWater()) // todo check this new method from 1.3
+					if (agent.MovementMode.HasFlag(AgentMovementMode.WaterDiving))
 					{
 						agentManager.SendDeathSignal(agent);
 					}
