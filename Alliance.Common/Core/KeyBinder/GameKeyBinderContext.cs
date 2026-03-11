@@ -10,10 +10,13 @@ namespace Alliance.Common.Core.KeyBinder
 	/// </summary>
 	public sealed class GameKeyBinderContext : GameKeyContext
 	{
+		// Be careful with this value. GameKey KeyId must be unique and not already used in native.
+		// We start at 300 to be sure to not conflict with native keys.
+		private const int INITIAL_KEY_ID = 300;
 		private readonly IEnumerable<BindedKey> keys;
 
 		public GameKeyBinderContext(string categoryId, IEnumerable<BindedKey> keys)
-			: base(categoryId, 109 + keys.Count(), GameKeyContextType.Default)
+			: base(categoryId, INITIAL_KEY_ID + keys.Count(), GameKeyContextType.Default)
 		{
 			this.keys = keys;
 			RegisterHotKeys();
@@ -28,15 +31,13 @@ namespace Alliance.Common.Core.KeyBinder
 
 		private void RegisterGameKeys()
 		{
-			// Be carefull with this 109
-			int i = 109;
+			int i = INITIAL_KEY_ID;
 			foreach (BindedKey key in keys)
 			{
 				key.KeyId = i++;
 				GameKey gameKey = new GameKey(key.KeyId, key.Id, GameKeyCategoryId, key.DefaultInputKey, key.DefaultControllerKey, GameKeyCategoryId);
 				RegisterGameKey(gameKey);
 			}
-
 		}
 
 		private void RegisterGameAxisKeys()

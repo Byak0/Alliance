@@ -52,7 +52,7 @@ namespace Alliance.Common.Core.KeyBinder
 
 				// Set up category name in the menu
 				GameText gameText = Module.CurrentModule.GlobalTextManager.GetGameText("str_key_category_name");
-				gameText.AddVariationWithId(cat.CategoryId, new TextObject(cat.Category, null), new List<GameTextManager.ChoiceTag>());
+				gameText.AddVariationWithId(cat.CategoryId, new TextObject(cat.Category), new List<GameTextManager.ChoiceTag>());
 
 				foreach (BindedKey key in cat.Keys)
 				{
@@ -60,12 +60,12 @@ namespace Alliance.Common.Core.KeyBinder
 					string text = cat.CategoryId;
 					GameText gameText2 = Module.CurrentModule.GlobalTextManager.GetGameText("str_key_name");
 					string variationId = text + "_" + key.KeyId.ToString();
-					gameText2.AddVariationWithId(variationId, new TextObject(key.Name, null), new List<GameTextManager.ChoiceTag>());
+					gameText2.AddVariationWithId(variationId, new TextObject(key.Name), new List<GameTextManager.ChoiceTag>());
 
 
 					// Set up key description in the menu
 					GameText gameText3 = Module.CurrentModule.GlobalTextManager.GetGameText("str_key_description");
-					gameText3.AddVariationWithId(variationId, new TextObject(key.Description, null), new List<GameTextManager.ChoiceTag>());
+					gameText3.AddVariationWithId(variationId, new TextObject(key.Description), new List<GameTextManager.ChoiceTag>());
 				}
 			}
 		}
