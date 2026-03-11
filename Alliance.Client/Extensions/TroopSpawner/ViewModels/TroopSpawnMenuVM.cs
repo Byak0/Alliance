@@ -370,6 +370,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			SpawnTroopsModel.Instance.OnTroopCountUpdated -= RefreshGold;
 		}
 
+		public override void RefreshValues()
+		{
+			RefreshFormations();
+		}
+
 		private void RefreshGold()
 		{
 			// Check if we can afford the troops 

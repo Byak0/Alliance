@@ -120,6 +120,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 			_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 			ScreenManager.TrySetFocus(_layer);
 			_dataSource.IsVisible = true;
+			_dataSource.RefreshValues();
 			IsMenuOpen = true;
 		}
 
