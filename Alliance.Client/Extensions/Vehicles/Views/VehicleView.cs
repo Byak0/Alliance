@@ -77,9 +77,9 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 
 		public override void EarlyStart()
 		{
-			//cameraKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_camera");
-			//honkKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_honk");
-			//lightKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_light");
+			cameraKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_camera");
+			honkKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_honk");
+			lightKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_light");
 		}
 
 		public override void AfterStart()
@@ -122,18 +122,18 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 
 		private void TickInputs()
 		{
-			//if (Input.IsKeyPressed(cameraKey.KeyboardKey.InputKey) || Input.IsKeyPressed(cameraKey.ControllerKey.InputKey))
-			//{
-			//	SwitchCameraView();
-			//}
-			//if (Input.IsKeyPressed(honkKey.KeyboardKey.InputKey) || Input.IsKeyPressed(honkKey.ControllerKey.InputKey))
-			//{
-			//	Honk();
-			//}
-			//if (Input.IsKeyPressed(lightKey.KeyboardKey.InputKey) || Input.IsKeyPressed(lightKey.ControllerKey.InputKey))
-			//{
-			//	ToggleLights();
-			//}
+			if (Input.IsKeyPressed(cameraKey.KeyboardKey.InputKey) || Input.IsKeyPressed(cameraKey.ControllerKey.InputKey))
+			{
+				SwitchCameraView();
+			}
+			if (Input.IsKeyPressed(honkKey.KeyboardKey.InputKey) || Input.IsKeyPressed(honkKey.ControllerKey.InputKey))
+			{
+				Honk();
+			}
+			if (Input.IsKeyPressed(lightKey.KeyboardKey.InputKey) || Input.IsKeyPressed(lightKey.ControllerKey.InputKey))
+			{
+				ToggleLights();
+			}
 		}
 
 		private void SwitchCameraView()
