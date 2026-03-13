@@ -372,7 +372,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 		public override void RefreshValues()
 		{
-			RefreshFormations();
+			// Refresh selected team
+			MissionPeer myPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
+			SpawnTroopsModel.Instance.SelectedTeam = myPeer?.Team;
 		}
 
 		private void RefreshGold()
