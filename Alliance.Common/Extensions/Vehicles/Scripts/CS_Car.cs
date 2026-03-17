@@ -1,9 +1,9 @@
-﻿using Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient;
+﻿using Alliance.Common.Extensions.Audio;
+using Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Vehicles.NetworkMessages.FromServer;
 using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -62,7 +62,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 		protected float PreviousUpwardRotation;
 		protected float PreviousHeightToTerrain;
 
-		private SoundEvent _honkSound;
 		private bool _lightOn;
 
 		public bool LightOn
@@ -175,16 +174,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			GroundOffset = 0;
 		}
 
-		protected override void OnTick(float dt)
-		{
-			base.OnTick(dt);
-
-			if (_honkSound != null && _honkSound.IsPlaying())
-			{
-				_honkSound.SetPosition(GameEntity.GetGlobalFrame().origin);
-			}
-		}
-
 		public void RequestLight(bool lightOn, bool sync = false)
 		{
 			if (LightOn != lightOn)
@@ -221,18 +210,9 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			else
 			{
 				// Play honk sound
-				_honkSound = SoundEvent.CreateEvent(SoundEvent.GetEventIdFromString("event:/mission/car/car_horn"), Scene);
-				_honkSound.SetPosition(GameEntity.GetGlobalFrame().origin);
-				_honkSound.Play();
-				DelayedStop(_honkSound);
+				Vec3 soundPosition = GameEntity.GetFrame().origin;
+				AudioPlayer.Instance.Play(AudioPlayer.Instance.GetAudioId("Native/Alert/Car horn.mp3"), 1f, true, 100, soundPosition);
 			}
-		}
-
-		// Delayed stop to prevent ambient sounds from looping
-		private async void DelayedStop(SoundEvent _honkSound)
-		{
-			await Task.Delay(3000);
-			_honkSound.Stop();
 		}
 
 		public virtual void ServerSyncHonk()
@@ -261,6 +241,114 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			if (_turnLeft) TurnLeft(dt);
 			else if (_turnRight) TurnRight(dt);
 			else SlowdownTurn(dt);
+		}
+
+		private bool CheckMultiPointCollision(MatrixFrame carFrame, float moveDistance, out Vec3 nearestCollision)
+		{
+			nearestCollision = Vec3.Zero;
+			float minDistance = float.MaxValue;
+			bool hasAnyCollision = false;
+
+			Vec3[] collisionCheckPoints = new Vec3[]
+			{
+				carFrame.origin + carFrame.rotation.f * 2.0f + carFrame.rotation.u * 0.5f, // Avant centre
+				carFrame.origin + carFrame.rotation.f * 2.0f + carFrame.rotation.s * 1.0f + carFrame.rotation.u * 0.5f, // Avant droit
+				carFrame.origin + carFrame.rotation.f * 2.0f - carFrame.rotation.s * 1.0f + carFrame.rotation.u * 0.5f, // Avant gauche
+				carFrame.origin - carFrame.rotation.f * 1.0f + carFrame.rotation.u * 0.5f, // Arrière centre
+			};
+
+			Vec3 moveDirection = carFrame.rotation.f * Math.Sign(CurrentForwardSpeed);
+			float checkDistance = moveDistance + 2.0f;
+
+			for (int i = 0; i < collisionCheckPoints.Length; i++)
+			{
+				Vec3 checkPoint = collisionCheckPoints[i];
+				Vec3 targetPoint = checkPoint + moveDirection * checkDistance;
+				
+				MBDebug.RenderDebugDirectionArrow(checkPoint, Vec3.Up, 0xFF00FF00, true);
+
+				float collisionDistance;
+				Vec3 collisionPoint;
+				WeakGameEntity hitEntity;
+
+				bool hit = Scene.RayCastForClosestEntityOrTerrain(
+					checkPoint,
+					targetPoint,
+					out collisionDistance,
+					out collisionPoint,
+					out hitEntity,
+					0.01f,
+					BodyFlags.CommonFocusRayCastExcludeFlags
+				);
+
+				if (hit)
+				{
+					uint arrowColor = 0xFFFF0000;
+					
+					bool isSelf = hitEntity != null && IsPartOfThisVehicle(hitEntity);
+					float heightDifference = collisionPoint.z - checkPoint.z;
+					
+					// Un obstacle (mur) est à la même hauteur ou plus haut (heightDifference >= -0.2)
+					bool isTerrain = heightDifference < -0.2f;  // Le sol est en bas
+					bool isObstacle = !isTerrain && !isSelf;     // Ni sol ni soi-même = obstacle
+
+					if (isSelf)
+					{
+						arrowColor = 0xFFFFFF00; // Jaune
+						//Log($"  Point {i}: Hit self (distance: {collisionDistance:F2}m) - IGNORED", LogLevel.Debug);
+					}
+					else if (isTerrain)
+					{
+						arrowColor = 0xFF888888; // Gris
+						//Log($"  Point {i}: Hit terrain at {collisionDistance:F2}m (height: {heightDifference:F2}m below) - IGNORED", LogLevel.Debug);
+					}
+					else if (isObstacle)
+					{
+						arrowColor = 0xFFFF0000; // Rouge
+						//Log($"  Point {i}: OBSTACLE DETECTED at {collisionDistance:F2}m (height diff: {heightDifference:F2}m)", LogLevel.Information);
+						
+						if (collisionDistance < minDistance && collisionDistance < checkDistance * 0.8f)
+						{
+							minDistance = collisionDistance;
+							nearestCollision = collisionPoint;
+							hasAnyCollision = true;
+						}
+					}
+
+					Vec3 rayDirection = (collisionPoint - checkPoint).NormalizedCopy();
+					MBDebug.RenderDebugDirectionArrow(checkPoint, rayDirection, arrowColor, false);
+					MBDebug.RenderDebugSphere(collisionPoint, 0.2f, arrowColor, false);
+				}
+				else
+				{
+					MBDebug.RenderDebugDirectionArrow(checkPoint, moveDirection, 0xFF00FF00, false);
+					Log($"  Point {i}: Clear path", LogLevel.Debug);
+				}
+			}
+
+			if (hasAnyCollision)
+			{
+				Log($"[Collision] BLOCKED! Nearest obstacle at {minDistance:F2}m", LogLevel.Warning);
+				MBDebug.RenderDebugSphere(nearestCollision, 0.5f, 0xFFFF0000, false);
+				MBDebug.RenderDebugDirectionArrow(nearestCollision, Vec3.Up, 0xFFFF0000, false);
+			}
+
+			return hasAnyCollision;
+		}
+
+		private bool IsPartOfThisVehicle(WeakGameEntity entity)
+		{
+			if (entity == null || GameEntity == null) return false;
+			
+			// Check if entity is part of vehicle or vehicle itself
+			WeakGameEntity current = entity;
+			while (current != null)
+			{
+				if (current == GameEntity) return true;
+				current = current.Parent;
+			}
+			
+			return false;
 		}
 
 		public override void UpdateVehicleMovement(float dt)
@@ -352,6 +440,13 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 				}
 			}
 
+
+			if (PilotAgent != null && (GameNetwork.IsClient || GameNetwork.IsServer))
+			{
+				Vec3 nearestCollision;
+				CheckMultiPointCollision(carFrame, Math.Abs(CurrentForwardSpeed * dt) + 0.5f, out nearestCollision);
+			}
+
 			// Update car position/rotation based on speed, turn rate, gravity, etc. (Server only)
 			if (GameNetwork.IsServer)
 			{
@@ -376,13 +471,13 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
 				if (!IsFlying && Math.Abs(CurrentForwardSpeed) > 5f && (takeOffAsc || takeOffDesc))
 				{
-					Log($"TakingOff! | {carUpwardRotationDeg} | backWheelsZ={averageBackWheelsZ} | frontWheelsZ={averageFrontWheelsZ} | distToTerrain={heightToTerrain} | relativeAng={relativeAngleForTakeOff}");
+					Log($"TakingOff! | {carUpwardRotationDeg} | backWheelsZ={averageBackWheelsZ} | frontWheelsZ={averageFrontWheelsZ} | distToTerrain={heightToTerrain} | relativeAng={relativeAngleForTakeOff}", LogLevel.Debug);
 					IsFlying = true;
 					CurrentUpwardSpeed = 0f;
 				}
 				if (IsFlying && heightToTerrain < -0.03f)
 				{
-					Log($"GroundReached! | {carUpwardRotationDeg} | backWheelsZ={averageBackWheelsZ} | frontWheelsZ={averageFrontWheelsZ} | distToTerrain={heightToTerrain}");
+					Log($"GroundReached! | {carUpwardRotationDeg} | backWheelsZ={averageBackWheelsZ} | frontWheelsZ={averageFrontWheelsZ} | distToTerrain={heightToTerrain}", LogLevel.Debug);
 					IsFlying = false;
 					CurrentUpwardSpeed = -1f;
 				}
@@ -400,35 +495,81 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 					carFrame.Elevate(adjustment);
 				}
 
-				if (IsFlying)
+				// Check for obstacle before moving
+				Vec3 moveDirection = carFrame.rotation.f;
+				float moveDistance = Math.Abs(CurrentForwardSpeed * dt);
+
+				if (CurrentForwardSpeed != 0)
 				{
-					// Increase gravity                    
-					CurrentUpwardSpeed += Gravity * dt;
-
-					// Update position
-					carFrame.Advance(CurrentForwardSpeed * dt);
-
-					// Rotate the car based on the slope steepness ?
-					float rotationFactor = Math.Min(-0.005f, 0.04f * -carUpwardRotation);
-					float rollFactor = rotationFactor / 5f * (_turnLeft ? 1 : -1);
-					carFrame.Rotate(rotationFactor, Vec3.Side);
-					carFrame.Rotate(rollFactor, Vec3.Forward);
-				}
-				else
-				{
-					// Propelling
-					carFrame.Advance(CurrentForwardSpeed * dt);
-
-					// Drifting
-					if (Math.Abs(CurrentForwardSpeed) > 10f && Math.Abs(CurrentPivotTurnAngleDeg) > 1f)
+					Vec3 collisionPoint;
+					if (CheckMultiPointCollision(carFrame, moveDistance + 0.5f, out collisionPoint))
 					{
-						HandleDrifting(dt, ref carFrame);
+						// Calculer la normale de surface (direction de rebond)
+						Vec3 impactDirection = (carFrame.origin - collisionPoint).NormalizedCopy();
+						impactDirection.z = 0; // Garder horizontal
+						impactDirection = impactDirection.NormalizedCopy();
+						
+						// Calculer l'angle d'impact
+						float impactAngle = Vec3.DotProduct(moveDirection, -impactDirection);
+						impactAngle = MathF.Clamp(impactAngle, 0f, 1f); // 0 = latéral, 1 = frontal
+						
+						// Force de rebond basée sur vitesse et angle d'impact
+						float impactForce = MathF.Abs(CurrentForwardSpeed) * impactAngle;
+						float bounceDistance = impactForce * 0.15f; // Conversion force -> distance
+						bounceDistance = MathF.Clamp(bounceDistance, 0.1f, 1.0f);
+						
+						// Appliquer le rebond
+						carFrame.origin += impactDirection * bounceDistance;
+						
+						// Calculer nouvelle vitesse avec perte d'énergie
+						float energyLoss = 0.7f; // 70% d'énergie perdue
+						float newSpeed = -CurrentForwardSpeed * (1f - energyLoss) * (1f - impactAngle * 0.5f);
+						
+						// Pour impact latéral, ajouter rotation
+						if (impactAngle < 0.7f) // Impact pas complètement frontal
+						{
+							Vec3 rotationAxis = Vec3.CrossProduct(moveDirection, impactDirection);
+							float spinIntensity = (1f - impactAngle) * impactForce * 0.05f;
+							carFrame.Rotate(spinIntensity, rotationAxis);
+						}
+						
+						CurrentForwardSpeed = newSpeed;
+						
+						// TODO ? Synchroniser avec clients via message réseau
+						//if (GameNetwork.IsServer && MathF.Abs(impactForce) > 5f) // Seulement impacts significatifs
+						//{
+						//	SyncCollisionBounce(impactDirection, bounceDistance, newSpeed);
+						//}
+						
+						Log($"[Collision] Impact {impactAngle:F2} force={impactForce:F1} bounce={bounceDistance:F2}m speed={newSpeed:F2}", LogLevel.Debug);
 					}
-
-					// Align with terrain
-					if (heightToTerrain < 1f && FollowTerrain && (CurrentForwardSpeed != 0f || CurrentUpwardSpeed != 0f) && GameNetwork.IsServer)
+					else
 					{
-						AlignFrameWithGround(ref carFrame, GameEntity, collisionPoints, GroundOffset);
+						// No collision, move normally
+						if (IsFlying)
+						{
+							CurrentUpwardSpeed += Gravity * dt;
+							carFrame.Advance(CurrentForwardSpeed * dt);
+
+							float rotationFactor = Math.Min(-0.005f, 0.04f * -carUpwardRotation);
+							float rollFactor = rotationFactor / 5f * (_turnLeft ? 1 : -1);
+							carFrame.Rotate(rotationFactor, Vec3.Side);
+							carFrame.Rotate(rollFactor, Vec3.Forward);
+						}
+						else
+						{
+							carFrame.Advance(CurrentForwardSpeed * dt);
+
+							if (Math.Abs(CurrentForwardSpeed) > 10f && Math.Abs(CurrentPivotTurnAngleDeg) > 1f)
+							{
+								HandleDrifting(dt, ref carFrame);
+							}
+
+							if (heightToTerrain < 1f && FollowTerrain && (CurrentForwardSpeed != 0f || CurrentUpwardSpeed != 0f))
+							{
+								AlignFrameWithGround(ref carFrame, GameEntity, collisionPoints, GroundOffset);
+							}
+						}
 					}
 				}
 			}
@@ -446,11 +587,56 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			CountVacuum.SetFrame(ref countFirstStageFrame);
 			CountPressure.SetFrame(ref countSecondStageFrame);
 
+			UpdatePilotHands();
+
 			// Sync global frame (server only)
 			if (GameNetwork.IsServer)
 			{
 				SetFrameSynched(ref carFrame);
 			}
+		}
+
+		private void UpdatePilotHands()
+		{
+			if (PilotAgent == null) return;
+
+			MatrixFrame wheelFrame = PivotSteeringWheel.GetGlobalFrame();
+
+			float wheelRadius = 0.27f;
+			float handDepth = 0.1f;
+			float leftHandAngle = MathHelper.ToRadian(-70f);  // ~9h
+			float rightHandAngle = MathHelper.ToRadian(70f);  // ~3h
+
+			// Left hand position on the wheel
+			Vec3 leftRadial = MathF.Cos(leftHandAngle) * wheelFrame.rotation.u + MathF.Sin(leftHandAngle) * wheelFrame.rotation.s;
+			Vec3 leftOffset = wheelRadius * leftRadial;
+			Vec3 leftHandPos = wheelFrame.origin + leftOffset + handDepth * wheelFrame.rotation.f;
+			Vec3 leftTangent = Vec3.CrossProduct(wheelFrame.rotation.f, leftRadial).NormalizedCopy();
+
+			Mat3 leftRotation;
+			leftRotation.u = -leftTangent;
+			leftRotation.s = leftTangent;
+			leftRotation.f = wheelFrame.rotation.s;
+			leftRotation.Orthonormalize();
+
+			MatrixFrame leftHand = new MatrixFrame(leftRotation, leftHandPos);
+
+			// Right hand position on the wheel
+			Vec3 rightRadial = MathF.Cos(rightHandAngle) * wheelFrame.rotation.u + MathF.Sin(rightHandAngle) * wheelFrame.rotation.s;
+			Vec3 rightOffset = wheelRadius * rightRadial;
+			Vec3 rightHandPos = wheelFrame.origin + rightOffset + handDepth * wheelFrame.rotation.f;
+
+			Vec3 rightTangent = Vec3.CrossProduct(wheelFrame.rotation.f, rightRadial).NormalizedCopy();
+
+			Mat3 rightRotation;
+			rightRotation.u = -rightTangent;
+			rightRotation.s = -rightTangent;
+			rightRotation.f = -wheelFrame.rotation.s;
+			rightRotation.Orthonormalize();
+
+			MatrixFrame rightHand = new MatrixFrame(rightRotation, rightHandPos);
+
+			PilotAgent.SetHandInverseKinematicsFrame(leftHand, rightHand);
 		}
 
 		private void UpdateRPMCount(ref MatrixFrame countRPMFrame, ref MatrixFrame countVacuumFrame, ref MatrixFrame countPressureFrame, float dt)
@@ -832,26 +1018,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			float heightToTerrain = heightAdjustmentOver + heightAdjustmentUnder;
 
 			return heightToTerrain;
-		}
-
-		public override void UpdatePilot(Agent agent)
-		{
-			base.UpdatePilot(agent);
-
-			if (GameNetwork.IsClient)
-			{
-				agent.AgentVisuals?.SetVisible(false);
-			}
-		}
-
-		public override void RemovePilot(Agent agent)
-		{
-			base.RemovePilot(agent);
-
-			if (GameNetwork.IsClient)
-			{
-				agent.AgentVisuals?.SetVisible(true);
-			}
 		}
 	}
 }

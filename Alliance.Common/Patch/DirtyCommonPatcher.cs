@@ -65,7 +65,7 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_Banner.Patch();
 			patchSuccess &= Patch_AgentStatCalculateModel.Patch();
 #if !SERVER && DEBUG
-			patchSuccess &= Patch_WidgetExtensions.Patch();
+			//patchSuccess &= Patch_WidgetExtensions.Patch();
 #endif
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);

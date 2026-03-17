@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;
 using TaleWorlds.DotNet;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static TaleWorlds.MountAndBlade.Agent;
 
@@ -27,6 +28,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			Animation = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == AnimationName);
 			AnimationOnStop = AnimationSystem.Instance.DefaultAnimations.Find(anim => anim.Name == "act_none");
+
 			_init = true;
 		}
 
@@ -34,53 +36,67 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		{
 			base.OnTick(dt);
 
-			//if (GameNetwork.IsServerOrRecorder)
-			//{
-			//    UserAgent?.SetInitialFrame(GameEntity.GetGlobalFrame().Advance(0.4f).origin, GameEntity.GetGlobalFrame().rotation.f.AsVec2);
-			//    MatrixFrame leftHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(-0.2f);
-			//    leftHand.Rotate(-MathHelper.ToRadian(120), GameEntity.GetGlobalFrame().rotation.f);
-			//    leftHand.Rotate(MathHelper.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
-			//    MatrixFrame rightHand = GameEntity.GetGlobalFrame().Advance(2f).Elevate(-0.7f).Strafe(0.2f);
-			//    rightHand.Rotate(-MathHelper.ToRadian(90), GameEntity.GetGlobalFrame().rotation.f);
-			//    rightHand.Rotate(MathHelper.ToRadian(60), GameEntity.GetGlobalFrame().rotation.u);
-			//    UserAgent?.SetHandInverseKinematicsFrame(ref leftHand, ref rightHand);
-			//}
+			if (UserAgent != null)
+			{
+				MatrixFrame targetFrame = GameEntity.GetGlobalFrame();
+
+				// Update agent position
+				UserAgent.TeleportToPosition(targetFrame.origin);
+
+				// Update agent visuals position precisely to avoid any stutter
+				Mat3 cleanRotation = Mat3.Identity;
+				cleanRotation = cleanRotation.TransformToLocal(targetFrame.rotation);
+				cleanRotation.Orthonormalize();
+				MatrixFrame visualFrame = new MatrixFrame(cleanRotation, targetFrame.origin);
+				UserAgent.AgentVisuals.GetEntity().SetGlobalFrame(in visualFrame);
+			}
 		}
 
 		public override void OnUse(Agent userAgent, sbyte agentBoneIndex)
 		{
 			if (!_init) Init();
-
-			if (GameNetwork.IsServerOrRecorder)
+			
+			LockUserFrames = false;	
+			LockUserPositions = false;
+			
+			if (GameNetwork.IsClient && userAgent == Agent.Main)
 			{
-				// Make agent invulnerable
-				//userAgent.SetMortalityState(MortalityState.Invulnerable);
-				// Teleport agent to exact position
-				userAgent.TeleportToPosition(GameEntity.GlobalPosition);
-
-				// Play animation
-				if (Animation != null) AnimationSystem.Instance.PlayAnimation(userAgent, Animation, true);
+				userAgent.Controller = TaleWorlds.Core.AgentControllerType.None;
 			}
-
-			OnUseEvent?.Invoke(userAgent);
-
+			
+			userAgent.SetExcludedFromGravity(true, false);
+			
+			if (GameNetwork.IsServerOrRecorder && Animation != null)
+			{
+				AnimationSystem.Instance.PlayAnimation(userAgent, Animation, true);
+			}
+			
 			base.OnUse(userAgent, agentBoneIndex);
+			OnUseEvent?.Invoke(userAgent);
 		}
 
 		public override void OnUseStopped(Agent userAgent, bool isSuccessful, int preferenceIndex)
 		{
 			base.OnUseStopped(userAgent, isSuccessful, preferenceIndex);
 
-			// Teleport agent to exact position
+			userAgent.SetExcludedFromGravity(false, false);
+			userAgent.ClearTargetFrame();
+
+			// Reset frame & orientation
+			Mat3 cleanRotation = Mat3.Identity;
+			MatrixFrame visualFrame = new MatrixFrame(cleanRotation, userAgent.Position);
+			userAgent.AgentVisuals.GetEntity().SetGlobalFrame(in visualFrame);
+			userAgent.ClearHandInverseKinematics();
+
+			if (GameNetwork.IsClient && userAgent == Agent.Main)
+			{
+				userAgent.Controller = TaleWorlds.Core.AgentControllerType.Player;
+			}
+
 			if (GameNetwork.IsServerOrRecorder)
 			{
-				// Free hands
-				UserAgent?.ClearHandInverseKinematics();
-				// Play animation
 				AnimationSystem.Instance.PlayAnimation(userAgent, AnimationOnStop, true);
-				// Make agent mortal
 				userAgent.SetMortalityState(MortalityState.Mortal);
-				// Teleport agent to exact position
 				userAgent.TeleportToPosition(GameEntity.GlobalPosition);
 			}
 

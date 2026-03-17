@@ -701,14 +701,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
 		public virtual void MovePilotAndPassengers()
 		{
-			//foreach (StandingPoint standingPoint in StandingPoints)
-			//{
-			//    if (standingPoint.HasUser)
-			//    {
-			//        Utility.Log($"Teleporting {standingPoint.UserAgent.Name} to {standingPoint.GameEntity.GlobalPosition}", logToAll: true);
-			//        standingPoint.UserAgent.TeleportToPosition(standingPoint.GameEntity.GlobalPosition);
-			//    }
-			//}
 		}
 
 		public virtual void SyncVehicle()
