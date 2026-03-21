@@ -17,6 +17,10 @@ namespace Alliance.Common.Core.ExtendedXML
 		/// </summary>
 		public static void Init()
 		{
+			// Manually add our custom XSD to the list so the game can look them up when loading XML
+			XmlResource.ReadXsdFileAndExtractInformation(ModuleHelper.GetXsdPathForModules(SubModule.CurrentModuleName, "CharactersExtended"));
+			XmlResource.ReadXsdFileAndExtractInformation(ModuleHelper.GetXsdPathForModules(SubModule.CurrentModuleName, "ItemsExtended"));
+
 			MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
 			XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("CharactersExtended", true);
 			MBObjectManager.Instance.LoadXml(xmlDocument);
