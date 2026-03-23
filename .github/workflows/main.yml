@@ -51,7 +51,7 @@ jobs:
         uses: NuGet/setup-nuget@v2
 
       - name: Download DepotDownloader_3.4.0
-        uses: i3h/download-release-asset@v1.3.4
+        uses: i3h/download-release-asset@v1.3.3
         with:
           owner: SteamRE
           repo: DepotDownloader
