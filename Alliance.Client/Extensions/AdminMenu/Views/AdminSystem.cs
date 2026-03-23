@@ -6,13 +6,13 @@ using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
-using TaleWorlds.GauntletUI.Data;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.MountAndBlade.View.Screens;
+using TaleWorlds.PlayerServices;
 using TaleWorlds.ScreenSystem;
 using TaleWorlds.TwoDimension;
 using static Alliance.Common.Utilities.Logger;
@@ -59,16 +59,16 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 		GauntletLayer _layerLoaded;
 		private bool _isMenuOpen;
-		private IGauntletMovie _movie;
+		private GauntletMovieIdentifier _movie;
 		public Agent CurrentHoverAgent { get; private set; }
 
 		public bool IsModoModeActive { get; private set; }
 
 		public override void EarlyStart()
 		{
-			getPlayerKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_getplayermouse");
-			openMenuKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_openmenu");
-			teleportKey = HotKeyManager.GetCategory(adminKeyCategoryId).GetGameKey("key_adm_teleport");
+			getPlayerKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_getplayermouse");
+			openMenuKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_openmenu");
+			teleportKey = HotKeyManager.GetCategory(adminKeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_adm_teleport");
 		}
 
 		private void InitLayer()
@@ -76,7 +76,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			if (_layerLoaded == null)
 			{
 				AdminInstance.GetInstance().IsVisible = false;
-				_layerLoaded ??= new GauntletLayer(2, "AdminSys", false);
+				_layerLoaded ??= new GauntletLayer("AdminSys", 2);
 				_movie ??= _layerLoaded.LoadMovie("AdminPanel", AdminInstance.GetInstance());
 				_layerLoaded.InputRestrictions.SetInputRestrictions();
 				_layerLoaded.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
@@ -118,7 +118,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			_layerLoaded.InputRestrictions.SetInputRestrictions();
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-			ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+			ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 			spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 			adminVM.RefreshPlayerList();
 			adminVM.IsVisible = true;
@@ -179,7 +179,6 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 
 						if (Input.IsKeyPressed(openMenuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(openMenuKey.ControllerKey.InputKey))
 						{
-							AdminInstance.GetInstance().RefreshPlayerList();
 							OpenAdminPanel(AdminInstance.GetInstance());
 						}
 					}
@@ -202,7 +201,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 				{
 					// Manage border color and 3d text
 					MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
-					Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out var distance, -1, 0.1f);
+					Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out float distance);
 
 					if (agent != null)
 					{
@@ -256,7 +255,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 		{
 			MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
 
-			Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out var distance, -1, 0.1f);
+			Agent agent = Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out float distance);
 
 			if (agent != null)
 			{
@@ -275,7 +274,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			{
 				Username = agent.MissionPeer?.Name ?? agent.Name,
 				AgentIndex = agent.Index,
-				PeerId = agent.MissionPeer?.Peer?.Id.ToString()
+				PlayerId = agent.MissionPeer?.Peer?.Id ?? PlayerId.Empty
 			};
 			adminVM.SelectTarget(agent);
 			OpenAdminPanel(adminVM);

@@ -18,7 +18,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views
 
 		public override void EarlyStart()
 		{
-			getPlayerKey = HotKeyManager.GetCategory("admin_sys").GetGameKey("key_adm_getplayermouse");
+			//getPlayerKey = HotKeyManager.GetCategory("admin_sys").GetGameKey("key_adm_getplayermouse");
 		}
 
 		public MarkerUIHandlerView()
@@ -29,7 +29,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MarkerUIHandler.Views
 		{
 			base.OnMissionScreenInitialize();
 			_dataSource = new MarkerUIHandlerVM(MissionScreen.CombatCamera);
-			_gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MPMissionMarkers", 1);
 			_gauntletLayer.LoadMovie("MPMissionMarkers", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 			adminSystemView = Mission.GetMissionBehavior<AdminSystem>();

@@ -1,8 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
-using System.Linq;
 using System.Reflection;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
@@ -28,34 +26,7 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
 			foreach (var field in ConfigManager.Instance.ConfigFields)
 			{
 				FieldInfo fieldInfo = field.Value;
-				object fieldValue = fieldInfo.GetValue(Config);
-
-				if (fieldInfo.FieldType == typeof(bool))
-				{
-					WriteBoolToPacket((bool)fieldValue);
-				}
-				else if (fieldInfo.FieldType == typeof(int))
-				{
-					WriteIntToPacket((int)fieldValue, CompressionHelper.DefaultIntValueCompressionInfo);
-				}
-				else if (fieldInfo.FieldType == typeof(float))
-				{
-					WriteFloatToPacket((float)fieldValue, CompressionHelper.DefaultFloatValueCompressionInfo);
-				}
-				else if (fieldInfo.FieldType == typeof(string))
-				{
-					ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
-					if (attribute.DataType == AllianceData.DataTypes.None)
-					{
-						WriteStringToPacket((string)fieldValue);
-					}
-					else
-					{
-						// Find index of the string in the possible values
-						int index = attribute.PossibleValues.FindIndex(item => item == (string)fieldValue);
-						WriteIntToPacket(index, CompressionHelper.DefaultIntValueCompressionInfo);
-					}
-				}
+				MultiplayerOptionsSerializer.WriteModOption(fieldInfo, fieldInfo.GetValue(Config));
 			}
 		}
 
@@ -66,34 +37,7 @@ namespace Alliance.Common.Core.Configuration.NetworkMessages.FromServer
 
 			foreach (var field in ConfigManager.Instance.ConfigFields)
 			{
-				FieldInfo fieldInfo = field.Value;
-
-				if (fieldInfo.FieldType == typeof(bool))
-				{
-					fieldInfo.SetValue(Config, ReadBoolFromPacket(ref bufferReadValid));
-				}
-				else if (fieldInfo.FieldType == typeof(int))
-				{
-					fieldInfo.SetValue(Config, ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid));
-				}
-				else if (fieldInfo.FieldType == typeof(float))
-				{
-					fieldInfo.SetValue(Config, ReadFloatFromPacket(CompressionHelper.DefaultFloatValueCompressionInfo, ref bufferReadValid));
-				}
-				else if (fieldInfo.FieldType == typeof(string))
-				{
-					ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
-					if (attribute.DataType == AllianceData.DataTypes.None)
-					{
-						fieldInfo.SetValue(Config, ReadStringFromPacket(ref bufferReadValid));
-					}
-					else
-					{
-						// Read index and set the corresponding value
-						int index = ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
-						fieldInfo.SetValue(Config, attribute.PossibleValues.ElementAtOrDefault(index));
-					}
-				}
+				MultiplayerOptionsSerializer.ReadModOption(field.Value, Config, ref bufferReadValid);
 			}
 
 			return bufferReadValid;

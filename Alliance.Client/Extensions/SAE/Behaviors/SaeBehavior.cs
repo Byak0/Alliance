@@ -166,14 +166,14 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 
 		public override void EarlyStart()
 		{
-			createMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_create_marker");
-			deleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_delete_marker");
-			deleteAllMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_delete_all_markers");
-			fastCreateMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_fast_create_marker");
-			fastDeleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_fast_delete_marker");
-			increaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_increase_sphere");
-			decreaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_decrease_sphere");
-			crouchIk = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_crouch");
+			createMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_create_marker");
+			deleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_delete_marker");
+			deleteAllMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_delete_all_markers");
+			fastCreateMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_fast_create_marker");
+			fastDeleteMarkerIK = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_fast_delete_marker");
+			increaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_increase_sphere");
+			decreaseSphereRadius = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_decrease_sphere");
+			crouchIk = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_crouch");
 		}
 
 		private void InitDynamicMarkers()
@@ -577,7 +577,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 
 			ghost.SetVisibilityExcludeParents(false);
 			ghost.GetGlobalScale().Normalize();
-			ghost.SetMobility(GameEntity.Mobility.stationary);
+			ghost.SetMobility(GameEntity.Mobility.Stationary);
 
 			return ghost;
 		}
@@ -647,7 +647,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 
 			sphereEntity.SetVisibilityExcludeParents(true);
 			sphereEntity.GetGlobalScale().Normalize();
-			sphereEntity.SetMobility(GameEntity.Mobility.dynamic);
+			sphereEntity.SetMobility(GameEntity.Mobility.Dynamic);
 
 			return sphereEntity;
 		}
@@ -832,7 +832,7 @@ namespace Alliance.Client.Extensions.SAE.Behaviors
 
 			cursorMarker.SetVisibilityExcludeParents(true);
 			cursorMarker.GetGlobalScale().Normalize();
-			cursorMarker.SetMobility(GameEntity.Mobility.dynamic);
+			cursorMarker.SetMobility(GameEntity.Mobility.Dynamic);
 			cursorMarker.AddTag(SaeConstants.MAIN_CURSOR);
 
 			return cursorMarker;

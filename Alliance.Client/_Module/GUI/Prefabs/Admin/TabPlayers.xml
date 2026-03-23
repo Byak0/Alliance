@@ -1,0 +1,149 @@
+﻿<Prefab>
+	<Parameters/>
+	<Constants/>
+	<VisualDefinitions/>
+	<Window>
+
+		<BrushWidget IsVisible="@ShowPlayerTab" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="140" MarginLeft="80" MarginRight="80" MarginBottom="100" Brush="Alliance.MainFrame">
+			<Children>
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right"  ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay">
+					<Children>
+						<!-- Text filter -->
+						<Widget WidthSizePolicy="Fixed" SuggestedWidth="385" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Top" MarginLeft="13" MarginTop="10" Sprite="StdAssets\tabbar_long_namebox">
+							<Children>
+								<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="30" SuggestedHeight="30" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" Brush="MPLobby.Profile.Rank.Leaderboard.Button" Brush.Color="#da95a3FF"/>
+								<EditableTextWidget WidthSizePolicy="Fixed" SuggestedWidth="350" HeightSizePolicy="Fixed" SuggestedHeight="45" MarginLeft="50" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="20" DefaultSearchText="Search..." Text="@FilterText" />
+							</Children>
+						</Widget>
+						<!-- Header row -->
+						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="64" >
+							<Children>
+								<TextWidget SuggestedWidth="96" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" VerticalAlignment="Center" Brush.FontSize="24" Text="Online" />
+								<TextWidget SuggestedWidth="248" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Username" />
+								<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="PlayerId" />
+								<TextWidget SuggestedWidth="64" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Sudo" />
+								<TextWidget SuggestedWidth="64" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Admin" />
+								<TextWidget SuggestedWidth="64" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="VIP" />
+								<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="NB Warning" />
+								<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Last warning" />
+								<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="NB Kick" />
+								<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="NB Ban" />
+								<TextWidget SuggestedWidth="64" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Ban" />
+								<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Last ban reason" />
+								<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Ban end" />
+								<TextWidget SuggestedWidth="72" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="Muted" />
+							</Children>
+						</ListPanel>
+						<!-- Player list -->
+						<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\NetworkPeers" VerticalScrollbar="..\VerticalScrollbar" MarginTop="80">
+							<Children>
+								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
+									<Children>
+										<ListPanel Id="NetworkPeers" DataSource="{PlayersData}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">
+											<ItemTemplate>
+
+												<!-- Player item -->
+												<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="4" Sprite="MPGeneral\MPScoreboard\player_indicator" Color="#A18661FF" AlphaFactor="0.4"  IsHidden="@IsFiltered">
+													<Children>
+
+														<!-- Offline/Online icon -->
+														<Widget SuggestedWidth="96" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center"  >
+															<Children>
+																<BrushWidget SuggestedWidth="32" SuggestedHeight="32" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Mission.SiegeEngine.Marker.Ally" IsVisible="@IsOnline" />
+																<BrushWidget SuggestedWidth="32" SuggestedHeight="32" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Mission.SiegeEngine.Marker.Enemy" IsHidden="@IsOnline" />
+															</Children>
+														</Widget>
+
+														<!-- Username -->
+														<TextWidget SuggestedWidth="248" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="@Username" />
+
+														<!-- PlayerID -->
+														<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="@PlayerStringId" />
+
+														<!-- Sudo button -->
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginLeft="7" MarginRight="7" VerticalAlignment="Center">
+															<Children>
+																<!-- Active button if player is sudo -->
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Brush="Alliance.Button.Checkbox" IsVisible="@IsSudo" IsSelected="@Sudo" Command.Click="ToggleSudo"/>
+																<!-- Fake buttons to just show status-->
+																<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsHidden="@IsSudo">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Sprite="StdAssets\checkbox_empty" AlphaFactor="0.4" IsHidden="@Sudo" />
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Sprite="StdAssets\checkbox_full" AlphaFactor="0.4" IsVisible="@Sudo" />
+																	</Children>
+																</Widget>
+															</Children>
+														</Widget>
+
+														<!-- Admin button -->
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginLeft="7" MarginRight="7" VerticalAlignment="Center">
+															<Children>
+																<!-- Active button if player is sudo -->
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Brush="Alliance.Button.Checkbox" IsVisible="@IsSudo" IsSelected="@Admin" Command.Click="ToggleAdmin"/>
+																<!-- Fake buttons to just show status-->
+																<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsHidden="@IsSudo">
+																	<Children>
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Sprite="StdAssets\checkbox_empty" AlphaFactor="0.4" IsHidden="@Admin" />
+																		<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Sprite="StdAssets\checkbox_full" AlphaFactor="0.4" IsVisible="@Admin" />
+																	</Children>
+																</Widget>
+															</Children>
+														</Widget>
+
+														<!-- VIP button -->
+														<ButtonWidget Id="BoolButton" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginLeft="7" MarginRight="7" VerticalAlignment="Center" Brush="Alliance.Button.Checkbox" IsSelected="@VIP" Command.Click="ToggleVIP"/>
+
+														<!-- NB Warning -->
+														<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" IntText="@WarningCount"/>
+
+														<!-- Last Warning -->
+														<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="@LastWarning" />
+
+														<!-- NB Kick -->
+														<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" IntText="@KickCount"/>
+
+														<!-- NB Ban -->
+														<TextWidget SuggestedWidth="128" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" IntText="@BanCount"/>
+
+														<!-- Unban button -->
+														<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginLeft="7" MarginRight="7" VerticalAlignment="Center">
+															<Children>
+																<!-- Active button if player is banned -->
+																<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Brush="Alliance.Button.Checkbox" IsVisible="@IsBanned" IsSelected="true" Command.Click="UnbanPlayer"/>
+																<!-- Fake button to just show status-->
+																<Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" VerticalAlignment="Center" Sprite="StdAssets\checkbox_empty" AlphaFactor="0.4" IsHidden="@IsBanned" />
+															</Children>
+														</Widget>
+
+														<!-- Last ban reason -->
+														<TextWidget SuggestedWidth="160" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="24" Text="@LastBanReason" />
+
+														<!-- Ban end date -->
+														<TextWidget SuggestedWidth="168" SuggestedHeight="30" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="20" Text="@SanctionEnd" />
+
+														<!-- Muted button -->
+														<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" MarginLeft="7" MarginRight="7" VerticalAlignment="Center" Brush="Alliance.Button.Checkbox" IsSelected="@IsMuted" Command.Click="ToggleMute"/>
+													</Children>
+												</ListPanel>
+
+											</ItemTemplate>
+										</ListPanel>
+									</Children>
+								</Widget>
+							</Children>
+						</ScrollablePanel>
+						<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="0" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+							<Children>
+								<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+								<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+							</Children>
+						</ScrollbarWidget>
+					</Children>
+				</Widget>
+
+			</Children>
+		</BrushWidget>
+
+	</Window>
+</Prefab>

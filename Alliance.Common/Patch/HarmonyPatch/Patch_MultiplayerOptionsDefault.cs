@@ -1,11 +1,12 @@
-﻿using HarmonyLib;
+﻿using Alliance.Common.Core.Utils;
+using HarmonyLib;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Utilities.Logger;
+using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.Patch.HarmonyPatch
 {
@@ -68,40 +69,8 @@ namespace Alliance.Common.Patch.HarmonyPatch
 
 			foreach (MultiplayerOptions.OptionType optionType in ____optionList)
 			{
-				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
-
-				// Use the correct Compression Info for the options we edited
-				switch (optionType)
-				{
-					case MultiplayerOptions.OptionType.MaxNumberOfPlayers:
-						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MaxNumberOfPlayersCompressionInfo, ref flag));
-						break;
-					case MultiplayerOptions.OptionType.RoundTimeLimit:
-						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionMission.RoundTimeCompressionInfo, ref flag));
-						break;
-					case MultiplayerOptions.OptionType.MapTimeLimit:
-						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.MapTimeLimitCompressionInfo, ref flag));
-						break;
-					case MultiplayerOptions.OptionType.NumberOfBotsPerFormation:
-						optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(CompressionBasic.NumberOfBotsPerFormationCompressionInfo, ref flag));
-						break;
-					// Native
-					default:
-						switch (optionProperty.OptionValueType)
-						{
-							case MultiplayerOptions.OptionValueType.Bool:
-								optionType.SetValue(GameNetworkMessage.ReadBoolFromPacket(ref flag));
-								break;
-							case MultiplayerOptions.OptionValueType.Integer:
-							case MultiplayerOptions.OptionValueType.Enum:
-								optionType.SetValue(GameNetworkMessage.ReadIntFromPacket(new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true), ref flag));
-								break;
-							case MultiplayerOptions.OptionValueType.String:
-								optionType.SetValue(GameNetworkMessage.ReadStringFromPacket(ref flag));
-								break;
-						}
-						break;
-				}
+				MultiplayerOptions.MultiplayerOption option = MultiplayerOptions.Instance.GetOptionFromOptionType(optionType);
+				MultiplayerOptionsSerializer.ReadOptionAndUpdate(option, ref flag);
 			}
 
 			__result = flag;
@@ -116,40 +85,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		{
 			foreach (MultiplayerOptions.OptionType optionType in ____optionList)
 			{
-				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
-
-				// Use the correct Compression Info for the options we edited
-				switch (optionType)
-				{
-					case MultiplayerOptions.OptionType.MaxNumberOfPlayers:
-						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MaxNumberOfPlayersCompressionInfo);
-						break;
-					case MultiplayerOptions.OptionType.RoundTimeLimit:
-						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionMission.RoundTimeCompressionInfo);
-						break;
-					case MultiplayerOptions.OptionType.MapTimeLimit:
-						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.MapTimeLimitCompressionInfo);
-						break;
-					case MultiplayerOptions.OptionType.NumberOfBotsPerFormation:
-						GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), CompressionBasic.NumberOfBotsPerFormationCompressionInfo);
-						break;
-					// Native
-					default:
-						switch (optionProperty.OptionValueType)
-						{
-							case MultiplayerOptions.OptionValueType.Bool:
-								GameNetworkMessage.WriteBoolToPacket(optionType.GetBoolValue());
-								break;
-							case MultiplayerOptions.OptionValueType.Integer:
-							case MultiplayerOptions.OptionValueType.Enum:
-								GameNetworkMessage.WriteIntToPacket(optionType.GetIntValue(), new CompressionInfo.Integer(optionProperty.BoundsMin, optionProperty.BoundsMax, true));
-								break;
-							case MultiplayerOptions.OptionValueType.String:
-								GameNetworkMessage.WriteStringToPacket(optionType.GetStrValue());
-								break;
-						}
-						break;
-				}
+				MultiplayerOptionsSerializer.WriteOption(optionType, optionType.GetOptionValue());
 			}
 
 			return false;

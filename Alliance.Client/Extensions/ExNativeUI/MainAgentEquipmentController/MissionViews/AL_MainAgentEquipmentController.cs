@@ -3,7 +3,6 @@ using Alliance.Common.Core.ExtendedXML.Extension;
 using Alliance.Common.Core.ExtendedXML.Models;
 using NetworkMessages.FromClient;
 using System;
-using System.ComponentModel;
 using TaleWorlds.Core;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.Library;
@@ -18,7 +17,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 	//replace ViewCreator.CreateMissionMainAgentEquipmentController(mission)
 	public class AL_MainAgentEquipmentController : MissionView
 	{
-
 		public event Action<bool> OnEquipmentDropInteractionViewToggled;
 		public event Action<bool> OnEquipmentEquipInteractionViewToggled;
 
@@ -42,12 +40,26 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 			set
 			{
 				_equipHoldHandled = value;
-				MissionScreen missionScreen = MissionScreen;
-				if (missionScreen == null)
+				if (_equipHoldHandled)
 				{
+					MissionScreen missionScreen = MissionScreen;
+					if (missionScreen == null)
+					{
+						return;
+					}
+					missionScreen.RegisterRadialMenuObject<AL_MainAgentEquipmentController>(this);
 					return;
 				}
-				missionScreen.SetRadialMenuActiveState(value);
+				else
+				{
+					MissionScreen missionScreen2 = MissionScreen;
+					if (missionScreen2 == null)
+					{
+						return;
+					}
+					missionScreen2.UnregisterRadialMenuObject(this);
+					return;
+				}
 			}
 		}
 
@@ -60,12 +72,26 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 			set
 			{
 				_dropHoldHandled = value;
-				MissionScreen missionScreen = MissionScreen;
-				if (missionScreen == null)
+				if (_dropHoldHandled)
 				{
+					MissionScreen missionScreen = MissionScreen;
+					if (missionScreen == null)
+					{
+						return;
+					}
+					missionScreen.RegisterRadialMenuObject<AL_MainAgentEquipmentController>(this);
 					return;
 				}
-				missionScreen.SetRadialMenuActiveState(value);
+				else
+				{
+					MissionScreen missionScreen2 = MissionScreen;
+					if (missionScreen2 == null)
+					{
+						return;
+					}
+					missionScreen2.UnregisterRadialMenuObject(this);
+					return;
+				}
 			}
 		}
 
@@ -79,18 +105,18 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 		public override void OnMissionScreenInitialize()
 		{
 			base.OnMissionScreenInitialize();
-			_gauntletLayer = new GauntletLayer(2, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MainAgentEquipmentController", 2);
 			_dataSource = new MissionMainAgentEquipmentControllerVM(new Action<EquipmentIndex>(OnDropEquipment), new Action<SpawnedItemEntity, EquipmentIndex>(OnEquipItem));
 			_gauntletLayer.LoadMovie("MainAgentEquipmentController", _dataSource);
 			_gauntletLayer.InputRestrictions.SetInputRestrictions(false, InputUsageMask.Invalid);
 			MissionScreen.AddLayer(_gauntletLayer);
-			Mission.OnMainAgentChanged += OnMainAgentChanged;
+			Mission.OnMainAgentChanged += new Mission.OnMainAgentChangedDelegate(OnMainAgentChanged);
 		}
 
 		public override void OnMissionScreenFinalize()
 		{
 			base.OnMissionScreenFinalize();
-			Mission.OnMainAgentChanged -= OnMainAgentChanged;
+			Mission.OnMainAgentChanged -= new Mission.OnMainAgentChangedDelegate(OnMainAgentChanged);
 			MissionScreen.RemoveLayer(_gauntletLayer);
 			_gauntletLayer = null;
 			_dataSource.OnFinalize();
@@ -161,7 +187,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentEquipmentController.Mis
 			}
 		}
 
-		private void OnMainAgentChanged(object sender, PropertyChangedEventArgs e)
+		private void OnMainAgentChanged(Agent oldAgent)
 		{
 			if (Mission.MainAgent == null)
 			{

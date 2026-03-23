@@ -16,9 +16,9 @@ namespace Alliance.Editor.Patch
 
 			patchSuccess &= Patch_CustomBattleData.Patch();
 			patchSuccess &= Patch_BannerlordConfig.Patch();
-			patchSuccess &= Patch_BasicCultureObject.Patch();
 			patchSuccess &= Patch_LessUselessErrors.Patch();
 			patchSuccess &= Patch_BodyGeneratorView.Patch();
+			patchSuccess &= Patch_SafeGetTypes.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

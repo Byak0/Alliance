@@ -60,7 +60,7 @@ namespace Alliance.Server.Core
 			{
 				if (missionObj is UsableMachine machine)
 				{
-					Log($"Disabling {machine.GameEntity?.Name} - {machine.IsDisabled}", LogLevel.Debug);
+					Log($"Disabling {machine.GameEntity.Name} - {machine.IsDisabled}", LogLevel.Debug);
 					machine.Disable();
 				}
 			}
@@ -80,7 +80,7 @@ namespace Alliance.Server.Core
 				//agent.DisableScriptedMovement();
 				//agent.ClearTargetFrame();
 				//agent.Detachment?.RemoveAgent(agent);
-				Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity?.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
+				Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
 			}
 
 			MissionListener missionListener = new MissionListener();
@@ -159,6 +159,10 @@ namespace Alliance.Server.Core
 		}
 
 		public void OnConversationCharacterChanged()
+		{
+		}
+
+		public void OnDeploymentPlanMade(Team team, bool isFirstPlan)
 		{
 		}
 

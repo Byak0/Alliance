@@ -24,9 +24,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		// Runtime properties
 		[XmlIgnore]
-		public BasicCharacterObject Character => Instance.GetCharacterObject(CharacterId);
+		public BasicCharacterObject Character => Characters.Instance.GetCharacterObject(CharacterId);
 		[XmlIgnore]
-		public BasicCharacterStub CharacterStub => Instance.GetCharacterStub(CharacterId);
+		public BasicCharacterStub CharacterStub => Characters.Instance.GetCharacterStub(CharacterId);
 		[XmlIgnore]
 		public string Name => Character?.Name.ToString() ?? CharacterStub?.Name.ToString() ?? "";
 		[XmlIgnore]
@@ -37,5 +37,22 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		public int UsedSlots { get; set; }
 		[XmlIgnore]
 		public int AvailableSlots => MaxSlots - UsedSlots;
+
+		public override bool Equals(object obj)
+		{
+			return obj is AvailableCharacter character &&
+				   Index == character.Index &&
+				   CharacterId == character.CharacterId &&
+				   Officer == character.Officer &&
+				   SpawnCount == character.SpawnCount &&
+				   IsPercentage == character.IsPercentage &&
+				   Difficulty == character.Difficulty &&
+				   HealthMultiplier == character.HealthMultiplier;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
 	}
 }

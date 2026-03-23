@@ -58,11 +58,13 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
 			patchSuccess &= Patch_AddTeam.Patch();
 			patchSuccess &= Patch_GameNetworkMessage.Patch();
-			patchSuccess &= Patch_AdvancedCombat.Patch();
+			//patchSuccess &= Patch_AdvancedCombat.Patch();
 			patchSuccess &= Patch_MissionPeer.Patch();
 			patchSuccess &= Patch_ActionSetCode.Patch();
+			patchSuccess &= Patch_Banner.Patch();
+			patchSuccess &= Patch_AgentStatCalculateModel.Patch();
 #if !SERVER && DEBUG
-			patchSuccess &= Patch_WidgetExtensions.Patch();
+			//patchSuccess &= Patch_WidgetExtensions.Patch();
 #endif
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);

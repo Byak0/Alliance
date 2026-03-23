@@ -91,7 +91,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private void SaveAsScenario(object obj)
 		{
 			// Clean the scenario name to make it filename-safe (remove illegal characters)
-			string safeScenarioName = string.Join("_", Scenario.Name.GetText().Split(Path.GetInvalidFileNameChars()));
+			string safeScenarioName = string.Join("_", Scenario.Name.GetText().Split(System.IO.Path.GetInvalidFileNameChars()));
 
 			// Merge the scenario name with the ID to ensure uniqueness
 			string fileName = $"{safeScenarioName}_{Scenario.Id}.xml";

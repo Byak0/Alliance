@@ -2,7 +2,6 @@
 using Alliance.Common.Extensions.AdvancedCombat.Utilities;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
-using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
@@ -22,7 +21,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 		{
 		}
 
-		public override void OnTickAsAI(float dt)
+		public override void OnTick(float dt)
 		{
 			_refreshTimer += dt;
 			_kickCD += dt;
@@ -64,30 +63,6 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			}
 
 			_kickCD = 0;
-		}
-
-		public override void OnTick(float dt)
-		{
-			return;
-			List<Agent> nearbyAgents = CoreUtils.GetNearAliveAgentsInRange(30, Agent.Position);
-			foreach (Agent nearbyAgent in nearbyAgents)
-			{
-				if (nearbyAgent.GetTargetAgent() == Agent && nearbyAgent.Position.Distance(Agent.Position) < 20)
-				{
-					Vec2 newTargetPosition = (Agent.Position + nearbyAgent.LookDirection * -5f).AsVec2;
-					//nearbyAgent.ClearTargetFrame();
-					//if (nearbyAgent.AIStateFlags != Agent.AIStateFlag.Paused)
-					//{
-					//	nearbyAgent.SetTargetPosition(newTargetPosition);
-					//	nearbyAgent.AIStateFlags = Agent.AIStateFlag.Paused;
-					//}
-				}
-				else
-				{
-					//nearbyAgent.ClearTargetFrame();
-					//nearbyAgent.AIStateFlags = Agent.AIStateFlag.Alarmed;
-				}
-			}
 		}
 	}
 }

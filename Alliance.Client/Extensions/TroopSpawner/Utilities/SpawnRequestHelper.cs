@@ -84,7 +84,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Utilities
         /// </summary>
         public static void RequestSpawnTheThing(Vec3 groundPos)
         {
-            if (!GameNetwork.MyPeer.IsDev()) return;
+            if (!GameNetwork.MyPeer.IsSudo()) return;
             MatrixFrame _spawnFrame = new MatrixFrame(Mat3.Identity, groundPos);
             GameNetwork.BeginModuleEventAsClient();
             GameNetwork.WriteMessage(new RequestSpawnThing(_spawnFrame));

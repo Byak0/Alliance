@@ -1,7 +1,6 @@
 ﻿using Alliance.Common.Extensions.FormationEnforcer.Component;
 using NetworkMessages.FromClient;
 using System;
-using System.ComponentModel;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.Options;
@@ -105,30 +104,30 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 		public override void EarlyStart()
 		{
 			base.EarlyStart();
-			Game.Current.EventManager.RegisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(OnPlayerToggleOrder));
-			Mission.OnMainAgentChanged += new PropertyChangedEventHandler(Mission_OnMainAgentChanged);
-			MissionMultiplayerGameModeBaseClient missionBehavior = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+			Game.Current.EventManager.RegisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(this.OnPlayerToggleOrder));
+			base.Mission.OnMainAgentChanged += new Mission.OnMainAgentChangedDelegate(this.Mission_OnMainAgentChanged);
+			MissionMultiplayerGameModeBaseClient missionBehavior = base.Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
 			if (((missionBehavior != null) ? missionBehavior.RoundComponent : null) != null)
 			{
-				missionBehavior.RoundComponent.OnRoundStarted += Disable;
-				missionBehavior.RoundComponent.OnPreparationEnded += Enable;
+				missionBehavior.RoundComponent.OnRoundStarted += this.Disable;
+				missionBehavior.RoundComponent.OnPreparationEnded += this.Enable;
 			}
-			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnManagedOptionChanged));
-			UpdateLockTargetOption();
+			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Combine(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(this.OnManagedOptionChanged));
+			this.UpdateLockTargetOption();
 		}
 
 		public override void OnMissionScreenFinalize()
 		{
 			base.OnMissionScreenFinalize();
-			Mission.OnMainAgentChanged -= new PropertyChangedEventHandler(Mission_OnMainAgentChanged);
-			Game.Current.EventManager.UnregisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(OnPlayerToggleOrder));
-			MissionMultiplayerGameModeBaseClient missionBehavior = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
+			base.Mission.OnMainAgentChanged -= new Mission.OnMainAgentChangedDelegate(this.Mission_OnMainAgentChanged);
+			Game.Current.EventManager.UnregisterEvent<MissionPlayerToggledOrderViewEvent>(new Action<MissionPlayerToggledOrderViewEvent>(this.OnPlayerToggleOrder));
+			MissionMultiplayerGameModeBaseClient missionBehavior = base.Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
 			if (((missionBehavior != null) ? missionBehavior.RoundComponent : null) != null)
 			{
-				missionBehavior.RoundComponent.OnRoundStarted -= Disable;
-				missionBehavior.RoundComponent.OnPreparationEnded -= Enable;
+				missionBehavior.RoundComponent.OnRoundStarted -= this.Disable;
+				missionBehavior.RoundComponent.OnPreparationEnded -= this.Enable;
 			}
-			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(OnManagedOptionChanged));
+			ManagedOptions.OnManagedOptionChanged = (ManagedOptions.OnManagedOptionChangedDelegate)Delegate.Remove(ManagedOptions.OnManagedOptionChanged, new ManagedOptions.OnManagedOptionChangedDelegate(this.OnManagedOptionChanged));
 		}
 
 		public override bool IsReady()
@@ -141,13 +140,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.MainAgentController.MissionViews
 			return flag;
 		}
 
-		private void Mission_OnMainAgentChanged(object sender, PropertyChangedEventArgs e)
+		private void Mission_OnMainAgentChanged(Agent oldAgent)
 		{
-			if (Mission.MainAgent != null)
+			if (base.Mission.MainAgent != null)
 			{
-				_isPlayerAgentAdded = true;
-				_strafeModeActive = false;
-				_autoDismountModeActive = false;
+				this._isPlayerAgentAdded = true;
+				this._strafeModeActive = false;
+				this._autoDismountModeActive = false;
 			}
 		}
 

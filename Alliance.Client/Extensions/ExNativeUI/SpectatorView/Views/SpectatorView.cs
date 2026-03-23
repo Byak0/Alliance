@@ -14,6 +14,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views
 {
     public class SpectatorView : MissionView
     {
+        private List<MatrixFrame> _spectateCamerFrames = new List<MatrixFrame>();
+
         public override void OnMissionScreenInitialize()
         {
             base.OnMissionScreenInitialize();
@@ -43,25 +45,45 @@ namespace Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views
         {
             List<Agent> agentList = new List<Agent>();
 
+            // List of valid agents for commanders : bots under control
             if (GameNetwork.MyPeer.IsCommander())
             {
                 MissionPeer myMissionPeer = GameNetwork.MyPeer.GetComponent<MissionPeer>();
                 List<FormationClass> controlledForms = FormationControlModel.Instance.GetControlledFormations(myMissionPeer);
-                agentList = Mission.AllAgents.Where((x) => x.Team == myMissionPeer.Team && x.Formation != null && controlledForms.Contains(x.Formation.FormationIndex) && x.MissionPeer == null && x.IsCameraAttachable()).ToList();
-            }
-            else
-            {
-                agentList = Mission.AllAgents.Where((x) => x.Team == Mission.PlayerTeam && x.MissionPeer != null && x.IsCameraAttachable()).ToList();
+                agentList = Mission.AllAgents
+                    .Where(x => x.Team == myMissionPeer.Team && 
+                               x.Formation != null && 
+                               controlledForms.Contains(x.Formation.FormationIndex) && 
+                               x.MissionPeer == null && 
+                               x.IsCameraAttachable())
+                    .ToList();
+			}
+			// List of valid agents for players : bots in same team
+			else
+			{
+                agentList = Mission.AllAgents
+                    .Where(x => x.Team == Mission.PlayerTeam && 
+                               x.MissionPeer != null && 
+                               x.IsCameraAttachable())
+                    .ToList();
             }
 
+            // Fallback : return all agents
             if (agentList.Count == 0)
             {
-                agentList = Mission.AllAgents.Where((x) => x.IsCameraAttachable()).ToList();
+                agentList = Mission.AllAgents
+                    .Where(x => x.IsCameraAttachable())
+                    .ToList();
+            }
+
+            // It's critical to include forcedAgentToInclude
+            // MissionScreen expect him to always be included, can crash client otherwise
+            if (forcedAgentToInclude != null && !agentList.Contains(forcedAgentToInclude))
+            {
+                agentList.Add(forcedAgentToInclude);
             }
 
             return agentList;
         }
-
-        private List<MatrixFrame> _spectateCamerFrames = new List<MatrixFrame>();
     }
 }

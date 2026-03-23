@@ -52,8 +52,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			base.OnBehaviorInitialize();
 			BasicCultureObject attacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 			BasicCultureObject defender = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
-			Banner banner = new Banner(attacker.BannerKey, attacker.BackgroundColor1, attacker.ForegroundColor1);
-			Banner banner2 = new Banner(defender.BannerKey, defender.BackgroundColor1, defender.ForegroundColor1);
+			Banner banner = new Banner(attacker.Banner, attacker.BackgroundColor1, attacker.ForegroundColor1);
+			Banner banner2 = new Banner(defender.Banner, defender.BackgroundColor1, defender.ForegroundColor1);
 			Mission.Teams.Add(BattleSideEnum.Attacker, attacker.BackgroundColor1, attacker.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
 			Mission.Teams.Add(BattleSideEnum.Defender, defender.BackgroundColor1, defender.ForegroundColor1, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
 		}

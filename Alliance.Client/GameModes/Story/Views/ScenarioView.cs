@@ -49,7 +49,7 @@ namespace Alliance.Client.GameModes.Story.Views
 		private void InitializeLayer()
 		{
 			_dataSource = new ScenarioVM();
-			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("ScenarioBoard", ViewOrderPriority);
 			_gauntletLayer.LoadMovie("ScenarioBoard", _dataSource);
 			_gauntletLayer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("Generic"));
 			_gauntletLayer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("ScoreboardHotKeyCategory"));

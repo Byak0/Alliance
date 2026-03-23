@@ -21,6 +21,9 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(true, "Show difficulty slider", "Show the difficulty slider in the troop menu. If false, the difficulty will be set to BotDifficulty value.")]
 		public bool ShowDifficultySlider = true;
 
+		[ConfigProperty(true, "Localized armor", "Enable localized armor system for bots and players.")]
+		public bool LocalizedArmor = true;
+
 		[ConfigProperty(true, "Toggle SAE", "Activate or not Scatter Around Expanded mod.")]
 		public bool ActivateSAE = true;
 		[ConfigProperty(true, "SAE range", "Indicate the max distance where a troop need to be in order to go to one marker.", 0, 1000)]

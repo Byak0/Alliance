@@ -1,4 +1,7 @@
-﻿using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.GameModels;
+using Alliance.Common.Patch.HarmonyPatch;
 using BehaviorTreeWrapper;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -28,6 +31,20 @@ namespace Alliance.Common
 		{
 			mission.AddMissionBehavior(new BehaviorTreeMissionLogic());
 			mission.AddMissionBehavior(new AL_MissionAgentHandler());
+		}
+
+		protected override void OnGameStart(Game game, IGameStarter gameStarter)
+		{
+			// Late patching, patching earlier causes issues with Voice type
+			Patch_AdvancedCombat.LatePatch();
+
+			// Add our custom GameModels 
+			//gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
+			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			base.OnGameStart(game, gameStarter);
+
+			var ExtendedAgentStatCalculateModel = CoreUtils.GetGameModel<CustomBattleAgentStatCalculateModel>(gameStarter);
+			gameStarter.AddModel(new ExtendedAgentStatCalculateModel(ExtendedAgentStatCalculateModel));
 		}
 	}
 }

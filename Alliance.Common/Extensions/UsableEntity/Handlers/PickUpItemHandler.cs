@@ -44,6 +44,12 @@ namespace Alliance.Common.Extensions.UsableEntity.Handlers
 				string itemName = target.Entity.GetTagValue(AllianceTags.ITEM_PREFIX_TAG);
 				ItemObject itemObject = MBObjectManager.Instance.GetObject<ItemObject>(itemName);
 				MissionWeapon missionWeapon = new MissionWeapon(itemObject, null, agent.Team.Banner);
+				if(itemObject == null)
+				{
+					Log($"Can't interact with item '{itemName}', no corresponding ItemObject found)", LogLevel.Error);
+					return;
+				}
+
 				if (itemObject.IsBannerItem ||
 					itemObject.HasWeaponComponent && itemObject.WeaponComponent?.PrimaryWeapon?.WeaponClass == WeaponClass.Boulder)
 				{

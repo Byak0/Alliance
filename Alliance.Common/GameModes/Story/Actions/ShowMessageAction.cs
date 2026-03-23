@@ -25,7 +25,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 					InformationManager.AddSystemNotification(Message.LocalizedText);
 					break;
 				case MessageFormat.QuickInformation:
-					MBInformationManager.AddQuickInformation(new TextObject(Message.LocalizedText, null), 0, null, "");
+					MBInformationManager.AddQuickInformation(new TextObject(Message.LocalizedText, null), 0, null);
 					break;
 				case MessageFormat.Message:
 					InformationManager.DisplayMessage(new InformationMessage(Message.LocalizedText, Color.White));

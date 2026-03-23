@@ -18,11 +18,25 @@ namespace Alliance.Common.Core.Utils
 			BannerBearer
 		}
 
-		private static readonly int _trollRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("troll");
-		private static readonly int _ologRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("olog");
-		private static readonly int _olog2RaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("olog2");
-		private static readonly int _entRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("ent");
-		private static readonly int _dwarfRaceId = TaleWorlds.Core.FaceGen.GetRaceOrDefault("dwarf");
+		private static readonly int _trollRaceId = GetRaceIdSafe("troll");
+		private static readonly int _ologRaceId = GetRaceIdSafe("olog");
+		private static readonly int _olog2RaceId = GetRaceIdSafe("olog2");
+		private static readonly int _entRaceId = GetRaceIdSafe("ent");
+		private static readonly int _dwarfRaceId = GetRaceIdSafe("dwarf");
+
+		private static int GetRaceIdSafe(string raceId)
+		{
+			try
+			{
+				return TaleWorlds.Core.FaceGen.GetRaceOrDefault(raceId);
+			}
+			catch (KeyNotFoundException)
+			{
+				// Race not loaded yet or doesn't exist, return invalid ID
+				Log($"Race {raceId} not found", LogLevel.Error);
+				return -1;
+			}
+		}
 
 		public static void DealDamage(this Agent agent, Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{

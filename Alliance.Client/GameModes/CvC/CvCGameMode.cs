@@ -29,7 +29,6 @@ namespace Alliance.Client.GameModes.CvC
 				new CvCGameModeClientBehavior(),
 
 				// Native captain behavior
-				new MultiplayerWarmupComponent(),
 				new MultiplayerRoundComponent(),
 				new MultiplayerTeamSelectComponent(),
 			});

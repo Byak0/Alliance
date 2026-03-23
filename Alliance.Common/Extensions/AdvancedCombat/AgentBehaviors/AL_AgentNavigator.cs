@@ -207,7 +207,8 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 			}
 
 			WorldPosition pos = OwnerAgent.GetWorldPosition();
-			OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity(), pos, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+			OwnerAgent.SetScriptedTargetEntity(TargetAgent.AgentVisuals.GetEntity().WeakEntity, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
+			//OwnerAgent.SetScriptedTargetEntityAndPosition(TargetAgent.AgentVisuals.GetEntity().WeakEntity, pos, TaleWorlds.MountAndBlade.Agent.AISpecialCombatModeFlags.IgnoreAmmoLimitForRangeCalculation, false);
 			if (OwnerAgent.HasRangedWeapon())
 			{
 				OwnerAgent.SetScriptedPosition(ref pos, false, TaleWorlds.MountAndBlade.Agent.AIScriptedFrameFlags.RangerCanMoveForClearTarget);
@@ -264,7 +265,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentBehaviors
 
 		public bool IsCarryingSomething()
 		{
-			return OwnerAgent.GetWieldedItemIndex(Agent.HandIndex.MainHand) >= EquipmentIndex.WeaponItemBeginSlot || OwnerAgent.GetWieldedItemIndex(Agent.HandIndex.OffHand) >= EquipmentIndex.WeaponItemBeginSlot || Enumerable.Any<KeyValuePair<KeyValuePair<sbyte, string>, int>>(_bodyComponents, (KeyValuePair<KeyValuePair<sbyte, string>, int> component) => OwnerAgent.IsSynchedPrefabComponentVisible(component.Value));
+			return OwnerAgent.GetPrimaryWieldedItemIndex() >= EquipmentIndex.WeaponItemBeginSlot || OwnerAgent.GetOffhandWieldedItemIndex() >= EquipmentIndex.WeaponItemBeginSlot || Enumerable.Any<KeyValuePair<KeyValuePair<sbyte, string>, int>>(_bodyComponents, (KeyValuePair<KeyValuePair<sbyte, string>, int> component) => OwnerAgent.IsSynchedPrefabComponentVisible(component.Value));
 		}
 
 		public void SetPrefabVisibility(sbyte realBoneIndex, string prefabName, bool isVisible)

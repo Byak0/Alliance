@@ -63,23 +63,16 @@ namespace Alliance.Editor
 			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}
 
-		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
+		protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
 		{
 			// Initialize animation system and all the game animations
 			AnimationSystem.Instance.Init();
-
-			mission.AddMissionBehavior(new CoreBehavior());
-			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 
-		protected override void OnGameStart(Game game, IGameStarter gameStarter)
+		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
 		{
-			// Late patching, patching earlier causes issues with Voice type
-			Patch_AdvancedCombat.LatePatch();
-
-			// Add our custom GameModels 
-			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			mission.AddMissionBehavior(new CoreBehavior());
+			mission.AddMissionBehavior(new AdvancedCombatBehavior());
 		}
 
 		private void GenerateScenarioExamples()
@@ -110,7 +103,7 @@ namespace Alliance.Editor
 		{
 			EntityUtils.Tick(dt);
 			EditorToolsManager.EditorTools.Tick(dt);
-			if (Input.IsKeyPressed(InputKey.O))
+			if (Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(InputKey.O))
 			{
 				OpenScenarioEditor();
 			}

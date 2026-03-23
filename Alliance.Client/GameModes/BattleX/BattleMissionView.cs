@@ -29,7 +29,7 @@ namespace Alliance.Client.GameModes.BattleX
 				MultiplayerViewCreator.CreateMultiplayerFactionBanVoteUIHandler(),
 				MultiplayerViewCreator.CreateMultiplayerMissionOrderUIHandler(mission),
 				ViewCreator.CreateMissionAgentLabelUIHandler(mission),
-				ViewCreator.CreateOrderTroopPlacerView(mission),
+				ViewCreator.CreateOrderTroopPlacerView(null),
 				MultiplayerViewCreator.CreateMultiplayerTeamSelectUIHandler(),
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerEndOfRoundUIHandler(),

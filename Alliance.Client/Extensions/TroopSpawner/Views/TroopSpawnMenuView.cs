@@ -69,9 +69,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 
 		public override void EarlyStart()
 		{
-			menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_menu");
-			spawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_spawn");
-			siegeSpawnKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_siege_spawn");
+			menuKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_menu");
+			spawnKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_spawn");
+			siegeSpawnKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_siege_spawn");
 		}
 
 		public override void OnMissionScreenFinalize()
@@ -94,13 +94,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 			{
 				_dataSource = new TroopSpawnMenuVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("TroopSpawnMenu", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("TroopSpawnMenu", _dataSource);
 				SpriteData spriteData = UIResourceManager.SpriteData;
 				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-				ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+				ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 				spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 				spriteData.SpriteCategories["ui_order"].Load(resourceContext, uiResourceDepot);
 				MissionScreen.AddLayer(_layer);
@@ -120,6 +120,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 			_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 			ScreenManager.TrySetFocus(_layer);
 			_dataSource.IsVisible = true;
+			_dataSource.RefreshValues();
 			IsMenuOpen = true;
 		}
 
@@ -195,7 +196,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Views
 		// Dev command - Spawn the thing at exact location
 		private void SpawnTheThing()
 		{
-			if (!GameNetwork.MyPeer.IsDev()) return;
+			if (!GameNetwork.MyPeer.IsSudo()) return;
 
 			bool validTargetArea = MissionScreen.GetProjectedMousePositionOnGround(out var groundPos, out _, BodyFlags.BodyOwnerFlora, true);
 			if (!validTargetArea)
