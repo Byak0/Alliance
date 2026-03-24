@@ -1,0 +1,6944 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CraftingPieces>
+	<!-- #region Sword Pieces -->
+	<!-- #region Sword Blade Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_pick_axe_head"
+		name="{=!}MP Vlandian Pick Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_37_head"
+		distance_to_next_piece="10.4"
+		distance_to_previous_piece="3.4"
+		weight="0.55"
+		excluded_item_usage_features="thrust">
+		<BuildData
+			piece_offset="-6.8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="15.764"
+			blade_width="12"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_sickle_head"
+		name="{=!}MP Vlandian Sickle Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="sickle_blade_1"
+		length="38.5"
+		weight="1.1"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_short_sword_blade"
+		name="{=!}MP Vlandian Shortsword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_7"
+		length="89.1"
+		weight="1.0">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_7_scabbard_7">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_arming_sword_blade"
+		name="{=!}MP Vlandian Armingsword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_8"
+		length="80.3"
+		weight="0.9">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_8_scabbard_8">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_long_sword_blade"
+		name="{=!}MP Vlandian Longsword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_2"
+		length="99"
+		weight="0.9">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_2hsword_blade"
+		name="{=!}MP Vlandian Twohander Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_3"
+		length="99.4"
+		weight="1.15">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_gladius_blade"
+		name="{=!}Mp Empire Gladius Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_4"
+		length="67.4"
+		weight="0.9">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="battania_blade_4_scabbard_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_spatha_blade"
+		name="{=!}Mp Empire Spatha Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_4"
+		length="73.7"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_4_scabbard_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_spatha_blade"
+		name="{=!}Mp Empire Long Spatha Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_4"
+		length="73.7"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_4_scabbard_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3.55" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_paramerion_blade"
+		name="{=!}MP Empire Paramerion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="empire_blade_5"
+		length="95.7"
+		weight="1.25">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="empire_blade_5_scabbard_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_paramerion_blade"
+		name="{=!}MP Empire Long Paramerion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="empire_blade_5"
+		length="95.7"
+		weight="1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="empire_blade_5_scabbard_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_northern_sword_blade"
+		name="{=!}MP Sturgian Nothern Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_8"
+		length="87.3"
+		weight="0.85">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_3_scabbard_3">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.65" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_sword_blade"
+		name="{=!}MP Sturgian Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_7"
+		culture="Culture.sturgia"
+		length="74.5"
+		weight="0.85">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_7_scabbard_7">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_sword_blade"
+		name="{=!}MP Sturgian Cavalry Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_6"
+		culture="Culture.sturgia"
+		length="73.7"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_6_scabbard_6">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_cavalry_sword_blade"
+		name="{=!}MP Vlandian Cavalry Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_2"
+		culture="Culture.vlandia"
+		length="99"
+		weight="1.0">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sabre_blade"
+		name="{=!}MP Khuzait Saber Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="khuzait_blade_3"
+		length="90.2"
+		weight="1.05">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="khuzait_blade_3_scabbard_3">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.05" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_strong_sabre_blade"
+		name="{=!}MP Khuzait Strong Saber Blade"
+		tier="3"
+		piece_type="Blade"
+		mesh="khuzait_blade_5"
+		length="101.2"
+		weight="1.03">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="khuzait_blade_5_scabbard_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_sabre_blade"
+		name="{=!}MP Khuzait Heavy Saber Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="khuzait_blade_1"
+		length="92.4"
+		weight="0.95">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="khuzait_blade_1_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_sabre_blade"
+		name="{=!}MP Khuzait Cavalry Saber Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="khuzait_blade_2"
+		length="94.6"
+		weight="1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="khuzait_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_sword_blade"
+		name="{=!}Aserai Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="khuzait_blade_7"
+		length="82.5"
+		weight="1.0">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.45" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_ranger_sword_blade"
+		name="{=!}MP Aserai Ranger Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="aserai_blade_3"
+		length="93.2"
+		weight="0.98">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="aserai_blade_3_scabbard_3">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_fast_sword_blade"
+		name="{=!}MP Aserai Fast Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="khuzait_noble_blade_2"
+		culture="Culture.khuzait"
+		length="72.5"
+		weight="0.8">
+		<BuildData
+			previous_piece_offset="-0.25" />
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="khuzait_noble_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.05" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_fast_sword_blade"
+		name="{=!}MP Vlandia Fast Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_noble_blade_2"
+		culture="Culture.vlandia"
+		length="74.5"
+		weight="0.7">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_noble_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.5" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_sword_blade"
+		name="{=!}MP Noble Aserai Long Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="empire_blade_5"
+		culture="Culture.empire"
+		length="95.7"
+		weight="1.0">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="empire_blade_5_scabbard_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.15" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_noble_long_sword_blade"
+		name="{=!}MP Aserai Long Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="aserai_blade_8"
+		length="104.5"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="aserai_blade_8_scabbard_8">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_pugio_blade"
+		name="{=!}Mp Empire Pugio Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="dagger_blade_7"
+		length="40"
+		weight="0.85">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_knife_a"
+			holster_mesh="dagger_blade_7_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.85" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_dagger_blade"
+		name="{=!}MP Battania Throwing Knife Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="dagger_blade_14"
+		length="35"
+		weight="0.2">
+		<BladeData
+			stack_amount="5"
+			physics_material="metal_weapon"
+			body_name="bo_knife_a"
+			holster_mesh="throwing_dagger_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2" />
+			<Swing
+				damage_type="Blunt"
+				damage_factor="5" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_dagger_blade_1"
+		name="{=!}Kama Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="dagger_blade_1"
+		length="39"
+		weight="0.205">
+		<BladeData
+			stack_amount="5"
+			physics_material="metal_weapon"
+			body_name="bo_knife_a"
+			holster_mesh="dagger_blade_1_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_short_sword_blade"
+		name="{=!}Mp Battania Short Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_4"
+		culture="Culture.battania"
+		length="67.4"
+		weight="0.9">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="battania_blade_4_scabbard_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_sword_blade"
+		name="{=!}Mp Battania Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_3"
+		length="80.8"
+		weight="0.93">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="battania_blade_3_scabbard_3">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.55" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_sword_blade"
+		name="{=!}Mp Battania Long Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_1"
+		length="98.9"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="battania_blade_1_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_cleaver_blade"
+		name="{=!}MP Battania CLeaver"
+		tier="4"
+		piece_type="Blade"
+		mesh="cleaver_blade_3"
+		culture="Culture.aserai"
+		length="101"
+		weight="0.85"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.75" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_noble_sword_blade"
+		name="{=!}Mp Battania Long Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_1"
+		length="98.9"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="battania_blade_1_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3.0" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_bastard_sword_blade"
+		name="{=!}Mp Battania Bastard Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_3"
+		culture="Culture.vlandia"
+		length="99.4"
+		weight="1.2">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_2_scabbard_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.5" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_falx_blade"
+		name="{=!}Mp Battania Falx Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_7"
+		length="75"
+		weight="1.2"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_falx_blade"
+		name="{=!}Mp Battania Long Falx Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_6"
+		length="95.6"
+		weight="1.2"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_sword_blade"
+		name="{=!}MP Battania 2hander Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="sturgian_blade_8"
+		length="87.3"
+		weight="1.4">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="sturgian_blade_3_scabbard_3">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_long_sword_blade"
+		name="{=!}MP Battania Long 2hander Blade"
+		tier="3"
+		piece_type="Blade"
+		mesh="vlandian_blade_4"
+		length="93.5"
+		weight="1.6">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_4_scabbard_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.05" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_two_handed_sword_blade"
+		name="{=!}MP Vlandian Noble Twohander Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_5"
+		length="99"
+		weight="1.05">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_5_scabbard_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_two_handed_sword_blade"
+		name="{=!}MP Aserai Twohander Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="aserai_blade_8"
+		culture="Culture.aserai"
+		length="104.5"
+		weight="0.95">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="aserai_blade_8_scabbard_8">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_bastard_sword_blade"
+		name="{=!}MP Vlandian Bastard Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_7"
+		length="89.1"
+		weight="1.25">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_7_scabbard_7">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_bastard_sword_blade"
+		name="{=!}MP Vlandian Noble Bastard Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_1"
+		length="95"
+		weight="1.1">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_1_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_sword_blade"
+		name="{=!}Mp Test Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="vlandian_blade_8"
+		length="80.3"
+		weight="0.9">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="vlandian_blade_8_scabbard_8">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hsword_blade"
+		name="{=!}Mp Test 2H Sword Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="aserai_blade_1"
+		length="102.3"
+		weight="1.05">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed"
+			holster_mesh="aserai_blade_1_scabbard_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="3.3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.2" />
+		</BladeData>
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Sword Guard Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_short_sword_guard"
+		name="{=!}MP Short Sword Vlandian Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_2"
+		length="2.809"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_arming_sword_guard"
+		name="{=!}MP Vlandian Armingsword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_2"
+		length="2.809"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_long_sword_guard"
+		name="{=!}MP Vlandian Longsword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_5"
+		length="0.9"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_2hsword_guard"
+		name="{=!}MP Vlandian 2hander Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_5"
+		length="0.9"
+		weight="0.20">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_spatha_guard"
+		name="{=!}MP Empire Spatha Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="empire_guard_4"
+		length="5.3"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="1.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_spatha_guard"
+		name="{=!}MP Empire Long Spatha Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="empire_guard_2"
+		length="3.6"
+		weight="0.18">
+		<BuildData
+			next_piece_offset="0.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_paramerion_guard"
+		name="{=!}MP Empire Paramerion Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="battania_guard_3"
+		length="2.8"
+		weight="0.112">
+		<BuildData
+			next_piece_offset="1.8" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_paramerion_guard"
+		name="{=!}MP Empire Paramerion Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="empire_guard_1"
+		length="3.8"
+		weight="0.08">
+		<BuildData
+			next_piece_offset="0.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_gladius_guard"
+		name="{=!}MP Empire Pugio Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_1"
+		length="5.902"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="-0.133"
+			previous_piece_offset="0.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_pugio_guard"
+		name="{=!}MP Empire Gladius Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="empire_guard_3"
+		length="5.2"
+		weight="0.16">
+		<BuildData
+			next_piece_offset="2.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_northern_sword_guard"
+		name="{=!}MP Sturgia Northern Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_1"
+		length="1.7"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_sword_guard"
+		name="{=!}MP Sturgia Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_6"
+		length="1.73"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_sword_guard"
+		name="{=!}MP Sturgia Cavalry Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_2"
+		length="2.5"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="1.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_cavalry_sword_guard"
+		name="{=!}MP Western Cavalry Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="cleaver_guard_2"
+		culture="Culture.aserai"
+		length="1.289"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_light_sabre_guard"
+		name="{=!}MP Khuzait Light Saber Guard"
+		tier="1"
+		piece_type="Guard"
+		mesh="khuzait_guard_6"
+		length="0.155"
+		weight="0.10">
+		<BuildData
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sabre_guard"
+		name="{=!}MP Khuzait Saber Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="khuzait_guard_7"
+		length="0.55"
+		weight="0.20">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_sabre_guard"
+		name="{=!}MP Khuzait Heavy Saber Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="khuzait_guard_9"
+		length="0.459"
+		weight="0.24">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_sabre_guard"
+		name="{=!}MP Khuzait Cavalry Saber Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="khuzait_guard_7"
+		length="0.55"
+		weight="0.10">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_sword_guard"
+		name="{=!}MP Aserai Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_8"
+		length="1.329"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_ranger_sword_guard"
+		name="{=!}MP Aserai Ranger Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_6"
+		length="3.28"
+		weight="0.163">
+		<BuildData
+			next_piece_offset="1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_fast_sword_guard"
+		name="{=!}MP Aserai Fast Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_noble_guard_3"
+		culture="Culture.aserai"
+		length="1.8"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="0.2"
+			previous_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_fast_sword_guard"
+		name="{=!}MP Vlandia Fast Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_noble_guard_2"
+		culture="Culture.vlandia"
+		length="1.6"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_sword_guard"
+		name="{=!}MP Aserai Long Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_2"
+		length="7.466"
+		weight="0.14">
+		<BuildData
+			next_piece_offset="3.9"
+			previous_piece_offset="3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_noble_long_sword_guard"
+		name="{=!}MP Aserai Noble Long Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_7"
+		culture="Culture.aserai"
+		length="2.865"
+		weight="0.17">
+		<BuildData
+			next_piece_offset="0.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_dagger_guard"
+		name="{=!}MP Battania Throwing Knife Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_dagger_guard_8"
+		length="1"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_falx_guard"
+		name="{=!}MP Battania Long Falx Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_9"
+		length="3.7"
+		weight="0.3">
+		<BuildData
+			next_piece_offset="0.416" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_falx_guard"
+		name="{=!}MP Battania Falx Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_6"
+		length="1.73"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_polearm_falx_guard"
+		name="{=!}Mp Battania Polearm Falx Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_1"
+		culture="Culture.sturgia"
+		length="1.7"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_sword_guard"
+		name="{=!}MP Battania Long Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_12"
+		length="5"
+		weight="0.20"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_bastard_sword_guard"
+		name="{=!}MP Battania Bastard Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_9"
+		culture="Culture.sturgia"
+		length="3.7"
+		weight="0.30">
+		<BuildData
+			next_piece_offset="0.416" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_sword_guard"
+		name="{=!}MP Battania Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_10"
+		length="3.718"
+		weight="0.20">
+		<BuildData
+			next_piece_offset="0.466" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_short_sword_guard"
+		name="{=!}MP Battania Short Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_1"
+		length="1.7"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_sword_guard"
+		name="{=!}MP Battania 2hander Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_11"
+		length="3.5"
+		weight="0.240">
+		<BuildData
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_long_sword_guard"
+		name="{=!}MP Battania Long 2hander Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_12"
+		length="5"
+		weight="0.1"></CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_two_handed_sword_guard"
+		name="{=!}MP Vlandian Noble Townhader Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_7"
+		length="1.844"
+		weight="0.20">
+		<BuildData
+			next_piece_offset="0.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_two_handed_sword_guard"
+		name="{=!}MP Aserai Twohander Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_2"
+		culture="Culture.aserai"
+		length="7.466"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="3.9"
+			previous_piece_offset="3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_bastard_sword_guard"
+		name="{=!}MP Vlandian Bastard Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_8"
+		length="1.42"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_bastard_sword_guard"
+		name="{=!}MP Vlandian Noble Bastard Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="vlandian_guard_2"
+		length="2.809"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_sword_guard"
+		name="{=!}MP Test Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="sturgian_guard_2"
+		length="2.5"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="1.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hsword_guard"
+		name="{=!}MP Test Sword Guard"
+		tier="2"
+		piece_type="Guard"
+		mesh="aserai_guard_3"
+		length="2.393"
+		weight="0.137">
+		<BuildData
+			next_piece_offset="0.4" />
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Sword Handle Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_pick_axe_handle"
+		name="{=!}MP Vlandian Pickaxe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_2_handle"
+		length="84"
+		weight="0.4"
+		excluded_item_usage_features="thrust">
+		<BuildData
+			piece_offset="23"
+			next_piece_offset="1.835" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_sickle_handle"
+		name="{=!}MP Vlandia Sickle Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_6"
+		length="56.2"
+		weight="0.6"
+		excluded_item_usage_features="thrust">
+		<BuildData
+			piece_offset="15" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_short_sword_grip"
+		name="{=!}MP Vlandian Shortsword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_2"
+		length="15.05"
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.06">
+		<!--l="15.05" w="0.1"-->
+		<BuildData
+			piece_offset="-0.02"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_long_sword_grip"
+		name="{=!}MP Vlandian Longsword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_4"
+		length="15.2"
+		weight="0.1"
+		item_holster_pos_shift="0,0,-0.02">
+		<BuildData
+			piece_offset="-0.09"
+			previous_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_arming_sword_grip"
+		name="{=!}MP Vlandian Armingsword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_4"
+		length="15.2"
+		weight="0.2"
+		item_holster_pos_shift="0,0,-0.03">
+		<BuildData
+			piece_offset="-0.09"
+			previous_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_2hsword_grip"
+		name="{=!}MP Vlandian Twohander Grip "
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_7"
+		length="30.3"
+		weight="0.7"
+		item_holster_pos_shift="0,0,-0.02">
+		<BuildData
+			piece_offset="-6.75"
+			previous_piece_offset="0.358" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_gladius_grip"
+		name="{=!}MP Empire Gladius Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="empire_grip_1"
+		length="15.4"
+		weight="0.20"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="-0.18"
+			next_piece_offset="-0.15"
+			previous_piece_offset="0.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_spatha_grip"
+		name="{=!}MP Empire Spatha Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="empire_grip_2"
+		length="17"
+		weight="0.1">
+		<BuildData
+			piece_offset="-0.79"
+			next_piece_offset="0"
+			previous_piece_offset="0.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_spatha_grip"
+		name="{=!}MP Empire Long Spatha Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_29"
+		length="16.1"
+		weight="0.225">
+		<BuildData
+			piece_offset="-1.00"
+			previous_piece_offset="0.1"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_paramerion_grip"
+		name="{=!}MP Empire Paramerion Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_5"
+		culture="Culture.aserai"
+		length="15.9"
+		weight="0.105">
+		<BuildData
+			piece_offset="-0.41"
+			previous_piece_offset="0.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_paramerion_grip"
+		name="{=!}MP Empire Long Paramerion Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="empire_grip_11"
+		length="25"
+		weight="0.1"
+		item_holster_pos_shift="0,0,-0.14">
+		<BuildData
+			piece_offset="-0.18"
+			next_piece_offset="-0.3"
+			previous_piece_offset="0.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_pugio_grip"
+		name="{=!}MP Empire Pugio Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_4"
+		length="15.1"
+		weight="0.1">
+		<BuildData
+			piece_offset="-0.04"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_northern_sword_grip"
+		name="{=!}MP Sturgian Northern Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_35"
+		length="15"
+		weight="0.100">
+		<BuildData
+			piece_offset="-1"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_sword_grip"
+		name="{=!}MP Sturiga Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_13"
+		culture="Culture.sturgia"
+		length="15.2"
+		weight="0.10">
+		<BuildData
+			piece_offset="-0.09"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_sword_grip"
+		name="{=!}MP Sturiga Cavalry Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="cleaver_grip_3"
+		culture="Culture.aserai"
+		length="19.855"
+		weight="0.1">
+		<BuildData
+			piece_offset="-2.18"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_cavalry_sword_grip"
+		name="{=!}MP Valndian Cavalry Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_14"
+		culture="Culture.vlandia"
+		length="25.2"
+		weight="0.1"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="-0.02"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sabre_grip"
+		name="{=!}MP Khuzait Saber Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="khuzait_grip_7"
+		length="15.1"
+		weight="0.2">
+		<BuildData
+			piece_offset="-0.04"
+			previous_piece_offset="0.2"
+			next_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_sabre_grip"
+		name="{=!}MP Khuzait Heavy Saber Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="khuzait_grip_4"
+		length="15.2"
+		weight="0.1">
+		<BuildData
+			piece_offset="-0.09"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_sabre_grip"
+		name="{=!}MP Khuzait Cavalry Saber Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="khuzait_grip_7"
+		culture="Culture.khuzait"
+		length="15.1"
+		weight="0.1">
+		<BuildData
+			piece_offset="-0.04"
+			previous_piece_offset="0.2"
+			next_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_sword_grip"
+		name="{=!}MP Aserai Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_1"
+		culture="Culture.aserai"
+		length="15"
+		weight="0.2">
+		<BuildData
+			piece_offset="0"
+			previous_piece_offset="0.1"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_ranger_sword_grip"
+		name="{=!}MP Aserai Ranger Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_23"
+		length="15.9"
+		weight="0.3">
+		<BuildData
+			piece_offset="-1"
+			previous_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_fast_sword_grip"
+		name="{=!}MP Aserai Fast Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_21"
+		culture="Culture.aserai"
+		length="25"
+		weight="0.1">
+		<BuildData
+			piece_offset="0"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_fast_sword_grip"
+		name="{=!}MP Vlandia Fast Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_noble_grip_1"
+		culture="Culture.vlandia"
+		length="17.5"
+		weight="0.1">
+		<BuildData
+			piece_offset="0"
+			previous_piece_offset="0.358" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_sword_grip"
+		name="{=!}MP Aserai Long Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="khuzait_grip_15"
+		length="25.5"
+		weight="0.150"
+		item_holster_pos_shift="0,0,-0.07">
+		<BuildData
+			piece_offset="-1.98"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_noble_long_sword_grip"
+		name="{=!}MP Aserai Noble Long Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_6"
+		length="15.07"
+		weight="0.135">
+		<BuildData
+			piece_offset="-0.03"
+			previous_piece_offset="0.1"
+			next_piece_offset="0.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_dagger_grip"
+		name="{=!}MP Battania Throwing Knife Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_8"
+		length="15"
+		weight="0.1">
+		<BuildData
+			piece_offset="0"
+			previous_piece_offset="0.1"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_falx_grip"
+		name="{=!}MP Battania Long Falx Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="battania_grip_6"
+		length="25.6"
+		weight="0.6">
+		<BuildData
+			piece_offset="-0.22"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_falx_grip"
+		name="{=!}MP Battania Falx Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_15"
+		culture="Culture.vlandia"
+		length="28.5"
+		weight="0.85">
+		<BuildData
+			piece_offset="-0.9"
+			previous_piece_offset="0.9"
+			next_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_polearm_falx_handle"
+		name="{=!}Mp Battania Polearm Falx Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_16"
+		length="50"
+		weight="0.5"
+		item_holster_pos_shift="0,0,-0.03">
+		<BuildData
+			piece_offset="-2.0"
+			previous_piece_offset="0.2"
+			next_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_sword_grip"
+		name="{=!}MP Battania Long Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_8"
+		length="15"
+		weight="0.1">
+		<BuildData
+			piece_offset="0"
+			next_piece_offset="0"
+			previous_piece_offset="0.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_bastard_sword_grip"
+		name="{=!}MP Battania Bastard Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_33"
+		culture="Culture.sturgia"
+		length="25"
+		weight="0.20">
+		<BuildData
+			piece_offset="-0.14"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_sword_grip"
+		name="{=!}MP Battania Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_13"
+		length="15.2"
+		weight="0.15">
+		<BuildData
+			piece_offset="-0.09"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_short_sword_grip"
+		name="{=!}MP Battania Short Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="cleaver_grip_1"
+		length="16.15"
+		weight="0.25"
+		item_holster_pos_shift="0,0,0.1">
+		<BuildData
+			piece_offset="-0.52"
+			previous_piece_offset="0.4"
+			next_piece_offset="-0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_sword_grip"
+		name="{=!}MP Battania 2hander Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="sturgian_grip_25"
+		length="25"
+		weight="0.13">
+		<BuildData
+			piece_offset="-5.04"
+			next_piece_offset="0.1"
+			previous_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_long_sword_grip"
+		name="{=!}MP Battania Long 2hander Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="battania_grip_6"
+		culture="Culture.battania"
+		length="25.6"
+		weight="0.2">
+		<BuildData
+			piece_offset="-8.28"
+			previous_piece_offset="0.3"
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_two_handed_sword_grip"
+		name="{=!}MP Vlandian Noble Twohander Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_8"
+		length="33.2"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.02">
+		<BuildData
+			piece_offset="-6.75"
+			previous_piece_offset="0.358" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_bastard_sword_handle"
+		name="{=!}MP Vlandian Bastard Sword Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="cleaver_grip_7"
+		length="25"
+		weight="0.4">
+		<BuildData
+			piece_offset="-1.06"
+			previous_piece_offset="0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_two_handed_sword_grip"
+		name="{=!}MP Aserai Twohander Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="aserai_grip_19"
+		culture="Culture.aserai"
+		length="31"
+		weight="0.4">
+		<BuildData
+			piece_offset="-5.41"
+			previous_piece_offset="0.2"
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_bastard_sword_handle"
+		name="{=!}MP Vlandian Noble Bastard Sword Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="vlandian_grip_10"
+		length="25.2"
+		weight="0.3"
+		item_holster_pos_shift="0,0,-0.02">
+		<BuildData
+			piece_offset="-4.59"
+			previous_piece_offset="0.358" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_sword_grip"
+		name="{=!}MP Test Sword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="empire_grip_1"
+		length="15.4"
+		weight="0.5">
+		<BuildData
+			piece_offset="-0.18"
+			next_piece_offset="-0.15"
+			previous_piece_offset="0.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hsword_grip"
+		name="{=!}MP Test 2HSword Grip"
+		tier="2"
+		piece_type="Handle"
+		mesh="khuzait_grip_8"
+		length="20.425"
+		weight="0.68">
+		<BuildData
+			piece_offset="-2.44"
+			previous_piece_offset="0.35"
+			next_piece_offset="0" />
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Sword Pommel Pieces -->
+	<CraftingPiece
+		id="mp_empire_pommel_2"
+		name="{=!}Faceted Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="empire_pommel_2"
+		culture="Culture.empire"
+		length="6.496"
+		weight="0.250">
+		<Materials>
+			<Material
+				id="Iron2"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_short_sword_pommel"
+		name="{=!}MP Vlandian Short Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_7"
+		culture="Culture.vlandia"
+		length="5.231"
+		weight="0.12">
+		<BuildData
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_arming_sword_pommel"
+		name="{=!}MP Vlandian Arming Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_7"
+		culture="Culture.vlandia"
+		length="5.231"
+		weight="0.12">
+		<BuildData
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_long_sword_pommel"
+		name="{=!}MP Vlandian Longsword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_4"
+		culture="Culture.vlandia"
+		length="7"
+		weight="0.16"></CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_2hsword_pommel"
+		name="{=!}MP Vlandian 2hander Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_9"
+		length="5.275"
+		weight="0.1"></CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_gladius_pommel"
+		name="{=!}MP Empire Gladius Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="aserai_pommel_4"
+		length="7.797"
+		weight="0.1">
+		<BuildData
+			next_piece_offset="-0.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_spatha_pommel"
+		name="{=!}MP Empire Spatha Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="empire_pommel_6"
+		length="5.4"
+		weight="0.1"></CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_spatha_pommel"
+		name="{=!}MP Empire Long Spatha Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="empire_pommel_3"
+		length="6.564"
+		weight="0.18"></CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_paramerion_pommel"
+		name="{=!}MP Paramerion Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_1"
+		length="6.588"
+		weight="0.12"></CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_paramerion_pommel"
+		name="{=!}MP Long Paramerion Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_5"
+		length="7.268"
+		weight="0.2"></CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_pugio_pommel"
+		name="{=!}MP Empire Pugio Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="battania_pommel_7"
+		length="10"
+		weight="0.250"></CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_northern_sword_pommel"
+		name="{=!}Mp Sturgian Nothern Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="sturgian_pommel_3"
+		length="3.587"
+		weight="0.13"></CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_sword_pommel"
+		name="{=!}MP Sturgian Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="battania_pommel_1"
+		length="4.027"
+		weight="0.13"></CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_sword_pommel"
+		name="{=!}MP Sturgian Cavalry Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="sturgian_pommel_1"
+		length="3.539"
+		weight="0.13"></CraftingPiece>
+	<CraftingPiece
+		id="mp_western_cavalry_sword_pommel"
+		name="{=!}MP Western Cavalry Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="cleaver_pommel_4"
+		culture="Culture.aserai"
+		length="1.07"
+		weight="0.08"></CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sabre_pommel"
+		name="{=!}MP Khuzait Saber Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_2"
+		length="1.17"
+		weight="0.08"></CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_sabre_pommel"
+		name="{=!}MP Khuzait Heavy Saber Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_3"
+		length="1.741"
+		weight="0.12"></CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_sabre_pommel"
+		name="{=!}MP Khuzait Cavarly Saber Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_3"
+		length="1.741"
+		weight="0.3"></CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_sword_pommel"
+		name="{=!}MP Aserai Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_4"
+		length="1.508"
+		weight="0.18"></CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_ranger_sword_pommel"
+		name="{=!}MP Aserai Ranger Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="aserai_pommel_8"
+		length="7.299"
+		weight="0.111"></CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_fast_sword_pommel"
+		name="{=!}MP Aserai Fast Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="aserai_noble_pommel_3"
+		culture="Culture.aserai"
+		length="6.7"
+		weight="0.15"></CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_fast_sword_pommel"
+		name="{=!}MP Vlandia Fast Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_noble_pommel_3"
+		culture="Culture.vlandia"
+		length="5"
+		weight="0.15"></CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_sword_pommel"
+		name="{=!}MP Aserai Long Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="aserai_pommel_1"
+		length="4.882"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_noble_long_sword_pommel"
+		name="{=!}MP Aserai Noble Long Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="empire_pommel_5"
+		length="6.911"
+		weight="0.2">
+		<BuildData
+			next_piece_offset="0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_falx_pommel"
+		name="{=!}MP Battania Long Falx Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_5"
+		length="7.268"
+		weight="0.2"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_falx_pommel"
+		name="{=!}MP Battania Falx Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="wood_pommel_1"
+		length="3.8"
+		weight="0.069"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_polearm_falx_pommel"
+		name="{=!}MP Battania Polearm Falx Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="cleaver_pommel_4"
+		culture="Culture.aserai"
+		length="1.07"
+		weight="0.08"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_sword_pommel"
+		name="{=!}MP Battania Long Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="battania_pommel_8"
+		length="2.5"
+		weight="0.14"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_bastard_sword_pommel"
+		name="{=!}MP Battania Bastard Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="sturgian_pommel_12"
+		length="5.1"
+		weight="0.17"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_sword_pommel"
+		name="{=!}MP Battania Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="sturgian_pommel_1"
+		length="3.539"
+		weight="0.150"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_short_sword_pommel"
+		name="{=!}MP Battania Short Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="cleaver_pommel_3"
+		length="7.8"
+		weight="0.15">
+		<BuildData
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_sword_pommel"
+		name="{=!}MP Battania 2hander Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="cleaver_pommel_2"
+		length="6.692"
+		weight="0.14"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2h_long_sword_pommel"
+		name="{=!}MP Battania Long 2hander Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="battania_pommel_8"
+		length="2.5"
+		weight="0.14"></CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_dagger_pommel"
+		name="{=!}MP Throwing Knifex Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="khuzait_pommel_5"
+		length="7.268"
+		weight="0.2"></CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_two_handed_sword_pommel"
+		name="{=!}MP Vlandian Noble Twohander Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="battania_pommel_1"
+		length="4.027"
+		weight="0.12"></CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_bastard_sword_pommel"
+		name="{=!}MP Vlandian Bastard Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_7"
+		length="5.231"
+		weight="0.12">
+		<BuildData
+			next_piece_offset="-0.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_noble_bastard_sword_pommel"
+		name="{=!}MP Vlandian Noble Bastard Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="vlandian_pommel_2"
+		length="7.9"
+		weight="0.17">
+		<BuildData
+			next_piece_offset="0.1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_sword_pommel"
+		name="{=!}MP Test Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="empire_pommel_4"
+		length="6.795"
+		weight="0.16"></CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hsword_pommel"
+		name="{=!}MP Test 2hander Sword Pommel"
+		tier="2"
+		piece_type="Pommel"
+		mesh="cleaver_pommel_4"
+		length="1.07"
+		weight="0.08"></CraftingPiece>
+	<!-- #endregion -->
+	<!-- #endregion -->
+	<!-- #region Dagger Pieces -->
+	<!-- #endregion -->
+	<!-- #region Axe Pieces -->
+	<!-- #region Axe Blade Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_billhook_head"
+		name="{=!}Mp Valndian Billhook Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_33"
+		length="35.5"
+		weight="0.55"
+		excluded_item_usage_features="shield:thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="1.9" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_light_axe_head"
+		name="{=!}MP Khuzait Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_27_head"
+		distance_to_next_piece="8.3"
+		distance_to_previous_piece="3.1"
+		weight="0.46">
+		<BuildData
+			piece_offset="-6.2" />
+		<BladeData
+			stack_amount="3"
+			blade_length="16.562"
+			blade_width="13.626"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+		<Materials>
+			<Material
+				id="Iron2"
+				count="4" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_2haxe_head"
+		name="{=!}Mp Empire 2h Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_22_head"
+		distance_to_next_piece="7"
+		distance_to_previous_piece="1.6"
+		weight="0.4">
+		<BuildData
+			piece_offset="-4" />
+		<BladeData
+			stack_amount="3"
+			blade_length="18.481"
+			blade_width="30.384"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Blunt"
+				damage_factor="1.2" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_short_2axe_head"
+		name="{=!}Mp Empire Short 2h Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_6_head"
+		distance_to_next_piece="18.597"
+		distance_to_previous_piece="3.996"
+		weight="1.04">
+		<BuildData
+			piece_offset="-7.992" />
+		<BladeData
+			stack_amount="3"
+			blade_length="24.612"
+			blade_width="24.998"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.8" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_halberd_head"
+		name="{=!}Mp Vlandian Halberd Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_17_head"
+		distance_to_next_piece="21"
+		distance_to_previous_piece="3.8"
+		weight="0.65">
+		<!--Herbert-->
+		<BuildData
+			piece_offset="-7.6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="33.887"
+			blade_width="22.47"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.45" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_throwing_axe_head"
+		name="{=!}Mp Vlandian Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_4_head"
+		distance_to_next_piece="5.787"
+		distance_to_previous_piece="1.483"
+		weight="0.9">
+		<BuildData
+			piece_offset="-2.966" />
+		<BladeData
+			stack_amount="3"
+			blade_length="10.566"
+			blade_width="19.257"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.4" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_throwing_axe_head_extra"
+		name="{=!}Mp Vlandian Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_4_head"
+		distance_to_next_piece="5.787"
+		distance_to_previous_piece="1.483"
+		weight="0.9">
+		<BuildData
+			piece_offset="-2.966" />
+		<BladeData
+			stack_amount="3"
+			blade_length="10.566"
+			blade_width="19.257"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.4" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battanian_throwing_axe_head"
+		name="{=!}Mp Battanian Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_4_head"
+		distance_to_next_piece="5.787"
+		distance_to_previous_piece="1.483"
+		weight="0.9">
+		<BuildData
+			piece_offset="-2.966" />
+		<BladeData
+			stack_amount="3"
+			blade_length="10.566"
+			blade_width="19.257"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Thrust
+				damage_type="Cut"
+				damage_factor="0.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="1.4" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_2haxe_head"
+		name="{=!}Mp Aserai 2h Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_16_head"
+		distance_to_next_piece="28.8"
+		distance_to_previous_piece="6"
+		weight="0.6">
+		<BuildData
+			piece_offset="-12" />
+		<BladeData
+			stack_amount="3"
+			blade_length="57.435"
+			blade_width="23.337"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_strong_2haxe_head"
+		name="{=!}Mp Aserai Strong 2h Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_16_head"
+		distance_to_next_piece="28.8"
+		distance_to_previous_piece="6"
+		weight="0.7">
+		<BuildData
+			piece_offset="-12" />
+		<BladeData
+			stack_amount="3"
+			blade_length="57.435"
+			blade_width="23.337"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_throwing_axe_head"
+		name="{=!}Mp Sturgia Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_13_head"
+		distance_to_next_piece="2.7"
+		distance_to_previous_piece="1.6"
+		weight="0.5">
+		<BuildData
+			piece_offset="-3.2" />
+		<BladeData
+			stack_amount="3"
+			blade_length="8.707"
+			blade_width="16.898"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_throwing_axe_head_captain"
+		name="{=!}Mp Sturgia Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_13_head"
+		distance_to_next_piece="2.7"
+		distance_to_previous_piece="1.6"
+		weight="0.5">
+		<BuildData
+			piece_offset="-3.2" />
+		<BladeData
+			stack_amount="4"
+			blade_length="8.707"
+			blade_width="16.898"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_throwing_axe_head"
+		name="{=!}Mp Aserai Throwing Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_13_head"
+		distance_to_next_piece="2.7"
+		distance_to_previous_piece="1.6"
+		weight="0.581">
+		<BuildData
+			piece_offset="-3.2" />
+		<BladeData
+			stack_amount="2"
+			blade_length="8.707"
+			blade_width="16.898"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b"
+			holster_mesh="throwing_axe_quiver_1">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.85" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_axe_head"
+		name="{=!}MP Battania Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_23_head"
+		distance_to_next_piece="3"
+		distance_to_previous_piece="5.3"
+		weight="0.5">
+		<BuildData
+			piece_offset="-10.6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="24.97"
+			blade_width="20.661"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_axe_head"
+		name="{=!}Mp Sturgia Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_2_head"
+		distance_to_next_piece="3.986"
+		distance_to_previous_piece="2.314"
+		weight="0.5">
+		<BuildData
+			piece_offset="-5.628" />
+		<BladeData
+			stack_amount="3"
+			blade_length="12.2"
+			blade_width="24.433"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_a">
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_heavy_axe_head"
+		name="{=!}Mp Sturgia Heavy Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_33_head"
+		distance_to_next_piece="7.2"
+		distance_to_previous_piece="3"
+		weight="0.45">
+		<BuildData
+			piece_offset="-6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="12.564"
+			blade_width="15.1"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.5" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_noble_axe_head"
+		name="{=!}Mp Sturgia Noble Axe Head"
+		tier="3"
+		piece_type="Blade"
+		mesh="axe_craft_36_head"
+		distance_to_next_piece="10.4"
+		distance_to_previous_piece="3.4"
+		weight="0.4">
+		<BuildData
+			piece_offset="-6.8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="15.764"
+			blade_width="16"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.85" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_axe_head"
+		name="{=!}MP Sturgia Cavalry Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_8_head"
+		distance_to_next_piece="11.156"
+		distance_to_previous_piece="1.96"
+		weight="0.45">
+		<BuildData
+			piece_offset="-3.92" />
+		<BladeData
+			stack_amount="3"
+			blade_length="22.332"
+			blade_width="23.205"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.85" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_2haxe_head"
+		name="{=!}MP Sturgia 2Handed Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_7_head"
+		distance_to_next_piece="14.96"
+		distance_to_previous_piece="2.712"
+		weight="0.6">
+		<BuildData
+			piece_offset="-5.424" />
+		<BladeData
+			stack_amount="3"
+			blade_length="28.366"
+			blade_width="28.192"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.1" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_woodcutters_axe_head"
+		name="{=!}MP Battania Woodcutters Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_5_head"
+		distance_to_next_piece="3.414"
+		distance_to_previous_piece="2.617"
+		weight="0.8">
+		<BuildData
+			piece_offset="-5.234" />
+		<BladeData
+			stack_amount="3"
+			blade_length="13.105"
+			blade_width="27.618"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.7" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_axe_head"
+		name="{=!}MP Empire Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_33_head"
+		distance_to_next_piece="7.2"
+		distance_to_previous_piece="3"
+		weight="0.7">
+		<BuildData
+			piece_offset="-6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="12.564"
+			blade_width="15.1"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Blunt"
+				damage_factor="2.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.85" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_axe_head"
+		name="{=!}Kampoks Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_36_head"
+		distance_to_next_piece="10.4"
+		distance_to_previous_piece="3.4"
+		weight="0.7">
+		<BuildData
+			piece_offset="-6.8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="15.764"
+			blade_width="16"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_battle_axe_head"
+		name="{=!}MP Empire Battle Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_25_head"
+		distance_to_next_piece="13.9"
+		distance_to_previous_piece="4"
+		weight="0.5">
+		<BuildData
+			piece_offset="-8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="25.328"
+			blade_width="31.023"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Blunt"
+				damage_factor="2.0" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.1" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_bastard_axe_head"
+		name="{=!}MP Western Bastard Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_18_head"
+		distance_to_next_piece="3.4"
+		distance_to_previous_piece="1.3"
+		weight="0.6">
+		<BuildData
+			piece_offset="-2.6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="11.4"
+			blade_width="17.4"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_axe_head"
+		name="{=!}MP Aserai Axe Craft Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_33_head"
+		distance_to_next_piece="7.2"
+		distance_to_previous_piece="3"
+		weight="0.6">
+		<BuildData
+			piece_offset="-6" />
+		<BladeData
+			stack_amount="3"
+			blade_length="12.564"
+			blade_width="15.1"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.55" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_hatchet_axe_head"
+		name="{=!}MP Hatchet Axe Craft Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_21_head"
+		distance_to_next_piece="2.6"
+		distance_to_previous_piece="2"
+		weight="0.7">
+		<BuildData
+			piece_offset="-4" />
+		<BladeData
+			stack_amount="3"
+			blade_length="9.382"
+			blade_width="18.004"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.5" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturiga_woodsplitter_axe_head"
+		name="{=!}MP Sturgia Woodsplitter Axe"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_12_head"
+		distance_to_next_piece="5"
+		distance_to_previous_piece="1.5"
+		weight="0.65">
+		<BuildData
+			piece_offset="-3" />
+		<BladeData
+			stack_amount="3"
+			blade_length="11.622"
+			blade_width="23.945"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.25" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_axe_head"
+		name="{=!}MP Vlandain Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_20_head"
+		distance_to_next_piece="3.6"
+		distance_to_previous_piece="2.7"
+		weight="0.5">
+		<BuildData
+			piece_offset="-5.4" />
+		<BladeData
+			stack_amount="3"
+			blade_length="9.683"
+			blade_width="18.004"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.95" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_2haxe_head"
+		name="{=!}MP Sturgia Long 2Handed Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_3_head"
+		distance_to_next_piece="13.057"
+		distance_to_previous_piece="2.314"
+		weight="0.6">
+		<BuildData
+			piece_offset="-4.628" />
+		<BladeData
+			stack_amount="3"
+			blade_length="23.005"
+			blade_width="22.407"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.8" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_axe_head"
+		name="{=!}MP Test Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_2_head"
+		distance_to_next_piece="3.986"
+		distance_to_previous_piece="2.314"
+		weight="0.6">
+		<BuildData
+			piece_offset="-5.628" />
+		<BladeData
+			stack_amount="3"
+			blade_length="12.2"
+			blade_width="24.433"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_a">
+			<Thrust
+				damage_type="Blunt"
+				damage_factor="2.8" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.5" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2haxe_head"
+		name="{=!}MP Test Axe Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_7_head"
+		distance_to_next_piece="14.96"
+		distance_to_previous_piece="2.712"
+		weight="0.45">
+		<BuildData
+			piece_offset="-5.424" />
+		<BladeData
+			stack_amount="3"
+			blade_length="28.366"
+			blade_width="28.192"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Blunt"
+				damage_factor="1.2" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.1" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Axe Handle Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_billhook_handle"
+		name="{=!}MP Vlandia Billhok Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_14"
+		length="160"
+		weight="0.5">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_hatchet_axe_handle"
+		name="{=!}MP Hatchet Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_6"
+		length="56.2"
+		weight="0.7"
+		item_holster_pos_shift="0,0,0.2">
+		<BuildData
+			piece_offset="15" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_2haxe_handle"
+		name="{=!}MP Empire 2h Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_1_handle"
+		length="157.6"
+		weight="0.8"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="37.408"
+			next_piece_offset="1.42" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_short_2haxe_handle"
+		name="{=!}MP Empire short 2h Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_10_handle"
+		length="132"
+		weight="0.3">
+		<BuildData
+			piece_offset="28.87"
+			next_piece_offset="2.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battanian_throwing_axe_handle"
+		name="{=!}MP Battanian Throwing Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_12_handle"
+		length="60"
+		weight="0.15">
+		<BuildData
+			piece_offset="17.2"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_throwing_axe_handle"
+		name="{=!}MP Vlandian Throwing Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_11_handle"
+		length="60"
+		weight="0.15">
+		<BuildData
+			piece_offset="17.2"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_throwing_axe_handle_extra"
+		name="{=!}MP Vlandian Extra Throwing Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_11_handle"
+		length="60"
+		weight="0.15">
+		<BuildData
+			piece_offset="17.2"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_2haxe_handle"
+		name="{=!}MP Aserai 2h Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_8_handle"
+		length="116"
+		weight="0.5">
+		<BuildData
+			piece_offset="25.86"
+			next_piece_offset="1" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_strong_2haxe_handle"
+		name="{=!}MP Aserai Strong 2h Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_4_handle"
+		length="157.5"
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="26.879"
+			next_piece_offset="1.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_axe_handle"
+		name="{=!}MP Empire Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_24_handle"
+		length="115"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.15">
+		<BuildData
+			piece_offset="31"
+			next_piece_offset="2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_axe_handle"
+		name="{=!}MP Heavy Empire Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_25_handle"
+		length="80"
+		weight="0.6">
+		<BuildData
+			piece_offset="20"
+			next_piece_offset="1.835" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_axe_handle_new2"
+		name="{=!}MP Empire Axe Handle new2"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_21_handle"
+		length="94"
+		weight="0.296">
+		<BuildData
+			piece_offset="21"
+			next_piece_offset="1.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_axe_handle_new3"
+		name="{=!}MP Empire Axe Handle new3"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_22_handle"
+		length="96"
+		weight="0.296">
+		<BuildData
+			piece_offset="21"
+			next_piece_offset="1.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_axe_handle_new4"
+		name="{=!}MP Empire Axe Handle new4"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_23_handle"
+		length="98"
+		weight="0.296">
+		<BuildData
+			piece_offset="21"
+			next_piece_offset="1.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_battle_axe_handle"
+		name="{=!}MP Empire Battle Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_24_handle"
+		length="110"
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.15">
+		<BuildData
+			piece_offset="31"
+			next_piece_offset="2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_bastard_axe_handle"
+		name="{=!}MP Vlandia Bastard Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_24_handle"
+		length="115"
+		weight="0.7"
+		item_holster_pos_shift="0,0,-0.15">
+		<BuildData
+			piece_offset="31"
+			next_piece_offset="2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_axe_handle"
+		name="{=!}MP Aserai Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_17_handle"
+		length="91.3"
+		weight="0.6">
+		<BuildData
+			piece_offset="27"
+			next_piece_offset="8" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_throwing_axe_handle"
+		name="{=!}MP Strugia Throwing Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_12_handle"
+		length="70"
+		weight="0.234">
+		<BuildData
+			piece_offset="8.175"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_throwing_axe_handle"
+		name="{=!}MP Aserai Throwing Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_12_handle"
+		length="70"
+		weight="0.234">
+		<BuildData
+			piece_offset="8.175"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_axe_handle"
+		name="{=!}MP Battania Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_21_handle"
+		length="94"
+		weight="0.35">
+		<BuildData
+			piece_offset="30"
+			next_piece_offset="1.835" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_axe_handle"
+		name="{=!}MP Sturgia Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_22_handle"
+		length="96"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="28"
+			next_piece_offset="2.44" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_cavalry_axe_handle"
+		name="{=!}MP Sturgia Cavalry Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_24_handle"
+		length="110"
+		weight="0.45"
+		item_holster_pos_shift="0,0,-0.2">
+		<BuildData
+			piece_offset="31"
+			next_piece_offset="2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_heavy_axe_handle"
+		name="{=!}MP Strugia Heavy Axe Hanlde"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_23_handle"
+		length="98"
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.2">
+		<BuildData
+			piece_offset="33"
+			next_piece_offset="1.835" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_woodcutters_axe_handle"
+		name="{=!}MP Battania Woodcutters Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_7_handle"
+		length="124.3"
+		weight="0.5"
+		excluded_item_usage_features="widegrip">
+		<BuildData
+			piece_offset="23.87"
+			next_piece_offset="1.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_2haxe_handle"
+		name="{=!}MP Strugia Twohanded Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_4_handle"
+		length="157.5"
+		weight="0.5"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="36.879"
+			next_piece_offset="1.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_halberd_handle"
+		name="{=!}MP Strugia Twohanded Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_4_handle"
+		length="157.5"
+		weight="0.55"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="36.879"
+			next_piece_offset="1.6" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturiga_woodsplitter_axe_handle"
+		name="{=!}MP Sturgia Woodsplitters Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_2"
+		length="87.1"
+		weight="0.5"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="14.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_axe_handle"
+		name="{=!}MP Vlandian Axe Handle"
+		tier="1"
+		piece_type="Handle"
+		mesh="axe_craft_3_handle"
+		length="80.6"
+		weight="0.3">
+		<BuildData
+			piece_offset="22"
+			next_piece_offset="2.29" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_2haxe_handle"
+		name="{=!}MP Strugia Long Twohanded Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_6_handle"
+		length="157.3"
+		weight="0.5"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="36.87"
+			next_piece_offset="1.122" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_axe_handle"
+		name="{=!}MP Test Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_2_handle"
+		length="84"
+		weight="0.4">
+		<BuildData
+			piece_offset="23"
+			next_piece_offset="1.835" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2haxe_handle"
+		name="{=!}MP Test Axe Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_6_handle"
+		length="157.3"
+		weight="0.6"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="36.87"
+			next_piece_offset="1.122" />
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #endregion -->
+	<!-- #region Polearm Pieces -->
+	<!-- #region Polearm Blade Pieces -->
+	<CraftingPiece
+		id="mp_khuzait_throwing_spear_blade"
+		name="{=!}Mp Khuzait Throwing Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_13"
+		length="50.864"
+		weight="0.65"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="1"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh=""
+			holster_body_name="">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_ash_throwing_spear_blade"
+		name="{=!}Mp Ash Throwing Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_42"
+		length="42"
+		weight="0.5"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="1"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh=""
+			holster_body_name="">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_ash_throwing_spear_blade_extra"
+		name="{=!}Mp Ash Throwing Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_42"
+		length="42"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh=""
+			holster_body_name="">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_extra_throwing_spear_blade"
+		name="{=!}Mp Khuzait Throwing Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_13"
+		length="51"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_blade"
+		name="{=!}Mp Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.43"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_blade_extraammo"
+		name="{=!}Mp Javelin Blade (Extra Ammo)"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.43"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="6"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_blade_captain"
+		name="{=!}Mp Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="5"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_blade_extraammo_captain"
+		name="{=!}Mp Javelin Blade (Extra Ammo)"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="10"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_light_javelin_blade"
+		name="{=!}Mp Light Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_9"
+		length="23.328"
+		weight="0.45"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_1"
+			holster_body_name="bo_throwing_spear_quiver_3_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.13" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_plumbata_blade"
+		name="{=!}Plumbata"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_37"
+		length="23.7"
+		weight="0.80"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="4"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_5"
+			holster_body_name="bo_throwing_spear_quiver_5">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_pilum_blade"
+		name="{=!}Mp Pilum Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="2"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_pilum_blade_extraammo"
+		name="{=!}Mp Pilum Blade (Extra Ammo)"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.2"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="4"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_jereed_blade"
+		name="{=!}Mp Jereed Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="67.2"
+		weight="0.6"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="4"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2"
+			holster_mesh_length="94.6">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.55" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_jereed_blade_extra"
+		name="{=!}Mp Extra Jereed Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="67.2"
+		weight="0.6"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="6"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2"
+			holster_mesh_length="94.6">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.55" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_jereed_blade_captain"
+		name="{=!}Mp Jereed Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="67.2"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="9"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2"
+			holster_mesh_length="94.6">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_jereed_blade_extra_captain"
+		name="{=!}Mp Extra Jereed Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="67.2"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="14"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2"
+			holster_mesh_length="94.6">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade"
+		name="{=!}Mp Sturgia Harpoon Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.22"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade_extra"
+		name="{=!}Mp Sturgia Harpoon Extra Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.23"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="6"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.3" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade_strong"
+		name="{=!}Mp Sturgia Harpoon Strong Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.25"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.58" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade_captain"
+		name="{=!}Mp Sturgia Harpoon Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.1"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="5"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade_extra_captain"
+		name="{=!}Mp Sturgia Harpoon Extra Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.1"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="10"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_blade_strong_captain"
+		name="{=!}Mp Sturgia Harpoon Strong Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_38"
+		length="23.7"
+		weight="0.1"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="5"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_3_2"
+			holster_body_name="bo_throwing_spear_quiver_3_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_javelin_blade"
+		name="{=!}Mp Battania Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.33"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.77" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_javelin_blade_captain"
+		name="{=!}Mp Battania Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.2"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="5"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_javelin_blade_extra"
+		name="{=!}Mp Battania Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.33"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="7"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.77" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_javelin_blade_extra_captain"
+		name="{=!}Mp Battania Javelin Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.2"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="10"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.1" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_spear_blade"
+		name="{=!}MP Western Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_1"
+		length="48.226"
+		weight="0.45"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.05" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_long_spear_blade"
+		name="{=!}MP Western Long Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_2"
+		length="47.843"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_cavalry_spear_blade"
+		name="{=!}MP Western Cavalry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_1"
+		length="48.226"
+		weight="0.15"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_pitchfork_metal_blade"
+		name="{=!}MP Western Pitchfork Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_32"
+		length="32.7"
+		weight="1.15"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_pitchfork_wood_blade"
+		name="{=!}Fork Head"
+		tier="1"
+		piece_type="Blade"
+		mesh="spear_blade_29"
+		length="42.5"
+		weight="0.9"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.55" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_pike_blade"
+		name="{=!}MP Vlandian Pike Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="67.2"
+		weight="0.6"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_pike_blade"
+		name="{=!}MP Battania Pike Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_39"
+		length="54.2"
+		weight="0.6">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_pike_blade"
+		name="{=!}MP Aserai Pike Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_27"
+		length="69.5"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_2"
+			holster_body_name="bo_throwing_spear_quiver_2">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.9" />
+		</BladeData>
+		<Materials>
+			<Material
+				id="FineSteel"
+				count="3" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_long_lance_blade"
+		name="{=!}Mp Western Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.12" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_lance_blade"
+		name="{=!}Mp Western Long Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.22"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_heavy_lance_blade"
+		name="{=!}Mp Vlandian Heavy Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_4"
+		length="72.558"
+		weight="0.85"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_spear_blade"
+		name="{=!}Mp Khuzait Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_36"
+		length="42"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_spear_blade"
+		name="{=!}Mp Khuzait Cavalry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_36"
+		length="42"
+		weight="0.55"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_lance_blade"
+		name="{=!}Mp Khuzait Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_36"
+		length="42"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_lance_blade_heavy"
+		name="{=!}Mp Khuzait Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_36"
+		length="42"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_pike_blade"
+		name="{=!}Mp Khuzait Pike Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_41"
+		length="53.2"
+		weight="0.6"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_polearm_head"
+		name="{=!}Mp Vlandian Polearm Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_10_head"
+		distance_to_next_piece="23"
+		distance_to_previous_piece="4"
+		weight="0.5">
+		<BuildData
+			piece_offset="-8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="23.118"
+			blade_width="18.371"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.9" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.9" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_menavlion_blade"
+		name="{=!}MP Empire Menavlion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_18"
+		length="70.4"
+		weight="0.4">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_cavalry_menavlion_blade"
+		name="{=!}MP Empire Cavalry Menavlion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_18"
+		length="70.4"
+		weight="0.5">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_menavlion_blade"
+		name="{=!}MP Empire Long Menavlion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_18"
+		length="70.4"
+		weight="0.3">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.7" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanHook" />
+			<Flag
+				name="CanDismount" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_menavlion_blade"
+		name="{=!}MP Empire Heavy Menavlion Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_18"
+		length="70.4"
+		weight="0.5">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.8" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanCrushThrough" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_polearm_blade"
+		name="{=!}MP Empire Polearm Blade"
+		tier="1"
+		piece_type="Blade"
+		mesh="spear_blade_23"
+		length="42.5"
+		weight="0.4">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.5" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="2.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_glaive_blade"
+		name="{=!}Mp Khuzait Glaive Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_19"
+		length="43.7"
+		weight="0.4">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.7" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanHook" />
+			<Flag
+				name="CanDismount" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_glaive_blade"
+		name="{=!}Mp Khuzait Heavy Glaive Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_19"
+		length="43.7"
+		weight="0.6">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.0" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanHook" />
+			<Flag
+				name="CanDismount" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_scythe_blade"
+		name="{=!}Scythe Blade"
+		tier="1"
+		piece_type="Blade"
+		mesh="spear_blade_31"
+		length="7"
+		weight="1.3"
+		excluded_item_usage_features="shield:thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="1.55" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_2h_sickle_blade"
+		name="{=!}Sickle Blade"
+		tier="1"
+		piece_type="Blade"
+		mesh="sickle_blade_1"
+		length="38.5"
+		weight="0.9"
+		full_scale="true"
+		excluded_item_usage_features="shield:thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Pierce"
+				damage_factor="1.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_shovel_blade"
+		name="{=!}Shovel Head"
+		tier="1"
+		piece_type="Blade"
+		mesh="spear_blade_28"
+		length="29.7"
+		weight="1.2"
+		excluded_item_usage_features="shield:thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="0.9" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sichel_blade"
+		name="{=!}MP Khuzait Sichel Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_12"
+		length="63"
+		weight="0.63">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_short_spear_blade"
+		name="{=!}MP Khuzait Short Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_35"
+		length="41.3"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_5_1"
+			holster_body_name="bo_throwing_spear_quiver_5_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_long_spear_blade"
+		name="{=!}Mp Khuzait Long Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_long_infantry_spear_blade"
+		name="{=!}Mp Khuzait Long Infantry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.7"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_lance_blade"
+		name="{=!}Mp Empire Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_7"
+		length="52.924"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_lance_blade"
+		name="{=!}Mp Empire Heavy Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_8"
+		length="60.2"
+		weight="0.62"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.8" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_spear_blade"
+		name="{=!}Mp Aserai Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_8"
+		length="60.2"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_bamboo_spear_blade"
+		name="{=!}Mp Aserai Bamboo Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_6"
+		length="86.4"
+		weight="0.5"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_spear_blade"
+		name="{=!}MP Aserai Long Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_11"
+		length="34.6"
+		weight="0.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_bamboo_lance_blade"
+		name="{=!}Mp Aserai Bamboo Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_6"
+		length="81"
+		weight="1.0"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_heavy_lance_blade"
+		name="{=!}Mp Aserai Heavy Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_8"
+		length="60.2"
+		weight="1.45"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_spear_blade"
+		name="{=!}Mp Sturgia Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_15"
+		length="22.862"
+		weight="0.2"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1_1"
+			holster_body_name="bo_throwing_spear_quiver_1_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_spear_blade"
+		name="{=!}Mp Sturgia Long Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_2"
+		length="47.843"
+		weight="0.5"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_infantry_spear_blade"
+		name="{=!}Mp Sturgia Long Infantry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_2"
+		length="47.843"
+		weight="0.5"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.25" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_short_spear_blade"
+		name="{=!}Mp Sturgia Short Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_42"
+		length="42"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4_1"
+			holster_body_name="bo_throwing_spear_quiver_4_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1.75" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_lance_blade"
+		name="{=!}Mp Sturgia Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_11"
+		length="34.6"
+		weight="1.0"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_lance_blade"
+		name="{=!}Mp Sturgia Long Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_42"
+		length="42"
+		weight="1.0456"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4_1"
+			holster_body_name="bo_throwing_spear_quiver_4_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_heavy_lance_blade"
+		name="{=!}Mp Sturgia Heavy Lance Blade"
+		tier="5"
+		piece_type="Blade"
+		mesh="spear_blade_13"
+		length="50.864"
+		weight="1.4"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.6" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_spear_blade"
+		name="{=!}Mp Battania Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_42"
+		length="42"
+		weight="0.2"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4_1"
+			holster_body_name="bo_throwing_spear_quiver_4_1">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_spear_blade"
+		name="{=!}Mp Battania Long Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_40"
+		length="42"
+		weight="0.25"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_infantry_spear_blade"
+		name="{=!}Mp Battania Long Infantry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_40"
+		length="42"
+		weight="0.25"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_cavalry_spear_blade"
+		name="{=!}Mp Battania Cavalry Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_10"
+		length="39.775"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="5"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_1"
+			holster_body_name="bo_throwing_spear_quiver_1"
+			holster_mesh_length="68.9">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_lance_blade"
+		name="{=!}Mp Battania Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_41"
+		length="53.2"
+		weight="0.6"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_polearm_falx_blade"
+		name="{=!}Mp Battania Polearm Falx Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="battania_blade_6"
+		length="95.6"
+		weight="1.0"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="metal_weapon"
+			body_name="bo_sword_one_handed">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.5" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_great_spear_blade"
+		name="{=!}Mp Sturgia Great Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_3"
+		length="57.143"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_polearm_head"
+		name="{=!}MP Test Polearm Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="axe_craft_10_head"
+		distance_to_next_piece="23"
+		distance_to_previous_piece="4"
+		weight="0.8">
+		<BuildData
+			piece_offset="-8" />
+		<BladeData
+			stack_amount="3"
+			blade_length="23.118"
+			blade_width="18.371"
+			physics_material="metal_weapon"
+			body_name="bo_axe_longer_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+			<Swing
+				damage_type="Cut"
+				damage_factor="4.6" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanBePickedUpFromCorpse"
+				type="ItemFlags" />
+			<Flag
+				name="BonusAgainstShield" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_spear_blade"
+		name="{=!}Mp Test Spear Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_5"
+		length="52.242"
+		weight="0.35"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.0" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_pike_blade"
+		name="{=!}Mp Test Pike Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_1"
+		length="48.226"
+		weight="0.3"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2.2" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_lance_blade"
+		name="{=!}Mp Test Lance Blade"
+		tier="2"
+		piece_type="Blade"
+		mesh="spear_blade_14"
+		length="46.28"
+		weight="0.5"
+		excluded_item_usage_features="swing">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_spear_b"
+			holster_mesh="throwing_spear_quiver_4"
+			holster_body_name="bo_throwing_spear_quiver_4">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="2" />
+		</BladeData>
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Polearm Guard Pieces -->
+	<CraftingPiece
+		id="mp_spear_guard_1"
+		name="{=!}mp_spear_guard_1"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_1"
+		culture="Culture.empire"
+		length="5.7"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_2"
+		name="{=!}mp_spear_guard_2"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_2"
+		culture="Culture.empire"
+		length="5.5"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_3"
+		name="{=!}mp_spear_guard_3"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_3"
+		culture="Culture.empire"
+		length="12.5"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_4"
+		name="{=!}mp_spear_guard_4"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_4"
+		culture="Culture.empire"
+		length="6.2"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_5"
+		name="{=!}mp_spear_guard_5"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_5"
+		culture="Culture.empire"
+		length="7.7"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_6"
+		name="{=!}mp_spear_guard_6"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_6"
+		culture="Culture.empire"
+		length="8.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_7"
+		name="{=!}mp_spear_guard_7"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_7"
+		culture="Culture.empire"
+		length="7.4"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_8"
+		name="{=!}mp_spear_guard_8"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_8"
+		culture="Culture.empire"
+		length="5.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_9"
+		name="{=!}mp_spear_guard_9"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_9"
+		culture="Culture.empire"
+		length="5.3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_10"
+		name="{=!}mp_spear_guard_10"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_10"
+		culture="Culture.empire"
+		length="4.5"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_11"
+		name="{=!}mp_spear_guard_11"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_11"
+		culture="Culture.empire"
+		length="8.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_12"
+		name="{=!}mp_spear_guard_12"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_12"
+		culture="Culture.empire"
+		length="14.3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_13"
+		name="{=!}mp_spear_guard_13"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_13"
+		culture="Culture.empire"
+		length="11.3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_14"
+		name="{=!}mp_spear_guard_14"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_14"
+		culture="Culture.empire"
+		length="9"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_15"
+		name="{=!}mp_spear_guard_15"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_15"
+		culture="Culture.empire"
+		length="2.6"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_16"
+		name="{=!}mp_spear_guard_16"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_16"
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_17"
+		name="{=!}mp_spear_guard_17"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_17"
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_18"
+		name="{=!}mp_spear_guard_18"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_18"
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_19"
+		name="{=!}mp_spear_guard_19"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_19"
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_guard_20"
+		name="{=!}mp_spear_guard_20"
+		tier="2"
+		piece_type="Guard"
+		mesh="spear_guard_20"
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Polearm Handle Pieces -->
+	<CraftingPiece
+		id="mp_test_spear_handle"
+		name="{=!}Mp Test Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="194"
+		weight="1.2"
+		excluded_item_usage_features="long"
+		item_holster_pos_shift="0,0,0.10">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_pike_handle"
+		name="{=!}Mp Test Pike Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_7"
+		length="295"
+		weight="2"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="39.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_lance_handle"
+		name="{=!}Mp Test Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="1.85"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_polearm_handle"
+		name="{=!}MP Vlandia Polearm Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_1_handle"
+		length="157.6"
+		weight="1.4"
+		item_holster_pos_shift="0,0,-0.1"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="37.408"
+			next_piece_offset="1.42" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_menavlion_handle"
+		name="{=!}Mp Empire Menavlion Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_28"
+		length="180"
+		weight="1.8"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_cavalry_menavlion_handle"
+		name="{=!}Mp Empire Cavalry Menavlion Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_28"
+		length="180"
+		weight="2.3"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_long_menavlion_handle"
+		name="{=!}Mp Empire Long Menavlion Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_menavlion_handle"
+		name="{=!}Mp Empire Heavy Menavlion Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_13"
+		length="228"
+		weight="1"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_polearm_handle"
+		name="{=!}MP Empire Polearm Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_1"
+		length="149"
+		weight="2.2"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="36.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_plumbata_handle"
+		name="{=!}MP Plumbata Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_11_handle"
+		length="60"
+		weight="0.226"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="7.2"
+			next_piece_offset="4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_great_spear_handle"
+		name="{=!}Mp Sturgia Great Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.25"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_throwing_spear_handle"
+		name="{=!}MP Khuzait Throwing Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_ash_throwing_spear_handle"
+		name="{=!}MP Ash Throwing Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_13"
+		length="228"
+		weight="0.9"
+		CraftingCost="110">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_spear_handle"
+		name="{=!}Mp Western Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="0.85"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_long_spear_handle"
+		name="{=!}MP Western Long Spar Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_13"
+		length="228"
+		weight="1.15"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_pitchfork_handle"
+		name="{=!}Mp Short Western Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_8"
+		length="230"
+		weight="1.2"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9"
+			next_piece_offset="2.0" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_spear_handle"
+		name="{=!}Mp Aserai Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1.292"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_spear_handle"
+		name="{=!}Mp Battnia Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1.25"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_short_spear_handle"
+		name="{=!}Khuzait Short Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="0.98"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_glaive_handle"
+		name="{=!}Mp Khuzait Glaive Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1.4"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_glaive_handle"
+		name="{=!}Mp Khuzait Heavy Glaive Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="0.8"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_sichel_handle"
+		name="{=!}MP Khuzait Sichel Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_2"
+		length="85.1"
+		weight="0.7"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_pike_handle"
+		name="{=!}Mp Valandian Pike Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_7"
+		length="295"
+		weight="0.8"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="39.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_pike_handle"
+		name="{=!}MP Aserai Pike Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_7"
+		length="295"
+		weight="0.8"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="39.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_handle"
+		name="{=!}MP Javelin Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_2"
+		length="85.1"
+		weight="0.4"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_javelin_handle_extraammo"
+		name="{=!}MP Javelin Handle (Extra Ammo)"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_2"
+		length="85.1"
+		weight="0.4"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_light_javelin_handle"
+		name="{=!}MP Light Javelin Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_2"
+		length="85.1"
+		weight="0.4"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_pilum_handle"
+		name="{=!}MP Pilum Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="0.9"
+		excluded_item_usage_features="long"
+		item_holster_pos_shift="0,0,0.10">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_pilum_handle_extraammo"
+		name="{=!}MP Pilum Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1.3"
+		excluded_item_usage_features="long"
+		item_holster_pos_shift="0,0,0.10">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_lance_handle"
+		name="{=!}Western Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="2.3">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_western_long_lance_handle"
+		name="{=!}Mp Western Long Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_8"
+		length="230"
+		weight="1.7">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_heavy_lance_handle"
+		name="{=!}Mp Vlandian Heavy Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="2.8">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_lance_handle"
+		name="{=!}Mp Empire Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="0.9">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_lance_handle"
+		name="{=!}Mp Empire Heavy Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.7">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_lance_handle"
+		name="{=!}Mp Khuzait Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.8">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_long_spear_handle"
+		name="{=!}Mp Khuzait Long Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="0.90"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_spear_handle"
+		name="{=!}Mp Sturgia Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.0"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_short_spear_handle"
+		name="{=!}Mp Sturgia Short Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="0.9"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_long_spear_handle"
+		name="{=!}Mp Sturgia Long Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.0"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="29.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_pike_handle"
+		name="{=!}Mp Khuzait Pike Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_8"
+		length="230"
+		weight="1.7"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_pike_handle"
+		name="{=!}Mp Battania Pike Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_8"
+		length="230"
+		weight="1.7"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_bamboo_spear_handle"
+		name="{=!}Mp Aserai Bamboo Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_3"
+		length="180"
+		weight="1"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="17.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_long_spear_handle"
+		name="{=!}MP Aserai Long Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="1.2"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_spear_handle"
+		name="{=!}Mp Khuzait Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_4"
+		length="190"
+		weight="1"
+		item_holster_pos_shift="0,0,0.10"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="19.4" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_bamboo_lance_handle"
+		name="{=!}Mp Aserai Bamboo Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_3"
+		length="180"
+		weight="1.45">
+		<BuildData
+			piece_offset="17.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_heavy_lance_handle"
+		name="{=!}Mp Aserai Heavy Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.9">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_long_spear_handle"
+		name="{=!}Mp Long Spear Spear Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="1.0"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_lance_handle"
+		name="{=!}Mp Battania Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_5"
+		length="228"
+		weight="1.85">
+		<BuildData
+			piece_offset="22.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_jereed_handle"
+		name="{=!}Mp Jerred Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_10"
+		length="86.7"
+		weight="0.4"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_lance_handle"
+		name="{=!}Mp Sturgia Lance Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_6"
+		length="250"
+		weight="1.6">
+		<BuildData
+			piece_offset="24.9" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_harpoon_handle"
+		name="{=!}Mp Sturgia Harpoon Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_12"
+		length="91.5"
+		weight="0.5"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="9.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_javelin_handle"
+		name="{=!}Mp Battania Javelin Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="spear_handle_11"
+		length="90"
+		weight="0.4"
+		excluded_item_usage_features="long"></CraftingPiece>
+	<CraftingPiece
+		id="mp_test_polearm_handle"
+		name="{=!}MP Test Polearm Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_1_handle"
+		length="157.6"
+		weight="0.3"
+		item_holster_pos_shift="0,0,-0.1"
+		excluded_item_usage_features="long">
+		<BuildData
+			piece_offset="37.408"
+			next_piece_offset="1.42" />
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Polearm Pommel Pieces -->
+	<CraftingPiece
+		id="mp_spear_pommel_1"
+		name="{=!}mp_spear_pommel_1"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_1"
+		culture="Culture.empire"
+		length="1.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_2"
+		name="{=!}mp_spear_pommel_2"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_2"
+		culture="Culture.empire"
+		length="3.82"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_3"
+		name="{=!}mp_spear_pommel_3"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_3"
+		culture="Culture.empire"
+		length="15.3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_sspear_pommel_4"
+		name="{=!}mp_spear_pommel_4"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_4"
+		culture="Culture.empire"
+		length="6"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_5"
+		name="{=!}mp_spear_pommel_5"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_5"
+		culture="Culture.empire"
+		length="3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_6"
+		name="{=!}mp_spear_pommel_6"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_6"
+		culture="Culture.empire"
+		length="3.1"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_7"
+		name="{=!}mp_spear_pommel_7"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_7"
+		culture="Culture.empire"
+		length="19.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_8"
+		name="{=!}mp_spear_pommel_5"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_8"
+		culture="Culture.empire"
+		length="3.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_9"
+		name="{=!}mp_spear_pommel_9"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_9"
+		culture="Culture.empire"
+		length="2.9"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_10"
+		name="{=!}mp_spear_pommel_10"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_10"
+		culture="Culture.empire"
+		length="8.3"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_11"
+		name="{=!}mp_spear_pommel_11"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_11"
+		culture="Culture.empire"
+		length="10"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_12"
+		name="{=!}mp_spear_pommel_12"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_12"
+		culture="Culture.empire"
+		length="14.8"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_spear_pommel_13"
+		name="{=!}mp_spear_pommel_13"
+		tier="2"
+		piece_type="Pommel"
+		mesh="spear_pommel_13"
+		culture="Culture.empire"
+		length="29.7"
+		weight="0"></CraftingPiece>
+	<!-- #endregion -->
+	<!-- #endregion -->
+	<!-- #region Mace Pieces -->
+	<!-- #region Mace Blade Pieces -->
+	<CraftingPiece
+		id="mp_vlandian_mace_head"
+		name="{=!}Mp Vlandian Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_4"
+		length="16.5"
+		weight="0.85"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_cavalry_mace_head"
+		name="{=!}MP Vlandia Cavalry Mace"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_18"
+		length="8.4"
+		weight="0.65"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.55" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_cavalry_mace_head"
+		name="{=!}MP Aserai Cavalry Mace"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_19"
+		length="11"
+		weight="0.65"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.5" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_maul_head"
+		name="{=!}MP Aserai Maul Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_19"
+		length="11"
+		weight="0.65"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.5" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandian_military_pick_head"
+		name="{=!}MP Vlandian Military Pick Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_25"
+		length="35.5"
+		weight="0.658"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Cut"
+				damage_factor="3.65" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_heavy_mace_head"
+		name="{=!}Mp Empire Heavy Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_3"
+		length="18.181"
+		weight="0.7"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_cavalry_mace_head"
+		name="{=!}Mp Empire Cavalry Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_11"
+		length="18.3"
+		weight="0.7"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_mace_head"
+		name="{=!}Mp Empire Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_8"
+		length="7"
+		weight="0.6"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.3" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_mace_head"
+		name="{=!}Mp Khuzait Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_6"
+		length="11.4"
+		weight="1.0"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_mace_head"
+		name="{=!}Mp Khuzait Heavy Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_14"
+		length="20.8"
+		weight="0.7"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_mace_head"
+		name="{=!}Mp Khuzait Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_16"
+		length="16.5"
+		weight="0.7"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.45" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_mace_head"
+		name="{=!}MP Aserai Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_15"
+		length="13.5"
+		weight="0.6"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_heavy_mace_head"
+		name="{=!}MP Aserai Heavy Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_9"
+		length="16.7"
+		weight="0.95"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.7" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_hammer_head"
+		name="{=!}Mp Sturgia Hammer Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_24"
+		length="12.6"
+		weight="0.57"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.15" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_mace_head"
+		name="{=!}Mp Sturgia Mace Head"
+		tier="1"
+		piece_type="Blade"
+		mesh="mace_head_2"
+		length="17"
+		weight="0.65"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.1" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_mace_head"
+		name="{=!}Mp Battania Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_5"
+		length="25.5"
+		weight="0.9"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.4" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_mace_head"
+		name="{=!}MP Test Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_18"
+		length="8.4"
+		weight="0.8"
+		full_scale="true">
+		<!-- excluded_item_usage_features="thrust" -->
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Thrust
+				damage_type="Pierce"
+				damage_factor="1" />
+			<!-- 1.15 -->
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.35" />
+		</BladeData>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_2hhammer_head"
+		name="{=!}Mp Sturgia 2h Hammer Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_24"
+		length="12.6"
+		weight="1.3"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<!--WOOD-->
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.8" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanCrushThrough" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2hhammer_head"
+		name="{=!}MP Battania 2h Hammer Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="mace_head_5"
+		length="25.5"
+		weight="1.2"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.55" />
+		</BladeData>
+		<Flags>
+			<Flag
+				name="CanCrushThrough" />
+			<Flag
+				name="CanHook" />
+		</Flags>
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hmace_head"
+		name="{=!}Mp Test 2h Mace Head"
+		tier="2"
+		piece_type="Blade"
+		mesh="blacksmith_hammer_tip"
+		length="7.4"
+		weight="0.9"
+		full_scale="true"
+		excluded_item_usage_features="thrust">
+		<BuildData
+			piece_offset="-10"
+			next_piece_offset="0" />
+		<BladeData
+			stack_amount="3"
+			physics_material="wood_weapon"
+			body_name="bo_mace_a">
+			<Swing
+				damage_type="Blunt"
+				damage_factor="2.45" />
+		</BladeData>
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #region Mace Handle Pieces -->
+	<CraftingPiece
+		id="mp_vlandia_mace_handle"
+		name="{=!}MP Vlandian Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_11"
+		length="78"
+		weight="0.40">
+		<BuildData
+			piece_offset="18" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_heavy_mace_handle"
+		name="{=!}MP Khuazait Heavy Mace"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_15"
+		length="80"
+		weight="0.35">
+		<BuildData
+			piece_offset="18" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_heavy_mace_handle"
+		name="{=!}MP Aserai Heavy Mace"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_15"
+		length="80"
+		weight="0.4">
+		<BuildData
+			piece_offset="18" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_cavalry_mace_handle"
+		name="{=!}MP Vlandian Cavalry Mace"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_15"
+		length="80"
+		weight="0.5"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="30.2" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_vlandia_military_pick_handle"
+		name="{=!}MP Vlandian Military Pick Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_16"
+		length="80"
+		weight="0.5">
+		<BuildData
+			piece_offset="19.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_cavalry_mace_handle"
+		name="{=!}MP Aserai Cavalry Mace"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_15"
+		length="80"
+		weight="0.5"
+		item_holster_pos_shift="0,0,-0.15">
+		<BuildData
+			piece_offset="23.7" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_hammer_handle"
+		name="{=!}MP Strugia Hammer Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_1"
+		length="62.5"
+		weight="0.5">
+		<BuildData
+			piece_offset="18" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_mace_handle"
+		name="{=!}MP Sturgia Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_11"
+		length="78"
+		weight="0.4">
+		<BuildData
+			piece_offset="18" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_mace_handle"
+		name="{=!}MP Empire Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_12"
+		length="78"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="28.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_empire_cavalry_mace_handle"
+		name="{=!}MP Empire Cavalry Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_15"
+		length="80"
+		weight="0.55"
+		item_holster_pos_shift="0,0,-0.05">
+		<BuildData
+			piece_offset="19.3" />
+	</CraftingPiece>
+	<!--CraftingPiece id="mp_empire_cavalry_mace_handle" name="{=F941rUa1}MP Empire Cavalry Mace Handle" tier="2" piece_type="Handle" mesh="axe_craft_18_handle" length="100" weight="0.5" item_holster_pos_shift="0,0,-0.15">
+    <BuildData piece_offset="31" next_piece_offset="2" />
+  </CraftingPiece-->
+	<CraftingPiece
+		id="mp_empire_heavy_mace_handle"
+		name="{=!}MP Empire Heavy Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_13"
+		length="65"
+		weight="0.55"
+		item_holster_pos_shift="0,0,-0.05">
+		<BuildData
+			piece_offset="15.7" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_mace_handle"
+		name="{=!}MP Khuzait Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_6"
+		length="56.2"
+		weight="0.4">
+		<BuildData
+			piece_offset="15" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_khuzait_cavalry_mace_handle"
+		name="{=!}MP Khuzait Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_17"
+		length="80"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.1">
+		<BuildData
+			piece_offset="25.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_aserai_mace_handle"
+		name="{=!}MP Aserai Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_12"
+		length="78"
+		weight="0.35"
+		item_holster_pos_shift="0,0,-0.05">
+		<BuildData
+			piece_offset="17.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_mace_handle"
+		name="{=!}MP Battania Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_2"
+		length="58.2"
+		weight="0.35">
+		<BuildData
+			piece_offset="15.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_mace_handle"
+		name="{=!}MP Test Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="mace_handle_8"
+		length="62.9"
+		weight="0.4"
+		item_holster_pos_shift="0,0,-0.05">
+		<BuildData
+			piece_offset="19.3" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_battania_2hammer_handle"
+		name="{=!}MP Battania 2h Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_7_handle"
+		length="124.3"
+		weight="1"
+		excluded_item_usage_features="widegrip">
+		<BuildData
+			piece_offset="23.87"
+			next_piece_offset="1.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_sturgia_2hammer_handle"
+		name="{=!}MP Sturgia 2h Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_10_handle"
+		length="132"
+		weight="0.8"
+		excluded_item_usage_features="widegrip">
+		<BuildData
+			piece_offset="28.87"
+			next_piece_offset="2.5" />
+	</CraftingPiece>
+	<CraftingPiece
+		id="mp_test_2hmace_handle"
+		name="{=!}MP Test 2h Mace Handle"
+		tier="2"
+		piece_type="Handle"
+		mesh="axe_craft_10_handle"
+		length="132"
+		weight="0.79"
+		excluded_item_usage_features="widegrip">
+		<BuildData
+			piece_offset="28.87"
+			next_piece_offset="2.5" />
+	</CraftingPiece>
+	<!-- #endregion -->
+	<!-- #endregion -->
+	<CraftingPiece
+		id="mp_default_polearm_pommel"
+		name="{=!}None but for Multiplayer"
+		tier="2"
+		piece_type="Pommel"
+		mesh=""
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+	<CraftingPiece
+		id="mp_default_polearm_guard"
+		name="{=!}None but for Multiplayer"
+		tier="2"
+		piece_type="Guard"
+		mesh=""
+		culture="Culture.empire"
+		length="0"
+		weight="0"></CraftingPiece>
+</CraftingPieces>

@@ -370,6 +370,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			SpawnTroopsModel.Instance.OnTroopCountUpdated -= RefreshGold;
 		}
 
+		public override void RefreshValues()
+		{
+			// Refresh selected team
+			MissionPeer myPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
+			SpawnTroopsModel.Instance.SelectedTeam = myPeer?.Team;
+		}
+
 		private void RefreshGold()
 		{
 			// Check if we can afford the troops 
@@ -469,7 +476,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 			TroopPreview.FillFrom(SelectedTroopVM.Troop);
 			TroopPreview.EquipmentCode = equipment.CalculateEquipmentCode();
-			TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode?.Code ?? String.Empty;
+			TroopPreview.BannerCodeText = SpawnTroopsModel.Instance.BannerCode;
 		}
 
 		private void SelectPerk(HeroPerkVM heroPerk, MPPerkVM candidate)

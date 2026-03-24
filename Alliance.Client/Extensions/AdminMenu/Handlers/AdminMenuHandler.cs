@@ -1,20 +1,26 @@
 ﻿using Alliance.Client.Extensions.AdminMenu.ViewModels;
 using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromServer;
+using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 using Color = TaleWorlds.Library.Color;
 
 namespace Alliance.Client.Extensions.AdminMenu.Handlers
 {
 	public class AdminMenuHandler : IHandlerRegister
 	{
+		public static Dictionary<NetworkCommunicator, (int, int, int)> AgentTkCount = new Dictionary<NetworkCommunicator, (int, int, int)>();
 		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
 			reg.Register<AdminServerLog>(HandleLogMessage);
 			reg.Register<SendNotification>(HandleNotification);
+
+			// handler to get dict with Tk info
+			reg.Register<SyncTk>(HandleSyncTk);
 		}
 
 		public void HandleNotification(SendNotification notification)
@@ -25,7 +31,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
 					InformationManager.AddSystemNotification(notification.Text);
 					break;
 				case 1:
-					MBInformationManager.AddQuickInformation(new TextObject(notification.Text, null), 0, null, "");
+					MBInformationManager.AddQuickInformation(new TextObject(notification.Text, null), 0, null);
 					break;
 				case 2:
 					InformationManager.DisplayMessage(new InformationMessage(notification.Text, Color.White));
@@ -36,6 +42,20 @@ namespace Alliance.Client.Extensions.AdminMenu.Handlers
 		public void HandleLogMessage(AdminServerLog logger)
 		{
 			AdminInstance.UpdateServerMessage(new ServerMessageVM(logger.LogMessage, logger.Color));
+		}
+		public static void HandleSyncTk(SyncTk message)
+		{
+			// Read Notification from server :
+			foreach (var kvp in message.AgentTkData)
+			{
+				NetworkCommunicator peer = kvp.Key;
+				var (tkCount, tkDamage, tkKill) = kvp.Value;
+
+				Log($"Receive agents with TK : network communicator, tkCount, tkDamage, tkKill", LogLevel.Debug);
+
+				// Recreate dictionnary on client side :
+				AgentTkCount[peer] = (tkCount, tkDamage, tkKill);
+			}
 		}
 	}
 }

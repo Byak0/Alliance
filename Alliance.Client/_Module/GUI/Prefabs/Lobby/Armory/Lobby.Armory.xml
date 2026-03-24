@@ -1,0 +1,318 @@
+<Prefab>
+  <Constants>
+    <Constant Name="TopHeader.Height" BrushLayer="Default" BrushName="MPLobby.TopHeader.Background" BrushValueType="Height" />
+
+    <Constant Name="SkinCategoryButton.Width" BrushLayer="Default" BrushName="MPLobby.Armory.Skins.CategoryButton" BrushValueType="Width" />
+    <Constant Name="SkinCategoryButton.Height" BrushLayer="Default" BrushName="MPLobby.Armory.Skins.CategoryButton" BrushValueType="Height" />
+
+    <Constant Name="ItemBackground.Width" BrushLayer="Default" BrushName="MPLobby.ItemBackground" BrushValueType="Width" />
+    <Constant Name="ItemBackground.Height" BrushLayer="Default" BrushName="MPLobby.ItemBackground" BrushValueType="Height" />
+
+    <Constant Name="CustomizeButton.Width" BrushLayer="Default" BrushName="WideButton.Flat" BrushValueType="Width" />
+    <Constant Name="CustomizeButton.Height" BrushLayer="Default" BrushName="WideButton.Flat" BrushValueType="Height" />
+
+    <Constant Name="Perks.Background.Width" BrushLayer="Default" BrushName="MPLobby.Perks.Background" BrushValueType="Width" />
+    <Constant Name="Perks.Background.Height" Additive="-12" BrushLayer="Default" BrushName="MPLobby.Perks.Background" BrushValueType="Height" />
+
+    <Constant Name="DropdownHeader.Width" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Width"/>
+    <Constant Name="DropdownHeader.Height" BrushName="MPLobby.Matchmaking.Region.DropdownHeader" BrushLayer="Default" BrushValueType="Height"/>
+
+    <Constant Name="Taunt.Enabled.Radial.Distance" Value="170" />
+    <Constant Name="Taunt.Disabled.Radial.Distance" Value="100" />
+  </Constants>
+  <VisualDefinitions>
+    <VisualDefinition Name="LeftSideVisuals" TransitionDuration="0.27">
+      <VisualState State="Default" PositionXOffset="0" />
+      <VisualState State="TauntEnabled" PositionXOffset="-750" />
+    </VisualDefinition>
+
+    <VisualDefinition Name="LeftSideDropdownVisuals" TransitionDuration="0.27">
+      <VisualState State="Default" PositionXOffset="0" />
+      <VisualState State="TauntEnabled" PositionXOffset="-750" />
+    </VisualDefinition>
+
+    <VisualDefinition Name="TauntRadialCircle" TransitionDuration="0.27">
+      <VisualState State="Default" SuggestedHeight="105" SuggestedWidth="105" />
+      <VisualState State="TauntEnabled" SuggestedHeight="170" SuggestedWidth="170" />
+    </VisualDefinition>
+
+    <VisualDefinition Name="TauntSlotsContainer" TransitionDuration="0.27">
+      <VisualState State="Default" PositionXOffset="0" PositionYOffset="0" />
+      <VisualState State="TauntEnabled" PositionXOffset="-250" PositionYOffset="125" />
+    </VisualDefinition>
+    
+    <VisualDefinition Name="TauntIcon" TransitionDuration="0.27">
+      <VisualState State="Default" SuggestedWidth="50" SuggestedHeight="50" />
+      <VisualState State="TauntEnabled" SuggestedWidth="82" SuggestedHeight="82" />
+    </VisualDefinition>
+
+    <VisualDefinition Name="RadialTextAlpha" TransitionDuration="0.27">
+      <VisualState State="Default" AlphaFactor="0"/>
+      <VisualState State="TauntEnabled" AlphaFactor="1"/>
+    </VisualDefinition>
+
+    <VisualDefinition Name="ManageTauntsButton" TransitionDuration="0.27">
+      <VisualState State="Default" SuggestedWidth="280" SuggestedHeight="280"/>
+      <VisualState State="TauntEnabled" SuggestedWidth="120" SuggestedHeight="120"/>
+    </VisualDefinition>
+
+  </VisualDefinitions>
+  <Window>
+    <MultiplayerArmoryPageWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="!TopHeader.Height" IsTauntControlsOpen="@IsManagingTaunts" IsTauntAssignmentActive="@IsTauntAssignmentActive" TauntEnabledRadialDistance="!Taunt.Enabled.Radial.Distance" TauntDisabledRadialDistance="!Taunt.Disabled.Radial.Distance" TauntAssignmentOverlay="TauntAssignmentOverlay" RightPanelTabControl="RightSideParent\RightAreaTabControl" TauntSlotsContainer="TauntSlotsContainer" TauntCircleActionSelector="TauntSlotsContainer\TauntsRadial" LeftSideParent="LeftSideParent" GameModesDropdownParent="GameModesDropdownParent" HeroPreviewParent="HeroPreview" ManageTauntsButton="TauntSlotsContainer\ManageTauntsButton" Command.ReleaseTauntSelections="ExecuteClearTauntSelection" TauntAssignmentOverlayAlpha="0.37" TauntStateAnimationDuration="0.27" >
+      <Children>
+
+        <!-- Selected Character -->
+        <Widget Id="HeroPreview" DataSource="{HeroPreview}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
+          <Children>
+
+            <AL_CharacterTableauWidget DataSource="{HeroVisual}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="1500" SuggestedHeight="1150" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-25" BannerCodeText="@BannerCodeText" BodyProperties="@BodyProperties" CharStringId="@CharStringId" EquipmentCode="@EquipmentCode" IsFemale="@IsFemale" MountCreationKey="@MountCreationKey" StanceIndex="@StanceIndex" ArmorColor1="@ArmorColor1" Race="@Race" ArmorColor2="@ArmorColor2" IdleAction="@IdleAction" DoNotUseCustomScale="true" CustomAnimationProgressRatio="@CustomAnimationProgressRatio" IsPlayingCustomAnimations="@IsPlayingCustomAnimations" CustomAnimationWaitDuration="@CustomAnimationWaitDuration" CustomAnimation="@CustomAnimation" SwapPlacesButtonWidget="SwapPlacesButtonWidget" RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex" LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex">
+              <Children>
+                <ButtonWidget Id="SwapPlacesButtonWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" Brush="MPLobby.Armory.SwapMountCharacter.Button" IsVisible="@HasMount" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="150"/>
+              </Children>
+            </AL_CharacterTableauWidget>
+
+            <TextWidget DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="25" Brush="MPLobby.Armory.SelectionTitle" Text="@ClassName" />
+          </Children>
+        </Widget>
+
+        <!-- Taunt Assignment Overlay -->
+        <Widget Id="TauntAssignmentOverlay" DoNotAcceptEvents="true" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="false">
+          <Children>
+            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0.1" />
+            <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="65" Brush="MPLobby.Armory.TauntManagement.ClickToCloseText" Text="@TauntAssignmentClickToCloseText"/>
+          </Children>
+        </Widget>
+
+        <!-- Action Buttons -->
+        <NavigationScopeTargeter ScopeID="ArmoryEditCharacterButtonScope" ScopeParent="..\EditCharacterButtonContainer" ScopeMovements="Vertical" />
+        <ListPanel Id="EditCharacterButtonContainer" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="40" StackLayout.LayoutMethod="VerticalBottomToTop" IsHidden="@IsTauntAssignmentActive">
+          <Children>
+
+            <!-- Customize Character Button -->
+            <ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!CustomizeButton.Width" SuggestedHeight="!CustomizeButton.Height" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WideButton.Flat" Command.Click="ExecuteOpenFaceGen" IsVisible="@CanOpenFacegen" UpdateChildrenStates="true" GamepadNavigationIndex="0">
+              <Children>
+                <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="1" Brush="MPTeamSelection.SpectateButton.Text" Text="@FacegenText" />
+              </Children>
+            </ButtonWidget>
+
+          </Children>
+        </ListPanel>
+
+        <!-- Taunt Slots -->
+        <NavigationScopeTargeter ScopeID="TauntSlotsNavigationScope" ScopeParent="..\TauntSlotsContainer" FollowMobileTargets="true" />
+        <Widget DoNotAcceptEvents="true" Id="TauntSlotsContainer" VisualDefinition="TauntSlotsContainer" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="600" SuggestedHeight="600" HorizontalAlignment="Center" VerticalAlignment="Center" MarginRight="650" MarginBottom="520">
+          <Children>
+            <TauntCircleActionSelectorWidget DoNotAcceptEvents="true" Id="TauntsRadial" UpdateChildrenStates="true" DataSource="{Cosmetics\TauntSlots}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ActionContainer="ActionContainer" DirectionWidget="..\DirectionWidget" FallbackNavigationWidget="..\ManageTauntsButton" AllowInvalidSelection="true" ActivateOnlyWithController="true" >
+              <ItemTemplate>
+                <BrushWidget DoNotAcceptEvents="true" VisualDefinition="TauntRadialCircle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="117" SuggestedHeight="115" HorizontalAlignment="Center" VerticalAlignment="Center" GamepadNavigationIndex="1" DoNotAcceptNavigation="true">
+                  <Children>
+                    <ButtonWidget Id="RadialButton" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.Click="ExecuteSelect" Command.AlternateClick="ExecutePreview" Command.HoverBegin="ExecuteFocus" Command.HoverEnd="ExecuteUnfocus" IsSelected="@IsSelected" InputKeyContainerWidget="InputKeyContainer" TauntVisualBrushWidget="Background\Glow\RadialContent\IconParent\TauntIcon">
+                      <Children>
+                        <BoolBrushChangerBrushWidget Id="Background" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="Lobby.Radial.Item.Background.Padded" BooleanCheck="@IsAcceptingTaunts" TrueBrush="Lobby.Radial.Item.Background.Padded.Active" FalseBrush="Lobby.Radial.Item.Background.Padded" >
+                          <Children>
+                            <BoolBrushChangerBrushWidget Id="Glow" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" IsSelected="@IsSelected" Brush="Lobby.Radial.Item.Glow" BooleanCheck="@IsAcceptingTaunts" TrueBrush="Lobby.Radial.Item.Glow.Active" FalseBrush="Lobby.Radial.Item.Glow">
+                              <Children>
+                                <Widget Id="RadialContent" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsHidden="@IsEmpty">
+                                  <Children>
+                                    <BoolStateChangerWidget Id="IconParent" VisualDefinition="TauntIcon" DoNotAcceptEvents="true" DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="58" SuggestedHeight="58" VerticalAlignment="Center" HorizontalAlignment="Center" BooleanCheck="@IsEnabled" TrueState="TauntEnabled" FalseState="Default">
+                                      <Children>
+                                        <IconBrushWidget Id="TauntIcon" DataSource="{AssignedTauntItem}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.Armory.Cosmetic.Taunt" IconBrush="MPLobby.Armory.Cosmetic.Taunt.Icons" IconID="@TauntID" />
+                                      </Children>
+                                    </BoolStateChangerWidget>
+                                  </Children>
+                                </Widget>
+
+                                <!-- Replace - Add Icon -->
+                                <Widget UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsAcceptingTaunts">
+                                  <Children>
+                                    <Widget UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsFocused">
+                                      <Children>
+                                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="70" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Center" IsHidden="@IsEmpty" Sprite="BlankWhiteCircle" Color="#00000080" />
+                                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" IsHidden="@IsEmpty" Sprite="StdAssets\replace_icon_big" Color="#FEC157FF" />
+                                        <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="60" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Center" TauntID="@TauntID" Sprite="StdAssets\plus_icon_big" Color="#FEC157FF" IsVisible="@IsEmpty" />
+                                      </Children>
+                                    </Widget>
+                                  </Children>
+                                </Widget>
+                              </Children>
+                            </BoolBrushChangerBrushWidget>
+                          </Children>
+                        </BoolBrushChangerBrushWidget>
+                        <Widget Id="InputKeyContainer" DoNotAcceptEvents="true" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" PositionYOffset="10" IsVisible="@IsFocused">
+                          <Children>
+                            <ListPanel DataSource="{EmptySlotKeyVisual}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" HorizontalAlignment="Left" MarginLeft="10" IsVisible="@IsVisible" >
+                              <Children>
+                                <InputKeyVisualWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="45" SuggestedHeight="45" KeyID="@KeyID" />
+                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" VerticalAlignment="Center" Sprite="MPLobby\Generic\failed_icon" PositionXOffset="-5" Color="#b00808ff"/>
+                              </Children>
+                            </ListPanel>
+                            
+                            <ListPanel DataSource="{SelectKeyVisual}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" HorizontalAlignment="Right" MarginRight="10" IsVisible="@IsVisible" >
+                              <Children>
+                                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="20" SuggestedHeight="20" VerticalAlignment="Center" Sprite="MPLobby\Generic\succeed_icon" PositionXOffset="5" Color="#9cf542ff"/>
+                                <InputKeyVisualWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="45" SuggestedHeight="45" KeyID="@KeyID" />
+                              </Children>
+                            </ListPanel>
+                          </Children>
+                        </Widget>
+                      </Children>
+                    </ButtonWidget>
+
+                  </Children>
+                </BrushWidget>
+              </ItemTemplate>
+            </TauntCircleActionSelectorWidget>
+            
+            <Widget Id="DirectionWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="13" SuggestedHeight="13" HorizontalAlignment="Center" VerticalAlignment="Center" Sprite="BlankWhiteCircle" AlphaFactor="0.3"/>
+
+            <!-- Manage Taunts Button -->
+            <Widget Id="ManageTauntsButton" VisualDefinition="ManageTauntsButton" DoNotAcceptEvents="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Center" ExtendCursorAreaLeft="-35" ExtendCursorAreaRight="-35" ExtendCursorAreaTop="-50" ExtendCursorAreaBottom="-50">
+              <Children>
+                <ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" GamepadNavigationIndex="0" Command.Click="ExecuteToggleManageTauntsState">
+                  <Children>
+                    <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="150" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="Manage.Taunts.Button.Background" UpdateChildrenStates="true"  >
+                      <Children>
+                        <TextWidget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="100" HorizontalAlignment="Center" PositionYOffset="1" Brush="MPLobby.Manage.Taunts.Button.Text" Text="@ManageTauntsText" />
+                      </Children>
+                    </BrushWidget>
+                  </Children>
+                </ButtonWidget>
+              </Children>
+            </Widget>
+
+          </Children>
+        </Widget>
+        
+        <!-- Left Side -->
+        <ListPanel VisualDefinition="LeftSideVisuals" Id="LeftSideParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+          <Children>
+            <Lobby.ClassFilter DataSource="{ClassFilter}" MarginLeft="50" Parameter.IsNavigationDisabled="@IsManagingTaunts" />
+
+            <NavigationScopeTargeter ScopeID="ArmoryPerksPanelScope" ScopeParent="..\PerksPanel" ScopeMovements="Horizontal" IsScopeDisabled="@IsManagingTaunts" />
+            <MultiplayerPerkContainerPanelWidget DataSource="{HeroPerkSelection}" Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginLeft="45" PopupWidgetFirst="..\..\PerkPopupsParent\FirstPerks" PopupWidgetSecond="..\..\PerkPopupsParent\SecondPerks" PopupWidgetThird="..\..\PerkPopupsParent\ThirdPerks">
+              <Children>
+
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Perks.Background.Width" SuggestedHeight="!Perks.Background.Height" HorizontalAlignment="Center" Sprite="MPLobby\Armory\perks_frame" Color="#F6A554FF" IsEnabled="false" />
+
+                <NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+                  <ItemTemplate>
+                    <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="160" SuggestedHeight="100" HorizontalAlignment="Center" MarginLeft="5" MarginTop="15" MarginBottom="3" Brush="MPLobby.Perks.Button" ContainerPanel="..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
+                      <Children>
+                        <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="10" Brush="MPLobby.Perks.Icon">
+                          <Children>
+                            <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Perks.Frame" />
+                          </Children>
+                        </BrushWidget>
+                        <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" HorizontalAlignment="Center" SuggestedHeight="42" VerticalAlignment="Bottom" MarginTop="5" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
+                        <HintWidget DataSource="{Hint}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
+                      </Children>
+                    </MultiplayerPerkItemToggleWidget>
+                  </ItemTemplate>
+                </NavigatableListPanel>
+              </Children>
+            </MultiplayerPerkContainerPanelWidget>
+            <!-- Troop Cost -->
+            <Widget DataSource="{ClassStats}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="60">
+              <Children>
+                <ListPanel DataSource="{CostHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginTop="10" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint">
+                  <Children>
+                    <TextWidget DataSource="{..}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginRight="5" Brush="MPClassLoadout.TotalGoldText" IntText="@Cost" />
+                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="29" SuggestedHeight="28" HorizontalAlignment="Right" VerticalAlignment="Center" Sprite="MPLobby\Armory\bracelet" />
+                  </Children>
+                </ListPanel>
+              </Children>
+            </Widget>
+          </Children>
+        </ListPanel>
+
+        <!-- Game Modes -->
+        <NavigationScopeTargeter ScopeID="ArmoryGameModesScope" ScopeParent="..\GameModesDropdownParent" ScopeMovements="Vertical" ExtendDiscoveryAreaLeft="18" IsScopeDisabled="@IsManagingTaunts" />
+        <ListPanelDropdownWidget VisualDefinition="LeftSideDropdownVisuals" Id="GameModesDropdownParent" DataSource="{HeroPerkSelection\GameModes}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="190" MarginTop="10" MarginLeft="500" DoNotHandleDropdownListPanel="true" CurrentSelectedIndex="@SelectedIndex" Button="DropdownButton" ListPanelContainer="ListContainer" ListPanel="ListContainer\PrimaryUsageSelectorList" TextWidget="DropdownButton\Container\ContainerChild\SelectedTextWidget" GamepadNavigationIndex="0" IsHidden="@IsManagingTaunts">
+          <Children>
+            <ButtonWidget Id="DropdownButton" Type="Toggle" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Right" VerticalAlignment="Top">
+              <Children>
+                <Widget Id="Container" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+                  <Children>
+                    <BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" Brush="MPLobby.GameMode.Dropdown.BG"/>
+                    <ListPanel Id="ContainerChild" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center">
+                      <Children>
+                        <RichTextWidget Id="SelectedTextWidget" Text=" " WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" MaxWidth="200" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="5" PositionYOffset="-2" Brush="MPLobby.GameMode.Dropdown.Text"/>
+                        <BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="12" SuggestedHeight="12" VerticalAlignment="Center" MarginLeft="7" PositionYOffset="-2" Brush="MPLobby.GameMode.Dropdown.Arrow"/>
+                      </Children>
+                    </ListPanel>
+                  </Children>
+                </Widget>
+              </Children>
+            </ButtonWidget>
+            <Widget Id="ListContainer" IsVisible="false" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="40" Sprite="region_combobox_bg_9" Color="#000000FF" AlphaFactor="0.9">
+              <Children>
+                <ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="20" MarginBottom="10" MinIndex="1">
+                  <ItemTemplate>
+                    <ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" IsHidden="@IsRegionNone">
+                      <Children>
+                        <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="10" MarginRight="10">
+                          <Children>
+                            <RichTextWidget Text="@StringItem" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.Matchmaking.Region.ItemText"/>
+                          </Children>
+                        </ListPanel>
+                      </Children>
+                    </ButtonWidget>
+                  </ItemTemplate>
+                </ListPanel>
+                <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="210" SuggestedHeight="!DropdownHeader.Height" HorizontalAlignment="Center" PositionYOffset="-3" Sprite="MPLobby\Matchmaking\region_combobox_header" />
+              </Children>
+            </Widget>
+          </Children>
+        </ListPanelDropdownWidget>
+
+        <!-- Right Side -->
+        <Widget Id="RightSideParent" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="550" HorizontalAlignment="Right" MarginRight="10" MarginTop="35" MarginBottom="110">
+          <Children>
+
+            <NavigationScopeTargeter ScopeID="ArmoryRightPanelTabsScope" ScopeParent="..\ArmoryRightPanelTabs" ScopeMovements="Horizontal" />
+            <ListPanel Id="ArmoryRightPanelTabs" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="0" MarginRight="15" LayoutImp.LayoutMethod="HorizontalSpaced" IsHidden="@IsManagingTaunts">
+              <Children>
+                <TabToggleWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" TabControlWidget="..\..\RightAreaTabControl" TabName="CosmeticsTab" GamepadNavigationIndex="0">
+                  <Children>
+                    <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="MPLobby.Armory.TabText" Text="@CustomizationText" />
+                  </Children>
+                </TabToggleWidget>
+
+                <TabToggleWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" TabControlWidget="..\..\RightAreaTabControl" TabName="StatsTab" GamepadNavigationIndex="1" >
+                  <Children>
+                    <TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="MPLobby.Armory.TabText" Text="@StatsText" />
+                  </Children>
+                </TabToggleWidget>
+              </Children>
+            </ListPanel>
+
+            <TabControl Id="RightAreaTabControl" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="35" SelectedIndex="1">
+              <Children>
+
+                <!-- Stats -->
+                <Lobby.Armory.ClassStats Id="StatsTab" DataSource="{ClassStats}" />
+
+                <!-- Cosmetics -->
+                <Lobby.Armory.Cosmetics Id="CosmeticsTab" DataSource="{Cosmetics}" />
+
+              </Children>
+            </TabControl>
+
+          </Children>
+        </Widget>
+
+        <Widget Id="PerkPopupsParent" DataSource="{HeroPerkSelection}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DoNotAcceptEvents="true">
+          <Children>
+            <MPLobbyPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{Perks\0\CandidatePerks}" ShowAboveContainer="true"/>
+            <MPLobbyPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{Perks\1\CandidatePerks}" ShowAboveContainer="true"/>
+            <MPLobbyPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{Perks\2\CandidatePerks}" ShowAboveContainer="true"/>
+          </Children>
+        </Widget>
+
+        <NavigationScopeTargeter ScopeID="ArmoryCenterScope" ScopeParent="..\ArmoryCenterNavigationWidget" IsScopeDisabled="@IsTauntAssignmentActive" />
+        <Widget Id="ArmoryCenterNavigationWidget" DoNotAcceptEvents="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="100" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="-150" GamepadNavigationIndex="0" />
+
+      </Children>
+    </MultiplayerArmoryPageWidget>
+  </Window>
+</Prefab>

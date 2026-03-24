@@ -300,10 +300,9 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			}
 
 			// Broadcast the updated player spawn menu to all players
-			// todo enable it back but conditioned to a value sent by client ?
 			PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
 
-			// Set player's team is they are known
+			// Set player's team if they are known
 			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
 			{
 				if (player.GetComponent<MissionPeer>()?.Team != null)

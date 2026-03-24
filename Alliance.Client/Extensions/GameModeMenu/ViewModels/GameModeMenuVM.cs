@@ -354,13 +354,17 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = newValue));
 						break;
 					case OptionValueType.Integer:
+						int boundMin = optionProperty.BoundsMin;
+						int boundMax = optionProperty.BoundsMax;
+						TWConfig.GetAdjustedBounds(optionType, ref boundMin, ref boundMax);
+						
 						NativeOptions.Add(new NumericOptionVM(
 							new TextObject(attribute.Label ?? optionType.ToString()),
 							new TextObject(attribute.Tooltip ?? optionType.ToString()),
 							() => (int)_selectedGameMode.GameModeSettings.TWOptions[optionType],
 							newValue => _selectedGameMode.GameModeSettings.TWOptions[optionType] = (int)newValue,
-							optionProperty.BoundsMin,
-							optionProperty.BoundsMax,
+							boundMin,
+							boundMax,
 							true, true));
 						break;
 					case OptionValueType.String:

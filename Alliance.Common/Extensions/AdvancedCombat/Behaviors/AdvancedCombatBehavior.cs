@@ -73,12 +73,11 @@ namespace Alliance.Common.Extensions.AdvancedCombat.Behaviors
 				{
 					continue;
 				}
+
 				List<AL_DefaultAgentComponent> components = agent.Components.Where(component => component is AL_DefaultAgentComponent).Select(component => component as AL_DefaultAgentComponent).ToList();
 				float offset_Z = agent.HasMount ? 1f : 0f;
 				foreach (AL_DefaultAgentComponent component in components)
 				{
-					component.OnTick(dt);
-
 #if DEBUG
 					// Show debug information for each agent
 					if (!Input.IsKeyDown(InputKey.LeftAlt)) continue;

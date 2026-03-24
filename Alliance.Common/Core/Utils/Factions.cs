@@ -42,7 +42,7 @@ namespace Alliance.Common.Core.Utils
 								 where x.IsMainCulture
 								 select x).ToDictionary(x => x.StringId);
 			// Remove monsters from available cultures for everyone except devs
-			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsDev()))
+			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsSudo()))
 			{
 				AvailableCultures.Remove("monsters");
 			}

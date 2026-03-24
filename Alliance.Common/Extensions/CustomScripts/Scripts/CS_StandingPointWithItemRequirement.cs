@@ -25,23 +25,23 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 			_requiredItem = MBObjectManager.Instance.GetObject<ItemObject>(RequiredItemId);
 		}
 
-		public override void OnUse(Agent userAgent)
+		public override void OnUse(Agent userAgent, sbyte agentBoneIndex)
 		{
 			if (GameNetwork.IsServerOrRecorder)
 			{
 				if (UpdateParentState)
 				{
-					CS_StateObject parentEntity = GameEntity?.Parent.GetFirstScriptOfTypeInFamily<CS_StateObject>();
+					CS_StateObject parentEntity = GameEntity.Parent.GetFirstScriptOfTypeInFamily<CS_StateObject>();
 					parentEntity?.SetState(parentEntity.CurrentStateIndex + 1);
 
 					if (userAgent?.WieldedWeapon.Item == _requiredItem)
 					{
-						EquipmentIndex index = userAgent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
+						EquipmentIndex index = userAgent.GetPrimaryWieldedItemIndex();
 						if (index != EquipmentIndex.None) userAgent.RemoveEquippedWeapon(index);
 					}
 					else if (userAgent?.WieldedWeapon.Item == _requiredItem)
 					{
-						EquipmentIndex index = userAgent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+						EquipmentIndex index = userAgent.GetOffhandWieldedItemIndex();
 						if (index != EquipmentIndex.None) userAgent.RemoveEquippedWeapon(index);
 					}
 				}
@@ -52,7 +52,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 			}
 
-			base.OnUse(userAgent);
+			base.OnUse(userAgent, agentBoneIndex);
 		}
 
 		public async void KillWithDelay(Agent agent, int waitTime)

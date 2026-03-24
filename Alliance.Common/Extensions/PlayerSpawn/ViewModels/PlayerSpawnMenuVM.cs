@@ -486,7 +486,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		public void AddTeam()
 		{
 			// todo check if setting default side to defender is pertinent
-			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(TaleWorlds.Core.BattleSideEnum.Defender, "New Team");
+			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(BattleSideEnum.Defender, "New Team");
 			if (newTeam != null)
 			{
 				PlayerTeamVM newTeamVM = new PlayerTeamVM(newTeam, SelectTeam, EditTeam, DeleteTeam, EditMode);
@@ -851,6 +851,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private void RefreshCharacters()
 		{
 			Characters.Clear();
+			ClearCharacterSelection();
 			PlayerCharacterVM characterToSelect = null;
 			if (SelectedFormationVM != null)
 			{
@@ -861,12 +862,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedTeamVM, SelectedFormationVM, availableCharacter, TrySelectCharacter, UpdateCharacterPerks, EditCharacter, DeleteCharacter, EditMode);
 					characterVM.Width = width;
 					characterVM.MarginLeft = marginLeft;
-					characterVM.Idle();
-					Characters.Add(characterVM);
 					if (PlayerSpawnMenu.Instance.MyAssignment != null && availableCharacter == PlayerSpawnMenu.Instance.MyAssignment.Character)
 					{
 						characterToSelect = characterVM;
 					}
+					else
+					{
+						characterVM.Idle();
+					}
+					Characters.Add(characterVM);
 
 					marginLeft += width;
 				}

@@ -49,7 +49,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private float _cameraYaw;
 		private float _cameraPitch;
 		private float _cameraRoll;
-		private float _cameraAnimDuration = 0.5f;
+		private float _cameraAnimDuration;
 		private bool _enableLight;
 
 		[DataSourceProperty]
@@ -560,7 +560,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public AL_CharacterViewModel(StanceTypes stance = StanceTypes.None)
 		{
-			_equipment = new Equipment(isCivilian: false);
+			_equipment = new Equipment(equipmentType: Equipment.EquipmentType.Battle);
 			EquipmentCode = _equipment.CalculateEquipmentCode();
 			StanceIndex = (int)stance;
 		}

@@ -14,7 +14,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	{
 		private SerializableZone _zone;
 		private FieldViewModel _fieldViewModel;
-		private GameEntity _gameEntity => _fieldViewModel?.parentViewModel?.GameEntity;
+		private WeakGameEntity _gameEntity => _fieldViewModel?.parentViewModel?.GameEntity ?? WeakGameEntity.Invalid;
 
 		public ICommand EditZoneCommand { get; }
 
@@ -117,7 +117,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					}
 					else
 					{
-						_zone.LocalEntity = null;
+						_zone.LocalEntity = WeakGameEntity.Invalid;
 					}
 					OnPropertyChanged(nameof(UseLocalSpace));
 				}

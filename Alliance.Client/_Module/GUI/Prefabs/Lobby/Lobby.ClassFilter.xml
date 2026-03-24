@@ -20,7 +20,7 @@
 											<Children>
 												<HintWidget DataSource="{Hint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
 												<!-- Display faction icon using our custom BannerWidget -->
-												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode"/>
+												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode" Brush="ButtonSimpleBrush"/>
 											</Children>
 										</MultiplayerLobbyClassFilterFactionItemButtonWidget>
 									</ItemTemplate>
@@ -35,8 +35,8 @@
 					<Children>
 						<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Horizontal" Handle="ScrollbarHandleFactions" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
 							<Children>
-					            <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
-					            <ImageWidget Id="ScrollbarHandleFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinWidth="50" />
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+								<ImageWidget Id="ScrollbarHandleFactions" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinWidth="50" />
 							</Children>
 						</ScrollbarWidget>
 					</Children>
@@ -61,7 +61,7 @@
 														<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Classes" />
 														<NavigatableListPanel Id="Classes" DataSource="{Classes}" StackLayout.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="30" MarginBottom="20" UseSelfIndexForMinimum="true">
 															<ItemTemplate>
-																<MultiplayerLobbyClassFilterClassItemWidget Command.Click="ExecuteSelect" AllowSwitchOff="false" NotifyParentForSelection="false" IsSelected="@IsSelected" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="394" SuggestedHeight="44" FactionColorWidget="FactionColorWidget" CultureColor="@CultureColor" TroopType="@IconType" IconWidget="Icon" Brush="MPLobby.ClassFilter.ClassTuple.Background">
+																<MultiplayerLobbyClassFilterClassItemWidget Command.Click="ExecuteSelect" AllowSwitchOff="false" NotifyParentForSelection="false" IsSelected="@IsSelected" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="394" SuggestedHeight="44" FactionColorWidget="FactionColorWidget" CultureColor="@CultureColor" TroopType="@IconType" IconWidget="Icon" Brush="MPLobby.ClassFilter.ClassTuple.Background" IconBrush="Compass.Type.Icons">
 																	<Children>
 																		<Widget Id="FactionColorWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="15" SuggestedHeight="40" VerticalAlignment="Center" MarginLeft="5" PositionYOffset="-1" Sprite="MPLobby\Store\class_tuple_faction_color" AlphaFactor="0.7"/>
 																		<Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="34" SuggestedHeight="34" VerticalAlignment="Center" MarginLeft="22" PositionYOffset="-1"  />
@@ -83,8 +83,8 @@
 							<Children>
 								<ScrollbarWidget Id="Scrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Vertical" Handle="ScrollbarHandle" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
 									<Children>
-                    <Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
-                    <ImageWidget Id="ScrollbarHandle" WidthSizePolicy="Fixed" SuggestedWidth="12" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinHeight="50" />
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+										<ImageWidget Id="ScrollbarHandle" WidthSizePolicy="Fixed" SuggestedWidth="12" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.CustomServer.ScrollHandle" MinHeight="50" />
 									</Children>
 								</ScrollbarWidget>
 							</Children>

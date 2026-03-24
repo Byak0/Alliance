@@ -33,11 +33,11 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
-		public GameEntity ParentEntity = null;
+		public WeakGameEntity ParentEntity = WeakGameEntity.Invalid;
 
 		public ConditionalActionStruct() { }
 
-		public void Register(GameEntity entity = null)
+		public void Register(WeakGameEntity entity)
 		{
 			_enabled = Enabled;
 

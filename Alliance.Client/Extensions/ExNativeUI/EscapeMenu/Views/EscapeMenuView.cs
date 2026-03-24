@@ -75,7 +75,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			list.Add(new EscapeMenuItemVM(new TextObject("{=e139gKZc}Return to the Game", null), delegate (object o)
 			{
 				OnEscapeMenuToggled(false);
-			}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+			}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 
 			// Propositions de vote
 			if (GameNetwork.MyPeer.IsAdmin() || (gameType == "Lobby" && Config.Instance.AuthorizePoll))
@@ -84,7 +84,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					Mission.Current.GetMissionBehavior<GameModeMenuView>()?.OpenMenu();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
 
 			// Native admin menu
@@ -97,7 +97,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 					{
 						_missionAdminComponent.ChangeAdminMenuActiveState(true);
 					}
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false);
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false);
 				list.Add(escapeMenuItemVM);
 			}
 
@@ -108,7 +108,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					_missionLobbyComponent.RequestCultureSelection();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false);
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false);
 				list.Add(_changeCultureItem);
 			}
 
@@ -119,7 +119,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					_playerSpawnMenuView.OpenMenu(PlayerSpawnMenu.Instance);
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
 
 			// Change Troop (native)
@@ -129,7 +129,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					_missionLobbyComponent.RequestTroopSelection();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false);
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false);
 				list.Add(_changeTroopItem);
 			}
 
@@ -143,7 +143,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					_missionTeamSelectComponent.SelectTeam();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
 			else if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
 			{
@@ -151,7 +151,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 				{
 					OnEscapeMenuToggled(false);
 					_missionTeamSelectComponent.SelectTeam();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
 			//}
 
@@ -165,7 +165,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 					return;
 				}
 				missionOptionsComponent.OnAddOptionsUIHandler();
-			}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+			}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 
 			// Quit
 			list.Add(new EscapeMenuItemVM(new TextObject("{=InGwtrWt}Quit", null), delegate (object o)
@@ -185,7 +185,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 					}
 					gameClient.QuitFromMatchmakerGame();
 				}, null, "", 0f, null, null, null), false, false);
-			}, null, () => new Tuple<bool, TextObject>(false, TextObject.Empty), false));
+			}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			return list;
 		}
 

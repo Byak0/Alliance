@@ -144,14 +144,14 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 		public override void EarlyStart()
 		{
 			AnimationRequestEmitter.Instance.LastRequest = 0;
-			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_menu");
-			_selfKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_self");
-			_targetKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_target");
-			_formationKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_formation");
+			_menuKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_anim_menu");
+			_selfKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_anim_self");
+			_targetKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_anim_target");
+			_formationKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_anim_formation");
 			_animationKeys = new List<GameKey>();
 			for (int i = 1; i <= 9; i++)
 			{
-				_animationKeys.Add(HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_anim_shortcut" + i));
+				_animationKeys.Add(HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_anim_shortcut" + i));
 			}
 		}
 
@@ -176,13 +176,13 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 				AnimationUserStore.Instance.Init();
 				_dataSource = new AnimationVM();
 				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer(25) { };
+				_layer = new GauntletLayer("AnimationMenu", 25) { };
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("AnimationMenu", _dataSource);
 				SpriteData spriteData = UIResourceManager.SpriteData;
 				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-				ResourceDepot uiResourceDepot = UIResourceManager.UIResourceDepot;
+				ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 				spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 				MissionScreen.AddLayer(_layer);
 				_initialized = true;
@@ -238,7 +238,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 		{
 			if (IsMenuOpen)
 			{
-				if (Input.IsKeyPressed(_menuKey.KeyboardKey.InputKey) || Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
+				if (Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
 				{
 					CloseMenu();
 				}
@@ -289,7 +289,6 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 
 		private void CheckAnimationShortcuts(TargetType targetType)
 		{
-			//AnimationSet animSet = AnimationUserStore.Instance.AnimationSets.ElementAtOrDefault(_dataSource != null ? _dataSource.SelectedSet : 0);
 			AnimationSet animSet = _dataSource != null ? _dataSource.SelectedAnimSet : AnimationUserStore.Instance.AnimationSets?.ElementAtOrDefault(0);
 
 			if (_dataSource == null || animSet == null) return;
@@ -337,7 +336,7 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 		private Agent GetTargettedAgent()
 		{
 			MissionScreen.ScreenPointToWorldRay(Input.GetMousePositionRanged(), out var rayBegin, out var rayEnd);
-			return Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, out _, -1, 0.1f);
+			return Mission.Current.RayCastForClosestAgent(rayBegin, rayEnd, -1, 0.1f, out _);
 		}
 	}
 

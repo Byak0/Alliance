@@ -74,7 +74,8 @@ namespace Alliance.Common.GameModes
 				OptionType.CultureTeam1,
 				OptionType.CultureTeam2,
 				OptionType.NumberOfBotsTeam1,
-				OptionType.NumberOfBotsTeam2
+				OptionType.NumberOfBotsTeam2,
+				OptionType.AutoTeamBalanceThreshold
 			};
 		}
 

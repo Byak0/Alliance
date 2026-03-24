@@ -3,17 +3,16 @@ using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ComponentInterfaces;
 
 namespace Alliance.Common.GameModels
 {
-	public class ExtendedAgentApplyDamageModel : AgentApplyDamageModel
+	public class ExtendedAgentApplyDamageModel : CustomAgentApplyDamageModel
 	{
 		public ExtendedAgentApplyDamageModel()
 		{
 		}
 
-		public override float CalculateDamage(in AttackInformation attackInformation, in AttackCollisionData collisionData, in MissionWeapon weapon, float baseDamage)
+		public override float ApplyGeneralDamageModifiers(in AttackInformation attackInformation, in AttackCollisionData collisionData, float baseDamage)
 		{
 			if (attackInformation.VictimAgent == null) return baseDamage;
 
@@ -22,8 +21,8 @@ namespace Alliance.Common.GameModels
 				return baseDamage * 0.1f;
 			}
 
-			MissionWeapon missionWeapon = weapon;
-			WeaponComponentData currentUsageItem = missionWeapon.CurrentUsageItem;
+			MissionWeapon attackerWeapon = attackInformation.AttackerWeapon;
+			WeaponComponentData currentUsageItem = attackerWeapon.CurrentUsageItem;
 			AttackCollisionData attackCollisionData = collisionData;
 			if (currentUsageItem != null && currentUsageItem.IsMeleeWeapon && attackCollisionData.StrikeType == (int)StrikeType.Thrust && !attackCollisionData.IsAlternativeAttack && baseDamage < currentUsageItem.ThrustDamage)
 			{
@@ -45,7 +44,7 @@ namespace Alliance.Common.GameModels
 				{
 					return Math.Max(baseDamage, attackInformation.VictimAgent.Health);
 				}
-				if (weapon.IsEmpty) // Fist damage
+				if (attackerWeapon.IsEmpty) // Fist damage
 				{
 					return baseDamage * 40;
 				}
@@ -58,23 +57,14 @@ namespace Alliance.Common.GameModels
 			return baseDamage;
 		}
 
-		public override float CalculateAlternativeAttackDamage(BasicCharacterObject attackerCharacter, WeaponComponentData weapon)
-		{
-			return 1f; // random default value
-		}
-
-		public override void DecideMissileWeaponFlags(Agent attackerAgent, MissionWeapon missileWeapon, ref WeaponFlags missileWeaponFlags)
-		{
-		}
-
 		public override bool DecideCrushedThrough(Agent attackerAgent, Agent defenderAgent, float totalAttackEnergy, Agent.UsageDirection attackDirection, StrikeType strikeType, WeaponComponentData defendItem, bool isPassiveUsage)
 		{
 			if ((attackerAgent.IsTroll() || attackerAgent.IsEnt()) && !defenderAgent.HasShieldCached) return true;
 
-			EquipmentIndex equipmentIndex = attackerAgent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+			EquipmentIndex equipmentIndex = attackerAgent.GetOffhandWieldedItemIndex();
 			if (equipmentIndex == EquipmentIndex.None)
 			{
-				equipmentIndex = attackerAgent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
+				equipmentIndex = attackerAgent.GetPrimaryWieldedItemIndex();
 			}
 			WeaponComponentData weaponComponentData = equipmentIndex != EquipmentIndex.None ? attackerAgent.Equipment[equipmentIndex].CurrentUsageItem : null;
 			if (weaponComponentData == null || isPassiveUsage || !weaponComponentData.WeaponFlags.HasAnyFlag(WeaponFlags.CanCrushThrough) || strikeType != StrikeType.Swing || attackDirection != Agent.UsageDirection.AttackUp)
@@ -96,24 +86,25 @@ namespace Alliance.Common.GameModels
 			return MBMath.IsBetween((int)blow.VictimBodyPart, 0, 6) && (blow.StrikeType == StrikeType.Swing && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanHook) || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanDismount));
 		}
 
-		public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
-		{
-			if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
-			{
-				attackerStunMultiplier = 1f;
-				defenderStunMultiplier = 0f;
-			}
-			else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
-			{
-				attackerStunMultiplier = 0f;
-				defenderStunMultiplier = 1f;
-			}
-			else
-			{
-				attackerStunMultiplier = 1f;
-				defenderStunMultiplier = 1f;
-			}
-		}
+		// todo check : Not available anymore in 1.3 ?
+		//public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
+		//{
+		//	if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
+		//	{
+		//		attackerStunMultiplier = 1f;
+		//		defenderStunMultiplier = 0f;
+		//	}
+		//	else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
+		//	{
+		//		attackerStunMultiplier = 0f;
+		//		defenderStunMultiplier = 1f;
+		//	}
+		//	else
+		//	{
+		//		attackerStunMultiplier = 1f;
+		//		defenderStunMultiplier = 1f;
+		//	}
+		//}
 
 		public override bool CanWeaponKnockback(Agent attackerAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
@@ -318,7 +309,7 @@ namespace Alliance.Common.GameModels
 			return weapon != null && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanPenetrateShield) && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.MultiplePenetration);
 		}
 
-		public override bool DecideAgentShrugOffBlow(Agent victimAgent, AttackCollisionData collisionData, in Blow blow)
+		public override bool DecideAgentShrugOffBlow(Agent victimAgent, in AttackCollisionData collisionData, in Blow blow)
 		{
 			if (victimAgent.IsTroll() || victimAgent.IsEnt())
 			{

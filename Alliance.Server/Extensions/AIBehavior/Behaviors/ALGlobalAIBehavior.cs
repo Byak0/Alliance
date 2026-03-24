@@ -72,10 +72,6 @@ namespace Alliance.Server.Extensions.AIBehavior.Behaviors
 			}
 			teamAI.OnTacticAppliedForFirstTime();
 			TeamQuerySystemUtils.SetPowerFix(Mission.Current);
-			foreach (Formation formation in team.FormationsIncludingSpecialAndEmpty)
-			{
-				teamAI.OnUnitAddedToFormationForTheFirstTime(formation);
-			}
 			team.AddTeamAI(teamAI);
 			bool playerIsControlling = !FormationControlModel.Instance.GetAllControllersFromTeam(team).IsEmpty();
 			team.SetPlayerRole(playerIsControlling, playerIsControlling);

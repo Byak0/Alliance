@@ -5,12 +5,13 @@
 	<!-- ************************************************************************* -->
 	<!-- LIGHT INFANTRY - TROOP -->
 	<NPCCharacter id="ze_woman_peasent"
-	  default_group="Infantry"
-	  name="Peasant Woman"
-	  level="6"
-	  occupation="Soldier"
-	  culture="Culture.zevent"
-	  is_female="true">
+		default_group="Infantry"
+		name="Peasant Woman"
+		level="6"
+		is_basic_troop="true"
+		occupation="Soldier"
+		culture="Culture.zevent"
+		is_female="true">
 		<face>
 			<BodyProperties
 				version="4"
@@ -99,12 +100,12 @@
 		</Equipments>
 	</NPCCharacter>
 	<NPCCharacter id="ze_man_peasent"
-	  default_group="Infantry"
-	  level="11"
-	  name="Peasant Man"
-	  occupation="Soldier"
-	  culture="Culture.zevent"
-	  is_female="false">
+		default_group="Infantry"
+		level="11"
+		name="Peasant Man"
+		occupation="Soldier"
+		culture="Culture.zevent"
+		is_female="false">
 		<face>
 			<!-- value="18.16;0.3333;0;C0700000001;11111211151111;7010000100000;11101100010100;500202111110;0;0;280000" max_value="23;0.4667;0.2;11FC0FC03C384F;FFFFFFFEFFF7EFFF;FFFFFFA97EF7FEFF;FFEFFFFFFFFFFFFF;37FD303FFFFFF;0;0;309101" /-->
 			<BodyProperties
@@ -202,11 +203,11 @@
 	</NPCCharacter>
 
 	<NPCCharacter id="mp_ze_noble_man"
-	  default_group="Infantry"
-	  level="11" name="Noble Man"
-	  occupation="Soldier"
-	  culture="Culture.zevent"
-	  is_female="false">
+		default_group="Infantry"
+		level="11" name="Noble Man"
+		occupation="Soldier"
+		culture="Culture.zevent"
+		is_female="false">
 		<face>
 			<!-- value="18.16;0.3333;0;C0700000001;11111211151111;7010000100000;11101100010100;500202111110;0;0;280000" max_value="23;0.4667;0.2;11FC0FC03C384F;FFFFFFFEFFF7EFFF;FFFFFFA97EF7FEFF;FFEFFFFFFFFFFFFF;37FD303FFFFFF;0;0;309101" /-->
 			<BodyProperties
@@ -276,11 +277,11 @@
 		</Equipments>
 	</NPCCharacter>
 	<NPCCharacter id="mp_ze_noble_woman"
-	  default_group="Infantry" level="11"
-	  name="Noble Woman"
-	  occupation="Soldier"
-	  culture="Culture.zevent"
-	  is_female="true" >
+		default_group="Infantry" level="11"
+		name="Noble Woman"
+		occupation="Soldier"
+		culture="Culture.zevent"
+		is_female="true" >
 		<face>
 			<BodyProperties
 				version="4"

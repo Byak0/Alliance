@@ -19,7 +19,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
-		public GameEntity LocalEntity;
+		public WeakGameEntity LocalEntity;
 
 		[XmlIgnore]
 		public Vec3 Position;
@@ -28,7 +28,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		{
 			get
 			{
-				if (UseLocalSpace && LocalEntity != null)
+				if (UseLocalSpace && LocalEntity.IsValid)
 				{
 					return LocalEntity.GlobalPosition + Position;
 				}
@@ -47,7 +47,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public SerializableZone() { }
 
-		public void Register(GameEntity localEntity)
+		public void Register(WeakGameEntity localEntity)
 		{
 			if (UseLocalSpace)
 			{

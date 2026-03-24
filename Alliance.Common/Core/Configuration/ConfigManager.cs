@@ -3,6 +3,7 @@ using Alliance.Common.Core.Configuration.NetworkMessages.FromClient;
 using Alliance.Common.Core.Configuration.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -39,6 +40,72 @@ namespace Alliance.Common.Core.Configuration
 		}
 
 		/// <summary>
+		/// Validate a specific config instance.
+		/// Returns true if any value was corrected.
+		/// </summary>
+		public bool ValidateConfigInstance(Config configToValidate)
+		{
+			DefaultConfig defaultConfig = new DefaultConfig();
+			bool hasInvalidValues = false;
+			
+			foreach (KeyValuePair<int, FieldInfo> field in ConfigFields)
+			{
+				FieldInfo fieldInfo = field.Value;
+				ConfigPropertyAttribute attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+				
+				if (attribute == null) continue;
+
+				object currentValue = fieldInfo.GetValue(configToValidate);
+				object defaultValue = fieldInfo.GetValue(defaultConfig);
+				bool isValid = true;
+				string validationError = null;
+
+				// Check values are within legal bounds
+				switch (currentValue)
+				{
+					case int intValue:
+						if (intValue < attribute.MinValue || intValue > attribute.MaxValue)
+						{
+							isValid = false;
+							validationError = $"Value {intValue} is out of range [{attribute.MinValue}, {attribute.MaxValue}]";
+						}
+						break;
+
+					case float floatValue:
+						if (floatValue < attribute.MinValue || floatValue > attribute.MaxValue)
+						{
+							isValid = false;
+							validationError = $"Value {floatValue} is out of range [{attribute.MinValue}, {attribute.MaxValue}]";
+						}
+						break;
+
+					case string stringValue:
+						// If from a specific DataType, ensure it is a valid value
+						if (attribute.DataType != AllianceData.DataTypes.None)
+						{
+							string[] possibleValues = attribute.PossibleValues;
+							if (possibleValues != null && possibleValues.Length > 0 && !possibleValues.Contains(stringValue))
+							{
+								isValid = false;
+								validationError = $"Value '{stringValue}' is not in allowed values: [{string.Join(", ", possibleValues)}]";
+							}
+						}
+						break;
+				}
+
+				// Reset to default value if invalid
+				if (!isValid)
+				{
+					Log($"Config validation failed for '{fieldInfo.Name}': {validationError}. Resetting to default: {defaultValue}", LogLevel.Warning);
+					fieldInfo.SetValue(configToValidate, defaultValue);
+					hasInvalidValues = true;
+				}
+			}
+			
+			return hasInvalidValues;
+		}
+
+		/// <summary>
 		/// Update config from a deserialized version of the class.
 		/// Compare both versions and update only the difference.
 		/// </summary>
@@ -51,12 +118,7 @@ namespace Alliance.Common.Core.Configuration
 				if (!actualValue.Equals(deserializedValue))
 				{
 					UpdateConfigField(field.Key, deserializedValue);
-					// If sync just got activated, send server config to everyone
-					if (field.Value.Name == nameof(Config.SyncConfig) && Config.Instance.SyncConfig)
-					{
-						SendConfigToAllPeers();
-					}
-					else if (synchronize)
+					if (synchronize)
 					{
 						SyncConfigField(field.Key, deserializedValue);
 					}
@@ -80,6 +142,7 @@ namespace Alliance.Common.Core.Configuration
 
 		public void SendConfigToAllPeers()
 		{
+			Log($"Sending config to all peers", LogLevel.Debug);
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new SyncConfigAll(Config.Instance));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients);
@@ -97,6 +160,7 @@ namespace Alliance.Common.Core.Configuration
 		/// </summary>
 		public void SyncConfigField(int fieldIndex, object fieldValue)
 		{
+			if (!GameNetwork.IsServer) return;
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new SyncConfigField(fieldIndex, fieldValue));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
@@ -151,28 +215,64 @@ namespace Alliance.Common.Core.Configuration
 			}
 			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
 			{
-				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
-				switch (optionProperty.OptionValueType)
-				{
-					case OptionValueType.Bool:
-						{
-							optionType.SetValue((bool)optionList[optionType], MultiplayerOptionsAccessMode.CurrentMapOptions);
-							break;
-						}
-					case OptionValueType.Integer:
-					case OptionValueType.Enum:
-						{
-							optionType.SetValue((int)optionList[optionType], MultiplayerOptionsAccessMode.CurrentMapOptions);
-							break;
-						}
-					case OptionValueType.String:
-						{
-							optionType.SetValue((string)optionList[optionType], MultiplayerOptionsAccessMode.CurrentMapOptions);
-							break;
-						}
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
+				ApplyNativeOption(optionType, optionList[optionType]);
+			}
+		}
+
+		/// <summary>
+		/// Apply a single native option if its value has changed.
+		/// </summary>
+		public void ApplyNativeOption(OptionType optionType, object newValue)
+		{
+			MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();
+			object currentValue = TWConfig.GetCurrentServerValue(optionType);
+
+			// Skip if value hasn't changed
+			if (AreValuesEqual(currentValue, newValue, optionProperty.OptionValueType))
+			{
+				return;
+			}
+
+			// Apply the new value based on type
+			SetOptionValue(optionType, newValue, optionProperty.OptionValueType);
+
+			// Log the change
+			Log($"Updated native option {optionType}: {currentValue} -> {newValue}", LogLevel.Debug);
+		}
+
+		/// <summary>
+		/// Compare two values based on their type.
+		/// </summary>
+		private static bool AreValuesEqual(object current, object newValue, OptionValueType valueType)
+		{
+			return valueType switch
+			{
+				OptionValueType.Bool => (bool)current == (bool)newValue,
+				OptionValueType.Integer or OptionValueType.Enum => (int)current == (int)newValue,
+				OptionValueType.String => (string)current == (string)newValue,
+				_ => throw new ArgumentOutOfRangeException(nameof(valueType))
+			};
+		}
+
+		/// <summary>
+		/// Set option value based on its type.
+		/// </summary>
+		private static void SetOptionValue(OptionType optionType, object value, OptionValueType valueType)
+		{
+			switch (valueType)
+			{
+				case OptionValueType.Bool:
+					optionType.SetValue((bool)value);
+					break;
+				case OptionValueType.Integer:
+				case OptionValueType.Enum:
+					optionType.SetValue((int)value);
+					break;
+				case OptionValueType.String:
+					optionType.SetValue((string)value);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(valueType));
 			}
 		}
 
@@ -199,8 +299,7 @@ namespace Alliance.Common.Core.Configuration
 				Log("Tried to apply empty mod options, skipping...", LogLevel.Warning);
 				return;
 			}
-			Config.Instance = modOptions;
-			SendConfigToAllPeers();
+			UpdateConfigFromDeserialized(modOptions, modOptions.SyncConfig);
 		}
 	}
 }

@@ -65,7 +65,7 @@ namespace Alliance.Common.Core.Utils
 						alignment: panel.TextAlignment,
 						glyphMap: DefaultAsciiGrid,
 						materialName: materialName,
-						customColor: panel.GameEntity.GetFactorColor(),
+						customColor: ColorFromHex(panel.CustomColor),
 						letterSpacingEm: panel.LetterSpacing,
 						lineSpacingMult: panel.LineSpacing
 					);
@@ -116,7 +116,7 @@ namespace Alliance.Common.Core.Utils
 					{
 						if (!m.Name.Contains("CreateEmpty")) return false;
 						var ps = m.GetParameters();
-						return ps.Length == 3
+						return ps.Length == 5
 							   && ps[0].ParameterType == typeof(UIntPtr)
 							   && ps[1].ParameterType == typeof(bool)
 							   && ps[2].ParameterType == typeof(UIntPtr);
@@ -162,7 +162,7 @@ namespace Alliance.Common.Core.Utils
 				UIntPtr scenePtr = (UIntPtr)_piScenePtr.GetValue(scene);
 				UIntPtr srcPtr = (UIntPtr)_piEntityPtr.GetValue(source);
 
-				copy = _miCreateEmpty.Invoke(_iGameEntityInstance, new object[] { scenePtr, true, srcPtr }) as GameEntity;
+				copy = _miCreateEmpty.Invoke(_iGameEntityInstance, new object[] { scenePtr, true, srcPtr, true, true }) as GameEntity;
 				copy.ValidateBoundingBox();
 
 				foreach (GameEntity child in copy.GetChildren())
@@ -266,6 +266,24 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
+		/// Return a color from a hex string (#RRGGBB or #RRGGBBAA).
+		/// </summary>
+		public static uint ColorFromHex(string hex)
+		{
+			if (!hex.StartsWith("#") || (hex.Length != 7 && hex.Length != 9))
+			{
+				Log($"[EntityUtils] Color '{hex}' has invalid syntax. Using default white (#ffffffff).", LogLevel.Warning);
+				hex = "#ffffffff";
+			}
+			float red = hex.Length >= 7 ? Convert.ToInt32(hex.Substring(1, 2), 16) / 255f : 1f;
+			float green = hex.Length >= 7 ? Convert.ToInt32(hex.Substring(3, 2), 16) / 255f : 1f;
+			float blue = hex.Length >= 7 ? Convert.ToInt32(hex.Substring(5, 2), 16) / 255f : 1f;
+			float alpha = hex.Length == 9 ? Convert.ToInt32(hex.Substring(7, 2), 16) / 255f : 1f;
+			Color color = new Color(red, green, blue, alpha);
+			return color.ToUnsignedInteger();
+		}
+
+		/// <summary>
 		/// Create a text mesh using a glyph map.
 		/// The material must have an atlas texture with glyphs.
 		///	</summary>
@@ -300,7 +318,7 @@ namespace Alliance.Common.Core.Utils
 			try
 			{
 				mesh.AddEditDataUser();
-				mesh.SetEditDataPolicy(EditDataPolicy.Keep_until_first_render);
+				mesh.SetEditDataPolicy(EditDataPolicy.KeepUntilFirstRender);
 				handle = mesh.LockEditDataWrite();
 				locked = true;
 

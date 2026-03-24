@@ -1,5 +1,4 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.AgentStatus.Views;
-using Alliance.Common.Extensions.PlayerSpawn.Views;
 using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -22,7 +21,7 @@ namespace Alliance.Client.GameModes.Lobby
 				new AgentStatusView(),
 				
 				// Native views
-				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
+				//MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, false),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});

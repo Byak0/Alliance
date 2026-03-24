@@ -71,7 +71,7 @@
 								<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Body" />
 
 								<!--Troop Tuple Body-->
-								<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="Body" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" Command.Click="SelectTroop" IconWidget="Icon" IsSelected="@IsSelected" TroopType="@IconType" UpdateChildrenStates="true" PerksNavigationScopeTargeter="..\Extension\PerksPanel\ScopeTargeter">
+								<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="Body" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" Command.Click="SelectTroop" IconWidget="Icon" IsSelected="@IsSelected" TroopType="@IconType" UpdateChildrenStates="true" PerksNavigationScopeTargeter="..\Extension\PerksPanel\ScopeTargeter" IconBrush="Compass.Type.Icons">
 									<Children>
 										<!-- Background -->
 										<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!TroopBanner.ItemBackground.Width" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPLobby.ClassFilter.ClassTuple.Background" />

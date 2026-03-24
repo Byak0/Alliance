@@ -52,9 +52,10 @@ namespace Alliance.Server.GameModes
 				new CoreBehavior(),
 				new ServerAutoHandler(), // Handle network message redirections
 				new AllianceLobbyComponent(),
-				new SyncRolesBehavior(),
+				new SyncPlayerStoreBehavior(),
 				new SyncConfigBehavior(),
 				new PlayerSpawnBehavior(),
+				new TeamKillCountBehavior(),
 				new UsableEntityBehavior(),
 				new TroopSpawnerBehavior(),
 				new BattlePowerCalculationLogic(),

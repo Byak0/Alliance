@@ -36,12 +36,12 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			base.OnBehaviorInitialize();
 
 			BasicCultureObject cultureDef = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-			Banner bannerDef = new Banner(cultureDef.BannerKey, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1);
+			Banner bannerDef = new Banner(cultureDef.Banner, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1);
 			Team teamDef = Mission.Teams.Add(BattleSideEnum.Defender, cultureDef.BackgroundColor1, cultureDef.ForegroundColor1, bannerDef, isPlayerGeneral: false, isPlayerSergeant: true, true);
 			teamDef.SetIsEnemyOf(teamDef, true);
 
 			BasicCultureObject cultureAttack = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-			Banner bannerAttack = new Banner(cultureAttack.BannerKey, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
+			Banner bannerAttack = new Banner(cultureAttack.Banner, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1);
 			Team teamAttack = Mission.Teams.Add(BattleSideEnum.Attacker, cultureAttack.BackgroundColor1, cultureAttack.ForegroundColor1, bannerAttack, isPlayerGeneral: false, isPlayerSergeant: true, true);
 			teamAttack.SetIsEnemyOf(teamAttack, false);
 

@@ -20,7 +20,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public TimerCondition() { }
 
-		public override void Register(GameEntity gameEntity = null)
+		public override void Register(WeakGameEntity gameEntity)
 		{
 			_triggered = false;
 			_lastTriggerTime = Mission.Current?.GetMissionTimeInSeconds() ?? 0f;

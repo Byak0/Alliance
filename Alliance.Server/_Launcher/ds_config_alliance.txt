@@ -1,6 +1,6 @@
 ServerName [Alliance] Test Server 1
 GameType Lobby
-Map proto_zevent
+Map mp_beefbacon_craglowe
 CultureTeam1 vlandia
 CultureTeam2 empire
 MaxNumberOfPlayers 500
@@ -16,6 +16,6 @@ RoundPreparationTimeLimit 10
 RoundTimeLimit 1800
 RoundTotal 11
 MapTimeLimit 360
-WarmupTimeLimit 1
+WarmupTimeLimitInSeconds 20
 SingleSpawn true
 start_game_and_mission

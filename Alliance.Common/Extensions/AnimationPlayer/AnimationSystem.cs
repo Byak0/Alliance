@@ -3,9 +3,11 @@ using Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.View;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AnimationPlayer
@@ -20,6 +22,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 		public Dictionary<int, ActionIndexCache> IndexToActionDictionary;
 		public Dictionary<int, float> IndexToDurationDictionary;
 		public List<Animation> DefaultAnimations;
+		public Dictionary<string, Animation> ActionNameToAnimation;
 
 		private static AnimationSystem _instance;
 		private bool _initialized;
@@ -51,6 +54,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			IndexToActionDictionary = new Dictionary<int, ActionIndexCache>();
 			IndexToDurationDictionary = new Dictionary<int, float>();
 			DefaultAnimations = new List<Animation>();
+			ActionNameToAnimation = new Dictionary<string, Animation>();
 
 			// Initialize all Actions and their respective ActionSet
 			int totalActions = MBAnimation.GetNumActionCodes();
@@ -67,11 +71,12 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			IndexToActionSetDictionary.Add(uniqueAnimationIndex, allActionSets);
 			uniqueAnimationIndex++;
 
+			ConstructorInfo actionCtor = typeof(ActionIndexCache).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { typeof(int) }, null);
+
 			// Add other actions and their compatible action_sets
 			for (int i = 0; i < totalActions; i++)
 			{
-				string actionName = MBAnimation.GetActionNameWithCode(i);
-				ActionIndexCache actionIndex = ActionIndexCache.Create(actionName);
+				ActionIndexCache actionIndex = (ActionIndexCache)actionCtor.Invoke(new object[] { i });
 				List<MBActionSet> actionSets = new List<MBActionSet>();
 				for (int j = 0; j < MBActionSet.GetNumberOfActionSets(); j++)
 				{
@@ -101,11 +106,15 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				if (refreshDefaultDurations)
 				{
 					//!\\ This call is randomly prone to AccessViolationException
-					float duration = MBActionSet.GetActionAnimationDuration(IndexToActionSetDictionary[i].First(), IndexToActionDictionary[i]);
+					//float duration = MBActionSet.GetActionAnimationDuration(IndexToActionSetDictionary[i].First(), IndexToActionDictionary[i]);
+					float duration = MBAnimation.GetAnimationDuration(i);
 					AnimationDefaultStore.Instance.DefaultDurations.Add(duration);
 				}
+
 				IndexToDurationDictionary.Add(i, AnimationDefaultStore.Instance.DefaultDurations[i]);
-				DefaultAnimations.Add(new Animation(i, IndexToActionDictionary[i], IndexToActionSetDictionary[i], "", 1f, AnimationDefaultStore.Instance.DefaultDurations[i]));
+				Animation anim = new Animation(i, IndexToActionDictionary[i], IndexToActionSetDictionary[i], maxDuration: AnimationDefaultStore.Instance.DefaultDurations[i]);
+				DefaultAnimations.Add(anim);
+				ActionNameToAnimation.Add(anim.Action.GetName(), anim);
 			}
 
 			if (refreshDefaultDurations)
@@ -182,7 +191,80 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				}
 				catch (Exception ex)
 				{
-					Log($"Alliance - Failed to play animation {animation.Action?.Name} on agent {agent.Name}", LogLevel.Error);
+					Log($"Alliance - Failed to play animation {animation?.Action.GetName()} on agent {agent?.Name}", LogLevel.Error);
+					Log(ex.Message, LogLevel.Error);
+				}
+			}
+		}
+
+		public void PlayAnimation(AgentVisuals agentVisuals, string actionName)
+		{
+			if (ActionNameToAnimation.TryGetValue(actionName, out Animation animation))
+			{
+				PlayAnimation(agentVisuals, animation);
+			}
+			else
+			{
+				Log($"Alliance - Animation with action name {actionName} not found", LogLevel.Error);
+			}
+		}
+
+		public void PlayAnimation(AgentVisuals agentVisuals, Animation animation)
+		{
+			if (agentVisuals == null)
+			{
+				Log($"Alliance - AgentVisuals is null", LogLevel.Error);
+				return;
+			}
+
+			bool correctActionSet = true;
+			AgentVisualsData agentVisualsData = agentVisuals.GetCopyAgentVisualsData();
+			// If animation requires a different ActionSet, apply the correct one to agent
+			if (!animation.ActionSets.Contains(agentVisualsData.ActionSetData) && agentVisualsData.ActionSetData.IsValid)
+			{
+				try
+				{
+					Log($"Alliance - ActionSet of {agentVisualsData.CharacterObjectStringIdData} is incorrect : {agentVisualsData.ActionSetData.GetName()} instead of required {animation.ActionSets.First().GetName()} ({animation.ActionSets.Count} total sets compatible)", LogLevel.Debug);
+					MBActionSet newActionSet = MBActionSet.InvalidActionSet;
+
+					if (agentVisualsData.ActionSetData.GetName().Contains("human"))
+					{
+						newActionSet = animation.ActionSets.Find(actionSet => actionSet.GetName().Contains("human"));
+					}
+					else
+					{
+						newActionSet = animation.ActionSets.First();
+					}
+
+					if (newActionSet.IsValid)
+					{
+						agentVisualsData.ActionSet(newActionSet);
+						agentVisuals.Refresh(needBatchedVersionForWeaponMeshes: false, agentVisualsData);
+						Log($"Alliance - Fixed ActionSet of {agentVisualsData.CharacterObjectStringIdData} to {agentVisualsData.ActionSetData.GetName()}", LogLevel.Debug);
+					}
+					else
+					{
+						Log($"Alliance - Didn't find any alternative valid ActionSet for {agentVisualsData.CharacterObjectStringIdData} ({agentVisualsData.ActionSetData.GetName()})", LogLevel.Error);
+						correctActionSet = false;
+					}
+				}
+				catch (Exception ex)
+				{
+					Log($"Alliance - Failed to fix ActionSet of {agentVisualsData.CharacterObjectStringIdData} ({agentVisualsData.ActionSetData.GetName()})", LogLevel.Error);
+					Log(ex.Message, LogLevel.Error);
+					correctActionSet = false;
+				}
+			}
+
+			if (correctActionSet)
+			{
+				try
+				{
+					agentVisuals.SetAction(animation.Action, 0f, true);
+				}
+				catch (Exception ex)
+				{
+					Log($"Alliance - Failed to play animation {animation?.Action.GetName()} on agent {agentVisualsData.CharacterObjectStringIdData}", LogLevel.Error);
 					Log(ex.Message, LogLevel.Error);
 				}
 			}

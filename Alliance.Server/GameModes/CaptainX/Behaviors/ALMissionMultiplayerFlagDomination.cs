@@ -1,6 +1,8 @@
 ﻿using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
@@ -193,8 +195,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 			BasicCultureObject @object = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 			BasicCultureObject object2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
-			Banner banner = new Banner(@object.BannerKey, @object.BackgroundColor1, @object.ForegroundColor1);
-			Banner banner2 = new Banner(object2.BannerKey, object2.BackgroundColor2, object2.ForegroundColor2);
+			Banner banner = new Banner(@object.Banner, @object.BackgroundColor1, @object.ForegroundColor1);
+			Banner banner2 = new Banner(object2.Banner, object2.BackgroundColor2, object2.ForegroundColor2);
 			Mission.Teams.Add(BattleSideEnum.Attacker, @object.BackgroundColor1, @object.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
 			Mission.Teams.Add(BattleSideEnum.Defender, object2.BackgroundColor2, object2.ForegroundColor2, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
 
@@ -215,8 +217,21 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 		public virtual void InitPlayerSpawnMenu()
 		{
+			// Generate default spawn menu if none exists
+			if (PlayerSpawnMenu.Instance.Teams.IsEmpty())
+			{
+				PlayerSpawnMenu.Instance.GenerateDefaultMenu(new List<KeyValuePair<BattleSideEnum, BasicCultureObject>>
+				{
+					new(BattleSideEnum.Attacker, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue())),
+					new(BattleSideEnum.Defender, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue()))
+				});
+
+				// Broadcast the updated player spawn menu to all players
+				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+			}
+
 			// Make use of the warmup to let players elect their officers
-			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimit.GetIntValue() * 60);
+			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimitInSeconds.GetIntValue());
 		}
 
 		private void StartPlayerSpawnSession()
@@ -347,7 +362,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					botAgent.Formation.PlayerOwner = botAgent;
 				}
 
-				botAgent.OwningAgentMissionPeer = null;
+				botAgent.SetOwningAgentMissionPeer(null);
 				botAgent.MissionPeer = missionPeer;
 				botAgent.Formation = missionPeer.ControlledFormation;
 				AgentFlag agentFlags = botAgent.GetAgentFlags();

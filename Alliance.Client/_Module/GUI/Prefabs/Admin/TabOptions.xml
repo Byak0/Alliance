@@ -1,0 +1,120 @@
+﻿<Prefab>
+	<Parameters/>
+	<Constants/>
+	<VisualDefinitions/>
+	<Window>
+
+		<BrushWidget IsVisible="@ShowOptionsTab" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="140" MarginLeft="80" MarginRight="80" MarginBottom="100" Brush="Alliance.MainFrame">
+			<Children>
+
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Right"  ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay">
+					<Children>
+
+						<!-- List of options -->
+						<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="800" SuggestedHeight="750" HorizontalAlignment="Left" VerticalAlignment="Top">
+							<Children>
+
+								<ScrollablePanel Id="ScrollablePanel" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Center" AutoHideScrollBars="true" ClipRect="ClipRect" InnerPanel="ClipRect\AllOptions" VerticalScrollbar="..\VerticalScrollbar" MarginTop="8" >
+									<Children>
+										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center" >
+											<Children>
+
+												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
+													<Children>
+
+														<!-- Native options -->
+														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="8" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\NativeOptions" ListPanel="..\NativeOptions" RenderLate="true" UpdateChildrenStates="true">
+															<Children>
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" LayoutImp.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+																		<Widget Id="CollapseParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Text="Native settings" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																					<Children>
+																						<ImageWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+																		<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine" />
+																	</Children>
+																</ListPanel>
+															</Children>
+														</PartyHeaderToggleWidget>
+														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+															<ItemTemplate>
+																<GenericOption/>
+															</ItemTemplate>
+														</ListPanel>
+
+														<!-- Mod options -->
+														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="5" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\ModOptions" ListPanel="..\ModOptions" RenderLate="true" UpdateChildrenStates="true">
+															<Children>
+																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" LayoutImp.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+																	<Children>
+																		<Widget Id="CollapseParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" UpdateChildrenStates="true">
+																			<Children>
+																				<TextWidget Text="Mod settings" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																					<Children>
+																						<ImageWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																					</Children>
+																				</TextWidget>
+																			</Children>
+																		</Widget>
+																		<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine" />
+																	</Children>
+																</ListPanel>
+															</Children>
+														</PartyHeaderToggleWidget>
+														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+															<ItemTemplate>
+																<GenericOption/>
+															</ItemTemplate>
+														</ListPanel>
+
+													</Children>
+												</ListPanel>
+											</Children>
+										</Widget>
+									</Children>
+								</ScrollablePanel>
+								<ScrollbarWidget Id="VerticalScrollbar" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="10" HorizontalAlignment="Right" VerticalAlignment="Center" MarginTop="130" MarginBottom="0" AlignmentAxis="Vertical" Handle="VerticalScrollbarHandle" MaxValue="100" MinValue="0">
+									<Children>
+										<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="4" HorizontalAlignment="Center" Sprite="BlankWhiteSquare_9" AlphaFactor="0.2" Color="#5a4033FF" />
+										<ImageWidget Id="VerticalScrollbarHandle" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="8" SuggestedHeight="10" HorizontalAlignment="Center" Brush="FaceGen.Scrollbar.Handle" />
+									</Children>
+								</ScrollbarWidget>
+							</Children>
+						</BrushWidget>
+
+					</Children>
+				</Widget>
+
+				<!-- Bottom buttons -->
+				<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="800" SuggestedHeight="80" HorizontalAlignment="Left" VerticalAlignment="Bottom" Brush="Alliance.FlippedTopHeader">
+					<Children>
+						<ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="Fixed"  SuggestedWidth="500" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" MarginBottom="-5" >
+							<Children>
+								<!-- Reset options -->
+								<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="WideButton.Flat" Command.Click="ResetOptions" >
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" SuggestedWidth="120" HeightSizePolicy="StretchToParent" SuggestedHeight="50" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" Text="Reset" />
+									</Children>
+								</ButtonWidget>
+
+								<!-- Apply options -->
+								<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="80" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="WideButton.Flat" MarginLeft="150" Command.Click="ApplyOptions" >
+									<Children>
+										<TextWidget WidthSizePolicy="StretchToParent" SuggestedWidth="120" HeightSizePolicy="StretchToParent" SuggestedHeight="50" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="24" Text="Apply" />
+									</Children>
+								</ButtonWidget>
+							</Children>
+						</ListPanel>
+					</Children>
+				</BrushWidget>
+
+			</Children>
+		</BrushWidget>
+
+	</Window>
+</Prefab>

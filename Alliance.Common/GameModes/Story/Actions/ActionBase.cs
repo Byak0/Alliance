@@ -15,12 +15,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 	{
 		public virtual void Execute() { }
 
-		public virtual void Register(GameEntity entity = null)
+		public virtual void Register(WeakGameEntity entity)
 		{
 			RegisterZones(entity);
 		}
 
-		protected void RegisterZones(GameEntity entity)
+		protected void RegisterZones(WeakGameEntity entity)
 		{
 			var properties = GetType().GetFields();
 

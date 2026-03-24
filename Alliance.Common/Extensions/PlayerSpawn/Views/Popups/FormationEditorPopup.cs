@@ -32,14 +32,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views.Popups
 				_dataSource = new FormationEditorVM(formation);
 				_dataSource.OnCloseMenu += OnCloseMenu;
 
-				_layer = new GauntletLayer(30, "GauntletLayer");
+				_layer = new GauntletLayer("FormationEditorPopup", 30);
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("FormationEditorPopup", _dataSource);
 
-				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
 
 				ScreenManager.TopScreen?.AddLayer(_layer);
 				ScreenManager.TrySetFocus(_layer);

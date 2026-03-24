@@ -1,10 +1,9 @@
-﻿using Alliance.Common.Core.Security;
+﻿using Alliance.Client.Extensions.AdminMenu;
+using Alliance.Common.Core.Security;
 using Alliance.Common.Core.Security.Models;
-using Alliance.Common.Utilities;
 using System;
-using System.Linq;
-using System.Reflection;
-using TaleWorlds.Core;
+using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.DedicatedCustomServer;
 using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
 
@@ -13,105 +12,162 @@ namespace Alliance.Server.Core.Security
 	/// <summary>
 	/// Server-side class used to update players roles and access level.
 	/// </summary>
-	public class SecurityManager
+	public static class SecurityManager
 	{
-		public static DateTime lastRead = DateTime.MinValue;
-
-		public static void AddBan(VirtualPlayer player)
+		private static AL_PlayerData GetOrCreate(PlayerId id, NetworkCommunicator peer = null)
 		{
-			UpdateRole(nameof(DefaultRoles.Banned), player.Id);
-		}
-
-		public static void RemoveBan(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Banned), player.Id, true);
-		}
-
-		public static void AddMute(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Muted), player.Id);
-		}
-
-		public static void RemoveMute(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Muted), player.Id, true);
-		}
-
-		public static void AddAdmin(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Admins), player.Id);
-		}
-
-		public static void RemoveAdmin(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Admins), player.Id, true);
-		}
-
-		public static void AddModerator(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Moderators), player.Id);
-		}
-
-		public static void RemoveModerator(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Moderators), player.Id, true);
-		}
-
-		public static void AddDev(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Devs), player.Id);
-		}
-
-		public static void RemoveDev(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Devs), player.Id, true);
-		}
-
-		public static void AddCommander(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Commanders), player.Id);
-		}
-
-		public static void RemoveCommander(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Commanders), player.Id, true);
-		}
-
-		public static void AddOfficer(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Officers), player.Id);
-		}
-
-		public static void RemoveOfficer(VirtualPlayer player)
-		{
-			UpdateRole(nameof(DefaultRoles.Officers), player.Id, true);
-		}
-
-		private static void UpdateRole(string roleName, PlayerId playerId, bool remove = false)
-		{
-			try
+			if (id == PlayerId.Empty) return null;
+			if (!PlayerStore.Instance.AllPlayersData.TryGetValue(id, out AL_PlayerData data))
 			{
-				// Update role in memory
-				int roleIndex = GetRoleIndex(roleName);
-				RoleManager.Instance.UpdatePlayersRoles(roleIndex, playerId, remove);
-
-				// Sync roles
-				RoleManager.Instance.SyncPlayersRoles(roleIndex, playerId, remove);
-
-				// Save roles to file
-				SerializeHelper.SaveClassToFile(SubModule.RolesFilePath, Roles.Instance);
+				data = new AL_PlayerData(peer?.UserName, id);
+				PlayerStore.Instance.AllPlayersData[id] = data;
 			}
-			catch (Exception ex)
-			{
-				Log($"Alliance - Failed to update role {roleName} for player {playerId} :", LogLevel.Error);
-				Log(ex.ToString(), LogLevel.Error);
-			}
+			return data;
 		}
 
-		private static int GetRoleIndex(string roleName)
+		private static void Kick(PlayerId id)
 		{
-			FieldInfo fi = typeof(DefaultRoles).GetField(roleName);
-			return RoleManager.Instance.RolesFields.FirstOrDefault(x => x.Value == fi).Key;
+			DedicatedCustomServerSubModule.Instance.DedicatedCustomGameServer.KickPlayer(id, false);
+		}
+
+		public static void WarnPlayer(PlayerId playerId, NetworkCommunicator player = null, string reason = "Warning issued")
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.WarningCount++;
+			data.LastWarning = reason;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			CommonAdminMsg.SendNotificationToPeerAsServer(player, reason);
+			Log($"[Security] {data.Name} warned: {reason}");
+		}
+
+		public static void KickPlayer(PlayerId playerId, NetworkCommunicator player = null, string reason = "Kicked by admin")
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.KickCount++;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Kick(playerId);
+			Log($"[Security] {data.Name} kicked. Reason: {reason}");
+		}
+
+		public static void BanPlayer(PlayerId playerId, NetworkCommunicator player = null, string reason = "Banned", DateTime? until = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.IsBanned = true;
+			data.BanCount++;
+			data.LastBanReason = reason;
+			data.SanctionEnd = until ?? DateTime.MaxValue;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Kick(playerId);
+			Log($"[Security] {data.Name} banned until {data.SanctionEnd} ({reason})");
+		}
+
+		public static void UnbanPlayer(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.IsBanned = false;
+			data.SanctionEnd = DateTime.Now;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} unbanned.");
+		}
+
+		public static void MutePlayer(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.IsMuted = true;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} muted.");
+		}
+
+		public static void UnmutePlayer(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.IsMuted = false;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} unmuted.");
+		}
+
+		public static void GrantAdmin(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.Admin = true;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} promoted to admin.");
+		}
+
+		public static void RevokeAdmin(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.Admin = false;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} removed from admin list.");
+		}
+
+		public static void GrantSudo(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.Sudo = true;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} granted SUDO access.");
+		}
+
+		public static void RevokeSudo(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.Sudo = false;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} SUDO access revoked.");
+		}
+
+		public static void GrantVIP(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null) return;
+
+			data.VIP = true;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} granted VIP status.");
+		}
+
+		public static void RevokeVIP(PlayerId playerId, NetworkCommunicator player = null)
+		{
+			AL_PlayerData data = GetOrCreate(playerId, player);
+			if (data == null || !data.VIP) return;
+
+			data.VIP = false;
+
+			PlayerService.ApplyPlayerDataUpdate(data, player);
+			Log($"[Security] {data.Name} VIP status removed.");
 		}
 	}
 }

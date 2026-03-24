@@ -50,7 +50,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 
 		public override MultiplayerGameType GetMissionType()
 		{
-			return MultiplayerGameType.FreeForAll;
+			return MultiplayerGameType.TeamDeathmatch;
 		}
 
 		public override void OnBehaviorInitialize()
@@ -59,7 +59,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 			spawnBehavior = (BRSpawningBehavior)SpawnComponent.SpawningBehavior;
 			zoneBehavior = Mission.Current.GetMissionBehavior<ShrinkingZoneBehavior>();
 			BasicCultureObject @object = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
-			Banner banner = new Banner(@object.BannerKey, @object.BackgroundColor1, @object.ForegroundColor1);
+			Banner banner = new Banner(@object.Banner, @object.BackgroundColor1, @object.ForegroundColor1);
 			Team team = Mission.Teams.Add(BattleSideEnum.Attacker, @object.BackgroundColor1, @object.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true, true);
 			team.SetIsEnemyOf(team, true);
 		}

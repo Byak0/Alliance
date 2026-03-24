@@ -16,8 +16,8 @@ namespace Alliance.Common.Core.Configuration.Models
 	{
 		//[ConfigProperty(isEditable: false)]
 		//public string ServerName;
-		[ConfigProperty(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
-		public string WelcomeMessage = "Hello";
+		//[ConfigProperty(label: "Welcome Message", tooltip: "Welcome messages which is shown to all players when they enter the server.")]
+		//public string WelcomeMessage = "Hello";
 		//[ConfigProperty(isEditable: false)]
 		//public string GamePassword;
 		//[ConfigProperty(isEditable: false)]
@@ -66,8 +66,8 @@ namespace Alliance.Common.Core.Configuration.Models
 		public int FriendlyFireDamageRangedFriendPercent;
 		[ConfigProperty(label: "Who can spectators look at, and how.")]
 		public SpectatorCameraTypes SpectatorCamera;
-		[ConfigProperty(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In minutes.")]
-		public int WarmupTimeLimit;
+		[ConfigProperty(label: "Warmup duration", tooltip: "Maximum duration for the warmup. In seconds.")]
+		public int WarmupTimeLimitInSeconds;
 		[ConfigProperty(label: "Map max duration", tooltip: "Maximum duration for the map. In minutes.")]
 		public int MapTimeLimit;
 		[ConfigProperty(label: "Round max duration", tooltip: "Maximum duration for each round. In seconds.")]
@@ -101,6 +101,8 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(label: "Disables the inactivity kick timer.")]
 		public bool DisableInactivityKick;
 
+		private static readonly System.Reflection.FieldInfo _minimumValueField = typeof(CompressionInfo.Integer).GetField("minimumValue", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
 		public TWConfig() { }
 
 		/// <summary>
@@ -111,8 +113,43 @@ namespace Alliance.Common.Core.Configuration.Models
 		/// <returns>Value of the option.</returns>
 		public object this[OptionType option]
 		{
-			get => GetBoundedOption(option, typeof(TWConfig).GetField(option.ToString())?.GetValue(this) ?? GetDefaultValue(option));
+			get => GetBoundedOption(option, typeof(TWConfig).GetField(option.ToString())?.GetValue(this) ?? GetCurrentServerValue(option));
 			set => SetBoundedOption(option, value);
+		}
+
+		/// <summary>
+		/// Get the custom CompressionInfo for options that use extended bounds beyond native limits.
+		/// Returns null if the option should use standard compression.
+		/// </summary>
+		public static CompressionInfo.Integer? GetCustomCompressionInfo(OptionType optionType)
+		{
+			return optionType switch
+			{
+				OptionType.MaxNumberOfPlayers => CompressionBasic.MaxNumberOfPlayersCompressionInfo,
+				OptionType.RoundTimeLimit => CompressionMission.RoundTimeCompressionInfo,
+				OptionType.MapTimeLimit => CompressionBasic.MapTimeLimitCompressionInfo,
+				OptionType.NumberOfBotsPerFormation => CompressionBasic.NumberOfBotsPerFormationCompressionInfo,
+				OptionType.WarmupTimeLimitInSeconds => new CompressionInfo.Integer(0, 3600, true),
+				_ => null
+			};
+		}
+
+		/// <summary>
+		/// Adjusts the min/max bounds for specific options that need custom limits.
+		/// </summary>
+		public static void GetAdjustedBounds(OptionType option, ref int min, ref int max)
+		{
+			CompressionInfo.Integer? customCompression = GetCustomCompressionInfo(option);
+			if (customCompression.HasValue)
+			{
+				min = (int)_minimumValueField.GetValue(customCompression.Value);
+				max = customCompression.Value.GetMaximumValue();
+			}
+			else
+			{
+				min = option.GetMinimumValue();
+				max = option.GetMaximumValue();
+			}
 		}
 
 		/// <summary>
@@ -126,24 +163,8 @@ namespace Alliance.Common.Core.Configuration.Models
 				{
 					if (value is int val)
 					{
-						// Override max value for some options
-						switch (option)
-						{
-							case OptionType.MaxNumberOfPlayers:
-								max = CompressionBasic.MaxNumberOfPlayersCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.RoundTimeLimit:
-								max = CompressionMission.RoundTimeCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.MapTimeLimit:
-								max = CompressionBasic.MapTimeLimitCompressionInfo.GetMaximumValue();
-								break;
-							case OptionType.NumberOfBotsPerFormation:
-								max = CompressionBasic.NumberOfBotsPerFormationCompressionInfo.GetMaximumValue();
-								break;
-							default:
-								break;
-						}
+						GetAdjustedBounds(option, ref min, ref max);
+
 						if (val > max)
 						{
 							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
@@ -171,6 +192,8 @@ namespace Alliance.Common.Core.Configuration.Models
 				{
 					if (value is int val)
 					{
+						GetAdjustedBounds(option, ref min, ref max);
+
 						if (val > max)
 						{
 							Log($"Value for option {option} is too high, setting to maximum value : {max}", LogLevel.Debug);
@@ -187,9 +210,8 @@ namespace Alliance.Common.Core.Configuration.Models
 			return value;
 		}
 
-		private object GetDefaultValue(OptionType key)
+		public static object GetCurrentServerValue(OptionType key)
 		{
-			Log($"No value set for option {key}, using server value : {key.GetValueText()}", LogLevel.Debug);
 			return key.GetOptionProperty().OptionValueType switch
 			{
 				OptionValueType.Bool => key.GetBoolValue(),

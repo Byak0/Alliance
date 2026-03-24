@@ -73,7 +73,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 			//}
 		}
 
-		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon)
+		public override void OnHit(Agent affectorAgent, int damage, in MissionWeapon affectorWeapon, in Blow b, in AttackCollisionData collisionData)
 		{
 			if (affectorAgent != null && affectorAgent != Agent.RiderAgent)
 			{
@@ -515,7 +515,7 @@ namespace Alliance.Common.Extensions.AdvancedCombat.AgentComponents
 					Vec3 fallbackPosition = _threat.Position - directionToTarget * proportionalDistance;
 					WorldPosition fallbackWorldPosition = fallbackPosition.ToWorldPosition();
 					// Check if path to destination exist before teleporting to avoid obstacles
-					if (Mission.Current.Scene.GetNavigationMeshForPosition(ref fallbackPosition))
+					if (fallbackWorldPosition.GetNavMesh() != UIntPtr.Zero) // todo check if this actually check for navmesh
 					{
 						Agent.SetScriptedPosition(ref fallbackWorldPosition, true, Agent.AIScriptedFrameFlags.None);
 						Agent.TeleportToPosition(fallbackPosition);

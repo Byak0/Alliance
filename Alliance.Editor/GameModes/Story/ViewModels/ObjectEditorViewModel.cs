@@ -21,11 +21,16 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public string Title { get; set; }
 		public string SelectedLanguage => parentViewModel?.SelectedLanguage ?? "English";
-		public GameEntity GameEntity { get; set; }
+		public WeakGameEntity GameEntity { get; set; }
 
-		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title, GameEntity gameEntity = null)
+		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title, WeakGameEntity gameEntity)
 		{
 			InitVM(obj, parentViewModel, title, gameEntity);
+		}
+
+		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title)
+		{
+			InitVM(obj, parentViewModel, title, WeakGameEntity.Invalid);
 		}
 
 		public ObjectEditorViewModel()
@@ -41,11 +46,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				string title = "Alliance - Scenario Editor";
 				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
 
-				InitVM(obj, parentViewModel, title, null);
+				InitVM(obj, parentViewModel, title, WeakGameEntity.Invalid);
 			}
 		}
 
-		private void InitVM(object obj, ScenarioEditorViewModel parentViewModel, string title, GameEntity gameEntity)
+		private void InitVM(object obj, ScenarioEditorViewModel parentViewModel, string title, WeakGameEntity gameEntity)
 		{
 			GameEntity = gameEntity;
 

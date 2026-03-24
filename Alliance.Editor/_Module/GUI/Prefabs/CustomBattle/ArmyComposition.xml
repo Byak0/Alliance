@@ -14,7 +14,7 @@
 					<Children>
 
 						<!--Selected Character Tableau-->
-						<CharacterTableauWidget DataSource="{CurrentSelectedCharacter}" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedWidth="400" SuggestedHeight="400" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText"  PositionYOffset="-30" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IsBannerShownInBackground="true"/>
+						<AL_CharacterTableauWidget DataSource="{CurrentSelectedCharacter}" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedWidth="400" SuggestedHeight="400" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText"  PositionYOffset="-30" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IsBannerShownInBackground="true"/>
 
 						<ListPanel DataSource="{ArmorsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" PositionYOffset="5" MarginLeft="25" LayoutImp.LayoutMethod="VerticalBottomToTop">
 							<ItemTemplate>

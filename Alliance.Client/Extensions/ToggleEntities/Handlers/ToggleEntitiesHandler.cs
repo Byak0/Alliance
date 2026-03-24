@@ -28,7 +28,7 @@ namespace Alliance.Client.Extensions.ToggleEntities.Handlers
 			if (Mission.Current?.Scene == null || message.MissionObjectId == null) return;
 
 			MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-			foreach (GameEntity entity in missionObject.GameEntity.CollectChildrenEntitiesWithTag(message.EntitiesTag))
+			foreach (WeakGameEntity entity in missionObject.GameEntity.CollectChildrenEntitiesWithTag(message.EntitiesTag))
 			{
 				entity.SetVisibilityExcludeParents(message.Show);
 			}

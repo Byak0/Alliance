@@ -303,7 +303,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		{
 			AvailableCharacter character = new AvailableCharacter();
 			character.Index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
-			character.CharacterId = ((BasicCharacterObject)GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid)).StringId;
+			character.CharacterId = ((BasicCharacterObject)GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid))?.StringId;
 			character.Officer = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
 			character.SpawnCount = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
 			character.IsPercentage = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);

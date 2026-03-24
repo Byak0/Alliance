@@ -1,6 +1,6 @@
 ﻿using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ViewModelCollection;
+using TaleWorlds.MountAndBlade.ViewModelCollection.Missions.Interaction;
 
 namespace Alliance.Client.Extensions.UsableEntity.ViewModels
 {

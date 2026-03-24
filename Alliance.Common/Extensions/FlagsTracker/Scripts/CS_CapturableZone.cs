@@ -40,8 +40,8 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 		private SynchedMissionObject[] _flags = new SynchedMissionObject[2];
 		private List<SynchedMissionObject> _flagDependentObjects;
 		private SynchedMissionObject _flagHolder;
-		private GameEntity _flagBottomBoundary;
-		private GameEntity _flagTopBoundary;
+		private WeakGameEntity _flagBottomBoundary;
+		private WeakGameEntity _flagTopBoundary;
 		private int _attackerAgentsCount = 0;
 		private int _defenderAgentsCount = 0;
 		private int _majorTeamAdvantage;
@@ -87,7 +87,7 @@ namespace Alliance.Common.Extensions.FlagsTracker.Scripts
 			Position = GameEntity.GlobalPosition;
 
 			// Recover all the game entities
-			_flagHolder = GameEntity?.CollectChildrenEntitiesWithTag("flag_holder")?.FirstOrDefault()?.GetScriptComponents<SynchedMissionObject>().FirstOrDefault();
+			_flagHolder = GameEntity.CollectChildrenEntitiesWithTag("flag_holder")?.FirstOrDefault().GetScriptComponents<SynchedMissionObject>().FirstOrDefault();
 			if (_flagHolder != null)
 			{
 				_flags[(int)BattleSideEnum.Defender] = _flagHolder.GameEntity.CollectChildrenEntitiesWithTag("flag_defender").SingleOrDefault().GetScriptComponents<SynchedMissionObject>().SingleOrDefault();
