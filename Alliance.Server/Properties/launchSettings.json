@@ -6,13 +6,6 @@
       "commandLineArgs": "/dedicatedcustomserverconfigfile ds_config_alliance.txt /LogOutputPath logs /no_watchdog _MODULES_*Native*Multiplayer*Alliance*_MODULES_",
       "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Server",
       "nativeDebugging": false
-    },
-    "BannerlordServerEOP": {
-      "commandName": "Executable",
-      "executablePath": "$(GameFolder)\\bin\\Win64_Shipping_Server\\DedicatedCustomServer.Starter.exe",
-      "commandLineArgs": "/dedicatedcustomserverconfigfile ds_config_alliance.txt /LogOutputPath logs /no_watchdog _MODULES_*Native*Multiplayer*Alliance*EmpireOfPowderMP*_MODULES_",
-      "workingDirectory": "$(GameFolder)\\bin\\Win64_Shipping_Server",
-      "nativeDebugging": false
     }
   }
 }
