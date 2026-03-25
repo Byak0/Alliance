@@ -882,7 +882,7 @@
 		Type="BodyArmor">
 		<ItemComponent>
 			<Armor
-				body_armor="31"
+				body_armor="28"
 				leg_armor="6"
 				arm_armor="6"
 				covers_body="true"
@@ -1547,7 +1547,7 @@
 		Type="BodyArmor">
 		<ItemComponent>
 			<Armor
-				body_armor="28"
+				body_armor="20"
 				leg_armor="8"
 				arm_armor="2"
 				has_gender_variations="true"
@@ -1616,7 +1616,7 @@
 		Type="BodyArmor">
 		<ItemComponent>
 			<Armor
-				body_armor="34"
+				body_armor="28"
 				leg_armor="8"
 				arm_armor="4"
 				has_gender_variations="true"
@@ -2850,7 +2850,7 @@
 		Type="BodyArmor">
 		<ItemComponent>
 			<Armor
-				body_armor="28"
+				body_armor="35"
 				leg_armor="14"
 				arm_armor="14"
 				has_gender_variations="true"

@@ -52,11 +52,11 @@
 		</XmlNode>
 		<XmlNode>
 			<XmlName id="CraftingPieces" path="CraftingPieces/LOTR" />
-		</XmlNode>
-		<XmlNode>
-			<XmlName id="CraftingPieces" path="CraftingPieces/NativeSP" />
-		</XmlNode>
-		<XmlNode>
+		</XmlNode>-->
+    <XmlNode>
+      <XmlName id="CraftingPieces" path="CraftingPieces/NativeSP" />
+    </XmlNode>
+    <!--<XmlNode>
 			<XmlName id="WeaponDescriptions" path="WeaponDescriptions/LOTR" />
 		</XmlNode>
 		<XmlNode>
