@@ -2270,7 +2270,7 @@
 	<CraftingPiece
 		id="battania_blade_6"
 		name="{=IUlApNGp}Long Falx Blade"
-		tier="4"
+		tier="5"
 		piece_type="Blade"
 		mesh="battania_blade_6"
 		culture="Culture.battania"
@@ -2283,7 +2283,7 @@
 			body_name="bo_sword_one_handed">
 			<Swing
 				damage_type="Cut"
-				damage_factor="4.7" />
+				damage_factor="4.9" />
 		</BladeData>
 		<Flags>
 			<Flag
@@ -13081,7 +13081,8 @@
 		mesh="axe_craft_16_head"
 		distance_to_next_piece="29"
 		distance_to_previous_piece="31.1"
-		weight="1.092">
+		weight="1.092"
+		is_hidden="true">
 		<BuildData
 			piece_offset="-39" />
 		<BladeData
@@ -14957,7 +14958,7 @@
 			body_name="bo_sword_one_handed">
 			<Swing
 				damage_type="Cut"
-				damage_factor="4.4" />
+				damage_factor="4.8" />
 		</BladeData>
 		<Flags>
 			<Flag
@@ -16547,6 +16548,24 @@
 		mesh="spear_handle_13"
 		length="228"
 		weight="1.6"
+		CraftingCost="110">
+		<BuildData
+			piece_offset="22.9" />
+		<Materials>
+			<Material
+				id="Wood"
+				count="1" />
+		</Materials>
+	</CraftingPiece>
+	<CraftingPiece
+		id="spear_handle_13_2"
+		name="{=pocRP9dq}Long Ash Staff"
+		tier="4"
+		piece_type="Handle"
+		mesh="spear_handle_13"
+		length="228"
+		weight="1"
+		is_hidden="true"
 		CraftingCost="110">
 		<BuildData
 			piece_offset="22.9" />
