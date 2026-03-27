@@ -80,7 +80,7 @@ namespace Alliance.Common.Core.Security
 					_playerDataFile = SerializeHelper.LoadClassFromFile(_playerDataFilePath, _playerDataFile);
 					InitPlayersData();
 					PlayerSyncService.BroadcastPlayerStore();
-					Log($"Alliance - Player datafile was edited externally at {lastWriteTime}");
+					Log($"Alliance - Player datafile was edited externally at {lastWriteTime}", LogLevel.Debug);
 				}
 			}
 			catch (Exception ex)

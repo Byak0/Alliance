@@ -19,7 +19,7 @@ namespace Alliance.Client.Core.Security.Handlers
 			try
 			{
 				PlayerService.ApplyPlayerDataUpdate(message.PlayerData, message.Player, message.AllData);
-				Log($"{message.PlayerData.Name} - {message.PlayerData.Id} - {message.PlayerData.Sudo} - {message.PlayerData.WarningCount}");
+				Log($"{message.PlayerData.Name} - {message.PlayerData.Id} - {message.PlayerData.Sudo} - {message.PlayerData.WarningCount}", LogLevel.Debug);
 			}
 			catch (Exception ex)
 			{
