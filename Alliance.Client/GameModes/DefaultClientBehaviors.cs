@@ -4,6 +4,7 @@ using Alliance.Client.Extensions.VOIP.Behaviors;
 using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.Extensions.Zevent.Behaviors;
 using System.Collections.Generic;
@@ -49,7 +50,8 @@ namespace Alliance.Client.GameModes
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
-				new ZeventCommonBehavior()
+				new ZeventCommonBehavior(),
+				new BuildBehavior()
 			};
 		}
 	}

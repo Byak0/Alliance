@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using Alliance.Common.Extensions.Zevent.Behaviors;
 using Alliance.Common.GameModes.Story.Behaviors;
@@ -67,6 +68,7 @@ namespace Alliance.Server.GameModes
 				new AnimalBehavior(),
 				new ConditionsBehavior(),
 				new ToggleEntitiesBehavior(),
+				new BuildBehavior(),
 
 				// Zevent special behavior (probably temporary)
 				new ZeventBehavior(),

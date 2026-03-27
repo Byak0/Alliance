@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.KeyBinder.Models;
+using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.Vehicles.Scripts;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
@@ -84,12 +85,19 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 
 		public override void AfterStart()
 		{
+			// Register callbacks for vehicles already in the scene
 			List<WeakGameEntity> vehicles = Mission.GetActiveEntitiesWithScriptComponentOfType<CS_Vehicle>().ToMBList();
 			foreach (WeakGameEntity vehicle in vehicles)
 			{
 				CS_Vehicle vehicleScript = vehicle.GetFirstScriptOfType<CS_Vehicle>();
-				vehicleScript.OnUseEvent += UseVehicle;
-				vehicleScript.OnUseStoppedEvent += StopUsingVehicle;
+				RegisterVehicle(vehicleScript);
+			}
+
+			// Subscribe to dynamically spawned vehicles from the build system
+			BuildBehavior buildBehavior = Mission.Current?.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt += OnPrefabBuilt;
 			}
 		}
 
@@ -99,6 +107,11 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 
 		public override void OnMissionScreenFinalize()
 		{
+			BuildBehavior buildBehavior = Mission.Current?.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt -= OnPrefabBuilt;
+			}
 		}
 
 		public override void OnPreDisplayMissionTick(float dt)
@@ -118,6 +131,22 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 			{
 				TickInputs();
 			}
+		}
+
+		private void OnPrefabBuilt(int buildIndex, GameEntity entity)
+		{
+			CS_Vehicle vehicleScript = entity.GetFirstScriptOfType<CS_Vehicle>();
+			if (vehicleScript != null)
+			{
+				RegisterVehicle(vehicleScript);
+			}
+		}
+
+		private void RegisterVehicle(CS_Vehicle vehicleScript)
+		{
+			if (vehicleScript == null) return;
+			vehicleScript.OnUseEvent += UseVehicle;
+			vehicleScript.OnUseStoppedEvent += StopUsingVehicle;
 		}
 
 		private void TickInputs()
