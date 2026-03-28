@@ -2,9 +2,11 @@
 using Alliance.Common.Core.KeyBinder.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
+using Alliance.Common.Extensions.BuildSystem.Configuration;
 using Alliance.Common.Extensions.BuildSystem.NetworkMessages.FromClient;
 using EnumsNET;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
@@ -84,18 +86,7 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			}
 		};
 
-		// Available prefabs for building - extend this list as needed
-		private List<string> AvailablePrefabs = new List<string>()
-		{
-			"deco_barrel_beer",
-			"deco_fence",
-			"interact_military_swords_rack",
-			"interact_healing_food_table_a",
-			"interact_torch_box",
-			"building_medieval_tente_t1",
-			"building_medieval_tente_t5_1",
-			"vehicle_sportcar"
-		};
+		private List<string> AvailablePrefabs = new List<string>();
 
 		private GameKey _buildKey;
 		private GameKey _confirmKey;
@@ -113,10 +104,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		private const float ROTATION_STEP = 15f; // degrees per click
 		private const float MAX_BUILD_DISTANCE = 50f;
 
-		public BuildSystemView()
-		{
-		}
-
 		public override void EarlyStart()
 		{
 			var keys = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys;
@@ -127,6 +114,8 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			_nextKey = keys.Find(gk => gk != null && gk.StringId == "key_build_next");
 			_prevKey = keys.Find(gk => gk != null && gk.StringId == "key_build_prev");
 			_deleteKey = keys.Find(gk => gk != null && gk.StringId == "key_build_delete");
+
+			SetAvailablePrefabs(BuildPrefabCatalogManager.GetActivePrefabIds());
 		}
 
 		public override void OnMissionScreenTick(float dt)
@@ -142,7 +131,7 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			if (IsKeyPressed(_prevKey)) CyclePrefab(-1);
 
 			if (IsKeyPressed(_rotateKey)) _rotationAngle += ROTATION_STEP;
-			
+
 			UpdateGhostPreview();
 
 			if (IsKeyPressed(_confirmKey)) ConfirmPlacement();
@@ -169,6 +158,14 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 
 		private void EnterBuildMode()
 		{
+			SetAvailablePrefabs(BuildPrefabCatalogManager.GetActivePrefabIds());
+
+			if (AvailablePrefabs.Count == 0)
+			{
+				Log("[BuildSystem] Cannot enter build mode: no prefab available.", LogLevel.Warning);
+				return;
+			}
+
 			_isBuildMode = true;
 			_selectedPrefabIndex = 0;
 			_rotationAngle = 0f;
@@ -188,7 +185,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			if (AvailablePrefabs.Count == 0) return;
 
 			_selectedPrefabIndex = (_selectedPrefabIndex + direction + AvailablePrefabs.Count) % AvailablePrefabs.Count;
-			// Recreate ghost with the new prefab
 			DestroyGhostEntity();
 			CreateGhostEntity();
 			Log($"Selected: {GetSelectedPrefabName()}", LogLevel.Debug);
@@ -201,7 +197,11 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			string prefabName = GetSelectedPrefabName();
 			_ghostEntity = GameEntity.Instantiate(Mission.Current.Scene, prefabName, true, false);
 
-			if (_ghostEntity == null) return;
+			if (_ghostEntity == null)
+			{
+				Log($"[BuildSystem] Failed to instantiate ghost prefab '{prefabName}'.", LogLevel.Warning);
+				return;
+			}
 
 			_ghostEntity.SetVisibilityExcludeParents(true);
 			_ghostEntity.SetMobility(GameEntity.Mobility.Dynamic);
@@ -222,7 +222,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		{
 			if (_ghostEntity == null || MissionScreen == null) return;
 
-			// Use the same approach as AdminSystem - project mouse position onto the ground
 			bool validPosition = MissionScreen.GetProjectedMousePositionOnGround(
 				out Vec3 groundPosition,
 				out Vec3 groundNormal,
@@ -231,7 +230,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 
 			if (!validPosition) return;
 
-			// Build the frame at the hit point with rotation
 			MatrixFrame frame = MatrixFrame.Identity;
 			float radians = _rotationAngle * MathF.PI / 180f;
 			frame.rotation.RotateAboutUp(radians);
@@ -247,7 +245,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			string prefabName = GetSelectedPrefabName();
 			MatrixFrame frame = _ghostEntity.GetGlobalFrame();
 
-			// Send the build request to server
 			SendBuildRequest(prefabName, frame);
 
 			Log($"Build request sent: '{prefabName}'.", LogLevel.Debug);
@@ -311,7 +308,29 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 
 		public void SetAvailablePrefabs(List<string> prefabNames)
 		{
-			AvailablePrefabs = prefabNames;
+			AvailablePrefabs = prefabNames?
+				.Where(x => !string.IsNullOrWhiteSpace(x))
+				.Distinct(System.StringComparer.OrdinalIgnoreCase)
+				.ToList()
+				?? new List<string>();
+
+			if (AvailablePrefabs.Count == 0)
+			{
+				_selectedPrefabIndex = 0;
+				DestroyGhostEntity();
+				return;
+			}
+
+			if (_selectedPrefabIndex >= AvailablePrefabs.Count)
+			{
+				_selectedPrefabIndex = 0;
+			}
+
+			if (_isBuildMode)
+			{
+				DestroyGhostEntity();
+				CreateGhostEntity();
+			}
 		}
 	}
 }

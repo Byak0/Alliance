@@ -12,24 +12,33 @@
 
 		<Widget IsVisible="@IsVisible" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 			<Children>
-				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="88" >
+				<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="88">
 					<Children>
 						<!-- Tab to display Admin View -->
-						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenAdminTab" IsSelected="@ShowAdminTab">
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenAdminTab" IsSelected="@ShowAdminTab">
 							<Children>
 								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="28" Text="Admin View" />
 							</Children>
 						</ButtonWidget>
+
 						<!-- Tab to display Players permissions & sanctions -->
-						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenPlayerTab" IsSelected="@ShowPlayerTab">
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenPlayerTab" IsSelected="@ShowPlayerTab">
 							<Children>
 								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="28" IsDisabled="true" Text="Permissions &amp; bans" />
 							</Children>
 						</ButtonWidget>
+
 						<!-- Tab to display current config -->
-						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="280" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenToolsTab" IsSelected="@ShowOptionsTab">
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenToolsTab" IsSelected="@ShowOptionsTab">
 							<Children>
 								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="28" IsDisabled="true" Text="Game options" />
+							</Children>
+						</ButtonWidget>
+
+						<!-- Tab to display build prefab configuration -->
+						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="260" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" Brush="Header.Tab.Center" Command.Click="OpenBuildTab" IsSelected="@ShowBuildTab">
+							<Children>
+								<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" Brush.FontSize="28" IsDisabled="true" Text="Build prefabs" />
 							</Children>
 						</ButtonWidget>
 					</Children>
@@ -43,6 +52,9 @@
 
 				<!-- Options View -->
 				<TabOptions/>
+
+				<!-- Build View -->
+				<TabBuild/>
 
 			</Children>
 		</Widget>
