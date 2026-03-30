@@ -22,8 +22,6 @@ namespace Alliance.Server.Core.Security.Behaviors
 
 		protected override void HandleNewClientAfterLoadingFinished(NetworkCommunicator networkPeer)
 		{
-			SecurityManager.GrantSudo(networkPeer.VirtualPlayer.Id, networkPeer);
-
 			AL_PlayerData playerData = PlayerStore.Instance.LoadPlayerData(networkPeer);
 			SendPlayerStoreToPeer(networkPeer);
 
