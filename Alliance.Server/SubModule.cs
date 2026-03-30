@@ -84,18 +84,6 @@ namespace Alliance.Server
 			ExtendedXMLLoader.Init();
 
 			ScenarioManagerServer.Initialize();
-
-			// Initialize the player spawn menu
-			if (PlayerSpawnMenu.TryLoadFromFile(PlayerSpawnMenuFilePath, out PlayerSpawnMenu newMenu))
-			{
-				PlayerSpawnMenu.Instance = newMenu;
-				Log($"Alliance - Loaded PlayerSpawnMenu succesfully with {PlayerSpawnMenu.Instance.Teams.Count} teams.", LogLevel.Information);
-			}
-			else
-			{
-				PlayerSpawnMenu.Instance = new PlayerSpawnMenu();
-				Log($"Alliance - Failed to load PlayerSpawnMenu from {PlayerSpawnMenuFilePath}. Using default menu.", LogLevel.Warning);
-			}
 		}
 
 		public override void OnGameEnd(Game game)
