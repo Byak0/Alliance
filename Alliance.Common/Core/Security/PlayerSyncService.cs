@@ -2,10 +2,12 @@
 using Alliance.Common.Core.Security.Models;
 using Alliance.Common.Core.Security.NetworkMessages.FromServer;
 using Alliance.Common.Core.Utils;
+using System;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.PlayerServices;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Core.Security
 {
@@ -93,7 +95,8 @@ namespace Alliance.Common.Core.Security
 			else
 			{
 				playerId = GameNetworkExtensions.ReadPlayerIdFromPacket(ref bufferReadValid);
-				playerData.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
+				if (allDataAvailable)
+					playerData.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
 			}
 			playerData.Id = player?.VirtualPlayer.Id ?? playerId;
 			playerData.Sudo = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
