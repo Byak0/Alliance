@@ -121,6 +121,7 @@ namespace Alliance.Client.Extensions.AdminMenu.Views
 			ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
 			spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
 			adminVM.RefreshPlayerList();
+			adminVM.ResetOptions();
 			adminVM.IsVisible = true;
 			AdminInstance.SetInstance(adminVM);
 			_isMenuOpen = true;
