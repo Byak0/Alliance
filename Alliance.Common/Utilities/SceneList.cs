@@ -24,6 +24,9 @@ namespace Alliance.Common.Utilities
 
 		private static Dictionary<string, MultiplayerGameTypeInfo> _multiplayerGameTypeInfos;
 		private static List<SceneInfo> _scenes;
+		private static bool _areMapsLoaded = false;
+
+		public static bool AreMapsLoaded => _areMapsLoaded;
 
 		public struct SceneInfo
 		{
@@ -68,28 +71,28 @@ namespace Alliance.Common.Utilities
 			await Task.Run(() =>
 			{
 				Stopwatch stopwatch = Stopwatch.StartNew();
-
+			
 				// Concurrent list to store scenes safely when using parallel processing
 				var scenes = new ConcurrentBag<SceneInfo>();
 				// Exclude unnecessary modules
 				var modNames = TaleWorlds.Engine.Utilities.GetModulesNames().Except(new string[] { "Sandbox", "SandBoxCore", "StoryMode" });
-
+			
 				Parallel.ForEach(modNames, modName =>
 				{
 					string scenesPath = ModuleHelper.GetModuleFullPath(modName) + "SceneObj/";
-
+			
 					if (!Directory.Exists(scenesPath)) return;
-
+			
 					foreach (string dir in Directory.GetDirectories(scenesPath))
 					{
 						string scenePath = dir + "/scene.xscene";
-
+			
 						if (!File.Exists(scenePath)) continue;
-
+			
 						XmlDocument xmlDoc = new XmlDocument();
 						xmlDoc.Load(scenePath);
 						XmlNode sceneNode = xmlDoc.SelectSingleNode("/scene");
-
+			
 						SceneInfo sceneInfo = new SceneInfo
 						{
 							Module = modName,
@@ -101,14 +104,15 @@ namespace Alliance.Common.Utilities
 							HasNavmesh = File.Exists(Path.Combine(dir, "navmesh.bin")),
 							HasSAEPos = xmlDoc.SelectNodes($"//game_entity[@prefab='{SaeCommonConstants.FDC_QUICK_PLACEMENT_POS_PREFAB_NAME}']").Count > 0
 						};
-
+			
 						scenes.Add(sceneInfo);
 					}
 				});
-
+			
 				_scenes = scenes.ToList();
-
+			
 				stopwatch.Stop();
+				_areMapsLoaded = true;
 				Log($"LoadAllScenes executed in: {stopwatch.ElapsedMilliseconds} ms", LogLevel.Debug);
 			});
 		}

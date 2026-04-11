@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Extensions.GameModeMenu.ViewModels;
+using Alliance.Common.Utilities;
 using System;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
@@ -59,26 +60,34 @@ namespace Alliance.Client.Extensions.GameModeMenu.Views
 
 		public void OpenMenu()
 		{
-			try
+			// Checking if maps are loaded before to open menu
+			if (!SceneList.AreMapsLoaded)
 			{
-				_dataSource = new GameModeMenuVM();
-				_dataSource.OnCloseMenu += OnCloseMenu;
-				_layer = new GauntletLayer("GameModeMenu", 25) { };
-				_layer.InputRestrictions.SetInputRestrictions();
-				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
-				_layer.LoadMovie("GameModeRequestMenu", _dataSource);
-				SpriteData spriteData = UIResourceManager.SpriteData;
-				TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
-				ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
-				spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
-				MissionScreen.AddLayer(_layer);
-				ScreenManager.TrySetFocus(_layer);
-				IsMenuOpen = true;
+				Log("Alliance - Map are loading, please try again in a moment", LogLevel.Error);
 			}
-			catch (Exception ex)
+			else
 			{
-				Log("Alliance - Error opening GameMode menu :", LogLevel.Error);
-				Log(ex.Message, LogLevel.Error);
+				try
+				{
+					_dataSource = new GameModeMenuVM();
+					_dataSource.OnCloseMenu += OnCloseMenu;
+					_layer = new GauntletLayer("GameModeMenu", 25) { };
+					_layer.InputRestrictions.SetInputRestrictions();
+					_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
+					_layer.LoadMovie("GameModeRequestMenu", _dataSource);
+					SpriteData spriteData = UIResourceManager.SpriteData;
+					TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
+					ResourceDepot uiResourceDepot = UIResourceManager.ResourceDepot;
+					spriteData.SpriteCategories["ui_mplobby"].Load(resourceContext, uiResourceDepot);
+					MissionScreen.AddLayer(_layer);
+					ScreenManager.TrySetFocus(_layer);
+					IsMenuOpen = true;
+				}
+				catch (Exception ex)
+				{
+					Log("Alliance - Error opening GameMode menu :", LogLevel.Error);
+					Log(ex.Message, LogLevel.Error);
+				}
 			}
 		}
 
