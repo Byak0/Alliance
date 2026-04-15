@@ -23,22 +23,6 @@
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.27" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.27">
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	    <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	    <PrivateAssets>all</PrivateAssets>
-	  </PackageReference>
-	  <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.22" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Core\Database\Models\" />
-	</ItemGroup>
 
 	<Target Name="RemoveModulePackageDir" AfterTargets="BeforeBuild">
 		<!-- Clean folders before build -->
@@ -69,12 +53,6 @@
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinMM.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Npgsql.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Npgsql.EntityFrameworkCore.PostgreSQL.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.Relational.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.Design.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)Microsoft.EntityFrameworkCore.Abstractions.dll&quot; &quot;$(ProjectDir)\obj\$(ModuleName)\bin\Win64_Shipping_Server\&quot; /C /I /Y /F" />
 		<!-- Move the Module from \obj to game folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\obj\$(ModuleName)&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
 		<!-- Copy Win launcher (.bat file) to Server/bin/Win64_Shipping_Server folder -->

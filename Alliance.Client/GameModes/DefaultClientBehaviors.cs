@@ -6,7 +6,6 @@ using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
-using Alliance.Common.Extensions.Zevent.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Source.Missions;
@@ -50,7 +49,6 @@ namespace Alliance.Client.GameModes
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
-				new ZeventCommonBehavior(),
 				new BuildBehavior()
 			};
 		}
