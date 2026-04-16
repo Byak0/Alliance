@@ -57,10 +57,10 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 		private List<Vec3> _cameraPositions = new List<Vec3>()
 		{
 			new Vec3(0.38f, 0.25f, 1.1f), // View from pilot
-            new Vec3(-5.45f, 0.0f, 5.20f), // View from behind and some height
-            new Vec3(-1f, -0.25f, 2.25f), // View from behind
+            new Vec3(-5.45f, 0.0f, 4.20f), // View from behind and some height
+            new Vec3(-1f, -0.25f, 1.55f), // View from behind
             new Vec3(1.5f, 0.5f, 1f), // View from front right wheel
-            new Vec3(0f, 0f, 0f)
+            new Vec3(-2f, 3f, 1f)
 		};
 		private int _currentCameraIndex = 0;
 		private bool _updateCamera;

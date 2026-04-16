@@ -304,13 +304,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 				}
 
 				MoveHorses(dt);
-
-				_lastAgentSync += dt;
-				if (_lastAgentSync > 1f)
-				{
-					MovePilotAndPassengers();
-					_lastAgentSync = 0f;
-				}
 			}
 		}
 

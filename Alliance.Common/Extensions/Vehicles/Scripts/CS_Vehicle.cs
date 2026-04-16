@@ -36,60 +36,10 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 		public float TimeToAttainMaxTurn = 2f;
 		public float DecelerationRate = 0.5f;
 		public float TurnSlowdownRate = 10f;
-		protected bool ForceDecelerate = false;
-
-		public float GetMaxForwardSpeed
-		{
-			get
-			{
-				return MaxForwardSpeed;
-			}
-			set
-			{
-				if (value <= 0)
-				{
-					if (0f == MaxForwardSpeed) return;
-					MaxForwardSpeed = 0f;
-					return;
-				}
-				if (value >= 10f)
-				{
-					if (0f == MaxForwardSpeed) return;
-					MaxForwardSpeed = 10f;
-					return;
-				}
-				if (value == MaxForwardSpeed) return;
-				MaxForwardSpeed = value;
-			}
-		}
-
-		public float GetMaxBackwardSpeed
-		{
-			get
-			{
-				return MaxBackwardSpeed;
-			}
-			set
-			{
-				if (value <= 0)
-				{
-					if (0f == MaxBackwardSpeed) return;
-					MaxBackwardSpeed = 0f;
-					return;
-				}
-				if (value >= 10f)
-				{
-					if (0f == MaxBackwardSpeed) return;
-					MaxBackwardSpeed = 10f;
-					return;
-				}
-				if (value == MaxBackwardSpeed) return;
-				MaxBackwardSpeed = value;
-			}
-		}
 
 		public bool CanFly = true;
 		public bool FollowTerrain = true;
+		public bool CollisionEnabled = true;
 
 		public bool ValidState { get; protected set; } = true;
 		public float ForwardAccelerationRate { get; protected set; } = 0f;
@@ -108,7 +58,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 		protected bool _moveDownward = false;
 		protected bool _turnRight = false;
 		protected bool _turnLeft = false;
-		protected const float MaxFlatTerrainAngle = 0.5f;
+		protected bool ForceDecelerate = false;
 
 		protected List<WeakGameEntity> FollowsTerrainPoints = new List<WeakGameEntity>();
 
@@ -150,6 +100,12 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 				}
 			}
 
+			if (PilotStandingPoint is CS_StandingPoint standingPoint)
+			{
+				standingPoint.OnUseEvent += UpdatePilot;
+				standingPoint.OnUseStoppedEvent += RemovePilot;
+			}
+
 			// Get the children entities that should follow the terrain
 			foreach (WeakGameEntity child in allChildren)
 			{
@@ -158,35 +114,94 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 					FollowsTerrainPoints.Add(child);
 				}
 			}
-
-			if (PilotStandingPoint is CS_StandingPoint standingPoint)
-			{
-				standingPoint.OnUseEvent += UpdatePilot;
-				standingPoint.OnUseStoppedEvent += RemovePilot;
-			}
-			//List<CS_StandingPoint> standingPoints = GameEntity.CollectObjects<CS_StandingPoint>();
-			//PassengersStandingPoints = new List<CS_StandingPoint>();
-			//foreach (CS_StandingPoint point in standingPoints)
-			//{
-			//    if (point.GameEntity.HasTag(PilotStandingPointTag))
-			//    {
-			//        PilotStandingPoint = point;                    
-			//    } 
-			//    else
-			//    {
-			//        PassengersStandingPoints.Add(point);
-			//    }
-			//}
 		}
 
 		public virtual void UpdatePilot(Agent agent)
 		{
+			ResetVehicleForPilot();
 			OnUseEvent?.Invoke(this, agent);
 		}
 
 		public virtual void RemovePilot(Agent agent)
 		{
 			OnUseStoppedEvent?.Invoke(this, agent);
+		}
+
+		protected virtual void ResetVehicleForPilot()
+		{
+			if (GameNetwork.IsClient && !GameNetwork.IsServerOrRecorder)
+			{
+				return;
+			}
+
+			MatrixFrame frame = GameEntity.GetFrame();
+			if (!IsUpsideDown(frame))
+			{
+				return;
+			}
+
+			FlipVehicle(ref frame);
+			ResetMovement(frame);
+			SyncFrame(frame);
+		}
+
+		protected virtual bool IsUpsideDown(MatrixFrame frame)
+		{
+			return Vec3.DotProduct(frame.rotation.u, Vec3.Up) < .25f;
+		}
+
+		protected virtual void FlipVehicle(ref MatrixFrame frame)
+		{
+			Vec3[] collisionPoints = GetCollisionPoints();
+			if (collisionPoints.Length >= 3)
+			{
+				AlignFrameWithGround(ref frame, GameEntity, collisionPoints);
+				AdjustPositionToTerrain(ref frame, collisionPoints);
+				return;
+			}
+
+			AlignFrameUpright(ref frame);
+		}
+
+		protected virtual void AlignFrameUpright(ref MatrixFrame frame)
+		{
+			Vec3 forward = frame.rotation.f - Vec3.Up * Vec3.DotProduct(frame.rotation.f, Vec3.Up);
+			if (forward.LengthSquared < 0.001f)
+			{
+				forward = frame.rotation.s - Vec3.Up * Vec3.DotProduct(frame.rotation.s, Vec3.Up);
+			}
+
+			if (forward.LengthSquared < 0.001f)
+			{
+				forward = Vec3.Forward;
+			}
+
+			forward.Normalize();
+
+			Vec3 side = Vec3.CrossProduct(forward, Vec3.Up);
+			if (side.LengthSquared < 0.001f)
+			{
+				side = new Vec3(1f, 0f, 0f);
+			}
+			side.Normalize();
+
+			frame.rotation.f = forward * frame.rotation.f.Length;
+			frame.rotation.s = side * frame.rotation.s.Length;
+			frame.rotation.u = Vec3.Up * frame.rotation.u.Length;
+		}
+
+		protected virtual void ResetMovement(MatrixFrame frame)
+		{
+			_moveForward = false;
+			_moveBackward = false;
+			_moveUpward = false;
+			_moveDownward = false;
+			_turnRight = false;
+			_turnLeft = false;
+			ForceDecelerate = false;
+			CurrentForwardSpeed = 0f;
+			CurrentUpwardSpeed = 0f;
+			CurrentTurnRate = 0f;
 		}
 
 		public override TickRequirement GetTickRequirement()
@@ -201,7 +216,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			if (!ValidState) return;
 
 			if (GameNetwork.IsClient) CheckPilotInput();
-			//if (GameNetwork.IsServer) UpdateVehicleMovement(dt);
+
 			UpdateVehicleMovement(dt);
 		}
 
@@ -236,7 +251,16 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
 			if (CurrentForwardSpeed != 0f)
 			{
-				frame.Advance(CurrentForwardSpeed * dt);
+				// Check for obstacle before moving
+				CollisionResult collision;
+				if (CollisionEnabled && CheckMultiPointCollision(frame, Math.Abs(CurrentForwardSpeed * dt) + 0.5f, out collision))
+				{
+					OnCollision(ref frame, collision);
+				}
+				else
+				{
+					frame.Advance(CurrentForwardSpeed * dt);
+				}
 			}
 
 			if (CurrentUpwardSpeed != 0f)
@@ -256,13 +280,6 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
 				// Adjust the position of the vehicle to prevent wheels from going under the terrain
 				AdjustPositionToTerrain(ref frame, collisionPoints);
-			}
-
-			_lastAgentSync += dt;
-			if (_lastAgentSync > 1f)
-			{
-				MovePilotAndPassengers();
-				_lastAgentSync = 0f;
 			}
 		}
 
@@ -289,7 +306,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 					Vec3 collisionPointPosition = collisionPoint;
 
 					// Get the ground height at the collisionPoint position
-					collisionPointPosition.z = FlyElevation - groundOffset + Scene.GetGroundHeightAtPosition(collisionPointPosition, BodyFlags.CommonCollisionExcludeFlags);
+					collisionPointPosition.z = FlyElevation - groundOffset + GetGroundHeight(collisionPointPosition);
 
 					// Store the collisionPoint position
 					collisionPointPositions[numcollisionPoints++] = collisionPointPosition;
@@ -364,7 +381,7 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			// Make the vehicle follow the ground
 			foreach (Vec3 cp in collisionPoints)
 			{
-				float terrainHeight = Scene.GetGroundHeightAtPosition(cp, BodyFlags.CommonCollisionExcludeFlags);
+				float terrainHeight = GetGroundHeight(cp);
 				float cpHeight = cp.z - groundOffset - terrainHeight;
 
 				// Collision point is under the ground
@@ -393,15 +410,18 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			}
 		}
 
+		public virtual float GetGroundHeight(Vec3 cp)
+		{
+			return Scene.GetGroundHeightAtPosition(cp, BodyFlags.CommonCollisionExcludeFlags);
+		}
+
 		public virtual Vec3[] GetCollisionPoints()
 		{
-			Vec3[] collisionPoints = new Vec3[4];
-
-			// Assuming points are ordered in clockwise or counterclockwise direction
-			collisionPoints[0] = FollowsTerrainPoints[0].GetGlobalFrame().origin;
-			collisionPoints[1] = FollowsTerrainPoints[1].GetGlobalFrame().origin;
-			collisionPoints[2] = FollowsTerrainPoints[2].GetGlobalFrame().origin;
-			collisionPoints[3] = FollowsTerrainPoints[3].GetGlobalFrame().origin;
+			Vec3[] collisionPoints = new Vec3[FollowsTerrainPoints.Count];
+			for (int i = 0; i < FollowsTerrainPoints.Count; i++)
+			{
+				collisionPoints[i] = FollowsTerrainPoints[i].GetGlobalFrame().origin;
+			}
 
 			return collisionPoints;
 		}
@@ -476,6 +496,24 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 			GameNetwork.WriteMessage(new CS_VehicleSyncForward(Id, move));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 			_moveForward = move;
+		}
+
+		/// <summary>
+		/// Broadcast the current forward speed to all clients (e.g. after collision).
+		/// </summary>
+		public virtual void ServerSyncSpeed()
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new CS_VehicleSyncSpeed(Id, CurrentForwardSpeed));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
+
+		/// <summary>
+		/// Set the forward speed directly (used by client when receiving speed sync).
+		/// </summary>
+		public virtual void SetForwardSpeed(float speed)
+		{
+			CurrentForwardSpeed = speed;
 		}
 
 		public virtual void RequestMoveBackward(bool move, bool sync = false)
@@ -728,18 +766,221 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 		{
 			return new TextObject(Description);
 		}
-	}
 
-	public static class Vec3Extensions
-	{
-		public static Vec3 ProjectOnUnitVector(this Vec3 vector, Vec3 unitVector)
+		#region Collision Detection
+
+		/// <summary>
+		/// Result of a collision check containing hit info.
+		/// </summary>
+		public struct CollisionResult
 		{
-			return unitVector * Vec3.DotProduct(vector, unitVector);
+			public bool HasCollision;
+			public Vec3 CollisionPoint;
+			public float Distance;
+			public Vec3 ImpactDirection;
+			public Vec3 CollisionNormal;
 		}
 
-		public static Vec3 ProjectOnPlane(this Vec3 vector, Vec3 planeNormal)
+		/// <summary>
+		/// Returns collision check points based on vehicle frame. 
+		/// Override to customize per vehicle type.
+		/// </summary>
+		protected virtual Vec3[] GetCollisionCheckPoints(MatrixFrame vehicleFrame)
 		{
-			return vector - planeNormal * Vec3.DotProduct(vector, planeNormal);
+			// Default: front and back center points
+			return new Vec3[]
+			{
+				vehicleFrame.origin + vehicleFrame.rotation.f * 2.0f + vehicleFrame.rotation.u * 0.5f,
+				vehicleFrame.origin - vehicleFrame.rotation.f * 1.0f + vehicleFrame.rotation.u * 0.5f,
+			};
 		}
+
+		/// <summary>
+		/// Estimates the surface normal at a collision point by sampling surrounding points.
+		/// Uses 4-point cross pattern to calculate gradient via finite difference method.
+		/// </summary>
+		protected Vec3 EstimateNormalAtPoint(Vec3 hitPoint, Vec3 rayDirection)
+		{
+			float sampleRadius = 0.2f;
+			float searchDepth = 0.5f;
+
+			Vec3 up = Vec3.Up;
+			Vec3 forward = rayDirection - up * Vec3.DotProduct(rayDirection, up);
+			if (forward.LengthSquared < 0.001f) forward = Vec3.Forward;
+			forward.Normalize();
+
+			Vec3 right = Vec3.CrossProduct(up, forward);
+			right.Normalize();
+
+			Vec3[] sampleOffsets = new Vec3[4]
+			{
+				forward * sampleRadius,
+				-forward * sampleRadius,
+				right * sampleRadius,
+				-right * sampleRadius
+			};
+
+			Vec3[] sampleHeights = new Vec3[4];
+			int validSamples = 0;
+
+			for (int i = 0; i < 4; i++)
+			{
+				Vec3 sampleCenter = hitPoint + sampleOffsets[i];
+				Vec3 rayStart = sampleCenter + up * (searchDepth * 0.5f);
+				Vec3 rayEnd = sampleCenter - up * (searchDepth * 0.5f);
+
+				float hitDist;
+				bool hit = Mission.Current.Scene.RayCastForClosestEntityOrTerrain(
+					rayStart, rayEnd, out hitDist, 0.01f, BodyFlags.CommonCollisionExcludeFlags);
+
+				if (hit)
+				{
+					Vec3 sampleHit = rayStart + (rayEnd - rayStart).NormalizedCopy() * hitDist;
+					sampleHeights[i] = sampleHit;
+					validSamples++;
+				}
+				else
+				{
+					sampleHeights[i] = hitPoint;
+				}
+			}
+
+			if (validSamples < 3)
+			{
+				return Vec3.Up;
+			}
+
+			Vec3 dx = sampleHeights[2] - sampleHeights[3];
+			Vec3 dy = sampleHeights[0] - sampleHeights[1];
+
+			Vec3 estimatedNormal = Vec3.CrossProduct(dy, dx);
+			if (estimatedNormal.LengthSquared < 0.001f)
+			{
+				return Vec3.Up;
+			}
+
+			estimatedNormal.Normalize();
+			if (Vec3.DotProduct(estimatedNormal, Vec3.Up) < 0)
+			{
+				estimatedNormal = -estimatedNormal;
+			}
+
+			return estimatedNormal;
+		}
+
+		/// <summary>
+		/// Checks for collisions from multiple points in the movement direction.
+		/// </summary>
+		protected bool CheckMultiPointCollision(MatrixFrame vehicleFrame, float moveDistance, out CollisionResult result)
+		{
+			result = default;
+			float minDistance = float.MaxValue;
+
+			// Check if visibility exclusion is enabled and disable it temporarily
+			bool wasVisibilityExcluded = GameEntity.GetVisibilityExcludeParents();
+			if (wasVisibilityExcluded)
+			{
+				GameEntity.SetVisibilityExcludeParents(false);
+			}
+
+			Vec3[] checkPoints = GetCollisionCheckPoints(vehicleFrame);
+			Vec3 moveDirection = vehicleFrame.rotation.f * Math.Sign(CurrentForwardSpeed);
+			float checkDistance = moveDistance + 2.0f;
+
+			for (int i = 0; i < checkPoints.Length; i++)
+			{
+				Vec3 checkPoint = checkPoints[i];
+				Vec3 targetPoint = checkPoint + moveDirection * checkDistance;
+
+				float collisionDistance;
+				Vec3 collisionPoint;
+				WeakGameEntity hitEntity;
+
+				bool hit = Scene.RayCastForClosestEntityOrTerrain(
+					checkPoint,
+					targetPoint,
+					out collisionDistance,
+					out collisionPoint,
+					out hitEntity,
+					0.01f,
+					BodyFlags.CommonCollisionExcludeFlags
+				);
+
+				uint arrowColor = 0xFFFF0000;
+
+				if (!hit)
+				{
+					continue;
+				}
+
+				bool isSelf = hitEntity != null && IsPartOfThisVehicle(hitEntity);
+				float heightDifference = collisionPoint.z - checkPoint.z;
+				bool isTerrain = heightDifference < -0.2f;
+
+				if (isSelf || isTerrain)
+				{
+					continue;
+				}
+
+				// Valid obstacle found
+				if (collisionDistance < minDistance && collisionDistance < checkDistance * 0.8f)
+				{
+					minDistance = collisionDistance;
+					Vec3 rayDirection = (collisionPoint - checkPoint).NormalizedCopy();
+					Vec3 estimatedNormal = EstimateNormalAtPoint(collisionPoint, rayDirection);
+
+					Vec3 impactDir = (vehicleFrame.origin - collisionPoint).NormalizedCopy();
+					impactDir.z = 0;
+					impactDir = impactDir.NormalizedCopy();
+
+					result = new CollisionResult
+					{
+						HasCollision = true,
+						CollisionPoint = collisionPoint,
+						Distance = collisionDistance,
+						ImpactDirection = impactDir,
+						CollisionNormal = estimatedNormal
+					};
+				}
+			}
+
+			// Re-enable visibility exclusion if it was originally enabled
+			if (wasVisibilityExcluded)
+			{
+				GameEntity.SetVisibilityExcludeParents(true);
+			}
+
+			return result.HasCollision;
+		}
+
+		/// <summary>
+		/// Checks if entity is part of this vehicle hierarchy.
+		/// </summary>
+		protected bool IsPartOfThisVehicle(WeakGameEntity entity)
+		{
+			if (entity == null || GameEntity == null) return false;
+
+			WeakGameEntity current = entity;
+			while (current != null)
+			{
+				if (current == GameEntity) return true;
+				current = current.Parent;
+			}
+
+			return false;
+		}
+
+		/// <summary>
+		/// Called when a collision is detected. Override to customize response.
+		/// Default behavior: simple stop and small pushback.
+		/// </summary>
+		protected virtual void OnCollision(ref MatrixFrame frame, CollisionResult collision)
+		{
+			frame.origin += collision.ImpactDirection * 0.1f;
+			CurrentForwardSpeed = 0f;
+			if (GameNetwork.IsServer) ServerSyncSpeed();
+		}
+
+		#endregion
 	}
 }
