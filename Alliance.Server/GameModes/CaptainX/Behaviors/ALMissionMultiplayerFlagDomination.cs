@@ -62,8 +62,6 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		protected float _lastPerkTickTime;
 		private PlayerSpawnBehavior _playerSpawnBehavior;
 
-		public string PlayerSpawnMenuFile { get; protected set; } = "spawn_preset_20_aserai_def_vs_vlandia_att.xml";
-
 		public override bool IsGameModeHidingAllAgentVisuals
 		{
 			get

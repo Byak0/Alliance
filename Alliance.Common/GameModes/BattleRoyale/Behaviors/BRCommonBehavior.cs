@@ -10,7 +10,7 @@ namespace Alliance.Common.GameModes.BattleRoyale.Behaviors
 		{
 			get
 			{
-				return true;
+				return false;
 			}
 		}
 

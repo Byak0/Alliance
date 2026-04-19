@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration;
+﻿using Alliance.Client.Extensions.AdminMenu.ViewModels.Build;
+using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security;
 using Alliance.Common.Core.Security.Extension;
@@ -53,13 +54,20 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private bool _showPlayerTab;
 		private bool _showToolsTab;
 		private string _banReason = "";
+		private BuildTabVM _buildTab;
+		private bool _showBuildTab;
 
 		public AdminVM()
 		{
 			_isSudo = GameNetwork.MyPeer.IsSudo();
 			_unitCharacter = new CharacterViewModel();
 			_serverMessage = new MBBindingList<ServerMessageVM>();
+			_buildTab = new BuildTabVM();
 			_showAdminTab = true;
+			_showPlayerTab = false;
+			_showToolsTab = false;
+			_showBuildTab = false;
+
 			RefreshPlayerList();
 			RefreshNativeOptions();
 			RefreshModOptions();
@@ -157,6 +165,39 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			}
 		}
 
+		[DataSourceProperty]
+		public bool ShowBuildTab
+		{
+			get
+			{
+				return _showBuildTab;
+			}
+			set
+			{
+				if (value != _showBuildTab)
+				{
+					_showBuildTab = value;
+					OnPropertyChangedWithValue(value, nameof(ShowBuildTab));
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public BuildTabVM BuildTab
+		{
+			get
+			{
+				return _buildTab;
+			}
+			set
+			{
+				if (value != _buildTab)
+				{
+					_buildTab = value;
+					OnPropertyChangedWithValue(value, nameof(BuildTab));
+				}
+			}
+		}
 
 		[DataSourceProperty]
 		public string Username
@@ -518,6 +559,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			ShowAdminTab = true;
 			ShowPlayerTab = false;
 			ShowOptionsTab = false;
+			ShowBuildTab = false;
 		}
 
 		public void OpenPlayerTab()
@@ -525,6 +567,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			ShowAdminTab = false;
 			ShowPlayerTab = true;
 			ShowOptionsTab = false;
+			ShowBuildTab = false;
 		}
 
 		public void OpenToolsTab()
@@ -532,6 +575,18 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			ShowAdminTab = false;
 			ShowPlayerTab = false;
 			ShowOptionsTab = true;
+			ShowBuildTab = false;
+		}
+
+		public void OpenBuildTab()
+		{
+			ShowAdminTab = false;
+			ShowPlayerTab = false;
+			ShowOptionsTab = false;
+			ShowBuildTab = true;
+
+			BuildTab ??= new BuildTabVM();
+			BuildTab.EnsureInitialized();
 		}
 
 		/// <summary>

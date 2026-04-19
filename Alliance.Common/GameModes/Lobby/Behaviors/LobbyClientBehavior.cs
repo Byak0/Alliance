@@ -10,7 +10,7 @@ namespace Alliance.Common.GameModes.Lobby.Behaviors
 		{
 			get
 			{
-				return true;
+				return false;
 			}
 		}
 

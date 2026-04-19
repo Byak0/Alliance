@@ -5,6 +5,7 @@ using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Utilities;
+using Alliance.Server.Core;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using System;
 using System.IO;
@@ -302,7 +303,11 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Handlers
 			// Broadcast the updated player spawn menu to all players
 			PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
 
+			// If mission is ending, return early (no need to set player's team)
+			if (GameModeStarter.Instance.EndingCurrentMissionThenStartingNewMission) return;
+
 			// Set player's team if they are known
+			Log($"Alliance - PlayerSpawnMenu synched on runtime, updating player's teams...", LogLevel.Debug);
 			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
 			{
 				if (player.GetComponent<MissionPeer>()?.Team != null)

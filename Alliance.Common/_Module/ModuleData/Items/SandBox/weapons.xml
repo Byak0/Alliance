@@ -1937,6 +1937,28 @@
 				scale_factor="100" />
 		</Pieces>
 	</CraftedItem>
+	<CraftedItem
+		id="imperial_throwing_spear_1_t4_2"
+		name="{=rkqaCud5}Pilum"
+		is_merchandise="false"
+		culture="Culture.empire"
+		crafting_template="TwoHandedPolearm">
+		<Pieces>
+			<Piece
+				id="spear_blade_38"
+				Type="Blade" />
+			<Piece
+				id="default_polearm_guard"
+				Type="Guard" />
+			<Piece
+				id="spear_handle_13_2"
+				Type="Handle"
+				scale_factor="110" />
+			<Piece
+				id="default_polearm_pommel"
+				Type="Pommel" />
+		</Pieces>
+	</CraftedItem>
 	<!-- RENAME CIHAN -->
 	<CraftedItem
 		id="wide_leaf_spear_t4"
@@ -4514,7 +4536,7 @@
 	<!-- #region Tier 4 -->
 	<CraftedItem
 		id="battania_2hsword_4_t4"
-		name="{=QLcP8bIs}Falx"
+		name="{=J4YgK18g}Long Falx"
 		crafting_template="TwoHandedSword"
 		culture="Culture.battania"
 		modifier_group="sword">
@@ -4536,6 +4558,30 @@
 				Type="Pommel"
 				scale_factor="100" />
 		</Pieces>
+	</CraftedItem>
+	<CraftedItem
+		id="battania_2hsword_6"
+		name="{=QLcP8bIs}Falx"
+		crafting_template="TwoHandedSword">
+		<Pieces>
+			<Piece
+				id="battania_blade_7"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="sturgian_guard_6"
+				Type="Guard"
+				scale_factor="100" />
+			<Piece
+				id="sturgian_grip_20"
+				Type="Handle"
+				scale_factor="100" />
+			<Piece
+				id="battania_pommel_9"
+				Type="Pommel"
+				scale_factor="100" />
+		</Pieces>
+		<!-- Length: 91 Weight: 1.13 -->
 	</CraftedItem>
 	<CraftedItem
 		id="northern_2hsword_t4"
@@ -5353,6 +5399,60 @@
 		</Pieces>
 		<!-- Length: 74 Weight: 2.29 -->
 	</CraftedItem>
+	<CraftedItem
+		id="aserai_mace_5_t4"
+		name="{=Xv95gei9}Southern Two Handed Mace"
+		crafting_template="TwoHandedMace">
+		<Pieces>
+			<Piece
+				id="mace_head_34"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="axe_craft_1_handle"
+				Type="Handle" />
+			<Piece
+				id="khuzait_noble_pommel_1"
+				Type="Pommel" />
+		</Pieces>
+		<!-- Length: 131 Weight: 2.07 -->
+	</CraftedItem>
+	<CraftedItem
+		id="sturgia_mace_2_t4"
+		name="{=Urv6mKxq}Northern Reinforced Two Handed Mace"
+		crafting_template="TwoHandedMace">
+		<Pieces>
+			<Piece
+				id="mace_head_37"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="mace_handle_20"
+				Type="Handle" />
+			<Piece
+				id="vlandian_pommel_6"
+				Type="Pommel" />
+		</Pieces>
+		<!-- Length: 109 Weight: 1.79 -->
+	</CraftedItem>
+	<CraftedItem
+		id="sturgia_mace_1_t3"
+		name="{=g6IpxVat}Northern Two Handed Mace"
+		crafting_template="TwoHandedMace">
+		<Pieces>
+			<Piece
+				id="mace_head_38"
+				Type="Blade"
+				scale_factor="110" />
+			<Piece
+				id="mace_handle_20"
+				Type="Handle" />
+			<Piece
+				id="khuzait_noble_pommel_3"
+				Type="Pommel" />
+		</Pieces>
+		<!-- Length: 99 Weight: 2.4 -->
+	</CraftedItem>
 	<!-- #endregion -->
 	<!-- #endregion -->
 	<!-- #region Used Bow -->
@@ -5380,7 +5480,7 @@
 				missile_speed="64"
 				weapon_length="110"
 				accuracy="85"
-				thrust_damage="45"
+				thrust_damage="40"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5422,7 +5522,7 @@
 				missile_speed="67"
 				weapon_length="108"
 				accuracy="82"
-				thrust_damage="46"
+				thrust_damage="41"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5464,7 +5564,7 @@
 				missile_speed="68"
 				weapon_length="110"
 				accuracy="80"
-				thrust_damage="46"
+				thrust_damage="41"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5507,7 +5607,7 @@
 				missile_speed="70"
 				weapon_length="111"
 				accuracy="88"
-				thrust_damage="60"
+				thrust_damage="51"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -5548,7 +5648,7 @@
 				missile_speed="65"
 				weapon_length="113"
 				accuracy="83"
-				thrust_damage="55"
+				thrust_damage="47"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -5591,7 +5691,7 @@
 				missile_speed="77"
 				weapon_length="110"
 				accuracy="94"
-				thrust_damage="61"
+				thrust_damage="51"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5635,7 +5735,7 @@
 				missile_speed="78"
 				weapon_length="108"
 				accuracy="94"
-				thrust_damage="62"
+				thrust_damage="52"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5679,7 +5779,7 @@
 				missile_speed="76"
 				weapon_length="106"
 				accuracy="91"
-				thrust_damage="62"
+				thrust_damage="52"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5723,7 +5823,7 @@
 				missile_speed="71"
 				weapon_length="108"
 				accuracy="95"
-				thrust_damage="52"
+				thrust_damage="46"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5767,7 +5867,7 @@
 				missile_speed="74"
 				weapon_length="120"
 				accuracy="94"
-				thrust_damage="65"
+				thrust_damage="57"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -5808,7 +5908,7 @@
 				missile_speed="73"
 				weapon_length="115"
 				accuracy="94"
-				thrust_damage="70"
+				thrust_damage="58"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -5852,7 +5952,7 @@
 				missile_speed="80"
 				weapon_length="107"
 				accuracy="95"
-				thrust_damage="66"
+				thrust_damage="54"
 				thrust_damage_type="Pierce"
 				item_usage="bow"
 				physics_material="wood_weapon"
@@ -5893,7 +5993,7 @@
 				missile_speed="76"
 				weapon_length="115"
 				accuracy="92"
-				thrust_damage="73"
+				thrust_damage="61"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -5934,7 +6034,7 @@
 				missile_speed="82"
 				weapon_length="118"
 				accuracy="94"
-				thrust_damage="76"
+				thrust_damage="64"
 				thrust_damage_type="Pierce"
 				item_usage="long_bow"
 				physics_material="wood_weapon"
@@ -7132,6 +7232,47 @@
 			<Weapon
 				weapon_class="Stone"
 				ammo_class="Stone"
+				stack_amount="14"
+				physics_material="missile"
+				accuracy="45"
+				thrust_speed="102"
+				speed_rating="102"
+				missile_speed="55"
+				weapon_length="10"
+				thrust_damage="10"
+				item_usage="stone"
+				rotation="100,30,20"
+				passby_sound_code=""
+				rotation_speed="0, -3.0, 0">
+				<WeaponFlags
+					AttachAmmoToVisual="true"
+					RangedWeapon="true"
+					Consumable="true"
+					AutoReload="true"
+					UnloadWhenSheathed="true"
+					UseHandAsThrowBase="true" />
+			</Weapon>
+		</ItemComponent>
+		<Flags />
+	</Item>
+	<Item
+		id="stealth_throwing_stone"
+		name="{=1CPdu9K0}Stone"
+		is_merchandise="false"
+		body_name="bo_throwing_stone"
+		holster_body_name="bo_axe_short"
+		holster_mesh="stone_holster"
+		holster_mesh_with_weapon="stone_holster"
+		mesh="throwing_stone"
+		value="0"
+		weight="0.01"
+		appearance="0.1"
+		Type="Thrown"
+		item_holsters="throwing_stone:throwing_stone_2">
+		<ItemComponent>
+			<Weapon
+				weapon_class="Stone"
+				ammo_class="Stone"
 				stack_amount="4"
 				physics_material="missile"
 				accuracy="45"
@@ -7344,6 +7485,7 @@
 				missile_speed="80"
 				weapon_length="95"
 				thrust_damage="2200"
+				fire_damage="200"
 				thrust_damage_type="Pierce"
 				item_usage=""
 				flying_sound_code="event:/mission/combat/missile/foley/passby"
@@ -7495,6 +7637,7 @@
 				missile_speed="8"
 				weapon_length="95"
 				thrust_damage="2300"
+				fire_damage="1000"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				trail_particle_name="psys_game_burning_jar_trail"
@@ -7548,6 +7691,7 @@
 				missile_speed="8"
 				weapon_length="95"
 				thrust_damage="200"
+				fire_damage="1000"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				trail_particle_name="psys_game_burning_jar_trail"
@@ -7754,6 +7898,7 @@
 				missile_speed="8"
 				weapon_length="95"
 				thrust_damage="250"
+				fire_damage="100"
 				item_usage="heavy_stone"
 				flying_sound_code="event:/mission/combat/boulder/passby"
 				trail_particle_name="mangonel_grapeshot_burning_projectile"

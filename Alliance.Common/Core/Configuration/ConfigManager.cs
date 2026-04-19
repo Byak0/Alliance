@@ -115,13 +115,18 @@ namespace Alliance.Common.Core.Configuration
 			{
 				var deserializedValue = field.Value.GetValue(deserializedConfig);
 				var actualValue = field.Value.GetValue(Config.Instance);
-				if (!actualValue.Equals(deserializedValue))
+
+				// Only update if value has changed
+				if ((actualValue == null && deserializedValue == null) ||
+					(actualValue != null && actualValue.Equals(deserializedValue)))
 				{
-					UpdateConfigField(field.Key, deserializedValue);
-					if (synchronize)
-					{
-						SyncConfigField(field.Key, deserializedValue);
-					}
+					continue;
+				}
+
+				UpdateConfigField(field.Key, deserializedValue);
+				if (synchronize)
+				{
+					SyncConfigField(field.Key, deserializedValue);
 				}
 			}
 		}

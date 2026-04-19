@@ -10,7 +10,6 @@ using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
-using Alliance.Server.Core.Database.Data;
 using Alliance.Server.Core.Security;
 using Alliance.Server.GameModes.BattleRoyale;
 using Alliance.Server.GameModes.BattleX;
@@ -23,8 +22,6 @@ using Alliance.Server.GameModes.SiegeX;
 using Alliance.Server.GameModes.Story;
 using Alliance.Server.GameModes.Story.Actions;
 using Alliance.Server.Patch;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -54,8 +51,6 @@ namespace Alliance.Server
 			DirtyServerPatcher.Patch();
 
 			AddGameModes();
-
-			InitServices();
 		}
 
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
@@ -84,18 +79,6 @@ namespace Alliance.Server
 			ExtendedXMLLoader.Init();
 
 			ScenarioManagerServer.Initialize();
-
-			// Initialize the player spawn menu
-			if (PlayerSpawnMenu.TryLoadFromFile(PlayerSpawnMenuFilePath, out PlayerSpawnMenu newMenu))
-			{
-				PlayerSpawnMenu.Instance = newMenu;
-				Log($"Alliance - Loaded PlayerSpawnMenu succesfully with {PlayerSpawnMenu.Instance.Teams.Count} teams.", LogLevel.Information);
-			}
-			else
-			{
-				PlayerSpawnMenu.Instance = new PlayerSpawnMenu();
-				Log($"Alliance - Failed to load PlayerSpawnMenu from {PlayerSpawnMenuFilePath}. Using default menu.", LogLevel.Warning);
-			}
 		}
 
 		public override void OnGameEnd(Game game)
@@ -114,22 +97,6 @@ namespace Alliance.Server
 			Module.CurrentModule.AddMultiplayerGameMode(new BattleGameMode("BattleX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new SiegeGameMode("SiegeX"));
 			Module.CurrentModule.AddMultiplayerGameMode(new DuelGameMode("DuelX"));
-		}
-
-		/// <summary>
-		/// Will add database to ServiceCollection which will contain the database service.
-		/// This allow the database service to be called from anywhere on the Server app and to avoid concurency issues.
-		/// </summary>
-		private static void InitServices()
-		{
-			var services = new ServiceCollection();
-
-			services.AddDbContext<AppDbContext>(options =>
-				options.UseNpgsql(SecretsManager.DB_CONNECTION_STRING));
-
-			var serviceProvider = services.BuildServiceProvider();
-
-			ServiceLocator.Initialize(serviceProvider);
 		}
 	}
 }

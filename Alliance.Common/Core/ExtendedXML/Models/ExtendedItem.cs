@@ -73,8 +73,6 @@ namespace Alliance.Common.Core.ExtendedXML.Models
 	/*
 	public enum ItemEffectType
 	{
-		[EnumMember(Value = "ZEVENT")]
-		ZEVENT,
 		[EnumMember(Value = "DropPrefab")]
 		DropPrefab,
 		[EnumMember(Value = "Spyglass")]

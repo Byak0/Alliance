@@ -518,6 +518,8 @@
 		<!--Sounds in Native/Alert-->
 		<module_sound name="Native/Alert/Car horn.mp3" sound_category="alert" path="Native/Alert/Car horn.mp3" />
 		<!--Sounds in Native/Ambient-->
+		<module_sound name="Native/Ambient/Car engine.mp3" sound_category="alert" path="Native/Ambient/Car engine.mp3" />
+		<module_sound name="Native/Ambient/Car tire screech.mp3" sound_category="alert" path="Native/Ambient/Car tire screech.mp3" />
 		<module_sound name="Native/Ambient/Fireworks 1.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 1.mp3" is_2d="true" />
 		<module_sound name="Native/Ambient/Fireworks 2.mp3" sound_category="mission_ambient_3d_medium" path="Native/Ambient/Fireworks 2.mp3" is_2d="true" />
 

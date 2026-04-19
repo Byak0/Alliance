@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Security.Extension;
+﻿using Alliance.Client.Extensions.BuildSystem.Views;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.Audio.NetworkMessages.FromClient;
@@ -265,6 +266,28 @@ namespace Alliance.Client.Core.Console
 			ToggleEntitiesMsg.RequestToggleEntities(entities_tag, show);
 
 			return $"Requested server to {(show ? "show" : "hide")} entities with tag {entities_tag}";
+		}
+
+		[CommandLineFunctionality.CommandLineArgumentFunction("build_set_prefab_list", "alliance")]
+		public static string BuildSetPrefabList(List<string> args)
+		{
+			if (GameNetwork.NetworkPeerCount == 0 || Mission.Current?.Scene == null)
+			{
+				return "Log into a server to use this command.";
+			}
+			else if (!GameNetwork.MyPeer.IsAdmin())
+			{
+				return "You need to be admin to use this command.";
+			}
+			if (args.Count < 2)
+			{
+				return "Usage: alliance.build_set_prefab_list prefabName1 prefabName2...";
+			}
+
+			BuildSystemView buildSystemView = Mission.Current.GetMissionBehavior<BuildSystemView>();
+			buildSystemView.SetAvailablePrefabs(args);
+
+			return $"Updated available prefabs in Build system";
 		}
 
 		[CommandLineFunctionality.CommandLineArgumentFunction("scenario_stop", "alliance")]

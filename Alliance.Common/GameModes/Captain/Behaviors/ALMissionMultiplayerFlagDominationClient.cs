@@ -9,7 +9,15 @@ namespace Alliance.Common.GameModes.Captain.Behaviors
     {
         private bool _informedAboutFlagRemoval;
 
-        protected override int GetWarningTimer()
+		public override bool IsGameModeUsingGold
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		protected override int GetWarningTimer()
         {
             int num = 0;
             if (IsRoundInProgress)

@@ -50,15 +50,6 @@
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>4</Index>
-              <CharacterId>mp_heavy_infantry_sturgia_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
@@ -96,15 +87,6 @@
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>3</Index>
-              <CharacterId>mp_heavy_infantry_vlandia_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
@@ -130,15 +112,6 @@
               <Officer>false</Officer>
               <SpawnCount>100</SpawnCount>
               <IsPercentage>true</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>2</Index>
-              <CharacterId>mp_heavy_infantry_khuzait_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>
@@ -176,15 +149,6 @@
               <Officer>false</Officer>
               <SpawnCount>100</SpawnCount>
               <IsPercentage>true</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>3</Index>
-              <CharacterId>mp_heavy_infantry_empire_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>
@@ -234,15 +198,6 @@
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>4</Index>
-              <CharacterId>mp_heavy_infantry_battania_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
           </AvailableCharacters>
         </PlayerFormation>
         <PlayerFormation>
@@ -277,15 +232,6 @@
               <Officer>false</Officer>
               <SpawnCount>100</SpawnCount>
               <IsPercentage>true</IsPercentage>
-              <Difficulty>Normal</Difficulty>
-              <HealthMultiplier>1</HealthMultiplier>
-            </AvailableCharacter>
-            <AvailableCharacter>
-              <Index>3</Index>
-              <CharacterId>mp_shock_infantry_aserai_banner_bearer</CharacterId>
-              <Officer>false</Officer>
-              <SpawnCount>5</SpawnCount>
-              <IsPercentage>false</IsPercentage>
               <Difficulty>Normal</Difficulty>
               <HealthMultiplier>1</HealthMultiplier>
             </AvailableCharacter>

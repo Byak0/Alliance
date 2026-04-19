@@ -24,13 +24,13 @@ namespace Alliance.Common.Extensions.Audio
 	{
 		private IWavePlayer waveOutDevice;
 		private MixingSampleProvider mixer;
+		private Dictionary<int, string> audioIdToFile = new Dictionary<int, string>();
 		private Dictionary<int, string> audioIdToFileName = new Dictionary<int, string>();
 		private Dictionary<string, int> fileNameToAudioId = new Dictionary<string, int>();
-		private Dictionary<string, CachedSound> cachedSounds = new Dictionary<string, CachedSound>();
-		private Dictionary<string, List<CachedSound>> activeStreams = new Dictionary<string, List<CachedSound>>();
+		private Dictionary<int, CachedSound> cachedSounds = new Dictionary<int, CachedSound>();
+		private Dictionary<int, List<CachedSound>> activeStreams = new Dictionary<int, List<CachedSound>>();
 		private ISampleProvider mainMusicProvider;
 
-		private string audioDirectory;
 		private float defaultSoundVolume = 1f;
 		private float defaultMusicVolume = 1f;
 		private float musicVolumeOffset = 0f;
@@ -53,7 +53,6 @@ namespace Alliance.Common.Extensions.Audio
 
 		public AudioPlayer()
 		{
-			audioDirectory = ModuleHelper.GetModuleFullPath(SubModule.CurrentModuleName) + "ModuleSounds/";
 			InitializeAudioMappings();
 			if (!GameNetwork.IsServer)
 			{
@@ -111,19 +110,40 @@ namespace Alliance.Common.Extensions.Audio
 
 		private void InitializeAudioMappings()
 		{
-			var files = Directory.EnumerateFiles(audioDirectory, "*.*", SearchOption.AllDirectories)
-						.Where(file => file.EndsWith(".wav") || file.EndsWith(".ogg") || file.EndsWith(".mp3"))
-						.OrderBy(file => file)
-						.ToList();
+			var allFiles = new List<(string moduleName, string filePath)>();
 
-			for (int i = 0; i < files.Count; i++)
+			// Scan all loaded modules for ModuleSounds directories
+			foreach (var moduleInfo in ModuleHelper.GetModules())
 			{
-				string fileName = PathHelper.GetRelativePath(audioDirectory, (files[i])).ToLowerInvariant();
-				audioIdToFileName[i] = fileName;
-				fileNameToAudioId[fileName] = i;
+				string moduleAudioDir = ModuleHelper.GetModuleFullPath(moduleInfo.Id) + "ModuleSounds/";
+				if (!Directory.Exists(moduleAudioDir)) continue;
+
+				var moduleFiles = Directory.EnumerateFiles(moduleAudioDir, "*.*", SearchOption.AllDirectories)
+							.Where(file => file.EndsWith(".wav") || file.EndsWith(".ogg") || file.EndsWith(".mp3"))
+							.Select(file => (moduleInfo.Id, file))
+							.ToList();
+
+				allFiles.AddRange(moduleFiles);
 			}
 
-			Log($"Registered {files.Count} audio files.", LogLevel.Debug);
+			// Sort by module name then file path for deterministic ordering
+			allFiles = allFiles.OrderBy(x => x.moduleName).ThenBy(x => x.filePath).ToList();
+
+			for (int i = 0; i < allFiles.Count; i++)
+			{
+				string moduleName = allFiles[i].moduleName;
+				string moduleAudioDir = ModuleHelper.GetModuleFullPath(moduleName) + "ModuleSounds/";
+				string relativeFileName = PathHelper.GetRelativePath(moduleAudioDir, allFiles[i].filePath);
+
+				// Full key with module prefix: "Alliance/Native/Alert/horn.mp3"
+				string prefixedKey = $"{moduleName}/{relativeFileName}".ToLowerInvariant();
+
+				audioIdToFile[i] = allFiles[i].filePath;
+				audioIdToFileName[i] = prefixedKey;
+				fileNameToAudioId[prefixedKey] = i;
+			}
+
+			Log($"Registered {allFiles.Count} audio files from {allFiles.Select(x => x.moduleName).Distinct().Count()} modules.", LogLevel.Debug);
 		}
 
 		public string[] GetAvailableSounds()
@@ -131,10 +151,10 @@ namespace Alliance.Common.Extensions.Audio
 			return fileNameToAudioId.Keys.ToArray();
 		}
 
-		private void CacheSound(string fileName)
+		private void CacheSound(int audioId)
 		{
-			var filePath = Path.Combine(audioDirectory, fileName);
-			if (!cachedSounds.ContainsKey(fileName))
+			var filePath = audioIdToFile[audioId];
+			if (!cachedSounds.ContainsKey(audioId))
 			{
 				var reader = new AudioFileReader(filePath);
 				var buffer = new List<float>((int)(reader.Length / 4));
@@ -144,7 +164,7 @@ namespace Alliance.Common.Extensions.Audio
 				{
 					buffer.AddRange(readBuffer.Take(samplesRead));
 				}
-				cachedSounds[fileName] = new CachedSound(buffer.ToArray(), reader.WaveFormat);
+				cachedSounds[audioId] = new CachedSound(buffer.ToArray(), reader.WaveFormat);
 				reader.Dispose();
 			}
 		}
@@ -183,11 +203,11 @@ namespace Alliance.Common.Extensions.Audio
 				mainMusicProvider = null;
 			}
 
-			if (!cachedSounds.ContainsKey(fileName))
+			if (!cachedSounds.ContainsKey(audioId))
 			{
-				CacheSound(fileName);
+				CacheSound(audioId);
 			}
-			CachedSound mainMusicSound = new CachedSound(cachedSounds[fileName].AudioData, cachedSounds[fileName].WaveFormat, startingPoint);
+			CachedSound mainMusicSound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint);
 
 			float startingVolume = mustFade ? 0f : volume * defaultMusicVolume;
 			mainMusicProvider = new VolumeSampleProvider(mainMusicSound) { Volume = startingVolume };
@@ -262,30 +282,30 @@ namespace Alliance.Common.Extensions.Audio
 			}
 
 			// test
-			if (activeStreams.TryGetValue(fileName, out var readers))
+			if (activeStreams.TryGetValue(audioId, out var readers))
 			{
 				Log($"Sound {fileName} is already playing", LogLevel.Debug);
 				return;
 			}
 
-			Stop(fileName);
+			Stop(audioId);
 
 			try
 			{
-				if (!cachedSounds.ContainsKey(fileName))
+				if (!cachedSounds.ContainsKey(audioId))
 				{
-					CacheSound(fileName);
+					CacheSound(audioId);
 				}
-				CachedSound sound = new CachedSound(cachedSounds[fileName].AudioData, cachedSounds[fileName].WaveFormat, startingPoint);
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint);
 
-				if (!activeStreams.ContainsKey(fileName))
+				if (!activeStreams.ContainsKey(audioId))
 				{
-					activeStreams[fileName] = new List<CachedSound>();
+					activeStreams[audioId] = new List<CachedSound>();
 				}
 
 				mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin, volume, maxHearingDistance));
 
-				activeStreams[fileName].Add(sound);
+				activeStreams[audioId].Add(sound);
 
 				if (muteMainMusic)
 				{
@@ -340,20 +360,20 @@ namespace Alliance.Common.Extensions.Audio
 
 			if (!stackable)
 			{
-				Stop(fileName);
+				Stop(audioId);
 			}
 
 			try
 			{
-				if (!cachedSounds.ContainsKey(fileName))
+				if (!cachedSounds.ContainsKey(audioId))
 				{
-					CacheSound(fileName);
+					CacheSound(audioId);
 				}
-				CachedSound sound = new CachedSound(cachedSounds[fileName].AudioData, cachedSounds[fileName].WaveFormat);
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat);
 
-				if (!activeStreams.ContainsKey(fileName))
+				if (!activeStreams.ContainsKey(audioId))
 				{
-					activeStreams[fileName] = new List<CachedSound>();
+					activeStreams[audioId] = new List<CachedSound>();
 				}
 
 				if (soundOrigin.HasValue)
@@ -366,7 +386,7 @@ namespace Alliance.Common.Extensions.Audio
 					ISampleProvider convertedInput = ConvertToCommonFormat(volumeProvider);
 					mixer.AddMixerInput(convertedInput);
 				}
-				activeStreams[fileName].Add(sound);
+				activeStreams[audioId].Add(sound);
 			}
 			catch (Exception ex)
 			{
@@ -460,23 +480,75 @@ namespace Alliance.Common.Extensions.Audio
 			}
 		}
 
-		public void Stop(string fileName)
+		/// <summary>
+		/// Play a looping 3D sound. Returns the CachedSound handle for position updates and stopping.
+		/// </summary>
+		public CachedSound PlayLooping(int audioId, float volume, int maxHearingDistance = 100, Vec3? soundOrigin = null)
 		{
-			if (activeStreams.TryGetValue(fileName, out var readers))
+			if (mixer == null) return null;
+
+			if (audioId < 0 || !audioIdToFileName.TryGetValue(audioId, out string fileName))
+			{
+				Log($"ERROR : Audio ID {audioId} not found in mappings.", LogLevel.Error);
+				return null;
+			}
+
+			try
+			{
+				if (!cachedSounds.ContainsKey(audioId))
+				{
+					CacheSound(audioId);
+				}
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat);
+				sound.Loop = true;
+
+				if (!activeStreams.ContainsKey(audioId))
+				{
+					activeStreams[audioId] = new List<CachedSound>();
+				}
+
+				if (soundOrigin.HasValue)
+				{
+					mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin.Value, volume, maxHearingDistance));
+				}
+				else
+				{
+					var volumeProvider = new VolumeSampleProvider(sound) { Volume = defaultSoundVolume * volume };
+					ISampleProvider convertedInput = ConvertToCommonFormat(volumeProvider);
+					mixer.AddMixerInput(convertedInput);
+				}
+				activeStreams[audioId].Add(sound);
+				return sound;
+			}
+			catch (Exception ex)
+			{
+				Log($"An error occurred when playing looping audio: {ex.Message}", LogLevel.Debug);
+				return null;
+			}
+		}
+
+		public CachedSound PlayLooping(string fileName, float volume, int maxHearingDistance = 100, Vec3? soundOrigin = null)
+		{
+			return PlayLooping(GetAudioId(fileName), volume, maxHearingDistance, soundOrigin);
+		}
+
+		public void Stop(int audioId)
+		{
+			if (activeStreams.TryGetValue(audioId, out var readers))
 			{
 				foreach (var reader in readers)
 				{
 					mixer.RemoveMixerInput(reader);
 				}
-				activeStreams.Remove(fileName);
+				activeStreams.Remove(audioId);
 			}
 		}
 
 		public void StopAll()
 		{
-			foreach (var fileName in new List<string>(activeStreams.Keys))
+			foreach (var audioId in new List<int>(activeStreams.Keys))
 			{
-				Stop(fileName);
+				Stop(audioId);
 			}
 		}
 
@@ -488,11 +560,11 @@ namespace Alliance.Common.Extensions.Audio
 
 		public void CleanSounds()
 		{
-			foreach (var fileName in new List<string>(activeStreams.Keys))
+			foreach (var audioId in new List<int>(activeStreams.Keys))
 			{
-				if (activeStreams[fileName].All(sound => sound.IsComplete))
+				if (activeStreams[audioId].All(sound => sound.IsComplete))
 				{
-					Stop(fileName);
+					Stop(audioId);
 				}
 			}
 		}
@@ -526,28 +598,37 @@ namespace Alliance.Common.Extensions.Audio
 	{
 		public float[] AudioData { get; private set; }
 		public WaveFormat WaveFormat { get; private set; }
-		public bool IsComplete => ReadProgress >= AudioData.Length;
+		public bool Loop { get; set; }
+		/// <summary>
+		/// Playback speed multiplier. Also affects pitch (higher = faster + higher pitch).
+		/// </summary>
+		public float PlaybackRate { get; set; } = 1.0f;
+		/// <summary>
+		/// Duration in seconds of the crossfade applied at the loop boundary to eliminate clicks.
+		/// </summary>
+		public float CrossfadeSeconds { get; set; }
+		public bool IsComplete => _stopped || (!Loop && _readPosition >= _totalFrames);
 		public PanningSampleProvider PanningProvider { get; private set; }
 		public VolumeSampleProvider VolumeProvider { get; private set; }
 		public Vec3? SoundOrigin { get; private set; }
 		public float InitialVolume { get; private set; }
 		public int MaxHearingDistance { get; private set; }
-		public int ReadProgress { get; private set; }
+		public int ReadProgress => (int)(_readPosition * _channels);
+		private bool _stopped;
+		private float _readPosition; // current position in frames
+		private int _channels;
+		private int _totalFrames;
 
-		// Constructor that accepts a start time in seconds
 		public CachedSound(float[] audioData, WaveFormat waveFormat, float startTimeInSeconds = 0f)
 		{
 			AudioData = audioData;
 			WaveFormat = waveFormat;
+			_channels = waveFormat.Channels;
+			_totalFrames = audioData.Length / _channels;
 
-			// Calculate the sound length in seconds
-			float soundLength = AudioData.Length / ((float)WaveFormat.SampleRate * WaveFormat.Channels);
-			// Calculate the starting point in seconds (modulus to ensure it's within bounds)
+			float soundLength = _totalFrames / (float)WaveFormat.SampleRate;
 			float startingPoint = startTimeInSeconds % soundLength;
-			// Calculate the starting point in samples
-			ReadProgress = (int)(startingPoint * WaveFormat.SampleRate * WaveFormat.Channels);
-
-			Log($"Read sound from: {startingPoint}/{soundLength}, starting sample: {ReadProgress}/{AudioData.Length}", LogLevel.Debug);
+			_readPosition = startingPoint * WaveFormat.SampleRate;
 		}
 
 		public void SetSpatialProviders(Vec3? soundOrigin, float initialVolume, int maxHearingRange, PanningSampleProvider panningProvider, VolumeSampleProvider volumeProvider)
@@ -559,24 +640,87 @@ namespace Alliance.Common.Extensions.Audio
 			VolumeProvider = volumeProvider;
 		}
 
+		/// <summary>
+		/// Stop this sound instance. It will return silence and be cleaned up.
+		/// </summary>
+		public void Stop()
+		{
+			_stopped = true;
+			Loop = false;
+		}
+
+		/// <summary>
+		/// Update the 3D origin of this sound for spatialization.
+		/// </summary>
+		public void SetSoundOrigin(Vec3 origin)
+		{
+			SoundOrigin = origin;
+		}
+
+		/// <summary>
+		/// Update the initial volume used for 3D spatialization calculations.
+		/// </summary>
+		public void SetVolume(float volume)
+		{
+			InitialVolume = volume;
+		}
+
 		public int Read(float[] buffer, int offset, int count)
 		{
-			// No more samples to read
-			if (ReadProgress >= AudioData.Length)
+			if (_stopped) return 0;
+
+			int framesRequested = count / _channels;
+			int framesWritten = 0;
+			int crossfadeFrames = (int)(CrossfadeSeconds * WaveFormat.SampleRate);
+			// Guard against files too short to crossfade cleanly
+			if (crossfadeFrames * 2 >= _totalFrames) crossfadeFrames = 0;
+
+			while (framesWritten < framesRequested)
 			{
-				return 0;
+				if (_readPosition >= _totalFrames)
+				{
+					if (!Loop) break;
+					// Jump to crossfadeFrames (not 0) so the zone already blended at the
+					// end is not replayed — that double-play was causing the loop artifact.
+					_readPosition -= _totalFrames - crossfadeFrames;
+				}
+
+				int frame0 = (int)_readPosition;
+				float frac = _readPosition - frame0;
+				int frame1 = Math.Min(frame0 + 1, _totalFrames - 1);
+
+				int bufPos = offset + framesWritten * _channels;
+
+				// Compute crossfade weights once per frame, outside the channel loop
+				float distFromEnd = _totalFrames - _readPosition;
+				bool inCrossfade = Loop && crossfadeFrames > 0 && distFromEnd < crossfadeFrames;
+				float crossfadeT = inCrossfade ? distFromEnd / crossfadeFrames : 1f;
+				float startPos = inCrossfade ? crossfadeFrames - distFromEnd : 0f;
+				int sf0 = inCrossfade ? (int)startPos : 0;
+				int sf1 = inCrossfade ? Math.Min(sf0 + 1, _totalFrames - 1) : 0;
+				float sfrac = inCrossfade ? startPos - sf0 : 0f;
+
+				for (int ch = 0; ch < _channels; ch++)
+				{
+					float s0 = AudioData[frame0 * _channels + ch];
+					float s1 = AudioData[frame1 * _channels + ch];
+					float sample = s0 + (s1 - s0) * frac;
+
+					if (inCrossfade)
+					{
+						float ss0 = AudioData[sf0 * _channels + ch];
+						float ss1 = AudioData[sf1 * _channels + ch];
+						sample = sample * crossfadeT + (ss0 + (ss1 - ss0) * sfrac) * (1f - crossfadeT);
+					}
+
+					buffer[bufPos + ch] = sample;
+				}
+
+				_readPosition += PlaybackRate;
+				framesWritten++;
 			}
 
-			// Number of samples remaining in the audio data
-			int availableSamples = AudioData.Length - ReadProgress;
-			int samplesToCopy = Math.Min(availableSamples, count); // Copy only as many samples as are available
-			Array.Copy(AudioData, ReadProgress, buffer, offset, samplesToCopy); // Copy samples from current progress into the output buffer
-
-			// Update the read progress by the number of samples copied
-			ReadProgress += samplesToCopy;
-
-			// Return the number of samples that were actually copied
-			return samplesToCopy;
+			return framesWritten * _channels;
 		}
 	}
 }

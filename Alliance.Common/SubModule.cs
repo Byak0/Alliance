@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
+using Alliance.Common.Extensions.BuildSystem.Configuration;
 using Alliance.Common.GameModels;
 using Alliance.Common.Patch.HarmonyPatch;
 using BehaviorTreeWrapper;
@@ -16,6 +17,7 @@ namespace Alliance.Common
 
 		protected override void OnSubModuleLoad()
 		{
+			BuildPrefabCatalogManager.Initialize();
 			Log("Alliance.Common initialized", LogLevel.Debug);
 		}
 
