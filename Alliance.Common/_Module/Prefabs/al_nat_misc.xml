@@ -1,0 +1,22 @@
+<prefabs>
+	<game_entity name="mp_torch_fx" old_prefab_name="">
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000" scale="1.000, 1.000, 1.000"/>
+		<children>
+			<game_entity name="torch_light_flicker" old_prefab_name="">
+				<transform position="0.000, 0.000, 0.5"/>
+				<components>
+					<light_component color="1.000, 0.545, 0.173" intensity="100.000" radius="4.000" flicker_interval="0.400" flicker_magnitude="0.700" local_frame_rot="4.000000, 0.000000, 0.000000, 0.000000, 4.000000, 0.000000, 0.000000, 0.000000, 4.000000" hotspot_angle="30.000" falloff_angle="45.000" shadow="2" shadow_size_multiplier="1" shadow_radius="3.000"/>
+				</components>
+			</game_entity>
+			<game_entity name="prt_torch_fire_smoke_spark" old_prefab_name="">
+				<transform position="0.000, 0.000, 0.350"/>
+				<components>
+					<particle_system_instanced_component>
+						<effect_ref base_effect="{943AACCA-7B14-4153-9E0C-4BC126958D2F}"/>
+					</particle_system_instanced_component>
+				</components>
+			</game_entity>
+		</children>
+	</game_entity>
+</prefabs>
+
