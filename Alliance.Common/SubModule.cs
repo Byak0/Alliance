@@ -45,7 +45,7 @@ namespace Alliance.Common
 			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
 			base.OnGameStart(game, gameStarter);
 
-			var ExtendedAgentStatCalculateModel = CoreUtils.GetGameModel<CustomBattleAgentStatCalculateModel>(gameStarter);
+			var ExtendedAgentStatCalculateModel = CoreUtils.GetGameModel<AgentStatCalculateModel>(gameStarter);
 			gameStarter.AddModel(new ExtendedAgentStatCalculateModel(ExtendedAgentStatCalculateModel));
 		}
 	}

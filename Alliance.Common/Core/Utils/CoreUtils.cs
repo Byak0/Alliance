@@ -316,6 +316,7 @@ namespace Alliance.Common.Core.Utils
 			// Return the new position (Z remains unchanged)
 			return new Vec3(x, y, center.z);
 		}
+
 		public static T? GetGameModel<T>(IGameStarter gameStarterObject) where T : GameModel
 		{
 			var models = gameStarterObject.Models.ToArray();
