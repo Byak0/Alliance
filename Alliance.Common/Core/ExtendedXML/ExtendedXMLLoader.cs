@@ -22,12 +22,18 @@ namespace Alliance.Common.Core.ExtendedXML
 			XmlResource.ReadXsdFileAndExtractInformation(ModuleHelper.GetXsdPathForModules(SubModule.CurrentModuleName, "ItemsExtended"));
 
 			MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
-			XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("CharactersExtended", true);
-			MBObjectManager.Instance.LoadXml(xmlDocument);
+			if (XmlResource.XmlInformationList.Exists(xmlInfo => xmlInfo.Id == "CharactersExtended"))
+			{
+				XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("CharactersExtended", true);
+				MBObjectManager.Instance.LoadXml(xmlDocument);
+			}	
 
 			MBObjectManager.Instance.RegisterType<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, true, false);
-			xmlDocument = MBObjectManager.GetMergedXmlForManaged("ItemsExtended", true);
-			MBObjectManager.Instance.LoadXml(xmlDocument);
+			if (XmlResource.XmlInformationList.Exists(xmlInfo => xmlInfo.Id == "ItemsExtended"))
+			{
+				XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("ItemsExtended", true);
+				MBObjectManager.Instance.LoadXml(xmlDocument);
+			}
 		}
 
 		// Test to auto generate XML
