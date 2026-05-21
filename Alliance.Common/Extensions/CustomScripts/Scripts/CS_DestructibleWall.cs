@@ -297,13 +297,15 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public void TriggerOnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, int affectorWeaponSlotOrMissileIndex, ScriptComponentBehavior attackerScriptComponentBehavior)
 		{
-			OnHit(attackerAgent, inflictedDamage, impactPosition, impactDirection, weapon, affectorWeaponSlotOrMissileIndex, attackerScriptComponentBehavior, out bool flag, out float num);
+			OnHit(attackerAgent, inflictedDamage, impactPosition, impactDirection, weapon, affectorWeaponSlotOrMissileIndex, attackerScriptComponentBehavior, out bool flag, out float num, out float fireDamage, out float modifiedFireDamage);
 		}
 
-		protected override bool OnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, int affectorWeaponSlotOrMissileIndex, ScriptComponentBehavior attackerScriptComponentBehavior, out bool reportDamage, out float modifiedDamage)
+		protected override bool OnHit(Agent attackerAgent, int inflictedDamage, Vec3 impactPosition, Vec3 impactDirection, in MissionWeapon weapon, int affectorWeaponSlotOrMissileIndex, ScriptComponentBehavior attackerScriptComponentBehavior, out bool reportDamage, out float modifiedDamage, out float fireDamage, out float modifiedFireDamage)
 		{
 			reportDamage = false;
 			modifiedDamage = (float)inflictedDamage;
+			fireDamage = 0f;
+			modifiedFireDamage = 0f;
 			if (IsDisabled)
 			{
 				return true;
@@ -621,7 +623,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 				else
 				{
-					gameEntity = TaleWorlds.Engine.GameEntity.Instantiate(Mission.Current.Scene, prefab, this._referenceEntity.GetGlobalFrame(), true, "");
+					gameEntity = TaleWorlds.Engine.GameEntity.Instantiate(Mission.Current.Scene, prefab, this._referenceEntity.GetGlobalFrame(), true);
 					if (gameEntity != null)
 					{
 						gameEntity.SetMobility(TaleWorlds.Engine.GameEntity.Mobility.Stationary);

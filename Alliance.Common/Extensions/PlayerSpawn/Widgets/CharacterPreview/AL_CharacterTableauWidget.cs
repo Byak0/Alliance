@@ -597,7 +597,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			SetTextureProviderProperty("CurrentlyRotating", true);
 		}
 
-		protected override void OnMouseReleased()
+		protected override void OnMouseReleased(bool isFromInput)
 		{
 			SetTextureProviderProperty("CurrentlyRotating", false);
 		}
