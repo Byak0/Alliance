@@ -55,7 +55,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="Encyclopedia.ListButton" TransitionDuration="0.1">
+  <Brush Name="Encyclopedia.ListButton" TransitionDuration="0.05">
     <Layers>
       <BrushLayer Name="Default" Sprite="Encyclopedia\list_hover" />
     </Layers>
@@ -83,11 +83,11 @@
         <BrushLayer Name="Frame" />
       </Style>
       <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
+        <BrushLayer Name="Default" AlphaFactor="0.6" />
         <BrushLayer Name="Frame" />
       </Style>
       <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
+        <BrushLayer Name="Default" AlphaFactor="0.4" />
         <BrushLayer Name="Frame" />
       </Style>
     </Styles>
@@ -103,7 +103,117 @@
       <BrushLayer Name="Frame" SaturationFactor="-100"/>
     </Layers>
   </Brush>
-  <Brush Name="Encyclopedia.SubPage.Settlement.Image">
+  <Brush Name="Encyclopedia.SubPage.Element.Settlement.ButtonBrush">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.7" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" AlphaFactor="1.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" AlphaFactor="0.6" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0.4" />
+      </Style>
+    </Styles>
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="ConnectedToRoot" Audio="empty" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+  <Brush Name="Encyclopedia.SubPage.Element.Settlement.SpriteBrush">
+    <Layers>
+      <BrushLayer Name="Default" />
+      <BrushLayer Name="placeholder" Sprite="placeholder" />
+      <BrushLayer Name="aserai_twn_scene_sktch_t" Sprite="aserai_twn_scene_sktch_t" />
+      <BrushLayer Name="aserai_vlg_scene_sktch_t" Sprite="aserai_vlg_scene_sktch_t" />
+      <BrushLayer Name="batannia_twn_scene_sktch_t" Sprite="batannia_twn_scene_sktch_t" />
+      <BrushLayer Name="batannia_vlg_scene_sktch_t" Sprite="batannia_vlg_scene_sktch_t" />
+      <BrushLayer Name="battania_town_3_t" Sprite="battania_town_3_t" />
+      <BrushLayer Name="empire_twn_scene_sktch_t" Sprite="empire_twn_scene_sktch_t" />
+      <BrushLayer Name="empire_vlg_scene_sktch_t" Sprite="empire_vlg_scene_sktch_t" />
+      <BrushLayer Name="gui_bg_castle_battania_t" Sprite="gui_bg_castle_battania_t" />
+      <BrushLayer Name="gui_bg_castle_empire_t" Sprite="gui_bg_castle_empire_t" />
+      <BrushLayer Name="gui_bg_castle_khuzait_t" Sprite="gui_bg_castle_khuzait_t" />
+      <BrushLayer Name="gui_bg_castle_sturgia_t" Sprite="gui_bg_castle_sturgia_t" />
+      <BrushLayer Name="gui_bg_castle_vlanda_t" Sprite="gui_bg_castle_vlanda_t" />
+      <BrushLayer Name="gui_bg_hideout_land_t" Sprite="gui_bg_hideout_land_t" />
+      <BrushLayer Name="gui_bg_hideout_sea_t" Sprite="gui_bg_hideout_sea_t" />
+      <BrushLayer Name="gui_bg_town_aserai_t" Sprite="gui_bg_town_aserai_t" />
+      <BrushLayer Name="gui_bg_town_battania_t" Sprite="gui_bg_town_battania_t" />
+      <BrushLayer Name="gui_bg_town_empire_t" Sprite="gui_bg_town_empire_t" />
+      <BrushLayer Name="gui_bg_town_khuzait_t" Sprite="gui_bg_town_khuzait_t" />
+      <BrushLayer Name="gui_bg_town_sturgia_t" Sprite="gui_bg_town_sturgia_t" />
+      <BrushLayer Name="gui_bg_town_vlanda_t" Sprite="gui_bg_town_vlanda_t" />
+      <BrushLayer Name="gui_bg_village_aserai_t" Sprite="gui_bg_village_aserai_t" />
+      <BrushLayer Name="gui_bg_village_battania_t" Sprite="gui_bg_village_battania_t" />
+      <BrushLayer Name="gui_bg_village_empire_t" Sprite="gui_bg_village_empire_t" />
+      <BrushLayer Name="gui_bg_village_khuzait_t" Sprite="gui_bg_village_khuzait_t" />
+      <BrushLayer Name="gui_bg_village_sturgia_t" Sprite="gui_bg_village_sturgia_t" />
+      <BrushLayer Name="gui_bg_village_vlanda_t" Sprite="gui_bg_village_vlanda_t" />
+      <BrushLayer Name="kuzait_twn_scene_sktch_t" Sprite="kuzait_twn_scene_sktch_t" />
+      <BrushLayer Name="kuzait_vlg_scene_sktch_t" Sprite="kuzait_vlg_scene_sktch_t" />
+      <BrushLayer Name="menu_aserai_1_t" Sprite="menu_aserai_1_t" />
+      <BrushLayer Name="menu_aserai_2_t" Sprite="menu_aserai_2_t" />
+      <BrushLayer Name="menu_aserai_3_t" Sprite="menu_aserai_3_t" />
+      <BrushLayer Name="menu_aserai_4_t" Sprite="menu_aserai_4_t" />
+      <BrushLayer Name="menu_aserai_5_t" Sprite="menu_aserai_5_t" />
+      <BrushLayer Name="menu_aserai_village_1_t" Sprite="menu_aserai_village_1_t" />
+      <BrushLayer Name="menu_aserai_village_2_t" Sprite="menu_aserai_village_2_t" />
+      <BrushLayer Name="menu_aserai_village_3_t" Sprite="menu_aserai_village_3_t" />
+      <BrushLayer Name="menu_aserai_village_4_t" Sprite="menu_aserai_village_4_t" />
+      <BrushLayer Name="menu_empire_1_t" Sprite="menu_empire_1_t" />
+      <BrushLayer Name="menu_empire_2_t" Sprite="menu_empire_2_t" />
+      <BrushLayer Name="menu_empire_3_t" Sprite="menu_empire_3_t" />
+      <BrushLayer Name="menu_empire_4_t" Sprite="menu_empire_4_t" />
+      <BrushLayer Name="menu_empire_5_t" Sprite="menu_empire_5_t" />
+      <BrushLayer Name="menu_empire_seaside_1_t" Sprite="menu_empire_seaside_1_t" />
+      <BrushLayer Name="menu_empire_seaside_2_t" Sprite="menu_empire_seaside_2_t" />
+      <BrushLayer Name="siege_art_1_t" Sprite="siege_art_1_t" />
+      <BrushLayer Name="siege_art_2_t" Sprite="siege_art_2_t" />
+    </Layers>
+  </Brush>
+  <Brush Name="Encyclopedia.NoAudioButton">
+    <SoundProperties>
+      <EventSounds>
+        <EventSound EventName="Click" Audio="" />
+      </EventSounds>
+    </SoundProperties>
+  </Brush>
+	<Brush Name="Encyclopedia.ShipSlot.Empty.Icon.Base">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="BlankWhiteSquare_9"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" ColorFactor="1" AlphaFactor="1" SaturationFactor="0" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" ColorFactor="0.25" AlphaFactor="0.6" SaturationFactor="-75" />
+			</Style>
+		</Styles>
+	</Brush>
+	<Brush Name="Encyclopedia..ShipSlot.Empty.Icon.Frame">
+		<Layers>
+			<BrushLayer Name="Default" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="6" ExtendBottom="6"/>
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Default" AlphaFactor="1" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Default" AlphaFactor="0.5" />
+			</Style>
+		</Styles>
+	</Brush>
+
+	<Brush Name="Encyclopedia.SubPage.Settlement.Image" BaseBrush="Encyclopedia.NoAudioButton">
     <Layers>
       <BrushLayer Name="Default" Sprite="Encyclopedia\subpage_notable_portrait" />
       <BrushLayer Name="Frame" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" Sprite="slick_frame_9" />
@@ -322,11 +432,39 @@
     <Layers>
       <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.35" />
     </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.35" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.25" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" />
+      </Style>
+    </Styles>
   </Brush>
   <Brush Name="Encyclopedia.Clan.SubElement.Banner.Big">
     <Layers>
       <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.35" />
     </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.35" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="0.5" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.25" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.1" />
+      </Style>
+    </Styles>
   </Brush>
   <Brush Name="EncyclopediaButtonTroops" FontColor="#FAF4DEFF">
     <Layers>
@@ -376,150 +514,80 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="EncyclopediaClan" FontColor="#FAF4DEFF">
+
+  <Brush Name="Encyclopedia.Home.Button.Base" FontColor="#FAF4DEFF" TransitionDuration="0.12">
     <Layers>
-      <BrushLayer Name="Default" Sprite="Encyclopedia\clan" Color="#FFFFFFFF" />
+      <BrushLayer Name="Default" Sprite="Encyclopedia\clan" Color="#FFFFFFFF" ImageFit.Type="Cover" ImageFit.HorizontalAlignment="Center" />
       <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
     </Layers>
     <Styles>
       <Style Name="Default">
         <BrushLayer Name="Default" AlphaFactor="0.70" />
-        <BrushLayer Name="Frame" />
       </Style>
       <Style Name="Hovered">
         <BrushLayer Name="Default" AlphaFactor="1.0" />
-        <BrushLayer Name="Frame" />
       </Style>
       <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
+        <BrushLayer Name="Default" AlphaFactor="0.6" />
       </Style>
       <Style Name="Disabled">
         <BrushLayer Name="Default" AlphaFactor="0.3" />
-        <BrushLayer Name="Frame" />
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="EncyclopediaConcept" FontColor="#FAF4DEFF">
+  
+  <Brush Name="EncyclopediaClan" BaseBrush="Encyclopedia.Home.Button.Base">
     <Layers>
-      <BrushLayer Name="Default" Sprite="Encyclopedia\concept" Color="#FFFFFFFF" />
-      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+      <BrushLayer Name="Default" Sprite="Encyclopedia\clan" Color="#FFFFFFFF" />
     </Layers>
-    <Styles>
-      <Style Name="Default">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Hovered">
-        <BrushLayer Name="Default" AlphaFactor="1.5" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-    </Styles>
   </Brush>
-  <Brush Name="EncyclopediaKingdom" FontColor="#FAF4DEFF">
+  
+  <Brush Name="EncyclopediaConcept" BaseBrush="Encyclopedia.Home.Button.Base">
     <Layers>
-      <BrushLayer Name="Default" Sprite="Encyclopedia\kingdom" Color="#FFFFFFFF" />
-      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+      <BrushLayer Name="Default" Sprite="encounter_peasant" Color="#FFFFFFFF" />
     </Layers>
-    <Styles>
-      <Style Name="Default">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Hovered">
-        <BrushLayer Name="Default" AlphaFactor="1.5" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-    </Styles>
   </Brush>
-  <Brush Name="EncyclopediaHero" FontColor="#FAF4DEFF">
+  
+  <Brush Name="EncyclopediaKingdom" BaseBrush="Encyclopedia.Home.Button.Base">
     <Layers>
-      <BrushLayer Name="Default" Sprite="Encyclopedia\hero" Color="#FFFFFFFF" />
-      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+      <BrushLayer Name="Default" Sprite="Encyclopedia\kingdom" Color="#FFFFFFFF" XOffset="-35" />
     </Layers>
-    <Styles>
-      <Style Name="Default">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Hovered">
-        <BrushLayer Name="Default" AlphaFactor="1.5" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-    </Styles>
   </Brush>
-  <Brush Name="EncyclopediaSettlement" FontColor="#FAF4DEFF">
+  
+  <Brush Name="EncyclopediaHero" BaseBrush="Encyclopedia.Home.Button.Base">
     <Layers>
-      <BrushLayer Name="Default" Sprite="Encyclopedia\settlements" Color="#FFFFFFFF" />
-      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
+      <BrushLayer Name="Default" Sprite="encounter_vlandia" Color="#FFFFFFFF" ExtendTop="200" ExtendLeft="55" ExtendRight="55" XOffset="5" YOffset="50" />
     </Layers>
-    <Styles>
-      <Style Name="Default">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Hovered">
-        <BrushLayer Name="Default" AlphaFactor="1.5" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-    </Styles>
   </Brush>
-  <Brush Name="EncyclopediaUnit" FontColor="#FAF4DEFF">
+  
+  <Brush Name="EncyclopediaSettlement" BaseBrush="Encyclopedia.Home.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="wait_empire_village" Color="#FFFFFFFF" />
+    </Layers>
+  </Brush>
+  
+  <Brush Name="EncyclopediaUnit" BaseBrush="Encyclopedia.Home.Button.Base">
     <Layers>
       <BrushLayer Name="Default" Sprite="Encyclopedia\units" Color="#FFFFFFFF" />
-      <BrushLayer Name="Frame" Sprite="slick_frame_9" ExtendLeft="6" ExtendRight="6" ExtendTop="5" ExtendBottom="6" />
     </Layers>
-    <Styles>
-      <Style Name="Default">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Hovered">
-        <BrushLayer Name="Default" AlphaFactor="1.5" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Pressed">
-        <BrushLayer Name="Default" AlphaFactor="0.85" />
-        <BrushLayer Name="Frame" />
-      </Style>
-      <Style Name="Disabled">
-        <BrushLayer Name="Default" AlphaFactor="0.7" />
-        <BrushLayer Name="Frame" />
-      </Style>
-    </Styles>
   </Brush>
+  
+  <Brush Name="EncyclopediaShip" BaseBrush="Encyclopedia.Home.Button.Base">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="aserai_port" Color="#FFFFFFFF" ExtendTop="50" ExtendLeft="50" XOffset="5" />
+    </Layers>
+  </Brush>
+  
+  <Brush Name="EncyclopediaShip.Wind.Indicator.Sprites">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="Mission\ShipControlHUD\compass_square" />
+      <BrushLayer Name="None" Sprite="Mission\ShipControlHUD\compass_square" />
+      <BrushLayer Name="Square" Sprite="Mission\ShipControlHUD\compass_square" />
+      <BrushLayer Name="Lateen" Sprite="Mission\ShipControlHUD\compass_lateen" />
+      <BrushLayer Name="Hybrid" Sprite="Mission\ShipControlHUD\compass_hybrid" />
+    </Layers>
+  </Brush>
+  
   <Brush Name="Encyclopedia.Search.TextBox" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left" BaseBrush="DefaultHighlightableTextBrush">
     <Layers>
       <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" />
@@ -668,7 +736,7 @@
   </Brush>
   <Brush Name="EncyclopediaHome.Type.Text" Font="Galahad" TextHorizontalAlignment="Center">
     <Styles>
-      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="36" />
+      <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" FontSize="36" />
     </Styles>
   </Brush>
   <Brush Name="EncyclopediaList.FilterType.Name.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
@@ -766,6 +834,42 @@
       <Style Name="Disabled" TextAlphaFactor="0.1" />
     </Styles>
   </Brush>
+  
+  <Brush Name="Encyclopedia.SubPage.SubTitle.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+  
+  <Brush Name="Encyclopedia.SubPage.ItemDecription.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
+    <Layers>
+    </Layers>
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextAlphaFactor="0.8" TextGlowColor="#FFFFFF00" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="18" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Encyclopedia.Settlement.Description.Type.BaseBrush">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Encyclopedia.Settlement.Description.Type.Brush">
+    <Layers>
+      <BrushLayer Name="Wall" Sprite="SPGeneral\MapOverlay\Settlement\icon_wall_big" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" />
+      <BrushLayer Name="Shipyard" Sprite="Map\Shipyard" />
+      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" />
+      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" ExtendTop="-5" ExtendBottom="-5" ExtendRight="-5" ExtendLeft="-5" />
+      <BrushLayer Name="Food" Sprite="General\Icons\Food" ExtendTop="-5" ExtendBottom="-5" ExtendRight="-5" ExtendLeft="-5" />
+	  <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" />
+      <BrushLayer Name="Loyalty" Sprite="SPGeneral\MapOverlay\Settlement\icon_loyalty" />
+      <BrushLayer Name="Security" Sprite="SPGeneral\MapOverlay\Settlement\icon_security" />
+    </Layers>
+  </Brush>
+  
   <Brush Name="Encyclopedia.TrackInfoText" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center" TextVerticalAlignment="Center">
     <Styles>
       <Style Name="Default" FontColor="#E1E1E1FF" TextGlowColor="#000000FF" TextOutlineColor="#FFFFFF00" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" FontSize="16" />
