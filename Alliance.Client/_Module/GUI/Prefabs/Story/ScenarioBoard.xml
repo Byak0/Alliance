@@ -19,7 +19,7 @@
 				<!-- Scenario board -->
 				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowBoard">
 					<Children>
-						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 							<Children>
 								<!-- Act title -->
 								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
@@ -38,7 +38,7 @@
 								<!-- Objectives -->
 								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500">
 									<Children>
-										<ListPanel DataSource="{Objectives}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="100" StackLayout.LayoutMethod="VerticalBottomToTop">
+										<ListPanel DataSource="{Objectives}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="100" StackLayout.LayoutMethod="VerticalTopToBottom">
 											<ItemTemplate>
 												<ObjectiveItem/>
 											</ItemTemplate>

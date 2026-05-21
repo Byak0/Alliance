@@ -31,7 +31,7 @@
         </Widget>
 
         <!-- Spawn text -->
-        <ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="400" HorizontalAlignment="Center" VerticalAlignment="Bottom" StackLayout.LayoutMethod="VerticalBottomToTop" MarginBottom="230" >
+        <ListPanel WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="400" HorizontalAlignment="Center" VerticalAlignment="Bottom" StackLayout.LayoutMethod="VerticalTopToBottom" MarginBottom="230" >
           <Children>
             <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" Brush="MPClassLoadout.SpawnText" IsVisible="@IsSpawnLabelVisible" Text="@SpawnLabelText" />
             <RichTextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Bottom" Brush="MPClassLoadout.SpawnText" IsVisible="@IsSpawnForfeitLabelVisible" Text="@SpawnForfeitLabelText" />
@@ -45,7 +45,7 @@
           <Children>
             <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="367" SuggestedHeight="5" HorizontalAlignment="Center" PositionYOffset="-2" Sprite="MPClassLoadout\panels_frame" />
 
-            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalBottomToTop">
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalTopToBottom">
               <Children>
                 <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="15" Brush="MPClassLoadout.FactionText" Brush.FontSize="32" Text="@EquipmentText" />
 
@@ -72,7 +72,7 @@
                 </MultiplayerClassLoadoutItemTabControllerButtonWidget>
 
                 <!-- Show big picture + stats of selected item -->
-                <ListPanel DataSource="{ItemSelected}" WidthSizePolicy="StretchToParent" SuggestedHeight="500" HorizontalAlignment="Center" MarginLeft="5" MarginRight="5" MarginTop="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+                <ListPanel DataSource="{ItemSelected}" WidthSizePolicy="StretchToParent" SuggestedHeight="500" HorizontalAlignment="Center" MarginLeft="5" MarginRight="5" MarginTop="10" StackLayout.LayoutMethod="VerticalTopToBottom">
                   <Children>
                     <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!ItemBackground.Width" SuggestedHeight="!ItemBackground.Height" HorizontalAlignment="Center" Sprite="MPClassLoadout\item_portrait_frame" AlphaFactor="0.6">
                       <Children>
@@ -93,7 +93,7 @@
                           </Children>
                         </Widget>
                     <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="18" HorizontalAlignment="Center" MarginTop="7.5" MarginBottom="7.5" Sprite="MPClassLoadout\stats_divider" />
-                    <ListPanel DataSource="{PropertyList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+                    <ListPanel DataSource="{PropertyList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
                       <ItemTemplate>
                         <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="34">
                           <Children>
@@ -123,7 +123,7 @@
         </Widget>
 
         <!-- STATS -->
-        <ListPanel DataSource="{HeroInformation}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="489" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="10" Sprite="MPClassLoadout\stats_bg" Color="#000000FF" StackLayout.LayoutMethod="VerticalBottomToTop">
+        <ListPanel DataSource="{HeroInformation}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="489" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="10" Sprite="MPClassLoadout\stats_bg" Color="#000000FF" StackLayout.LayoutMethod="VerticalTopToBottom">
           <Children>
 
             <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" Sprite="MPClassLoadout\stats_frame" />
@@ -146,7 +146,7 @@
                     <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalSpaced">
                       <Children>
 
-                        <ListPanel DataSource="{HitPointsHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
+                        <ListPanel DataSource="{HitPointsHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalTopToBottom">
                           <Children>
                             <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center">
                               <Children>
@@ -157,7 +157,7 @@
                           </Children>
                         </ListPanel>
 
-                        <ListPanel DataSource="{ArmorHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
+                        <ListPanel DataSource="{ArmorHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalTopToBottom">
                           <Children>
                             <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center">
                               <Children>
@@ -168,7 +168,7 @@
                           </Children>
                         </ListPanel>
 
-                        <ListPanel DataSource="{MovementSpeedHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
+                        <ListPanel DataSource="{MovementSpeedHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalTopToBottom">
                           <Children>
                             <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center">
                               <Children>
@@ -182,7 +182,7 @@
                         <!-- Army Stats -->
                         <Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" IsVisible="@IsArmyAvailable" DoNotAcceptEvents="true">
                           <Children>
-                            <ListPanel DataSource="{ArmySizeHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalBottomToTop">
+                            <ListPanel DataSource="{ArmySizeHint}" DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" StackLayout.LayoutMethod="VerticalTopToBottom">
                               <Children>
                                 <Widget DataSource="{..}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="50" SuggestedHeight="50" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="@IsArmyAvailable">
                                   <Children>
@@ -209,16 +209,16 @@
         </ListPanel>
 
         <!-- Right panel. List of classes and subclasses -->
-        <ListPanel Id="RightPanel" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="500" SuggestedHeight="880" HorizontalAlignment="Right" MarginRight="37" MarginTop="95" Sprite="BlankWhiteSquare_9" AlphaFactor="0.8" Color="#000000FF" StackLayout.LayoutMethod="VerticalBottomToTop">
+        <ListPanel Id="RightPanel" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="500" SuggestedHeight="880" HorizontalAlignment="Right" MarginRight="37" MarginTop="95" Sprite="BlankWhiteSquare_9" AlphaFactor="0.8" Color="#000000FF" StackLayout.LayoutMethod="VerticalTopToBottom">
           <Children>
             <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="520" SuggestedHeight="5" HorizontalAlignment="Center" PositionYOffset="-2" Sprite="MPClassLoadout\panels_frame" />
             
-            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalBottomToTop">
+            <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" StackLayout.LayoutMethod="VerticalTopToBottom">
               <Children>
 
                 <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
                   <Children>
-                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">
+                    <ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="20">
                       <Children>
 
                         <MultiplayerFactionBannerWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="100" SuggestedHeight="55" HorizontalAlignment="Center" VerticalAlignment="Center" BannerWidget="Banner" FactionCode="@CultureId" CultureColor1="@CultureColor1" CultureColor2="@CultureColor2" IconWidget="Icon">
@@ -260,7 +260,7 @@
                         <NavigationScopeTargeter ScopeID="ClassSelectionScope" ScopeParent="..\ScrollingRect" ScopeMovements="Vertical" />
                         <Widget Id="ScrollingRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginTop="7">
                           <Children>
-                            <NavigatableListPanel Id="ClassesInnerPanel" DataSource="{Classes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" StepSize="1000">
+                            <NavigatableListPanel Id="ClassesInnerPanel" DataSource="{Classes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" StepSize="1000">
                               <ItemTemplate>
                                 <MultiplayerClassLoadoutClassGroup />
                               </ItemTemplate>

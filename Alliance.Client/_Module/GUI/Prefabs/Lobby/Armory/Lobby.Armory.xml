@@ -85,7 +85,7 @@
 
         <!-- Action Buttons -->
         <NavigationScopeTargeter ScopeID="ArmoryEditCharacterButtonScope" ScopeParent="..\EditCharacterButtonContainer" ScopeMovements="Vertical" />
-        <ListPanel Id="EditCharacterButtonContainer" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="40" StackLayout.LayoutMethod="VerticalBottomToTop" IsHidden="@IsTauntAssignmentActive">
+        <ListPanel Id="EditCharacterButtonContainer" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="40" StackLayout.LayoutMethod="VerticalTopToBottom" IsHidden="@IsTauntAssignmentActive">
           <Children>
 
             <!-- Customize Character Button -->
@@ -184,7 +184,7 @@
         </Widget>
         
         <!-- Left Side -->
-        <ListPanel VisualDefinition="LeftSideVisuals" Id="LeftSideParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop">
+        <ListPanel VisualDefinition="LeftSideVisuals" Id="LeftSideParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom">
           <Children>
             <Lobby.ClassFilter DataSource="{ClassFilter}" MarginLeft="50" Parameter.IsNavigationDisabled="@IsManagingTaunts" />
 
@@ -246,7 +246,7 @@
             </ButtonWidget>
             <Widget Id="ListContainer" IsVisible="false" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="40" Sprite="region_combobox_bg_9" Color="#000000FF" AlphaFactor="0.9">
               <Children>
-                <ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="20" MarginBottom="10" MinIndex="1">
+                <ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" IsVisible="false" LayoutImp.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Top" HorizontalAlignment="Left" MarginTop="20" MarginBottom="10" MinIndex="1">
                   <ItemTemplate>
                     <ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" IsHidden="@IsRegionNone">
                       <Children>

@@ -31,7 +31,7 @@
 												<GridWidget DataSource="{ActiveFormationClasses}" Id="PrimaryColorGrid" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" ColumnCount="2" DefaultCellHeight="56" DefaultCellWidth="46" LayoutImp="GridLayout"  >
 													<ItemTemplate>
 
-														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 															<Children>
 																<OrderFormationClassVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Troop.Icon.Width" SuggestedHeight="!Troop.Icon.Height" FormationClassValue="@FormationClassValue" Brush="Order.Troop.Icon" />
 																<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="-5" Brush="Order.Troop.CountText" IntText="@TroopCount" />

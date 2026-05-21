@@ -10,7 +10,7 @@
 				<!-- PANEL GAUCHE -->
 				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Left" ExtendTop="27" ExtendLeft="26" ExtendRight="27" ExtendBottom="29" Sprite="Frame1_frame" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_overlay">
 					<Children>
-						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="10" MarginLeft="10">
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="10" MarginLeft="10">
 							<Children>
 								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight">
 									<Children>
@@ -72,7 +72,7 @@
 				<!-- PANEL CENTRE -->
 				<Widget WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="585" HorizontalAlignment="Center" MarginTop="85" >
 					<Children>
-						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="10" MarginLeft="10">
+						<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="10" MarginLeft="10">
 							<Children>
 
 								<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="HorizontalLeftToRight" VerticalAlignment="Center">
@@ -296,7 +296,7 @@
 											<Children>
 												<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 													<Children>
-														<ListPanel Id="NetworkPeers" DataSource="{ServerMessage}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="5">
+														<ListPanel Id="NetworkPeers" DataSource="{ServerMessage}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="5">
 															<ItemTemplate>
 																<RichTextWidget MarginLeft="10"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" Brush="@Color" Text="@Message"/>
 															</ItemTemplate>
@@ -332,7 +332,7 @@
 							<Children>
 								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 									<Children>
-										<ListPanel Id="NetworkPeers" DataSource="{NetworkPeers}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">
+										<ListPanel Id="NetworkPeers" DataSource="{NetworkPeers}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="20">
 											<ItemTemplate>
 												<ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Center" Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1" IsHidden="@IsFiltered" IsSelected="@IsSelected" Command.Click="SelectPeer">
 													<Children>

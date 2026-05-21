@@ -33,7 +33,7 @@
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.Matchmaking.Region.DropdownItem" >
 			<Children>
 				<!-- Troops of that type -->
-				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalBottomToTop">
+				<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalTopToBottom">
 					<ItemTemplate>
 
 						<!-- Troop button -->

@@ -6,7 +6,7 @@
 				<!-- Interaction -->
         <Widget DataSource="{InteractionInterface}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsActive">
           <Children>
-            <ListPanel DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-120" StackLayout.LayoutMethod="VerticalBottomToTop">
+            <ListPanel DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-120" StackLayout.LayoutMethod="VerticalTopToBottom">
               <Children>
                 <ListPanel DoNotAcceptEvents="true" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center">
                   <Children>

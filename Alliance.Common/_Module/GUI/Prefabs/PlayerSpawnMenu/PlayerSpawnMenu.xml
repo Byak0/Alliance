@@ -111,9 +111,9 @@
 							<Children>
 								<Widget Id="ClipRectFormations" WidthSizePolicy="Fixed" SuggestedWidth="!FormationList.Width" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
 									<Children>
-										<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+										<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalTopToBottom">
 											<Children>
-												<ListPanel DataSource="{Formations}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="8">
+												<ListPanel DataSource="{Formations}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="8">
 													<ItemTemplate>
 														<FormationItem/>
 													</ItemTemplate>

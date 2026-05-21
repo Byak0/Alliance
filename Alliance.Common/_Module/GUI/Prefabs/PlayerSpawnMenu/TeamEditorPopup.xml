@@ -53,9 +53,9 @@
 									<Children>
 										<Widget Id="ClipRectFormations" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
 											<Children>
-												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalTopToBottom">
 													<Children>
-														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>
