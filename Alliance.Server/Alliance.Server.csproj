@@ -4,7 +4,6 @@
 	<PropertyGroup>
 		<Version>$(AllianceVersion)</Version>
 		<TargetFramework>net6.0</TargetFramework>
-		<Platforms>x64</Platforms>
 		<LangVersion>10.0</LangVersion>
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance</ModuleName>
