@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.Vehicles.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.Vehicles.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Core;
 using TaleWorlds.DotNet;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
@@ -752,14 +753,18 @@ namespace Alliance.Common.Extensions.Vehicles.Scripts
 
 		public override TextObject GetActionTextForStandingPoint(UsableMissionObject usableGameObject)
 		{
+			TextObject textObject = new TextObject("{=fEQAPJ2e}{KEY} {TEXT}");
+			textObject.SetTextVariable("KEY", HyperlinkTexts.GetKeyHyperlinkText(HotKeyManager.GetHotKeyId("CombatHotKeyCategory", 13), 1f));			
+
 			if (usableGameObject.GameEntity.HasTag("Pilot"))
 			{
-				return new TextObject(PilotInteraction, null);
+				textObject.SetTextVariable("TEXT", PilotInteraction);
 			}
 			else
 			{
-				return new TextObject(PassengerInteraction, null);
+				textObject.SetTextVariable("TEXT", PassengerInteraction);
 			}
+			return textObject;
 		}
 
 		public override TextObject GetDescriptionText(WeakGameEntity gameEntity)
