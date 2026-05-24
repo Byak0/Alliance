@@ -25,7 +25,7 @@
 									<Children>
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 											<Children>
-												<ListPanel Id="GameModes" DataSource="{GameModes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+												<ListPanel Id="GameModes" DataSource="{GameModes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" >
 													<ItemTemplate>
 														<GameModeCard/>
 													</ItemTemplate>
@@ -62,7 +62,7 @@
 									<Children>
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 											<Children>
-												<ListPanel Id="Maps" DataSource="{Maps}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+												<ListPanel Id="Maps" DataSource="{Maps}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" >
 													<ItemTemplate>
 														<MapCard/>
 													</ItemTemplate>
@@ -94,7 +94,7 @@
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center" >
 											<Children>
 
-												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
+												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
 													<Children>
 
 														<!-- Player Spawn Menu short description-->
@@ -126,7 +126,7 @@
 																</ListPanel>
 															</Children>
 														</PartyHeaderToggleWidget>
-														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalTopToBottom" >
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>
@@ -151,7 +151,7 @@
 																</ListPanel>
 															</Children>
 														</PartyHeaderToggleWidget>
-														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalTopToBottom" >
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>

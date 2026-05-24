@@ -3,7 +3,6 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net6.0</TargetFrameworks>
 		<LangVersion>10.0</LangVersion>
-		<Platforms>x64</Platforms>
 		<Version>$(AllianceVersion)</Version>
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Common</ModuleName>

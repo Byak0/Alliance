@@ -40,7 +40,7 @@
 							<Children>
 								<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 									<Children>
-										<ListPanel Id="NetworkPeers" DataSource="{PlayersData}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">
+										<ListPanel Id="NetworkPeers" DataSource="{PlayersData}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="20">
 											<ItemTemplate>
 
 												<!-- Player item -->

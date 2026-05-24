@@ -1,0 +1,13 @@
+﻿<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Release" />
+    <Platform Name="AnyCPU" Default="true" />
+  </Configurations>
+  
+  <Project Path="Alliance.Common/Alliance.Common.csproj" />
+  <Project Path="Alliance.Client/Alliance.Client.csproj" />
+  <Project Path="Alliance.Server/Alliance.Server.csproj" />
+  <Project Path="Alliance.Editor/Alliance.Editor.csproj" />
+  <Project Path="Alliance.SP/Alliance.SP.csproj" />
+</Solution>

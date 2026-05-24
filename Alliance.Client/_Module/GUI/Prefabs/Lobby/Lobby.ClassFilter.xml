@@ -53,13 +53,13 @@
 							<Children>
 								<Widget Id="MyClipRect" WidthSizePolicy = "StretchToParent" HeightSizePolicy = "StretchToParent" HorizontalAlignment="Center" ClipContents="true" AlphaFactor="0.75">
 									<Children>
-										<NavigatableListPanel Id="InnerPanel" DataSource="{ActiveClassGroups}" StackLayout.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StepSize="1000">
+										<NavigatableListPanel Id="InnerPanel" DataSource="{ActiveClassGroups}" StackLayout.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StepSize="1000">
 											<ItemTemplate>
 												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
 													<Children>
 														<TextWidget DoNotAcceptEvents="true" Text="@Name" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="30" Brush="MPLobby.ClassFilter.ClassTuple.Text" />
 														<NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Classes" />
-														<NavigatableListPanel Id="Classes" DataSource="{Classes}" StackLayout.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="30" MarginBottom="20" UseSelfIndexForMinimum="true">
+														<NavigatableListPanel Id="Classes" DataSource="{Classes}" StackLayout.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="30" MarginBottom="20" UseSelfIndexForMinimum="true">
 															<ItemTemplate>
 																<MultiplayerLobbyClassFilterClassItemWidget Command.Click="ExecuteSelect" AllowSwitchOff="false" NotifyParentForSelection="false" IsSelected="@IsSelected" DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="394" SuggestedHeight="44" FactionColorWidget="FactionColorWidget" CultureColor="@CultureColor" TroopType="@IconType" IconWidget="Icon" Brush="MPLobby.ClassFilter.ClassTuple.Background" IconBrush="Compass.Type.Icons">
 																	<Children>

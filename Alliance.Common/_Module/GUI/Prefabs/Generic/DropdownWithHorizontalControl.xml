@@ -70,7 +70,7 @@
 												<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" ClipContents="true" MaxHeight="355">
 													<Children>
 
-														<ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+														<ListPanel Id="PrimaryUsageSelectorList" DataSource="{ItemList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 															<ItemTemplate>
 																<ButtonWidget Id="DropdownItemButton" DoNotUseCustomScale="true" DoNotPassEventsToChildren="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="29" MarginLeft="10" MarginRight="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" UpdateChildrenStates="true" IsEnabled="@CanBeSelected" Brush="Standard.DropdownItem.SoundBrush">
 																	<Children>

@@ -31,7 +31,7 @@
 												<GridWidget DataSource="{ActiveFormationClasses}" Id="PrimaryColorGrid" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" ColumnCount="2" DefaultCellHeight="56" DefaultCellWidth="46" LayoutImp="GridLayout"  >
 													<ItemTemplate>
 
-														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+														<ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 															<Children>
 																<OrderFormationClassVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!Troop.Icon.Width" SuggestedHeight="!Troop.Icon.Height" FormationClassValue="@FormationClassValue" Brush="Order.Troop.Icon" />
 																<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" PositionYOffset="-5" Brush="Order.Troop.CountText" IntText="@TroopCount" />
@@ -61,7 +61,7 @@
 												</SliderWidget>
 
 												<!-- Commander Visual -->
-												<ImageIdentifierWidget DoNotAcceptEvents="true" DataSource="{CommanderImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-10" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" />
+												<ImageIdentifierWidget DoNotAcceptEvents="true" DataSource="{CommanderImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-10" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" />
 
 											</Children>
 										</OrderTroopItemBrushWidget>

@@ -996,7 +996,12 @@
   </Brush>
   <Brush Name="Clan.PartySize.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
     <Styles>
-      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="28" />
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="24" />
+    </Styles>
+  </Brush>
+  <Brush Name="Clan.TroopCount.Text" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="22" />
     </Styles>
   </Brush>
   <Brush Name="Clan.Role.Title.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Left">
@@ -1019,11 +1024,6 @@
       <Style Name="Default" FontColor="#A7DF50FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="24" />
     </Styles>
   </Brush>
-  <Brush Name="Clan.RightPanel.Name.Text" Font="Galahad" TextHorizontalAlignment="Left">
-    <Styles>
-      <Style Name="Default" FontColor="#BE945BFF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36" />
-    </Styles>
-  </Brush>
   <Brush Name="Clan.RightPanel.EditableName.Text" Font="Galahad" TextHorizontalAlignment="Left">
     <Styles>
       <Style Name="Default" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
@@ -1042,7 +1042,7 @@
   </Brush>
 	<Brush Name="Clan.RightPanel.Name.Text" Font="Galahad" TextHorizontalAlignment="Left">
 		<Styles>
-			<Style Name="Default" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="36">
+			<Style Name="Default" FontColor="#BE945BFF"  TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextShadowAngle="60" FontSize="30">
 				<BrushLayer Name="Default" />
 			</Style>
 		</Styles>
@@ -1173,12 +1173,15 @@
       <BrushLayer Name="Default" IsHidden="true" />
       <BrushLayer Name="None" IsHidden="true" />
       <BrushLayer Name="Wall" Sprite="General\Icons\Walls" IsHidden="true" />
-      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" IsHidden="true" />
-      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" IsHidden="true" />
-      <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" IsHidden="true" />
-      <BrushLayer Name="Food" Sprite="General\Icons\Food" IsHidden="true" />
+      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" IsHidden="true" ExtendLeft="-3" ExtendRight="-3" ExtendTop="-3" ExtendBottom="-3" />
+      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" IsHidden="true" ExtendLeft="-5" ExtendRight="-5" ExtendTop="-5" ExtendBottom="-5"/>
+      <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" IsHidden="true" ExtendLeft="-2" ExtendRight="-2" ExtendTop="-2" ExtendBottom="-2" />
+      <BrushLayer Name="Food" Sprite="General\Icons\Food" IsHidden="true" ExtendLeft="-2" ExtendRight="-2" ExtendTop="-2" ExtendBottom="-2" />
       <BrushLayer Name="Loyalty" Sprite="SPGeneral\MapOverlay\Settlement\icon_loyalty" IsHidden="true" />
       <BrushLayer Name="Security" Sprite="SPGeneral\MapOverlay\Settlement\icon_security" IsHidden="true" />
+      <BrushLayer Name="Shipyard" Sprite="Map\anchor_stroked" IsHidden="true" ExtendLeft="-4" ExtendRight="-4" ExtendTop="-4" ExtendBottom="-4" />
+      <BrushLayer Name="Patrol" Sprite="General\Icons\Patrol" IsHidden="true" />
+      <BrushLayer Name="CoastalPatrol" Sprite="General\Icons\CoastalPatrol" IsHidden="true" />
     </Layers>
     <Styles>
       <Style Name="Default">
@@ -1199,7 +1202,7 @@
       <Style Name="Prosperity">
         <BrushLayer Name="Prosperity" IsHidden="false" />
       </Style>
-      <Style Name="Food">
+      <Style Name="Food"  >
         <BrushLayer Name="Food" IsHidden="false" />
       </Style>
       <Style Name="Loyalty">
@@ -1208,6 +1211,15 @@
       <Style Name="Security">
         <BrushLayer Name="Security" IsHidden="false" />
       </Style>
+      <Style Name="Shipyard">
+        <BrushLayer Name="Shipyard" IsHidden="false" />
+      </Style>
+      <Style Name="Patrol">
+        <BrushLayer Name="Patrol" IsHidden="false" />
+      </Style>
+      <Style Name="CoastalPatrol">
+        <BrushLayer Name="CoastalPatrol" IsHidden="false" />
+      </Style>
     </Styles>
   </Brush>
   <Brush Name="Clan.Fief.Profit.Type.Image">
@@ -1215,7 +1227,7 @@
       <BrushLayer Name="Default" IsHidden="true" />
       <BrushLayer Name="Tax" Sprite="SPGeneral\MapOverlay\Settlement\icon_tax_big" IsHidden="true" />
       <BrushLayer Name="Tariff" Sprite="SPGeneral\MapOverlay\Settlement\icon_tariff_big" IsHidden="true" />
-      <BrushLayer Name="Garrison" Sprite="SPGeneral\MapOverlay\Settlement\icon_garrison_wages_big" IsHidden="true" />
+      <BrushLayer Name="Garrison" Sprite="SPGeneral\MapOverlay\Settlement\icon_garrison_wages_big" IsHidden="true" ExtendLeft="-3" ExtendRight="-3" ExtendTop="-3" ExtendBottom="-3"/>
       <BrushLayer Name="Village" Sprite="SPGeneral\MapOverlay\Settlement\icon_village_big" IsHidden="true" />
     </Layers>
     <Styles>
@@ -1241,5 +1253,12 @@
         <BrushLayer Name="Default" IsHidden="true" />
       </Style>
     </Styles>
+  </Brush>
+  <Brush Name="Clan.Member.Role.Icon">
+    <Layers>
+      <BrushLayer Name="Default" />
+      <BrushLayer Name="first_mate" Sprite="SPGeneral\mariner_icon" />
+      <BrushLayer Name="navigator" Sprite="SPGeneral\mariner_icon" />
+    </Layers>
   </Brush>
 </Brushes>

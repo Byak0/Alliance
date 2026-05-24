@@ -41,7 +41,7 @@ namespace Alliance.SP
 
 		public override void OnGameInitializationFinished(Game game)
 		{
-			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
+			// Load our custom XML (ExtenderCharacter/ExtendedItem)
 			ExtendedXMLLoader.Init();
 
 			SceneList.Initialize();

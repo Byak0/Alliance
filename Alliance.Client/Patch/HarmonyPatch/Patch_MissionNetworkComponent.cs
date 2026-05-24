@@ -154,7 +154,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
 		public static bool Prefix_HandleServerEventCreateMissionObject(GameNetworkMessage baseMessage)
 		{
 			CreateMissionObject createMissionObject = (CreateMissionObject)baseMessage;
-			GameEntity gameEntity = GameEntity.Instantiate(Mission.Current.Scene, createMissionObject.Prefab, createMissionObject.Frame, true, "");
+			GameEntity gameEntity = GameEntity.Instantiate(Mission.Current.Scene, createMissionObject.Prefab, createMissionObject.Frame, true);
 
 			MissionObject rootMissionObject = gameEntity.GetFirstScriptOfType<MissionObject>();
 			if (rootMissionObject == null)

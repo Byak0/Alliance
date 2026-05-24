@@ -98,7 +98,7 @@
 											<Children>
 
 												<!-- Inner panel -->
-												<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="1">
+												<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="1">
 													<ItemTemplate>
 
 														<!-- Troops grouped by type -->
@@ -106,7 +106,7 @@
 														<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy ="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Top" >
 															<Children>
 																<!-- Troops of that type -->
-																<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalBottomToTop">
+																<ListPanel DataSource="{Troops}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" MarginRight="10" MarginTop="20" StackLayout.LayoutMethod="VerticalTopToBottom">
 																	<ItemTemplate>
 
 																		<!-- Troop button -->
@@ -168,9 +168,9 @@
 									<Children>
 										<Widget Id="ClipRectFormations" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" ClipContents="true" >
 											<Children>
-												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalBottomToTop">
+												<NavigatableListPanel Id="InnerPanelFormations" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginLeft="10" MarginRight="10" StackLayout.LayoutMethod="VerticalTopToBottom">
 													<Children>
-														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+														<ListPanel DataSource="{Options}"  WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>

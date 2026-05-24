@@ -116,7 +116,7 @@ namespace Alliance.Common.Core.KeyBinder
 				if (!keyList.Contains(context)) keyList.Add(context);
 			}
 			// Register all contexts
-			HotKeyManager.RegisterInitialContexts(keyList, true);
+			HotKeyManager.RegisterInitialContexts(keyList);
 		}
 	}
 }

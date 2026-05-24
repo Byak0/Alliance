@@ -16,13 +16,13 @@
 						<!--Selected Character Tableau-->
 						<AL_CharacterTableauWidget DataSource="{CurrentSelectedCharacter}" WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedWidth="400" SuggestedHeight="400" BodyProperties="@BodyProperties" IsFemale="@IsFemale" EquipmentCode="@EquipmentCode" CharStringId="@CharStringId" StanceIndex="@StanceIndex" BannerCodeText="@BannerCodeText"  PositionYOffset="-30" ArmorColor1="@ArmorColor1" ArmorColor2="@ArmorColor2" Race="@Race" IsBannerShownInBackground="true"/>
 
-						<ListPanel DataSource="{ArmorsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" PositionYOffset="5" MarginLeft="25" LayoutImp.LayoutMethod="VerticalBottomToTop">
+						<ListPanel DataSource="{ArmorsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" PositionYOffset="5" MarginLeft="25" LayoutImp.LayoutMethod="VerticalTopToBottom">
 							<ItemTemplate>
 								<EquipmentTypeVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="35" HorizontalAlignment="Left" MarginLeft="5" MarginBottom="5" Brush="EquipmentType.Image" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsVisible="@HasItem" Type="@Type" />
 							</ItemTemplate>
 						</ListPanel>
 
-						<ListPanel DataSource="{WeaponsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" PositionYOffset="5"  MarginRight="25" LayoutImp.LayoutMethod="VerticalBottomToTop">
+						<ListPanel DataSource="{WeaponsList}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" PositionYOffset="5"  MarginRight="25" LayoutImp.LayoutMethod="VerticalTopToBottom">
 							<ItemTemplate>
 								<EquipmentTypeVisualBrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="35" SuggestedHeight="35" HorizontalAlignment="Right" MarginRight="5" MarginBottom="5" Brush="EquipmentType.Image" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" IsVisible="@HasItem" Type="@Type" />
 							</ItemTemplate>
@@ -75,7 +75,7 @@
 				</Widget>
 
 				<!--_____Army Composition_______-->
-				<ListPanel DataSource="{CompositionGroup}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="560" LayoutImp.LayoutMethod="VerticalBottomToTop">
+				<ListPanel DataSource="{CompositionGroup}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="560" LayoutImp.LayoutMethod="VerticalTopToBottom">
 					<Children>
 						<CompositionSlider MarginBottom="5" MarginLeft="20" Parameter.SliderImage="General\compass\Infantry_Light" Parameter.CompositionDataSource="{MeleeInfantryComposition}"/>
 						<CompositionSlider MarginBottom="5" MarginLeft="20" Parameter.SliderImage="General\compass\Archer_Light" Parameter.CompositionDataSource="{RangedInfantryComposition}"/>

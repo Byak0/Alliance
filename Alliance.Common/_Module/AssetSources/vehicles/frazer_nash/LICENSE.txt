@@ -1,0 +1,17 @@
+Asset: Frazer Nash Super Sport 1929
+Author: kuarif
+License: CC-BY
+
+Special thanks to kuarif for making and sharing this model.
+
+This asset has been modified for use in the Alliance mod project :
+- Conversion to FBX
+- Optimization
+- Texture/material adjustments
+- Integration into the game pipeline
+
+Original source:
+https://blendswap.com/blend/30188
+
+Author Instagram - arif_bukanarip :
+https://www.instagram.com/p/CbB7oOlvY0N/

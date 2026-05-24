@@ -73,7 +73,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 			}
 			if (isInitialSpawn)
 			{
-				return _spawnZonesByTeam[(int)team.Side].Single((sz) => sz.HasTag("starting"));
+				return _spawnZonesByTeam[(int)team.Side].SingleOrDefault((sz) => sz.HasTag("starting"));
 			}
 			List<GameEntity> list = _spawnZonesByTeam[(int)team.Side].Where((sz) => !sz.HasTag("starting")).ToList();
 			if (!list.Any())

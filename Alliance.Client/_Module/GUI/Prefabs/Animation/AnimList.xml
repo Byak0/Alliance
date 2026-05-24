@@ -11,7 +11,7 @@
               <Children>
                 <Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
                   <Children>
-                    <ListPanel Id="Animations" DataSource="{AnimationsList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="20">                     
+                    <ListPanel Id="Animations" DataSource="{AnimationsList}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="20">                     
                       <ItemTemplate>
                         <ButtonWidget DoNotPassEventsToChildren="true" MarginRight="20" SuggestedWidth="300" SuggestedHeight="50" HorizontalAlignment="Center"  Brush="WideButton.Flat" UpdateChildrenStates="true" GamepadNavigationIndex="1">
                           <Children>

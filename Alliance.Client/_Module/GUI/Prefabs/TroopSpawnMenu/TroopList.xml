@@ -74,7 +74,7 @@
 									<Children>
 
 										<!-- Inner panel -->
-										<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" MarginTop="1">
+										<ListPanel Id="InnerPanel" DataSource="{TroopGroups}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" MarginTop="1">
 											<ItemTemplate>
 
 												<!-- Troops grouped by type -->

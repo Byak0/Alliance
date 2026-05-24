@@ -19,7 +19,7 @@
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center" >
 											<Children>
 
-												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
+												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
 													<Children>
 
 														<!-- Native options -->
@@ -41,7 +41,7 @@
 																</ListPanel>
 															</Children>
 														</PartyHeaderToggleWidget>
-														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalTopToBottom" >
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>
@@ -66,7 +66,7 @@
 																</ListPanel>
 															</Children>
 														</PartyHeaderToggleWidget>
-														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalTopToBottom" >
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>

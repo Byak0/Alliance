@@ -20,7 +20,7 @@
                 <MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="CoverChildren" MinWidth="150" HeightSizePolicy="Fixed" SuggestedHeight="115" Command.Click="ExecuteSelectPerk" IconType="@IconType" IconWidget="Placement\Icon" IsEnabled="@IsSelectable" UpdateChildrenStates="true" Brush="MPClassLoadout.Perks.Button">
                   <Children>
 
-                    <ListPanel Id="Placement" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" UpdateChildrenStates="true" MarginTop="25" MarginBottom="15" MarginLeft="10" MarginRight="10" >
+                    <ListPanel Id="Placement" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" UpdateChildrenStates="true" MarginTop="25" MarginBottom="15" MarginLeft="10" MarginRight="10" >
                       <Children>
                         <BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.PopupIcon" UpdateChildrenStates="true">
                           <Children>

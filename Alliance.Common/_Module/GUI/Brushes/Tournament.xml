@@ -161,11 +161,11 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="CurrentMatchAnimation" Duration="1" Loop="true">
+      <Animation Name="CurrentMatchAnimation" Duration="0.5" Loop="true">
         <AnimationProperty PropertyName="ColorFactor" LayerName="Default">
           <KeyFrame Time="0.0" Value="1" />
-          <KeyFrame Time="0.5" Value="2.5" />
-          <KeyFrame Time="1" Value="1" />
+          <KeyFrame Time="0.25" Value="2.5" />
+          <KeyFrame Time="0.5" Value="1" />
         </AnimationProperty>
       </Animation>
     </Animations>
@@ -189,7 +189,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="Tournament.Flags.Success" TransitionDuration="0.25">
+  <Brush Name="Tournament.Flags.Success" TransitionDuration="0.125">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\banner" Color="#9DD163FF" />
     </Layers>
@@ -212,7 +212,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="Tournament.Flags.Defeat" TransitionDuration="0.25">
+  <Brush Name="Tournament.Flags.Defeat" TransitionDuration="0.125">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\SPScoreboard\banner" Color="#FF5D4BFF" />
     </Layers>
@@ -225,17 +225,17 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="Tournament.Title" TextHorizontalAlignment="Center" TransitionDuration="5.5">
+  <Brush Name="Tournament.Title" TextHorizontalAlignment="Center" TransitionDuration="2.75">
     <Styles>
       <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="40" />
     </Styles>
   </Brush>
-  <Brush Name="Tournament.Winner.Info" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" TransitionDuration="5.5">
+  <Brush Name="Tournament.Winner.Info" TextHorizontalAlignment="Center" TextVerticalAlignment="Center" TransitionDuration="2.75">
     <Styles>
       <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="35" />
     </Styles>
   </Brush>
-  <Brush Name="Tournament.Winner.Name" TextHorizontalAlignment="Center" TransitionDuration="5.5">
+  <Brush Name="Tournament.Winner.Name" TextHorizontalAlignment="Center" TransitionDuration="2.75">
     <Styles>
       <Style Name="Default" FontColor="#FFFFFFFF" TextBlur="0" TextOutlineAmount="0" TextGlowRadius="0" FontSize="45" />
     </Styles>

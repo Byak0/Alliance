@@ -178,8 +178,6 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 		{
 			if (agent == Agent.Main && vehicle is CS_Car)
 			{
-				MissionCameraFadeView mcfv = Mission.Current.GetMissionBehavior<MissionCameraFadeView>();
-				mcfv.BeginFadeOutAndIn(0, 0, 1);
 				Vehicle = vehicle;
 				SetupCamera();
 			}

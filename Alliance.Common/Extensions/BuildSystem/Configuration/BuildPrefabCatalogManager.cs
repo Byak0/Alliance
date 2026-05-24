@@ -163,9 +163,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Configuration
 			return new BuildPrefabPreset
 			{
 				Name = "Default",
-				AllowedPrefabs = _catalog.Prefabs
-					.Select(x => new BuildPrefabReference { Id = x.Id })
-					.ToList()
+				AllowedPrefabs = new List<BuildPrefabReference>()
 			};
 		}
 

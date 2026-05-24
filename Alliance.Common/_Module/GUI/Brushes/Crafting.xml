@@ -432,12 +432,12 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="HighlightAnimation" Duration="2" Loop="true">
+      <Animation Name="HighlightAnimation" Duration="1" Loop="true">
         <AnimationProperty PropertyName="AlphaFactor" LayerName="Default">
           <KeyFrame Time="0.0" Value="0.15" />
-          <KeyFrame Time="0.75" Value="1.25" />
-          <KeyFrame Time="1.25" Value="1.25" />
-          <KeyFrame Time="2" Value="0.15" />
+          <KeyFrame Time="0.375" Value="1.25" />
+          <KeyFrame Time="0.625" Value="1.25" />
+          <KeyFrame Time="1" Value="0.15" />
         </AnimationProperty>
       </Animation>
     </Animations>
@@ -453,18 +453,18 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="DotHighlightAnimation" Duration="2" Loop="true">
+      <Animation Name="DotHighlightAnimation" Duration="1" Loop="true">
         <AnimationProperty PropertyName="AlphaFactor" LayerName="Default">
           <KeyFrame Time="0.0" Value="0.15" />
-          <KeyFrame Time="0.75" Value="1.25" />
-          <KeyFrame Time="1.25" Value="1.25" />
-          <KeyFrame Time="2" Value="0.15" />
+          <KeyFrame Time="0.375" Value="1.25" />
+          <KeyFrame Time="0.625" Value="1.25" />
+          <KeyFrame Time="1" Value="0.15" />
         </AnimationProperty>
       </Animation>
     </Animations>
   </Brush>
 
-  <Brush Name="Crafting.Piece.Card.HavePiece" TransitionDuration="0.070">
+  <Brush Name="Crafting.Piece.Card.HavePiece" TransitionDuration="0.07">
     <Layers>
       <BrushLayer Name="Default" Sprite="Crafting\weapon_piece_card" IsHidden="true" />
       <BrushLayer Name="DefaultFrame" Sprite="Crafting\crafting_card_frame_default" IsHidden="true" />
@@ -507,7 +507,7 @@
     </SoundProperties>
   </Brush>
 
-  <Brush Name="Crafting.Piece.Card.DontHavePiece" TransitionDuration="0.070">
+  <Brush Name="Crafting.Piece.Card.DontHavePiece" TransitionDuration="0.07">
     <Layers>
       <BrushLayer Name="Default" Sprite="Crafting\weapon_piece_card" IsHidden="true" SaturationFactor="-100"/>
       <BrushLayer Name="DefaultFrame" Sprite="Crafting\crafting_card_frame_default" IsHidden="true" SaturationFactor="-100"/>
@@ -623,7 +623,7 @@
     </Styles>
   </Brush>
 
-  <Brush Name="Crafting.Piece.Left.Card.HasPiece" TransitionDuration="0.070">
+  <Brush Name="Crafting.Piece.Left.Card.HasPiece" TransitionDuration="0.07">
     <Layers>
       <BrushLayer Name="Default" Sprite="Crafting\left_card_base_default" IsHidden="true"  ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
       <BrushLayer Name="DefaultFrame" Sprite="Crafting\left_card_frame_default" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18"/>
@@ -659,7 +659,7 @@
     </SoundProperties>
   </Brush>
 
-  <Brush Name="Crafting.Piece.Left.Card.DontHavePiece" TransitionDuration="0.070">
+  <Brush Name="Crafting.Piece.Left.Card.DontHavePiece" TransitionDuration="0.07">
     <Layers>
       <BrushLayer Name="Default" Sprite="Crafting\left_card_base_default" IsHidden="true"  ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
       <BrushLayer Name="DefaultFrame" Sprite="Crafting\left_card_frame_default" IsHidden="true" ExtendBottom="18" ExtendLeft="18" ExtendRight="18" ExtendTop="18" SaturationFactor="-100"/>
@@ -1257,6 +1257,7 @@
       <Style Name="Default" FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="20" />
       <Style Name="Selected" />
       <Style Name="Hovered" />
+      <Style Name="Disabled" FontColor="#CC4747FF"/>
     </Styles>
   </Brush>
   <Brush Name="Refinement.Amount.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
@@ -1265,7 +1266,7 @@
       <Style Name="Selected" />
       <Style Name="Hovered" />
       <Style Name="Pressed" />
-      <Style Name="Disabled"  FontColor="#F9EAD2FF" TextBlur="0" TextGlowColor="#000000FF" TextGlowRadius="0" TextOutlineAmount="0" TextOutlineColor="#000000FF" FontSize="32" TextColorFactor="0.5"/>
+      <Style Name="Disabled" FontColor="#CC4747FF"/>
     </Styles>
   </Brush>
   <Brush Name="Refinement.Direction.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
@@ -1321,7 +1322,7 @@
     </Styles>
   </Brush>
 
-  <Brush Name="Crafting.Order.Card" TransitionDuration="0.1600">
+  <Brush Name="Crafting.Order.Card" TransitionDuration="0.08">
     <Layers>
       <BrushLayer Name="Default" Sprite="order_popup_card_default_9" AlphaFactor="0.75" />
     </Layers>
