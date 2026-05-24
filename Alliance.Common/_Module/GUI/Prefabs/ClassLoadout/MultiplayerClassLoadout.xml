@@ -76,7 +76,7 @@
                   <Children>
                     <Widget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!ItemBackground.Width" SuggestedHeight="!ItemBackground.Height" HorizontalAlignment="Center" Sprite="MPClassLoadout\item_portrait_frame" AlphaFactor="0.6">
                       <Children>
-                        <ImageIdentifierWidget DataSource="{Icon}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="6" MarginRight="6" MarginTop="6" MarginBottom="6" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" IsBig="true" MaterialAlphaFactor="0.8" />
+                        <ImageIdentifierWidget DataSource="{Icon}" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginLeft="6" MarginRight="6" MarginTop="6" MarginBottom="6" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" IsBig="true" MaterialAlphaFactor="0.8" />
                       </Children>
                     </Widget>
                     <TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="62" VerticalAlignment="Top" Brush="MPClassLoadout.ItemText" Text="@Name" />

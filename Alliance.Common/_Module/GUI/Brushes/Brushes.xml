@@ -402,13 +402,13 @@
 
 	<Brush Name="Alliance.BannerBackgroundLeft">
 		<Layers>
-			<BrushLayer Name="Default" Sprite="MPHud\banner_left" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_left" ExtendTop="0" ExtendLeft="4" ExtendRight="4" ExtendBottom="4" OverlayXOffset="4" OverlayYOffset="0" ColorFactor="0.6"/>
 		</Layers>
 	</Brush>
 
 	<Brush Name="Alliance.BannerBackgroundRight">
 		<Layers>
-			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="0" ExtendLeft="4" ExtendRight="4" ExtendBottom="4" OverlayXOffset="4" OverlayYOffset="0" ColorFactor="0.6"/>
 		</Layers>
 	</Brush>
 </Brushes>

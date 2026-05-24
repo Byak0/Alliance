@@ -61,7 +61,7 @@
 												</SliderWidget>
 
 												<!-- Commander Visual -->
-												<ImageIdentifierWidget DoNotAcceptEvents="true" DataSource="{CommanderImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-10" AdditionalArgs="@AdditionalArgs" ImageId="@Id" ImageTypeCode="@ImageTypeCode" />
+												<ImageIdentifierWidget DoNotAcceptEvents="true" DataSource="{CommanderImageIdentifier}" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="110" SuggestedHeight="70" HorizontalAlignment="Center" VerticalAlignment="Bottom" PositionYOffset="-10" AdditionalArgs="@AdditionalArgs" ImageId="@Id" TextureProviderName="@TextureProviderName" />
 
 											</Children>
 										</OrderTroopItemBrushWidget>
