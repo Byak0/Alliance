@@ -10,6 +10,8 @@ namespace Alliance.Server.Extensions.AdminMenu
 		{
 			foreach (NetworkCommunicator peer in PlayerStore.Instance.OnlineAdmins)
 			{
+				if (peer == null || !peer.IsConnectionActive) continue;
+
 				GameNetwork.BeginModuleEventAsServer(peer);
 				GameNetwork.WriteMessage(new AdminServerLog(message, color));
 				GameNetwork.EndModuleEventAsServer();
