@@ -2,7 +2,7 @@
   <Configurations>
     <BuildType Name="Debug" />
     <BuildType Name="Release" />
-    <Platform Name="AnyCPU" Default="true" />
+    <Platform Name="AnyCPU" />
   </Configurations>
   
   <Project Path="Alliance.Common/Alliance.Common.csproj" />
