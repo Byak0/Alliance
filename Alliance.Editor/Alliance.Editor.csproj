@@ -58,7 +58,8 @@
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module\SceneEditData&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\SceneEditData\&quot; /E /C /I /Y /F" IgnoreExitCode="true" />
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module\SceneObj&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\SceneObj\&quot; /E /C /I /Y /F" IgnoreExitCode="true" />
 		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module\Spawn_Presets&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\Spawn_Presets\&quot; /E /C /I /Y /F" IgnoreExitCode="true" />
-
+		<Exec Command="xcopy &quot;$(ProjectDir)\..\Alliance.Common\_Module\RuntimeDataCache&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\RuntimeDataCache\&quot; /E /C /I /Y /F" IgnoreExitCode="true" />
+		
 		<!-- Copy Editor-specific assets -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Module&quot; &quot;$(GameFolder)\Modules\$(ModuleName)&quot; /E /C /I /Y /F" />
 
