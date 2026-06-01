@@ -116,7 +116,7 @@ namespace Alliance.Server.GameModes.BattleRoyale.Behaviors
 					CommonAdminMsg.SendNotificationToAll(loseMessage);
 					Log(loseMessage);
 				}
-				GameModeStarter.Instance.StartLobby("Lobby", MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+				GameModeStarter.Instance.StartLobby(MultiplayerOptions.OptionType.Map.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
 				_gameEnded = true;
 			}
 		}
