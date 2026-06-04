@@ -6,6 +6,7 @@ using Alliance.Common.Extensions.AnimationPlayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Alliance.Common.Core.Configuration.Models;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -236,6 +237,10 @@ namespace Alliance.Client.Extensions.AnimationPlayer.Views
 
 		private void TickInputs()
 		{
+			if (!Config.Instance.EnableAnimationMenu)
+			{
+				return;
+			}
 			if (IsMenuOpen)
 			{
 				if (Input.IsKeyPressed(_menuKey.ControllerKey.InputKey) || _layer.Input.IsKeyPressed(InputKey.RightMouseButton) || _layer.Input.IsHotKeyReleased("Exit"))
