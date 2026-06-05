@@ -16,6 +16,9 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(true, "Authorize Poll", "Authorize everyone to use the GameMode menu when in Lobby.")]
 		public bool AuthorizePoll = false;
 
+		[ConfigProperty(true, "Enable animation menu", "Allow players to use the animation menu.")]
+		public bool EnableAnimationMenu = true;
+
 		[ConfigProperty(true, "Bot difficulty", "Choose how good the bots are in combat. Set to PlayerChoice to allow custom difficulty when recruiting.", dataType: DataTypes.Difficulty)]
 		public string BotDifficulty = nameof(Difficulty.Normal);
 		[ConfigProperty(true, "Show difficulty slider", "Show the difficulty slider in the troop menu. If false, the difficulty will be set to BotDifficulty value.")]
