@@ -32,6 +32,7 @@
 		<value name="scene_scale" value="1.000"/>
 		<value name="skybox_height" value="7500.000"/>
 		<value name="horizon_distance" value="7500.000"/>
+		<value name="horizon_height" value="0.000"/>
 		<value name="fog_falloff_offset" value="100.000"/>
 		<value name="fog_falloff_minfog" value="0.000"/>
 		<value name="fog_start_distance" value="1.000"/>
