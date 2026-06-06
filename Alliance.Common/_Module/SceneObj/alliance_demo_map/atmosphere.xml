@@ -1,0 +1,106 @@
+<atmosphere>
+	<values>
+		<value name="name" value="scene_atmosphere"/>
+		<value name="cloud_amount" value="0.100"/>
+		<value name="middle_gray" value="0.133"/>
+		<value name="temperature" value="40.000"/>
+		<value name="humidity" value="0.000"/>
+		<value name="color_grade_name" value="cg_50c_5b"/>
+		<value name="time_of_day" value="6.000"/>
+		<value name="fall_density" value="0.000"/>
+		<value name="snow_density" value="0.000"/>
+		<value name="is_indoor" value="true"/>
+		<value name="global_envmap_multiplier" value="1.000"/>
+		<value name="global_envmap_color_factor" value="0.885, 0.923, 1.000"/>
+		<value name="prt_multiplier" value="1.000"/>
+		<value name="do_not_render_envmap" value="false"/>
+		<value name="skybox_background_texture_name" value="semi_cloudy_2"/>
+		<value name="skybox_sun_texture_name" value="sun_core2"/>
+		<value name="lens_flare_dirt_texture_name" value="lens_dirt"/>
+		<value name="lens_flare_star_texture_name" value="lens_star"/>
+		<value name="skybox_panaroma_type" value="0"/>
+		<value name="season" value="summer"/>
+	</values>
+	<global_ambient fog_ambient_color="0.154, 0.767, 0.023"/>
+	<fog>
+		<value name="fog_density" value="5.000"/>
+		<value name="fog_falloff" value="1.000"/>
+		<value name="fog_color" value="0.364, 0.476, 1.000"/>
+		<value name="cloud_shadow_color" value="0.250, 0.250, 0.400"/>
+		<value name="mie_scatter_particle_size" value="5.619"/>
+		<value name="skybox_distance" value="6000.000"/>
+		<value name="scene_scale" value="1.000"/>
+		<value name="skybox_height" value="7500.000"/>
+		<value name="horizon_distance" value="7500.000"/>
+		<value name="horizon_height" value="0.000"/>
+		<value name="fog_falloff_offset" value="100.000"/>
+		<value name="fog_falloff_minfog" value="0.000"/>
+		<value name="fog_start_distance" value="1.000"/>
+		<value name="fog_scatter" value="0.200"/>
+		<value name="scatter_strength" value="5.987"/>
+	</fog>
+	<cloud_shadow>
+		<value name="cloud_shadow_amount" value="0.000"/>
+		<value name="cloud_shadow_contrast" value="3.000"/>
+		<value name="cloud_shadow_begin_height" value="0.000"/>
+		<value name="cloud_shadow_end_height" value="1000.000"/>
+		<value name="cloud_shadow_scale" value="0.200"/>
+		<value name="cloud_shadow_speed" value="0.200"/>
+	</cloud_shadow>
+	<sun>
+		<value name="skybox_rotation" value="0.000"/>
+		<value name="sun_altitude" value="24.000"/>
+		<value name="sun_angle" value="20.000"/>
+		<value name="shadow_opacity" value="1.000"/>
+		<value name="minimum_ambient" value="0.000"/>
+		<value name="sun_rotation" value="180.000"/>
+		<value name="sun_intesity" value="1500.000"/>
+		<value name="sky_brightness" value="120.165"/>
+		<value name="cloud_brightness" value="0.700"/>
+		<value name="sun_size" value="0.124"/>
+		<value name="sky_noise_amount" value="0.344"/>
+		<value name="sunshafts_strength" value="1.000"/>
+		<value name="sun_color" value="1.000, 0.582, 0.313"/>
+		<value name="rayleigh_constant" value="0.390"/>
+	</sun>
+	<postfx>
+		<value name="brightpass_threshold" value="0.500"/>
+		<value name="min_exposure" value="-10.030"/>
+		<value name="max_exposure" value="-2.000"/>
+		<value name="target_exposure" value="-7.984"/>
+		<value name="bloom_strength" value="0.900"/>
+		<value name="bloom_amount" value="0.386"/>
+		<value name="grain_amount" value="0.000"/>
+		<value name="anti_banding_noise_amount_" value="0.321"/>
+		<value name="lens_flare_amount" value="3.000"/>
+		<value name="lens_flare_threshold" value="0.750"/>
+		<value name="lens_flare_strength" value="1.000"/>
+		<value name="lens_flare_dirt_weight" value="0.750"/>
+		<value name="lens_flare_diffraction_weight" value="0.850"/>
+		<value name="lens_flare_halo_weight" value="0.650"/>
+		<value name="lens_flare_ghost_weight" value="1.750"/>
+		<value name="lens_flare_halo_width" value="0.550"/>
+		<value name="lens_flare_ghost_samples" value="8"/>
+		<value name="lens_flare_aberration_offset" value="1.000"/>
+		<value name="lens_flare_blur_size" value="16"/>
+		<value name="lens_flare_blur_sigma" value="8.000"/>
+		<value name="streak_amount" value="0.500"/>
+		<value name="streak_threshold" value="0.700"/>
+		<value name="streak_strength" value="1.000"/>
+		<value name="streak_stretch" value="0.750"/>
+		<value name="streak_intensity" value="9.000"/>
+		<value name="streak_tint" value="0.550, 0.550, 1.000"/>
+		<value name="vignette_inner_radius" value="0.100"/>
+		<value name="vignette_outer_radius" value="1.000"/>
+		<value name="vignette_opacity" value="1.000"/>
+		<value name="aberration_offset" value="0.100"/>
+		<value name="aberration_size" value="0.550"/>
+		<value name="aberration_smooth" value="0.260"/>
+		<value name="lens_distortion" value="0.490"/>
+		<value name="burnout_threshold" value="3.000"/>
+		<value name="contrast_enhancement" value="4.000"/>
+	</postfx>
+	<cubemap_texture env_map_name="default_cubemap"/>
+	<flags/>
+</atmosphere>
+

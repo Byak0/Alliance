@@ -18,13 +18,7 @@ namespace Alliance.Common.Core.Utils
 			BannerBearer
 		}
 
-		private static readonly int _trollRaceId = GetRaceIdSafe("troll");
-		private static readonly int _ologRaceId = GetRaceIdSafe("olog");
-		private static readonly int _olog2RaceId = GetRaceIdSafe("olog2");
-		private static readonly int _entRaceId = GetRaceIdSafe("ent");
-		private static readonly int _dwarfRaceId = GetRaceIdSafe("dwarf");
-
-		private static int GetRaceIdSafe(string raceId)
+		public static int GetRaceIdSafe(string raceId)
 		{
 			try
 			{
@@ -41,41 +35,6 @@ namespace Alliance.Common.Core.Utils
 		public static void DealDamage(this Agent agent, Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{
 			CoreUtils.TakeDamage(victim, agent, damage, magnitude, knockDown);
-		}
-
-		public static bool IsTroll(this Agent agent)
-		{
-			return agent.Character?.IsTroll() ?? false;
-		}
-
-		public static bool IsTroll(this BasicCharacterObject character)
-		{
-			return character.Race == _trollRaceId || character.Race == _ologRaceId || character.Race == _olog2RaceId;
-		}
-
-		public static bool IsEnt(this Agent agent)
-		{
-			return agent.Character?.IsEnt() ?? false;
-		}
-
-		public static bool IsEnt(this BasicCharacterObject character)
-		{
-			return character.Race == _entRaceId;
-		}
-
-		public static bool IsDwarf(this Agent agent)
-		{
-			return agent.Character?.IsDwarf() ?? false;
-		}
-
-		public static bool IsDwarf(this BasicCharacterObject character)
-		{
-			return character.Race == _dwarfRaceId;
-		}
-
-		public static bool IsWarg(this Agent agent)
-		{
-			return agent.Monster.StringId == "warg";
 		}
 
 		public static bool IsHorse(this Agent agent)

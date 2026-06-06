@@ -3,7 +3,6 @@ using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Utilities;
 using System;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using static Alliance.Common.Utilities.Logger;
 

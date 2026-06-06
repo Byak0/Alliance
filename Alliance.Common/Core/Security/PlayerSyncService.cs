@@ -2,12 +2,10 @@
 using Alliance.Common.Core.Security.Models;
 using Alliance.Common.Core.Security.NetworkMessages.FromServer;
 using Alliance.Common.Core.Utils;
-using System;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.PlayerServices;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Core.Security
 {

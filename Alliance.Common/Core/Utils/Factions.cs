@@ -1,8 +1,6 @@
-﻿using Alliance.Common.Core.Security.Extension;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Common.Core.Utils
@@ -41,11 +39,6 @@ namespace Alliance.Common.Core.Utils
 			AvailableCultures = (from x in MBObjectManager.Instance.GetObjectTypeList<BasicCultureObject>().ToArray()
 								 where x.IsMainCulture
 								 select x).ToDictionary(x => x.StringId);
-			// Remove monsters from available cultures for everyone except devs
-			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsSudo()))
-			{
-				AvailableCultures.Remove("monsters");
-			}
 			OrderedCultureKeys = AvailableCultures.Keys.ToList();
 		}
 

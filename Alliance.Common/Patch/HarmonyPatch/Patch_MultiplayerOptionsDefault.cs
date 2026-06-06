@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
-using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.Patch.HarmonyPatch
 {

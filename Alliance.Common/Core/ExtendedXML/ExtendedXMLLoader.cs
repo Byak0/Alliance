@@ -1,9 +1,11 @@
 ﻿using Alliance.Common.Core.ExtendedXML.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.ObjectSystem;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Core.ExtendedXML
 {
@@ -18,22 +20,11 @@ namespace Alliance.Common.Core.ExtendedXML
 		public static void Init()
 		{
 			// Manually add our custom XSD to the list so the game can look them up when loading XML
-			XmlResource.ReadXsdFileAndExtractInformation(ModuleHelper.GetXsdPathForModules(SubModule.CurrentModuleName, "CharactersExtended"));
-			XmlResource.ReadXsdFileAndExtractInformation(ModuleHelper.GetXsdPathForModules(SubModule.CurrentModuleName, "ItemsExtended"));
+			RegisterNewXMLTypeWithXSD<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, "CharactersExtended", SubModule.CurrentModuleName);
+			RegisterNewXMLTypeWithXSD<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, "ItemsExtended", SubModule.CurrentModuleName);
 
-			MBObjectManager.Instance.RegisterType<ExtendedCharacter>("CharacterExtended", "CharactersExtended", 2001, true, false);
-			if (XmlResource.XmlInformationList.Exists(xmlInfo => xmlInfo.Id == "CharactersExtended"))
-			{
-				XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("CharactersExtended", true);
-				MBObjectManager.Instance.LoadXml(xmlDocument);
-			}	
-
-			MBObjectManager.Instance.RegisterType<ExtendedItem>("ItemExtended", "ItemsExtended", 2002, true, false);
-			if (XmlResource.XmlInformationList.Exists(xmlInfo => xmlInfo.Id == "ItemsExtended"))
-			{
-				XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged("ItemsExtended", true);
-				MBObjectManager.Instance.LoadXml(xmlDocument);
-			}
+			LoadXML("CharactersExtended");
+			LoadXML("ItemsExtended");
 		}
 
 		// Test to auto generate XML
@@ -64,6 +55,31 @@ namespace Alliance.Common.Core.ExtendedXML
 			xmlDoc.AppendChild(CharactersExtended);
 
 			xmlDoc.Save(moduleFullPath + "/ModuleData/CharactersExtended.xml");
+		}
+
+		public static void RegisterNewXMLTypeWithXSD<T>(string classPrefix, string classListPrefix, uint typeId, string xsdFileName, string moduleName) where T : MBObjectBase
+		{
+			string xsdFilePath = ModuleHelper.GetXsdPathForModules(moduleName, xsdFileName);
+			if (!File.Exists(xsdFilePath))
+			{
+				Log("XSD file not found: " + xsdFilePath, LogLevel.Error);
+				return;
+			}
+			// Read the XSD file and store extracted information
+			XmlResource.ReadXsdFileAndExtractInformation(xsdFilePath);
+			// Duplicate extracted information under default path (used when loading from other modules)
+			XmlResource.XsdElementDictionary[ModuleHelper.GetXsdPath(xsdFileName)] = XmlResource.XsdElementDictionary[xsdFilePath];
+			// Register the new type with MBObjectManager
+			MBObjectManager.Instance.RegisterType<T>(classPrefix, classListPrefix, typeId, true, false);
+		}
+
+		public static void LoadXML(string xmlType)
+		{
+			if (XmlResource.XmlInformationList.Exists(xmlInfo => xmlInfo.Id == xmlType))
+			{
+				XmlDocument xmlDocument = MBObjectManager.GetMergedXmlForManaged(xmlType, true);
+				MBObjectManager.Instance.LoadXml(xmlDocument);
+			}
 		}
 	}
 }

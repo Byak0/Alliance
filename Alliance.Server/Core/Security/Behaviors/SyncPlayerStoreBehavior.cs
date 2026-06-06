@@ -31,6 +31,11 @@ namespace Alliance.Server.Core.Security.Behaviors
 			}
 		}
 
+		protected override void HandlePlayerDisconnect(NetworkCommunicator networkPeer)
+		{
+			PlayerStore.Instance.UnloadPlayerData(networkPeer);
+		}
+
 		public void SendPlayerStoreToPeer(NetworkCommunicator networkPeer)
 		{
 			try

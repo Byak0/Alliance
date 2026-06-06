@@ -2,7 +2,7 @@
 <Module>
   <Id value="Alliance.SP" />
   <Name value="Alliance.SP" />
-  <Version value="v0.5.3.0" />
+  <Version value="v0.5.4.0" />
   <ModuleCategory value="Singleplayer" />
   <DependedModules>
     <DependedModule Id="Native" />

@@ -1,12 +1,10 @@
 ﻿using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Common.Extensions.TroopSpawner.Models;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
 using System.Collections.Generic;
-using System;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {

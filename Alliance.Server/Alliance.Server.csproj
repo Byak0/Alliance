@@ -65,6 +65,9 @@
 		
 		<!-- Copy Win launcher (.bat file) to Server/bin/Win64_Shipping_Server folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*.bat&quot; &quot;$(GameFolder)\bin\Win64_Shipping_Server\&quot; /E /C /I /Y /F" />
+
+		<!-- Copy for Linux version -->
+		<Exec Command="xcopy &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_Server&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Linux64_Shipping_Server\&quot; /E /C /I /Y /F" />
 		
 		<!-- Copy config (.txt file) to Server/Modules/Native folder -->
 		<Exec Command="xcopy &quot;$(ProjectDir)\_Launcher\*config*.txt&quot; &quot;$(GameFolder)\Modules\Native\&quot; /E /C /I /Y /F" />
