@@ -1,6 +1,4 @@
-﻿using Alliance.Common.Core.Utils;
-using Alliance.Common.Extensions.AdvancedCombat.Utilities;
-using Alliance.Common.Extensions.TroopSpawner.Models;
+﻿using Alliance.Common.Extensions.TroopSpawner.Models;
 using HarmonyLib;
 using System;
 using TaleWorlds.MountAndBlade;

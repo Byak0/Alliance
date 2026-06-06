@@ -8,7 +8,6 @@ using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.ExNativeUI.SpectatorView.Views
 {

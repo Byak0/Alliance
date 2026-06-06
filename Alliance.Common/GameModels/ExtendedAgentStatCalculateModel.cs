@@ -3,7 +3,6 @@ using Alliance.Common.Extensions.FormationEnforcer.Component;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModels
 {
