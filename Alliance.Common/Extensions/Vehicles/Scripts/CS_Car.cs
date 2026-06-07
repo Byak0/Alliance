@@ -5,6 +5,7 @@ using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
+using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using MathF = TaleWorlds.Library.MathF;
