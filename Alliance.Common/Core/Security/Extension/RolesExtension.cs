@@ -20,7 +20,9 @@ namespace Alliance.Common.Core.Security.Extension
 		{
 			Team team = player.GetComponent<MissionPeer>()?.Team;
 			bool validTeam = team == Mission.Current.AttackerTeam || team == Mission.Current.DefenderTeam;
-			return validTeam && MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC";
+			bool isCvC = MultiplayerOptions.OptionType.GameType.GetStrValue() == "CvC";
+			bool isPvCCommanderSide = MultiplayerOptions.OptionType.GameType.GetStrValue() == "PvC" && Config.Instance.CommanderSide == team.Side.ToString();
+			return validTeam && (isCvC || isPvCCommanderSide);
 		}
 
 		public static bool IsAdmin(this NetworkCommunicator player) => PlayerStore.Instance.OnlineAdmins.Contains(player);
