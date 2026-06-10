@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
