@@ -1037,7 +1037,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					// Prevent capturing when in rambo
 					FormationComponent formationComponent = lastFoundAgent?.MissionPeer?.GetComponent<FormationComponent>();
 					bool agentIsAuthorizedToCap = !(formationComponent != null && formationComponent.State == FormationState.Rambo);
-					if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap)
+					if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap && lastFoundAgent.Team.Side != BattleSideEnum.None)
 					{
 						_agentCountsOnSide[(int)lastFoundAgent.Team.Side]++;
 						float num2 = lastFoundAgent.Position.DistanceSquared(allCapturePoint.Position);
