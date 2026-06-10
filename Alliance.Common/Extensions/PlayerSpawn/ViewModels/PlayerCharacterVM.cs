@@ -341,7 +341,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void Advance()
 		{
-			Log($"{AvailableCharacter.Name} is advancing", LogLevel.Debug);
 			if (_characterViewModel == null || _advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h_left_stance");
 			_characterViewModel.CameraZoom = -1.2f;
@@ -355,7 +354,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void FallBack()
 		{
-			Log($"{AvailableCharacter.Name} is fallback", LogLevel.Debug);
 			if (_characterViewModel == null || !_advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_backward_1h");
 			_characterViewModel.CameraZoom = 1.2f;
@@ -369,14 +367,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void Cheer()
 		{
-			Log($"{AvailableCharacter.Name} is cheering", LogLevel.Debug);
 			if (_characterViewModel == null) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_cheer_1");
 		}
 
 		public void Idle()
 		{
-			Log($"{AvailableCharacter.Name} is idle", LogLevel.Debug);
 			if (CharacterViewModel == null) return;
 			CharacterViewModel.IdleAction = "act_walk_idle_1h_with_h_shld_left_stance";
 			CharacterViewModel.CameraZoom = 0f;
