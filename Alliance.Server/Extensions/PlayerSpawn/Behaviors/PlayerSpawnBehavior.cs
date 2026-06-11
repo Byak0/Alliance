@@ -57,7 +57,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 
 			// When a new player connects, send the whole player spawn menu ("static" data)
 			PlayerSpawnMenuMsg.SendPlayerSpawnMenuToPeer(networkPeer);
-			PlayerSpawnMenuMsg.SendElectionStatusToPeer(PlayerSpawnMenu.Instance.ElectionInProgress, PlayerSpawnMenu.Instance.TimeBeforeOfficerElection, networkPeer);
+			PlayerSpawnMenuMsg.SendElectionStatusToPeer(PlayerSpawnMenu.Instance.ElectionInProgress, (int)PlayerSpawnMenu.Instance.TimeBeforeOfficerElection, networkPeer);
 
 			// Then send all the current character usages / officer candidates ("dynamic" data)
 			foreach (PlayerTeam team in PlayerSpawnMenu.Instance.Teams)
@@ -171,7 +171,7 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 				return;
 			}
 			PlayerSpawnMenu.Instance.StartOfficerElection(duration);
-			PlayerSpawnMenuMsg.SendElectionStatusToAll(true, duration);
+			PlayerSpawnMenuMsg.SendElectionStatusToAll(true, (int)duration);
 			Log($"Alliance - PlayerSpawnMenu - Started election countdown of {duration}s. Officers will be elected afterward.", LogLevel.Information);
 		}
 
