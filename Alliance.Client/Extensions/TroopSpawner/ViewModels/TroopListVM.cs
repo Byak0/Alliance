@@ -24,7 +24,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 		private bool _showTroops = true;
 		private bool _showHeroes;
 		private bool _showBannerBearers;
-		private string _cultureSprite;
+		private string _cultureId;
 		private string _cultureName;
 		private MBBindingList<TroopGroupVM> _troopGroups;
 
@@ -114,18 +114,18 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 		}
 
 		[DataSourceProperty]
-		public string CultureSprite
+		public string CultureId
 		{
 			get
 			{
-				return _cultureSprite;
+				return _cultureId;
 			}
 			set
 			{
-				if (_cultureSprite != value)
+				if (_cultureId != value)
 				{
-					_cultureSprite = value;
-					OnPropertyChangedWithValue(value, "CultureSprite");
+					_cultureId = value;
+					OnPropertyChangedWithValue(value, "CultureId");
 				}
 			}
 		}
@@ -221,7 +221,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			CultureName = culture.Name.ToString();
 			CultureBackgroundColor = Color.FromUint(culture.BackgroundColor1);
 			CultureForegroundColor = Color.FromUint(culture.ForegroundColor1);
-			CultureSprite = "StdAssets\\FactionIcons\\LargeIcons\\" + culture.StringId;
+			CultureId = culture.StringId;
 
 			RefreshTroopGroups(culture);
 		}
