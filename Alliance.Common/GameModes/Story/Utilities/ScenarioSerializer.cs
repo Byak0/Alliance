@@ -154,6 +154,11 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// </summary>
 		public static ConditionalActionStruct DeserializeConditionalActionStruct(string serializedConditionalAction)
 		{
+			if (string.IsNullOrEmpty(serializedConditionalAction))
+			{
+				return new ConditionalActionStruct();
+			}
+
 			try
 			{
 				string xmlString = DecompressString(serializedConditionalAction);

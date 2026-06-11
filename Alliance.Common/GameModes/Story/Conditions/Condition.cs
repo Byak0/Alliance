@@ -1,4 +1,6 @@
-﻿using TaleWorlds.Core;
+﻿using Alliance.Common.GameModes.Story.Models;
+using System.Collections.Generic;
+using TaleWorlds.Core;
 using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Conditions
@@ -35,7 +37,37 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		}
 
 		public abstract bool Evaluate(ScenarioManager context);
-		public virtual void Register(WeakGameEntity entity) { }
+
+		public virtual void Register(WeakGameEntity entity)
+		{
+			RegisterZones(entity);
+		}
+
+		protected void RegisterZones(WeakGameEntity entity)
+		{
+			var properties = GetType().GetFields();
+
+			foreach (var property in properties)
+			{
+				if (property.FieldType == typeof(SerializableZone))
+				{
+					var zone = property.GetValue(this) as SerializableZone;
+					zone?.Register(entity);
+				}
+				else if (typeof(IEnumerable<SerializableZone>).IsAssignableFrom(property.FieldType))
+				{
+					var zones = property.GetValue(this) as IEnumerable<SerializableZone>;
+					if (zones != null)
+					{
+						foreach (var zone in zones)
+						{
+							zone.Register(entity);
+						}
+					}
+				}
+			}
+		}
+
 		public virtual void Unregister() { }
 	}
 }
