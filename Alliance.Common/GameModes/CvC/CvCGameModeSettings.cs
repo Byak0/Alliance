@@ -43,9 +43,6 @@ namespace Alliance.Common.GameModes.CvC
 			ModOptions.UseTroopCost = true;
 			ModOptions.GoldMultiplier = 0f;
 			ModOptions.StartingGold = 5000;
-			ModOptions.GoldPerKill = 0;
-			ModOptions.GoldPerAssist = 0;
-			ModOptions.GoldPerAllyDead = 0;
 			ModOptions.AllowSpawnInRound = false;
 			ModOptions.ShowFlagMarkers = true;
 			ModOptions.ShowScore = true;

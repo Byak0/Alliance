@@ -1,4 +1,5 @@
-﻿using Alliance.Client.Extensions.AdminMenu.ViewModels.Build;
+﻿using Alliance.Client.Extensions.AdminMenu.Handlers;
+using Alliance.Client.Extensions.AdminMenu.ViewModels.Build;
 using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security;
@@ -18,7 +19,6 @@ using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.PlayerServices;
 using static Alliance.Common.Utilities.Logger;
-using Alliance.Client.Extensions.AdminMenu.Handlers;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Client.Extensions.AdminMenu.ViewModels
@@ -56,6 +56,7 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		private string _banReason = "";
 		private BuildTabVM _buildTab;
 		private bool _showBuildTab;
+		private MBBindingList<OptionCategoryVM> _modOptionCategories;
 
 		public AdminVM()
 		{
@@ -297,6 +298,20 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 				{
 					_modOptions = value;
 					OnPropertyChangedWithValue(value, nameof(ModOptions));
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public MBBindingList<OptionCategoryVM> ModOptionCategories
+		{
+			get => _modOptionCategories;
+			set
+			{
+				if (_modOptionCategories != value)
+				{
+					_modOptionCategories = value;
+					OnPropertyChangedWithValue(value, nameof(ModOptionCategories));
 				}
 			}
 		}
@@ -1001,8 +1016,25 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 
 		private void RefreshModOptions()
 		{
-			ModOptions = new MBBindingList<OptionVM>();
 			_newModOptions = ConfigManager.Instance.GetModOptionsCopy();
+
+			RefreshModOptionsUI();
+		}
+
+		private void RefreshModOptionsUI()
+		{
+			// Store expanded states
+			Dictionary<string, bool> expandedStates = new Dictionary<string, bool>();
+			if (ModOptionCategories != null)
+			{
+				foreach (var category in ModOptionCategories)
+				{
+					expandedStates[category.Name] = category.IsExpanded;
+				}
+			}
+
+			ModOptionCategories = new MBBindingList<OptionCategoryVM>();
+			Dictionary<string, OptionCategoryVM> categories = new Dictionary<string, OptionCategoryVM>();
 
 			List<string> availableOptions = typeof(Config)
 											.GetFields(BindingFlags.Public | BindingFlags.Instance)
@@ -1012,63 +1044,98 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 			foreach (var field in ConfigManager.Instance.ConfigFields.Where(field => availableOptions.Contains(field.Value.Name)))
 			{
 				FieldInfo fieldInfo = field.Value;
-				object fieldValue = fieldInfo.GetValue(_newModOptions);
 				ConfigPropertyAttribute configPropertyAttribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
 
-				if (fieldInfo.FieldType == typeof(bool))
+				// Check if dependency is satisfied
+				if (!configPropertyAttribute.IsDependencySatisfied(_newModOptions))
 				{
-					ModOptions.Add(
-						new BoolOptionVM(
-							new TextObject(configPropertyAttribute.Label),
-							new TextObject(configPropertyAttribute.Tooltip),
-							() => (bool)fieldInfo.GetValue(_newModOptions),
-							newValue => fieldInfo.SetValue(_newModOptions, newValue))
-						);
+					continue;
 				}
-				else if (fieldInfo.FieldType == typeof(int))
+
+				// Get or create category
+				string categoryName = configPropertyAttribute.Category ?? "General";
+				if (!categories.ContainsKey(categoryName))
 				{
-					ModOptions.Add(
-						new NumericOptionVM(
-							new TextObject(configPropertyAttribute.Label),
-							new TextObject(configPropertyAttribute.Tooltip),
-							() => (int)fieldInfo.GetValue(_newModOptions),
-							newValue => fieldInfo.SetValue(_newModOptions, (int)newValue),
-							configPropertyAttribute.MinValue,
-							configPropertyAttribute.MaxValue,
-							true, true)
-						);
+					// Restore expanded state
+					bool isExpanded = expandedStates.ContainsKey(categoryName) 
+						? expandedStates[categoryName] 
+						: (categoryName == "General");
+					
+					categories[categoryName] = new OptionCategoryVM(categoryName, isExpanded);
 				}
-				else if (fieldInfo.FieldType == typeof(float))
+
+				// Create option VM
+				OptionVM optionVM = CreateOptionVM(fieldInfo, configPropertyAttribute);
+				if (optionVM != null)
 				{
-					ModOptions.Add(
-						new NumericOptionVM(
-							new TextObject(configPropertyAttribute.Label),
-							new TextObject(configPropertyAttribute.Tooltip),
-							() => (float)fieldInfo.GetValue(_newModOptions),
-							newValue => fieldInfo.SetValue(_newModOptions, newValue),
-							configPropertyAttribute.MinValue,
-							configPropertyAttribute.MaxValue,
-							false, true)
-						);
-				}
-				// TODO : add an option for string ? (other than enums)
-				else if (fieldInfo.FieldType == typeof(string) && configPropertyAttribute.DataType != AllianceData.DataTypes.None)
-				{
-					List<SelectionItem> selectionItems = GetSelectionItemsFromValues(configPropertyAttribute.PossibleValues.ToList());
-					ModOptions.Add(
-						new SelectionOptionVM(
-							new TextObject(configPropertyAttribute.Label),
-							new TextObject(configPropertyAttribute.Tooltip),
-							new SelectionOptionData(
-								() => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(_newModOptions)),
-								newValue => fieldInfo.SetValue(_newModOptions, selectionItems.ElementAtOrDefault(newValue).Data),
-								2,
-								selectionItems),
-							false)
-						);
+					categories[categoryName].Options.Add(optionVM);
 				}
 			}
+
+			// Add categories to list
+			foreach (var category in categories.Values)
+			{
+				ModOptionCategories.Add(category);
+			}
 		}
+
+		private OptionVM CreateOptionVM(FieldInfo fieldInfo, ConfigPropertyAttribute configPropertyAttribute)
+		{
+			if (fieldInfo.FieldType == typeof(bool))
+			{
+				return new BoolOptionVM(
+					new TextObject(configPropertyAttribute.Label),
+					new TextObject(configPropertyAttribute.Tooltip),
+					() => (bool)fieldInfo.GetValue(_newModOptions),
+					newValue =>
+					{
+						fieldInfo.SetValue(_newModOptions, newValue);
+						if (ConfigPropertyAttribute.HasDependents(fieldInfo.Name, _newModOptions))
+						{
+							RefreshModOptionsUI();
+						}
+					});
+			}
+			else if (fieldInfo.FieldType == typeof(int))
+			{
+				return new NumericOptionVM(
+					new TextObject(configPropertyAttribute.Label),
+					new TextObject(configPropertyAttribute.Tooltip),
+					() => (int)fieldInfo.GetValue(_newModOptions),
+					newValue => fieldInfo.SetValue(_newModOptions, (int)newValue),
+					configPropertyAttribute.MinValue,
+					configPropertyAttribute.MaxValue,
+					true, true);
+			}
+			else if (fieldInfo.FieldType == typeof(float))
+			{
+				return new NumericOptionVM(
+					new TextObject(configPropertyAttribute.Label),
+					new TextObject(configPropertyAttribute.Tooltip),
+					() => (float)fieldInfo.GetValue(_newModOptions),
+					newValue => fieldInfo.SetValue(_newModOptions, newValue),
+					configPropertyAttribute.MinValue,
+					configPropertyAttribute.MaxValue,
+					false, true);
+			}
+			// TODO : add an option for string ? (other than enums)
+			else if (fieldInfo.FieldType == typeof(string) && configPropertyAttribute.DataType != AllianceData.DataTypes.None)
+			{
+				List<SelectionItem> selectionItems = GetSelectionItemsFromValues(configPropertyAttribute.PossibleValues.ToList());
+				return new SelectionOptionVM(
+					new TextObject(configPropertyAttribute.Label),
+					new TextObject(configPropertyAttribute.Tooltip),
+					new SelectionOptionData(
+						() => selectionItems.FindIndex(item => item.Data == (string)fieldInfo.GetValue(_newModOptions)),
+						newValue => fieldInfo.SetValue(_newModOptions, selectionItems.ElementAtOrDefault(newValue).Data),
+						2,
+						selectionItems),
+					false);
+			}
+
+			return null;
+		}
+
 
 		private List<SelectionItem> GetSelectionItemsFromValues(List<string> values)
 		{
