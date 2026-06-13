@@ -101,7 +101,7 @@ namespace Alliance.Editor
 		{
 			EntityUtils.Tick(dt);
 			EditorToolsManager.EditorTools.Tick(dt);
-			if (Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(InputKey.O))
+			if (Input.IsKeyDown(InputKey.LeftControl) && Input.IsKeyPressed(InputKey.P))
 			{
 				OpenScenarioEditor();
 			}
