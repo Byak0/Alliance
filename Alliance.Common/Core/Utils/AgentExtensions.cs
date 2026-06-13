@@ -15,7 +15,8 @@ namespace Alliance.Common.Core.Utils
 		{
 			Troop,
 			Hero,
-			BannerBearer
+			BannerBearer,
+			None
 		}
 
 		public static int GetRaceIdSafe(string raceId)

@@ -77,7 +77,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 				Settings = new FormationSettings
 				{
 					UseMorale = formation.Settings.UseMorale
-				}
+				},
+				MainCultureId = formation.MainCultureId
 			};
 			InitializeOptions();
 		}
@@ -88,6 +89,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			// Reset the formation to its original state
 			_formation.Name = _formationCopy.Name;
 			_formation.Settings.UseMorale = _formationCopy.Settings.UseMorale;
+			_formation.MainCultureId = _formationCopy.MainCultureId;
 			OnCloseMenu(this, EventArgs.Empty);
 		}
 

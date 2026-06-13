@@ -1,7 +1,5 @@
 ﻿#if !SERVER
-using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.PlayerSpawn.ViewModels;
 using System;
 using TaleWorlds.Core;
@@ -135,7 +133,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			}
 			try
 			{
-				Characters.Instance.TryRefreshCharacters();
 				_dataSource = new PlayerSpawnMenuVM(playerSpawnMenu);
 				_onMenuClosed += onCloseCallback;
 				_dataSource.OnCloseMenu += CloseMenu;
