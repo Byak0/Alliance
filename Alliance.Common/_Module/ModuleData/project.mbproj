@@ -6,4 +6,5 @@
 	<file id="soln_action_sets" name="ModuleData/Animations/action_sets.xml" type="action_set" />
 	<file id="soln_action_types" name="ModuleData/Animations/action_types.xml" type="action_type" />
 	<file id="soln_item_usage_sets" name="ModuleData/ItemUsage/al_item_usage.xml" type="item_usage_set" />
+	<file id="soln_module_sound" name="ModuleData/module_sounds.xml" type="module_sound" />
 </base>

@@ -46,13 +46,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		}
 
 		// From server - Sends the election timer to a specific peer.
-		public static void SendElectionStatusToPeer(bool enable, float timer, NetworkCommunicator peer)
+		public static void SendElectionStatusToPeer(bool enable, int timer, NetworkCommunicator peer)
 		{
 			SendToClient(new SetElectionStatus(enable, timer), peer);
 		}
 
 		// From server - Broadcasts the election timer to all players in the game.
-		public static void SendElectionStatusToAll(bool enable, float timer = 0f)
+		public static void SendElectionStatusToAll(bool enable, int timer = 0)
 		{
 			SendToClient(new SetElectionStatus(enable, timer));
 		}

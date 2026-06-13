@@ -1,7 +1,10 @@
 ﻿using Alliance.Common.Core.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
+using static Alliance.Common.Core.Utils.AgentExtensions;
+using static Alliance.Common.Core.Utils.Characters;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Models
 {
@@ -24,7 +27,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				Index = PlayerSpawnMenu.GetNextFormationIndex(this),
 				Name = name,
 				Settings = settings ?? new FormationSettings(),
-				AvailableCharacters = chars ?? new List<AvailableCharacter>()
+				AvailableCharacters = chars ?? new List<AvailableCharacter>(),
+				MainCultureId = Factions.Instance.AvailableCultures?.Keys.FirstOrDefault() ?? string.Empty
 			};
 			Formations.Add(formation);
 			return formation;
@@ -45,12 +49,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			infFormation.MainCultureId = culture.StringId;
 			arcFormation.MainCultureId = culture.StringId;
 			cavFormation.MainCultureId = culture.StringId;
-			foreach (BasicCharacterObject character in Characters.Instance.MPCharactersByCulture[infFormation.MainCulture])
+			foreach (BasicCharacterStub character in Characters.Instance.GetCharactersByCulture(culture, ClassType.Hero))
 			{
+				if(character.CharacterObject == null) continue;
 				AvailableCharacter availableCharacter = new AvailableCharacter() { CharacterId = character.StringId };
-				if (character.IsMounted) cavFormation.AddCharacter(availableCharacter);
-				else if (character.IsRanged) arcFormation.AddCharacter(availableCharacter);
-				else if (character.IsInfantry) infFormation.AddCharacter(availableCharacter);
+				if (character.CharacterObject.IsMounted) cavFormation.AddCharacter(availableCharacter);
+				else if (character.CharacterObject.IsRanged) arcFormation.AddCharacter(availableCharacter);
+				else if (character.CharacterObject.IsInfantry) infFormation.AddCharacter(availableCharacter);
 			}
 		}
 	}

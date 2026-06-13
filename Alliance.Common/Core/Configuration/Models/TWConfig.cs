@@ -129,7 +129,7 @@ namespace Alliance.Common.Core.Configuration.Models
 				OptionType.RoundTimeLimit => CompressionMission.RoundTimeCompressionInfo,
 				OptionType.MapTimeLimit => CompressionBasic.MapTimeLimitCompressionInfo,
 				OptionType.NumberOfBotsPerFormation => CompressionBasic.NumberOfBotsPerFormationCompressionInfo,
-				OptionType.WarmupTimeLimitInSeconds => new CompressionInfo.Integer(0, 3600, true),
+				OptionType.WarmupTimeLimitInSeconds => CompressionBasic.WarmupTimeLimitCompressionInfo,
 				_ => null
 			};
 		}

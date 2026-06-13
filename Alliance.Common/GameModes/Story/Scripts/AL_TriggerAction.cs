@@ -43,11 +43,16 @@ namespace Alliance.Common.GameModes.Story.Scripts
 			_conditionalActionStruct.Register(GameEntity);
 		}
 
+		public override void AfterMissionStart()
+		{
+			base.AfterMissionStart();
+			Init();
+		}
+
 		protected override void OnEditorInit()
 		{
 			base.OnEditorInit();
-			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
-			_conditionalActionStruct.Register(GameEntity);
+			Init();
 		}
 
 		protected override void OnRemoved(int removeReason)
@@ -117,7 +122,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 			}
 		}
 
-		private void OpenEditor()
+		public void OpenEditor()
 		{
 			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
 			_conditionalActionStruct.Register(GameEntity);

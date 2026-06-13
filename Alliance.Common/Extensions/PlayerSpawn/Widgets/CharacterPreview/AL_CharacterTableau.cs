@@ -1052,7 +1052,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_light.Frame = new MatrixFrame(Mat3.Identity, new Vec3(0f, 0.8f, 0.2f));
 
 			entity.AddLight(_light);
-			Log("light");
 
 			_pendingLightEnable = false;
 		}

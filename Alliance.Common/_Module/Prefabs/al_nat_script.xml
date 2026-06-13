@@ -879,5 +879,145 @@
 			</game_entity>
 		</children>
 	</game_entity>
+	<game_entity name="script_autospawn_vlandia_easy" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<components>
+			<meta_mesh_component name="editor_sphere_uv" position="0.000, 0.000, -0.200" rotation="0.000, 0.000, 0.000" scale="1.000, 1.000, 0.300">
+				<mesh name="editor_sphere_uv" material="plain_white" factor="4282056704" argument="2.000, 0.000, 0.000, 0.000"/>
+			</meta_mesh_component>
+		</components>
+		<scripts>
+			<script name="AL_TriggerAction">
+				<variables>
+					<variable name="Chunk1" value="bgUAAB+LCAAAAAAABADFVE2L2zAQvRf6H4zvG8Ut7SEoXtIkhcC2WzZbyOYSpvLYFsiykeQk/veVP1aRXUoPLfRkzZsnz5s3Y9P7ayGCMyrNS7kMo9k8DFCyMuEyW4a1Se+ij+F9/PYNXZcy4cayQKxY+9wbVTMT2PtSL646WYa5MdWCkMvlMru8n5UqI+/m84gcvjzsWY4FhI7M/0y+41IbkAxDWz0I6FcoMPZEBL0KSrpER3FZ3cU+EtiaC9N"/>
+					<variable name="Chunk2" value="UuAxXGUqzlQYVJsdSouOEwy17r8VdZONDPKfk4CMvLfLiI8cWOfrIEyS81vEHSoaTl/uu8aFkIPYVMIytlUjJGHNiyEgN3fME45UQlHQnhz+DytD0meE8ya3LWppWpR86zvYKrMcepWgGSRNwsJU4z3rjycR52s/GjaEPP4FGbw62y4vshtGnPfvXOShbF9UuiYvqlCOcmxOXKUijmtNZgK0GJ6PKsrK1PfLNpPblfYORNeoWOcZOf0PFbHXIME"/>
+					<variable name="Chunk3" value="5BaNvtCBsbvsEUZYJq6vrnUhXQObEb9FFywxxtw9OUs1qYJt6CthwPGIv+p6sX/e3q/SrJtqKQjbr77yqnkii5bdywof5G0q2EHwKT1x0foi71KPGZF9ht+7AVPtRxnjBVqPMNCmi6r9uP7a+S/OZfGf8EsGFY/W4FAAA="/>
+					<variable name="Chunk4" value=""/>
+					<variable name="Chunk5" value=""/>
+					<variable name="Chunk6" value=""/>
+					<variable name="Chunk7" value=""/>
+					<variable name="Chunk8" value=""/>
+					<variable name="Chunk9" value=""/>
+					<variable name="Chunk10" value=""/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+	</game_entity>
+	<game_entity name="script_autospawn_vlandia_normal" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<components>
+			<meta_mesh_component name="editor_sphere_uv" position="0.000, 0.000, -0.200" rotation="0.000, 0.000, 0.000" scale="1.000, 1.000, 0.300">
+				<mesh name="editor_sphere_uv" material="plain_white" factor="4282056704" argument="2.000, 0.000, 0.000, 0.000"/>
+			</meta_mesh_component>
+		</components>
+		<scripts>
+			<script name="AL_TriggerAction">
+				<variables>
+					<variable name="Chunk1" value="cQUAAB+LCAAAAAAABADFVMGK2zAQvRf6D8b3jZKW9hAULdkkhcB2t2y2kM0lqPI4EchSkOQ4/vvKsleRXZY9tNCTPW+ePG/ejIVvL4VIzqANV3KWTkbjNAHJVMblYZaWNr+ZfE1vyccPeKFkxq1jUTFnzXNjdcls4s5LM72YbJYerT1NEaqqalR9Hil9QJ/G4wnafr/fsCMUNA1k/j75hktjqWSQuupJgh9oASQSkbQqMPIJTwlZ4+MYSVzNqa1"/>
+					<variable name="Chunk2" value="PMEvnB5B2JS1oyHZKQuCk3Sl3rsFD5OItGWO0jZGXBnmJkV2D7GLkiWa8NOQLRt1blPtp4F4xKjYnyoA4KwGjPhbEoJ4avOEZkLkQGPm3gD9TfQBL7pQ1GHXBILlQpbSNzDgMnNWFshZ7lKLuNA3AzlcUTGudRwPrcTucMIc2vKMGokG4Nivpp9GmI/8XR6pdXdDrjBSn/RHoud5zmVNpdb0/C+qq0b3VSp1c7Yh8dan5eNvgxDl1jQJjbX6AZq"/>
+					<variable name="Chunk3" value="46PQDJqTCu2x7Wd3wJOcgM9ND2b0oX1Dux7vRhdMUCbcnznLNS2Jo8NFk3vgjqy/6n2zf52+37U5JrRgPr9fffVQ4lYXTduW5H453EK0l/Cchet7yLfOpRwjMvwO97txcx5DlPkGswxyUIWvsfPI7dbYneuC7Jbykwb+hxBQAA"/>
+					<variable name="Chunk4" value=""/>
+					<variable name="Chunk5" value=""/>
+					<variable name="Chunk6" value=""/>
+					<variable name="Chunk7" value=""/>
+					<variable name="Chunk8" value=""/>
+					<variable name="Chunk9" value=""/>
+					<variable name="Chunk10" value=""/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+	</game_entity>
+	<game_entity name="script_autospawn_vlandia_hard" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<components>
+			<meta_mesh_component name="editor_sphere_uv" position="0.000, 0.000, -0.200" rotation="0.000, 0.000, 0.000" scale="1.000, 1.000, 0.300">
+				<mesh name="editor_sphere_uv" material="plain_white" factor="4282056704" argument="2.000, 0.000, 0.000, 0.000"/>
+			</meta_mesh_component>
+		</components>
+		<scripts>
+			<script name="AL_TriggerAction">
+				<variables>
+					<variable name="Chunk1" value="bwUAAB+LCAAAAAAABADFVE2P2jAQvVfqf4hyXwyt2gMyXrFAVaRtt1q2EssFTZ0JWHJsZJuP/Ps6H2ucVKs9tFJP5L15zrx5HkJvL4VMTmis0GqSjgbDNEHFdSbUbpIeXX4z+pzesvfv6EyrTDivAjnl1e/KmSN3iT+v7Phis0m6d+4wJuR8Pg/OHwfa7MiH4XBE1t/uV3yPBaRBLN4W3whlHSiOqe+eJPQ7FMgiE0njgpK6UEtC1dY4ZhLfc+z"/>
+					<variable name="Chunk2" value="KA07S6Q6VWyiHBrONVhg0aXvKn6v4gDxesyEl65h5rpjnmNlUzCZmHiETR8s+UdI+RbWfFu81B7k6AEfmo0RKulwwQzpu6EpkyKZSUlI/Bf4JzA4du9POUtKCXnGmj8pVNmMYNIsL8IZ7ULJsPfXINlcSQmuSJ73oaXM54R4aeAcWo4vwY55VfRtNOcp/tgfj+6JZZqw4bPcIp3IrVA7KmXJ7kuC7wdYZrQ++dyS+plS9vBlw5JO6oqBY2h9ouO"/>
+					<variable name="Chunk3" value="8OO2Q5SOun7XDdxOeYo8rQ9GP/ok0BdRLL1h8lVy7I5iLPBT9KV7KvYDJKIqJr+p/u3uhvd+9PS34Ug7wz3X932bdEyXXj2g2NN5IuFPySmL3seIvq0oPCJ1Fgve3tVsRUrXnE3KDdz1FCWf+9Y+y/leSVjyX7DeACdWlvBQAA"/>
+					<variable name="Chunk4" value=""/>
+					<variable name="Chunk5" value=""/>
+					<variable name="Chunk6" value=""/>
+					<variable name="Chunk7" value=""/>
+					<variable name="Chunk8" value=""/>
+					<variable name="Chunk9" value=""/>
+					<variable name="Chunk10" value=""/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+	</game_entity>
+	<game_entity name="script_autospawn_vlandia_veryhard" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<components>
+			<meta_mesh_component name="editor_sphere_uv" position="0.000, 0.000, -0.200" rotation="0.000, 0.000, 0.000" scale="1.000, 1.000, 0.300">
+				<mesh name="editor_sphere_uv" material="plain_white" factor="4282056704" argument="2.000, 0.000, 0.000, 0.000"/>
+			</meta_mesh_component>
+		</components>
+		<scripts>
+			<script name="AL_TriggerAction">
+				<variables>
+					<variable name="Chunk1" value="cwUAAB+LCAAAAAAABADFVE2P2jAQvVfqf4hyXwyt2gMyXrFAVaRtt1q2FcsFTZ0JWHJsZJuP/Ps6HzVOqtUeWqkn8t48Z948D6G3l0ImJzRWaDVJR4NhmqDiOhNqN0mPLr8ZfUxv2ds3dKZVJpxXgZzy6nflzJG7xJ9Xdnyx2STdO3cYE3I+nwfn9wNtduTdcDgi6y/3K77HAtIgFq+Lb4SyDhTH1HdPEvoVCmSRiaRxQUldqCWhamscM4nvOXb"/>
+					<variable name="Chunk2" value="lASfpdIfKLZRDg9lGKwyatD3lz1V8QB6v2ZCSdcw8V8xzzGwqZhMzj5CJo2UfKGmfotp3i/eag1wdgCPzUSIlXS6YIR03dCUyZFMpKamfAv8EZoeO3WlnKWlBrzjTR+UqmzEMmsUFeMM9KFm2nnpkmysJoTXJk170tLmccA8NvAOL0UX4Mc+qvo2mHOU/24PxfdEsM1YctnuEU7kVKgflTLk9SfDdYOuM1gffOxJfU6pe3gw48kldUVAs7Tc03H"/>
+					<variable name="Chunk3" value="eHHbIcpPXTdrhu4nPMUWVo+rF/0qaAOoll64+SKxdkc5Hngh+lK9kPNOVnMBklEdk1/k/3b/S3+/enJT+OQd6Z8L+77Fui5Lp17ZbGW0kXCn5KzH7veYvq0oPCJ1FgvfHtZsRUrXnE3KDdz1FCWf/FY+y/l+SFDyb7BRpGRYdzBQAA"/>
+					<variable name="Chunk4" value=""/>
+					<variable name="Chunk5" value=""/>
+					<variable name="Chunk6" value=""/>
+					<variable name="Chunk7" value=""/>
+					<variable name="Chunk8" value=""/>
+					<variable name="Chunk9" value=""/>
+					<variable name="Chunk10" value=""/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+	</game_entity>
+	<game_entity name="script_autospawn_vlandia_bannerlord" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<components>
+			<meta_mesh_component name="editor_sphere_uv" position="0.000, 0.000, -0.200" rotation="0.000, 0.000, 0.000" scale="1.000, 1.000, 0.300">
+				<mesh name="editor_sphere_uv" material="plain_white" factor="4282056704" argument="2.000, 0.000, 0.000, 0.000"/>
+			</meta_mesh_component>
+		</components>
+		<scripts>
+			<script name="AL_TriggerAction">
+				<variables>
+					<variable name="Chunk1" value="dQUAAB+LCAAAAAAABADFVE2L2zAQvRf6H4zvGyUt7SEoWvJVCGy7ZbOFbC5hKo8TgSwFSfnwv6/8UUV2KXvYQk/xe/PkefM0Mb2/FjI5o7FCq0k6GgzTBBXXmVD7SXpy+d3oc3rP3r+jc60y4bwK5JRXv2tnTtwl/ryy46vNJunBueOYkMvlMrh8HGizJx+GwxHZfH1Y8wMWkAaxeF18J5R1oDimvnuS0G9QIItMJI0LSupCLQlVW+OYSXzPsSu"/>
+					<variable name="Chunk2" value="POEmne1RuqRwazLZaYdCk7Sl/ruID8njDhpRsYualYl5iZlsx25h5gkycLPtESfsU1X5YfNAc5PoIHJmPEinpcsEM6biha5Ehm0pJSf0U+Gcwe3Rspp2lpAW94lyflKtsxjBollfgDfeoZNl66pFtriSE1iRPetHT5nLCPTRwBhaji/BjXlR9G005yn9+AOP7olllrDjuDgjncidUDsqZcneW4LvBzhmtj753JL6lVL28GXDkk7qhoFjZ72i47w"/>
+					<variable name="Chunk3" value="57ZDlI66ftcN3EF5ijytD0Y/+iTQF1EqvWHyU3LsgWIs8FP0lXshkohUZqk1ES0V3r/3QDR2/dwD8t+YEM8s6M/91l3xIlt71r9zTeS7pU8FNi9nvTW1SXHhU+iwLrnW93I6ZqzRPmBu1hgRLK+k8eY//FJH/5ZLJfPaBv/HUFAAA="/>
+					<variable name="Chunk4" value=""/>
+					<variable name="Chunk5" value=""/>
+					<variable name="Chunk6" value=""/>
+					<variable name="Chunk7" value=""/>
+					<variable name="Chunk8" value=""/>
+					<variable name="Chunk9" value=""/>
+					<variable name="Chunk10" value=""/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+	</game_entity>
 </prefabs>
 

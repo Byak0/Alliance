@@ -124,12 +124,15 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 					continue;
 				}
 
-				BasicCultureObject culture = playerAssignment.Formation.MainCulture;
-				BasicCharacterObject basicCharacterObject = playerAssignment.Character.Character;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = playerAssignment.Character.Character.GetHeroClass();
 				MPOnSpawnPerkHandler onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
 				// Spawn player, make him invulnerable in the beginning to prevent TK
-				SpawnHelper.SpawnPlayer(networkPeer, onSpawnPerkHandler, basicCharacterObject, mortalityState: MortalityState.Invulnerable, customCulture: culture);
+				SpawnHelper.SpawnPlayer(networkPeer, 
+					onSpawnPerkHandler, 
+					playerAssignment.Character.Character, 
+					mortalityState: MortalityState.Invulnerable, 
+					healthMultiplier: playerAssignment.Character.HealthMultiplier, 
+					customCulture: playerAssignment.Formation.MainCulture);
 
 				// not useful anymore since our perk list is not the native one ?
 				//GameNetwork.BeginBroadcastModuleEvent();

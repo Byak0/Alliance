@@ -264,9 +264,9 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		private void DeleteNearestBuilding()
 		{
 			BuildBehavior buildBehavior = Mission.Current?.GetMissionBehavior<BuildBehavior>();
-			if (buildBehavior == null || Agent.Main == null) return;
+			if (buildBehavior == null) return;
 
-			Vec3 playerPos = Agent.Main.Position;
+			Vec3 playerPos = Agent.Main?.Position ?? Mission.GetCameraFrame().origin;
 			float closestDist = float.MaxValue;
 			int closestIndex = -1;
 

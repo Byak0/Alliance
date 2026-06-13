@@ -47,6 +47,11 @@ namespace Alliance.Client.Patch.HarmonyPatch
 						BindingFlags.Instance | BindingFlags.NonPublic),
 					prefix: new HarmonyMethod(typeof(Patch_MissionNetworkComponent).GetMethod(
 						nameof(Prefix_HandleServerEventCreateMissionObject), BindingFlags.Static | BindingFlags.Public)));
+				Harmony.Patch(
+					typeof(MissionNetworkComponent).GetMethod("HandleServerEventAddTeam",
+						BindingFlags.Instance | BindingFlags.NonPublic),
+					prefix: new HarmonyMethod(typeof(Patch_MissionNetworkComponent).GetMethod(
+						nameof(Prefix_HandleServerEventAddTeam), BindingFlags.Static | BindingFlags.Public)));
 			}
 			catch (Exception e)
 			{
@@ -193,6 +198,17 @@ namespace Alliance.Client.Patch.HarmonyPatch
 
 				CollectMissionObjectsRecursive(child, missionObjects);
 			}
+		}
+
+		// Fix some banners who were wrongly recolored when they shouldn't
+		public static bool Prefix_HandleServerEventAddTeam(GameNetworkMessage baseMessage)
+		{
+			AddTeam addTeam = (AddTeam)baseMessage;
+			// No need to pass colors to Banner ctor since our BannerCode already contains the colors (see BannerHelper.GetBannerCodeFromCulture)
+			Banner banner = (string.IsNullOrEmpty(addTeam.BannerCode) ? null : new Banner(addTeam.BannerCode/*, addTeam.Color, addTeam.Color2*/));
+			Mission.Current?.Teams.Add(addTeam.Side, addTeam.Color, addTeam.Color2, banner, addTeam.IsPlayerGeneral, addTeam.IsPlayerSergeant, true);
+
+			return false;
 		}
 
 		/* Original method
