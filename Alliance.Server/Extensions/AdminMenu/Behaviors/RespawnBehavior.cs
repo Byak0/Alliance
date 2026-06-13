@@ -101,10 +101,12 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 			BasicCultureObject _cultureTeam;
 			MPHeroClass _defaultMpClassTeam;
 
-			if (basicCharacterObject != null)
-				SpawnHelper.SpawnPlayer(playerSelected, perkHandler, basicCharacterObject);
-			else
+			PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance?.GetPlayerAssignment(playerSelected);
+			float healthMultiplier = playerAssignment?.Character?.HealthMultiplier ?? 1f;
 
+			if (basicCharacterObject != null)
+				SpawnHelper.SpawnPlayer(playerSelected, perkHandler, basicCharacterObject, healthMultiplier: healthMultiplier);
+			else
 			{
 				if (missionPeer.Team == Mission.AttackerTeam)
 				{
@@ -114,11 +116,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 					// If player is officer, spawn hero instead of standard troop
 					if (playerSelected.IsOfficer())
 					{
-						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.HeroCharacter);
+						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.HeroCharacter, healthMultiplier: healthMultiplier);
 					}
 					else
 					{
-						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.TroopCharacter);
+						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.TroopCharacter, healthMultiplier: healthMultiplier);
 					}
 
 				}
@@ -130,11 +132,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 					// If player is officer, spawn hero instead of standard troop
 					if (playerSelected.IsOfficer())
 					{
-						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.HeroCharacter);
+						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.HeroCharacter, healthMultiplier: healthMultiplier);
 					}
 					else
 					{
-						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.TroopCharacter);
+						SpawnHelper.SpawnPlayer(playerSelected, perkHandler, _defaultMpClassTeam.TroopCharacter, healthMultiplier: healthMultiplier);
 					}
 
 				}
