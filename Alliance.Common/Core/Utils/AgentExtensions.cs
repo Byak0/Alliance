@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -134,6 +135,13 @@ namespace Alliance.Common.Core.Utils
 		public static int GetSpeakingRange(this Agent agent)
 		{
 			return AgentsInfoModel.Instance.Agents[agent.Index].SpeakingRange;
+		}
+
+		public static void SyncHealthLimit(this Agent agent)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new SetHealthLimitMessage(agent.Index, (int)agent.HealthLimit));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 	}
 }

@@ -18,8 +18,10 @@ namespace Alliance.Common.Core.Configuration.Models
 		public bool AllowSpawnInRound = true;
 		[ConfigProperty(true, "Free respawn timer", "Duration in seconds during which players can freely respawn after round start.", 0, 3600, category: "General")]
 		public int FreeRespawnTimer = 60;
-		[ConfigProperty(true, "HP multiplier for officers", "Health is multiplied by this value for officers.", 0f, 10f, category: "General")]
-		public float OfficerHPMultip = 1f;
+		[ConfigProperty(true, "HP multiplier for players", "Health is multiplied by this value for players.", 0f, 10f, category: "General")]
+		public float PlayerHPMultiplier = 1f;
+		[ConfigProperty(true, "HP multiplier for bots", "Health is multiplied by this value for bots.", 0f, 10f, category: "General")]
+		public float BotHPMultiplier = 1f;
 
 		// Commanders
 		[ConfigProperty(true, "Commander side", "Commander side for PvC.", dataType: DataTypes.BattleSide, category: "Commanders")]

@@ -5,6 +5,7 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
 using NetworkMessages.FromServer;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 {
@@ -14,7 +15,8 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 		{
 			reg.Register<SpawnInfoMessage>(HandleSpawnInfoMessage);
 			reg.Register<FormationControlMessage>(HandleFormationControlMessage);
-			reg.Register<BotsControlledChange>(HandleServerEventBotsControlledChangeEvent);
+			reg.Register<BotsControlledChange>(HandleBotsControlledChange);
+			reg.Register<SetHealthLimitMessage>(HandleSetHealthLimit);
 		}
 
 		public void HandleSpawnInfoMessage(SpawnInfoMessage message)
@@ -36,11 +38,21 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 			}
 		}
 
-		public void HandleServerEventBotsControlledChangeEvent(BotsControlledChange message)
+		public void HandleBotsControlledChange(BotsControlledChange message)
 		{
 			MissionPeer component = message.Peer.GetComponent<MissionPeer>();
 			MissionMultiplayerGameModeBaseClient gameModeClient = Mission.Current.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
 			if (gameModeClient is IBotControllerBehavior) ((IBotControllerBehavior)gameModeClient)?.OnBotsControlledChanged(component, message.AliveCount, message.TotalCount);
+		}
+
+		public void HandleSetHealthLimit(SetHealthLimitMessage message)
+		{
+			Agent agent = Mission.MissionNetworkHelper.GetAgentFromIndex(message.AgentIndex);
+			if (agent != null)
+			{
+				agent.HealthLimit = message.HealthLimit;
+				Log($"Synced agent {agent.Index} health limit: {message.HealthLimit}", LogLevel.Debug);
+			}
 		}
 	}
 }
