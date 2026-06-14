@@ -328,6 +328,37 @@ namespace Alliance.Common.Core.Utils
 			}
 			return default;
 		}
+
+		/// <summary>
+		/// Maps Alliance custom game modes to their corresponding native Bannerlord game mode names.
+		/// This is used for perk filtering, as perks are defined with native game mode names in XML.
+		/// </summary>
+		/// <param name="allianceGameMode">The Alliance custom game mode name (e.g., "BattleX", "PvC")</param>
+		/// <returns>The corresponding native game mode name (e.g., "Battle", "Captain")</returns>
+		public static string GetNativeGameModeForPerks(string allianceGameMode = null)
+		{
+			if (string.IsNullOrEmpty(allianceGameMode))
+			{
+				allianceGameMode = MultiplayerOptions.OptionType.GameType.GetStrValue();
+			}
+
+			// Map Alliance custom game modes to native game modes
+			return allianceGameMode switch
+			{
+				"Lobby" => "Skirmish",
+				"BattleRoyale" => "Duel",
+				"PvC" => "Captain",
+				"CvC" => "Captain",
+				"Scenario" => "Captain",
+				"CaptainX" => "Captain",
+				"BattleX" => "Battle",
+				"SiegeX" => "Siege",
+				"DuelX" => "Duel",
+
+				// If it's already a native game mode or unknown, return as-is
+				_ => allianceGameMode
+			};
+		}
 	}
 
 
@@ -404,6 +435,5 @@ namespace Alliance.Common.Core.Utils
 				}
 			}
 		}
-		
 	}
 }

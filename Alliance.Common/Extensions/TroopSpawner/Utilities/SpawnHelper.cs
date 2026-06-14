@@ -504,7 +504,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
 		{
 			MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
@@ -524,7 +524,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		public static List<IReadOnlyPerkObject> GetPerks(MultiplayerClassDivisions.MPHeroClass heroClass, List<int> indices)
 		{
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)

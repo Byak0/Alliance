@@ -75,7 +75,7 @@ namespace Alliance.Common.Core.Utils
 				troopType = ClassType.BannerBearer;
 			}
 
-			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 
 			// Ignore perks if it only contains a default one
 			if (allPerksForHeroClass.Count >= 0 && allPerksForHeroClass[0].Count == 1 && allPerksForHeroClass[0][0].Name.Value.Contains("Default"))
