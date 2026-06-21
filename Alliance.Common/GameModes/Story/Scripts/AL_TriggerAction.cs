@@ -39,7 +39,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public void Init()
 		{
-			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks(), GetEntityContextForLogs());
 			_conditionalActionStruct.Register(GameEntity);
 		}
 
@@ -124,7 +124,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public void OpenEditor()
 		{
-			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks());
+			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks(), GetEntityContextForLogs());
 			_conditionalActionStruct.Register(GameEntity);
 			EditorToolsManager.OpenEditor(_conditionalActionStruct, modifiedObject =>
 			{
@@ -134,6 +134,11 @@ namespace Alliance.Common.GameModes.Story.Scripts
 					UpdateChunks(ScenarioSerializer.SerializeConditionalActionStruct(_conditionalActionStruct));
 				}
 			});
+		}
+
+		private string GetEntityContextForLogs()
+		{
+			return GameEntity.IsValid ? GameEntity.Name : "";
 		}
 
 		public override TickRequirement GetTickRequirement()
