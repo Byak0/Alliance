@@ -204,6 +204,7 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 
 			_ghostEntity.SetVisibilityExcludeParents(true);
 			_ghostEntity.SetMobility(GameEntity.Mobility.Dynamic);
+			_ghostEntity.AddBodyFlags(BodyFlags.DoNotCollideWithRaycast | BodyFlags.CommonFlagsThatDoNotBlockRay);
 		}
 
 		private void DestroyGhostEntity()
