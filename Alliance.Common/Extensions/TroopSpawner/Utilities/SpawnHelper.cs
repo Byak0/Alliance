@@ -447,6 +447,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			while (goldToUse > 0 && nbAgents < 1000)
 			{
 				BasicCharacterObject bco;
+				BasicCharacterObject defaultChar = Characters.Instance.GetCharactersByCulture(culture1, AgentExtensions.ClassType.Troop).FirstOrDefault()?.CharacterObject;
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{
@@ -462,7 +463,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				{
 					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 				}
-
+				bco ??= defaultChar;
 				goldToUse -= GetTroopCost(bco, difficulty);
 				agentsToSpawn.Add(bco);
 				nbAgents++;
