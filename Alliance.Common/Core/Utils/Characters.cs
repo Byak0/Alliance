@@ -57,7 +57,7 @@ namespace Alliance.Common.Core.Utils
 			}
 
 			characters = MPCharactersByCulture[culture]
-				.Where(c => c.ClassType == classType)
+				.Where(c => c.ClassTypes.Contains(classType))
 				.ToList();
 
 			return characters;
@@ -81,8 +81,9 @@ namespace Alliance.Common.Core.Utils
 				MultiplayerClassDivisions.Initialize();
 			}
 
-			// Manually load character information from MPClassDivisions (should work in every context)
-			Dictionary<string, ClassType> characterClassTypes = LoadCharacterClassTypesFromMPClassDivisions();
+			// Manually load character information from MPClassDivisions (should work in every context).
+			// A single CharacterObject can appear in multiple MPClassDivisions with different roles
+			Dictionary<string, HashSet<ClassType>> characterClassTypes = LoadCharacterClassTypesFromMPClassDivisions();
 
 			// Retrieve all loaded BasicCharacterObjects (only works in game context, will be empty in modding kit context)
 			MBReadOnlyList<BasicCharacterObject> _characterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
@@ -93,12 +94,10 @@ namespace Alliance.Common.Core.Utils
 				foreach (BasicCharacterObject character in _characterObjects)
 				{
 					if (character?.Culture == null) continue;
-					ClassType classType = ClassType.None;
-					if (characterClassTypes.TryGetValue(character.StringId, out ClassType foundClassType))
-					{
-						classType = foundClassType;
-					}
-					BasicCharacterStub stub = new BasicCharacterStub(character.StringId, character.Name, character.Culture, classType, character);
+					HashSet<ClassType> classTypes = characterClassTypes.TryGetValue(character.StringId, out HashSet<ClassType> foundClassTypes)
+						? foundClassTypes
+						: new HashSet<ClassType> { ClassType.None };
+					BasicCharacterStub stub = new BasicCharacterStub(character.StringId, character.Name, character.Culture, classTypes, character);
 					_characterStubs.Add(stub);
 				}
 			}
@@ -121,12 +120,12 @@ namespace Alliance.Common.Core.Utils
 		}
 
 		/// <summary>
-		/// Reads MPClassDivisions XML to build a mapping of character ID to ClassType.
+		/// Reads MPClassDivisions XML to build a mapping of character ID to all their ClassTypes.
 		/// </summary>
-		/// <returns>Dictionary mapping character StringId to ClassType</returns>
-		private Dictionary<string, ClassType> LoadCharacterClassTypesFromMPClassDivisions()
+		/// <returns>Dictionary mapping character StringId to the set of all registered ClassTypes</returns>
+		private Dictionary<string, HashSet<ClassType>> LoadCharacterClassTypesFromMPClassDivisions()
 		{
-			Dictionary<string, ClassType> characterClassTypes = new Dictionary<string, ClassType>();
+			Dictionary<string, HashSet<ClassType>> characterClassTypes = new Dictionary<string, HashSet<ClassType>>();
 
 			try
 			{
@@ -149,31 +148,41 @@ namespace Alliance.Common.Core.Utils
 					string bannerBearerCharacter = node.Attributes["banner_bearer"]?.Value;
 
 					if (!string.IsNullOrEmpty(heroCharacter))
-						characterClassTypes[heroCharacter] = ClassType.Hero;
+						RegisterRole(characterClassTypes, heroCharacter, ClassType.Hero);
 					if (!string.IsNullOrEmpty(troopCharacter))
-						characterClassTypes[troopCharacter] = ClassType.Troop;
+						RegisterRole(characterClassTypes, troopCharacter, ClassType.Troop);
 					if (!string.IsNullOrEmpty(bannerBearerCharacter))
-						characterClassTypes[bannerBearerCharacter] = ClassType.BannerBearer;
+						RegisterRole(characterClassTypes, bannerBearerCharacter, ClassType.BannerBearer);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Log($"Error loading MPClassDivisions XML: {ex.Message}", LogLevel.Error);
-				return new Dictionary<string, ClassType>();
+				return new Dictionary<string, HashSet<ClassType>>();
 			}
 
 			return characterClassTypes;
+		}
+
+		private static void RegisterRole(Dictionary<string, HashSet<ClassType>> dict, string characterId, ClassType role)
+		{
+			if (!dict.TryGetValue(characterId, out HashSet<ClassType> roles))
+			{
+				roles = new HashSet<ClassType>();
+				dict[characterId] = roles;
+			}
+			roles.Add(role);
 		}
 
 		/// <summary>
 		/// Loads character stubs from MPCharacters XML.
 		/// This is used when running in modding kit context where full character objects are not loaded.
 		/// </summary>
-		private void LoadCharacterStubsFromXml(Dictionary<string, ClassType> characterClassTypes)
+		private void LoadCharacterStubsFromXml(Dictionary<string, HashSet<ClassType>> characterClassTypes)
 		{
 			try
 			{
-				if(!MBObjectManager.Instance.HasType(typeof(BasicCharacterObject)))
+				if (!MBObjectManager.Instance.HasType(typeof(BasicCharacterObject)))
 				{
 					MBObjectManager.Instance.RegisterType<BasicCharacterObject>("NPCCharacter", "MPCharacters", 43U, true, false);
 				}
@@ -198,19 +207,21 @@ namespace Alliance.Common.Core.Utils
 					if (culture == null)
 						continue;
 
-					ClassType classType = characterClassTypes.TryGetValue(stringId, out ClassType value) ? value : ClassType.None;
+					HashSet<ClassType> classTypes = characterClassTypes.TryGetValue(stringId, out HashSet<ClassType> found)
+						? found
+						: new HashSet<ClassType> { ClassType.None };
 
 					BasicCharacterStub stub = new BasicCharacterStub(
 						stringId,
 						new TextObject(name),
 						culture,
-						classType,
+						classTypes,
 						null); // No BasicCharacterObject available in modding kit context
 
 					_characterStubs.Add(stub);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				Log($"Error loading MPCharacters XML: {ex.Message}", LogLevel.Error);
 			}
@@ -221,16 +232,21 @@ namespace Alliance.Common.Core.Utils
 			public string StringId { get; set; }
 			public TextObject Name { get; set; }
 			public BasicCultureObject Culture { get; set; }
-			public ClassType ClassType { get; set; }
 			public BasicCharacterObject CharacterObject { get; set; }
+			public HashSet<ClassType> ClassTypes { get; set; }
 
-			public BasicCharacterStub(string stringId, TextObject name, BasicCultureObject culture, ClassType classType, BasicCharacterObject characterObject)
+			public BasicCharacterStub(string stringId, TextObject name, BasicCultureObject culture, HashSet<ClassType> classTypes, BasicCharacterObject characterObject)
 			{
 				StringId = stringId;
 				Name = name;
 				Culture = culture;
-				ClassType = classType;
+				ClassTypes = classTypes ?? new HashSet<ClassType> { ClassType.None };
 				CharacterObject = characterObject;
+			}
+
+			public bool HasClassType(ClassType classType)
+			{
+				return ClassTypes.Contains(classType);
 			}
 		}
 	}

@@ -383,19 +383,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			// Add troops from the culture's default classes
 			if (TroopGroups.IsEmpty() && Instance.MPCharactersByCulture.TryGetValue(culture, out List<BasicCharacterStub> characterStubs))
 			{
-				characterStubs = characterStubs.Where(c => c.ClassType != ClassType.None).ToList();
+				characterStubs = characterStubs.Where(c => !c.HasClassType(ClassType.None)).ToList();
 				if (characterStubs.Count > 0)
 				{
 					MBBindingList<TroopVM> troopVMs = new MBBindingList<TroopVM>();
 					foreach (BasicCharacterStub characterStub in characterStubs)
 					{
-						if (characterStub.ClassType == ClassType.Troop && !ShowTroops ||
-							characterStub.ClassType == ClassType.Hero && !ShowHeroes ||
-							characterStub.ClassType == ClassType.BannerBearer && !ShowBannerBearers) continue;
-
-						TroopVM troopVM = new TroopVM(characterStub, SelectTroop);
-
-						troopVMs.Add(troopVM);
+						if(characterStub.HasClassType(ClassType.Troop) && ShowTroops) troopVMs.Add(new TroopVM(characterStub, ClassType.Troop, SelectTroop));
+						if(characterStub.HasClassType(ClassType.Hero) && ShowHeroes) troopVMs.Add(new TroopVM(characterStub, ClassType.Hero, SelectTroop));
+						if(characterStub.HasClassType(ClassType.BannerBearer) && ShowBannerBearers) troopVMs.Add(new TroopVM(characterStub, ClassType.BannerBearer, SelectTroop));
 					}
 					TroopGroups.Add(new TroopGroupVM(culture.Name.ToString(), culture.StringId, troopVMs));
 				}
@@ -634,10 +630,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			_onTroopSelected = onSelect;
 		}
 
-		public TroopVM(BasicCharacterStub characterStub, Action<TroopVM> onSelect)
+		public TroopVM(BasicCharacterStub characterStub, ClassType troopType, Action<TroopVM> onSelect)
 		{
 			IsSelected = false;
-			TroopType = characterStub.ClassType;
+			TroopType = troopType;
 			StringId = characterStub.StringId;
 			Troop = characterStub.CharacterObject;
 			Name = characterStub.Name.ToString();
