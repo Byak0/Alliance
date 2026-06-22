@@ -135,6 +135,8 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 					return ToggleMutePlayer(peer, admin);
 				if (admin.Respawn)
 					return Respawn(peer, admin);
+				if (admin.RespawnAll)
+					return RespawnAll(peer, admin);
 				if (admin.ToggleInvulnerable)
 					return ToggleInvulnerable(peer, admin);
 				if (admin.TeleportToPlayer)
@@ -267,7 +269,28 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 				ServerAdminMenuMsg.SendMessageToAllAdmins($"[RESPAWN] Error while respawning, player {playerSelected?.UserName} doesn't belong to a team", AdminServerLog.ColorList.Danger);
 				return false;
 			}
+		}
 
+		public bool RespawnAll(NetworkCommunicator peer, AdminClient admin)
+		{
+			List<NetworkCommunicator> playersSelected = GameNetwork.NetworkPeers.ToList();
+			MissionPeer missionPeer;
+
+			RespawnBehavior respawnBehavior = Mission.Current.GetMissionBehavior<RespawnBehavior>();
+
+			foreach (var playerSelected in playersSelected)
+			{
+				missionPeer = playerSelected.GetComponent<MissionPeer>();
+
+				if (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam)
+				{
+					respawnBehavior.RespawnPlayer(playerSelected);
+				}
+			}
+
+			Log($"[AdminPanel][RESPAWN ALL] All players respawned by admin {peer.UserName}", LogLevel.Information);
+			ServerAdminMenuMsg.SendMessageToAllAdmins($"[RESPAWN ALL] All players respawned by admin {peer.UserName}", AdminServerLog.ColorList.Success);
+			return true;
 		}
 
 		public bool HealAll(NetworkCommunicator peer)

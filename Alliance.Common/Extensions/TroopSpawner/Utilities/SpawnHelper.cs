@@ -157,12 +157,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.MountAgent?.UpdateAgentProperties();
 
 				// Calculate health limit
+				healthMultiplier *= Config.Instance.BotHPMultiplier;
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
-				agent.HealthLimit = Math.Max(classHealth, character.MaxHitPoints());
-				agent.HealthLimit += bonusHealth;
-				agent.HealthLimit *= healthMultiplier;
+				float healthLimit = (Math.Max(classHealth, character.MaxHitPoints()) + bonusHealth) * healthMultiplier;
+				if(healthLimit != character.MaxHitPoints())
+				{
+					agent.HealthLimit = healthLimit;
+					agent.SyncHealthLimit(); // Manually sync HealthLimit since native doesn't
+				}
 				agent.Health = agent.HealthLimit;
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -293,19 +297,23 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.MountAgent?.UpdateAgentProperties();
 
 				// Calculate health limit
+				healthMultiplier *= Config.Instance.PlayerHPMultiplier;
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
-				agent.HealthLimit += bonusHealth;
-				// Additional health for officers
-				if (networkPeer.IsOfficer()) agent.HealthLimit *= Config.Instance.OfficerHPMultip;
-				agent.HealthLimit *= healthMultiplier;
+				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
+				float healthLimit = (Math.Max(classHealth, character.MaxHitPoints()) + bonusHealth) * healthMultiplier;
+				if (healthLimit != character.MaxHitPoints())
+				{
+					agent.HealthLimit = healthLimit;
+					agent.SyncHealthLimit(); // Manually sync HealthLimit since native doesn't
+				}
 				agent.Health = agent.HealthLimit;
 
 				// Update Alliance custom agent properties
 				agent.AddAgentInfo(difficulty: difficulty, synchronize: true);
 				agent.MountAgent?.AddAgentInfo(difficulty: difficulty, synchronize: true);
 
+				agent.UpdateAgentProperties();
 				agent.WieldInitialWeapons();
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -439,6 +447,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			while (goldToUse > 0 && nbAgents < 1000)
 			{
 				BasicCharacterObject bco;
+				BasicCharacterObject defaultChar = Characters.Instance.GetCharactersByCulture(culture1, AgentExtensions.ClassType.Troop).FirstOrDefault()?.CharacterObject;
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{
@@ -454,7 +463,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				{
 					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 				}
-
+				bco ??= defaultChar;
 				goldToUse -= GetTroopCost(bco, difficulty);
 				agentsToSpawn.Add(bco);
 				nbAgents++;
@@ -496,7 +505,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
 		{
 			MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
@@ -516,7 +525,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		public static List<IReadOnlyPerkObject> GetPerks(MultiplayerClassDivisions.MPHeroClass heroClass, List<int> indices)
 		{
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)

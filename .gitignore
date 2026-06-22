@@ -367,3 +367,5 @@ FodyWeavers.xsd
 
 # Ignore TW decompiled classes (used for local reference only)
 /Alliance.Common/TW_References/BannerlordSource
+/AGENTS.md
+/.idea

@@ -1,4 +1,4 @@
-598
+597
 mesh arabian_platform_wooden_c
 mesh archer_target_stick
 mesh arrow_barrel
@@ -19,7 +19,6 @@ mesh battania_castle_keep_wood_stake_e
 mesh battania_shield_targe_a
 mesh battania_street_tent_a
 mesh battania_watermill_mill
-mesh bd_anvil
 mesh bd_barrel_a
 mesh bd_barrel_c
 mesh bd_battania_pot_on_trunk_b

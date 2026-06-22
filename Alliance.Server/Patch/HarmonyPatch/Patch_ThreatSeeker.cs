@@ -28,6 +28,11 @@ namespace Alliance.Server.Patch.HarmonyPatch
 					typeof(ThreatSeeker).GetMethod("GetPositionMultiplierOfFormation", BindingFlags.Static | BindingFlags.NonPublic),
 					prefix: new HarmonyMethod(typeof(Patch_ThreatSeeker).GetMethod(
 						nameof(Prefix_GetPositionMultiplierOfFormation), BindingFlags.Static | BindingFlags.Public)));
+
+				Harmony.Patch(
+					typeof(ThreatSeeker).GetMethod(nameof(ThreatSeeker.GetAllThreats)),
+					prefix: new HarmonyMethod(typeof(Patch_ThreatSeeker).GetMethod(
+						nameof(Prefix_GetAllThreats), BindingFlags.Static | BindingFlags.Public)));
 			}
 			catch (Exception e)
 			{
@@ -45,7 +50,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 		public static bool Prefix_GetPositionMultiplierOfFormation(Formation formation, IEnumerable<ICastleKeyPosition> referencePositions, ref float __result)
 		{
 			// Check if referencePositions is empty
-			if (!referencePositions.Any())
+			if (referencePositions == null || !referencePositions.Any())
 			{
 				// Skip the original method and return a default value
 				__result = 1f;
@@ -58,6 +63,17 @@ namespace Alliance.Server.Patch.HarmonyPatch
 			}
 		}
 
+		/// <summary>
+		/// Fix crash when the potentialTargetObjects is null (probably no siege units to target).
+		/// </summary>
+		public static bool Prefix_GetAllThreats(ThreatSeeker __instance, ref List<ITargetable> ____potentialTargetObjects, ref List<Threat> __result)
+		{
+			// Make sure _potentialTargetObjects is not null when the original method is called
+			____potentialTargetObjects ??= new List<ITargetable>();
+
+			// Call the original method
+			return true;
+		}
 
 		/* Original method 
          * 

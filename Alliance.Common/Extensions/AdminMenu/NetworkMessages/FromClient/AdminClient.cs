@@ -25,6 +25,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 		public bool Unban { get; set; }
 		public bool ToggleMutePlayer { get; set; }
 		public bool Respawn { get; set; }
+		public bool RespawnAll { get; set; }
 		public bool SetSudo { get; set; }
 		public bool SetAdmin { get; set; }
 		public bool SetVIP { get; set; }
@@ -51,6 +52,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			WriteBoolToPacket(Unban);
 			WriteBoolToPacket(ToggleMutePlayer);
 			WriteBoolToPacket(Respawn);
+			WriteBoolToPacket(RespawnAll);
 			WriteBoolToPacket(SetSudo);
 			WriteBoolToPacket(SetAdmin);
 			WriteBoolToPacket(SetVIP);
@@ -79,6 +81,7 @@ namespace Alliance.Common.Extensions.AdminMenu.NetworkMessages.FromClient
 			Unban = ReadBoolFromPacket(ref bufferReadValid);
 			ToggleMutePlayer = ReadBoolFromPacket(ref bufferReadValid);
 			Respawn = ReadBoolFromPacket(ref bufferReadValid);
+			RespawnAll = ReadBoolFromPacket(ref bufferReadValid);
 			SetSudo = ReadBoolFromPacket(ref bufferReadValid);
 			SetAdmin = ReadBoolFromPacket(ref bufferReadValid);
 			SetVIP = ReadBoolFromPacket(ref bufferReadValid);

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
@@ -74,7 +75,7 @@ namespace Alliance.Common.Core.Utils
 				troopType = ClassType.BannerBearer;
 			}
 
-			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 
 			// Ignore perks if it only contains a default one
 			if (allPerksForHeroClass.Count >= 0 && allPerksForHeroClass[0].Count == 1 && allPerksForHeroClass[0][0].Name.Value.Contains("Default"))
@@ -134,6 +135,13 @@ namespace Alliance.Common.Core.Utils
 		public static int GetSpeakingRange(this Agent agent)
 		{
 			return AgentsInfoModel.Instance.Agents[agent.Index].SpeakingRange;
+		}
+
+		public static void SyncHealthLimit(this Agent agent)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new SetHealthLimitMessage(agent.Index, (int)agent.HealthLimit));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 	}
 }

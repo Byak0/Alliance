@@ -40,6 +40,22 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 			base.OnBehaviorInitialize();
 			_builtEntities.Clear();
 			_nextBuildIndex = 0;
+			// If mission has rounds, add a listener to disable UsableMachines at the end of each round.
+			MultiplayerRoundController roundComponent = Mission.Current?.GetMissionBehavior<MultiplayerRoundController>();
+			if (roundComponent != null)
+			{
+				roundComponent.OnPreRoundEnding += DisableTrackedUsableMachines;
+			}
+		}
+
+		public override void OnEndMissionInternal()
+		{
+			MultiplayerRoundController roundComponent = Mission.Current?.GetMissionBehavior<MultiplayerRoundController>();
+			if (roundComponent != null)
+			{
+				roundComponent.OnPreRoundEnding -= DisableTrackedUsableMachines;
+			}
+			base.OnEndMissionInternal();
 		}
 
 		protected override void HandleNewClientAfterSynchronized(NetworkCommunicator networkPeer)
@@ -279,6 +295,48 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 			entity.SetFrameChanged();
 		}
 
+		private static List<GameEntity> GetAllEntitiesRecursive(GameEntity rootEntity)
+		{
+			List<GameEntity> allEntities = new List<GameEntity>();
+			if (rootEntity == null)
+			{
+				return allEntities;
+			}
+
+			rootEntity.GetChildrenRecursive(ref allEntities);
+			allEntities.Add(rootEntity);
+			return allEntities;
+		}
+
+		private static void DisableUsableMachines(GameEntity rootEntity)
+		{
+			HashSet<UsableMachine> usableMachines = new HashSet<UsableMachine>();
+			foreach (GameEntity entity in GetAllEntitiesRecursive(rootEntity))
+			{
+				UsableMachine machine = entity.GetFirstScriptOfType<UsableMachine>();
+				if (machine != null)
+				{
+					usableMachines.Add(machine);
+				}
+			}
+
+			foreach (UsableMachine machine in usableMachines)
+			{
+				machine.Disable();
+			}
+		}
+
+		private void DisableTrackedUsableMachines()
+		{
+			foreach (BuildEntry entry in _builtEntities.Values)
+			{
+				if (entry.Entity != null)
+				{
+					DisableUsableMachines(entry.Entity);
+				}
+			}
+		}
+
 		public bool RemovePrefab(int buildIndex)
 		{
 			if (!_builtEntities.TryGetValue(buildIndex, out BuildEntry entry))
@@ -289,6 +347,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 
 			if (entry.Entity != null)
 			{
+				DisableUsableMachines(entry.Entity);
 				entry.Entity.SetVisibilityExcludeParents(false);
 				entry.Entity.RemoveAllChildren();
 				entry.Entity.Remove(0);

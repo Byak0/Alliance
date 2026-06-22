@@ -226,7 +226,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			// Check that the character has a hero class
 			if (_heroClass == null)
 			{
-				if (AvailableCharacter.CharacterStub.ClassType == ClassType.None) Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
+				if (AvailableCharacter.CharacterStub.HasClassType(ClassType.None)) Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
 				else Log($"Character {AvailableCharacter.Name} hero class is not loaded", LogLevel.Warning);
 				return;
 			}

@@ -10,6 +10,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
 
@@ -24,6 +25,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 	{
 		private static XmlSerializer _xmlSerializer;
 		private static XmlSerializer _conditionalActionSerializer;
+		private static readonly object _knownTypeNamesCacheLock = new object();
+		private static readonly Dictionary<Type, HashSet<string>> _knownTypeNamesCache = new Dictionary<Type, HashSet<string>>();
 
 		private static XmlSerializer XmlSerializer
 		{
@@ -55,15 +58,11 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// <returns>A configured XmlSerializer.</returns>
 		private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
 		{
-			var derivedTypes = new List<Type>();
-			foreach (var baseType in baseTypes)
-			{
-				derivedTypes.AddRange(Assembly.GetAssembly(baseType)
-					.GetTypes()
-					.Where(t => t.IsSubclassOf(baseType) && !t.IsAbstract));
-			}
+			Type[] derivedTypes = GetSerializableDerivedTypes(baseTypes)
+				.Distinct()
+				.ToArray();
 
-			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
+			return new XmlSerializer(rootType, derivedTypes);
 		}
 
 		public static void SerializeScenarioToXML(Scenario scenarioToSerialize, string filePath)
@@ -152,7 +151,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// <summary>
 		/// Deserialize a base64 string into a ConditionalActionStruct.
 		/// </summary>
-		public static ConditionalActionStruct DeserializeConditionalActionStruct(string serializedConditionalAction)
+		public static ConditionalActionStruct DeserializeConditionalActionStruct(string serializedConditionalAction, string ownerEntityContext = null)
 		{
 			if (string.IsNullOrEmpty(serializedConditionalAction))
 			{
@@ -167,6 +166,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				{
 					return new ConditionalActionStruct();
 				}
+
+				xmlString = RemoveObsoleteConditionalActionEntries(xmlString, ownerEntityContext);
 
 				ConditionalActionStruct conditionalActionStruct;
 
@@ -191,6 +192,132 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			}
 
 			return new ConditionalActionStruct();
+		}
+
+		private static string RemoveObsoleteConditionalActionEntries(string xmlString, string ownerEntityContext)
+		{
+			try
+			{
+				XDocument document = XDocument.Parse(xmlString, LoadOptions.PreserveWhitespace);
+				bool hasChanges = false;
+				HashSet<string> knownConditionTypeNames = GetKnownDerivedTypeNames(typeof(Condition));
+				HashSet<string> knownActionTypeNames = GetKnownDerivedTypeNames(typeof(ActionBase));
+
+				hasChanges |= RemoveObsoleteEntries(document, "Conditions", "Condition", knownConditionTypeNames, "condition", ownerEntityContext);
+				hasChanges |= RemoveObsoleteEntries(document, "Actions", "ActionBase", knownActionTypeNames, "action", ownerEntityContext);
+
+				return hasChanges ? document.ToString(SaveOptions.DisableFormatting) : xmlString;
+			}
+			catch (Exception ex)
+			{
+				Log($"Could not pre-filter obsolete conditional action entries: {ex.Message}", LogLevel.Warning);
+				return xmlString;
+			}
+		}
+
+		private static bool RemoveObsoleteEntries(
+			XDocument document,
+			string containerName,
+			string fallbackTypeName,
+			HashSet<string> knownTypeNames,
+			string kind,
+			string ownerEntityContext)
+		{
+			bool hasChanges = false;
+			XNamespace xsiNamespace = "http://www.w3.org/2001/XMLSchema-instance";
+
+			foreach (XElement container in document.Descendants().Where(e => e.Name.LocalName == containerName))
+			{
+				foreach (XElement child in container.Elements().ToList())
+				{
+					string elementTypeName = child.Name.LocalName;
+					if (elementTypeName == fallbackTypeName)
+					{
+						XAttribute xsiTypeAttribute = child.Attribute(xsiNamespace + "type");
+						string xsiTypeName = GetTypeNameFromXsiType(xsiTypeAttribute?.Value);
+						if (!string.IsNullOrEmpty(xsiTypeName))
+						{
+							elementTypeName = xsiTypeName;
+						}
+					}
+
+					if (knownTypeNames.Contains(elementTypeName))
+					{
+						continue;
+					}
+
+					child.Remove();
+					hasChanges = true;
+					string entityContextSuffix = string.IsNullOrWhiteSpace(ownerEntityContext)
+						? string.Empty
+						: $" on entity '{ownerEntityContext}'";
+					Log($"Skipped obsolete {kind} '{elementTypeName}' while deserializing ConditionalActionStruct{entityContextSuffix}.", LogLevel.Warning);
+				}
+			}
+
+			return hasChanges;
+		}
+
+		private static string GetTypeNameFromXsiType(string xsiType)
+		{
+			if (string.IsNullOrEmpty(xsiType))
+			{
+				return null;
+			}
+
+			int separatorIndex = xsiType.IndexOf(':');
+			return separatorIndex >= 0 ? xsiType.Substring(separatorIndex + 1) : xsiType;
+		}
+
+		private static HashSet<string> GetKnownDerivedTypeNames(Type baseType)
+		{
+			lock (_knownTypeNamesCacheLock)
+			{
+				if (_knownTypeNamesCache.TryGetValue(baseType, out HashSet<string> cachedTypeNames))
+				{
+					return cachedTypeNames;
+				}
+
+				HashSet<string> computedTypeNames = GetSerializableDerivedTypes(baseType)
+					.SelectMany(GetXmlTypeNames)
+					.ToHashSet();
+				_knownTypeNamesCache[baseType] = computedTypeNames;
+				return computedTypeNames;
+			}
+		}
+
+		private static IEnumerable<Type> GetSerializableDerivedTypes(params Type[] baseTypes)
+		{
+			IEnumerable<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(a =>
+				{
+					try
+					{
+						return a.GetTypes();
+					}
+					catch (ReflectionTypeLoadException ex)
+					{
+						return ex.Types.Where(t => t != null);
+					}
+					catch
+					{
+						return Enumerable.Empty<Type>();
+					}
+				});
+
+			return allTypes
+				.Where(t => t != null && !t.IsAbstract && baseTypes.Any(t.IsSubclassOf));
+		}
+
+		private static IEnumerable<string> GetXmlTypeNames(Type type)
+		{
+			yield return type.Name;
+
+			XmlTypeAttribute xmlTypeAttribute = type.GetCustomAttribute<XmlTypeAttribute>();
+			if (!string.IsNullOrWhiteSpace(xmlTypeAttribute?.TypeName))
+			{
+				yield return xmlTypeAttribute.TypeName;
+			}
 		}
 
 		public static string CompressString(string text)
@@ -302,7 +429,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 
 			if (actionMethod == null)
 			{
-				Log($"Action method '{obj.GetType().Name}' not found in ActionFactory.", LogLevel.Error);
+				bool isAllianceAction = obj.GetType().Assembly == typeof(ActionBase).Assembly;
+				Log($"Action method '{obj.GetType().Name}' not found in ActionFactory, keeping deserialized instance.", isAllianceAction ? LogLevel.Error : LogLevel.Warning);
 				return obj;
 			}
 

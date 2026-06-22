@@ -38,6 +38,9 @@ namespace Alliance.Common.Patch
 			// Increase max health of objects to 104856.5 instead of 26213.3
 			CompressionMission.UsableGameObjectHealthCompressionInfo = new CompressionInfo.Float(-1f, 20, 0.1f);
 
+			// Doubles max speed of missiles (204.75 -> 409.5) by slightly reducing precision (same payload)
+			CompressionMission.MissileSpeedCompressionInfo = new CompressionInfo.Float(0f, 12, 0.1f);
+
 			// TODO : Check if still necessary with 1.2 optimisation
 			// Fix native lag when lot of arrows
 			//typeof(CompressionBasic).GetField(nameof(CompressionBasic.BigRangeLowResLocalPositionCompressionInfo), BindingFlags.Static).

@@ -36,6 +36,20 @@
 	<ItemGroup>
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Resource Include="Resources\alliance_delete.png" />
+	  <Resource Include="Resources\alliance_edit.png" />
+	  <Resource Include="Resources\alliance_edit2.png" />
+	  <Resource Include="Resources\alliance_help.png" />
+	  <Resource Include="Resources\alliance_help2.png" />
+	  <Resource Include="Resources\alliance_ico.ico" />
+	  <Resource Include="Resources\alliance_info.png" />
+	  <Resource Include="Resources\alliance_manual.png" />
+	  <Resource Include="Resources\alliance_save.png" />
+	  <Resource Include="Resources\alliance_saveas.png" />
+	  <Resource Include="Resources\alliance_translation.png" />
+	</ItemGroup>
 
 	<Target Name="RemoveModulePackageDir" AfterTargets="BeforeBuild">
 		<!-- Clean folders before build -->
