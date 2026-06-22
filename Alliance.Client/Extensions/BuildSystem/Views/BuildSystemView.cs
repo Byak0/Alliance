@@ -56,10 +56,17 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 				},
 				new BindedKey()
 				{
-					Id = "key_build_rotate",
-					Description = "Rotate building",
-					Name = "Rotate building",
-					DefaultInputKey = InputKey.MiddleMouseButton,
+					Id = "key_build_rotate_left",
+					Description = "Rotate building left",
+					Name = "Rotate building left",
+					DefaultInputKey = InputKey.Q,
+				},
+				new BindedKey()
+				{
+					Id = "key_build_rotate_right",
+					Description = "Rotate building right",
+					Name = "Rotate building right",
+					DefaultInputKey = InputKey.E,
 				},
 				new BindedKey()
 				{
@@ -90,7 +97,8 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		private GameKey _buildKey;
 		private GameKey _confirmKey;
 		private GameKey _cancelKey;
-		private GameKey _rotateKey;
+		private GameKey _rotateLeftKey;
+		private GameKey _rotateRightKey;
 		private GameKey _nextKey;
 		private GameKey _prevKey;
 		private GameKey _deleteKey;
@@ -100,7 +108,7 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		private float _rotationAngle;
 		private GameEntity _ghostEntity;
 
-		private const float ROTATION_STEP = 15f; // degrees per click
+		private const float ROTATION_SPEED = 120f; // degrees per second when key is held
 		private const float MAX_BUILD_DISTANCE = 50f;
 
 		public override void EarlyStart()
@@ -109,7 +117,8 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			_buildKey = keys.Find(gk => gk != null && gk.StringId == "key_build_place");
 			_confirmKey = keys.Find(gk => gk != null && gk.StringId == "key_build_confirm");
 			_cancelKey = keys.Find(gk => gk != null && gk.StringId == "key_build_cancel");
-			_rotateKey = keys.Find(gk => gk != null && gk.StringId == "key_build_rotate");
+			_rotateLeftKey = keys.Find(gk => gk != null && gk.StringId == "key_build_rotate_left");
+			_rotateRightKey = keys.Find(gk => gk != null && gk.StringId == "key_build_rotate_right");
 			_nextKey = keys.Find(gk => gk != null && gk.StringId == "key_build_next");
 			_prevKey = keys.Find(gk => gk != null && gk.StringId == "key_build_prev");
 			_deleteKey = keys.Find(gk => gk != null && gk.StringId == "key_build_delete");
@@ -129,7 +138,13 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			if (IsKeyPressed(_nextKey)) CyclePrefab(1);
 			if (IsKeyPressed(_prevKey)) CyclePrefab(-1);
 
-			if (IsKeyPressed(_rotateKey)) _rotationAngle += ROTATION_STEP;
+			float rotationInput = 0f;
+			if (IsKeyDown(_rotateLeftKey)) rotationInput += 1f;
+			if (IsKeyDown(_rotateRightKey)) rotationInput -= 1f;
+			if (rotationInput != 0f)
+			{
+				_rotationAngle += rotationInput * ROTATION_SPEED * dt;
+			}
 
 			UpdateGhostPreview();
 
@@ -141,6 +156,11 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 		private bool IsKeyPressed(GameKey key)
 		{
 			return Input.IsKeyPressed(key.KeyboardKey.InputKey) || Input.IsKeyPressed(key.ControllerKey.InputKey);
+		}
+
+		private bool IsKeyDown(GameKey key)
+		{
+			return Input.IsKeyDown(key.KeyboardKey.InputKey) || Input.IsKeyDown(key.ControllerKey.InputKey);
 		}
 
 		private void ToggleBuildMode()
@@ -166,8 +186,6 @@ namespace Alliance.Client.Extensions.BuildSystem.Views
 			}
 
 			_isBuildMode = true;
-			_selectedPrefabIndex = 0;
-			_rotationAngle = 0f;
 			CreateGhostEntity();
 			Log("Build mode ON - Use scroll to select, click to place, right-click to cancel.", LogLevel.Information);
 		}
