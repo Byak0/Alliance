@@ -130,8 +130,12 @@ namespace Alliance.Client.Extensions.TroopSpawner.Models
 				if (_selectedTeam != value)
 				{
 					_selectedTeam = value;
-					BannerCode = value.Banner?.BannerCode;
-					OnFactionSelected?.Invoke();
+					BannerCode = value?.Banner?.BannerCode;
+
+					// Update selected culture based on team side
+					BasicCultureObject culture1 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
+					BasicCultureObject culture2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+					SelectedFaction = value?.Side == BattleSideEnum.Attacker ? culture1 : culture2;
 				}
 			}
 		}
