@@ -777,6 +777,13 @@ namespace Alliance.Client.Extensions.AdminMenu.ViewModels
 		}
 
 		[UsedImplicitly]
+		public void RespawnAll()
+		{
+			if (_selectedPeer == null) { return; }
+			ClientAdminMenuMsg.SendMessageToServer(new AdminClient() { RespawnAll = true, PlayerSelected = PlayerId.Empty });
+		}
+
+		[UsedImplicitly]
 		public void TeleportToPlayer()
 		{
 			if (_selectedPeer == null) { return; }

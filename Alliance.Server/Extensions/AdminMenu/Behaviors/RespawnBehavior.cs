@@ -140,7 +140,6 @@ namespace Alliance.Server.Extensions.AdminMenu.Behaviors
 					}
 
 				}
-
 			}
 		}
 
