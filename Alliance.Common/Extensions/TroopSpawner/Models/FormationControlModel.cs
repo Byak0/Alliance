@@ -24,17 +24,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         {
         }
 
-        public void DebugLog()
-        {
-            foreach(KeyValuePair<int, Dictionary<FormationClass, MissionPeer>> teamMap in playerFormationMapping)
-			{
-				foreach (KeyValuePair<FormationClass, MissionPeer> formationMap in teamMap.Value)
-				{
-					Log($"-Team {teamMap.Key} Formation {formationMap.Key} controlled by {formationMap.Value?.Name}", LogLevel.Debug);
-				}
-			}
-        }
-
         public void Clear()
         {
             playerFormationMapping.Clear();
@@ -97,8 +86,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (GameNetwork.IsServer) missionPeer.ControlledAgent?.Team.AssignPlayerAsSergeantOfFormation(missionPeer, formationClass);
             FormationControlChanged?.Invoke(teamIndex, formationClass, missionPeer);
             Log($"Assigned {missionPeer.Name} control over team {teamIndex} formation {formationClass}", LogLevel.Debug);
-
-			DebugLog();
 
 			if (sync)
             {
