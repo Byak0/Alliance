@@ -134,7 +134,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (sync)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
-                GameNetwork.WriteMessage(new FormationControlMessage(missionPeer.GetNetworkPeer(), teamIndex, formationClass, false));
+                GameNetwork.WriteMessage(new FormationControlMessage(missionPeer.GetNetworkPeer(), teamIndex, formationClass, true));
                 GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
             }
         }
@@ -172,17 +172,19 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         }
 
         public List<FormationClass> GetControlledFormations(MissionPeer missionPeer)
-        {            
-            if(missionPeer.Team == null) return new List<FormationClass>();
+		{
+			List<FormationClass> controlledFormations = new();
 
-			playerFormationMapping.TryGetValue(missionPeer.Team.TeamIndex, out var formationMapping);
+			if (missionPeer.Team == null) return controlledFormations;
 
-            List<FormationClass> controlledFormations = new();
-			foreach (KeyValuePair<FormationClass, MissionPeer> kvp in formationMapping)
-			{
-				if (kvp.Value == missionPeer)
+			if(playerFormationMapping.TryGetValue(missionPeer.Team.TeamIndex, out var formationMapping))
+            {
+				foreach (KeyValuePair<FormationClass, MissionPeer> kvp in formationMapping)
 				{
-					controlledFormations.Add(kvp.Key);
+					if (kvp.Value == missionPeer)
+					{
+						controlledFormations.Add(kvp.Key);
+					}
 				}
 			}
 
