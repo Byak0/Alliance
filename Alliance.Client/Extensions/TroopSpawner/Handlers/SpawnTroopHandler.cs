@@ -28,14 +28,13 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 		public void HandleFormationControlMessage(FormationControlMessage message)
 		{
 			MissionPeer target = message.Peer.GetComponent<MissionPeer>();
-			Team team = Mission.MissionNetworkHelper.GetTeamFromTeamIndex(message.TeamIndex);
 			if (message.Delete)
 			{
-				FormationControlModel.Instance.RemoveControlFromPlayer(target, team, message.Formation);
+				FormationControlModel.Instance.RemoveControlFromPlayer(target, message.TeamIndex, message.Formation);
 			}
 			else
 			{
-				FormationControlModel.Instance.AssignControlToPlayer(target, team, message.Formation);
+				FormationControlModel.Instance.AssignControlToPlayer(target, message.TeamIndex, message.Formation);
 			}
 		}
 

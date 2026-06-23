@@ -253,7 +253,7 @@ namespace Alliance.Server.Patch.HarmonyPatch
 
 			// Give control to player
 			Log($"Giving control of formation {formation.Index} to {networkPeer.UserName}", LogLevel.Information);
-			FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), teamOfPeer, formation.FormationIndex, true);
+			FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), teamOfPeer.TeamIndex, formation.FormationIndex, true);
 
 			int number = message.Number;
 			if (teamOfPeer != null && orderController != null && formation != null)

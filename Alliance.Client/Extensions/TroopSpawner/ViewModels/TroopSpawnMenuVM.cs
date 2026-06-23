@@ -397,9 +397,9 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !troopTooCostly;
 		}
 
-		private void OnFormationControlChanged(FormationClass formationClass, Team team, MissionPeer commander)
+		private void OnFormationControlChanged(int teamIndex, FormationClass formationClass, MissionPeer commander)
 		{
-			if (Formations == null || Formations.Count < (int)formationClass || SpawnTroopsModel.Instance.SelectedTeam != team)
+			if (Formations == null || Formations.Count < (int)formationClass || SpawnTroopsModel.Instance.SelectedTeam.TeamIndex != teamIndex)
 			{
 				return;
 			}
