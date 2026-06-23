@@ -40,7 +40,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			MissionPeer commander = model.Peer.GetComponent<MissionPeer>();
 			if (commander == null) return false;
 
-			FormationControlModel.Instance.AssignControlToPlayer(commander, model.Formation, true);
+			FormationControlModel.Instance.AssignControlToPlayer(commander, commander.Team, model.Formation, true);
 			return true;
 		}
 
@@ -134,12 +134,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 				if (previousSergeant != missionPeer)
 				{
 					// Unassign previous sergeant from this formation to prevent crash 
-					if (previousSergeant != null)
-					{
-						FormationControlModel.Instance.RemoveControlFromPlayer(previousSergeant, (FormationClass)model.Formation, true);
-						previousSergeant.ControlledFormation = null;
-					}
-					FormationControlModel.Instance.AssignControlToPlayer(missionPeer, (FormationClass)model.Formation, true);
+					FormationControlModel.Instance.TransferControl(previousSergeant, missionPeer, (FormationClass)model.Formation, true);
 				}
 			}
 

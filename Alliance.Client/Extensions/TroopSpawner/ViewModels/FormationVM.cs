@@ -92,17 +92,15 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 		public FormationVM(Formation formation, Action<FormationVM> selectFormation)
 		{
 			Formation = formation;
-			RefreshCommanderInfos();
-			FormationControlModel.Instance.FormationControlChanged += RefreshCommanderInfos;
 			OrderTroopVM = new OrderTroopItemVM(formation, null, new Func<Formation, int>(GetFormationMorale));
 			OrderTroopVM.IsSelectable = true;
 			Formation.OnUnitCountChanged += RefreshFormationInfos;
 			_onFormationSelected = selectFormation;
+			SetCommanderInfos(FormationControlModel.Instance.GetControllerOfFormation(Formation));
 		}
 
 		public override void OnFinalize()
 		{
-			FormationControlModel.Instance.FormationControlChanged -= RefreshCommanderInfos;
 			Formation.OnUnitCountChanged -= RefreshFormationInfos;
 		}
 
@@ -113,12 +111,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 		public void RefreshCommanderVisual(Agent agent)
 		{
-			if (agent != null && OrderTroopVM != null) OrderTroopVM.CaptainImageIdentifier = new CharacterImageIdentifierVM(CharacterCode.CreateFrom(agent.Character));
+			if (OrderTroopVM == null) return;
+
+			if (agent != null) OrderTroopVM.CaptainImageIdentifier = new CharacterImageIdentifierVM(CharacterCode.CreateFrom(agent.Character));
+			else OrderTroopVM.CaptainImageIdentifier = null;
 		}
 
-		private void RefreshCommanderInfos()
+		public void SetCommanderInfos(MissionPeer commander)
 		{
-			MissionPeer commander = FormationControlModel.Instance.GetControllerOfFormation(Formation);
 			HasCommander = commander != null;
 			CommanderName = commander?.Name;
 			RefreshCommanderVisual(commander?.ControlledAgent);

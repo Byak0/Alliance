@@ -76,7 +76,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 				if (playerInCharge != null)
 				{
-					FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, Formation, true);
+					FormationControlModel.Instance.AssignControlToPlayer(playerInCharge, team, Formation, true);
 				}
 				else
 				{

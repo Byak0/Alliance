@@ -334,23 +334,16 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			Difficulty = SpawnHelper.DifficultyLevelFromString(Config.Instance.BotDifficulty);
 			UseTroopCost = Config.Instance.UseTroopCost;
 
-			Formations = new MBBindingList<FormationVM>();
-			for (int i = 0; i < 8; i++)
-			{
-				Formation formation = SpawnTroopsModel.Instance.SelectedTeam?.GetFormation((FormationClass)i);
-				FormationVM formationVM = new FormationVM(formation, SelectFormation);
-				if (i == SpawnTroopsModel.Instance.FormationSelected)
-				{
-					_selectedFormation = formationVM;
-					_selectedFormation.Selected = true;
-				}
-				Formations.Add(formationVM);
-				formationVM.Formation.OnUnitAdded += RefreshCommanderVisual;
-			}
+			MissionPeer myPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
+			SpawnTroopsModel.Instance.SelectedTeam = myPeer?.Team;
+			RefreshFormations();
+
 			SpawnTroopsModel.Instance.OnDifficultyUpdated += RefreshGold;
 			SpawnTroopsModel.Instance.OnTroopSelected += RefreshGold;
 			SpawnTroopsModel.Instance.OnTroopCountUpdated += RefreshGold;
 			SpawnTroopsModel.Instance.OnFactionSelected += RefreshFormations;
+			SpawnTroopsModel.Instance.OnFormationUpdated += RefreshFormations;
+			FormationControlModel.Instance.FormationControlChanged += OnFormationControlChanged;
 			_myRepresentative.OnGoldUpdated += RefreshGold;
 
 			TroopGroupVM troopGroupVM = TroopList.TroopGroups.FirstOrDefault();
@@ -361,13 +354,14 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 		public override void OnFinalize()
 		{
-			foreach (FormationVM formationVM in Formations)
-			{
-				formationVM.Formation.OnUnitAdded -= RefreshCommanderVisual;
-			}
+			foreach (FormationVM formationVM in Formations) formationVM.OnFinalize();
 			SpawnTroopsModel.Instance.OnDifficultyUpdated -= RefreshGold;
 			SpawnTroopsModel.Instance.OnTroopSelected -= RefreshGold;
 			SpawnTroopsModel.Instance.OnTroopCountUpdated -= RefreshGold;
+			SpawnTroopsModel.Instance.OnFactionSelected -= RefreshFormations;
+			SpawnTroopsModel.Instance.OnFormationUpdated -= RefreshFormations;
+			FormationControlModel.Instance.FormationControlChanged -= OnFormationControlChanged;
+			_myRepresentative.OnGoldUpdated -= RefreshGold;
 		}
 
 		public override void RefreshValues()
@@ -375,6 +369,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			// Refresh selected team
 			MissionPeer myPeer = GameNetwork.MyPeer?.GetComponent<MissionPeer>();
 			SpawnTroopsModel.Instance.SelectedTeam = myPeer?.Team;
+			RefreshFormations();
 		}
 
 		private void RefreshGold()
@@ -402,29 +397,21 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 			CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !troopTooCostly;
 		}
 
-		private void RefreshCommanderVisual(Formation formation, Agent agent)
+		private void OnFormationControlChanged(FormationClass formationClass, Team team, MissionPeer commander)
 		{
-			if (formation.Captain == null && agent.MissionPeer != null)
+			if (Formations == null || Formations.Count < (int)formationClass || SpawnTroopsModel.Instance.SelectedTeam != team)
 			{
-				// If new agent is the commander
-				if (FormationControlModel.Instance.GetControllerOfFormation(formation) == agent.MissionPeer)
-				{
-					// Update the commander visual in all of his formations
-					List<FormationClass> formationToRefresh = FormationControlModel.Instance.GetControlledFormations(agent.MissionPeer);
-					foreach (FormationClass formationClass in formationToRefresh)
-					{
-						Formations[(int)formationClass].RefreshCommanderVisual(agent);
-						Log("Updating commander visual for formation " + (int)formationClass, LogLevel.Debug);
-					}
-				}
+				return;
 			}
+
+			Formations[(int)formationClass].SetCommanderInfos(commander);
 		}
 
 		private void RefreshFormations()
 		{
-			foreach (FormationVM formationVM in Formations)
+			if(Formations != null)
 			{
-				formationVM.Formation.OnUnitAdded -= RefreshCommanderVisual;
+				foreach (FormationVM formationVM in Formations) formationVM.OnFinalize();
 			}
 			Formations = new MBBindingList<FormationVM>();
 			for (int i = 0; i < 8; i++)
@@ -437,7 +424,6 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 					_selectedFormation.Selected = true;
 				}
 				Formations.Add(formationVM);
-				formationVM.Formation.OnUnitAdded += RefreshCommanderVisual;
 			}
 		}
 
