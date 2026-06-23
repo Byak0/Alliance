@@ -133,8 +133,6 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 
 				if (previousSergeant != missionPeer)
 				{
-					// Unassign previous sergeant from this formation to prevent crash 
-					if(previousSergeant != null) FormationControlModel.Instance.RemoveControlFromPlayer(previousSergeant, missionPeer.Team.TeamIndex, (FormationClass)model.Formation, true);
 					FormationControlModel.Instance.AssignControlToPlayer(missionPeer, missionPeer.Team.TeamIndex, (FormationClass)model.Formation, true);
 				}
 			}

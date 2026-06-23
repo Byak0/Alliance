@@ -24,6 +24,17 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         {
         }
 
+        public void DebugLog()
+        {
+            foreach(KeyValuePair<int, Dictionary<FormationClass, MissionPeer>> teamMap in playerFormationMapping)
+			{
+				foreach (KeyValuePair<FormationClass, MissionPeer> formationMap in teamMap.Value)
+				{
+					Log($"-Team {teamMap.Key} Formation {formationMap.Key} controlled by {formationMap.Value?.Name}", LogLevel.Debug);
+				}
+			}
+        }
+
         public void Clear()
         {
             playerFormationMapping.Clear();
@@ -69,7 +80,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             if (!playerFormationMapping.TryGetValue(teamIndex, out var formationMapping))
             {
                 playerFormationMapping[teamIndex] = new Dictionary<FormationClass, MissionPeer>();
-            }
+				formationMapping = playerFormationMapping[teamIndex];
+			}
 			
             // Remove control from any other player controlling this formation
             if (formationMapping.TryGetValue(formationClass, out MissionPeer currentController))
@@ -86,7 +98,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
             FormationControlChanged?.Invoke(teamIndex, formationClass, missionPeer);
             Log($"Assigned {missionPeer.Name} control over team {teamIndex} formation {formationClass}", LogLevel.Debug);
 
-            if (sync)
+			DebugLog();
+
+			if (sync)
             {
                 GameNetwork.BeginBroadcastModuleEvent();
                 GameNetwork.WriteMessage(new FormationControlMessage(missionPeer.GetNetworkPeer(), teamIndex, formationClass));
@@ -100,7 +114,9 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
         /// <param name="sync">Set this to true if you want to synchronize with all clients</param>
         public void RemoveControlFromPlayer(MissionPeer missionPeer, int teamIndex, FormationClass formationClass, bool sync = false)
         {
-            if (playerFormationMapping.TryGetValue(teamIndex, out var formationMapping))
+            if(missionPeer == null) return;
+
+			if (playerFormationMapping.TryGetValue(teamIndex, out var formationMapping))
             {
                 if(formationMapping.TryGetValue(formationClass, out MissionPeer controller))
                 {
@@ -136,12 +152,6 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
 				}
 			}
 		}
-
-		public void TransferControl(MissionPeer fromPeer, MissionPeer toPeer, FormationClass formationClass, bool sync = false)
-        {
-            RemoveControlFromPlayer(fromPeer, toPeer.Team.TeamIndex, formationClass, sync);
-            AssignControlToPlayer(toPeer, toPeer.Team.TeamIndex, formationClass, sync);
-        }
 
         public void SendMappingToClient(NetworkCommunicator peer)
         {
@@ -212,6 +222,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Models
 
         public MissionPeer GetControllerOfFormation(Formation formation)
         {
+            if(formation.Team == null) return null;
+
 			if (playerFormationMapping.TryGetValue(formation.Team.TeamIndex, out var formationMapping))
 			{
 				if (formationMapping.TryGetValue(formation.FormationIndex, out var controller))
