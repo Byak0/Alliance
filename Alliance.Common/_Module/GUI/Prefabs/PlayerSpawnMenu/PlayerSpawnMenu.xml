@@ -189,10 +189,13 @@
 				</BrushWidget>
 
 				<!-- Selected perks -->
-				<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\FirstPerk\CandidatePerks}" MarginTop="-280"/>
-				<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\SecondPerk\CandidatePerks}" MarginTop="-280"/>
-				<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\ThirdPerk\CandidatePerks}" MarginTop="-280"/>
-
+				<Widget Id="PerksContainer" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Left" VerticalAlignment="Top" DoNotAcceptEvents="true" IsHidden="@ForceHidePerkPopups" >
+					<Children>
+						<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\FirstPerk\CandidatePerks}" MarginTop="-280" />
+						<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\SecondPerk\CandidatePerks}" MarginTop="-280" />
+						<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedCharacterVM\ThirdPerk\CandidatePerks}" MarginTop="-280" />
+					</Children>
+				</Widget>
 
 			</Children>
 		</BrushWidget>

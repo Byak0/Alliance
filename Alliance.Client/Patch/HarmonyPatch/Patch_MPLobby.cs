@@ -32,7 +32,18 @@ namespace Alliance.Client.Patch.HarmonyPatch
 			"act_arena_spectator",
 			"act_childhood_toddler_vigor",
 			"act_childhood_toddler_endurance",
-			"act_childhood_toddler_social"
+			"act_childhood_toddler_social",
+			"act_main_story_conspirator_kneel_down_1_continue",
+			"act_main_story_conspirator_kneel_down_2_continue",
+			"act_main_story_conspirator_kneel_down_3_continue",
+			"act_cutscene_kingdom_made_pose_02",
+			"act_cutscene_kingdom_made_pose_04",
+			"act_cutscene_kingdom_made_pose_05",
+			"act_cutscene_kingdom_made_pose_06",
+			"act_cutscene_join_faction_crew_d_loop",
+			"act_character_creation_nord_shipwrights_father",
+			"act_character_creation_nord_shipwrights_mother",
+			"act_talk_to_1"
 		};
 
 		private static readonly Harmony Harmony = new Harmony(SubModule.ModuleId + nameof(Patch_MPLobby));

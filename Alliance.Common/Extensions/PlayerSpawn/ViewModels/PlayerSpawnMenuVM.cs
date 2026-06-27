@@ -15,12 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using TaleWorlds.Core;
-using TaleWorlds.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Diamond;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
@@ -54,6 +52,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private float _timeBeforeOfficerElection;
 		private string _formationInfoText;
 		private bool _showTroops;
+		private bool _forceHidePerkPopups = true;
 		private string _playerSpawnInfo;
 		private float _timeBeforeSpawn;
 		private bool _showSpawnInfo;
@@ -159,6 +158,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				{
 					_showTroops = value;
 					OnPropertyChangedWithValue(value, nameof(ShowTroops));
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool ForceHidePerkPopups
+		{
+			get => _forceHidePerkPopups;
+			set
+			{
+				if (value != _forceHidePerkPopups)
+				{
+					_forceHidePerkPopups = value;
+					OnPropertyChangedWithValue(value, nameof(ForceHidePerkPopups));
 				}
 			}
 		}
@@ -655,6 +668,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (formationVM != null)
 			{
+				if (SelectedCharacterVM != null) ClearCharacterSelection();
 				if (SelectedFormationVM != null) SelectedFormationVM.IsSelected = false;
 				_selectedFormationVM = formationVM;
 				formationVM.IsSelected = true;
@@ -834,16 +848,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			SelectedCharacterVM.RefreshValues();
 			SelectedFormationVM.RefreshValues();
 			ShowSpawnInfo = true;
+			ForceHidePerkPopups = false;
 		}
 
 		private void ClearCharacterSelection()
 		{
+			ForceHidePerkPopups = true;
 			if (SelectedCharacterVM != null)
 			{
 				_previouslySelectedCharacterVM = SelectedCharacterVM;
 				_previouslySelectedCharacterVM.FallBack();
 				_previouslySelectedCharacterVM.IsSelected = false;
-				_officerCharacterWaitingForValidationVM = null;
+				_officerCharacterWaitingForValidationVM = null;				
 				SelectedCharacterVM = null;
 			}
 		}
