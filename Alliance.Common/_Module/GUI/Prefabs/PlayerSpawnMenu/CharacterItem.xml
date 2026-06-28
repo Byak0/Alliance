@@ -17,7 +17,7 @@
 					<Children>
 
 						<!-- Character Tableau -->
-						<AL_CharacterTableauWidget DataSource="{CharacterViewModel}"
+						<CharacterTableauWidget DataSource="{CharacterViewModel}"
 														WidthSizePolicy="Fixed"
 														HeightSizePolicy="Fixed"
 														SuggestedWidth="800"
