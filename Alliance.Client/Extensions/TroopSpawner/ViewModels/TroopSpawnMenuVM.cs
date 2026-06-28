@@ -394,7 +394,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 				TotalGold = totalGold;
 			}
 
-			CanRecruit = GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander() && !troopTooCostly;
+			CanRecruit = (GameNetwork.MyPeer.IsAdmin() || GameNetwork.MyPeer.IsCommander()) && !troopTooCostly;
 		}
 
 		private void OnFormationControlChanged(int teamIndex, FormationClass formationClass, MissionPeer commander)

@@ -257,7 +257,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 				return false;
 			}
 			// If player lacks gold
-			if (!model.SpawnAtExactPosition && isCommander && Config.Instance.UseTroopCost && goldRemaining < 0)
+			if (!model.SpawnAtExactPosition && Config.Instance.UseTroopCost && goldRemaining < 0)
 			{
 				refuseReason = "You need more gold.";
 				return false;
