@@ -491,7 +491,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 					Log($"Loading PlayerSpawnMenu from {filePath}");
 					playerSpawnMenu = SerializeHelper.LoadClassFromFile(filePath, new PlayerSpawnMenu());
 					playerSpawnMenu.RefreshIndices(); // Ensure indices are unique and valid
-					return true;
+					return playerSpawnMenu.CheckCharacterValidity();
 				}
 				else
 				{
@@ -503,6 +503,26 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				Log($"Failed to load PlayerSpawnMenu from {filePath}: {ex.Message}", LogLevel.Error);
 			}
 			return false;
+		}
+
+		private bool CheckCharacterValidity()
+		{
+			bool validity = true;
+			foreach (PlayerTeam team in Teams)
+			{				
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					foreach (AvailableCharacter character in formation.AvailableCharacters)
+					{
+						if(character.CharacterStub == null)
+						{
+							Log($"Character {character.Name} in formation {formation.Name} of team {team.Name} is invalid (CharacterStub is null).", LogLevel.Error);
+							return false;
+						}
+					}
+				}
+			}
+			return validity;
 		}
 
 		/// <summary>
