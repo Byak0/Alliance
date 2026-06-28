@@ -229,12 +229,13 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 			}
 
 			// Make use of the warmup to let players elect their officers
-			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimitInSeconds.GetIntValue());
+			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(Config.Instance.ElectionTimer);
 		}
 
 		private void StartPlayerSpawnSession()
 		{
-			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
+			float maxSpawnTime = Math.Max(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), Config.Instance.FreeRespawnTimer);
+			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), maxSpawnTime);
 		}
 
 		protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)

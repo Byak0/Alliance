@@ -13,7 +13,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		[ConfigProperty(true, "Localized armor", "Enable localized armor system for bots and players.", category: "General")]
 		public bool LocalizedArmor = true;
 		[ConfigProperty(true, "Time before start", "Duration in seconds during which players are stuck in starting zone.", 0, 600, category: "General")]
-		public int TimeBeforeStart = 30;
+		public int ElectionTimer = 30;
 		[ConfigProperty(true, "Allow spawn during round", "Allow players to spawn while round is in progress.", category: "General")]
 		public bool AllowSpawnInRound = true;
 		[ConfigProperty(true, "Free respawn timer", "Duration in seconds during which players can freely respawn after round start.", 0, 3600, category: "General")]

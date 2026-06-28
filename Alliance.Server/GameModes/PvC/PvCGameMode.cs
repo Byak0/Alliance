@@ -33,6 +33,7 @@ namespace Alliance.Server.GameModes.PvC
 
 				// Native captain behaviors
 				new MultiplayerRoundController(),
+				new MultiplayerWarmupComponent(),
 				new MultiplayerTeamSelectComponent(),
 				new MissionAgentPanicHandler(),
 				new AgentVictoryLogic()

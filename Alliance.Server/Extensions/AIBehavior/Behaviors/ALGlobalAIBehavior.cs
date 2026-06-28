@@ -46,7 +46,7 @@ namespace Alliance.Server.Extensions.AIBehavior.Behaviors
 			Mission.Current.AllowAiTicking = false;
 			AddTeamAI(Mission.Current.AttackerTeam);
 			AddTeamAI(Mission.Current.DefenderTeam);
-			EnableAIAfterTimer(Config.Instance.TimeBeforeStart * 1000 + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			EnableAIAfterTimer(1000 * MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
 		}
 
 		private async void EnableAIAfterTimer(int waitTime)
