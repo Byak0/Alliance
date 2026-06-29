@@ -246,14 +246,14 @@ namespace Alliance.Server.Patch.HarmonyPatch
 			Team teamOfPeer = (Team)(typeof(MissionNetworkComponent).GetMethod("GetTeamOfPeer",
 						BindingFlags.Instance | BindingFlags.NonPublic)?
 						.Invoke(__instance, new object[] { networkPeer }));
-			OrderController orderController = teamOfPeer != null ? teamOfPeer.GetOrderControllerOf(networkPeer.ControlledAgent) : null;
+			OrderController orderController = teamOfPeer?.GetOrderControllerOf(networkPeer.ControlledAgent);
 
 			// Remove check on CountOfUnits to allow transfer to empty formations
-			Formation formation = teamOfPeer != null ? teamOfPeer.FormationsIncludingEmpty.SingleOrDefault((f) => /*f.CountOfUnits > 0 && */f.Index == message.FormationIndex) : null;
+			Formation formation = teamOfPeer?.FormationsIncludingEmpty.SingleOrDefault((f) => /*f.CountOfUnits > 0 && */f.Index == message.FormationIndex);
 
 			// Give control to player
 			Log($"Giving control of formation {formation.Index} to {networkPeer.UserName}", LogLevel.Information);
-			FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), formation.FormationIndex, true);
+			FormationControlModel.Instance.AssignControlToPlayer(networkPeer.GetComponent<MissionPeer>(), teamOfPeer.TeamIndex, formation.FormationIndex, true);
 
 			int number = message.Number;
 			if (teamOfPeer != null && orderController != null && formation != null)

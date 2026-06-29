@@ -40,7 +40,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 			MissionPeer commander = model.Peer.GetComponent<MissionPeer>();
 			if (commander == null) return false;
 
-			FormationControlModel.Instance.AssignControlToPlayer(commander, model.Formation, true);
+			FormationControlModel.Instance.AssignControlToPlayer(commander, commander.Team.TeamIndex, (FormationClass)model.Formation, true);
 			return true;
 		}
 
@@ -133,13 +133,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 
 				if (previousSergeant != missionPeer)
 				{
-					// Unassign previous sergeant from this formation to prevent crash 
-					if (previousSergeant != null)
-					{
-						FormationControlModel.Instance.RemoveControlFromPlayer(previousSergeant, (FormationClass)model.Formation, true);
-						previousSergeant.ControlledFormation = null;
-					}
-					FormationControlModel.Instance.AssignControlToPlayer(missionPeer, (FormationClass)model.Formation, true);
+					FormationControlModel.Instance.AssignControlToPlayer(missionPeer, missionPeer.Team.TeamIndex, (FormationClass)model.Formation, true);
 				}
 			}
 
@@ -263,7 +257,7 @@ namespace Alliance.Server.Extensions.TroopSpawner.Handlers
 				return false;
 			}
 			// If player lacks gold
-			if (!model.SpawnAtExactPosition && isCommander && Config.Instance.UseTroopCost && goldRemaining < 0)
+			if (!model.SpawnAtExactPosition && Config.Instance.UseTroopCost && goldRemaining < 0)
 			{
 				refuseReason = "You need more gold.";
 				return false;

@@ -30,11 +30,11 @@ namespace Alliance.Client.Extensions.TroopSpawner.Handlers
 			MissionPeer target = message.Peer.GetComponent<MissionPeer>();
 			if (message.Delete)
 			{
-				FormationControlModel.Instance.RemoveControlFromPlayer(target, message.Formation);
+				FormationControlModel.Instance.RemoveControlFromPlayer(target, message.TeamIndex, message.Formation);
 			}
 			else
 			{
-				FormationControlModel.Instance.AssignControlToPlayer(target, message.Formation);
+				FormationControlModel.Instance.AssignControlToPlayer(target, message.TeamIndex, message.Formation);
 			}
 		}
 

@@ -30,6 +30,7 @@ namespace Alliance.Client.GameModes.PvC
 
 				// Native behaviors
 				new MultiplayerRoundComponent(),
+				new MultiplayerWarmupComponent(),
 				new MultiplayerTeamSelectComponent()
 			});
 			return behaviors;

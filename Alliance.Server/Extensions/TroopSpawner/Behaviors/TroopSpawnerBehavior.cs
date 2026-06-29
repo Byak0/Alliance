@@ -62,6 +62,11 @@ namespace Alliance.Server.Extensions.TroopSpawner.Behaviors
 			FormationControlModel.Instance.SendMappingToClient(networkPeer);
 		}
 
+		protected override void HandleEarlyPlayerDisconnect(NetworkCommunicator networkPeer)
+		{
+			FormationControlModel.Instance.RemoveAllControlFromPlayer(networkPeer.GetComponent<MissionPeer>(), true);
+		}
+
 		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
 			FormationControlModel.Instance.ReassignControlToAgent(agent);
