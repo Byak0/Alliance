@@ -89,7 +89,9 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
-				int numberToSpawn = characterToSpawn.IsPercentage ? (int)((characterToSpawn.SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : characterToSpawn.SpawnCount;
+				int numberToSpawn = characterToSpawn.IsPercentage ? 
+					SpawnHelper.GetTroopCountFromPercentage(characterToSpawn.SpawnCount) : 
+					characterToSpawn.SpawnCount;
 
 				for (int i = 0; i < numberToSpawn; i++)
 				{
