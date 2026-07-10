@@ -168,7 +168,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool TeleportPlayerToYou(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			if (playerSelected == null) return false;
 
@@ -200,7 +200,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool TeleportToPlayer(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			// Check if admin and target player both have an agent
 			if (playerSelected == null) return false;
@@ -241,7 +241,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool HealPlayer(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			healPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
@@ -252,10 +252,10 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool Respawn(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
-			MissionPeer missionPeer = playerSelected.GetComponent<MissionPeer>();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);			
+			MissionPeer missionPeer = playerSelected?.GetComponent<MissionPeer>();
 
-			if (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam)
+			if (missionPeer != null && (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam))
 			{
 				Mission.Current.GetMissionBehavior<RespawnBehavior>().RespawnPlayer(playerSelected);
 				Log($"[AdminPanel][RESPAWN] Player {playerSelected?.UserName} respawn by admin {peer.UserName}", LogLevel.Information);
@@ -274,13 +274,11 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 		public bool RespawnAll(NetworkCommunicator peer, AdminClient admin)
 		{
 			List<NetworkCommunicator> playersSelected = GameNetwork.NetworkPeers.ToList();
-			MissionPeer missionPeer;
-
 			RespawnBehavior respawnBehavior = Mission.Current.GetMissionBehavior<RespawnBehavior>();
 
 			foreach (var playerSelected in playersSelected)
 			{
-				missionPeer = playerSelected.GetComponent<MissionPeer>();
+				MissionPeer missionPeer = playerSelected.GetComponent<MissionPeer>();
 
 				if (missionPeer.Team == Mission.Current.AttackerTeam || missionPeer.Team == Mission.Current.DefenderTeam)
 				{
@@ -306,7 +304,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool GodMod(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			godModPlayers(new List<NetworkCommunicator> { playerSelected }, peer);
 
@@ -350,7 +348,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool Kill(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			if (playerSelected == null) return true;
 
@@ -364,7 +362,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool SendWarningToPlayer(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			// Check si joueur existe
 			if (playerSelected == null) return false;
@@ -380,7 +378,7 @@ namespace Alliance.Server.Extensions.AdminMenu.Handlers
 
 		public bool Kick(NetworkCommunicator peer, AdminClient admin)
 		{
-			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.Where(x => x.VirtualPlayer.Id == admin.PlayerSelected).FirstOrDefault();
+			NetworkCommunicator playerSelected = GameNetwork.NetworkPeers.FirstOrDefault(x => x.VirtualPlayer.Id == admin.PlayerSelected);
 
 			// Check si joueur existe
 			if (playerSelected == null)
