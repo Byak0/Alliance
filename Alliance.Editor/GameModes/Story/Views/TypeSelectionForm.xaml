@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Select Type"
-        Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
+        Icon="pack://application:,,,/Alliance.Editor;component/Resources/alliance_ico.ico"
         Width="256"
         SizeToContent="Height"
         MinHeight="200"

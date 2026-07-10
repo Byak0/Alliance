@@ -9,7 +9,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{Binding ObjectEditorVM.Title}" Height="480" Width="512"
-		Icon="pack://application:,,,/Alliance.Common;component/Resources/alliance_ico.ico"
+		Icon="pack://application:,,,/Alliance.Editor;component/Resources/alliance_ico.ico"
         d:DataContext="{d:DesignInstance Type=vm:ScenarioEditorViewModel, IsDesignTimeCreatable=True}"
 		Closing="Window_Closing">
 
@@ -50,7 +50,7 @@
 			<MenuItem Header="Save As" Command="{Binding SaveAsCommand}" Height="32"/>
 			<Separator Width="32" Background="{x:Null}" />
 			<StackPanel Orientation="Horizontal" Height="32" Margin="0, -16, 0, 0" HorizontalAlignment="Center" >
-				<Image Source="pack://application:,,,/Alliance.Common;component/Resources/alliance_translation.png" Width="16" Height="16" />
+				<Image Source="pack://application:,,,/Alliance.Editor;component/Resources/alliance_translation.png" Width="16" Height="16" />
 				<ComboBox ItemsSource="{Binding AvailableLanguages}" 
 						  SelectedItem="{Binding SelectedLanguage}" 
 						  Height="32" 

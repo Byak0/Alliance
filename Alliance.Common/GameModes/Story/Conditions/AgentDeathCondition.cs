@@ -22,7 +22,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public override void Register(WeakGameEntity gameEntity)
 		{
-			ConditionsBehavior cdtBehavior = Mission.Current.GetMissionBehavior<ConditionsBehavior>();
+			ConditionsBehavior cdtBehavior = Mission.Current?.GetMissionBehavior<ConditionsBehavior>();
 			if (cdtBehavior == null) return;
 			cdtBehavior.UpdateAgentDeathCondition += CheckDeadAgentId;
 		}

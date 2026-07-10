@@ -33,7 +33,7 @@
 					Orientation="Horizontal" 
 					VerticalAlignment="Center">
 			<Image
-				Source="pack://application:,,,/Alliance.Common;component/Resources/alliance_help2.png"
+				Source="pack://application:,,,/Alliance.Editor;component/Resources/alliance_help2.png"
 				Width="24"
 				Height="24"
 				VerticalAlignment="Center"
