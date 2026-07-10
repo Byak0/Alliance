@@ -10,9 +10,9 @@ namespace Alliance.Common.GameModes.Story.Models
 	[Serializable]
 	public class SpawnLogic
 	{
-		[ConfigProperty(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker")]
+		[ConfigProperty(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker", dataType: AllianceData.DataTypes.Character)]
 		public string DefaultCharacterAttacker;
-		[ConfigProperty(label: "Default unit (defender)", tooltip: "Default character to spawn for defender")]
+		[ConfigProperty(label: "Default unit (defender)", tooltip: "Default character to spawn for defender", dataType: AllianceData.DataTypes.Character)]
 		public string DefaultCharacterDefender;
 		[ConfigProperty(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker")]
 		public string DefaultSpawnTagAttacker;
