@@ -3,8 +3,10 @@ using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using TaleWorlds.Engine;
@@ -19,6 +21,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		protected ScenarioEditorViewModel parentViewModel;
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
+		public ObservableCollection<FieldCategoryViewModel> FieldCategories { get; private set; }
 		public string Title { get; set; }
 		public string SelectedLanguage => parentViewModel?.SelectedLanguage ?? "English";
 		public WeakGameEntity GameEntity { get; set; }
@@ -82,24 +85,71 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			Object = obj;
 			this.parentViewModel = parentViewModel;
 			Fields = new ObservableCollection<FieldViewModel>();
+			FieldCategories = new ObservableCollection<FieldCategoryViewModel>();
 
-			// Iterate over all public fields
-			foreach (FieldInfo fi in obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
-			{
-				// Skip fields that are marked as not editable
-				ConfigPropertyAttribute attribute = fi.GetCustomAttribute<ConfigPropertyAttribute>();
-				if (attribute == null || attribute.IsEditable)
-				{
-					// Create a view model to display the field content
-					FieldViewModel fvm = new FieldViewModel(fi, fi.GetValue(obj), this, this.parentViewModel);
-					Fields.Add(fvm);
-				}
-			}
+			RefreshFields();
 			Title = title + " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
 
 			if (parentViewModel != null)
 			{
 				parentViewModel.OnLanguageChange += UpdateAllFieldsLanguage;
+			}
+		}
+
+		public void RefreshFields()
+		{
+			List<FieldInfo> editableFields = Object.GetType()
+				.GetFields(BindingFlags.Instance | BindingFlags.Public)
+				.Where(fi =>
+				{
+					ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+					return attr == null || attr.IsEditable;
+				})
+				.ToList();
+
+			Dictionary<string, bool> expandedStates = new Dictionary<string, bool>();
+			foreach (var category in FieldCategories)
+			{
+				expandedStates[category.Name] = category.IsExpanded;
+			}
+
+			Fields.Clear();
+			FieldCategories.Clear();
+
+			Dictionary<string, FieldCategoryViewModel> categories = new Dictionary<string, FieldCategoryViewModel>();
+
+			foreach (FieldInfo fi in editableFields)
+			{
+				ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+				// If the field has a dependency and the dependency is not satisfied, skip it
+				if (attr != null && !attr.IsDependencySatisfied(Object))
+				{
+					continue;
+				}
+				// Add fields without a category to the Fields collection directly
+				else if (attr == null || attr.Category == null)
+				{
+					Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, parentViewModel));
+				}
+				// Add fields with a category to the appropriate FieldCategoryViewModel
+				else
+				{
+					string categoryName = attr.Category;
+					if (!categories.ContainsKey(categoryName))
+					{
+						bool isExpanded = expandedStates.ContainsKey(categoryName)
+							? expandedStates[categoryName]
+							: (categoryName == "General");
+						categories[categoryName] = new FieldCategoryViewModel(categoryName, isExpanded);
+					}
+
+					categories[categoryName].Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, parentViewModel));
+				}
+			}
+
+			foreach (var category in categories.Values)
+			{
+				FieldCategories.Add(category);
 			}
 		}
 
@@ -109,6 +159,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				field.Close();
 			}
+
+			foreach (var category in FieldCategories)
+			{
+				foreach (var field in category.Fields)
+				{
+					field.Close();
+				}
+			}
+
 			if (parentViewModel != null)
 			{
 				parentViewModel.OnLanguageChange -= UpdateAllFieldsLanguage;
@@ -122,6 +181,17 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				if (field.FieldValue is LocalizedString)
 				{
 					field.OnPropertyChanged(nameof(field.LocalizedText));
+				}
+			}
+
+			foreach (var category in FieldCategories)
+			{
+				foreach (var field in category.Fields)
+				{
+					if (field.FieldValue is LocalizedString)
+					{
+						field.OnPropertyChanged(nameof(field.LocalizedText));
+					}
 				}
 			}
 		}

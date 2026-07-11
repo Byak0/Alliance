@@ -28,7 +28,7 @@
 	<!-- Template for a label with a tooltip (optional) -->
 	<DataTemplate x:Key="LabelWithTooltipTemplate">
 		<StackPanel Height="24" 
-					Width="176" 
+					Width="192" 
 					Margin="0,0,16,0"
 					Orientation="Horizontal" 
 					VerticalAlignment="Center">
@@ -45,8 +45,16 @@
 				</Image.ToolTip>
 			</Image>
 
-			<!-- Text for the label -->
-			<TextBlock Text="{Binding Label}" VerticalAlignment="Center" FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}" />
+			<!-- Text for the label with trimming and tooltip for long text -->
+			<TextBlock Text="{Binding Label}" 
+					   VerticalAlignment="Center" 
+					   FontFamily="{StaticResource DefaultFontFamily}" 
+					   FontSize="{StaticResource DefaultFontSize}"
+					   TextTrimming="CharacterEllipsis">
+				<TextBlock.ToolTip>
+					<ToolTip Content="{Binding Label}" Visibility="{Binding Label, Converter={StaticResource BoolToVisibilityConverter}}" />
+				</TextBlock.ToolTip>
+			</TextBlock>
 		</StackPanel>
 	</DataTemplate>
 

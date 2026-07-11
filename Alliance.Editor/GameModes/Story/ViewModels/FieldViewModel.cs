@@ -52,6 +52,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					// Propagate the value to the parent object
 					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
+
+					if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
+					{
+						parentViewModel.RefreshFields();
+					}
 				}
 			}
 		}
