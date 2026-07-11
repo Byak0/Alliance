@@ -95,7 +95,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				Label = attribute.Label ?? FieldName;
 				Tooltip = attribute.Tooltip;
 				ShowTooltip = !string.IsNullOrEmpty(Tooltip);
-				PossibleValues = attribute.PossibleValues;
+				try
+				{
+					PossibleValues = attribute.PossibleValues;
+				}
+				catch(Exception ex)
+				{
+					Log($"Error retrieving possible values for field '{FieldName}': {ex.Message}", LogLevel.Error);
+					PossibleValues = new string[0];
+				}
 			}
 			else
 			{
