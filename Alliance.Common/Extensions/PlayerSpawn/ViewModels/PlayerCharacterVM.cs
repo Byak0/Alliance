@@ -9,6 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.ClassLoadout;
+using TaleWorlds.ObjectSystem;
 using static Alliance.Common.Core.Utils.AgentExtensions;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MultiplayerClassDivisions;
@@ -30,6 +31,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private readonly Action<PlayerCharacterVM> _onCharacterPerksUpdated;
 		private readonly Action<PlayerCharacterVM> _onCharacterEdited;
 		private readonly Action<PlayerCharacterVM> _onCharacterDeleted;
+		private bool _enableCharacterPreview = false;
 		private AL_CharacterViewModel _characterViewModel;
 		private bool _isSelected;
 		private int _siblingOrder = -1;
@@ -142,6 +144,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		}
 
 		[DataSourceProperty]
+		public bool EnableCharacterPreview
+		{
+			get => _enableCharacterPreview;
+			set
+			{
+				if (value != _enableCharacterPreview)
+				{
+					_enableCharacterPreview = value;
+					OnPropertyChangedWithValue(value, nameof(EnableCharacterPreview));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public AL_CharacterViewModel CharacterViewModel
 		{
 			get => _characterViewModel;
@@ -198,12 +214,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_teamVM = teamVM;
 			_formationVM = playerFormationVM;
 			_availableCharacter = availableCharacter;
+			// Safety check to disable preview in wrong contexts (Editor...)
+			EnableCharacterPreview = MBObjectManager.Instance != null && MBObjectManager.Instance.HasType<Monster>();
 			if (availableCharacter.Character != null)
 			{
 				CharacterViewModel = new AL_CharacterViewModel();
 				CharacterViewModel.FillFrom(availableCharacter);
 				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture?.Color ?? _defaultArmorColor;
-				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture ?.Color2 ?? _defaultArmorColor;
+				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture?.Color2 ?? _defaultArmorColor;
 				_heroClass = AvailableCharacter.Character.GetHeroClass();
 				_heroClassIndex = _heroClass != null ? MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass) : -1;
 			}
@@ -226,8 +244,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			// Check that the character has a hero class
 			if (_heroClass == null)
 			{
-				if (AvailableCharacter.CharacterStub.HasClassType(ClassType.None)) Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
-				else Log($"Character {AvailableCharacter.Name} hero class is not loaded", LogLevel.Warning);
+				if (AvailableCharacter.CharacterStub.HasClassType(ClassType.None)) Log($"Character {AvailableCharacter.Name} does not have a hero class - Can't display perks", LogLevel.Warning);
+				else Log($"The hero class of character {AvailableCharacter.Name} is not loaded - Can't display perks", LogLevel.Warning);
 				return;
 			}
 

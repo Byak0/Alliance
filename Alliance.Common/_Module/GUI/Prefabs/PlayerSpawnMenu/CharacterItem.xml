@@ -17,7 +17,9 @@
 					<Children>
 
 						<!-- Character Tableau -->
-						<CharacterTableauWidget DataSource="{CharacterViewModel}"
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@EnableCharacterPreview">
+							<Children>
+								<CharacterTableauWidget DataSource="{CharacterViewModel}"
 														WidthSizePolicy="Fixed"
 														HeightSizePolicy="Fixed"
 														SuggestedWidth="800"
@@ -62,6 +64,8 @@
 														CustomRenderScale="@CustomRenderScale"
 														IsBannerShownInBackground="true"
 														DoNotUseCustomScale="true" />
+							</Children>
+						</Widget>
 
 						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="360" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.TopHeader.HoverGlow.Centered" MarginBottom="-120" />
 
