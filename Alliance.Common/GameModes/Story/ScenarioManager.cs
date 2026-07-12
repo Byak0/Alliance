@@ -193,7 +193,7 @@ namespace Alliance.Common.GameModes.Story
 					}
 				}
 
-				if (objective.RequiredForActWin)
+				if (!objective.Optional)
 				{
 					sideWin &= objectiveCompleted;
 				}

@@ -28,7 +28,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			GameModeSettings gameModeSettings;
 
 			string gameType = Settings.TWOptions.GameType;
-			string map = Settings.TWOptions.Map;
+			string map = MapID ?? MultiplayerOptions.OptionType.Map.GetStrValue();
 			string cultureTeam1 = Settings.TWOptions[MultiplayerOptions.OptionType.CultureTeam1].ToString();
 			string cultureTeam2 = Settings.TWOptions[MultiplayerOptions.OptionType.CultureTeam2].ToString();
 

@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -11,7 +12,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	/// Logic for handling victory conditions and results.
 	/// </summary>
 	[Serializable]
-	public class VictoryLogic
+	public class VictoryLogic : ISerializationCallback
 	{
 		[ConfigProperty(label: "Actions on victory", tooltip: "These actions will be triggered as soon as one side completed its objectives.")]
 		public List<ActionBase> ActionsOnDisplayResults;
@@ -42,6 +43,16 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				action.Execute();
 			}
+		}
+
+		public void OnBeforeSerialize()
+		{
+		}
+
+		public void OnAfterDeserialize()
+		{
+			ActionsOnDisplayResults ??= new List<ActionBase>() { new ShowResultScreenAction() };
+			ActionsOnActCompleted ??= new List<ActionBase>() { new StartGameAction("", new GameModeSettings()) };
 		}
 	}
 }

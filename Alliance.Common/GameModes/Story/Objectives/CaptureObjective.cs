@@ -13,8 +13,8 @@ namespace Alliance.Common.GameModes.Story.Objectives
 
 		private CS_CapturableZone _capturableZone;
 
-		public CaptureObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin, string capturableZoneId) :
-			base(side, name, desc, instantWin, requiredForWin)
+		public CaptureObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool optional, string capturableZoneId) :
+			base(side, name, desc, instantWin, optional)
 		{
 			CapturableZoneId = capturableZoneId;
 		}

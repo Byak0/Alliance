@@ -11,8 +11,8 @@ namespace Alliance.Common.GameModes.Story.Objectives
 
 		private int _killProgress;
 
-		public KillCountObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin, int killCount) :
-			base(side, name, desc, instantWin, requiredForWin)
+		public KillCountObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool optional, int killCount) :
+			base(side, name, desc, instantWin, optional)
 		{
 			KillCount = killCount;
 			_killProgress = 0;
