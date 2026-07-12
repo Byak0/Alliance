@@ -44,6 +44,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		public bool ElectionInProgress { get; private set; } = false;
 		[XmlIgnore]
 		public float TimeBeforeOfficerElection { get; set; } = 0f;
+		[XmlIgnore]
+		public bool RandomOfficer { get; private set; } = false;
 
 		// Lookup properties
 		[XmlIgnore]
@@ -74,10 +76,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return _playerAssignments[player];
 		}
 
-		public void StartOfficerElection(float timeBeforeElection)
+		public void StartOfficerElection(float timeBeforeElection, bool randomOfficer = false)
 		{
 			ElectionInProgress = true;
 			TimeBeforeOfficerElection = timeBeforeElection;
+			RandomOfficer = randomOfficer;
 			OnElectionStatusChanged?.Invoke(true);
 			Log($"Officer election started, will end in {timeBeforeElection} seconds.", LogLevel.Debug);
 		}
@@ -93,7 +96,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				{
 					foreach (PlayerFormation formation in team.Formations)
 					{
-						ElectOfficer(team, formation);
+						ElectOfficer(team, formation, RandomOfficer);
 					}
 				}
 			}
@@ -189,24 +192,32 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		/// Elects an officer for the given team and formation based on the votes received by candidates.
 		/// Elected officer's character will be set as the officer of the formation. Other candidates will be dispatched to characters with available slots.
 		/// </summary>
-		public void ElectOfficer(PlayerTeam team, PlayerFormation formation)
+		public void ElectOfficer(PlayerTeam team, PlayerFormation formation, bool randomOfficer = false)
 		{
 			if (!GameNetwork.IsServer) return;
 
 			CandidateInfo electedCandidate = null;
-			int maxVotes = 0;
-			foreach (CandidateInfo candidate in formation.Candidates)
+			if (randomOfficer)
 			{
-				if (candidate.Votes > maxVotes)
+				electedCandidate = formation.Candidates.GetRandomElementInefficiently();
+				Log($"Officer randomly selected: {formation.Officer.UserName}", LogLevel.Information);
+			}
+			else
+			{
+				int maxVotes = 0;
+				foreach (CandidateInfo candidate in formation.Candidates)
 				{
-					maxVotes = candidate.Votes;
-					electedCandidate = candidate;
+					if (candidate.Votes > maxVotes)
+					{
+						maxVotes = candidate.Votes;
+						electedCandidate = candidate;
+					}
 				}
+				Log($"Officer elected: {formation.Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
 			}
 			if (electedCandidate != null)
 			{
 				SetFormationOfficer(team, formation, electedCandidate.Candidate);
-				Log($"Officer elected: {formation.Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
 
 				// Set officer's character
 				SelectCharacter(electedCandidate.Candidate, team, formation, GetPlayerAssignment(formation.Officer).Character);

@@ -163,16 +163,16 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 			Log($"Alliance - PlayerSpawnMenu - Stopped spawn session after {TimeSinceSpawnStart}s", LogLevel.Information);
 		}
 
-		public void StartElectionCountdown(float duration)
+		public void StartElectionCountdown(float duration, bool randomOfficer = false)
 		{
 			if (PlayerSpawnMenu.Instance == null)
 			{
 				Log($"PlayerSpawnMenu is not initialized, can't start election countdown", LogLevel.Error);
 				return;
 			}
-			PlayerSpawnMenu.Instance.StartOfficerElection(duration);
+			PlayerSpawnMenu.Instance.StartOfficerElection(duration, randomOfficer);
 			PlayerSpawnMenuMsg.SendElectionStatusToAll(true, (int)duration);
-			Log($"Alliance - PlayerSpawnMenu - Started election countdown of {duration}s. Officers will be elected afterward.", LogLevel.Information);
+			Log($"Alliance - PlayerSpawnMenu - Started election countdown of {duration}s. Officers will be {(randomOfficer ? "randomly picked" : "elected")} afterward.", LogLevel.Information);
 		}
 
 		public void StopElection()
