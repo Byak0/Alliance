@@ -22,6 +22,25 @@
 	</Window.Resources>
 
 	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,32,0">
+			<Button Content="Copy"
+					Width="64"
+					Height="28"
+					Margin="0,0,4,0"
+					Padding="0"
+					Command="{Binding CopyCommand}" />
+			<Button Content="Paste"
+					Width="64"
+					Height="28"
+					Padding="0"
+					Command="{Binding PasteCommand}" />
+		</StackPanel>
+
 		<views:ObjectEditorContentControl Grid.Row="1" />
 	</Grid>
 </Window>

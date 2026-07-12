@@ -4,12 +4,14 @@ using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
+using System.Windows.Input;
 using TaleWorlds.Engine;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
@@ -19,6 +21,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	/// </summary>
 	public class ObjectEditorViewModel : INotifyPropertyChanged
 	{
+		private static object _clipboardObject;
+		private static Type _clipboardType;
+
 		protected ScenarioEditorViewModel ScenarioVM;
 		protected FieldViewModel ParentVM;
 		public object Object { get; set; }
@@ -27,19 +32,30 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public string Title { get; set; }
 		public string SelectedLanguage => ScenarioVM?.SelectedLanguage ?? "English";
 		public WeakGameEntity GameEntity { get; set; }
+		public bool CanPaste => _clipboardObject != null && _clipboardType == Object?.GetType();
+
+		public ICommand CopyCommand { get; }
+		public ICommand PasteCommand { get; }
 
 		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity)
 		{
+			CopyCommand = new RelayCommand(_ => CopyObject());
+			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
 			InitVM(obj, parentVM, scenarioVM, title, gameEntity);
 		}
 
 		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title)
 		{
+			CopyCommand = new RelayCommand(_ => CopyObject());
+			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
 			InitVM(obj, parentVM, scenarioVM, title, WeakGameEntity.Invalid);
 		}
 
 		public ObjectEditorViewModel()
 		{
+			CopyCommand = new RelayCommand(_ => CopyObject());
+			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
+
 			// If in design mode, create a dummy object to display in the designer
 			if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{
@@ -96,6 +112,169 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (ScenarioVM != null)
 			{
 				ScenarioVM.OnLanguageChange += UpdateAllFieldsLanguage;
+			}
+
+			OnPropertyChanged(nameof(CanPaste));
+		}
+
+		private void CopyObject()
+		{
+			if (Object == null) return;
+
+			_clipboardType = Object.GetType();
+			_clipboardObject = DeepCloneObject(Object);
+			OnPropertyChanged(nameof(CanPaste));
+		}
+
+		private void PasteObject()
+		{
+			if (!CanPaste || _clipboardObject == null || Object == null) return;
+
+			if (_clipboardType != Object.GetType())
+			{
+				MessageBox.Show($"Cannot paste values from '{_clipboardType?.Name}' into '{Object.GetType().Name}'.", "Paste Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+				return;
+			}
+
+			CopyObjectState(_clipboardObject, Object);
+			RefreshFields();
+			OnPropertyChanged(nameof(CanPaste));
+		}
+
+		private static object DeepCloneObject(object source)
+		{
+			if (source == null) return null;
+
+			Type type = source.GetType();
+
+			if (type.IsPrimitive || type.IsEnum || type == typeof(string) || type == typeof(decimal) || type == typeof(DateTime))
+			{
+				return source;
+			}
+
+			if (type.IsArray)
+			{
+				Array sourceArray = (Array)source;
+				Type elementType = type.GetElementType();
+				Array clonedArray = Array.CreateInstance(elementType, sourceArray.Length);
+				for (int i = 0; i < sourceArray.Length; i++)
+				{
+					clonedArray.SetValue(DeepCloneObject(sourceArray.GetValue(i)), i);
+				}
+				return clonedArray;
+			}
+
+			if (typeof(IDictionary).IsAssignableFrom(type))
+			{
+				IDictionary sourceDict = (IDictionary)source;
+				IDictionary clonedDict = CreateDictionaryInstance(type);
+				foreach (DictionaryEntry entry in sourceDict)
+				{
+					clonedDict.Add(DeepCloneObject(entry.Key), DeepCloneObject(entry.Value));
+				}
+				return clonedDict;
+			}
+
+			if (typeof(IList).IsAssignableFrom(type))
+			{
+				IList sourceList = (IList)source;
+				IList clonedList = CreateListInstance(type);
+				foreach (object item in sourceList)
+				{
+					clonedList.Add(DeepCloneObject(item));
+				}
+				return clonedList;
+			}
+
+			object clone;
+			try
+			{
+				clone = Activator.CreateInstance(type);
+			}
+			catch
+			{
+				// Fallback: if no parameterless ctor, keep source reference instead of crashing.
+				return source;
+			}
+
+			CopyObjectState(source, clone);
+			return clone;
+		}
+
+		private static IList CreateListInstance(Type listType)
+		{
+			try
+			{
+				if (!listType.IsInterface && !listType.IsAbstract)
+				{
+					return (IList)Activator.CreateInstance(listType);
+				}
+			}
+			catch
+			{
+			}
+
+			if (listType.IsGenericType)
+			{
+				Type itemType = listType.GetGenericArguments()[0];
+				Type concreteType = typeof(List<>).MakeGenericType(itemType);
+				return (IList)Activator.CreateInstance(concreteType);
+			}
+
+			return new ArrayList();
+		}
+
+		private static IDictionary CreateDictionaryInstance(Type dictionaryType)
+		{
+			try
+			{
+				if (!dictionaryType.IsInterface && !dictionaryType.IsAbstract)
+				{
+					return (IDictionary)Activator.CreateInstance(dictionaryType);
+				}
+			}
+			catch
+			{
+			}
+
+			if (dictionaryType.IsGenericType)
+			{
+				Type[] args = dictionaryType.GetGenericArguments();
+				Type concreteType = typeof(Dictionary<,>).MakeGenericType(args[0], args[1]);
+				return (IDictionary)Activator.CreateInstance(concreteType);
+			}
+
+			return new Hashtable();
+		}
+
+		private static void CopyObjectState(object source, object target)
+		{
+			if (source == null || target == null || source.GetType() != target.GetType()) return;
+
+			Type type = source.GetType();
+
+			foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+			{
+				object sourceValue = field.GetValue(source);
+				field.SetValue(target, DeepCloneObject(sourceValue));
+			}
+
+			foreach (PropertyInfo property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
+			{
+				if (!property.CanRead || !property.CanWrite || property.GetIndexParameters().Length > 0)
+				{
+					continue;
+				}
+
+				object sourceValue = property.GetValue(source);
+				object clonedValue = DeepCloneObject(sourceValue);
+
+				if (clonedValue != null && !property.PropertyType.IsAssignableFrom(clonedValue.GetType()))
+				{
+					continue;
+				}
+
+				property.SetValue(target, clonedValue);
 			}
 		}
 
