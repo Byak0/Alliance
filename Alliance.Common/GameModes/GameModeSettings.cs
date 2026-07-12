@@ -71,11 +71,22 @@ namespace Alliance.Common.GameModes
 		{
 			return new List<OptionType>
 			{
+				OptionType.GameType,
 				OptionType.CultureTeam1,
 				OptionType.CultureTeam2,
+				OptionType.NumberOfBotsPerFormation,
 				OptionType.NumberOfBotsTeam1,
 				OptionType.NumberOfBotsTeam2,
-				OptionType.AutoTeamBalanceThreshold
+				OptionType.AutoTeamBalanceThreshold,
+				OptionType.WarmupTimeLimitInSeconds,
+				OptionType.RoundPreparationTimeLimit,
+				OptionType.RoundTimeLimit,
+				OptionType.RoundTotal,
+				OptionType.UnlimitedGold,
+				OptionType.FriendlyFireDamageMeleeFriendPercent,
+				OptionType.FriendlyFireDamageMeleeSelfPercent,
+				OptionType.FriendlyFireDamageRangedFriendPercent,
+				OptionType.FriendlyFireDamageRangedSelfPercent
 			};
 		}
 

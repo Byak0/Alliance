@@ -28,7 +28,7 @@
 	<!-- Template for a label with a tooltip (optional) -->
 	<DataTemplate x:Key="LabelWithTooltipTemplate">
 		<StackPanel Height="24" 
-					Width="192" 
+					Width="240" 
 					Margin="0,0,16,0"
 					Orientation="Horizontal" 
 					VerticalAlignment="Center">
@@ -50,11 +50,8 @@
 					   VerticalAlignment="Center" 
 					   FontFamily="{StaticResource DefaultFontFamily}" 
 					   FontSize="{StaticResource DefaultFontSize}"
-					   TextTrimming="CharacterEllipsis">
-				<TextBlock.ToolTip>
-					<ToolTip Content="{Binding Label}" Visibility="{Binding Label, Converter={StaticResource BoolToVisibilityConverter}}" />
-				</TextBlock.ToolTip>
-			</TextBlock>
+					   TextTrimming="CharacterEllipsis"
+					   ToolTip="{Binding Label}" />
 		</StackPanel>
 	</DataTemplate>
 
@@ -169,7 +166,7 @@
 				  FontFamily="{StaticResource DefaultFontFamily}"
 				  FontSize="{StaticResource DefaultFontSize}"
 				  Foreground="{StaticResource DefaultFontColor}"
-				  Width="264"
+				  Width="248"
 				  VerticalAlignment="Center"/>
 		</StackPanel>
 	</DataTemplate>
@@ -276,7 +273,7 @@
 							<Button Content="{Binding DisplayName}" 
 									Command="{Binding EditCommand}" 
 									Height="24" 
-									Width="416" 
+									Width="472" 
 									Margin="0"
 									Padding="0, 0, 0, 0"
 									FontFamily="{StaticResource DefaultFontFamily}"
@@ -301,8 +298,8 @@
 					Margin="2,10,0,0"
 					Padding="0, 0, 4, 2"
 					HorizontalAlignment="Center"/>
-			<Line Stroke="Black" X1="0" X2="192" Y1="0" Y2="0" StrokeThickness="1" Margin="0, -12, 0, 0"/>
-			<Line Stroke="Black" X1="0" X2="192" Y1="0" Y2="0" StrokeThickness="1" Margin="256, -12, 0, 0"/>
+			<Line Stroke="Black" X1="0" X2="216" Y1="0" Y2="0" StrokeThickness="1" Margin="0, -12, 0, 0"/>
+			<Line Stroke="Black" X1="0" X2="216" Y1="0" Y2="0" StrokeThickness="1" Margin="288, -12, 0, 0"/>
 		</StackPanel>
 	</DataTemplate>
 

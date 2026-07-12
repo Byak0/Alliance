@@ -6,7 +6,6 @@
 		xmlns:vm="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		xmlns:system="clr-namespace:System;assembly=mscorlib"
-		d:DataContext="{d:DesignInstance Type=vm:ObjectEditorDesignViewModel, IsDesignTimeCreatable=True}"
 		mc:Ignorable="d">
 
 	<UserControl.Resources>
@@ -69,27 +68,26 @@
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
 		<StackPanel Margin="24, 8, 0, 32">
+			<!-- Flat fields view -->
+			<ItemsControl ItemsSource="{Binding Fields}">
+				<ItemsControl.ItemTemplate>
+					<StaticResource ResourceKey="FieldTemplate"/>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 			<!-- Categories view -->
 			<ItemsControl ItemsSource="{Binding FieldCategories}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Expander Header="{Binding Name}" 
 								  IsExpanded="{Binding IsExpanded, Mode=TwoWay}" 
-								  Margin="0, 8, 0, 0">
-							<ItemsControl ItemsSource="{Binding Fields}" Margin="16,8,0,0">
+								  Margin="-12, 0, 0, 0">
+							<ItemsControl ItemsSource="{Binding Fields}" Margin="0,8,0,0">
 								<ItemsControl.ItemTemplate>
 									<StaticResource ResourceKey="FieldTemplate"/>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
 						</Expander>
 					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-
-			<!-- Flat fields view (original behavior) -->
-			<ItemsControl ItemsSource="{Binding Fields}">
-				<ItemsControl.ItemTemplate>
-					<StaticResource ResourceKey="FieldTemplate"/>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</StackPanel>

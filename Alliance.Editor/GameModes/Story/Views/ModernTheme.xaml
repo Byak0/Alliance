@@ -43,35 +43,47 @@
 							CornerRadius="4"
 							Margin="0,4,0,0">
 						<StackPanel>
-							<!-- Header avec Grid pour positionner bouton + texte -->
-							<Grid Background="{StaticResource BackgroundBrush}" x:Name="HeaderGrid">
-								<Grid.ColumnDefinitions>
-									<ColumnDefinition Width="Auto"/>
-									<ColumnDefinition Width="*"/>
-								</Grid.ColumnDefinitions>
-
-								<!-- Bouton flèche à gauche -->
+							<!-- Header entier cliquable via ToggleButton pleine largeur -->
 								<ToggleButton x:Name="HeaderToggle"
-											  Grid.Column="0"
 											  IsChecked="{Binding Path=IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-											  Width="40"
-											  Height="40"
 											  Cursor="Hand"
-											  VerticalAlignment="Center">
+											  HorizontalAlignment="Stretch"
+											  HorizontalContentAlignment="Stretch">
 									<ToggleButton.Template>
 										<ControlTemplate TargetType="ToggleButton">
-											<!-- Juste le triangle bleu, rien d'autre -->
-											<TextBlock x:Name="Arrow" 
-													   Text="▶" 
-													   FontSize="18" 
-													   Foreground="{StaticResource PrimaryBrush}"
-													   HorizontalAlignment="Center"
-													   VerticalAlignment="Center"
-													   RenderTransformOrigin="0.5,0.5">
-												<TextBlock.RenderTransform>
-													<RotateTransform Angle="0"/>
-												</TextBlock.RenderTransform>
-											</TextBlock>
+											<Grid x:Name="HeaderGrid" Background="{StaticResource BackgroundBrush}">
+												<Grid.ColumnDefinitions>
+													<ColumnDefinition Width="Auto"/>
+													<ColumnDefinition Width="*"/>
+												</Grid.ColumnDefinitions>
+
+												<!-- Triangle bleu à gauche -->
+												<TextBlock x:Name="Arrow"
+														   Grid.Column="0"
+														   Text="▶"
+														   FontSize="18"
+														   Foreground="{StaticResource PrimaryBrush}"
+														   HorizontalAlignment="Center"
+														   VerticalAlignment="Center"
+														   Width="40"
+														   TextAlignment="Center"
+														   RenderTransformOrigin="0.5,0.5">
+													<TextBlock.RenderTransform>
+														<RotateTransform Angle="0"/>
+													</TextBlock.RenderTransform>
+												</TextBlock>
+
+												<!-- Texte du header -->
+												<TextBlock Grid.Column="1"
+														   Text="{Binding Header, RelativeSource={RelativeSource AncestorType=Expander, Mode=FindAncestor}}"
+														   FontSize="20"
+														   FontWeight="SemiBold"
+														   Foreground="{StaticResource TextPrimaryBrush}"
+														   VerticalAlignment="Center"
+														   HorizontalAlignment="Left"
+														   Margin="8,12,12,12"
+														   TextWrapping="NoWrap"/>
+											</Grid>
 											<ControlTemplate.Triggers>
 												<Trigger Property="IsChecked" Value="True">
 													<Setter TargetName="Arrow" Property="RenderTransform">
@@ -80,22 +92,13 @@
 														</Setter.Value>
 													</Setter>
 												</Trigger>
+												<Trigger Property="IsMouseOver" Value="True">
+													<Setter TargetName="HeaderGrid" Property="Background" Value="{StaticResource HoverBrush}"/>
+												</Trigger>
 											</ControlTemplate.Triggers>
 										</ControlTemplate>
 									</ToggleButton.Template>
 								</ToggleButton>
-
-								<!-- Texte du header au centre -->
-								<TextBlock Grid.Column="1"
-										   Text="{Binding Header, RelativeSource={RelativeSource AncestorType=Expander, Mode=FindAncestor}}"
-										   FontSize="20" 
-										   FontWeight="SemiBold" 
-										   Foreground="{StaticResource TextPrimaryBrush}"
-										   VerticalAlignment="Center"
-										   HorizontalAlignment="Left"
-										   Margin="8,12,12,12"
-										   TextWrapping="NoWrap"/>
-							</Grid>
 
 							<!-- Contenu -->
 							<ContentPresenter x:Name="ContentSite"

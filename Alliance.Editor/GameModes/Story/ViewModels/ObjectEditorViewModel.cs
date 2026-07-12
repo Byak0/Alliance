@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
@@ -18,22 +19,23 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	/// </summary>
 	public class ObjectEditorViewModel : INotifyPropertyChanged
 	{
-		protected ScenarioEditorViewModel parentViewModel;
+		protected ScenarioEditorViewModel ScenarioVM;
+		protected FieldViewModel ParentVM;
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public ObservableCollection<FieldCategoryViewModel> FieldCategories { get; private set; }
 		public string Title { get; set; }
-		public string SelectedLanguage => parentViewModel?.SelectedLanguage ?? "English";
+		public string SelectedLanguage => ScenarioVM?.SelectedLanguage ?? "English";
 		public WeakGameEntity GameEntity { get; set; }
 
-		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title, WeakGameEntity gameEntity)
+		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity)
 		{
-			InitVM(obj, parentViewModel, title, gameEntity);
+			InitVM(obj, parentVM, scenarioVM, title, gameEntity);
 		}
 
-		public ObjectEditorViewModel(object obj, ScenarioEditorViewModel parentViewModel, string title)
+		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title)
 		{
-			InitVM(obj, parentViewModel, title, WeakGameEntity.Invalid);
+			InitVM(obj, parentVM, scenarioVM, title, WeakGameEntity.Invalid);
 		}
 
 		public ObjectEditorViewModel()
@@ -49,12 +51,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				string title = "Alliance - Scenario Editor";
 				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
 
-				InitVM(obj, parentViewModel, title, WeakGameEntity.Invalid);
+				InitVM(obj, null, parentViewModel, title, WeakGameEntity.Invalid);
 			}
 		}
 
-		private void InitVM(object obj, ScenarioEditorViewModel parentViewModel, string title, WeakGameEntity gameEntity)
+		private void InitVM(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity)
 		{
+			ParentVM = parentVM;
 			GameEntity = gameEntity;
 
 			FieldInfo[] fieldInfos = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
@@ -83,27 +86,43 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 
 			Object = obj;
-			this.parentViewModel = parentViewModel;
+			ScenarioVM = scenarioVM;
 			Fields = new ObservableCollection<FieldViewModel>();
 			FieldCategories = new ObservableCollection<FieldCategoryViewModel>();
 
 			RefreshFields();
 			Title = title + " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
 
-			if (parentViewModel != null)
+			if (ScenarioVM != null)
 			{
-				parentViewModel.OnLanguageChange += UpdateAllFieldsLanguage;
+				ScenarioVM.OnLanguageChange += UpdateAllFieldsLanguage;
 			}
 		}
 
 		public void RefreshFields()
 		{
+			// Determine which field names are allowed
+			HashSet<string> allowedFields = null;
+			if(ParentVM?.ParentObject is GameModeSettings settings)
+			{
+				if (Object is TWConfig)
+				{
+					allowedFields = new HashSet<string>(settings.GetAvailableNativeOptions().Select(o => o.ToString()));
+				}
+				else if (Object is Config)
+				{
+					allowedFields = new HashSet<string>(settings.GetAvailableModOptions());
+				}
+			}
+
 			List<FieldInfo> editableFields = Object.GetType()
 				.GetFields(BindingFlags.Instance | BindingFlags.Public)
 				.Where(fi =>
 				{
 					ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
-					return attr == null || attr.IsEditable;
+					if (attr != null && !attr.IsEditable) return false;
+					if (allowedFields != null && !allowedFields.Contains(fi.Name)) return false;
+					return true;
 				})
 				.ToList();
 
@@ -129,7 +148,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				// Add fields without a category to the Fields collection directly
 				else if (attr == null || attr.Category == null)
 				{
-					Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, parentViewModel));
+					Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM));
 				}
 				// Add fields with a category to the appropriate FieldCategoryViewModel
 				else
@@ -143,7 +162,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 						categories[categoryName] = new FieldCategoryViewModel(categoryName, isExpanded);
 					}
 
-					categories[categoryName].Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, parentViewModel));
+					categories[categoryName].Fields.Add(new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM));
 				}
 			}
 
@@ -168,9 +187,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				}
 			}
 
-			if (parentViewModel != null)
+			if (ScenarioVM != null)
 			{
-				parentViewModel.OnLanguageChange -= UpdateAllFieldsLanguage;
+				ScenarioVM.OnLanguageChange -= UpdateAllFieldsLanguage;
 			}
 		}
 

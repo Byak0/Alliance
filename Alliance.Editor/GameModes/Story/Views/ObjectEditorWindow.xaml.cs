@@ -9,12 +9,12 @@ namespace Alliance.Editor.GameModes.Story.Views
 {
 	public partial class ObjectEditorWindow : Window
 	{
-		public ObjectEditorWindow(object obj, WeakGameEntity gameEntity, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
+		public ObjectEditorWindow(object obj, WeakGameEntity gameEntity, FieldViewModel fieldVM = null, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
 		{
 			InitializeComponent();
 
 			// Pass the object to the ObjectEditorViewModel
-			DataContext = new ObjectEditorViewModel(obj, parentViewModel, title, gameEntity);
+			DataContext = new ObjectEditorViewModel(obj, fieldVM, parentViewModel, title, gameEntity);
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
@@ -22,12 +22,12 @@ namespace Alliance.Editor.GameModes.Story.Views
 			Topmost = true; // Keep it on top
 		}
 
-		public ObjectEditorWindow(object obj, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
+		public ObjectEditorWindow(object obj, FieldViewModel fieldVM = null, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
 		{
 			InitializeComponent();
 
 			// Pass the object to the ObjectEditorViewModel
-			DataContext = new ObjectEditorViewModel(obj, parentViewModel, title, WeakGameEntity.Invalid);
+			DataContext = new ObjectEditorViewModel(obj, fieldVM, parentViewModel, title, WeakGameEntity.Invalid);
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;

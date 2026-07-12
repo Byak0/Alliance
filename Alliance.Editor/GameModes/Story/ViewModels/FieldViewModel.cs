@@ -41,6 +41,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; }
 
+		public object ParentObject => parentViewModel?.Object;
+
 		public object FieldValue
 		{
 			get => _fieldValue;
@@ -171,7 +173,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, scenarioEditorViewModel, parentViewModel.Title);
+			var editorWindow = new ObjectEditorWindow(obj,parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
 			editorWindow.Show();
 
 			// Update DisplayName when the editor window is closed

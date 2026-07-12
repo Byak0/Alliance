@@ -7,7 +7,7 @@
 		xmlns:views="clr-namespace:Alliance.Editor.GameModes.Story.Views"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		mc:Ignorable="d"
-		Title="{Binding ObjectEditorVM.Title}" Height="480" Width="512"
+		Title="{Binding ObjectEditorVM.Title}" Height="480" Width="576"
 		Icon="pack://application:,,,/Alliance.Editor;component/Resources/alliance_ico.ico"
 		d:DataContext="{d:DesignInstance Type=vm:ScenarioEditorViewModel, IsDesignTimeCreatable=True}"
 		Closing="Window_Closing">
@@ -22,7 +22,8 @@
 			<Style TargetType="Menu">
 				<Setter Property="Background" Value="#FF3F51B5"/>
 				<Setter Property="Foreground" Value="White"/>
-				<Setter Property="FontSize" Value="16"/>
+				<Setter Property="FontWeight" Value="Bold"/>
+				<Setter Property="FontSize" Value="18"/>
 				<Setter Property="Height" Value="32"/>
 				<Setter Property="Padding" Value="0,0,0,0"/>
 				<Setter Property="Margin" Value="0,0,0,0"/>
@@ -42,12 +43,13 @@
 
 		<!-- Menu Bar -->
 		<Menu Grid.Row="0">
+			<Separator Width="16" Background="{x:Null}" />
 			<MenuItem Header="New" Command="{Binding NewCommand}" Height="32"/>
-			<Separator Width="12" Background="{x:Null}" />
+			<Separator Width="16" Background="{x:Null}" />
 			<MenuItem Header="Open" Command="{Binding LoadCommand}" Height="32"/>
-			<Separator Width="12" Background="{x:Null}" />
+			<Separator Width="16" Background="{x:Null}" />
 			<MenuItem Header="Save" Command="{Binding SaveCommand}" Height="32"/>
-			<Separator Width="12" Background="{x:Null}" />
+			<Separator Width="16" Background="{x:Null}" />
 			<MenuItem Header="Save As" Command="{Binding SaveAsCommand}" Height="32"/>
 			<Separator Width="64" Background="{x:Null}" />
 			<StackPanel Orientation="Horizontal" Height="32" Margin="0, 0, 0, 0" HorizontalAlignment="Center" >
@@ -55,7 +57,7 @@
 				<ComboBox ItemsSource="{Binding AvailableLanguages}" 
 						  SelectedItem="{Binding SelectedLanguage}" 
 						  Height="32" 
-						  Width="124" 
+						  Width="136" 
 						  Margin="8,0,0,0" />
 			</StackPanel>
 		</Menu>
