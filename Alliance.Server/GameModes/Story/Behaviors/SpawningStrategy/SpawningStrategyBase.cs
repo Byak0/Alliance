@@ -1,9 +1,13 @@
 ﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
+using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.GameModes.Story.Models;
 using NetworkMessages.FromServer;
 using System;
@@ -31,6 +35,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		protected ScenarioSpawningBehavior SpawnBehavior { get; set; }
 		protected SpawnFrameBehaviorBase DefaultSpawnFrameBehavior { get; set; }
 		protected FlagTrackerBehavior FlagTrackerBehavior { get; set; }
+		protected PlayerSpawnBehavior PlayerSpawnBehavior { get; set; }
+		protected bool UsePlayerSpawnMenu { get; set; }
 		protected bool SpawnEnabled { get; set; }
 		protected bool ShowRespawnPreview { get; set; }
 
@@ -55,6 +61,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			DefaultSpawnFrameBehavior = defaultSpawnFrameBehavior;
 
 			FlagTrackerBehavior = Mission.Current.GetMissionBehavior<FlagTrackerBehavior>();
+			PlayerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
 
 			Log(GetType().Name + " initialized", LogLevel.Debug);
 		}
@@ -76,15 +83,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					MissionPeer peer = player.GetComponent<MissionPeer>();
 					if (peer?.Team != null && CanPlayerSpawn(player, peer))
 					{
-						bool ignoreVisual = !ShowRespawnPreview && ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player) && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 1;
-						if (SpawnBehavior.CheckIfEnforcedSpawnTimerExpiredForPeer(player.GetComponent<MissionPeer>(), ignoreVisual))
-						{
+						//bool ignoreVisual = !ShowRespawnPreview && ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player) && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 1;
+						//if (SpawnBehavior.CheckIfEnforcedSpawnTimerExpiredForPeer(player.GetComponent<MissionPeer>(), ignoreVisual))
+						//{
 							SpawnPlayer(player, peer);
-						}
-						else
-						{
-							SpawnPlayerPreview(player, peer, ignoreVisual);
-						}
+						//}
+						//else
+						//{
+						//	SpawnPlayerPreview(player, peer, ignoreVisual);
+						//}
 					}
 				}
 			}
@@ -183,21 +190,21 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			return null;
 		}
 
-		public virtual void SpawnPlayerPreview(NetworkCommunicator player, MissionPeer peer, bool ignoreVisual)
-		{
-			if (player.IsSynchronized && peer != null && peer.Team != null)
-			{
-				SpawnBehavior.CreateEnforcedSpawnTimerForPeer(peer, _spawnPreparationTimeLimit);
+		//public virtual void SpawnPlayerPreview(NetworkCommunicator player, MissionPeer peer, bool ignoreVisual)
+		//{
+		//	if (player.IsSynchronized && peer != null && peer.Team != null)
+		//	{
+		//		SpawnBehavior.CreateEnforcedSpawnTimerForPeer(peer, _spawnPreparationTimeLimit);
 
-				if (ignoreVisual)
-				{
-					peer.HasSpawnedAgentVisuals = true;
-					return;
-				}
+		//		if (ignoreVisual)
+		//		{
+		//			peer.HasSpawnedAgentVisuals = true;
+		//			return;
+		//		}
 
-				SpawnHelper.SpawnPlayerPreview(player, _cultures[(int)peer.Team.Side]);
-			}
-		}
+		//		SpawnHelper.SpawnPlayerPreview(player, _cultures[(int)peer.Team.Side]);
+		//	}
+		//}
 
 		/// <summary>
 		/// If battle side was not found, return 0;
@@ -214,60 +221,61 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public virtual void SpawnPlayer(NetworkCommunicator player, MissionPeer peer)
 		{
-			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForPeer(peer);
-			MPOnSpawnPerkHandler onSpawnPerkHandler = GetOnSpawnPerkHandler(peer);
-
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new SyncPerksForCurrentlySelectedTroop(player, peer.Perks[peer.SelectedTroopIndex]));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.ExcludeOtherTeamPlayers, player);
-
-			BasicCharacterObject basicCharacterObject;
-
+			BasicCharacterObject basicCharacterObject = SpawnLogic.DefaultCharacterObjects[(int)peer.Team.Side];
+			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = basicCharacterObject.GetHeroClass();
+			MPOnSpawnPerkHandler onSpawnPerkHandler = null;
 			MatrixFrame? spawnLocation = null;
+			float healthMultiplier = 1f;
+			BasicCultureObject customCulture = null;
+			List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>();
 
-			// If player is officer, spawn hero instead of standard troop
-			if (player.IsOfficer())
+			if (UsePlayerSpawnMenu)
 			{
-				basicCharacterObject = mPHeroClassForPeer.HeroCharacter;
-				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
-
-				if (FlagTrackerBehavior != null)
+				PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(player);
+				
+				if (playerAssignment?.Character != null)
 				{
-					bool freeBannerSlot = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty;
-					bool characterHasBanner = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].Item?.IsBannerItem ?? false;
-
-					List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>();
-
-					// Give banner to officer if none are present for team
-					if (!FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && freeBannerSlot)
-					{
-						EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
-						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
-						{
-							(EquipmentIndex.ExtraWeaponSlot, banner)
-						};
-					}
-					// If banner already exist and character has a default banner, remove it
-					else if (FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && characterHasBanner)
-					{
-						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
-						{
-							(EquipmentIndex.ExtraWeaponSlot, EquipmentElement.Invalid)
-						};
-					}
-					SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation, alternativeEquipment: altEquipment);
-				}
-				else
-				{
-					SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation);
+					basicCharacterObject = playerAssignment.Character.Character;
+					mPHeroClassForPeer = playerAssignment.Character.Character.GetHeroClass();
+					onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
+					healthMultiplier = playerAssignment.Character.HealthMultiplier;
+					customCulture = playerAssignment.Formation.MainCulture;
 				}
 			}
-			else
+
+			spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
+
+			if (FlagTrackerBehavior != null && player.IsOfficer())
 			{
-				basicCharacterObject = mPHeroClassForPeer.TroopCharacter;
-				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
-				SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation);
+				bool freeBannerSlot = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty;
+				bool characterHasBanner = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].Item?.IsBannerItem ?? false;
+				
+				// Give banner to officer if none are present for team
+				if (!FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && freeBannerSlot)
+				{
+					EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
+					altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+					{
+						(EquipmentIndex.ExtraWeaponSlot, banner)
+					};
+				}
+				// If banner already exist and character has a default banner, remove it
+				else if (FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && characterHasBanner)
+				{
+					altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+					{
+						(EquipmentIndex.ExtraWeaponSlot, EquipmentElement.Invalid)
+					};
+				}
 			}
+
+			SpawnHelper.SpawnPlayer(player,
+					onSpawnPerkHandler,
+					basicCharacterObject,
+					spawnLocation,
+					healthMultiplier: healthMultiplier,
+					customCulture: customCulture,
+					alternativeEquipment: altEquipment);
 
 			// TODO : rework the control state of formations
 			if (peer.ControlledFormation != null)
@@ -275,12 +283,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				UpdateBotControlState(peer, player);
 			}
 
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(player));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-			peer.HasSpawnedAgentVisuals = false;
+			//if(peer.HasSpawnedAgentVisuals)
+			//{
+			//	GameNetwork.BeginBroadcastModuleEvent();
+			//	GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(player));
+			//	GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			//	peer.HasSpawnedAgentVisuals = false;
+			//}
 
-			GetPerkHandler(peer)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
 			UpdatePlayerLives(player, peer);
 		}
 
@@ -418,6 +428,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				InitPlayerLives(player, peer);
 			}
 
+			if (UsePlayerSpawnMenu)
+			{
+				PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(player);
+				if (playerAssignment?.Character == null || !playerAssignment.CanSpawn || playerAssignment.TimeBeforeSpawn > 0f)
+				{
+					return false;
+				}
+			}
+
 			switch (SpawnLogic.RespawnStrategies[(int)peer.Team.Side])
 			{
 				case RespawnStrategy.NoRespawn:
@@ -551,7 +570,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public virtual void StartSpawnSession()
 		{
-			_spawnPreparationTimeLimit = OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions);
+			_spawnPreparationTimeLimit = SpawnLogic.TimeBeforeSpawn;
 
 			// Init available cultures based on current act
 			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
@@ -607,28 +626,62 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				};
 			}
 
-			SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			// Use the player spawn menu if defined in SpawnLogic
+			UsePlayerSpawnMenu = PlayerSpawnBehavior != null && !SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty();
+			
+			if (UsePlayerSpawnMenu)
+			{
+				PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu;
+				
+				// Broadcast the updated player spawn menu to all players
+				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+
+				if(SpawnLogic.OfficerSelectionStrategy == OfficerSelectionStrategy.PlayerVote)
+				{
+					PlayerSpawnBehavior.StartElectionCountdown(SpawnLogic.TimeBeforeSpawn, false);
+				}
+				else if (SpawnLogic.OfficerSelectionStrategy == OfficerSelectionStrategy.RandomOfficer)
+				{
+					PlayerSpawnBehavior.StartElectionCountdown(SpawnLogic.TimeBeforeSpawn, true);
+				}
+
+				PlayerSpawnBehavior.StartSpawnSession(_spawnPreparationTimeLimit, _spawnPreparationTimeLimit);
+			}
+			else
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			}
+
 			SpawnEnabled = true;
 			Log(GetType().Name + " - StartSpawnSession", LogLevel.Debug);
 		}
 
 		public virtual void EndSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			if(!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			}
 			SpawnEnabled = false;
 			Log(GetType().Name + " - EndSpawnSession", LogLevel.Debug);
 		}
 
 		public virtual void PauseSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			if(!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			}
 			SpawnEnabled = false;
 			Log(GetType().Name + " - PauseSpawnSession", LogLevel.Debug);
 		}
 
 		public virtual void ResumeSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			if(!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			}
 			SpawnEnabled = true;
 			Log(GetType().Name + " - ResumeSpawnSession", LogLevel.Debug);
 		}
