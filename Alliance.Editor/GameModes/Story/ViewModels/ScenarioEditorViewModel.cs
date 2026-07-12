@@ -81,7 +81,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			if (ConfirmUnsavedChanges())
 			{
-				Scenario = new Scenario(new LocalizedString("New scenario"), new LocalizedString());
+				Scenario = Scenario.CreateDefaultScenario();
 				ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 				_currentFilePath = null;  // New scenario, no file path yet
 				OnPropertyChanged(nameof(ObjectEditorVM));

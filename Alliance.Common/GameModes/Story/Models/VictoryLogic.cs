@@ -12,7 +12,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	/// Logic for handling victory conditions and results.
 	/// </summary>
 	[Serializable]
-	public class VictoryLogic : ISerializationCallback
+	public class VictoryLogic
 	{
 		[ConfigProperty(label: "Actions on victory", tooltip: "These actions will be triggered as soon as one side completed its objectives.")]
 		public List<ActionBase> ActionsOnDisplayResults;
@@ -26,7 +26,9 @@ namespace Alliance.Common.GameModes.Story.Models
 			ActionsOnActCompleted = actionsOnActCompleted;
 		}
 
-		public VictoryLogic() { }
+		public VictoryLogic()
+		{
+		}
 
 		public void OnDisplayResults(BattleSideEnum winner)
 		{
@@ -43,16 +45,6 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				action.Execute();
 			}
-		}
-
-		public void OnBeforeSerialize()
-		{
-		}
-
-		public void OnAfterDeserialize()
-		{
-			ActionsOnDisplayResults ??= new List<ActionBase>() { new ShowResultScreenAction() };
-			ActionsOnActCompleted ??= new List<ActionBase>() { new StartGameAction("", new GameModeSettings()) };
 		}
 	}
 }

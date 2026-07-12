@@ -200,7 +200,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (randomOfficer)
 			{
 				electedCandidate = formation.Candidates.GetRandomElementInefficiently();
-				Log($"Officer randomly selected: {formation.Officer.UserName}", LogLevel.Information);
+				if(electedCandidate != null) Log($"Officer randomly selected: {electedCandidate.Candidate.UserName}", LogLevel.Information);
 			}
 			else
 			{
@@ -213,7 +213,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 						electedCandidate = candidate;
 					}
 				}
-				Log($"Officer elected: {formation.Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
+				if(electedCandidate != null) Log($"Officer elected: {electedCandidate.Candidate.UserName} with {maxVotes} votes.", LogLevel.Information);
 			}
 			if (electedCandidate != null)
 			{

@@ -186,5 +186,15 @@ namespace Alliance.Server.Extensions.PlayerSpawn.Behaviors
 			PlayerSpawnMenuMsg.SendElectionStatusToAll(false);
 			Log($"Alliance - PlayerSpawnMenu - Stopped election.", LogLevel.Information);
 		}
+
+		public void EnableSpawnForPlayer(NetworkCommunicator networkPeer, float timeBeforeSpawn)
+		{
+			PlayerSpawnMenu.Instance.UpdateSpawnStatus(networkPeer, true, timeBeforeSpawn);
+		}
+
+		public void DisableSpawnForPlayer(NetworkCommunicator networkPeer)
+		{
+			PlayerSpawnMenu.Instance.UpdateSpawnStatus(networkPeer, false, -1f);
+		}
 	}
 }
