@@ -6,6 +6,7 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.GameModes.Story.Models;
@@ -218,10 +219,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		/// <returns>Number of tickets of selected side. <b>/!\ Should only be use for ATTACKER and DEFENDER sides /!\</b></returns>
 		public int GetRemainingLives(BattleSideEnum battleSide)
 		{
-			return ScenarioPersistentData.Instance.TeamRemainingLives.Where(e => e.Key == battleSide)
-				.ToList()
-				.FirstOrDefault(new KeyValuePair<BattleSideEnum, int>(BattleSideEnum.Defender, 0))
-				.Value;
+			return ScenarioPersistentData.Instance.TeamRemainingLives.FirstOrDefault(e => e.Key == battleSide, new KeyValuePair<BattleSideEnum, int>(BattleSideEnum.Defender, 0)).Value;
 		}
 
 		public virtual void SpawnPlayer(NetworkCommunicator player, MissionPeer peer)
@@ -329,19 +327,23 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			ScenarioPersistentData.Instance.PlayerUsedLives[player]++;
 
-			if (ScenarioPersistentData.Instance.PlayerUsedLives[player] <= 1) return;
+			if (ScenarioPersistentData.Instance.PlayerUsedLives[player] <= 1)
+			{
+				SyncLivesToPeer(player);
+				return;
+			}
 
 			if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
 			{
 				ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]--;
-				// TODO replace this with a proper UI indicator
 				string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]} lives remaining for {_cultures[(int)peer.Team.Side].Name}.";
 				Log(log, LogLevel.Information);
-				SendMessageToAll(log);
+				SyncLivesToAllPeers(peer.Team.Side);
 			}
 			else if (respawnStrategy == RespawnStrategy.MaxLivesPerPlayer)
 			{
 				ScenarioPersistentData.Instance.PlayerRemainingLives[player]--;
+				SyncLivesToPeer(player);
 			}
 		}
 
@@ -395,10 +397,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam && _haveBotsBeenSpawned[(int)team.Side])
 				{
 					ScenarioPersistentData.Instance.TeamRemainingLives[team.Side] -= nbBotsToSpawn;
-					// TODO replace this with a proper UI indicator
 					string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for {_cultures[(int)team.Side].Name}.";
 					Log(log, LogLevel.Information);
-					SendMessageToAll(log);
+					SyncLivesToAllPeers(team.Side);
 
 				}
 				Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for team.", LogLevel.Debug);
@@ -676,6 +677,51 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			SpawnEnabled = true;
 			Log(GetType().Name + " - StartSpawnSession", LogLevel.Debug);
+		}
+
+		public virtual void SyncLivesToPeer(NetworkCommunicator player)
+		{
+			MissionPeer peer = player?.GetComponent<MissionPeer>();
+			BattleSideEnum side = peer?.Team?.Side ?? BattleSideEnum.None;
+			RespawnStrategy respawnStrategy = side == BattleSideEnum.Attacker || side == BattleSideEnum.Defender
+				? SpawnLogic.RespawnStrategies[(int)side]
+				: RespawnStrategy.NoRespawn;
+
+			int teamRemainingLives = 0;
+			int playerRemainingLives = 0;
+
+			switch (respawnStrategy)
+			{
+				case RespawnStrategy.MaxLivesPerTeam:
+					teamRemainingLives = GetRemainingLives(side);
+					break;
+				case RespawnStrategy.MaxLivesPerPlayer:
+					ScenarioPersistentData.Instance.PlayerRemainingLives.TryGetValue(player, out playerRemainingLives);
+					break;
+			}
+
+			GameNetwork.BeginModuleEventAsServer(player);
+			GameNetwork.WriteMessage(new SyncScenarioLivesMessage(respawnStrategy, teamRemainingLives, playerRemainingLives));
+			GameNetwork.EndModuleEventAsServer();
+		}
+
+		public virtual void SyncLivesToAllPeers(BattleSideEnum side)
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (!peer.IsSynchronized)
+				{
+					continue;
+				}
+
+				MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
+				if (missionPeer?.Team?.Side != side)
+				{
+					continue;
+				}
+
+				SyncLivesToPeer(peer);
+			}
 		}
 
 		public virtual void EndSpawnSession()

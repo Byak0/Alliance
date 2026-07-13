@@ -254,6 +254,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
 		{
 			ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+			SpawningBehavior.SpawningStrategy.SyncLivesToPeer(peer);
 		}
 
 		public override void OnAgentBuild(Agent agent, Banner banner)
