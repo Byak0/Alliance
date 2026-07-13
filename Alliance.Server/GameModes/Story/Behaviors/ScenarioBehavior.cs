@@ -207,7 +207,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			//return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			// TODO check if this fix the act starting before spawn ended
-			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue();
+			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + Act.SpawnLogic.TimeBeforeSpawn;
 		}
 
 		private bool CheckObjectives()
@@ -254,6 +254,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
 		{
 			ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+			SpawningBehavior.SpawningStrategy.SyncLivesToPeer(peer);
 		}
 
 		public override void OnAgentBuild(Agent agent, Banner banner)

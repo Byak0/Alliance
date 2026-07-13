@@ -10,8 +10,8 @@ namespace Alliance.Common.GameModes.Story.Objectives
 		private int _enemiesKilled = -1;
 		private int _enemiesLeft = -1;
 
-		public KillAllObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin) :
-			base(side, name, desc, instantWin, requiredForWin)
+		public KillAllObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool optional) :
+			base(side, name, desc, instantWin, optional)
 		{
 		}
 

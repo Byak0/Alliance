@@ -13,8 +13,8 @@ namespace Alliance.Common.GameModes.Story.Objectives
 		private float _remainingTime;
 		private float _startTime = 0f;
 
-		public TimerObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool requiredForWin, int duration) :
-			base(side, name, desc, instantWin, requiredForWin)
+		public TimerObjective(BattleSideEnum side, LocalizedString name, LocalizedString desc, bool instantWin, bool optional, int duration) :
+			base(side, name, desc, instantWin, optional)
 		{
 			Duration = duration;
 			_remainingTime = duration;

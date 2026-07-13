@@ -56,7 +56,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ScenarioEditorViewModel(Scenario scenario)
 		{
 			Scenario = scenario;
-			ObjectEditorVM = new ObjectEditorViewModel(scenario, this, "Alliance - Scenario Editor");
+			ObjectEditorVM = new ObjectEditorViewModel(scenario, null, this, "Alliance - Scenario Editor");
 			NewCommand = new RelayCommand(NewScenario);
 			LoadCommand = new RelayCommand(LoadScenario);
 			SaveCommand = new RelayCommand(SaveScenario);
@@ -68,7 +68,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ScenarioEditorViewModel()
 		{
 			Scenario = ExampleScenarios.BFHD();
-			ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+			ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 			NewCommand = new RelayCommand(NewScenario);
 			LoadCommand = new RelayCommand(LoadScenario);
 			SaveCommand = new RelayCommand(SaveScenario);
@@ -81,8 +81,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			if (ConfirmUnsavedChanges())
 			{
-				Scenario = new Scenario(new LocalizedString("New scenario"), new LocalizedString());
-				ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+				Scenario = Scenario.CreateDefaultScenario();
+				ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 				_currentFilePath = null;  // New scenario, no file path yet
 				OnPropertyChanged(nameof(ObjectEditorVM));
 			}
@@ -139,7 +139,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 					// Deserialize the scenario from the selected file
 					Scenario = ScenarioSerializer.DeserializeScenarioFromPath(_currentFilePath);
-					ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+					ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 					OnPropertyChanged(nameof(ObjectEditorVM));
 				}
 			}

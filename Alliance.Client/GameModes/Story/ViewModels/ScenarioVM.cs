@@ -17,6 +17,9 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		private string _resultTitle;
 		private string _resultDescription;
 		private Color _resultColor;
+		private bool _showLives;
+		private string _livesLabel;
+		private string _livesValue;
 		private MBBindingList<ObjectiveVM> _objectives;
 		private float _lastRefresh;
 
@@ -157,6 +160,57 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		}
 
 		[DataSourceProperty]
+		public bool ShowLives
+		{
+			get
+			{
+				return _showLives;
+			}
+			set
+			{
+				if (value != _showLives)
+				{
+					_showLives = value;
+					OnPropertyChangedWithValue(value, "ShowLives");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string LivesLabel
+		{
+			get
+			{
+				return _livesLabel;
+			}
+			set
+			{
+				if (value != _livesLabel)
+				{
+					_livesLabel = value;
+					OnPropertyChangedWithValue(value, "LivesLabel");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string LivesValue
+		{
+			get
+			{
+				return _livesValue;
+			}
+			set
+			{
+				if (value != _livesValue)
+				{
+					_livesValue = value;
+					OnPropertyChangedWithValue(value, "LivesValue");
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public MBBindingList<ObjectiveVM> Objectives
 		{
 			get
@@ -193,6 +247,45 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 			{
 				Log(objective.Name.LocalizedText + " - " + objective.Description.LocalizedText, LogLevel.Debug);
 				Objectives.Add(new ObjectiveVM(objective));
+			}
+		}
+
+		public void SetLives(RespawnStrategy strategy, int teamRemainingLives, int playerRemainingLives)
+		{
+			switch (strategy)
+			{
+				case RespawnStrategy.MaxLivesPerTeam:
+					if(teamRemainingLives > 1)
+					{
+						LivesLabel = teamRemainingLives.ToString() + " lives left for team.";
+					}
+					else if (teamRemainingLives == 1)
+					{
+						LivesLabel = " 1 life left for team.";
+					}
+					else
+					{
+						LivesLabel = "No lives left for team.";
+					}
+					break;
+				case RespawnStrategy.MaxLivesPerPlayer:
+					if (playerRemainingLives > 1)
+					{
+						LivesLabel = "You have " + playerRemainingLives.ToString() + " lives left.";
+					}
+					else if (playerRemainingLives == 1)
+					{
+						LivesLabel = "You have 1 life left.";
+					}
+					else
+					{
+						LivesLabel = "You don't have any life left.";
+					}
+					break;
+				default:
+					LivesLabel = string.Empty;
+					LivesValue = string.Empty;
+					break;
 			}
 		}
 

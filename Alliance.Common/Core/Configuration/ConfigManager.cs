@@ -177,6 +177,13 @@ namespace Alliance.Common.Core.Configuration
 		public TWConfig GetNativeOptionsCopy()
 		{
 			TWConfig nativeOptions = new TWConfig();
+
+			// If we are not in a multiplayer game, return default options
+			if (!GameNetwork.IsMultiplayer)
+			{
+				return nativeOptions;
+			}
+
 			for (OptionType optionType = OptionType.ServerName; optionType < OptionType.NumOfSlots; optionType++)
 			{
 				MultiplayerOptionsProperty optionProperty = optionType.GetOptionProperty();

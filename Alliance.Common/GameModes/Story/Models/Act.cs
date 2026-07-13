@@ -1,5 +1,4 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
 using System;
@@ -17,31 +16,28 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Act description", tooltip: "Short description. Will be displayed to players at the beginning of the act and when pressing tab.")]
 		public LocalizedString Description = new("There is stuff to do, follow objectives !");
 
-		[ConfigProperty(label: "Load Map", tooltip: "If enabled, force a map load before starting the act. Disable it if you want to keep the map from the previous act.")]
-		public bool LoadMap;
+		[ConfigProperty(label: "Load Map", tooltip: "If enabled, force a map load before starting the act. Disable it if you want to keep the map currently playing.")]
+		public bool LoadMap = false;
 
-		[ConfigProperty(label: "Map ID", tooltip: "ID of the map to load", dataType: AllianceData.DataTypes.Map)]
+		[ConfigProperty(label: "Map ID", tooltip: "ID of the map to load", dataType: AllianceData.DataTypes.Map, dependency: nameof(LoadMap))]
 		public string MapID;
 
-		[ConfigProperty(label: "Settings", tooltip: "Specify which game mode and what settings to apply for this act.")]
-		public GameModeSettings ActSettings = new GameModeSettings();
+		[ConfigProperty(label: "Generic settings", tooltip: "Define native and mod settings for this act.")]
+		public ScenarioGameModeSettings ActSettings = new ScenarioGameModeSettings();
 
-		[ConfigProperty(label: "Victory events", tooltip: "Define what happens on victory among the list of available events.")]
-		public VictoryLogic VictoryLogic = new VictoryLogic();
-
-		[ConfigProperty(label: "Spawn behavior", tooltip: "Define how, when and where the players and IA must spawn.")]
+		[ConfigProperty(label: "Spawn settings", tooltip: "Define how, when and where the players and IA must spawn.")]
 		public SpawnLogic SpawnLogic = new SpawnLogic();
 
-		[ConfigProperty(label: "Player spawn menu", tooltip: "Define the player spawn menu for this act.")]
-		public PlayerSpawnMenu PlayerSpawnMenu = new PlayerSpawnMenu();
-
 		[ConfigProperty(label: "Objectives", tooltip: "List of objectives to complete in this act.")]
-		public List<ObjectiveBase> Objectives;
+		public List<ObjectiveBase> Objectives = new List<ObjectiveBase>();
 
-		[ConfigProperty(label: "Trigger actions", tooltip: "List of actions to trigger based on conditions.")]
+		[ConfigProperty(label: "Scripted events", tooltip: "You can define various events that can be triggered based on conditions.")]
 		public List<ConditionalActionStruct> ConditionalActions = new List<ConditionalActionStruct>();
 
-		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, GameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)
+		[ConfigProperty(label: "Victory events", tooltip: "Events triggered upon victory.")]
+		public VictoryLogic VictoryLogic = new VictoryLogic();
+
+		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, ScenarioGameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)
 		{
 			Name = name;
 			Description = desc;

@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -25,7 +26,9 @@ namespace Alliance.Common.GameModes.Story.Models
 			ActionsOnActCompleted = actionsOnActCompleted;
 		}
 
-		public VictoryLogic() { }
+		public VictoryLogic()
+		{
+		}
 
 		public void OnDisplayResults(BattleSideEnum winner)
 		{

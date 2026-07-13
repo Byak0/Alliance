@@ -22,14 +22,14 @@
 						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 							<Children>
 								<!-- Act title -->
-								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="120">
 									<Children>
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="60" Text="@ActTitle"  />
 										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="Alliance.HeaderGlow" />
 									</Children>
 								</Widget>
 								<!-- Act description -->
-								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="160">
 									<Children>
 										<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="36" Text="@ActDescription"  />
 										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="800" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-40" Brush="Alliance.HeaderGlowFlip" />
@@ -45,6 +45,13 @@
 										</ListPanel>
 									</Children>
 								</Widget>
+								<!-- Lives -->
+								<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="90" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom" IsVisible="@ShowLives">
+									<Children>
+										<!-- Objective name -->
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="32" Text="@LivesLabel" />
+									</Children>
+								</ListPanel>
 							</Children>
 						</ListPanel>
 					</Children>

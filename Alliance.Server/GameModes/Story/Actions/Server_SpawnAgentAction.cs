@@ -28,7 +28,9 @@ namespace Alliance.Server.GameModes.Story.Actions
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(CharacterId);
 			float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Difficulty);
-			int numbertoSpawn = IsPercentage ? (int)((SpawnCount / 100f) * CoreUtils.CurrentPlayerCount) : SpawnCount;
+			int numbertoSpawn = IsPercentage ? 
+				SpawnHelper.GetTroopCountFromPercentage(SpawnCount) : 
+				SpawnCount;
 
 			for (int i = 0; i < numbertoSpawn; i++)
 			{

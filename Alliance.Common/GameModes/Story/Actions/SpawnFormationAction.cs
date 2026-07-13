@@ -36,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	public class CharacterToSpawn
 	{
-		[ConfigProperty(label: "Character", tooltip: "ID of the character to spawn.")]
+		[ConfigProperty(label: "Character", tooltip: "ID of the character to spawn.", dataType: AllianceData.DataTypes.Character)]
 		public string CharacterId = "mp_heavy_infantry_vlandia_troop";
 		[ConfigProperty(label: "Number", tooltip: "Number of characters to spawn.")]
 		public int SpawnCount = 1;

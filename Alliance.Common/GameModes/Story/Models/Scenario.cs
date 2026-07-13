@@ -1,6 +1,9 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Objectives;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Core;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -38,5 +41,48 @@ namespace Alliance.Common.GameModes.Story.Models
 		}
 
 		public Scenario() { }
+
+		public static Scenario CreateDefaultScenario()
+		{
+			Scenario scenario = new Scenario(
+				name: new LocalizedString("Name"),
+				desc: new LocalizedString("Description")
+				);
+
+			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
+			{
+				new ShowResultScreenAction()
+			};
+			List<ActionBase> act1CompletedActions = new List<ActionBase>()
+			{
+				new StartGameAction("", new GameModeSettings())
+			};
+
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			Act act1 = new Act(
+				name: new LocalizedString("Act 1"),
+				desc: new LocalizedString(""),
+				loadMap: false,
+				mapId: "",
+				actSettings: new ScenarioGameModeSettings(),
+				spawnLogic: new SpawnLogic(),
+				victoryLogic: act1VictoryLogic
+				);
+			KillAllObjective act1objective1 = new KillAllObjective(
+				BattleSideEnum.Defender,
+				new LocalizedString("Kill all attackers"),
+				new LocalizedString(""),
+				true, false);
+			KillAllObjective act1objective2 = new KillAllObjective(
+				BattleSideEnum.Attacker,
+				new LocalizedString("Kill all defenders"),
+				new LocalizedString(""),
+				true, false);
+			act1.Objectives.Add(act1objective1);
+			act1.Objectives.Add(act1objective2);
+			scenario.Acts.Add(act1);
+
+			return scenario;
+		}
 	}
 }

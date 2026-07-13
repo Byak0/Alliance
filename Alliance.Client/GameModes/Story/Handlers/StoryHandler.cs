@@ -16,6 +16,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<InitScenarioMessage>(HandleServerEventInitScenarioMessage);
 			reg.Register<UpdateScenarioMessage>(HandleServerEventUpdateScenarioMessage);
 			reg.Register<ObjectivesProgressMessage>(HandleServerEventObjectivesProgressMessage);
+			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)
@@ -75,6 +76,12 @@ namespace Alliance.Client.GameModes.Story.Handlers
 				objBehavior.TotalDefenderDead = message.DefendersDead;
 				objBehavior.StartTimerAsClient(message.TimerStart, message.TimerDuration);
 			}
+		}
+
+		public void HandleServerEventSyncScenarioLivesMessage(SyncScenarioLivesMessage message)
+		{
+			ScenarioClientBehavior scenarioClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
+			scenarioClientBehavior?.UpdateLives(message.RespawnStrategy, message.TeamRemainingLives, message.PlayerRemainingLives);
 		}
 	}
 }
