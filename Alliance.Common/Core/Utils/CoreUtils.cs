@@ -347,9 +347,9 @@ namespace Alliance.Common.Core.Utils
 			{
 				"Lobby" => "Skirmish",
 				"BattleRoyale" => "Duel",
-				"PvC" => "Captain",
-				"CvC" => "Captain",
-				"Scenario" => "Captain",
+				"PvC" => "Battle",
+				"CvC" => "Battle",
+				"Scenario" => "Battle",
 				"CaptainX" => "Captain",
 				"BattleX" => "Battle",
 				"SiegeX" => "Siege",
