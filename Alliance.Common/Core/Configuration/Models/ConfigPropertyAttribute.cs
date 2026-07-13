@@ -26,7 +26,7 @@ namespace Alliance.Common.Core.Configuration.Models
 			float maxValue = 10, 
 			AllianceData.DataTypes dataType = AllianceData.DataTypes.None, 
 			string dependency = null,
-			string category = "General")
+			string category = null)
 		{
 			IsEditable = isEditable;
 			Label = label;

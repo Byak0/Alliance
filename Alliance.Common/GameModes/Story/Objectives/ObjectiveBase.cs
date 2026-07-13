@@ -15,22 +15,22 @@ namespace Alliance.Common.GameModes.Story.Objectives
 		[ConfigProperty(label: "Description", tooltip: "Description of the objective")]
 		public LocalizedString Description = new LocalizedString("Objective description");
 
-		[ConfigProperty(label: "Instant win", tooltip: "If true, completing this objective will instantly win the act")]
-		public bool InstantActWin;
+		[ConfigProperty(label: "Optional", tooltip: "Set this objective as optional (=not required to complete the act). Do not set all your objectives as optional or the scenario will be won instantly.")]
+		public bool Optional = false;
 
-		[ConfigProperty(label: "Required for win", tooltip: "If true, this objective must be completed to win the act")]
-		public bool RequiredForActWin;
+		[ConfigProperty(label: "Instant win", tooltip: "If enabled, completing this objective will instantly win the act, bypassing all other objectives.")]
+		public bool InstantActWin = false;
 
 		[ConfigProperty(isEditable: false)]
 		public bool Active = true;
 
-		public ObjectiveBase(BattleSideEnum side, LocalizedString name, LocalizedString description, bool instantWin, bool requiredForWin)
+		public ObjectiveBase(BattleSideEnum side, LocalizedString name, LocalizedString description, bool instantWin, bool optional)
 		{
 			Side = side;
 			Name = name;
 			Description = description;
 			InstantActWin = instantWin;
-			RequiredForActWin = requiredForWin;
+			Optional = optional;
 			Active = true;
 		}
 

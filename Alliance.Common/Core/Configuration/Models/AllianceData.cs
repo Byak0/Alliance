@@ -38,7 +38,7 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		public static string[] AvailableCultures() => Factions.Instance.OrderedCultureKeys.ToArray();
 
-		public static string[] AvailableCharacters() => Characters.Instance.CharacterStubs.ConvertAll(c => c.Name.ToString()).ToArray();
+		public static string[] AvailableCharacters() => Characters.Instance.CharacterStubs.ConvertAll(c => c.StringId).ToArray();
 
 		public static string[] AvailableItems()
 		{

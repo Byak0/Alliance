@@ -41,6 +41,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; }
 
+		public object ParentObject => parentViewModel?.Object;
+
 		public object FieldValue
 		{
 			get => _fieldValue;
@@ -52,6 +54,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					// Propagate the value to the parent object
 					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
+
+					if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
+					{
+						parentViewModel.RefreshFields();
+					}
 				}
 			}
 		}
@@ -90,7 +97,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				Label = attribute.Label ?? FieldName;
 				Tooltip = attribute.Tooltip;
 				ShowTooltip = !string.IsNullOrEmpty(Tooltip);
-				PossibleValues = attribute.PossibleValues;
+				try
+				{
+					PossibleValues = attribute.PossibleValues;
+				}
+				catch(Exception ex)
+				{
+					Log($"Error retrieving possible values for field '{FieldName}': {ex.Message}", LogLevel.Error);
+					PossibleValues = new string[0];
+				}
 			}
 			else
 			{
@@ -158,7 +173,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, scenarioEditorViewModel, parentViewModel.Title);
+			var editorWindow = new ObjectEditorWindow(obj,parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
 			editorWindow.Show();
 
 			// Update DisplayName when the editor window is closed

@@ -1,6 +1,9 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using System;
 using System.Xml.Serialization;
+using TaleWorlds.Core;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -10,33 +13,37 @@ namespace Alliance.Common.GameModes.Story.Models
 	[Serializable]
 	public class SpawnLogic
 	{
-		[ConfigProperty(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker")]
-		public string DefaultCharacterAttacker;
-		[ConfigProperty(label: "Default unit (defender)", tooltip: "Default character to spawn for defender")]
-		public string DefaultCharacterDefender;
-		[ConfigProperty(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker")]
-		public string DefaultSpawnTagAttacker;
-		[ConfigProperty(label: "Default spawn (defender)", tooltip: "By default, use spawn positions with this tag for defender")]
-		public string DefaultSpawnTagDefender;
-		[ConfigProperty(label: "Spawn type (attacker)", tooltip: "How to choose the spawn location for the attacker")]
-		public LocationStrategy LocationStrategyAttacker;
-		[ConfigProperty(label: "Spawn type (defender)", tooltip: "How to choose the spawn location for the defender")]
-		public LocationStrategy LocationStrategyDefender;
-		[ConfigProperty(label: "Number of lives (attacker)", tooltip: "Number of lives for attacker")]
-		public int MaxLivesAttacker;
-		[ConfigProperty(label: "Number of lives (defender)", tooltip: "Number of lives for defender")]
-		public int MaxLivesDefender;
-		[ConfigProperty(label: "Respawn type (attacker)", tooltip: "Define how attackers can respawn")]
-		public RespawnStrategy RespawnStrategyAttacker;
-		[ConfigProperty(label: "Respawn type (defender)", tooltip: "Define how defenders can respawn")]
-		public RespawnStrategy RespawnStrategyDefender;
-		[ConfigProperty(label: "Keep lives", tooltip: "If enabled, add number of lives on top of the lives left from previous act. Otherwise previous lives left are lost.")]
-		public bool KeepLivesFromPreviousAct;
-		[ConfigProperty(label: "Store agents", tooltip: "If enabled, store the state and positions of all agents at the end of the act.")]
-		public bool StoreAgentsInfo;
-		[ConfigProperty(label: "Use stored agents", tooltip: "If enabled, spawn the agents that were stored in a previous act.")]
-		public bool UsePreviousActAgents;
-
+		[ConfigProperty(label: "Player spawn menu", tooltip: "Define the player spawn menu for this act. Set teams, formations and available characters.")]
+		public PlayerSpawnMenu PlayerSpawnMenu = new PlayerSpawnMenu();
+		[ConfigProperty(label: "Default unit (attacker)", tooltip: "Default character to spawn for attacker. Only used if the player spawn menu is undefined.", dataType: AllianceData.DataTypes.Character)]
+		public string DefaultCharacterAttacker = "mp_heavy_infantry_empire_hero";
+		[ConfigProperty(label: "Default unit (defender)", tooltip: "Default character to spawn for defender. Only used if the player spawn menu is undefined.", dataType: AllianceData.DataTypes.Character)]
+		public string DefaultCharacterDefender = "mp_heavy_infantry_vlandia_hero";
+		[ConfigProperty(label: "Officer selection strategy", tooltip: "Define how the officer is selected. You must define officer characters in the player spawn menu.")]
+		public OfficerSelectionStrategy OfficerSelectionStrategy = OfficerSelectionStrategy.PlayerVote;
+		[ConfigProperty(label: "Time before initial spawn", tooltip: "Time in seconds before the original spawn. Players must choose their team, formation and character (and eventually vote for their officers) in that duration.")]
+		public int TimeBeforeSpawn = 30;
+		[ConfigProperty(label: "Default spawn (attacker)", tooltip: "By default, use spawn positions with this tag for attacker", category: "Spawn location")]
+		public string DefaultSpawnTagAttacker = "attacker";
+		[ConfigProperty(label: "Default spawn (defender)", tooltip: "By default, use spawn positions with this tag for defender", category: "Spawn location")]
+		public string DefaultSpawnTagDefender = "defender";
+		[ConfigProperty(label: "Spawn type (attacker)", tooltip: "How to choose the spawn location for the attacker", category: "Spawn location")]
+		public LocationStrategy LocationStrategyAttacker = LocationStrategy.OnlyTags;
+		[ConfigProperty(label: "Spawn type (defender)", tooltip: "How to choose the spawn location for the defender", category: "Spawn location")]
+		public LocationStrategy LocationStrategyDefender = LocationStrategy.OnlyTags;
+		[ConfigProperty(label: "Respawn type (attacker)", tooltip: "Define how attackers can respawn", category: "Respawn")]
+		public RespawnStrategy RespawnStrategyAttacker = RespawnStrategy.NoRespawn;
+		[ConfigProperty(label: "Respawn type (defender)", tooltip: "Define how defenders can respawn", category: "Respawn")]
+		public RespawnStrategy RespawnStrategyDefender = RespawnStrategy.NoRespawn;
+		[ConfigProperty(label: "Number of lives (attacker)", tooltip: "Number of lives for attacker", category: "Respawn")]
+		public int MaxLivesAttacker = 0;
+		[ConfigProperty(label: "Number of lives (defender)", tooltip: "Number of lives for defender", category: "Respawn")]
+		public int MaxLivesDefender = 0;
+		[ConfigProperty(label: "Time before respawn", tooltip: "Time in seconds before a player can respawn after death.", category: "Respawn")]
+		public int TimeBeforeRespawn = 10;
+		[ConfigProperty(label: "Keep lives from previous act", tooltip: "If enabled, add number of lives on top of the lives left from previous act. Otherwise previous lives left are lost.", category: "Respawn")]
+		public bool KeepLivesFromPreviousAct = false;
+		
 		[XmlIgnore]
 		public string[] DefaultCharacters
 		{
@@ -50,6 +57,15 @@ namespace Alliance.Common.GameModes.Story.Models
 				}
 			}
 		}
+
+		[XmlIgnore]
+		public BasicCharacterObject DefaultCharacterObjectAttacker => Characters.Instance.GetCharacterObject(DefaultCharacterAttacker);
+		
+		[XmlIgnore]
+		public BasicCharacterObject DefaultCharacterObjectDefender => Characters.Instance.GetCharacterObject(DefaultCharacterDefender);
+
+		[XmlIgnore]
+		public BasicCharacterObject[] DefaultCharacterObjects => new[] { DefaultCharacterObjectDefender, DefaultCharacterObjectAttacker };
 
 		[XmlIgnore]
 		public string[] DefaultSpawnTags
@@ -107,12 +123,10 @@ namespace Alliance.Common.GameModes.Story.Models
 			}
 		}
 
-		public SpawnLogic(string[] defaultCharacters, string[] spawnTags, bool storeAgentsInfo, bool usePreviousActAgents, int[] maxLives, bool keepLivesFromPreviousAct, LocationStrategy[] locationStrategies, RespawnStrategy[] respawnStrategies)
+		public SpawnLogic(string[] defaultCharacters, string[] spawnTags, int[] maxLives, bool keepLivesFromPreviousAct, LocationStrategy[] locationStrategies, RespawnStrategy[] respawnStrategies)
 		{
 			DefaultCharacters = defaultCharacters;
 			DefaultSpawnTags = spawnTags;
-			StoreAgentsInfo = storeAgentsInfo;
-			UsePreviousActAgents = usePreviousActAgents;
 			MaxLives = maxLives;
 			KeepLivesFromPreviousAct = keepLivesFromPreviousAct;
 			LocationStrategies = locationStrategies;
@@ -135,5 +149,12 @@ namespace Alliance.Common.GameModes.Story.Models
 		NoRespawn,
 		MaxLivesPerTeam,
 		MaxLivesPerPlayer,
+	}
+
+	public enum OfficerSelectionStrategy
+	{
+		NoOfficer,
+		RandomOfficer,
+		PlayerVote,
 	}
 }

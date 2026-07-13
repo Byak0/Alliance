@@ -30,10 +30,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
-	</ItemGroup>
-	
-	<ItemGroup>
 		<ProjectReference Include="..\Alliance.Common\Alliance.Common.csproj" />
 	</ItemGroup>
 	
@@ -93,9 +89,7 @@
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.WinForms.dll&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)NAudio.Wasapi.dll&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
 		<Exec Command="xcopy &quot;$(TargetDir)Concentus.dll&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignThemes.Wpf.dll&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
-		<Exec Command="xcopy &quot;$(TargetDir)MaterialDesignColors.dll&quot; &quot;$(GameFolder)\Modules\$(ModuleName)\bin\Win64_Shipping_wEditor\&quot; /C /I /Y /F" />
-		
+
 	</Target>
 
 </Project>

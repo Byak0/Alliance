@@ -291,7 +291,7 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			_selectedGameMode.GameModeSettings.TWOptions[OptionType.Map] = mapCardVM.MapInfo.Name;
 			if (mapCardVM is ActCardVM actCardVM)
 			{
-				_playerSpawnMenuInstance = actCardVM.Act.PlayerSpawnMenu;
+				_playerSpawnMenuInstance = actCardVM.Act.SpawnLogic.PlayerSpawnMenu;
 				RefreshPlayerSpawnMenuShortDesc();
 				_selectedGameMode.GameModeSettings = actCardVM.Act.ActSettings;
 				RefreshNativeOptions();

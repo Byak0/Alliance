@@ -1,4 +1,6 @@
 ﻿using Alliance.Client.GameModes.Story.ViewModels;
+using Alliance.Common.GameModes.Story.Behaviors;
+using Alliance.Common.GameModes.Story.Models;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -17,6 +19,7 @@ namespace Alliance.Client.GameModes.Story.Views
 	{
 		private GauntletLayer _gauntletLayer;
 		private ScenarioVM _dataSource;
+		private ScenarioClientBehavior _scenarioClientBehavior;
 
 		private bool _showBoard;
 		private bool _mouseRequestedWhileBoardActive;
@@ -63,6 +66,9 @@ namespace Alliance.Client.GameModes.Story.Views
 			ScenarioPlayer.Instance.OnActStateSpawnParticipants += ShowSpawnScreen;
 			ScenarioPlayer.Instance.OnActStateInProgress += ShowStartScreen;
 			ScenarioPlayer.Instance.OnActStateCompleted += ShowEndScreen;
+
+			_scenarioClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
+			_scenarioClientBehavior.State.OnLivesChanged += RefreshLivesDisplay;
 		}
 
 		private void UnregisterScenarioEvents()
@@ -72,6 +78,7 @@ namespace Alliance.Client.GameModes.Story.Views
 			ScenarioPlayer.Instance.OnActStateSpawnParticipants -= ShowSpawnScreen;
 			ScenarioPlayer.Instance.OnActStateInProgress -= ShowStartScreen;
 			ScenarioPlayer.Instance.OnActStateCompleted -= ShowEndScreen;
+			_scenarioClientBehavior.State.OnLivesChanged -= RefreshLivesDisplay;
 		}
 
 		private void SetObjectives(NetworkCommunicator peer, Team previousTeam, Team newTeam)
@@ -87,6 +94,7 @@ namespace Alliance.Client.GameModes.Story.Views
 		public void ShowInitialScreen()
 		{
 			_dataSource.SetAct(ScenarioPlayer.Instance.CurrentAct);
+			RefreshLivesDisplay();
 
 			_scenarioIntroRequested = true;
 			_scenarioIntroTimeElapsed = 0;
@@ -102,6 +110,7 @@ namespace Alliance.Client.GameModes.Story.Views
 		public void ShowStartScreen()
 		{
 			Log("Hello I'm StartScreen", LogLevel.Debug);
+			_dataSource.ShowLives = true;
 		}
 
 		public void ShowEndScreen()
@@ -206,6 +215,16 @@ namespace Alliance.Client.GameModes.Story.Views
 				}
 				dataSource.SetMouseState(isMouseVisible);
 			}
+		}
+
+		private void RefreshLivesDisplay()
+		{
+			_dataSource.ShowLives = ScenarioPlayer.Instance.ActState == ActState.InProgress;
+
+			_dataSource?.SetLives(
+				_scenarioClientBehavior.State.RespawnStrategy,
+				_scenarioClientBehavior.State.TeamRemainingLives,
+				_scenarioClientBehavior.State.PlayerRemainingLives);
 		}
 
 		private void FinalizeLayer()

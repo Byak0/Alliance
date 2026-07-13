@@ -588,6 +588,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				default: return Difficulty.Normal;
 			}
 		}
+
+		public static int GetTroopCountFromPercentage(int percentage)
+		{
+			return (int)Math.Ceiling((percentage / 100f) * CoreUtils.CurrentPlayerCount);
+		}
 	}
 
 	public class SpawnRequest

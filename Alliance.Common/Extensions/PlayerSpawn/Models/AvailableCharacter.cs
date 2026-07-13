@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using System;
 using System.Xml.Serialization;
 using TaleWorlds.Core;
@@ -32,7 +33,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		[XmlIgnore]
 		public BasicCultureObject Culture => Character?.Culture ?? CharacterStub?.Culture;
 		[XmlIgnore]
-		public int MaxSlots => (int)(SpawnCount * (IsPercentage ? CoreUtils.CurrentPlayerCount / 100f : 1));
+		public int MaxSlots => IsPercentage ? SpawnHelper.GetTroopCountFromPercentage(SpawnCount) : SpawnCount;
 		[XmlIgnore]
 		public int UsedSlots { get; set; }
 		[XmlIgnore]

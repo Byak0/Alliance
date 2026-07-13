@@ -110,7 +110,7 @@ namespace Alliance.Editor
 		private void OpenScenarioEditor()
 		{
 			// Create and show the editor window
-			Scenario scenario = new Scenario(new LocalizedString("New scenario"), new LocalizedString());
+			Scenario scenario = Scenario.CreateDefaultScenario();
 			if (_scenarioEditorWindow == null || !_scenarioEditorWindow.IsLoaded)
 			{
 				_scenarioEditorWindow = new ScenarioEditorWindow(scenario);
