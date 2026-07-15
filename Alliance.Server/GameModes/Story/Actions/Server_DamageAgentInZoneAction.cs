@@ -7,6 +7,7 @@ using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
+	[OverrideAction(typeof(DamageAgentInZoneAction))]
 	public class Server_DamageAgentInZoneAction : DamageAgentInZoneAction
 	{
 		public override void Execute()

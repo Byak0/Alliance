@@ -17,6 +17,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// <summary>
 	/// Action for starting a game.
 	/// </summary>
+	[OverrideAction(typeof(StartGameAction))]
 	public class Server_StartGameAction : StartGameAction
 	{
 		public Server_StartGameAction() : base() { }

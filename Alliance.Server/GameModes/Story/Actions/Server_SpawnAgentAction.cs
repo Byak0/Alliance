@@ -12,6 +12,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// <summary>
 	/// Action for spawning agents.
 	/// </summary>
+	[OverrideAction(typeof(SpawnAgentAction))]
 	public class Server_SpawnAgentAction : SpawnAgentAction
 	{
 		public Server_SpawnAgentAction() : base() { }
