@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -120,22 +122,83 @@ namespace Alliance.Common.Utilities
             return watcher;
         }
 
-        private static XmlDocument LoadAndMergeXML(List<string> xmlList, string nodesName)
-        {
-            XmlDocument xmlDoc = new();
-            xmlDoc.Load(xmlList.First());
-            xmlList.RemoveAt(0);
-            foreach (string path in xmlList)
-            {
-                XmlDocument xmlDocX = new();
-                xmlDocX.Load(path);
-                XmlNodeList nodesToImport = xmlDocX.SelectNodes(nodesName);
-                foreach (XmlNode node in nodesToImport)
-                {
-                    xmlDoc.DocumentElement.AppendChild(xmlDoc.ImportNode(node, true));
-                }
-            }
-            return xmlDoc;
-        }
-    }
+		/// <summary>
+		/// Creates an XmlSerializer that can serialize a given root type and include all derived types of specified base types.
+		/// </summary>
+		/// <param name="rootType">The type of the root object to serialize.</param>
+		/// <param name="baseTypes">The base types for which all derived types should be included.</param>
+		/// <returns>A configured XmlSerializer.</returns>
+		public static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
+		{
+			Type[] derivedTypes = GetSerializableDerivedTypes(baseTypes)
+				.Distinct()
+				.ToArray();
+
+			return new XmlSerializer(rootType, derivedTypes);
+		}
+
+		public static IEnumerable<Type> GetSerializableDerivedTypes(params Type[] baseTypes)
+		{
+			IEnumerable<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(a =>
+				{
+					try
+					{
+						return a.GetTypes();
+					}
+					catch (ReflectionTypeLoadException ex)
+					{
+						return ex.Types.Where(t => t != null);
+					}
+					catch
+					{
+						return Enumerable.Empty<Type>();
+					}
+				});
+
+			return allTypes
+				.Where(t => t != null && !t.IsAbstract && baseTypes.Any(t.IsSubclassOf));
+		}
+
+		public static T LoadAbstractClassFromFile<T>(string pathConfig, T defaultInstance) where T : new()
+		{
+			TextReader reader = null;
+
+			try
+			{
+				
+				var serializer =  CreateSerializer(rootType: typeof(T), typeof(T));
+				using var fs = new FileStream(pathConfig, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+				reader = new StreamReader(fs);
+				return (T)serializer.Deserialize(reader);
+			}
+			finally
+			{
+				if (reader != null)
+					reader.Close();
+			}
+			
+		}
+
+		/// <summary>
+		/// Try to save instance to specified file path.
+		/// </summary>
+		public static bool SaveAbstractClassToFile<T>(string pathConfig, T instance) where T : new()
+		{
+			TextWriter writer = null;
+			try
+			{
+				var serializer = CreateSerializer(rootType: typeof(T), typeof(T));
+				writer = new StreamWriter(pathConfig, false);
+				serializer.Serialize(writer, instance);
+				return true;
+			}
+			finally
+			{
+				if (writer != null)
+					writer.Close();
+			}
+		}
+
+	}
 }

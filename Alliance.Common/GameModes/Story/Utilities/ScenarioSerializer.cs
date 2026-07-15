@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
+using static Alliance.Common.Utilities.SerializeHelper;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -48,21 +50,6 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					typeof(Condition), typeof(ActionBase));
 				return _conditionalActionSerializer;
 			}
-		}
-
-		/// <summary>
-		/// Creates an XmlSerializer that can serialize a given root type and include all derived types of specified base types.
-		/// </summary>
-		/// <param name="rootType">The type of the root object to serialize.</param>
-		/// <param name="baseTypes">The base types for which all derived types should be included.</param>
-		/// <returns>A configured XmlSerializer.</returns>
-		private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
-		{
-			Type[] derivedTypes = GetSerializableDerivedTypes(baseTypes)
-				.Distinct()
-				.ToArray();
-
-			return new XmlSerializer(rootType, derivedTypes);
 		}
 
 		public static void SerializeScenarioToXML(Scenario scenarioToSerialize, string filePath)
@@ -286,28 +273,6 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			}
 		}
 
-		private static IEnumerable<Type> GetSerializableDerivedTypes(params Type[] baseTypes)
-		{
-			IEnumerable<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(a =>
-				{
-					try
-					{
-						return a.GetTypes();
-					}
-					catch (ReflectionTypeLoadException ex)
-					{
-						return ex.Types.Where(t => t != null);
-					}
-					catch
-					{
-						return Enumerable.Empty<Type>();
-					}
-				});
-
-			return allTypes
-				.Where(t => t != null && !t.IsAbstract && baseTypes.Any(t.IsSubclassOf));
-		}
 
 		private static IEnumerable<string> GetXmlTypeNames(Type type)
 		{
