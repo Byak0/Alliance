@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
+	[OverrideAction(typeof(VOIPRangeInZoneAction))]
 	public class Server_VOIPRangeInZoneAction : VOIPRangeInZoneAction
 	{
 		// Create a dictionary with agent in zone and previous speakingrange 

@@ -6,6 +6,7 @@ using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
+	[OverrideAction(typeof(MortalityStateZoneAction))]
 	public class Server_MortalityStateZoneAction : MortalityStateZoneAction
 	{
 		public override void Execute()

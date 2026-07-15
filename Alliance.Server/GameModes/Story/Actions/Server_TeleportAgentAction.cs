@@ -7,6 +7,7 @@ using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
+	[OverrideAction(typeof(TeleportAgentAction))]
 	public class Server_TeleportAgentAction : TeleportAgentAction
 	{
 		public override void Execute()

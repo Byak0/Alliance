@@ -8,7 +8,7 @@ using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
-using Alliance.Client.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
@@ -38,7 +38,7 @@ namespace Alliance.Client
 			};
 			KeyBinder.Initialize(assemblies);
 
-			Client_ActionFactory.Initialize();
+			ActionOverrideRegistry.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();

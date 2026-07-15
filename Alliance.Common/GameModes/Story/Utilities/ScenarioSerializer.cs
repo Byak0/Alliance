@@ -361,7 +361,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		}
 
 		/// <summary>
-		/// Recursively replaces all ActionBase objects with their correct version from Server or Client ActionFactory.
+		/// Recursively replaces all ActionBase objects with their optional override (Client or Server) from ActionOverrideRegistry.
 		/// </summary>
 		private static void RecursiveActionReplace(object obj, object parentObj = null, FieldInfo fi = null)
 		{
@@ -418,25 +418,29 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		}
 
 		/// <summary>
-		/// Creates the correct instance of an ActionBase object by invoking the corresponding method in the ActionFactory.
+		/// Creates the correct instance of an ActionBase object using optional overrides from the ActionOverrideRegistry
 		/// </summary>
 		private static object CreateCorrectActionInstance(object obj)
 		{
 			if (obj == null) return null;
 
-			// Get the corresponding method in the ActionFactory (e.g., StartGameAction)
-			MethodInfo actionMethod = ActionFactory.Instance.GetType().GetMethod(obj.GetType().Name);
+			Type overrideType = ActionOverrideRegistry.GetOverrideType(obj.GetType());
 
-			if (actionMethod == null)
+			// No override found: run the Common implementation as-is.
+			if (overrideType == null)
 			{
-				bool isAllianceAction = obj.GetType().Assembly == typeof(ActionBase).Assembly;
-				Log($"Action method '{obj.GetType().Name}' not found in ActionFactory, keeping deserialized instance.", isAllianceAction ? LogLevel.Error : LogLevel.Warning);
 				return obj;
 			}
 
-			// Invoke the method on the ActionFactory to get the correct action instance
-			object newAction = actionMethod.Invoke(ActionFactory.Instance, null);
-			return newAction;
+			try
+			{
+				return Activator.CreateInstance(overrideType);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to create runtime override '{overrideType.Name}' for action '{obj.GetType().Name}': {ex.Message}", LogLevel.Error);
+				return obj;
+			}
 		}
 
 		/// <summary>

@@ -47,7 +47,7 @@ namespace Alliance.Editor
 
 			KeyBinder.RegisterContexts();
 
-			ActionFactory.Initialize();
+			ActionOverrideRegistry.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
 			SceneList.Initialize();
 

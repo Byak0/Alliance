@@ -14,7 +14,7 @@ using Alliance.Server.GameModes.Lobby;
 using Alliance.Server.GameModes.PvC;
 using Alliance.Server.GameModes.SiegeX;
 using Alliance.Server.GameModes.Story;
-using Alliance.Server.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Server.Patch;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
@@ -35,7 +35,7 @@ namespace Alliance.Server
 			// Initialize player roles and access level
 			PlayerStore.Instance.InitFromFile(PlayerStorePath);
 
-			Server_ActionFactory.Initialize();
+			ActionOverrideRegistry.Initialize();
 
 			// Initialize mod configuration
 			ConfigInitializer.Init();

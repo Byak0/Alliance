@@ -6,6 +6,7 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
+	[OverrideAction(typeof(ShowOrHideEntitiesAction))]
 	public class Server_ShowOrHideEntitiesAction : ShowOrHideEntitiesAction
 	{
 		private WeakGameEntity _gameEntity = WeakGameEntity.Invalid;
