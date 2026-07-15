@@ -107,6 +107,29 @@
 															</Children>
 														</ButtonWidget>
 
+														<!-- Load / Save  gameoption from/to file -->
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" MarginTop="16" Text="Load or Save Map Preset" />
+
+														<BrushWidget SuggestedWidth="560" SuggestedHeight="60" VerticalAlignment="Top" HorizontalAlignment="Right" MarginRight="104" IsVisible="@IsAdmin" >
+															<Children>
+
+																<!-- Load button -->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="288" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Load">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Load" />
+																	</Children>
+																</ButtonWidget>
+
+																<!-- Save button -->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="160" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Save" />
+																	</Children>
+																</ButtonWidget>
+																
+															</Children>
+														</BrushWidget>
+
 														<!-- Native options -->
 														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="8" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\NativeOptions" ListPanel="..\NativeOptions" RenderLate="true" UpdateChildrenStates="true">
 															<Children>
