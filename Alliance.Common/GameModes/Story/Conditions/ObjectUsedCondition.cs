@@ -10,6 +10,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// <summary>
 	/// Check if a CS_UsableObject has been used.
 	/// </summary>
+	[PhraseTemplate("The script {ObjectId} has been used. Repeat: {AllowMultipleUses}. Restrict to parent entity: {ParentEntityOnly}")]
 	public class ObjectUsedCondition : Condition
 	{
 		[ConfigProperty(label: "Object ID", tooltip: "ID of the script to listen to.")]

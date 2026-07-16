@@ -10,7 +10,8 @@ namespace Alliance.Common.GameModes.Story.Models
 	/// <summary>
 	/// A conditional action is a set of conditions and actions that are triggered when the conditions are met.
 	/// </summary>
-	public class ConditionalActionStruct
+	[PhrasePreview("{Name} — {#Conditions} condition(s) → {#Actions} action(s)")]
+	public class ScriptedEvent
 	{
 		public string Name = "Conditional Action";
 		[ConfigProperty(label: "Conditions", tooltip: "If multiple conditions are set, they must all be true to trigger the actions.")]
@@ -35,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public WeakGameEntity ParentEntity = WeakGameEntity.Invalid;
 
-		public ConditionalActionStruct() { }
+		public ScriptedEvent() { }
 
 		public void Register(WeakGameEntity entity)
 		{
@@ -66,6 +67,9 @@ namespace Alliance.Common.GameModes.Story.Models
 				if (_refreshTimer < RefreshDelay) return;
 				_refreshTimer = 0f;
 
+				// Fresh variable scope for this evaluation: conditions may capture into it, actions may read it.
+				ScenarioManager.Instance.CurrentTriggerContext = new TriggerContext();
+
 				bool conditionsMet = true;
 				foreach (Condition condition in Conditions)
 				{
@@ -88,6 +92,8 @@ namespace Alliance.Common.GameModes.Story.Models
 						_enabled = false;
 					}
 				}
+
+				ScenarioManager.Instance.CurrentTriggerContext = null;
 			}
 		}
 	}

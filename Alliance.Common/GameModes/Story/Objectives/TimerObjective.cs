@@ -6,6 +6,8 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Objectives
 {
+	[PhrasePreview("{Side} must survive {Duration}s")]
+	[PhraseTemplate("{Side} must survive {Duration}s")]	
 	public class TimerObjective : ObjectiveBase
 	{
 		public float Duration;

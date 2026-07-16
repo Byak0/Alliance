@@ -51,6 +51,9 @@
 									<DataTrigger Binding="{Binding IsComplexType}" Value="True">
 										<Setter Property="ContentTemplate" Value="{StaticResource EditButtonTemplate}"/>
 									</DataTrigger>
+									<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
+										<Setter Property="ContentTemplate" Value="{StaticResource PolymorphicFieldTemplate}"/>
+									</DataTrigger>
 									<DataTrigger Binding="{Binding IsZone}" Value="True">
 										<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
 									</DataTrigger>
@@ -61,13 +64,41 @@
 							</Style>
 						</ContentControl.Style>
 					</ContentControl>
-				</StackPanel>
-			</DataTemplate>
-		</ResourceDictionary>
+			</StackPanel>
+		</DataTemplate>
+
+		<!-- Implicit templates for the phrase segments (selected by runtime item type) -->
+		<DataTemplate DataType="{x:Type vm:PhraseTextSegment}">
+			<TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="3,0"
+					   FontSize="18" FontWeight="Medium" Foreground="#FF2B2B2B" />
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type vm:PhraseFieldSegment}">
+			<Border Background="#FFF1F3F5" BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4"
+					Padding="4,1" Margin="3,1" VerticalAlignment="Center">
+				<ContentControl Content="{Binding Field}" ContentTemplate="{StaticResource InlineFieldTemplate}" VerticalAlignment="Center" />
+			</Border>
+		</DataTemplate>
+	</ResourceDictionary>
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
 		<StackPanel Margin="24, 8, 0, 32">
+			<!-- Inline phrase view (shown when the edited type declares a [PhraseTemplate]) -->
+			<ItemsControl ItemsSource="{Binding PhraseLines}"
+						  Visibility="{Binding HasPhrase, Converter={StaticResource BoolToVisibilityConverter}}"
+						  Margin="0,8,0,0">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<ItemsControl ItemsSource="{Binding Segments}" Margin="0,3">
+							<ItemsControl.ItemsPanel>
+								<ItemsPanelTemplate>
+									<WrapPanel Orientation="Horizontal" />
+								</ItemsPanelTemplate>
+							</ItemsControl.ItemsPanel>
+						</ItemsControl>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
 			<!-- Flat fields view -->
 			<ItemsControl ItemsSource="{Binding Fields}">
 				<ItemsControl.ItemTemplate>

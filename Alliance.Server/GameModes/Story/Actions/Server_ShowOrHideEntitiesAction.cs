@@ -10,6 +10,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	public class Server_ShowOrHideEntitiesAction : ShowOrHideEntitiesAction
 	{
 		private WeakGameEntity _gameEntity = WeakGameEntity.Invalid;
+		private bool? _currentVisibility;
 
 		public override void Register(WeakGameEntity entity)
 		{
@@ -18,9 +19,16 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override void Execute()
 		{
-			if (Toggle)
+			bool target;
+			if (VisibilityType == Visibility.Switch)
 			{
-				Visible = !Visible;
+				if (!_currentVisibility.HasValue) _currentVisibility = DefaultVisibility;
+				_currentVisibility = !_currentVisibility.Value;
+				target = _currentVisibility.Value;
+			}
+			else
+			{
+				target = VisibilityType == Visibility.Show;
 			}
 
 			ToggleEntitiesBehavior toggleBehavior = Mission.Current.GetMissionBehavior<ToggleEntitiesBehavior>();
@@ -34,11 +42,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 					return;
 				}
 
-				toggleBehavior.SetLocalTagVisibility(missionObject, Tag, Visible);
+				toggleBehavior.SetLocalTagVisibility(missionObject, Tag, target);
 			}
 			else
 			{
-				toggleBehavior.SetTagVisibility(Tag, Visible);
+				toggleBehavior.SetTagVisibility(Tag, target);
 			}
 		}
 	}

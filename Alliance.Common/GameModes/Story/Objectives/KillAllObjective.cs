@@ -5,6 +5,8 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Objectives
 {
+	[PhrasePreview("{Side} must eliminate all enemies")]
+	[PhraseTemplate("{Side} must eliminate all enemies")]	
 	public class KillAllObjective : ObjectiveBase
 	{
 		private int _enemiesKilled = -1;

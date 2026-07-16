@@ -52,7 +52,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act1ActionActComplete = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_lobby",lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
@@ -185,7 +185,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act1CompletedActions = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
@@ -244,7 +244,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act2CompletedActions = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 2))
@@ -303,7 +303,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act3CompletedActions = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 3))
@@ -440,7 +440,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act1CompletedActions = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings2))
@@ -522,7 +522,7 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 			};
 			List<ActionBase> act1CompletedActions = new List<ActionBase>()
 			{
-				new ConditionalAction(
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("Amazonia", lobbyGameModeSettings),
 					new StartGameAction("Amazonia", lobbyGameModeSettings2))

@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -11,7 +12,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Conditional action.
 	/// </summary>
 	[Serializable]
-	public class ConditionalAction : ActionBase
+	[XmlType("ConditionalAction")]
+	public class IfElseAction : ActionBase
 	{
 		[ConfigProperty(label: "Conditions", tooltip: "If there are multiple conditions, they must all be met.")]
 		public List<Condition> Condition;
@@ -19,23 +21,19 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public List<ActionBase> ActionIfTrue;
 		[ConfigProperty(label: "Actions if false", tooltip: "Actions to execute if any condition is not met.")]
 		public List<ActionBase> ActionIfFalse;
-		[ConfigProperty(label: "Delay", tooltip: "Delay in seconds before executing the \"Actions if true\".")]
-		public float Delay = 0f;
 
-		public ConditionalAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse, float delay = 0f)
+		public IfElseAction(Condition condition, ActionBase actionIfTrue, ActionBase actionIfFalse)
 		{
 			Condition = new List<Condition> { condition };
 			ActionIfTrue = new List<ActionBase> { actionIfTrue };
 			ActionIfFalse = new List<ActionBase> { actionIfFalse };
-			Delay = delay;
 		}
 
-		public ConditionalAction()
+		public IfElseAction()
 		{
 			Condition = new List<Condition>();
 			ActionIfTrue = new List<ActionBase>();
 			ActionIfFalse = new List<ActionBase>();
-			Delay = 0f;
 		}
 
 		public override void Register(WeakGameEntity entity)
@@ -54,25 +52,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 			// Execute actions based on result
 			if (result)
 			{
-				if (Delay > 0f)
-				{
-					DelayedExecute();
-				}
-				else
-				{
-					ActionIfTrue.ForEach(a => a.Execute());
-				}
+				ActionIfTrue.ForEach(a => a.Execute());
 			}
 			else
 			{
 				ActionIfFalse.ForEach(a => a.Execute());
 			}
-		}
-
-		private async void DelayedExecute()
-		{
-			await Task.Delay((int)(Delay * 1000));
-			ActionIfTrue.ForEach(a => a.Execute());
 		}
 	}
 }
