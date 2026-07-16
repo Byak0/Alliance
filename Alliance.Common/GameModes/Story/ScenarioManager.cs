@@ -48,6 +48,12 @@ namespace Alliance.Common.GameModes.Story
 		public ActState ActState { get; protected set; }
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
+		/// <summary>
+		/// Variables captured by conditions during the current ScriptedEvent evaluation. Set by ScriptedEvent.Tick
+		/// while conditions are evaluated and actions executed; null otherwise. Conditions write to it, actions read it.
+		/// </summary>
+		public TriggerContext CurrentTriggerContext { get; set; }
+
 		public virtual void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid) { }
 
 		/// <summary>
@@ -108,9 +114,9 @@ namespace Alliance.Common.GameModes.Story
 		{
 			if (CurrentAct != null && ActState > ActState.SpawningParticipants)
 			{
-				foreach (ConditionalActionStruct conditionalActionStruct in CurrentAct.ConditionalActions)
+				foreach (ScriptedEvent scriptedEvent in CurrentAct.ConditionalActions)
 				{
-					conditionalActionStruct.Tick(dt);
+					scriptedEvent.Tick(dt);
 				}
 			}
 		}

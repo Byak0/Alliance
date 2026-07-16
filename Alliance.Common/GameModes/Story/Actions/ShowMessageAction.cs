@@ -10,8 +10,16 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Display some text.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Show {MessageType}")]
 	public class ShowMessageAction : ActionBase
 	{
+		public enum MessageFormat
+		{
+			SystemNotification,
+			QuickInformation,
+			Message
+		}
+
 		public LocalizedString Message = new("Message");
 		public MessageFormat MessageType = MessageFormat.SystemNotification;
 
@@ -32,12 +40,5 @@ namespace Alliance.Common.GameModes.Story.Actions
 					break;
 			}
 		}
-	}
-
-	public enum MessageFormat
-	{
-		SystemNotification,
-		QuickInformation,
-		Message
 	}
 }

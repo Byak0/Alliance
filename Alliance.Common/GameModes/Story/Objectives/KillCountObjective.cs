@@ -5,6 +5,8 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Objectives
 {
+	[PhrasePreview("{Side} must kill {KillCount} enemies")]
+	[PhraseTemplate("{Side} must kill {KillCount} enemies")]	
 	public class KillCountObjective : ObjectiveBase
 	{
 		public int KillCount;

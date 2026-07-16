@@ -1,12 +1,13 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
+using System.Reflection;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
 	public static class ScenarioEditorHelper
 	{
 		/// <summary>
-		/// Returns a "readable" name for any object, looking for a "Name" field or property.
-		/// Will return the type name otherwise.
+		/// Returns a "readable" name for any object. Prefers an explicit [PhrasePreview] template,
+		/// then a "Name" field or property, and finally the type name.
 		/// </summary>
 		public static string GetItemDisplayName(object item, string language = "English")
 		{
@@ -14,6 +15,14 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				return "null";
 			}
+
+			// Prefer an explicit read-only preview template.
+			PhrasePreviewAttribute previewAttr = item.GetType().GetCustomAttribute<PhrasePreviewAttribute>();
+			if (previewAttr != null && !string.IsNullOrWhiteSpace(previewAttr.Template))
+			{
+				return PhraseTextRenderer.RenderText(previewAttr.Template, item);
+			}
+
 			var nameProperty = item.GetType().GetProperty("Name");
 			if (nameProperty != null && nameProperty.PropertyType == typeof(string))
 			{

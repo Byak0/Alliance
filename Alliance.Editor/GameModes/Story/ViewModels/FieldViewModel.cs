@@ -1,5 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
@@ -38,6 +40,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
 		public bool IsZone => FieldType == typeof(SerializableZone);
 		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
+		public Type[] ConcreteTypes { get; private set; } = Array.Empty<Type>();
+		/// <summary>True for abstract-typed fields (e.g. AgentSource): rendered inline with a subtype picker.</summary>
+		public bool IsPolymorphicField => FieldType != null && FieldType.IsAbstract && ConcreteTypes.Length > 0;
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; }
 
@@ -59,6 +64,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					{
 						parentViewModel.RefreshFields();
 					}
+					// Re-evaluate conditional spans ({?field=...: ...}) when a phrase bool/enum gate changes.
+					else if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
+					{
+						parentViewModel.RefreshFields();
+					}
 				}
 			}
 		}
@@ -76,10 +86,109 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
+		private string[] _choiceLabels;
+		private object[] _enumOrderedValues;
+
+		/// <summary>
+		/// When set, this field renders inline as a dropdown whose items are these labels (phrase-only).
+		/// The selected index maps to the underlying value: bool → 0 (false) / 1 (true),
+		/// enum → value declaration order.
+		/// </summary>
+		public string[] ChoiceLabels
+		{
+			get => _choiceLabels;
+			set
+			{
+				_choiceLabels = value;
+				OnPropertyChanged(nameof(IsChoice));
+				OnPropertyChanged(nameof(SelectedChoiceIndex));
+			}
+		}
+
+		public bool IsChoice => _choiceLabels != null && _choiceLabels.Length > 0;
+
+		public int SelectedChoiceIndex
+		{
+			get
+			{
+				if (_choiceLabels == null || FieldValue == null) return -1;
+				if (FieldType == typeof(bool)) return (bool)FieldValue ? 1 : 0;
+				if (FieldType.IsEnum) return Array.IndexOf(GetEnumOrderedValues(), FieldValue);
+				return -1;
+			}
+			set
+			{
+				if (_choiceLabels == null) return;
+				object newValue = null;
+				if (FieldType == typeof(bool)) newValue = (object)(value == 1);
+				else if (FieldType.IsEnum)
+				{
+					object[] ordered = GetEnumOrderedValues();
+					if (value >= 0 && value < ordered.Length) newValue = ordered[value];
+				}
+				if (newValue != null)
+				{
+					FieldValue = newValue;
+					OnPropertyChanged(nameof(SelectedChoiceIndex));
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gathers the names of trigger variables of <paramref name="variableType"/> produced by conditions
+		/// of the ScriptedEvent enclosing the edited object. Reads each sibling condition's [VariableOutput]
+		/// fields (their current value is the variable name), matching either the exact type or List&lt;type&gt;.
+		/// </summary>
+		private string[] CollectVariableNames(Type variableType)
+		{
+			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
+			if (scriptedEvent == null) return Array.Empty<string>();
+
+			List<string> names = new List<string>();
+			foreach (Condition condition in scriptedEvent.Conditions)
+			{
+				if (condition == null) continue;
+				foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
+				{
+					VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
+					if (outAttr?.VariableType == null) continue;
+
+					Type produced = outAttr.VariableType;
+					bool typeMatch = variableType.IsAssignableFrom(produced)
+						|| (produced.IsGenericType && produced.GetGenericTypeDefinition() == typeof(List<>) && variableType.IsAssignableFrom(produced.GetGenericArguments()[0]));
+					if (!typeMatch) continue;
+
+					string name = f.GetValue(condition) as string;
+					if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
+					{
+						names.Add(name);
+					}
+				}
+			}
+			return names.ToArray();
+		}
+
+		private object[] GetEnumOrderedValues()
+		{
+			if (_enumOrderedValues == null && FieldType != null && FieldType.IsEnum)
+			{
+				_enumOrderedValues = FieldType.GetFields(BindingFlags.Public | BindingFlags.Static)
+					.Select(f => f.GetValue(null))
+					.ToArray();
+			}
+			return _enumOrderedValues;
+		}
+
 		public ICommand EditCommand { get; }
 		public ICommand DeleteCommand { get; }
 		public ICommand AddCommand { get; }
 		public ICommand EditPlayerSpawnMenuCommand { get; }
+
+		/// <summary>
+		/// Command used by the compact inline (phrase) widget to edit complex fields
+		/// (zones, nested objects, spawn menus). Resolves to the most appropriate editor for the field type.
+		/// </summary>
+		public ICommand InlineEditCommand => IsZone ? ZoneVM?.EditZoneCommand : (IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand);
 
 		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
 		{
@@ -87,8 +196,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			this.parentViewModel = parentViewModel;
 			this.scenarioEditorViewModel = scenarioEditorViewModel;
 			FieldName = fieldInfo.Name;
-			FieldValue = fieldValue;
 			FieldType = fieldInfo.FieldType;
+			_fieldValue = fieldValue;
 
 			var attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
 
@@ -110,6 +219,19 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			else
 			{
 				Label = FieldName;
+			}
+
+			// [VariableRef]: render as a dropdown of trigger variables captured by sibling conditions.
+			VariableRefAttribute variableRef = fieldInfo.GetCustomAttribute<VariableRefAttribute>();
+			if (variableRef != null)
+			{
+				PossibleValues = CollectVariableNames(variableRef.VariableType);
+			}
+
+			// Polymorphic (abstract-typed) fields: discover concrete subtypes for the inline type picker.
+			if (FieldType != null && FieldType.IsAbstract)
+			{
+				ConcreteTypes = DiscoverConcreteTypes(FieldType);
 			}
 
 			EditCommand = new RelayCommand(_ => EditObjectFromFieldInfo(FieldInfo), _ => IsComplexType);
@@ -289,9 +411,68 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
+		private ObjectEditorViewModel _nestedVM;
+
+		/// <summary>Inline editor for a polymorphic (abstract-typed) field: renders the chosen instance's fields directly.</summary>
+		public ObjectEditorViewModel NestedVM
+		{
+			get
+			{
+				if (_nestedVM == null && IsPolymorphicField && FieldValue != null)
+				{
+					_nestedVM = new ObjectEditorViewModel(FieldValue, this, scenarioEditorViewModel, "", parentViewModel.GameEntity);
+				}
+				return _nestedVM;
+			}
+		}
+
+		/// <summary>The concrete type of the current value; setting it swaps the instance (changes the source).</summary>
+		public Type SelectedConcreteType
+		{
+			get => FieldValue?.GetType();
+			set
+			{
+				if (value == null) return;
+				if (FieldValue != null && FieldValue.GetType() == value) return;
+				FieldValue = Activator.CreateInstance(value);
+				_nestedVM?.Close();
+				_nestedVM = null;
+				OnPropertyChanged(nameof(SelectedConcreteType));
+				OnPropertyChanged(nameof(NestedVM));
+			}
+		}
+
+		private static Type[] DiscoverConcreteTypes(Type baseType)
+		{
+			List<Type> types = new List<Type>();
+			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+			{
+				try
+				{
+					foreach (var t in assembly.GetTypes())
+					{
+						if (baseType.IsAssignableFrom(t) && !t.IsAbstract) types.Add(t);
+					}
+				}
+				catch (ReflectionTypeLoadException ex)
+				{
+					if (ex.Types != null)
+					{
+						foreach (var t in ex.Types)
+						{
+							if (t != null && baseType.IsAssignableFrom(t) && !t.IsAbstract) types.Add(t);
+						}
+					}
+				}
+				catch { }
+			}
+			return types.ToArray();
+		}
+
 		public void Close()
 		{
 			ZoneVM?.Close();
+			_nestedVM?.Close();
 		}
 	}
 

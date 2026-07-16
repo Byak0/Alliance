@@ -7,9 +7,11 @@ using static TaleWorlds.MountAndBlade.Agent;
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
-	/// change mortality status of agents in a zone.
+	/// Change mortality status of agents in a zone.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Make {Target} from {Side} {State} in...")]
+	[PhraseTemplate("Make {Target} from {Side} {State} in {Zone}")]
 	public class MortalityStateZoneAction : ActionBase
 	{
 		public SerializableZone Zone;

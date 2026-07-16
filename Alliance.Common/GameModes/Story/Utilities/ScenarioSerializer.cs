@@ -46,7 +46,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			get
 			{
 				_conditionalActionSerializer ??= CreateSerializer(
-					rootType: typeof(ConditionalActionStruct),
+					rootType: typeof(ScriptedEvent),
 					typeof(Condition), typeof(ActionBase));
 				return _conditionalActionSerializer;
 			}
@@ -120,15 +120,15 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		}
 
 		/// <summary>
-		/// Serialize a ConditionalActionStruct into a base64 string.
+		/// Serialize a ScriptedEvent into a base64 string.
 		/// </summary>
-		public static string SerializeConditionalActionStruct(ConditionalActionStruct conditionalActionStruct)
+		public static string SerializeScriptedEvent(ScriptedEvent scriptedEvent)
 		{
 			// Serialize the struct to XML
 			using (StringWriter stringWriter = new StringWriter())
 			{
 				// Serialize the object to XML
-				ConditionalActionSerializer.Serialize(stringWriter, conditionalActionStruct);
+				ConditionalActionSerializer.Serialize(stringWriter, scriptedEvent);
 				string xmlString = stringWriter.ToString();
 
 				return CompressString(xmlString);
@@ -136,13 +136,13 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		}
 
 		/// <summary>
-		/// Deserialize a base64 string into a ConditionalActionStruct.
+		/// Deserialize a base64 string into a ScriptedEvent.
 		/// </summary>
-		public static ConditionalActionStruct DeserializeConditionalActionStruct(string serializedConditionalAction, string ownerEntityContext = null)
+		public static ScriptedEvent DeserializeScriptedEvent(string serializedConditionalAction, string ownerEntityContext = null)
 		{
 			if (string.IsNullOrEmpty(serializedConditionalAction))
 			{
-				return new ConditionalActionStruct();
+				return new ScriptedEvent();
 			}
 
 			try
@@ -151,21 +151,21 @@ namespace Alliance.Common.GameModes.Story.Utilities
 
 				if (string.IsNullOrEmpty(xmlString))
 				{
-					return new ConditionalActionStruct();
+					return new ScriptedEvent();
 				}
 
-				xmlString = RemoveObsoleteConditionalActionEntries(xmlString, ownerEntityContext);
+				xmlString = RemoveObsoleteScriptedEventEntries(xmlString, ownerEntityContext);
 
-				ConditionalActionStruct conditionalActionStruct;
+				ScriptedEvent scriptedEvent;
 
 				// Deserialize the XML string back into the object
 				using (StringReader stringReader = new StringReader(xmlString))
 				{
-					conditionalActionStruct = (ConditionalActionStruct)ConditionalActionSerializer.Deserialize(stringReader);
+					scriptedEvent = (ScriptedEvent)ConditionalActionSerializer.Deserialize(stringReader);
 				}
-				RecursiveActionReplace(conditionalActionStruct);
-				RecursiveSerializationCallBack(conditionalActionStruct, obj => obj.OnAfterDeserialize());
-				return conditionalActionStruct;
+				RecursiveActionReplace(scriptedEvent);
+				RecursiveSerializationCallBack(scriptedEvent, obj => obj.OnAfterDeserialize());
+				return scriptedEvent;
 			}
 			catch (FormatException ex)
 			{
@@ -178,10 +178,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				Log($"XML deserialization failed: {ex.Message}", LogLevel.Error);
 			}
 
-			return new ConditionalActionStruct();
+			return new ScriptedEvent();
 		}
 
-		private static string RemoveObsoleteConditionalActionEntries(string xmlString, string ownerEntityContext)
+		private static string RemoveObsoleteScriptedEventEntries(string xmlString, string ownerEntityContext)
 		{
 			try
 			{
@@ -238,7 +238,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					string entityContextSuffix = string.IsNullOrWhiteSpace(ownerEntityContext)
 						? string.Empty
 						: $" on entity '{ownerEntityContext}'";
-					Log($"Skipped obsolete {kind} '{elementTypeName}' while deserializing ConditionalActionStruct{entityContextSuffix}.", LogLevel.Warning);
+					Log($"Skipped obsolete {kind} '{elementTypeName}' while deserializing ScriptedEvent{entityContextSuffix}.", LogLevel.Warning);
 				}
 			}
 

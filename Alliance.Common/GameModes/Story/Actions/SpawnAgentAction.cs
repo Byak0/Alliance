@@ -10,6 +10,10 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Spawn agent(s) with specific parameters.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Spawn {SpawnCount}{SpawnCount}{IsPercentage||%} {CharacterId}")]
+	[PhraseTemplate(
+		"Spawn {SpawnCount}{IsPercentage||%} {Difficulty} {CharacterId} for {Side} in {Formation}",
+		"They spawn at {SpawnZone} towards {Direction}")]
 	public class SpawnAgentAction : ActionBase
 	{
 		[ConfigProperty(label: "Character", tooltip: "ID of the character to spawn.", dataType: AllianceData.DataTypes.Character)]

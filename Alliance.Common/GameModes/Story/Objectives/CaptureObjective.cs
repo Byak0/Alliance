@@ -7,6 +7,8 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story.Objectives
 {
+	[PhrasePreview("{Side} must capture {CapturableZoneId}")]
+	[PhraseTemplate("{Side} must capture zone {CapturableZoneId}")]	
 	public class CaptureObjective : ObjectiveBase
 	{
 		public string CapturableZoneId;

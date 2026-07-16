@@ -13,6 +13,13 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Spawn agent(s) with specific parameters.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Spawn {Characters}")]
+	[PhraseTemplate(
+		"Spawn {Characters}",
+		"They spawn in formation {Formation} for {Side}",
+		"They spawn at {SpawnZone}",
+		"They are given a {MoveOrder} order{?MoveOrder==Move: to {Direction}}",
+		"They are arranged in {Disposition} formation")]
 	public class SpawnFormationAction : ActionBase
 	{
 		[ConfigProperty(label: "Characters", tooltip: "Characters to spawn.")]
@@ -34,6 +41,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 	}
 
 	[Serializable]
+	[PhrasePreview("{SpawnCount}{?IsPercentage:%} {CharacterId}")]
+	[PhraseTemplate("{SpawnCount}{IsPercentage||%} {Difficulty} {CharacterId} with health x {HealthMultiplier}")]
 	public class CharacterToSpawn
 	{
 		[ConfigProperty(label: "Character", tooltip: "ID of the character to spawn.", dataType: AllianceData.DataTypes.Character)]

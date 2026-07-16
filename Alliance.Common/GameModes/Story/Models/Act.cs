@@ -8,6 +8,7 @@ using TaleWorlds.Engine;
 namespace Alliance.Common.GameModes.Story.Models
 {
 	[Serializable]
+	[PhrasePreview("{Name}{?LoadMap: — {MapID}}")]
 	public class Act
 	{
 		[ConfigProperty(label: "Act name")]
@@ -32,7 +33,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		public List<ObjectiveBase> Objectives = new List<ObjectiveBase>();
 
 		[ConfigProperty(label: "Scripted events", tooltip: "You can define various events that can be triggered based on conditions.")]
-		public List<ConditionalActionStruct> ConditionalActions = new List<ConditionalActionStruct>();
+		public List<ScriptedEvent> ConditionalActions = new List<ScriptedEvent>();
 
 		[ConfigProperty(label: "Victory events", tooltip: "Events triggered upon victory.")]
 		public VictoryLogic VictoryLogic = new VictoryLogic();
@@ -58,7 +59,7 @@ namespace Alliance.Common.GameModes.Story.Models
 				objective.Reset();
 				objective.RegisterForUpdate();
 			}
-			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
+			foreach (ScriptedEvent conditionalAction in ConditionalActions)
 			{
 				conditionalAction.Register(WeakGameEntity.Invalid);
 			}
@@ -70,7 +71,7 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				objective.UnregisterForUpdate();
 			}
-			foreach (ConditionalActionStruct conditionalAction in ConditionalActions)
+			foreach (ScriptedEvent conditionalAction in ConditionalActions)
 			{
 				foreach (Condition condition in conditionalAction.Conditions)
 				{

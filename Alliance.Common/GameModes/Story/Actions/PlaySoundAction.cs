@@ -11,6 +11,10 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Play a sound.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Play {SoundName}")]
+	[PhraseTemplate(
+		"Play {SoundName} as a {SoundType|local sound|local music|main music} at volume {Volume}{?SoundType!=MainMusic: and position {SoundZone}}.",
+		"While we hear the sound, {PauseMainMusicWhilePlaying|leave main music playing|mute main music}.")]
 	public class PlaySoundAction : ActionBase
 	{
 		public enum SoundCategory

@@ -8,9 +8,11 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// <summary>
 	/// Check if a specific agent (or a number of this specific agent) is dead
 	/// </summary>
+	[PhrasePreview("{DeathQuota}× {Character} dead {ConditionMayRepeat||⟲}")]
+	[PhraseTemplate("{DeathQuota} × {Character} from {Side} have died {ConditionMayRepeat||⟲}")]
 	public class AgentDeathCondition : Condition
 	{
-		[ConfigProperty(label: "Character", tooltip: "ID of the character to check death.")]
+		[ConfigProperty(label: "Character", tooltip: "ID of the character to check death.", dataType: AllianceData.DataTypes.Character)]
 		public string Character;
 		public SideType Side = SideType.All;
 		[ConfigProperty(label: "Death quota", tooltip: "How many time character need to die to trigger condition.")]

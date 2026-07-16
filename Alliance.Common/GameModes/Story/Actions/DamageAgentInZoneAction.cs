@@ -8,6 +8,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Damage agents in a zone.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Deal {Damage} damage to...")]
+	[PhraseTemplate("Deal {Damage} damage to {Target} from {Side} in {Zone}")]
 	public class DamageAgentInZoneAction : ActionBase
 	{
 		public SerializableZone Zone;
