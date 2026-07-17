@@ -37,9 +37,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public PlaySoundAction() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
-			if (!GameNetwork.IsServer) return;
+			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
 
 			switch (SoundType)
 			{
@@ -53,6 +53,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 					PlayMainMusic();
 					break;
 			}
+			return ActionTask.CompletedTask;
 		}
 
 		private void PlayMainMusic()

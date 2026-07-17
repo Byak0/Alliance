@@ -21,10 +21,10 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public TeleportAgentAction() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
-			if (!GameNetwork.IsServer) return;
-			if (Who == null || Destination == null) return;
+			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
+			if (Who == null || Destination == null) return ActionTask.CompletedTask;
 
 			TriggerContext context = ScenarioManager.Instance.CurrentTriggerContext;
 			foreach (Agent agent in Who.Resolve(context))
@@ -32,6 +32,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 				var position = CoreUtils.GetRandomPositionWithinRadius(Destination.GlobalPosition, Destination.Radius);
 				agent.TeleportToPosition(position);
 			}
+			return ActionTask.CompletedTask;
 		}
 	}
 }

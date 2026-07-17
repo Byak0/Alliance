@@ -10,9 +10,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_StartScenarioAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			ScenarioManagerServer.Instance.StartScenario(ScenarioId, ActIndex);
+			return ActionTask.CompletedTask;
 		}
 	}
 }

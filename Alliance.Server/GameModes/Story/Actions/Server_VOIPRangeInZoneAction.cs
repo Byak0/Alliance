@@ -13,7 +13,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		// Create a dictionary with agent in zone and previous speakingrange 
 		Dictionary<Agent, int> AgentInZone = new Dictionary<Agent, int>();
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			MBList<Agent> agents = new MBList<Agent>();
 
@@ -34,6 +34,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 					RemoveInAgentWithCustomSpeakingRange(agent);
 				}
 			}
+			return ActionTask.CompletedTask;
 		}
 
 		public bool IsValidTarget(Agent agent)

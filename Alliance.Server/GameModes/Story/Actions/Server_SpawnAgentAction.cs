@@ -17,9 +17,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_SpawnAgentAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			Spawn();
+			return ActionTask.CompletedTask;
 		}
 
 		private async void Spawn()

@@ -22,7 +22,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_StartGameAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			GameModeStarter.Instance.StartMission(Settings);
 
@@ -55,6 +55,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 			Log(log, LogLevel.Information);
 			SendMessageToAll(log);
+			return ActionTask.CompletedTask;
 		}
 	}
 }
