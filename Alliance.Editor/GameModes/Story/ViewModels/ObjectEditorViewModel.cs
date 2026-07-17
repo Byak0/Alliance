@@ -530,6 +530,19 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return null;
 		}
 
+		/// <summary>
+		/// Walks up the parent-editor chain to find the Scenario this editor is editing within (if any),
+		/// so variable-reference fields can also list global variables defined on the scenario.
+		/// </summary>
+		public Scenario FindEnclosingScenario()
+		{
+			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
+			{
+				if (vm.Object is Scenario scenario) return scenario;
+			}
+			return null;
+		}
+
 		public void Close()
 		{
 			foreach (var field in AllFieldViewModels())

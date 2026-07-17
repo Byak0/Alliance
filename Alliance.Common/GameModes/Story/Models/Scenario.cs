@@ -27,6 +27,9 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Acts", tooltip: "Acts are the 'chapters' of the scenario. You can add as many as you want. A scenario must have at least one act to work.")]
 		public List<Act> Acts;
 
+		[ConfigProperty(label: "Variables", tooltip: "Global variables available throughout the scenario. Variables can be used in conditions and actions via ValueSource fields.")]
+		public List<ScenarioVariable> Variables = new List<ScenarioVariable>();
+
 		public Scenario(LocalizedString name, LocalizedString desc)
 		{
 			// Generate a random ID for the scenario

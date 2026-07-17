@@ -10,10 +10,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Input;
+using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
@@ -26,6 +28,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		internal readonly ObjectEditorViewModel parentViewModel;
 		internal readonly ScenarioEditorViewModel scenarioEditorViewModel;
 		private object _fieldValue;
+		private Func<object, object> _valueToEffective;
+		private Func<object, object> _valueFromEffective;
 
 		public FieldInfo FieldInfo { get; private set; }
 		public string FieldName { get; private set; }
@@ -35,6 +39,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool ShowTooltip { get; private set; }
 		public string[] PossibleValues { get; private set; }
 		public bool IsMultiChoiceString => PossibleValues != null && PossibleValues.Length > 0;
+		/// <summary>When true, the dropdown only allows picking from PossibleValues (no free-text entry).</summary>
+		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
 		public bool IsComplexType => !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
@@ -50,13 +56,18 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public object FieldValue
 		{
-			get => _fieldValue;
+			get
+			{
+				if (_valueToEffective != null)
+					return _valueToEffective(_fieldValue);
+				return _fieldValue;
+			}
 			set
 			{
-				if (_fieldValue != value)
+				object storageValue = _valueFromEffective != null ? _valueFromEffective(value) : value;
+				if (!object.Equals(_fieldValue, storageValue))
 				{
-					_fieldValue = value;
-					// Propagate the value to the parent object
+					_fieldValue = storageValue;
 					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
 
@@ -64,8 +75,17 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					{
 						parentViewModel.RefreshFields();
 					}
-					// Re-evaluate conditional spans ({?field=...: ...}) when a phrase bool/enum gate changes.
 					else if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
+					{
+						parentViewModel.RefreshFields();
+					}
+					else if (parentViewModel?.Object is ScenarioVariable && FieldName == nameof(ScenarioVariable.EnumTypeName))
+					{
+						parentViewModel.RefreshFields();
+					}
+					else if (parentViewModel?.Object != null && parentViewModel.Object.GetType()
+						.GetFields(BindingFlags.Public | BindingFlags.Instance)
+						.Any(f => f.GetCustomAttribute<DependsOnVariableAttribute>()?.SourceField == FieldName))
 					{
 						parentViewModel.RefreshFields();
 					}
@@ -135,37 +155,85 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		}
 
 		/// <summary>
-		/// Gathers the names of trigger variables of <paramref name="variableType"/> produced by conditions
-		/// of the ScriptedEvent enclosing the edited object. Reads each sibling condition's [VariableOutput]
-		/// fields (their current value is the variable name), matching either the exact type or List&lt;type&gt;.
+		/// Gathers the names of available variables matching <paramref name="variableType"/> from all sources:
+		/// 1. Trigger variables produced by [VariableOutput] fields on sibling conditions of the enclosing ScriptedEvent.
+		/// 2. Global variables declared on the enclosing Scenario (via its Variables list, populated in Phase 2).
+		/// Matching follows the exact type or List&lt;type&gt; convention.
 		/// </summary>
-		private string[] CollectVariableNames(Type variableType)
+		private string[] CollectAvailableVariables(Type variableType)
 		{
-			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
-			if (scriptedEvent == null) return Array.Empty<string>();
-
 			List<string> names = new List<string>();
-			foreach (Condition condition in scriptedEvent.Conditions)
+
+			// Source 1: trigger variables from sibling conditions
+			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
+			if (scriptedEvent != null)
 			{
-				if (condition == null) continue;
-				foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
+				foreach (Condition condition in scriptedEvent.Conditions)
 				{
-					VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
-					if (outAttr?.VariableType == null) continue;
-
-					Type produced = outAttr.VariableType;
-					bool typeMatch = variableType.IsAssignableFrom(produced)
-						|| (produced.IsGenericType && produced.GetGenericTypeDefinition() == typeof(List<>) && variableType.IsAssignableFrom(produced.GetGenericArguments()[0]));
-					if (!typeMatch) continue;
-
-					string name = f.GetValue(condition) as string;
-					if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
+					if (condition == null) continue;
+					foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
 					{
-						names.Add(name);
+						VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
+						if (outAttr?.VariableType == null) continue;
+
+						Type produced = outAttr.VariableType;
+						bool typeMatch = variableType.IsAssignableFrom(produced)
+							|| (produced.IsGenericType && produced.GetGenericTypeDefinition() == typeof(List<>) && variableType.IsAssignableFrom(produced.GetGenericArguments()[0]));
+						if (!typeMatch) continue;
+
+						string name = f.GetValue(condition) as string;
+						if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
+						{
+							names.Add(name);
+						}
 					}
 				}
 			}
+
+			// Source 2: global variables from the enclosing Scenario
+			Scenario parentScenario = parentViewModel?.FindEnclosingScenario();
+			if (parentScenario?.Variables != null)
+			{
+				foreach (var scVar in parentScenario.Variables)
+				{
+					if (scVar == null || string.IsNullOrWhiteSpace(scVar.Name)) continue;
+					if (!TypeMatchesFilter(variableType, scVar.Type)) continue;
+					if (!names.Contains(scVar.Name))
+					{
+						names.Add(scVar.Name);
+					}
+				}
+			}
+
 			return names.ToArray();
+		}
+
+		/// <summary>
+		/// Maps a VariableType enum to its closest System.Type for type matching.
+		/// </summary>
+		private static Type VariableTypeToSystemType(VariableType vt)
+		{
+			switch (vt)
+			{
+				case VariableType.Int: return typeof(int);
+				case VariableType.Float: return typeof(float);
+				case VariableType.Bool: return typeof(bool);
+				case VariableType.String: return typeof(string);
+				case VariableType.Enum: return typeof(string);
+				default: return typeof(object);
+			}
+		}
+
+		/// <summary>
+		/// Checks whether a scenario variable's type matches a given filter type.
+		/// </summary>
+		private static bool TypeMatchesFilter(Type filterType, VariableType varType)
+		{
+			if (filterType == typeof(object)) return true;
+			Type varSysType = VariableTypeToSystemType(varType);
+			if (filterType == varSysType) return true;
+			if (filterType == typeof(float) && varSysType == typeof(int)) return true;
+			return false;
 		}
 
 		private object[] GetEnumOrderedValues()
@@ -221,11 +289,101 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				Label = FieldName;
 			}
 
-			// [VariableRef]: render as a dropdown of trigger variables captured by sibling conditions.
+			// [VariableRef]: render as a dropdown of available variables from trigger conditions and scenario globals.
 			VariableRefAttribute variableRef = fieldInfo.GetCustomAttribute<VariableRefAttribute>();
 			if (variableRef != null)
 			{
-				PossibleValues = CollectVariableNames(variableRef.VariableType);
+				PossibleValues = CollectAvailableVariables(variableRef.VariableType);
+			}
+
+			// ScenarioVariable.EnumTypeName: populate + lock dropdown from discovered enum types.
+			if (parentViewModel?.Object is ScenarioVariable sv && FieldName == nameof(ScenarioVariable.EnumTypeName))
+			{
+				PossibleValues = ScenarioData.AvailableEnumTypes().Select(t => t.Name).ToArray();
+				IsChoiceLocked = true;
+			}
+			// ScenarioVariable.DefaultValue: show enum value dropdown when Type == Enum.
+			if (parentViewModel?.Object is ScenarioVariable sv2 && FieldName == nameof(ScenarioVariable.DefaultValue) && sv2.Type == VariableType.Enum && !string.IsNullOrEmpty(sv2.EnumTypeName))
+			{
+				Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == sv2.EnumTypeName);
+				if (enumType != null)
+				{
+					PossibleValues = Enum.GetNames(enumType);
+					IsChoiceLocked = true;
+				}
+			}
+			// ScenarioVariable.DefaultValue: dynamic editor type based on VariableType.
+			if (parentViewModel?.Object is ScenarioVariable svForType && FieldName == nameof(ScenarioVariable.DefaultValue))
+			{
+				switch (svForType.Type)
+				{
+					case VariableType.Int:
+						FieldType = typeof(int);
+						_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
+						_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
+						break;
+					case VariableType.Float:
+						FieldType = typeof(float);
+						_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
+						_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
+						break;
+					case VariableType.Bool:
+						FieldType = typeof(bool);
+						_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
+						_valueFromEffective = v => ((bool)v).ToString().ToLower();
+						break;
+					default:
+						break;
+				}
+			}
+			// Fields marked with [DependsOnVariable]: dynamic editor based on the variable referenced by another field.
+			DependsOnVariableAttribute depAttr = fieldInfo.GetCustomAttribute<DependsOnVariableAttribute>();
+			if (depAttr != null && !string.IsNullOrEmpty(depAttr.SourceField))
+			{
+				FieldInfo srcField = parentViewModel?.Object?.GetType().GetField(depAttr.SourceField, BindingFlags.Public | BindingFlags.Instance);
+				if (srcField != null)
+				{
+					string varName = srcField.GetValue(parentViewModel.Object) as string;
+					if (!string.IsNullOrEmpty(varName))
+					{
+						Scenario scenario = parentViewModel.FindEnclosingScenario();
+						ScenarioVariable matchedVar = scenario?.Variables?.FirstOrDefault(v => v.Name == varName);
+						if (matchedVar != null)
+						{
+							switch (matchedVar.Type)
+							{
+								case VariableType.Int:
+									FieldType = typeof(int);
+									_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
+									_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
+									break;
+								case VariableType.Float:
+									FieldType = typeof(float);
+									_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
+									_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
+									break;
+								case VariableType.Bool:
+									FieldType = typeof(bool);
+									_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
+									_valueFromEffective = v => ((bool)v).ToString().ToLower();
+									break;
+								case VariableType.Enum:
+									if (!string.IsNullOrEmpty(matchedVar.EnumTypeName))
+									{
+										Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == matchedVar.EnumTypeName);
+										if (enumType != null)
+										{
+											PossibleValues = Enum.GetNames(enumType);
+											IsChoiceLocked = true;
+										}
+									}
+									break;
+								default:
+									break;
+							}
+						}
+					}
+				}
 			}
 
 			// Polymorphic (abstract-typed) fields: discover concrete subtypes for the inline type picker.

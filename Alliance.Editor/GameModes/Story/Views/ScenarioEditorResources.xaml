@@ -77,19 +77,25 @@
 			<!-- Include the Label/Tooltip -->
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
-			<ComboBox ItemsSource="{Binding PossibleValues}"
-				  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				  FontFamily="{StaticResource DefaultFontFamily}"
-				  FontSize="{StaticResource DefaultFontSize}"
-				  Foreground="{StaticResource DefaultFontColor}"
-				  Width="264"
-				  VerticalAlignment="Center"
-				  IsEditable="True"
-				  Padding="0,0,8,0">
-				<ComboBox.ToolTip>
-					<ToolTip Content="{Binding Tooltip}" />
-				</ComboBox.ToolTip>
-			</ComboBox>
+		<ComboBox ItemsSource="{Binding PossibleValues}"
+			  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+			  FontFamily="{StaticResource DefaultFontFamily}"
+			  FontSize="{StaticResource DefaultFontSize}"
+			  Foreground="{StaticResource DefaultFontColor}"
+			  Width="264"
+			  VerticalAlignment="Center"
+			  ToolTip="{Binding Tooltip}">
+			<ComboBox.Style>
+				<Style TargetType="ComboBox">
+					<Setter Property="IsEditable" Value="True"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
+							<Setter Property="IsEditable" Value="False"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ComboBox.Style>
+		</ComboBox>
 		</StackPanel>
 	</DataTemplate>
 
@@ -322,10 +328,21 @@
 		</DataTemplate>
 
 		<DataTemplate x:Key="InlineStringMultiChoiceTemplate">
-			<ComboBox ItemsSource="{Binding PossibleValues}"
-					  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  IsEditable="True" MaxWidth="320" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-					  ToolTip="{Binding Tooltip}"/>
+		<ComboBox ItemsSource="{Binding PossibleValues}"
+				  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				  MaxWidth="320" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
+				  ToolTip="{Binding Tooltip}">
+			<ComboBox.Style>
+				<Style TargetType="ComboBox">
+					<Setter Property="IsEditable" Value="True"/>
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
+							<Setter Property="IsEditable" Value="False"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ComboBox.Style>
+		</ComboBox>
 		</DataTemplate>
 
 		<DataTemplate x:Key="InlineLocalizedStringTemplate">
