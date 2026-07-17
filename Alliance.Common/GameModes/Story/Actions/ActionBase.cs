@@ -13,7 +13,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	public abstract class ActionBase
 	{
-		public virtual void Execute() { }
+		public virtual ActionTask Execute() => ActionTask.CompletedTask;
 
 		public virtual void Register(WeakGameEntity entity)
 		{

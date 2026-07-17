@@ -9,7 +9,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	[OverrideAction(typeof(MortalityStateZoneAction))]
 	public class Server_MortalityStateZoneAction : MortalityStateZoneAction
 	{
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(Zone.GlobalPosition.AsVec2, Zone.Radius, agents);
@@ -18,6 +18,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				agent.SetMortalityState(State);
 			}
+			return ActionTask.CompletedTask;
 		}
 
 		public bool IsValidTarget(Agent agent)

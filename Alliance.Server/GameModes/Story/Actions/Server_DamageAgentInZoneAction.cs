@@ -10,7 +10,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	[OverrideAction(typeof(DamageAgentInZoneAction))]
 	public class Server_DamageAgentInZoneAction : DamageAgentInZoneAction
 	{
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(Zone.GlobalPosition.AsVec2, Zone.Radius, agents);
@@ -19,6 +19,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				CoreUtils.TakeDamage(agent, Damage);
 			}
+			return ActionTask.CompletedTask;
 		}
 
 		public bool IsValidTarget(Agent agent)

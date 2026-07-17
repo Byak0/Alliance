@@ -43,21 +43,21 @@ namespace Alliance.Common.GameModes.Story.Actions
 			ActionIfFalse.ForEach(a => a.Register(entity));
 		}
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
-			// Get result of all conditions (AND)
 			bool result = true;
 			Condition.ForEach(c => result &= c.Evaluate(ScenarioManager.Instance));
 
-			// Execute actions based on result
-			if (result)
+			List<ActionBase> branch = result ? ActionIfTrue : ActionIfFalse;
+			if (branch == null || branch.Count == 0)
 			{
-				ActionIfTrue.ForEach(a => a.Execute());
+				return ActionTask.CompletedTask;
 			}
-			else
+			if (branch.Count == 1)
 			{
-				ActionIfFalse.ForEach(a => a.Execute());
+				return branch[0].Execute();
 			}
+			return new SequenceTask(branch);
 		}
 	}
 }

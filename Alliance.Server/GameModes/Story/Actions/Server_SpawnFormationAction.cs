@@ -25,9 +25,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_SpawnFormationAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			_ = SpawnAsync();
+			return ActionTask.CompletedTask;
 		}
 
 		private async Task SpawnAsync()

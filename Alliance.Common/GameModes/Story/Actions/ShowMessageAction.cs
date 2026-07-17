@@ -25,7 +25,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public ShowMessageAction() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			switch (MessageType)
 			{
@@ -39,6 +39,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 					InformationManager.DisplayMessage(new InformationMessage(Message.LocalizedText, Color.White));
 					break;
 			}
+			return ActionTask.CompletedTask;
 		}
 	}
 }

@@ -36,11 +36,18 @@ namespace Alliance.Common.GameModes.Story.Models
 		[XmlIgnore]
 		public WeakGameEntity ParentEntity = WeakGameEntity.Invalid;
 
+		private enum PipelineState { Idle, Running, Done }
+		private PipelineState _pipelineState = PipelineState.Idle;
+		private int _actionIndex;
+		private ActionTask _currentTask;
+
 		public ScriptedEvent() { }
 
 		public void Register(WeakGameEntity entity)
 		{
 			_enabled = Enabled;
+			_pipelineState = PipelineState.Idle;
+			_currentTask = null;
 
 			if (entity != null)
 			{
@@ -58,41 +65,91 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		/// <summary>
 		/// Check if the conditions are met and execute the actions if they are.
+		/// Uses a cooperative async pipeline so that actions with duration (e.g. WaitAction)
+		/// are awaited over multiple ticks. The pipeline is anti-reentrant: while running,
+		/// condition re-evaluation is blocked.
 		/// </summary>
 		public void Tick(float dt)
 		{
-			if (_enabled)
+			if (!_enabled) return;
+
+			// --- Pipeline running: tick the current action ---
+			if (_pipelineState == PipelineState.Running)
 			{
-				_refreshTimer += dt;
-				if (_refreshTimer < RefreshDelay) return;
-				_refreshTimer = 0f;
+				_currentTask?.Tick(dt);
 
-				// Fresh variable scope for this evaluation: conditions may capture into it, actions may read it.
-				ScenarioManager.Instance.CurrentTriggerContext = new TriggerContext();
-
-				bool conditionsMet = true;
-				foreach (Condition condition in Conditions)
+				if (_currentTask != null && _currentTask.IsCompleted)
 				{
-					if (!condition.Evaluate(ScenarioManager.Instance))
+					_actionIndex++;
+					if (_actionIndex < Actions.Count)
 					{
-						conditionsMet = false;
-						break;
+						_currentTask = Actions[_actionIndex].Execute();
+					}
+					else
+					{
+						_pipelineState = PipelineState.Done;
+						_currentTask = null;
 					}
 				}
+				return;
+			}
 
-				if (conditionsMet)
+			// --- Pipeline done: handle completion logic ---
+			if (_pipelineState == PipelineState.Done)
+			{
+				if (OneTimeOnly)
 				{
-					foreach (ActionBase action in Actions)
-					{
-						action.Execute();
-					}
+					_enabled = false;
+				}
+				ScenarioManager.Instance.CurrentTriggerContext = null;
+				_pipelineState = PipelineState.Idle;
+				return;
+			}
 
-					if (OneTimeOnly)
+			// --- Idle: check conditions (throttled by RefreshDelay) ---
+			_refreshTimer += dt;
+			if (_refreshTimer < RefreshDelay) return;
+			_refreshTimer = 0f;
+
+			ScenarioManager.Instance.CurrentTriggerContext = new TriggerContext();
+
+			bool conditionsMet = true;
+			foreach (Condition condition in Conditions)
+			{
+				if (!condition.Evaluate(ScenarioManager.Instance))
+				{
+					conditionsMet = false;
+					break;
+				}
+			}
+
+			if (conditionsMet)
+			{
+				// Start the async pipeline
+				_pipelineState = PipelineState.Running;
+				_actionIndex = 0;
+				_currentTask = Actions.Count > 0 ? Actions[0].Execute() : ActionTask.CompletedTask;
+
+				// Tick the first task immediately
+				_currentTask?.Tick(0f);
+				if (_currentTask != null && _currentTask.IsCompleted)
+				{
+					_actionIndex++;
+					if (_actionIndex < Actions.Count)
 					{
-						_enabled = false;
+						_currentTask = Actions[_actionIndex].Execute();
+					}
+					else
+					{
+						_pipelineState = PipelineState.Done;
+						_currentTask = null;
+						ScenarioManager.Instance.CurrentTriggerContext = null;
+						if (OneTimeOnly) _enabled = false;
 					}
 				}
-
+			}
+			else
+			{
 				ScenarioManager.Instance.CurrentTriggerContext = null;
 			}
 		}

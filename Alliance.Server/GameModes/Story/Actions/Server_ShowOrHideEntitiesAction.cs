@@ -17,7 +17,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			_gameEntity = entity;
 		}
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			bool target;
 			if (VisibilityType == Visibility.Switch)
@@ -34,12 +34,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			ToggleEntitiesBehavior toggleBehavior = Mission.Current.GetMissionBehavior<ToggleEntitiesBehavior>();
 			if (ParentEntityOnly && _gameEntity != WeakGameEntity.Invalid)
 			{
-				// TODO: Add support for any entity. For now, we rely on MissionObjectId to sync with clients.
 				MissionObject missionObject = _gameEntity.GetFirstScriptOfType<MissionObject>();
 				if (missionObject == null)
 				{
 					Log($"Error in ShowOrHideEntitiesAction - Game entity must have a MissionObject script if ParentEntityOnly is checked", LogLevel.Error);
-					return;
+return ActionTask.CompletedTask;
 				}
 
 				toggleBehavior.SetLocalTagVisibility(missionObject, Tag, target);
@@ -48,6 +47,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				toggleBehavior.SetTagVisibility(Tag, target);
 			}
+			return ActionTask.CompletedTask;
 		}
 	}
 }

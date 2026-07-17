@@ -23,6 +23,6 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public StartGameAction() { }
 
-		public override void Execute() { }
+		public override ActionTask Execute() => ActionTask.CompletedTask;
 	}
 }

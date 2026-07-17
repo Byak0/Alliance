@@ -15,11 +15,11 @@ namespace Alliance.Client.GameModes.Story.Actions
 	{
 		public Client_ShowResultScreenAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			if (Mission.Current.PlayerTeam == null)
 			{
-				return;
+				return ActionTask.CompletedTask;
 			}
 			BattleSideEnum playerSide = Mission.Current.PlayerTeam.Side;
 			ScenarioView sv = Mission.Current.GetMissionBehavior<ScenarioView>();
@@ -39,6 +39,7 @@ namespace Alliance.Client.GameModes.Story.Actions
 			}
 			Color color = isWinner ? new Color(0.4f, 0.7f, 0.1f) : new Color(0.7f, 0.1f, 0.1f);
 			sv?.ShowResultScreen(title, description, color);
+			return ActionTask.CompletedTask;
 		}
 	}
 }
