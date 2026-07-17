@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
+using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story
@@ -54,6 +55,12 @@ namespace Alliance.Common.GameModes.Story
 		/// </summary>
 		public TriggerContext CurrentTriggerContext { get; set; }
 
+		/// <summary>
+		/// Global variables for the current scenario. Initialized from Scenario.Variables on scenario start.
+		/// Server-authoritative; clients receive read-only mirrors via network sync.
+		/// </summary>
+		public VariableStore Globals { get; protected set; } = new VariableStore();
+
 		public virtual void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid) { }
 
 		/// <summary>
@@ -65,7 +72,62 @@ namespace Alliance.Common.GameModes.Story
 			CurrentAct = act;
 			ActState = state;
 			CurrentWinner = BattleSideEnum.None;
+			InitGlobals();
 			OnStartScenario?.Invoke();
+		}
+
+		/// <summary>
+		/// Initializes global variables from the current scenario definition.
+		/// Parses each ScenarioVariable.DefaultValue according to its VariableType and seeds the store.
+		/// </summary>
+		protected virtual void InitGlobals()
+		{
+			Globals = new VariableStore();
+			if (CurrentScenario?.Variables == null) return;
+			foreach (ScenarioVariable sv in CurrentScenario.Variables)
+			{
+				if (string.IsNullOrWhiteSpace(sv.Name)) continue;
+				object val = ParseDefaultValue(sv.DefaultValue, sv.Type);
+				Globals.Set(sv.Name, val);
+			}
+		}
+
+		/// <summary>
+		/// Parses a default value string according to VariableType.
+		/// </summary>
+		private static object ParseDefaultValue(string raw, VariableType type)
+		{
+			switch (type)
+			{
+				case VariableType.Int:
+					if (int.TryParse(raw, out int i)) return i;
+					return 0;
+				case VariableType.Float:
+					if (float.TryParse(raw, out float f)) return f;
+					return 0f;
+				case VariableType.Bool:
+					if (bool.TryParse(raw, out bool b)) return b;
+					return false;
+				case VariableType.String:
+					return raw ?? "";
+				default:
+					return raw;
+			}
+		}
+
+
+
+		/// <summary>
+		/// Resolves a variable by name, searching first in the current trigger context (from condition evaluation),
+		/// then in the scenario global variable store. Returns default(T) if not found.
+		/// </summary>
+		public T ResolveVariable<T>(string name)
+		{
+			if (CurrentTriggerContext != null && CurrentTriggerContext.Has(name))
+				return CurrentTriggerContext.Get<T>(name);
+			if (Globals != null && Globals.Has(name))
+				return Globals.Get<T>(name);
+			return default;
 		}
 
 		public virtual void StopScenario()
@@ -74,6 +136,7 @@ namespace Alliance.Common.GameModes.Story
 			OnStopScenario?.Invoke();
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
+			Globals?.Reset();
 		}
 
 		/// <summary>
