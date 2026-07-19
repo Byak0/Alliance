@@ -1,8 +1,19 @@
 ﻿using Alliance.Common.Core.Configuration;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Lobby;
 using NetworkMessages.FromServer;
 using System.Threading;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.GameModes.Battle;
+using Alliance.Common.GameModes.BattleRoyale;
+using Alliance.Common.GameModes.Captain;
+using Alliance.Common.GameModes.CvC;
+using Alliance.Common.GameModes.Duel;
+using Alliance.Common.GameModes.PvC;
+using Alliance.Common.GameModes.Siege;
+using Alliance.Common.GameModes.Story;
+using Alliance.Server.Extensions.NativeIntermissionVote;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.DedicatedCustomServer;
@@ -53,10 +64,32 @@ namespace Alliance.Server.Core
 
 		private void EndMissionThenStartMission(GameModeSettings gameModeSettings)
 		{
+			MissionListener missionListener = new MissionListener();
+			missionListener.SetGameModeSettings(gameModeSettings);
+			EndMissionWithListener(missionListener, logAgentUsage: true);
+		}
+
+		internal void EndMissionWithListener(IMissionListener listener, bool logAgentUsage = false)
+		{
+			PrepareCurrentMissionForEnd(logAgentUsage);
+			DisableNativeIntermissionVotes();
+
+			Mission.Current.AddListener(listener);
+			EndingCurrentMissionThenStartingNewMission = true;
+			DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.EndMission();
+		}
+
+		private void PrepareCurrentMissionForEnd(bool logAgentUsage = false)
+		{
+			if (Mission.Current == null)
+			{
+				return;
+			}
+
 			// Try to stop everyone from using objects to prevent crash
-			Log("Scene=" + Mission.Current?.SceneName, LogLevel.Debug);
-			Log("NB Agents=" + Mission.Current?.Agents.Count, LogLevel.Debug);
-			foreach (MissionObject missionObj in Mission.Current?.MissionObjects)
+			Log("Scene=" + Mission.Current.SceneName, LogLevel.Debug);
+			Log("NB Agents=" + Mission.Current.Agents.Count, LogLevel.Debug);
+			foreach (MissionObject missionObj in Mission.Current.MissionObjects)
 			{
 				if (missionObj is UsableMachine machine)
 				{
@@ -64,36 +97,27 @@ namespace Alliance.Server.Core
 					machine.Disable();
 				}
 			}
-			foreach (Agent agent in Mission.Current?.AllAgents)
+
+			foreach (Agent agent in Mission.Current.AllAgents)
 			{
 				agent.SetMortalityState(Agent.MortalityState.Invulnerable);
-				//UsableMissionObject missionObject = agent.CurrentlyUsedGameObject;
-				//if (missionObject != null)
-				//{
-				//    Log("agent using " + missionObject?.GameEntity?.Name, 0, Debug.DebugColor.Blue);
-				//    agent.StopUsingGameObject();
-				//    Log("agent now using " + agent.CurrentlyUsedGameObject?.GameEntity?.Name, 0, Debug.DebugColor.Blue);
-				//    missionObject.SetDisabled();
-				//}
-				//agent.AIStateFlags = Agent.AIStateFlag.Alarmed;
-				//agent.SetScriptedCombatFlags(Agent.AISpecialCombatModeFlags.None);
-				//agent.DisableScriptedMovement();
-				//agent.ClearTargetFrame();
-				//agent.Detachment?.RemoveAgent(agent);
-				Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
+				if (logAgentUsage)
+				{
+					Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
+				}
 			}
+		}
 
-			MissionListener missionListener = new MissionListener();
-			Mission.Current.AddListener(missionListener);
-			MultiplayerIntermissionVotingManager.Instance.IsCultureVoteEnabled = false;
-			MultiplayerIntermissionVotingManager.Instance.IsMapVoteEnabled = false;
-			EndingCurrentMissionThenStartingNewMission = true;
-			missionListener.SetGameModeSettings(gameModeSettings);
-			DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.EndMission();
+		private static void DisableNativeIntermissionVotes()
+		{
+			MultiplayerIntermissionVotingManager votingManager = MultiplayerIntermissionVotingManager.Instance;
+			votingManager.IsCultureVoteEnabled = false;
+			votingManager.IsMapVoteEnabled = false;
 		}
 
 		public void ApplyGameModeSettings(GameModeSettings gameModeSettings)
 		{
+			PlayerSpawnMenu.Instance.Clear();
 			ConfigManager.Instance.ApplyNativeOptions(gameModeSettings.TWOptions);
 			ConfigManager.Instance.ApplyModOptions(gameModeSettings.ModOptions);
 			SyncMultiplayerOptionsToClients();
@@ -101,6 +125,12 @@ namespace Alliance.Server.Core
 
 		public bool StartMissionOnly(GameModeSettings gameModeSettings)
 		{
+			if (gameModeSettings == null)
+			{
+				Log("StartMissionOnly called with null settings.", LogLevel.Error);
+				return false;
+			}
+
 			if (!MissionIsRunning)
 			{
 				ApplyGameModeSettings(gameModeSettings);
@@ -120,21 +150,86 @@ namespace Alliance.Server.Core
 			StartMission(lobby);
 		}
 
-		public GameModeStarter()
+		/// <summary>
+		/// Starts the configured post-match transition.
+		/// Defaults to Lobby, or runs the configured intermission flow when enabled.
+		/// </summary>
+		public void StartPostMatchTransition()
 		{
+			string map = OptionType.Map.GetStrValue();
+			string culture1 = OptionType.CultureTeam1.GetStrValue();
+			string culture2 = OptionType.CultureTeam2.GetStrValue();
+
+			if (EndingCurrentMissionThenStartingNewMission)
+			{
+				return;
+			}
+
+			if (Config.Instance.LoopCurrentModeWithNativeVote)
+			{
+				try
+				{
+					GameModeSettings currentGameModeSettings = CreateSettingsFromCurrentOptions();
+					if (NativeIntermissionVoteService.TryStart(this, currentGameModeSettings))
+					{
+						return;
+					}
+
+					Log("Native intermission vote could not be started. Falling back to Lobby.", LogLevel.Warning);
+				}
+				catch
+				{
+					Log("Failed to start native intermission vote. Falling back to Lobby.", LogLevel.Warning);
+				}
+			}
+
+			StartLobby(map, culture1, culture2);
+		}
+
+
+		public GameModeSettings CreateSettingsFromCurrentOptions()
+		{
+			string gameType = OptionType.GameType.GetStrValue();
+			GameModeSettings gameModeSettings;
+
+			switch (gameType)
+			{
+				case "CaptainX": gameModeSettings = new CaptainGameModeSettings(); break;
+				case "BattleX": gameModeSettings = new BattleGameModeSettings(); break;
+				case "SiegeX": gameModeSettings = new SiegeGameModeSettings(); break;
+				case "DuelX": gameModeSettings = new DuelGameModeSettings(); break;
+				case "Scenario": gameModeSettings = new ScenarioGameModeSettings(); break;
+				case "PvC": gameModeSettings = new PvCGameModeSettings(); break;
+				case "CvC": gameModeSettings = new CvCGameModeSettings(); break;
+				case "BattleRoyale": gameModeSettings = new BRGameModeSettings(); break;
+				case "Lobby": gameModeSettings = new LobbyGameModeSettings(); break;
+				default:
+					Log($"Unsupported game type '{gameType}' for loop transition. Falling back to Lobby.", LogLevel.Warning);
+					gameModeSettings = new LobbyGameModeSettings();
+					break;
+			}
+
+			gameModeSettings.TWOptions = ConfigManager.Instance.GetNativeOptionsCopy();
+			gameModeSettings.ModOptions = ConfigManager.Instance.GetModOptionsCopy();
+			return gameModeSettings;
 		}
 	}
 
-	public class MissionListener : IMissionListener
+	internal class MissionListener : IMissionListener
 	{
 		public void SetGameModeSettings(GameModeSettings gameModeSettings)
 		{
 			_gameModeSettings = gameModeSettings;
 		}
 
+		public void SetUseCurrentOptionsForNextMission()
+		{
+			_useCurrentOptionsForNextMission = true;
+		}
+
 		public void OnEndMission()
 		{
-			new Thread(new ParameterizedThreadStart(StartMissionThread.ThreadProc)).Start(_gameModeSettings);
+			new Thread(new ParameterizedThreadStart(StartMissionThread.ThreadProc)).Start(new StartMissionThread.StartMissionRequest(_gameModeSettings, _useCurrentOptionsForNextMission));
 			Mission.Current.RemoveListener(this);
 		}
 
@@ -166,20 +261,38 @@ namespace Alliance.Server.Core
 		{
 		}
 
-		public MissionListener()
-		{
-		}
-
 		private GameModeSettings _gameModeSettings;
+		private bool _useCurrentOptionsForNextMission;
 	}
 
 	internal class StartMissionThread
 	{
-		public static void ThreadProc(object gameModeSettings)
+		public class StartMissionRequest
 		{
+			public readonly GameModeSettings GameModeSettings;
+			public readonly bool UseCurrentOptionsForNextMission;
+
+			public StartMissionRequest(GameModeSettings gameModeSettings, bool useCurrentOptionsForNextMission)
+			{
+				GameModeSettings = gameModeSettings;
+				UseCurrentOptionsForNextMission = useCurrentOptionsForNextMission;
+			}
+		}
+
+		public static void ThreadProc(object requestObj)
+		{
+			StartMissionRequest request = requestObj as StartMissionRequest;
 			Thread.Sleep(1000);
 			GameModeStarter.Instance.EndingCurrentMissionThenStartingNewMission = false;
-			GameModeStarter.Instance.StartMissionOnly((GameModeSettings)gameModeSettings);
+
+			if (request?.UseCurrentOptionsForNextMission == true)
+			{
+				GameModeSettings nextSettings = GameModeStarter.Instance.CreateSettingsFromCurrentOptions();
+				GameModeStarter.Instance.StartMissionOnly(nextSettings);
+				return;
+			}
+
+			GameModeStarter.Instance.StartMissionOnly(request?.GameModeSettings);
 		}
 
 		public StartMissionThread()

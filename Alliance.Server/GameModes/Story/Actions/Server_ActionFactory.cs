@@ -24,6 +24,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 			return new Server_StartScenarioAction();
 		}
 
+		public override EndScenarioAction EndScenarioAction()
+		{
+			return new Server_EndScenarioAction();
+		}
+
 		public override SpawnAgentAction SpawnAgentAction()
 		{
 			return new Server_SpawnAgentAction();

@@ -44,6 +44,7 @@ namespace Alliance.Common.GameModes.BattleRoyale
 			return new List<string>
 			{
 				nameof(Config.BRZoneLifeTime),
+				nameof(Config.LoopCurrentModeWithNativeVote),
 				nameof(Config.AllowCustomBody),
 				nameof(Config.RandomizeAppearance),
 				nameof(Config.ShowFlagMarkers),
