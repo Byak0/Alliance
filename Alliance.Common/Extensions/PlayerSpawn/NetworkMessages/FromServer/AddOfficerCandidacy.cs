@@ -1,7 +1,7 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
@@ -33,9 +33,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 		protected override void OnWrite()
 		{
 			WriteNetworkPeerReferenceToPacket(Player);
-			WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
-			WriteIntToPacket(FormationIndex, FormationIndexCompressionInfo);
-			WriteIntToPacket(CharacterIndex, CharacterIndexCompressionInfo);
+			WriteIntToPacket(TeamIndex, CompressionHelper.TeamIndexCompressionInfo);
+			WriteIntToPacket(FormationIndex, CompressionHelper.FormationIndexCompressionInfo);
+			WriteIntToPacket(CharacterIndex, CompressionHelper.CharacterIndexCompressionInfo);
 			WriteStringToPacket(Pitch);
 		}
 
@@ -43,9 +43,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 		{
 			bool bufferReadValid = true;
 			Player = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-			TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
-			FormationIndex = ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
-			CharacterIndex = ReadIntFromPacket(CharacterIndexCompressionInfo, ref bufferReadValid);
+			TeamIndex = ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
+			FormationIndex = ReadIntFromPacket(CompressionHelper.FormationIndexCompressionInfo, ref bufferReadValid);
+			CharacterIndex = ReadIntFromPacket(CompressionHelper.CharacterIndexCompressionInfo, ref bufferReadValid);
 			Pitch = ReadStringFromPacket(ref bufferReadValid);
 			return bufferReadValid;
 		}

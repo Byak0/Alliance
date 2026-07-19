@@ -20,9 +20,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		public static readonly CompressionInfo.Integer OperationCompressionInfo = new CompressionInfo.Integer(0, Enum.GetValues(typeof(PlayerSpawnMenuOperation)).Length, true);
 		public static readonly CompressionInfo.Integer SyncIdCompressionInfo = new CompressionInfo.Integer(-1, 8190, true);
 		public static readonly CompressionInfo.Integer TotalMessageCountCompressionInfo = new CompressionInfo.Integer(-1, 254, true);
-		public static readonly CompressionInfo.Integer TeamIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
-		public static readonly CompressionInfo.Integer FormationIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
-		public static readonly CompressionInfo.Integer CharacterIndexCompressionInfo = new CompressionInfo.Integer(-1, 30, true);
 
 		#region Server Messages
 		/// <summary>
@@ -252,7 +249,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		#region Packet Read/Write Methods - Utilities
 		public static void WritePlayerTeamToPacket(PlayerTeam team)
 		{
-			GameNetworkMessage.WriteIntToPacket(team.Index, TeamIndexCompressionInfo);
+			GameNetworkMessage.WriteIntToPacket(team.Index, CompressionHelper.TeamIndexCompressionInfo);
 			GameNetworkMessage.WriteStringToPacket(team.Name);
 			GameNetworkMessage.WriteIntToPacket((int)team.TeamSide, CompressionMission.TeamSideCompressionInfo);
 		}
@@ -260,7 +257,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		public static PlayerTeam ReadPlayerTeamFromPacket(ref bool bufferReadValid)
 		{
 			PlayerTeam team = new PlayerTeam();
-			team.Index = GameNetworkMessage.ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+			team.Index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
 			team.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
 			team.TeamSide = (BattleSideEnum)GameNetworkMessage.ReadIntFromPacket(CompressionMission.TeamSideCompressionInfo, ref bufferReadValid);
 			return team;
@@ -268,7 +265,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 
 		public static void WritePlayerFormationToPacket(PlayerFormation formation)
 		{
-			GameNetworkMessage.WriteIntToPacket(formation.Index, FormationIndexCompressionInfo);
+			GameNetworkMessage.WriteIntToPacket(formation.Index, CompressionHelper.FormationIndexCompressionInfo);
 			GameNetworkMessage.WriteStringToPacket(formation.Name);
 			GameNetworkMessage.WriteObjectReferenceToPacket(formation.MainCulture, CompressionBasic.GUIDCompressionInfo);
 			GameNetworkMessage.WriteBoolToPacket(formation.Settings.UseMorale);
@@ -277,7 +274,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		public static PlayerFormation ReadPlayerFormationFromPacket(ref bool bufferReadValid)
 		{
 			PlayerFormation formation = new PlayerFormation();
-			formation.Index = GameNetworkMessage.ReadIntFromPacket(FormationIndexCompressionInfo, ref bufferReadValid);
+			formation.Index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.FormationIndexCompressionInfo, ref bufferReadValid);
 			formation.Name = GameNetworkMessage.ReadStringFromPacket(ref bufferReadValid);
 			object cultureObject = GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid);
 			if (cultureObject != null && cultureObject is BasicCultureObject bco)

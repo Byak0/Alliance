@@ -1,7 +1,7 @@
-﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
-using static Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.PlayerSpawnMenuMsg;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 {
@@ -27,14 +27,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 		protected override void OnWrite()
 		{
 			WriteNetworkPeerReferenceToPacket(Player);
-			WriteIntToPacket(TeamIndex, TeamIndexCompressionInfo);
+			WriteIntToPacket(TeamIndex, CompressionHelper.TeamIndexCompressionInfo);
 		}
 
 		protected override bool OnRead()
 		{
 			bool bufferReadValid = true;
 			Player = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-			TeamIndex = ReadIntFromPacket(TeamIndexCompressionInfo, ref bufferReadValid);
+			TeamIndex = ReadIntFromPacket(CompressionHelper.TeamIndexCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
 		}
 
