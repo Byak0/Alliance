@@ -18,6 +18,7 @@ using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
+using Alliance.Client.Core;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
@@ -74,7 +75,7 @@ namespace Alliance.Client
 
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
-			NativeIntermissionVoteHandler.Register();
+			ClientGlobalAutoHandler.Initialize();
 		}
 
 		private void AddGameModes()

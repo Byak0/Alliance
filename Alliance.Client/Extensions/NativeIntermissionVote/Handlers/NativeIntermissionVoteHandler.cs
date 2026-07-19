@@ -1,3 +1,4 @@
+using Alliance.Common.Extensions;
 using Alliance.Common.Extensions.NativeIntermissionVote.NetworkMessages.FromServer;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -6,25 +7,18 @@ namespace Alliance.Client.Extensions.NativeIntermissionVote.Handlers
 {
 	/// <summary>
 	/// Handles client-side synchronization required by Alliance custom native intermission vote flows.
-	/// Registered globally because native intermission voting runs after mission behaviors are removed.
+	/// Implements IGlobalHandlerRegister (not IHandlerRegister) and is discovered/registered by
+	/// ClientGlobalAutoHandler, because native intermission voting runs after mission behaviors
+	/// (and thus ClientAutoHandler) have been removed.
 	/// </summary>
-	internal static class NativeIntermissionVoteHandler
+	internal class NativeIntermissionVoteHandler : IGlobalHandlerRegister
 	{
-		private static bool _registered;
-
-		public static void Register()
+		public void Register(GameNetwork.NetworkMessageHandlerRegisterer reg)
 		{
-			if (_registered)
-			{
-				return;
-			}
-
-			GameNetwork.NetworkMessageHandlerRegisterer reg = new GameNetwork.NetworkMessageHandlerRegisterer(GameNetwork.NetworkMessageHandlerRegisterer.RegisterMode.Add);
 			reg.Register<ClearNativeIntermissionVoteItems>(HandleClearNativeIntermissionVoteItems);
-			_registered = true;
 		}
 
-		private static void HandleClearNativeIntermissionVoteItems(ClearNativeIntermissionVoteItems message)
+		private void HandleClearNativeIntermissionVoteItems(ClearNativeIntermissionVoteItems message)
 		{
 			MultiplayerIntermissionVotingManager votingManager = MultiplayerIntermissionVotingManager.Instance;
 			if (votingManager == null)
