@@ -51,6 +51,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return new StartScenarioAction();
 		}
 
+		public virtual EndScenarioAction EndScenarioAction()
+		{
+			return new EndScenarioAction();
+		}
+
 		public virtual SpawnAgentAction SpawnAgentAction()
 		{
 			return new SpawnAgentAction();

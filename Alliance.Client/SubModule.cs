@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Core.Providers;
+using Alliance.Client.Extensions.NativeIntermissionVote.Handlers;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -73,6 +74,7 @@ namespace Alliance.Client
 
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
+			NativeIntermissionVoteHandler.Register();
 		}
 
 		private void AddGameModes()
