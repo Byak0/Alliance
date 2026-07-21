@@ -96,7 +96,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		/// <summary>
 		/// If the object wraps a ScriptedEvent with a ParentEntity, use that as the game entity.
-		/// If the object has a single non-abstract class field (not string), unwrap to edit it directly.
+		/// If the object has a single non-abstract class field (not string, not Zone), unwrap to edit it directly.
+		/// Zone is kept wrapped so its Value field is rendered via FieldTemplate → IsZone → ZoneTemplate (with "Edit Zone" button).
 		/// </summary>
 		private void UnwrapSingleFieldObject(ref object obj, ref string title, ref WeakGameEntity gameEntity)
 		{
@@ -106,7 +107,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				gameEntity = scriptedEvent.ParentEntity;
 			}
-			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
+			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
+				&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);

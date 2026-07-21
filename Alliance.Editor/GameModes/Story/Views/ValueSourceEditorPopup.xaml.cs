@@ -1,6 +1,8 @@
 using Alliance.Editor.GameModes.Story.ViewModels;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Alliance.Editor.GameModes.Story.Views
 {
@@ -11,6 +13,9 @@ namespace Alliance.Editor.GameModes.Story.Views
 		{
 			InitializeComponent();
 			DataContext = new ValueSourceEditorViewModel(field);
+
+			// Disable hardware acceleration for this window to prevent Steam overlay detection
+			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 		}
 
 		private void Window_Closing(object sender, CancelEventArgs e)
