@@ -1,3 +1,4 @@
+using Alliance.Common.GameModes.Story.Attributes;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -187,6 +188,11 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			if (val == null) return string.Empty;
 			if (val is Enum) return Enum.GetName(val.GetType(), val) ?? val.ToString();
+			PhrasePreviewAttribute preview = val.GetType().GetCustomAttribute<PhrasePreviewAttribute>();
+			if (preview != null)
+			{
+				return RenderText(preview.Template, val);
+			}
 			// LocalizedString-like value: render its default (English) text.
 			MethodInfo getText = val.GetType().GetMethod("GetText", new[] { typeof(string) });
 			if (getText != null) return getText.Invoke(val, new object[] { "English" }) as string ?? string.Empty;

@@ -1,6 +1,6 @@
 using System;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Attributes
 {
 	/// <summary>
 	/// Marks a string field on a Condition as the NAME of a trigger variable that the condition captures

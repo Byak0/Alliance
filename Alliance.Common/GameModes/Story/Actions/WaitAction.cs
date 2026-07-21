@@ -1,3 +1,4 @@
+using Alliance.Common.GameModes.Story.Attributes;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions

@@ -1,6 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
@@ -13,10 +15,12 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
+using Condition = Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -30,6 +34,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private object _fieldValue;
 		private Func<object, object> _valueToEffective;
 		private Func<object, object> _valueFromEffective;
+		private ValueSourceChipViewModel _valueSourceChip;
 
 		public FieldInfo FieldInfo { get; private set; }
 		public string FieldName { get; private set; }
@@ -42,15 +47,17 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		/// <summary>When true, the dropdown only allows picking from PossibleValues (no free-text entry).</summary>
 		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
-		public bool IsComplexType => !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
+		public bool IsValueSource => ValueSourceTypeSupport.IsValueSourceType(FieldType);
+		public bool IsComplexType => !IsValueSource && !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
-		public bool IsZone => FieldType == typeof(SerializableZone);
+		public bool IsZone => FieldType == typeof(Zone);
 		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
 		public Type[] ConcreteTypes { get; private set; } = Array.Empty<Type>();
-		/// <summary>True for abstract-typed fields (e.g. AgentSource): rendered inline with a subtype picker.</summary>
+		/// <summary>True for abstract-typed fields rendered with the generic subtype picker.</summary>
 		public bool IsPolymorphicField => FieldType != null && FieldType.IsAbstract && ConcreteTypes.Length > 0;
 		public ObservableCollection<ItemViewModel> Items { get; }
-		public ZoneViewModel ZoneVM { get; }
+		public ZoneViewModel ZoneVM { get; private set; }
+		public ValueSourceChipViewModel ValueSourceChip => _valueSourceChip ??= new ValueSourceChipViewModel(this);
 
 		public object ParentObject => parentViewModel?.Object;
 
@@ -70,6 +77,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					_fieldValue = storageValue;
 					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
+					_valueSourceChip?.Refresh();
+					for (ObjectEditorViewModel vm = parentViewModel; vm != null; vm = vm.ParentEditor)
+					{
+						vm.RefreshValueSourcePreviews();
+					}
 
 					if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
 					{
@@ -156,15 +168,34 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		/// <summary>
 		/// Gathers the names of available variables matching <paramref name="variableType"/> from all sources:
-		/// 1. Trigger variables produced by [VariableOutput] fields on sibling conditions of the enclosing ScriptedEvent.
-		/// 2. Global variables declared on the enclosing Scenario (via its Variables list, populated in Phase 2).
+		/// 1. Predefined zones in the enclosing Act.
+		/// 2. Trigger variables produced by [VariableOutput] fields on sibling conditions of the enclosing ScriptedEvent.
+		/// 3. Global variables declared on the enclosing Scenario (via its Variables list, populated in Phase 2).
 		/// Matching follows the exact type or List&lt;type&gt; convention.
 		/// </summary>
-		private string[] CollectAvailableVariables(Type variableType)
+		internal string[] CollectAvailableVariables(Type variableType)
 		{
 			List<string> names = new List<string>();
 
-			// Source 1: trigger variables from sibling conditions
+			// Source 1: predefined zones from the enclosing Act
+			if (variableType == typeof(Zone))
+			{
+				Act parentAct = parentViewModel?.FindEnclosingAct();
+				if(parentAct?.Zones != null)
+				{
+					foreach (var zone in parentAct.Zones)
+					{
+						if (zone == null || string.IsNullOrWhiteSpace(zone.Name)) continue;
+						if (!names.Contains(zone.Name))
+						{
+							names.Add(zone.Name);
+						}
+					}
+				}
+				return names.ToArray();
+			}
+
+			// Source 2: trigger variables from sibling conditions
 			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
 			if (scriptedEvent != null)
 			{
@@ -177,8 +208,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 						if (outAttr?.VariableType == null) continue;
 
 						Type produced = outAttr.VariableType;
-						bool typeMatch = variableType.IsAssignableFrom(produced)
-							|| (produced.IsGenericType && produced.GetGenericTypeDefinition() == typeof(List<>) && variableType.IsAssignableFrom(produced.GetGenericArguments()[0]));
+						bool typeMatch = variableType.IsAssignableFrom(produced);
 						if (!typeMatch) continue;
 
 						string name = f.GetValue(condition) as string;
@@ -190,7 +220,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				}
 			}
 
-			// Source 2: global variables from the enclosing Scenario
+			// Source 3: global variables from the enclosing Scenario
 			Scenario parentScenario = parentViewModel?.FindEnclosingScenario();
 			if (parentScenario?.Variables != null)
 			{
@@ -209,31 +239,19 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		}
 
 		/// <summary>
-		/// Maps a VariableType enum to its closest System.Type for type matching.
-		/// </summary>
-		private static Type VariableTypeToSystemType(VariableType vt)
-		{
-			switch (vt)
-			{
-				case VariableType.Int: return typeof(int);
-				case VariableType.Float: return typeof(float);
-				case VariableType.Bool: return typeof(bool);
-				case VariableType.String: return typeof(string);
-				case VariableType.Enum: return typeof(string);
-				default: return typeof(object);
-			}
-		}
-
-		/// <summary>
 		/// Checks whether a scenario variable's type matches a given filter type.
 		/// </summary>
 		private static bool TypeMatchesFilter(Type filterType, VariableType varType)
 		{
-			if (filterType == typeof(object)) return true;
-			Type varSysType = VariableTypeToSystemType(varType);
-			if (filterType == varSysType) return true;
-			if (filterType == typeof(float) && varSysType == typeof(int)) return true;
-			return false;
+			return varType switch
+			{
+				VariableType.Int => filterType == typeof(int) || filterType == typeof(float),
+				VariableType.Float => filterType == typeof(float),
+				VariableType.Bool => filterType == typeof(bool),
+				VariableType.String => filterType == typeof(string),
+				VariableType.Enum => filterType == typeof(string),
+				_ => filterType == typeof(object),
+			};
 		}
 
 		private object[] GetEnumOrderedValues()
@@ -252,11 +270,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ICommand AddCommand { get; }
 		public ICommand EditPlayerSpawnMenuCommand { get; }
 
-		/// <summary>
-		/// Command used by the compact inline (phrase) widget to edit complex fields
-		/// (zones, nested objects, spawn menus). Resolves to the most appropriate editor for the field type.
-		/// </summary>
-		public ICommand InlineEditCommand => IsZone ? ZoneVM?.EditZoneCommand : (IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand);
+		/// <summary>Command used by the remaining compact complex-field template.</summary>
+		public ICommand InlineEditCommand => IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand;
 
 		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
 		{
@@ -294,6 +309,18 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (variableRef != null)
 			{
 				PossibleValues = CollectAvailableVariables(variableRef.VariableType);
+				IsChoiceLocked = true;
+			}
+			// Generic attributes cannot express [VariableRef(typeof(T))]. Infer the intended type from
+			// VariableValue<T> itself so every expression slot gets the same filtered variable dropdown.
+			if (parentViewModel?.Object != null
+				&& parentViewModel.Object.GetType().IsGenericType
+				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(VariableValue<>)
+				&& FieldName == nameof(VariableValue<int>.VariableName))
+			{
+				Type valueType = parentViewModel.Object.GetType().GetGenericArguments()[0];
+				PossibleValues = CollectAvailableVariables(valueType);
+				IsChoiceLocked = true;
 			}
 
 			// ScenarioVariable.EnumTypeName: populate + lock dropdown from discovered enum types.
@@ -386,10 +413,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				}
 			}
 
-			// Polymorphic (abstract-typed) fields: discover concrete subtypes for the inline type picker.
-			if (FieldType != null && FieldType.IsAbstract)
+			// ValueSource<T> is rendered by its dedicated chip/popup. Other abstract fields retain the
+			// generic polymorphic picker.
+			if (FieldType != null && FieldType.IsAbstract && !IsValueSource)
 			{
 				ConcreteTypes = DiscoverConcreteTypes(FieldType);
+			}
+
+			// A FunctionCall<T>.Function field must only expose functions whose declared return type is assignable to T.
+			if (FieldType == typeof(Function)
+				&& parentViewModel?.Object != null
+				&& parentViewModel.Object.GetType().IsGenericType
+				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(FunctionCall<>))
+			{
+				Type resultType = parentViewModel.Object.GetType().GetGenericArguments()[0];
+				ConcreteTypes = ConcreteTypes
+					.Where(type => FunctionReturns(type, resultType))
+					.OrderBy(type => type.Name)
+					.ToArray();
 			}
 
 			EditCommand = new RelayCommand(_ => EditObjectFromFieldInfo(FieldInfo), _ => IsComplexType);
@@ -410,7 +451,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			if (IsZone)
 			{
-				ZoneVM = new ZoneViewModel((SerializableZone)FieldValue, FieldInfo, this);
+				ZoneVM = new ZoneViewModel((Zone)FieldValue, FieldInfo, this);
 			}
 		}
 
@@ -598,6 +639,41 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				OnPropertyChanged(nameof(SelectedConcreteType));
 				OnPropertyChanged(nameof(NestedVM));
 			}
+		}
+
+
+		internal void OpenValueSourceEditor()
+		{
+			if (!IsValueSource) return;
+			ValueSourceEditorPopup popup = new ValueSourceEditorPopup(this)
+			{
+				Owner = Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
+					?? Application.Current?.MainWindow
+			};
+			popup.ShowDialog();
+			RefreshValueSourceDisplay();
+		}
+
+		internal void RefreshValueSourceDisplay()
+		{
+			_valueSourceChip?.Refresh();
+			OnPropertyChanged(nameof(FieldValue));
+		}
+
+		private static bool FunctionReturns(Type functionType, Type resultType)
+		{
+			if (functionType == null || resultType == null || functionType.IsAbstract) return false;
+			try
+			{
+				if (Activator.CreateInstance(functionType) is Function function)
+				{
+					return resultType.IsAssignableFrom(function.ReturnType);
+				}
+			}
+			catch
+			{
+			}
+			return false;
 		}
 
 		private static Type[] DiscoverConcreteTypes(Type baseType)

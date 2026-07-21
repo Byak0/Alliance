@@ -1,0 +1,67 @@
+<Window x:Class="Alliance.Editor.GameModes.Story.Views.ValueSourceEditorPopup"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:views="clr-namespace:Alliance.Editor.GameModes.Story.Views"
+		xmlns:viewmodels="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
+		d:DataContext="{d:DesignInstance Type=viewmodels:ValueSourceEditorViewModel}"
+		mc:Ignorable="d"
+		Title="{Binding Title}"
+		Height="500"
+		Width="620"
+		MinHeight="260"
+		MinWidth="420"
+		WindowStartupLocation="CenterOwner"
+		Topmost="True"
+		Closing="Window_Closing">
+
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="ScenarioEditorResources.xaml" />
+				<ResourceDictionary Source="ModernTheme.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Grid Margin="16">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+
+		<TextBlock Text="Choose how this value is produced" FontWeight="SemiBold" FontSize="18" />
+
+		<StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,10">
+			<TextBlock Text="Origin" Width="90" VerticalAlignment="Center" />
+			<ComboBox ItemsSource="{Binding Origins}"
+					  SelectedItem="{Binding SelectedOrigin, Mode=TwoWay}"
+					  DisplayMemberPath="Label"
+					  Width="220">
+				<ComboBox.ItemContainerStyle>
+					<Style TargetType="ComboBoxItem">
+						<Setter Property="IsEnabled" Value="{Binding IsAvailable}" />
+					</Style>
+				</ComboBox.ItemContainerStyle>
+			</ComboBox>
+			<TextBlock Text="{Binding TargetTypeLabel}" Margin="12,0,0,0" VerticalAlignment="Center" Foreground="#FF666666" />
+		</StackPanel>
+
+		<Border Grid.Row="2" BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="0,0">
+			<views:ObjectEditorContentControl DataContext="{Binding DetailEditor}" Margin="-12,0"/>
+		</Border>
+
+		<Button Grid.Row="3"
+				Content="Done"
+				Command="{Binding CloseCommand}"
+				CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+				Width="88"
+				Height="28"
+				HorizontalAlignment="Right"
+				Padding="0"
+				Margin="0,12,0,0" />
+	</Grid>
+</Window>

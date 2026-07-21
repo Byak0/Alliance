@@ -35,12 +35,12 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 			_playerSpawnMenuView.OpenMenu(playerSpawnMenu, onCloseCallback, true);
 		}
 
-		public void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)
+		public void AddZoneToEditor(Zone zone, string zoneName, Action onEditCallback)
 		{
 			EditZoneView.AddZone(zone, zoneName, onEditCallback);
 		}
 
-		public void RemoveZoneFromEditor(SerializableZone zone)
+		public void RemoveZoneFromEditor(Zone zone)
 		{
 			EditZoneView.RemoveZone(zone);
 		}
@@ -50,7 +50,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 			EditZoneView.ClearZones();
 		}
 
-		public void SetEditableZone(SerializableZone zone)
+		public void SetEditableZone(Zone zone)
 		{
 			EditZoneView.SetEditableZone(zone);
 		}

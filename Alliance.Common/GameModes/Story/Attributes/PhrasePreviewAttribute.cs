@@ -1,6 +1,6 @@
 using System;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Attributes
 {
 	/// <summary>
 	/// Defines a read-only text preview rendered from an object's fields, used wherever a compact

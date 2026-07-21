@@ -1,8 +1,10 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.Audio;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -13,8 +15,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	[PhrasePreview("Play {SoundName}")]
 	[PhraseTemplate(
-		"Play {SoundName} as a {SoundType|local sound|local music|main music} at volume {Volume}{?SoundType!=MainMusic: and position {SoundZone}}.",
-		"While we hear the sound, {PauseMainMusicWhilePlaying|leave main music playing|mute main music}.")]
+		"Play {SoundName} as a {SoundType|local sound|local music|main music} at volume {Volume}{?SoundType!=MainMusic: and position {SoundZone}}",
+		"While we hear the sound, {PauseMainMusicWhilePlaying|leave main music playing|mute main music}")]
 	public class PlaySoundAction : ActionBase
 	{
 		public enum SoundCategory
@@ -31,23 +33,24 @@ namespace Alliance.Common.GameModes.Story.Actions
 		[ConfigProperty(label: "Mute Main Music", tooltip: "Mute the current main music while this sound is playing (for temporary/localized musics). Doesn't work with native sounds.")]
 		public bool PauseMainMusicWhilePlaying;
 		[ConfigProperty(label: "Volume", tooltip: "Volume level. Default is 1.")]
-		public float Volume = 1f;
+		public ValueSource<float> Volume = new LiteralValue<float>(1f);
 		[ConfigProperty(label: "Position", tooltip: "Position of the sound. Radius is the hearing range. Can't be used with Main Music.")]
-		public SerializableZone SoundZone;
+		public ValueSource<Zone> SoundZone = new LiteralValue<Zone>(new Zone());
 
 		public PlaySoundAction() { }
 
 		public override ActionTask Execute()
 		{
 			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
+			float volume = Volume?.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals) ?? 1f;
 
 			switch (SoundType)
 			{
 				case SoundCategory.AudioLocal:
-					PlayLocalizedSound();
+					PlayLocalizedSound(volume);
 					break;
 				case SoundCategory.MusicLocal:
-					PlayLocalizedMusic();
+					PlayLocalizedMusic(volume);
 					break;
 				case SoundCategory.MainMusic:
 					PlayMainMusic();
@@ -70,31 +73,39 @@ namespace Alliance.Common.GameModes.Story.Actions
 			}
 		}
 
-		private void PlayLocalizedMusic()
+		private void PlayLocalizedMusic(float volume)
 		{
 			if (string.IsNullOrEmpty(SoundName) || Mission.Current == null || SoundZone == null) return;
 
+			Zone zone = SoundZone.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			if (zone == null) return;
+			Vec3 center = zone.ResolveCenter(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+
 			if (IsNativeSound(SoundName))
 			{
-				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.GlobalPosition, synchronize: true);
+				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, center, synchronize: true);
 			}
 			else
 			{
-				AudioPlayer.Instance.PlayLocalizedMusic(SoundName, Volume, SoundZone.GlobalPosition, (int)SoundZone.Radius, Mission.Current.GetMissionTimeInSeconds(), PauseMainMusicWhilePlaying, synchronize: true);
+				AudioPlayer.Instance.PlayLocalizedMusic(SoundName, volume, center, (int)zone.Radius, Mission.Current.GetMissionTimeInSeconds(), PauseMainMusicWhilePlaying, synchronize: true);
 			}
 		}
 
-		private void PlayLocalizedSound()
+		private void PlayLocalizedSound(float volume)
 		{
 			if (string.IsNullOrEmpty(SoundName)) return;
 
+			Zone zone = SoundZone.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			if (zone == null) return;
+			Vec3 center = zone.ResolveCenter(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+
 			if (IsNativeSound(SoundName))
 			{
-				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, SoundZone.GlobalPosition, synchronize: true);
+				NativeAudioPlayer.Instance.PlaySoundLocalized(SoundName, center, synchronize: true);
 			}
 			else
 			{
-				AudioPlayer.Instance.Play(SoundName, Volume, true, (int)SoundZone.Radius, SoundZone.GlobalPosition, synchronize: true);
+				AudioPlayer.Instance.Play(SoundName, volume, true, (int)zone.Radius, center, synchronize: true);
 			}
 		}
 

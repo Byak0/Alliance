@@ -8,6 +8,11 @@ using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Editor.GameModes.Story.Views
 {
+	/// <summary>
+	/// In-scene overlay that renders all zones currently being edited and allows click-placement
+	/// of the active zone + radius editing via the mouse wheel. Works with the new <see cref="Zone"/> model:
+	/// rendering uses <c>ResolveCenter()</c> (so anchors are honoured) and placement uses <c>SetPositionFromWorld()</c>.
+	/// </summary>
 	public static class EditZoneView
 	{
 		private static SceneView _sceneView;
@@ -26,26 +31,26 @@ namespace Alliance.Editor.GameModes.Story.Views
 		private static float _rightClickHoldTime = 0f;
 
 		// Store zones with their names and edit callbacks
-		private static Dictionary<SerializableZone, (string zoneName, Action onEditCallback)> _zones = new Dictionary<SerializableZone, (string, Action)>();
+		private static Dictionary<Zone, (string zoneName, Action onEditCallback)> _zones = new Dictionary<Zone, (string, Action)>();
 
 		// Track the currently editable zone
-		private static SerializableZone _editableZone;
+		private static Zone _editableZone;
 		public static Action OnEditCallBack;
 
 		// Add a zone with its associated name
-		public static void AddZone(SerializableZone zone, string zoneName, Action onEditCallback)
+		public static void AddZone(Zone zone, string zoneName, Action onEditCallback)
 		{
 			_sceneView = MBEditor.GetEditorSceneView();
 
-			if (!_zones.ContainsKey(zone))
+			if (zone != null && !_zones.ContainsKey(zone))
 			{
 				_zones.Add(zone, (zoneName, onEditCallback));
 			}
 		}
 
-		public static void RemoveZone(SerializableZone zone)
+		public static void RemoveZone(Zone zone)
 		{
-			if (_zones.ContainsKey(zone))
+			if (zone != null && _zones.ContainsKey(zone))
 			{
 				_zones.Remove(zone);
 			}
@@ -55,9 +60,9 @@ namespace Alliance.Editor.GameModes.Story.Views
 			}
 		}
 
-		public static void SetEditableZone(SerializableZone zone)
+		public static void SetEditableZone(Zone zone)
 		{
-			if (_zones.ContainsKey(zone))
+			if (zone != null && _zones.ContainsKey(zone))
 			{
 				_editableZone = zone;
 				OnEditCallBack = _zones[zone].onEditCallback;
@@ -78,24 +83,18 @@ namespace Alliance.Editor.GameModes.Story.Views
 			// Display all zones
 			foreach (var entry in _zones)
 			{
-				SerializableZone zone = entry.Key;
+				Zone zone = entry.Key;
 				bool isEditable = zone == _editableZone;
 
-				Vec3 position;
-				if (zone.UseLocalSpace && zone.LocalEntity != null)
-				{
-					Vec3 entityPosition = zone.LocalEntity.GlobalPosition;
-					Vec3 zoneLocalPosition = new Vec3(zone.X, zone.Y, zone.Z);
-					position = entityPosition + zoneLocalPosition;
-				}
-				else
-				{
-					position = zone.Position;
-				}
+				// ResolveCenter honours the anchor (world/host/entity/agent). In the editor, ctx/globals
+				// are null: host-relative uses the editor GameEntity set on Zone.HostEntity by ZoneViewModel;
+				// agent/remote-entity anchors degrade to the raw offset.
+				Vec3 position = zone.ResolveCenter();
+				float radius = zone.Shape?.BoundingRadius ?? 1f;
 				uint color = isEditable ? _editableColor : _colorList[colorIndex % _colorList.Count];
 
 				// Render the zone sphere and the associated name
-				Debug.RenderDebugSphere(position, zone.Radius, color, true);
+				Debug.RenderDebugSphere(position, radius, color, true);
 				Debug.RenderDebugText3D(position, entry.Value.zoneName, color, -100);
 
 				colorIndex++;
@@ -138,34 +137,29 @@ namespace Alliance.Editor.GameModes.Story.Views
 			if (Input.IsKeyDown(InputKey.LeftMouseButton))
 			{
 				_sceneView.ProjectedMousePositionOnGround(out var groundPosition, out var groundNormal, true, BodyFlags.BodyOwnerFlora, checkOccludedSurface: true);
-				UpdateZonePosition(groundPosition, _editableZone);
+				_editableZone.SetPositionFromWorld(groundPosition);
 				OnEditCallBack?.Invoke();
 			}
 
-			// Update the zone's radius on mouse wheel
+			// Update the zone's radius on mouse wheel (only meaningful for circle shapes)
 			if (Input.IsKeyDown(InputKey.MouseScrollDown))
 			{
-				_editableZone.Radius -= 0.1f;
+				AdjustRadius(-0.1f);
 				OnEditCallBack?.Invoke();
 			}
 			else if (Input.IsKeyDown(InputKey.MouseScrollUp))
 			{
-				_editableZone.Radius += 0.1f;
+				AdjustRadius(0.1f);
 				OnEditCallBack?.Invoke();
 			}
 		}
 
-		private static void UpdateZonePosition(Vec3 groundPosition, SerializableZone zone)
+		private static void AdjustRadius(float delta)
 		{
-			if (zone.UseLocalSpace && zone.LocalEntity != null)
+			if (_editableZone.Shape is CircleShape circle)
 			{
-				// Transform the ground position to the local space of the entity
-				groundPosition -= zone.LocalEntity.GlobalPosition;
+				circle.Radius = Math.Max(0.1f, circle.Radius + delta);
 			}
-			zone.Position = groundPosition;
-			zone.X = groundPosition.x;
-			zone.Y = groundPosition.y;
-			zone.Z = groundPosition.z;
 		}
 	}
 }

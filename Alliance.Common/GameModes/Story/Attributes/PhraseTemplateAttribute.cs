@@ -1,6 +1,6 @@
 using System;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Attributes
 {
 	/// <summary>
 	/// Defines one or more human-readable phrases that the scenario editor renders inline for this type,

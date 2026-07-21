@@ -1,9 +1,11 @@
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Attributes;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	[Serializable]
+	[PhrasePreview("Increment {VariableName} by {Amount}")]
 	[PhraseTemplate("Increment {VariableName} by {Amount}")]
 	public class IncrementVariableAction : ActionBase
 	{

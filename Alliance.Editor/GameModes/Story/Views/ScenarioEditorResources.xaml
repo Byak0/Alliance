@@ -28,7 +28,7 @@
 	<!-- Template for a label with a tooltip (optional) -->
 	<DataTemplate x:Key="LabelWithTooltipTemplate">
 		<StackPanel Height="24" 
-					Width="240" 
+					Width="200" 
 					Margin="0,0,16,0"
 					Orientation="Horizontal" 
 					VerticalAlignment="Center">
@@ -141,11 +141,28 @@
 								 Width="80" 
 								 Height="26"
 								 Margin="0"
-								 Padding="0,2,0,0"
+								 Padding="0,1.3,0,0"
 								 HorizontalAlignment="Center" 
 								 VerticalAlignment="Center" 
 								 TextAlignment="Center" />
 						<Button x:Name="PART_IncrementButton" Content="+" Width="24" Height="24" Padding="0, 0, 0, 4"/>
+					</StackPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Compact variant of NumericUpDownBox for inline (phrase) numerics. -->
+	<Style x:Key="InlineNumericUpDownStyle" TargetType="{x:Type widgets:NumericUpDownBox}">
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type widgets:NumericUpDownBox}">
+					<StackPanel Orientation="Horizontal">
+						<Button x:Name="PART_DecrementButton" Content="-" Width="18" Height="22" Padding="0,0,0,3"/>
+						<TextBox x:Name="PART_TextBox"
+									 Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									 Width="44" Padding="0,3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+						<Button x:Name="PART_IncrementButton" Content="+" Width="18" Height="22" Padding="0,0,0,3"/>
 					</StackPanel>
 				</ControlTemplate>
 			</Setter.Value>
@@ -188,66 +205,97 @@
 			<Button Content="Edit"
 					Command="{Binding EditCommand}"
 					Height="24"
-					Width="128"
+					Width="184"
+					Margin="0,0,0,0"
 					Padding="0, 0, 0, 0"
+					HorizontalAlignment="Center"
 					FontFamily="{StaticResource DefaultFontFamily}"
 					FontSize="{StaticResource DefaultFontSize}"/>
 		</StackPanel>
 	</DataTemplate>
+	
+	<!-- Inline editor for a polymorphic (abstract-typed) field: subtype picker + nested fields. -->
+	<DataTemplate x:Key="PolymorphicFieldTemplate">
+		<StackPanel Orientation="Vertical" Margin="0,8,0,0" >
+			<StackPanel Orientation="Horizontal">
+				<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+				<ComboBox ItemsSource="{Binding ConcreteTypes}" DisplayMemberPath="Name"
+							SelectedItem="{Binding SelectedConcreteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							Width="220" VerticalAlignment="Center" />
+			</StackPanel>
+			<views:ObjectEditorContentControl DataContext="{Binding NestedVM}" Margin="16,4,0,0" />
+		</StackPanel>
+	</DataTemplate>
 
-	<!-- Template for Zone - Show button to edit zone in Scene directly -->
-	<DataTemplate x:Key="ZoneTemplate">
-		<StackPanel Orientation="Horizontal">
-			<!-- Include the Label/Tooltip -->
-			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+	<DataTemplate x:Key="InlinePolymorphicFieldTemplate">
+		<StackPanel Orientation="Vertical" VerticalAlignment="Center">
+			<ComboBox ItemsSource="{Binding ConcreteTypes}" DisplayMemberPath="Name"
+						SelectedItem="{Binding SelectedConcreteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						Width="160" VerticalAlignment="Center" Margin="2,0" />
+			<views:ObjectEditorContentControl DataContext="{Binding NestedVM}" Margin="0,2,0,0" />
+		</StackPanel>
+	</DataTemplate>
 
-			<!-- X/Y/Z/Radius Fields -->
-			<StackPanel Orientation="Vertical" Width="200" >
-				<StackPanel Orientation="Horizontal" Margin="4" >
-					<TextBlock Text="X" VerticalAlignment="Center" Width="40" />
-					<widgets:NumericUpDownBox Value="{Binding ZoneVM.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-						HorizontalAlignment="Center" 
-						VerticalAlignment="Center"
-						Margin="8,0,0,0"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Margin="4" >
-					<TextBlock Text="Y" VerticalAlignment="Center" Width="40" />
-					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-						HorizontalAlignment="Center" 
-						VerticalAlignment="Center"
-						Margin="8,0,0,0"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Margin="4" >
-					<TextBlock Text="Z" VerticalAlignment="Center" Width="40" />
-					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-						HorizontalAlignment="Center" 
-						VerticalAlignment="Center"
-						Margin="8,0,0,0"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Margin="4" >
-					<TextBlock Text="Radius" VerticalAlignment="Center" Width="40" />
-					<widgets:NumericUpDownBox Value="{Binding ZoneVM.Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-						HorizontalAlignment="Center" 
-						VerticalAlignment="Center"
-						Margin="8,0,0,0"/>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" Margin="4" >
-					<TextBlock Text="Local" VerticalAlignment="Center" Width="40" />
-					<CheckBox IsChecked="{Binding ZoneVM.UseLocalSpace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="8,0,0,0">
-						<CheckBox.LayoutTransform>
-							<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
-						</CheckBox.LayoutTransform>
-					</CheckBox>
+	<!-- Implicit editor for a ZoneViewModel: centered Edit button + compact Anchor/Shape + inline Position. -->
+	<DataTemplate DataType="{x:Type vm:ZoneViewModel}">
+		<Border BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="0,0,0,4">
+			<StackPanel Orientation="Vertical">
+				<!-- Centered Edit Zone button -->
+				<Button Content="Edit Zone" Command="{Binding EditZoneCommand}" 
+						HorizontalAlignment="Center" Height="24" Width="80" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,0,0,4"
+						ToolTip="Click to position this zone on the map."/>
+				<!-- Anchor and Shape fields (Position hidden; rendered inline below) -->
+				<ItemsControl ItemsSource="{Binding ZoneEditor.Fields}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<ContentControl Content="{Binding}" ContentTemplate="{StaticResource PolymorphicFieldTemplate}" Margin="0,2,0,0"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+				<!-- Position inline (under Shape) -->
+				<StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+					<TextBlock Text="Position" VerticalAlignment="Center" Width="100" FontSize="16"/>
+					<TextBlock Text="X:" VerticalAlignment="Center" Margin="2,0,1,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
+											 Value="{Binding PositionX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+											 VerticalAlignment="Center"/>
+					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="4,0,1,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
+											 Value="{Binding PositionY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+											 VerticalAlignment="Center"/>
+					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="4,0,1,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
+											 Value="{Binding PositionZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+											 VerticalAlignment="Center"/>
 				</StackPanel>
 			</StackPanel>
+		</Border>
+	</DataTemplate>
 
-			<Button
-                Command="{Binding ZoneVM.EditZoneCommand}"
-                Height="64"
-                Width="64"
-                Margin="4,0,0,0"
-                Padding="4, 0, 4, 4">
-				<TextBlock TextWrapping="Wrap" Foreground="White" TextAlignment="Center">Edit Zone</TextBlock>
+	<!-- Template for a direct Zone field (e.g. NamedZone.Zone): label + zone editor. -->
+	<DataTemplate x:Key="ZoneTemplate">
+		<StackPanel Orientation="Vertical">
+			<ContentControl Content="{Binding ZoneVM}" VerticalAlignment="Top" Width="Auto"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- All runtime value slots are compact hyperlinks. Clicking opens Literal / Variable / Function editing -->
+	<DataTemplate x:Key="ValueSourceTemplate">
+		<StackPanel Orientation="Horizontal">
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+			<Button Command="{Binding ValueSourceChip.OpenCommand}"
+					ToolTip="{Binding ValueSourceChip.ToolTip}"
+					Background="Transparent"
+					BorderThickness="0"
+					Height="28"
+					Padding="4,1"
+					VerticalAlignment="Center">
+				<TextBlock Text="{Binding ValueSourceChip.DisplayText}"
+						   Foreground="CornflowerBlue"
+						   TextDecorations="Underline"
+						   FontWeight="SemiBold"/>
 			</Button>
 		</StackPanel>
 	</DataTemplate>
@@ -275,7 +323,7 @@
 
 	<!-- Template for List values -->
 	<DataTemplate x:Key="ListTemplate">
-		<StackPanel Orientation="Vertical" Margin="0">
+		<StackPanel Orientation="Vertical" Margin="0,12,0,24">
 			<!-- Label for the list -->
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
@@ -319,19 +367,78 @@
 		</StackPanel>
 	</DataTemplate>
 
-		<!-- ===== Inline (phrase) templates: label-less, compact variants of the editors above ===== -->
+	<!-- Template for an individual field (dispatches to the correct editor by type). -->
+	<DataTemplate x:Key="FieldTemplate">
+		<StackPanel Orientation="Horizontal">
+			<ContentControl Content="{Binding}" Margin="0, 8, 0, 0" VerticalAlignment="Center">
+				<ContentControl.Style>
+					<Style TargetType="ContentControl">
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
+								<Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource StringMultiChoiceTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsLocalizedString}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource LocalizedStringTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Boolean}">
+								<Setter Property="ContentTemplate" Value="{StaticResource BooleanTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding FieldType.IsEnum}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Int32}">
+								<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Double}">
+								<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Single}">
+								<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsCollection}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource ListTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsComplexType}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource EditButtonTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource PolymorphicFieldTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsZone}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
+							</DataTrigger>
+							<DataTrigger Binding="{Binding IsValueSource}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource ValueSourceTemplate}"/>
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</ContentControl.Style>
+			</ContentControl>
+		</StackPanel>
+	</DataTemplate>
 
-		<DataTemplate x:Key="InlineStringTemplate">
-			<TextBox Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Width="160" VerticalAlignment="Center" Margin="4,0"
-					 ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
+	<!-- ===== Inline (phrase) templates: label-less, compact variants of the editors above ===== -->
 
-		<DataTemplate x:Key="InlineStringMultiChoiceTemplate">
+	<DataTemplate x:Key="InlineStringTemplate">
+		<TextBox Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+					Height="32" Width="160" VerticalAlignment="Center" Margin="4,0" Padding="0"
+					ToolTip="{Binding Tooltip}"/>
+	</DataTemplate>
+
+	<DataTemplate x:Key="InlineStringMultiChoiceTemplate">
 		<ComboBox ItemsSource="{Binding PossibleValues}"
-				  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-				  MaxWidth="320" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-				  ToolTip="{Binding Tooltip}">
+					Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					FontSize="14"
+					VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+					Height="32" MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
+					ToolTip="{Binding Tooltip}">
 			<ComboBox.Style>
 				<Style TargetType="ComboBox">
 					<Setter Property="IsEditable" Value="True"/>
@@ -343,222 +450,160 @@
 				</Style>
 			</ComboBox.Style>
 		</ComboBox>
-		</DataTemplate>
+	</DataTemplate>
 
-		<DataTemplate x:Key="InlineLocalizedStringTemplate">
-			<TextBox Text="{Binding LocalizedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					 Width="160" VerticalAlignment="Center" Margin="4,0"
-					 ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
-
-		<DataTemplate x:Key="InlineBooleanTemplate">
-			<CheckBox IsChecked="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  VerticalAlignment="Center" Margin="4,0"
-					  ToolTip="{Binding Tooltip}">
-				<CheckBox.LayoutTransform>
-					<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
-				</CheckBox.LayoutTransform>
-			</CheckBox>
-		</DataTemplate>
-
-		<DataTemplate x:Key="InlineEnumTemplate">
-			<ComboBox ItemsSource="{Binding FieldValue, Converter={StaticResource EnumToListConverter}}"
-					  SelectedItem="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-					  ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
-
-		<!-- Inline choice dropdown for {Field|Label0|Label1|...} slots (bool → 0/1, enum → declaration order). -->
-		<DataTemplate x:Key="InlineChoiceTemplate">
-			<ComboBox ItemsSource="{Binding ChoiceLabels}"
-					  SelectedIndex="{Binding SelectedChoiceIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					  MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-					  ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
-
-		<!-- Compact variant of NumericUpDownBox for inline (phrase) numerics. -->
-		<Style x:Key="InlineNumericUpDownStyle" TargetType="{x:Type widgets:NumericUpDownBox}">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="{x:Type widgets:NumericUpDownBox}">
-						<StackPanel Orientation="Horizontal">
-							<Button x:Name="PART_DecrementButton" Content="-" Width="18" Height="22" Padding="0,0,0,3"/>
-							<TextBox x:Name="PART_TextBox"
-									 Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-									 Width="44" Padding="0,3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
-							<Button x:Name="PART_IncrementButton" Content="+" Width="18" Height="22" Padding="0,0,0,3"/>
-						</StackPanel>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</Style>
-
-		<DataTemplate x:Key="InlineNumericTemplate">
-			<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
-									  Value="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-									  VerticalAlignment="Center" Margin="4,0"
-									  ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
-
-		<!-- Compact edit button for complex fields embedded in a phrase (zones, nested objects, lists). -->
-		<DataTemplate x:Key="InlineEditButtonTemplate">
-			<Button Content="{Binding Label}" Command="{Binding InlineEditCommand}"
-					Height="24" Margin="4,0" Padding="8,0"
-					FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+	<DataTemplate x:Key="InlineLocalizedStringTemplate">
+		<TextBox Text="{Binding LocalizedText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					Width="160" VerticalAlignment="Center" Margin="4,0"
 					ToolTip="{Binding Tooltip}"/>
-		</DataTemplate>
+	</DataTemplate>
 
-		<!-- Compact inline editor for a SerializableZone: map placement + radius + local-space toggle. -->
-		<DataTemplate x:Key="InlineZoneTemplate">
-			<StackPanel Orientation="Vertical" VerticalAlignment="Center" >
-				<Button Content="Edit Zone" Command="{Binding ZoneVM.EditZoneCommand}"
-						Height="24" Margin="0,0" Padding="8,0"
-						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-						ToolTip="Click to position this zone on the map."/>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" >
-					<TextBlock Text="Radius" VerticalAlignment="Center" Margin="8,0,4,0" FontSize="18px"/>
-					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
-											  Value="{Binding ZoneVM.Radius, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-											  VerticalAlignment="Center" Margin="2,2"/>
-					<CheckBox Content="Local" IsChecked="{Binding ZoneVM.UseLocalSpace, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-								  VerticalAlignment="Center" Margin="8,0,4,0"
-								  ToolTip="Local space: position relative to the parent entity.">
-						<CheckBox.LayoutTransform>
-							<ScaleTransform ScaleX="1.3" ScaleY="1.3"/>
-						</CheckBox.LayoutTransform>
-					</CheckBox>
-				</StackPanel>
-				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-					<StackPanel Orientation="Horizontal" Margin="4" >
-						<TextBlock Text="X" VerticalAlignment="Center" Width="20" />
-						<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
-												Value="{Binding ZoneVM.X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-												Margin="-4,0,0,0" />
-					</StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="4" >
-						<TextBlock Text="Y" VerticalAlignment="Center" Width="20" />
-						<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
-											Value="{Binding ZoneVM.Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-											Margin="-4,0,0,0" />
-					</StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="4" >
-						<TextBlock Text="Z" VerticalAlignment="Center" Width="20" />
-						<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
-											Value="{Binding ZoneVM.Z, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-											Margin="-4,0,0,0" />
-					</StackPanel>
-				</StackPanel>
-			</StackPanel>
-		</DataTemplate>
+	<DataTemplate x:Key="InlineBooleanTemplate">
+		<CheckBox IsChecked="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					VerticalAlignment="Center" Margin="4,0"
+					ToolTip="{Binding Tooltip}">
+			<CheckBox.LayoutTransform>
+				<ScaleTransform ScaleX="1.5" ScaleY="1.5"/>
+			</CheckBox.LayoutTransform>
+		</CheckBox>
+	</DataTemplate>
 
-		<!-- Compact inline editor for a collection: item buttons (edit/delete) + add. Items wrap to fit width. -->
-		<DataTemplate x:Key="InlineListTemplate">
-			<StackPanel Orientation="Vertical" VerticalAlignment="Center">
-				<ItemsControl ItemsSource="{Binding Items}">
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel Orientation="Horizontal" />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<StackPanel Orientation="Horizontal" Margin="0,0,4,4" VerticalAlignment="Center">
-								<Button Content="{Binding DisplayName}" Command="{Binding EditCommand}"
-										ContentTemplate="{StaticResource WrappingButtonText}"
-										MaxWidth="280" Height="24" Padding="6,0"
-										FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-										ToolTip="Edit this item" />
-								<Button Content="×" Command="{Binding DeleteCommand}"
-										Height="24" Width="20" Margin="2,0,0,0" Background="DarkRed" Foreground="White" Padding="0"
-										FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-										ToolTip="Remove this item" />
-							</StackPanel>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-				<Button Content="+" Command="{Binding AddCommand}"
-						HorizontalAlignment="Left" Margin="0,0,0,4" Height="24" Width="20" Background="Green" Foreground="White" Padding="0"
-						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-						ToolTip="Add an item" />
-			</StackPanel>
-		</DataTemplate>
+	<DataTemplate x:Key="InlineEnumTemplate">
+		<ComboBox ItemsSource="{Binding FieldValue, Converter={StaticResource EnumToListConverter}}"
+					VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+					SelectedItem="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
+					ToolTip="{Binding Tooltip}"/>
+	</DataTemplate>
 
-		<!-- Inline editor for a polymorphic (abstract-typed) field: subtype picker + nested fields. -->
-		<DataTemplate x:Key="PolymorphicFieldTemplate">
-		<StackPanel Orientation="Vertical" Margin="0,8,0,0" >
-				<StackPanel Orientation="Horizontal">
-					<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
-					<ComboBox ItemsSource="{Binding ConcreteTypes}" DisplayMemberPath="Name"
-							  SelectedItem="{Binding SelectedConcreteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-							  Width="220" VerticalAlignment="Center" />
-				</StackPanel>
-				<views:ObjectEditorContentControl DataContext="{Binding NestedVM}" Margin="16,4,0,0" />
-			</StackPanel>
-		</DataTemplate>
+	<!-- Inline choice dropdown for {Field|Label0|Label1|...} slots (bool → 0/1, enum → declaration order). -->
+	<DataTemplate x:Key="InlineChoiceTemplate">
+		<ComboBox ItemsSource="{Binding ChoiceLabels}"
+					SelectedIndex="{Binding SelectedChoiceIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+					MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
+					ToolTip="{Binding Tooltip}"/>
+	</DataTemplate>
 
-		<DataTemplate x:Key="InlinePolymorphicFieldTemplate">
-			<StackPanel Orientation="Vertical" VerticalAlignment="Center">
-				<ComboBox ItemsSource="{Binding ConcreteTypes}" DisplayMemberPath="Name"
-						  SelectedItem="{Binding SelectedConcreteType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						  Width="160" VerticalAlignment="Center" Margin="2,0" />
-				<views:ObjectEditorContentControl DataContext="{Binding NestedVM}" Margin="0,2,0,0" />
-			</StackPanel>
-		</DataTemplate>
+	<DataTemplate x:Key="InlineNumericTemplate">
+		<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
+									Value="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									VerticalAlignment="Center" Margin="4,0"
+									ToolTip="{Binding Tooltip}"/>
+	</DataTemplate>
 
-		<!-- Dispatcher that picks the right inline template based on the field type (mirrors FieldTemplate order). -->
-		<DataTemplate x:Key="InlineFieldTemplate">
-			<ContentControl Content="{Binding}" VerticalAlignment="Center">
-				<ContentControl.Style>
-					<Style TargetType="ContentControl">
-						<Style.Triggers>
-							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineStringTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineStringMultiChoiceTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsLocalizedString}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineLocalizedStringTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Boolean}">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineBooleanTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding FieldType.IsEnum}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineEnumTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Int32}">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Double}">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Single}">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsCollection}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineListTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsComplexType}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
-							</DataTrigger>
-							<!-- Polymorphic fields win over the generic complex edit-button. -->
-							<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlinePolymorphicFieldTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsZone}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineZoneTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
-							</DataTrigger>
-							<!-- Choice slots win over plain bool/enum (declared last on purpose). -->
-							<DataTrigger Binding="{Binding IsChoice}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource InlineChoiceTemplate}"/>
-							</DataTrigger>
-						</Style.Triggers>
-					</Style>
-				</ContentControl.Style>
-			</ContentControl>
-		</DataTemplate>
+	<!-- Compact edit button for complex fields embedded in a phrase (zones, nested objects, lists). -->
+	<DataTemplate x:Key="InlineEditButtonTemplate">
+		<Button Content="{Binding Label}" Command="{Binding InlineEditCommand}"
+				Height="24" Margin="4,0" Padding="8,0"
+				FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+				ToolTip="{Binding Tooltip}"/>
+	</DataTemplate>
+
+	<!-- Inline hyperlink for value source-->
+	<DataTemplate x:Key="InlineValueSourceTemplate">
+		<Button Command="{Binding ValueSourceChip.OpenCommand}"
+				ToolTip="{Binding ValueSourceChip.ToolTip}"
+				Background="Transparent"					
+				BorderThickness="0"
+				Height="28"
+				Padding="2,0"
+				VerticalAlignment="Center">
+			<TextBlock Text="{Binding ValueSourceChip.DisplayText}"
+					Foreground="CornflowerBlue"
+					TextDecorations="Underline"
+					FontWeight="SemiBold"/>
+		</Button>
+	</DataTemplate>
+
+	<!-- Compact inline editor for a collection: item buttons (edit/delete) + add. Items wrap to fit width. -->
+	<DataTemplate x:Key="InlineListTemplate">
+		<StackPanel Orientation="Vertical" VerticalAlignment="Center">
+			<ItemsControl ItemsSource="{Binding Items}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<WrapPanel Orientation="Horizontal" />
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<StackPanel Orientation="Horizontal" Margin="0,0,4,4" VerticalAlignment="Center">
+							<Button Content="{Binding DisplayName}" Command="{Binding EditCommand}"
+									ContentTemplate="{StaticResource WrappingButtonText}"
+									MaxWidth="280" Height="24" Padding="6,0"
+									FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+									ToolTip="Edit this item" />
+							<Button Content="×" Command="{Binding DeleteCommand}"
+									Height="24" Width="20" Margin="2,0,0,0" Background="DarkRed" Foreground="White" Padding="0"
+									FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+									ToolTip="Remove this item" />
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+			<Button Content="+" Command="{Binding AddCommand}"
+					HorizontalAlignment="Left" Margin="0,0,0,4" Height="24" Width="20" Background="Green" Foreground="White" Padding="0"
+					FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+					ToolTip="Add an item" />
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Dispatcher that picks the right inline template based on the field type (mirrors FieldTemplate order). -->
+	<DataTemplate x:Key="InlineFieldTemplate">
+		<ContentControl Content="{Binding}" VerticalAlignment="Center">
+			<ContentControl.Style>
+				<Style TargetType="ContentControl">
+					<Style.Triggers>
+						<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineStringTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineStringMultiChoiceTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsLocalizedString}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineLocalizedStringTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Boolean}">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineBooleanTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding FieldType.IsEnum}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineEnumTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Int32}">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Double}">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Single}">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineNumericTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsCollection}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineListTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsComplexType}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
+						</DataTrigger>
+						<!-- Polymorphic fields win over the generic complex edit-button. -->
+						<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlinePolymorphicFieldTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsZone}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
+						</DataTrigger>
+						<!-- Choice slots win over plain bool/enum (declared last on purpose). -->
+						<DataTrigger Binding="{Binding IsChoice}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineChoiceTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsValueSource}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineValueSourceTemplate}"/>
+						</DataTrigger>
+					</Style.Triggers>
+				</Style>
+			</ContentControl.Style>
+		</ContentControl>
+	</DataTemplate>
 
 </ResourceDictionary>

@@ -7,7 +7,10 @@
 		xmlns:views="clr-namespace:Alliance.Editor.GameModes.Story.Views"
 		xmlns:sys="clr-namespace:System;assembly=mscorlib"
 		mc:Ignorable="d"
-		Title="{Binding Title}" Height="480" Width="592"
+		Title="{Binding Title}"
+		SizeToContent="WidthAndHeight"
+		MinWidth="576"
+		MinHeight="168"
 		Icon="pack://application:,,,/Alliance.Editor;component/Resources/alliance_ico.ico"
 		Loaded="Window_Loaded"
 		Closing="Window_Closing">

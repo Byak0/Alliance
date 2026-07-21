@@ -19,17 +19,17 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			EditorTools?.OpenPlayerSpawnMenu(playerSpawnMenu, onCloseCallback);
 		}
 
-		public static void AddZoneToEditor(SerializableZone zone, string zoneName, Action onEditCallback)
+		public static void AddZoneToEditor(Zone zone, string zoneName, Action onEditCallback)
 		{
 			EditorTools?.AddZoneToEditor(zone, zoneName, onEditCallback);
 		}
 
-		public static void RemoveZoneFromEditor(SerializableZone zone)
+		public static void RemoveZoneFromEditor(Zone zone)
 		{
 			EditorTools?.RemoveZoneFromEditor(zone);
 		}
 
-		public static void SetEditableZone(SerializableZone zone)
+		public static void SetEditableZone(Zone zone)
 		{
 			EditorTools?.SetEditableZone(zone);
 		}

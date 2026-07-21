@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Behaviors;
+﻿using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;

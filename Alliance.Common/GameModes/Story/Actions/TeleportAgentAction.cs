@@ -1,23 +1,23 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
+using System.Collections.Generic;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
-	/// Teleport a set of agents to a destination zone. The agents come from a generic <see cref="AgentSource"/>
+	/// Teleport agent to a specified zone.
 	/// </summary>
 	[Serializable]
 	[PhraseTemplate("Teleport {Who} to {Destination}")]
 	public class TeleportAgentAction : ActionBase
 	{
-		[ConfigProperty(label: "Who", tooltip: "Which agent(s) to teleport, based on various sources.")]
-		public AgentSource Who;
-
-		[ConfigProperty(label: "Destination", tooltip: "Zone the agents will be teleported to.")]
-		public SerializableZone Destination;
+		public ValueSource<List<Agent>> Who = new VariableValue<List<Agent>>();
+		public ValueSource<Zone> Destination = new LiteralValue<Zone>(new Zone());
 
 		public TeleportAgentAction() { }
 
@@ -27,9 +27,17 @@ namespace Alliance.Common.GameModes.Story.Actions
 			if (Who == null || Destination == null) return ActionTask.CompletedTask;
 
 			TriggerContext context = ScenarioManager.Instance.CurrentTriggerContext;
-			foreach (Agent agent in Who.Resolve(context))
+			VariableStore globals = ScenarioManager.Instance.Globals;
+			Zone dest = Destination.Resolve(context, globals);
+			if (dest == null) return ActionTask.CompletedTask;
+
+			Vec3 center = dest.ResolveCenter(context, globals);
+			List<Agent> agents = Who.Resolve(context, globals);
+			if (agents == null) return ActionTask.CompletedTask;
+			foreach (Agent agent in agents)
 			{
-				var position = CoreUtils.GetRandomPositionWithinRadius(Destination.GlobalPosition, Destination.Radius);
+				if (agent == null) continue;
+				var position = CoreUtils.GetRandomPositionWithinRadius(center, dest.Radius);
 				agent.TeleportToPosition(position);
 			}
 			return ActionTask.CompletedTask;

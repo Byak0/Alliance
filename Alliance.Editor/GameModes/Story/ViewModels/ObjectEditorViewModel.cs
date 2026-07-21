@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
@@ -37,6 +38,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public string SelectedLanguage => ScenarioVM?.SelectedLanguage ?? "English";
 		public WeakGameEntity GameEntity { get; set; }
 		public bool CanPaste => _clipboardObject != null && _clipboardType == Object?.GetType();
+		/// <summary>Field names to skip when rendering (e.g., "Position" shown inline by a parent template).</summary>
+		public HashSet<string> HiddenFieldNames { get; set; }
 
 		public ICommand CopyCommand { get; }
 		public ICommand PasteCommand { get; }
@@ -63,11 +66,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			// If in design mode, create a dummy object to display in the designer
 			if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{
-				AgentEnteredZoneCondition obj = new AgentEnteredZoneCondition()
-				{
-					Zone = new SerializableZone(new TaleWorlds.Library.Vec3(12f, 102.56f, 69442.1f), 124.41f)
-				};
-				obj.TargetCount = 5;
+				AgentCountCondition obj = new AgentCountCondition(){};
+				obj.TargetCount = new LiteralValue<int>(5);
 				string title = "Alliance - Scenario Editor";
 				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
 
@@ -351,6 +351,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					continue;
 				}
 
+				// Skip fields the parent wants to render itself (e.g. Position in the zone editor)
+				if (HiddenFieldNames?.Contains(fi.Name) == true) continue;
+
 				FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
 
 				// Add fields without a category to the Fields collection directly
@@ -541,6 +544,30 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				if (vm.Object is Scenario scenario) return scenario;
 			}
 			return null;
+		}
+
+		/// <summary>
+		/// Walks up the parent-editor chain to find the Act this editor is editing within (if any).
+		/// Used to decide whether named zones are available (scenario context) or not (AL_TriggerAction).
+		/// </summary>
+		public Act FindEnclosingAct()
+		{
+			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
+			{
+				if (vm.Object is Act act) return act;
+			}
+			return null;
+		}
+
+		internal ObjectEditorViewModel ParentEditor => ParentVM?.parentViewModel;
+
+		/// <summary>Refreshes visible expression chips after a nested literal, variable, or function changes.</summary>
+		internal void RefreshValueSourcePreviews()
+		{
+			foreach (FieldViewModel field in AllFieldViewModels())
+			{
+				field.RefreshValueSourceDisplay();
+			}
 		}
 
 		public void Close()
