@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -43,29 +44,14 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			RegisterZones(entity);
 		}
 
+		/// <summary>
+		/// Walks this condition's field graph and registers every embedded <see cref="Zone"/> with its host
+		/// entity. Handles <c>ValueSource&lt;Zone&gt;</c> expression trees (zones nested inside functions,
+		/// literal zone values, etc.).
+		/// </summary>
 		protected void RegisterZones(WeakGameEntity entity)
 		{
-			var properties = GetType().GetFields();
-
-			foreach (var property in properties)
-			{
-				if (property.FieldType == typeof(SerializableZone))
-				{
-					var zone = property.GetValue(this) as SerializableZone;
-					zone?.Register(entity);
-				}
-				else if (typeof(IEnumerable<SerializableZone>).IsAssignableFrom(property.FieldType))
-				{
-					var zones = property.GetValue(this) as IEnumerable<SerializableZone>;
-					if (zones != null)
-					{
-						foreach (var zone in zones)
-						{
-							zone.Register(entity);
-						}
-					}
-				}
-			}
+			ZoneRegistrar.RegisterAll(this, entity);
 		}
 
 		public virtual void Unregister() { }

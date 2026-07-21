@@ -15,81 +15,30 @@
 				<ResourceDictionary Source="ModernTheme.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
-			<DataTemplate x:Key="FieldTemplate">
-				<StackPanel Orientation="Horizontal">
-					<ContentControl Content="{Binding}" Margin="0, 24, 0, 0" VerticalAlignment="Center">
-						<ContentControl.Style>
-							<Style TargetType="ContentControl">
-								<Style.Triggers>
-									<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
-										<Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource StringMultiChoiceTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsLocalizedString}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource LocalizedStringTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Boolean}">
-										<Setter Property="ContentTemplate" Value="{StaticResource BooleanTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding FieldType.IsEnum}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource EnumTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Int32}">
-										<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Double}">
-										<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:Single}">
-										<Setter Property="ContentTemplate" Value="{StaticResource NumericTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsCollection}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource ListTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsComplexType}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource EditButtonTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource PolymorphicFieldTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsZone}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
-									</DataTrigger>
-									<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
-										<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
-									</DataTrigger>
-								</Style.Triggers>
-							</Style>
-						</ContentControl.Style>
-					</ContentControl>
-			</StackPanel>
-		</DataTemplate>
-
-		<!-- Implicit templates for the phrase segments (selected by runtime item type) -->
-		<DataTemplate DataType="{x:Type vm:PhraseTextSegment}">
-			<TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="3,0"
-					   FontSize="18" FontWeight="Medium" Foreground="#FF2B2B2B" />
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type vm:PhraseFieldSegment}">
-			<Border Background="#FFF1F3F5" BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4"
-					Padding="4,1" Margin="3,1" VerticalAlignment="Center">
-				<ContentControl Content="{Binding Field}" ContentTemplate="{StaticResource InlineFieldTemplate}" VerticalAlignment="Center" />
-			</Border>
-		</DataTemplate>
-	</ResourceDictionary>
+			<!-- Implicit templates for the phrase segments (selected by runtime item type) -->
+			<DataTemplate DataType="{x:Type vm:PhraseTextSegment}">
+				<TextBlock Text="{Binding Text}" VerticalAlignment="Center" Margin="3,0"
+						   FontSize="18" FontWeight="Medium" Foreground="#FF2B2B2B" />
+			</DataTemplate>
+			<DataTemplate DataType="{x:Type vm:PhraseFieldSegment}">
+				<Border Background="#FFF1F3F5" BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4"
+						Padding="4,1" Margin="3,1" VerticalAlignment="Center">
+					<ContentControl Content="{Binding Field}" ContentTemplate="{StaticResource InlineFieldTemplate}" VerticalAlignment="Center" />
+				</Border>
+			</DataTemplate>
+		</ResourceDictionary>
 	</UserControl.Resources>
 
 	<ScrollViewer VerticalScrollBarVisibility="Auto">
-		<StackPanel Margin="24, 8, 0, 32">
+		<StackPanel Margin="0, 4, 0, 12">
 			<!-- Inline phrase view (shown when the edited type declares a [PhraseTemplate]) -->
 			<ItemsControl ItemsSource="{Binding PhraseLines}"
 						  Visibility="{Binding HasPhrase, Converter={StaticResource BoolToVisibilityConverter}}"
-						  Margin="0,8,0,0">
+						  Margin="0,8,0,0"
+						  HorizontalAlignment="Center">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<ItemsControl ItemsSource="{Binding Segments}" Margin="0,3">
+						<ItemsControl ItemsSource="{Binding Segments}" Margin="0,3" HorizontalAlignment="Center">
 							<ItemsControl.ItemsPanel>
 								<ItemsPanelTemplate>
 									<WrapPanel Orientation="Horizontal" />
@@ -100,13 +49,13 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 			<!-- Flat fields view -->
-			<ItemsControl ItemsSource="{Binding Fields}">
+			<ItemsControl ItemsSource="{Binding Fields}" Margin="24, 0, 0, 0">
 				<ItemsControl.ItemTemplate>
 					<StaticResource ResourceKey="FieldTemplate"/>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 			<!-- Categories view -->
-			<ItemsControl ItemsSource="{Binding FieldCategories}">
+			<ItemsControl ItemsSource="{Binding FieldCategories}" Margin="24, 0, 0, 0">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Expander Header="{Binding Name}" 

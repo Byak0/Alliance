@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.CustomScripts.Scripts;
+using Alliance.Common.GameModes.Story.Attributes;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;

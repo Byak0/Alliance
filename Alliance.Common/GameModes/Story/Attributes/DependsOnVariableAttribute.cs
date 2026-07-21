@@ -1,6 +1,6 @@
 using System;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Attributes
 {
 	[AttributeUsage(AttributeTargets.Field, Inherited = true)]
 	public class DependsOnVariableAttribute : Attribute

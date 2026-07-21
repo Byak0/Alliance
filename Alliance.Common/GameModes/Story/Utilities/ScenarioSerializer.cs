@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.Utilities;
@@ -35,7 +36,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				_xmlSerializer ??= CreateSerializer(
 					rootType: typeof(Scenario),
-					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings));
+					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
 				return _xmlSerializer;
 			}
 		}
@@ -46,7 +48,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				_conditionalActionSerializer ??= CreateSerializer(
 					rootType: typeof(ScriptedEvent),
-					typeof(Condition), typeof(ActionBase));
+					typeof(Condition), typeof(ActionBase),
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
 				return _conditionalActionSerializer;
 			}
 		}
@@ -59,11 +62,69 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// <returns>A configured XmlSerializer.</returns>
 		private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
 		{
-			Type[] derivedTypes = GetSerializableDerivedTypes(baseTypes)
+			List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes)
 				.Distinct()
-				.ToArray();
+				.ToList();
+			derivedTypes.AddRange(GetClosedValueSourceTypes(rootType, derivedTypes));
 
-			return new XmlSerializer(rootType, derivedTypes);
+			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
+		}
+
+		/// <summary>
+		/// XmlSerializer cannot register open generic types such as <c>LiteralValue&lt;&gt;</c>. Discover
+		/// each closed <c>ValueSource&lt;T&gt;</c> field reachable from the scenario graph and add its valid
+		/// concrete node types explicitly.
+		/// </summary>
+		private static IEnumerable<Type> GetClosedValueSourceTypes(Type rootType, IEnumerable<Type> knownTypes)
+		{
+			HashSet<Type> valueSourceTypes = new HashSet<Type>();
+			HashSet<Type> visited = new HashSet<Type>();
+			Queue<Type> pending = new Queue<Type>();
+			pending.Enqueue(rootType);
+			foreach (Type type in knownTypes) pending.Enqueue(type);
+
+			while (pending.Count > 0)
+			{
+				Type type = UnwrapCollectionType(pending.Dequeue());
+				if (type == null || !visited.Add(type)) continue;
+				if (ValueSourceTypeSupport.IsValueSourceType(type))
+				{
+					valueSourceTypes.Add(type);
+					continue;
+				}
+
+				if (!IsScenarioGraphType(type)) continue;
+				foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+				{
+					Type fieldType = UnwrapCollectionType(field.FieldType);
+					if (ValueSourceTypeSupport.IsValueSourceType(fieldType))
+					{
+						valueSourceTypes.Add(fieldType);
+					}
+					else if (IsScenarioGraphType(fieldType))
+					{
+						pending.Enqueue(fieldType);
+					}
+				}
+			}
+
+			return valueSourceTypes.SelectMany(ValueSourceTypeSupport.GetConcreteTypes);
+		}
+
+		private static Type UnwrapCollectionType(Type type)
+		{
+			if (type != null && type.IsGenericType && typeof(IEnumerable).IsAssignableFrom(type))
+			{
+				return type.GetGenericArguments()[0];
+			}
+			return type;
+		}
+
+		private static bool IsScenarioGraphType(Type type)
+		{
+			return type != null
+				&& type.Namespace != null
+				&& type.Namespace.Contains(".GameModes.Story");
 		}
 
 		public static void SerializeScenarioToXML(Scenario scenarioToSerialize, string filePath)
@@ -394,6 +455,9 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			// Recursively check fields of the object
 			foreach (FieldInfo field in obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
 			{
+				// Skip fields marked with [XmlIgnore] (e.g. WeakGameEntity runtime caches on Zone/anchors)
+				if (Attribute.IsDefined(field, typeof(XmlIgnoreAttribute))) continue;
+
 				// Handle lists
 				if (typeof(IList).IsAssignableFrom(field.FieldType) && field.FieldType != typeof(string))
 				{

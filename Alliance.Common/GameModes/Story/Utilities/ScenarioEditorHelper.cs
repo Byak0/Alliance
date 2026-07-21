@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
 using System.Reflection;
 
 namespace Alliance.Common.GameModes.Story.Utilities

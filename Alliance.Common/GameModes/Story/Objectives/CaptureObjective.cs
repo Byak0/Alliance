@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.FlagsTracker.Scripts;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System.Linq;
 using TaleWorlds.Core;

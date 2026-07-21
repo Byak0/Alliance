@@ -1,8 +1,10 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Models
@@ -25,6 +27,9 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		[ConfigProperty(label: "Generic settings", tooltip: "Define native and mod settings for this act.")]
 		public ScenarioGameModeSettings ActSettings = new ScenarioGameModeSettings();
+
+		[ConfigProperty(label: "Zones", tooltip: "Reusable named zones for this act. Can be referenced by conditions/actions in the act.")]
+		public List<NamedZone> Zones = new List<NamedZone>();
 
 		[ConfigProperty(label: "Spawn settings", tooltip: "Define how, when and where the players and IA must spawn.")]
 		public SpawnLogic SpawnLogic = new SpawnLogic();
@@ -63,6 +68,10 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				conditionalAction.Register(WeakGameEntity.Invalid);
 			}
+			foreach (NamedZone namedZone in Zones)
+			{
+				namedZone.Zone?.Register(WeakGameEntity.Invalid);
+			}
 		}
 
 		public void UnregisterObjectives()
@@ -79,5 +88,8 @@ namespace Alliance.Common.GameModes.Story.Models
 				}
 			}
 		}
+
+		/// <summary>Runtime lookup used by <c>NamedZoneFunction</c>. Returns the first match by name, or null.</summary>
+		public Zone FindNamedZone(string name) => Zones.FirstOrDefault(z => z?.Name == name)?.Zone;
 	}
 }

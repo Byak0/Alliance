@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using TaleWorlds.Core;
@@ -19,7 +20,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 		[ConfigProperty(label: "Character", tooltip: "ID of the character to spawn.", dataType: AllianceData.DataTypes.Character)]
 		public string CharacterId = "mp_heavy_infantry_vlandia_troop";
 		[ConfigProperty(label: "Number", tooltip: "Number of characters to spawn.")]
-		public int SpawnCount = 1;
+		public ValueSource<int> SpawnCount = new LiteralValue<int>(1);
 		[ConfigProperty(label: "IsPercentage", tooltip: "If true, Number will be treated as percentage of the current number of players.")]
 		public bool IsPercentage = false;
 		[ConfigProperty(label: "Side", tooltip: "Which side the characters belongs to.")]
@@ -29,9 +30,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 		[ConfigProperty(label: "Difficulty", tooltip: "Difficulty of the characters.")]
 		public Difficulty Difficulty = Difficulty.Normal;
 		[ConfigProperty(label: "Position", tooltip: "Position to spawn the characters.")]
-		public SerializableZone SpawnZone;
+		public ValueSource<Zone> SpawnZone = new LiteralValue<Zone>(new Zone());
 		[ConfigProperty(label: "Direction", tooltip: "Direction the characters will move to.")]
-		public SerializableZone Direction;
+		public ValueSource<Zone> Direction = new LiteralValue<Zone>(new Zone());
 
 		public SpawnAgentAction() { }
 	}

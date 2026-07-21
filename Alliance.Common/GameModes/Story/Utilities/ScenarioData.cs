@@ -1,5 +1,6 @@
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +16,14 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			Float,
 			Bool,
 			String,
-			Enum,
-			Agent,
-			AgentList
+			Enum
 		}
 
 		private static List<Type> _availableEnumTypes;
 		private static readonly object _cacheLock = new object();
 
 		/// <summary>
-		/// Scans all concrete types deriving from Condition, ActionBase, AgentSource, ValueSource&lt;&gt;,
-		/// and ZoneSource (when available) to discover enum types used in their public fields.
-		/// Results are cached per AppDomain for stable lookups.
+		/// Scans all enum types used in Condition, ActionBase, and Function
 		/// </summary>
 		public static List<Type> AvailableEnumTypes()
 		{
@@ -42,7 +39,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				{
 					typeof(Condition),
 					typeof(ActionBase),
-					typeof(AgentSource)
+					typeof(Function)
 				};
 
 				List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes.ToArray());
