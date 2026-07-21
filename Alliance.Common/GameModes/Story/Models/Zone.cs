@@ -29,6 +29,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(isEditable: false)]
 		public float X, Y, Z;
 
+		[ConfigProperty(isEditable: false)]
 		[XmlIgnore]
 		public Vec3 Position;
 

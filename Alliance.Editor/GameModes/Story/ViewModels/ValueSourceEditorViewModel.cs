@@ -1,4 +1,5 @@
 using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
@@ -89,11 +90,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				throw new ArgumentException("The owning field must be ValueSource<T>.", nameof(owner));
 			}
 
+			bool hasVariables = _owner.CollectAvailableVariables(_valueType).Length > 0;
+			bool hasFunctions = FieldViewModel.DiscoverConcreteTypes(typeof(Function))
+				.Any(t => FieldViewModel.FunctionReturns(t, _valueType));
+
 			Origins = new List<ValueSourceOriginOption>
 			{
 				new ValueSourceOriginOption(ValueSourceOrigin.Literal, "Literal", ValueSourceTypeSupport.SupportsLiteral(_valueType)),
-				new ValueSourceOriginOption(ValueSourceOrigin.Variable, "Variable"),
-				new ValueSourceOriginOption(ValueSourceOrigin.Function, "Function")
+				new ValueSourceOriginOption(ValueSourceOrigin.Variable, "Variable", hasVariables),
+				new ValueSourceOriginOption(ValueSourceOrigin.Function, "Function", hasFunctions)
 			};
 			CloseCommand = new RelayCommand(CloseWindow);
 

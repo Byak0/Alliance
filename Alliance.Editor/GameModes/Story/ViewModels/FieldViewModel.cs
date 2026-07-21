@@ -644,8 +644,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				Owner = Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
 					?? Application.Current?.MainWindow
 			};
-			popup.ShowDialog();
-			RefreshValueSourceDisplay();
+			popup.Closed += (_, _) => RefreshValueSourceDisplay();
+			popup.Show();
 		}
 
 		internal void RefreshValueSourceDisplay()
@@ -654,7 +654,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			OnPropertyChanged(nameof(FieldValue));
 		}
 
-		private static bool FunctionReturns(Type functionType, Type resultType)
+		internal static bool FunctionReturns(Type functionType, Type resultType)
 		{
 			if (functionType == null || resultType == null || functionType.IsAbstract) return false;
 			try
@@ -670,7 +670,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return false;
 		}
 
-		private static Type[] DiscoverConcreteTypes(Type baseType)
+		internal static Type[] DiscoverConcreteTypes(Type baseType)
 		{
 			List<Type> types = new List<Type>();
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
