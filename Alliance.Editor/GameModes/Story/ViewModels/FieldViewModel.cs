@@ -3,7 +3,6 @@ using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Functions;
-using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
@@ -44,7 +43,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool ShowTooltip { get; private set; }
 		public string[] PossibleValues { get; private set; }
 		public bool IsMultiChoiceString => PossibleValues != null && PossibleValues.Length > 0;
-		/// <summary>When true, the dropdown only allows picking from PossibleValues (no free-text entry).</summary>
 		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
 		public bool IsValueSource => ValueSourceTypeSupport.IsValueSourceType(FieldType);
@@ -53,7 +51,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsZone => FieldType == typeof(Zone);
 		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
 		public Type[] ConcreteTypes { get; private set; } = Array.Empty<Type>();
-		/// <summary>True for abstract-typed fields rendered with the generic subtype picker.</summary>
 		public bool IsPolymorphicField => FieldType != null && FieldType.IsAbstract && ConcreteTypes.Length > 0;
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; private set; }
@@ -78,31 +75,37 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
 					_valueSourceChip?.Refresh();
+
 					for (ObjectEditorViewModel vm = parentViewModel; vm != null; vm = vm.ParentEditor)
 					{
 						vm.RefreshValueSourcePreviews();
 					}
 
-					if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
-					{
-						parentViewModel.RefreshFields();
-					}
-					else if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
-					{
-						parentViewModel.RefreshFields();
-					}
-					else if (parentViewModel?.Object is ScenarioVariable && FieldName == nameof(ScenarioVariable.EnumTypeName))
-					{
-						parentViewModel.RefreshFields();
-					}
-					else if (parentViewModel?.Object != null && parentViewModel.Object.GetType()
-						.GetFields(BindingFlags.Public | BindingFlags.Instance)
-						.Any(f => f.GetCustomAttribute<DependsOnVariableAttribute>()?.SourceField == FieldName))
+					if (ShouldRefreshParentOnChange())
 					{
 						parentViewModel.RefreshFields();
 					}
 				}
 			}
+		}
+
+		private bool ShouldRefreshParentOnChange()
+		{
+			if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
+				return true;
+
+			if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
+				return true;
+
+			if (parentViewModel?.Object is ScenarioVariable && FieldName == nameof(ScenarioVariable.EnumTypeName))
+				return true;
+
+			if (parentViewModel?.Object != null && parentViewModel.Object.GetType()
+				.GetFields(BindingFlags.Public | BindingFlags.Instance)
+				.Any(f => f.GetCustomAttribute<DependsOnVariableAttribute>()?.SourceField == FieldName))
+				return true;
+
+			return false;
 		}
 
 		public string LocalizedText
@@ -121,11 +124,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private string[] _choiceLabels;
 		private object[] _enumOrderedValues;
 
-		/// <summary>
-		/// When set, this field renders inline as a dropdown whose items are these labels (phrase-only).
-		/// The selected index maps to the underlying value: bool → 0 (false) / 1 (true),
-		/// enum → value declaration order.
-		/// </summary>
 		public string[] ChoiceLabels
 		{
 			get => _choiceLabels;
@@ -166,81 +164,288 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// Gathers the names of available variables matching <paramref name="variableType"/> from all sources:
-		/// 1. Predefined zones in the enclosing Act.
-		/// 2. Trigger variables produced by [VariableOutput] fields on sibling conditions of the enclosing ScriptedEvent.
-		/// 3. Global variables declared on the enclosing Scenario (via its Variables list, populated in Phase 2).
-		/// Matching follows the exact type or List&lt;type&gt; convention.
-		/// </summary>
+		public ICommand EditCommand { get; }
+		public ICommand DeleteCommand { get; }
+		public ICommand AddCommand { get; }
+		public ICommand EditPlayerSpawnMenuCommand { get; }
+		public ICommand InlineEditCommand => IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand;
+
+		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
+		{
+			// Core field info
+			FieldInfo = fieldInfo;
+			this.parentViewModel = parentViewModel;
+			this.scenarioEditorViewModel = scenarioEditorViewModel;
+			FieldName = fieldInfo.Name;
+			FieldType = fieldInfo.FieldType;
+			_fieldValue = fieldValue;
+
+			ApplyConfigPropertyAttribute(fieldInfo);
+			ApplyVariableReferenceDropdowns(fieldInfo);
+			ApplyScenarioVariableFields();
+			ApplyDependsOnVariableAttribute(fieldInfo);
+			DiscoverPolymorphicTypes();
+			FilterFunctionCallTypes();
+
+			// Commands
+			EditCommand = new RelayCommand(_ => EditObjectFromFieldInfo(FieldInfo), _ => IsComplexType);
+			DeleteCommand = new RelayCommand(DeleteItem);
+			AddCommand = new RelayCommand(_ => AddItem());
+			EditPlayerSpawnMenuCommand = new RelayCommand(_ => OpenPlayerSpawnMenu(), _ => IsPlayerSpawnMenu);
+
+			// Collection items
+			if (IsCollection && FieldValue is IEnumerable enumerable)
+			{
+				Items = new ObservableCollection<ItemViewModel>(
+					enumerable.Cast<object>().Select(item => new ItemViewModel(item, this))
+				);
+			}
+			else
+			{
+				Items = new ObservableCollection<ItemViewModel>();
+			}
+
+			InitializeZoneViewModel();
+		}
+
+		private void ApplyConfigPropertyAttribute(FieldInfo fieldInfo)
+		{
+			var attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
+
+			if (attribute != null)
+			{
+				Label = attribute.Label ?? FieldName;
+				Tooltip = attribute.Tooltip;
+				ShowTooltip = !string.IsNullOrEmpty(Tooltip);
+				try
+				{
+					PossibleValues = attribute.PossibleValues;
+				}
+				catch (Exception ex)
+				{
+					Log($"Error retrieving possible values for field '{FieldName}': {ex.Message}", LogLevel.Error);
+					PossibleValues = new string[0];
+				}
+			}
+			else
+			{
+				Label = FieldName;
+			}
+		}
+
+		private void ApplyVariableReferenceDropdowns(FieldInfo fieldInfo)
+		{
+			VariableRefAttribute variableRef = fieldInfo.GetCustomAttribute<VariableRefAttribute>();
+			if (variableRef != null)
+			{
+				PossibleValues = CollectAvailableVariables(variableRef.VariableType);
+				IsChoiceLocked = true;
+			}
+
+			if (parentViewModel?.Object != null
+				&& parentViewModel.Object.GetType().IsGenericType
+				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(VariableValue<>)
+				&& FieldName == nameof(VariableValue<int>.VariableName))
+			{
+				Type valueType = parentViewModel.Object.GetType().GetGenericArguments()[0];
+				PossibleValues = CollectAvailableVariables(valueType);
+				IsChoiceLocked = true;
+			}
+		}
+
+		private void ApplyScenarioVariableFields()
+		{
+			if (!(parentViewModel?.Object is ScenarioVariable sv)) return;
+
+			if (FieldName == nameof(ScenarioVariable.EnumTypeName))
+			{
+				PossibleValues = ScenarioData.AvailableEnumTypes().Select(t => t.Name).ToArray();
+				IsChoiceLocked = true;
+			}
+
+			if (FieldName == nameof(ScenarioVariable.DefaultValue))
+			{
+				ApplyScenarioVariableDefaultValue(sv);
+			}
+		}
+
+		private void ApplyScenarioVariableDefaultValue(ScenarioVariable sv)
+		{
+			if (sv.Type == VariableType.Enum && !string.IsNullOrEmpty(sv.EnumTypeName))
+			{
+				Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == sv.EnumTypeName);
+				if (enumType != null)
+				{
+					PossibleValues = Enum.GetNames(enumType);
+					IsChoiceLocked = true;
+				}
+			}
+
+			switch (sv.Type)
+			{
+				case VariableType.Int:
+					FieldType = typeof(int);
+					_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
+					_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
+					break;
+				case VariableType.Float:
+					FieldType = typeof(float);
+					_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
+					_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
+					break;
+				case VariableType.Bool:
+					FieldType = typeof(bool);
+					_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
+					_valueFromEffective = v => ((bool)v).ToString().ToLower();
+					break;
+			}
+		}
+
+		private void ApplyDependsOnVariableAttribute(FieldInfo fieldInfo)
+		{
+			DependsOnVariableAttribute depAttr = fieldInfo.GetCustomAttribute<DependsOnVariableAttribute>();
+			if (depAttr == null || string.IsNullOrEmpty(depAttr.SourceField)) return;
+
+			FieldInfo srcField = parentViewModel?.Object?.GetType().GetField(depAttr.SourceField, BindingFlags.Public | BindingFlags.Instance);
+			if (srcField == null) return;
+
+			string varName = srcField.GetValue(parentViewModel.Object) as string;
+			if (string.IsNullOrEmpty(varName)) return;
+
+			Scenario scenario = parentViewModel.FindEnclosingScenario();
+			ScenarioVariable matchedVar = scenario?.Variables?.FirstOrDefault(v => v.Name == varName);
+			if (matchedVar == null) return;
+
+			switch (matchedVar.Type)
+			{
+				case VariableType.Int:
+					FieldType = typeof(int);
+					_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
+					_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
+					break;
+				case VariableType.Float:
+					FieldType = typeof(float);
+					_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
+					_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
+					break;
+				case VariableType.Bool:
+					FieldType = typeof(bool);
+					_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
+					_valueFromEffective = v => ((bool)v).ToString().ToLower();
+					break;
+				case VariableType.Enum:
+					if (!string.IsNullOrEmpty(matchedVar.EnumTypeName))
+					{
+						Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == matchedVar.EnumTypeName);
+						if (enumType != null)
+						{
+							PossibleValues = Enum.GetNames(enumType);
+							IsChoiceLocked = true;
+						}
+					}
+					break;
+			}
+		}
+
+		private void DiscoverPolymorphicTypes()
+		{
+			if (FieldType != null && FieldType.IsAbstract && !IsValueSource)
+			{
+				ConcreteTypes = DiscoverConcreteTypes(FieldType);
+			}
+		}
+
+		private void FilterFunctionCallTypes()
+		{
+			if (FieldType != typeof(Function)
+				|| parentViewModel?.Object == null
+				|| !parentViewModel.Object.GetType().IsGenericType
+				|| parentViewModel.Object.GetType().GetGenericTypeDefinition() != typeof(FunctionCall<>))
+			{
+				return;
+			}
+
+			Type resultType = parentViewModel.Object.GetType().GetGenericArguments()[0];
+			ConcreteTypes = ConcreteTypes
+				.Where(type => FunctionReturns(type, resultType))
+				.OrderBy(type => type.Name)
+				.ToArray();
+		}
+
+		private void InitializeZoneViewModel()
+		{
+			if (IsZone)
+			{
+				ZoneVM = new ZoneViewModel((Zone)FieldValue, FieldInfo, this);
+			}
+		}
+
 		internal string[] CollectAvailableVariables(Type variableType)
 		{
 			List<string> names = new List<string>();
 
-			// Source 1: predefined zones from the enclosing Act
 			if (variableType == typeof(Zone))
 			{
-				Act parentAct = parentViewModel?.FindEnclosingAct();
-				if(parentAct?.Zones != null)
-				{
-					foreach (var zone in parentAct.Zones)
-					{
-						if (zone == null || string.IsNullOrWhiteSpace(zone.Name)) continue;
-						if (!names.Contains(zone.Name))
-						{
-							names.Add(zone.Name);
-						}
-					}
-				}
+				CollectZoneNames(names);
 				return names.ToArray();
 			}
 
-			// Source 2: trigger variables from sibling conditions
-			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
-			if (scriptedEvent != null)
-			{
-				foreach (Condition condition in scriptedEvent.Conditions)
-				{
-					if (condition == null) continue;
-					foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
-					{
-						VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
-						if (outAttr?.VariableType == null) continue;
-
-						Type produced = outAttr.VariableType;
-						bool typeMatch = variableType.IsAssignableFrom(produced);
-						if (!typeMatch) continue;
-
-						string name = f.GetValue(condition) as string;
-						if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
-						{
-							names.Add(name);
-						}
-					}
-				}
-			}
-
-			// Source 3: global variables from the enclosing Scenario
-			Scenario parentScenario = parentViewModel?.FindEnclosingScenario();
-			if (parentScenario?.Variables != null)
-			{
-				foreach (var scVar in parentScenario.Variables)
-				{
-					if (scVar == null || string.IsNullOrWhiteSpace(scVar.Name)) continue;
-					if (!TypeMatchesFilter(variableType, scVar.Type)) continue;
-					if (!names.Contains(scVar.Name))
-					{
-						names.Add(scVar.Name);
-					}
-				}
-			}
+			CollectTriggerVariableNames(variableType, names);
+			CollectGlobalVariableNames(variableType, names);
 
 			return names.ToArray();
 		}
 
-		/// <summary>
-		/// Checks whether a scenario variable's type matches a given filter type.
-		/// </summary>
+		private void CollectZoneNames(List<string> names)
+		{
+			Act parentAct = parentViewModel?.FindEnclosingAct();
+			if (parentAct?.Zones != null)
+			{
+				foreach (var zone in parentAct.Zones)
+				{
+					if (zone == null || string.IsNullOrWhiteSpace(zone.Name)) continue;
+					if (!names.Contains(zone.Name)) names.Add(zone.Name);
+				}
+			}
+		}
+
+		private void CollectTriggerVariableNames(Type variableType, List<string> names)
+		{
+			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
+			if (scriptedEvent == null) return;
+
+			foreach (Condition condition in scriptedEvent.Conditions)
+			{
+				if (condition == null) continue;
+
+				foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
+				{
+					VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
+					if (outAttr?.VariableType == null) continue;
+					if (!variableType.IsAssignableFrom(outAttr.VariableType)) continue;
+
+					string name = f.GetValue(condition) as string;
+					if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
+					{
+						names.Add(name);
+					}
+				}
+			}
+		}
+
+		private void CollectGlobalVariableNames(Type variableType, List<string> names)
+		{
+			Scenario parentScenario = parentViewModel?.FindEnclosingScenario();
+			if (parentScenario?.Variables == null) return;
+
+			foreach (var scVar in parentScenario.Variables)
+			{
+				if (scVar == null || string.IsNullOrWhiteSpace(scVar.Name)) continue;
+				if (!TypeMatchesFilter(variableType, scVar.Type)) continue;
+				if (!names.Contains(scVar.Name)) names.Add(scVar.Name);
+			}
+		}
+
 		private static bool TypeMatchesFilter(Type filterType, VariableType varType)
 		{
 			return varType switch
@@ -265,196 +470,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return _enumOrderedValues;
 		}
 
-		public ICommand EditCommand { get; }
-		public ICommand DeleteCommand { get; }
-		public ICommand AddCommand { get; }
-		public ICommand EditPlayerSpawnMenuCommand { get; }
-
-		/// <summary>Command used by the remaining compact complex-field template.</summary>
-		public ICommand InlineEditCommand => IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand;
-
-		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
-		{
-			FieldInfo = fieldInfo;
-			this.parentViewModel = parentViewModel;
-			this.scenarioEditorViewModel = scenarioEditorViewModel;
-			FieldName = fieldInfo.Name;
-			FieldType = fieldInfo.FieldType;
-			_fieldValue = fieldValue;
-
-			var attribute = fieldInfo.GetCustomAttribute<ConfigPropertyAttribute>();
-
-			if (attribute != null)
-			{
-				Label = attribute.Label ?? FieldName;
-				Tooltip = attribute.Tooltip;
-				ShowTooltip = !string.IsNullOrEmpty(Tooltip);
-				try
-				{
-					PossibleValues = attribute.PossibleValues;
-				}
-				catch(Exception ex)
-				{
-					Log($"Error retrieving possible values for field '{FieldName}': {ex.Message}", LogLevel.Error);
-					PossibleValues = new string[0];
-				}
-			}
-			else
-			{
-				Label = FieldName;
-			}
-
-			// [VariableRef]: render as a dropdown of available variables from trigger conditions and scenario globals.
-			VariableRefAttribute variableRef = fieldInfo.GetCustomAttribute<VariableRefAttribute>();
-			if (variableRef != null)
-			{
-				PossibleValues = CollectAvailableVariables(variableRef.VariableType);
-				IsChoiceLocked = true;
-			}
-			// Generic attributes cannot express [VariableRef(typeof(T))]. Infer the intended type from
-			// VariableValue<T> itself so every expression slot gets the same filtered variable dropdown.
-			if (parentViewModel?.Object != null
-				&& parentViewModel.Object.GetType().IsGenericType
-				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(VariableValue<>)
-				&& FieldName == nameof(VariableValue<int>.VariableName))
-			{
-				Type valueType = parentViewModel.Object.GetType().GetGenericArguments()[0];
-				PossibleValues = CollectAvailableVariables(valueType);
-				IsChoiceLocked = true;
-			}
-
-			// ScenarioVariable.EnumTypeName: populate + lock dropdown from discovered enum types.
-			if (parentViewModel?.Object is ScenarioVariable sv && FieldName == nameof(ScenarioVariable.EnumTypeName))
-			{
-				PossibleValues = ScenarioData.AvailableEnumTypes().Select(t => t.Name).ToArray();
-				IsChoiceLocked = true;
-			}
-			// ScenarioVariable.DefaultValue: show enum value dropdown when Type == Enum.
-			if (parentViewModel?.Object is ScenarioVariable sv2 && FieldName == nameof(ScenarioVariable.DefaultValue) && sv2.Type == VariableType.Enum && !string.IsNullOrEmpty(sv2.EnumTypeName))
-			{
-				Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == sv2.EnumTypeName);
-				if (enumType != null)
-				{
-					PossibleValues = Enum.GetNames(enumType);
-					IsChoiceLocked = true;
-				}
-			}
-			// ScenarioVariable.DefaultValue: dynamic editor type based on VariableType.
-			if (parentViewModel?.Object is ScenarioVariable svForType && FieldName == nameof(ScenarioVariable.DefaultValue))
-			{
-				switch (svForType.Type)
-				{
-					case VariableType.Int:
-						FieldType = typeof(int);
-						_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
-						_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
-						break;
-					case VariableType.Float:
-						FieldType = typeof(float);
-						_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
-						_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
-						break;
-					case VariableType.Bool:
-						FieldType = typeof(bool);
-						_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
-						_valueFromEffective = v => ((bool)v).ToString().ToLower();
-						break;
-					default:
-						break;
-				}
-			}
-			// Fields marked with [DependsOnVariable]: dynamic editor based on the variable referenced by another field.
-			DependsOnVariableAttribute depAttr = fieldInfo.GetCustomAttribute<DependsOnVariableAttribute>();
-			if (depAttr != null && !string.IsNullOrEmpty(depAttr.SourceField))
-			{
-				FieldInfo srcField = parentViewModel?.Object?.GetType().GetField(depAttr.SourceField, BindingFlags.Public | BindingFlags.Instance);
-				if (srcField != null)
-				{
-					string varName = srcField.GetValue(parentViewModel.Object) as string;
-					if (!string.IsNullOrEmpty(varName))
-					{
-						Scenario scenario = parentViewModel.FindEnclosingScenario();
-						ScenarioVariable matchedVar = scenario?.Variables?.FirstOrDefault(v => v.Name == varName);
-						if (matchedVar != null)
-						{
-							switch (matchedVar.Type)
-							{
-								case VariableType.Int:
-									FieldType = typeof(int);
-									_valueToEffective = v => int.TryParse(v?.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int i) ? i : 0;
-									_valueFromEffective = v => ((int)v).ToString(CultureInfo.InvariantCulture);
-									break;
-								case VariableType.Float:
-									FieldType = typeof(float);
-									_valueToEffective = v => float.TryParse(v?.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float f) ? f : 0f;
-									_valueFromEffective = v => ((float)v).ToString(CultureInfo.InvariantCulture);
-									break;
-								case VariableType.Bool:
-									FieldType = typeof(bool);
-									_valueToEffective = v => bool.TryParse(v?.ToString(), out bool b) && b;
-									_valueFromEffective = v => ((bool)v).ToString().ToLower();
-									break;
-								case VariableType.Enum:
-									if (!string.IsNullOrEmpty(matchedVar.EnumTypeName))
-									{
-										Type enumType = ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == matchedVar.EnumTypeName);
-										if (enumType != null)
-										{
-											PossibleValues = Enum.GetNames(enumType);
-											IsChoiceLocked = true;
-										}
-									}
-									break;
-								default:
-									break;
-							}
-						}
-					}
-				}
-			}
-
-			// ValueSource<T> is rendered by its dedicated chip/popup. Other abstract fields retain the
-			// generic polymorphic picker.
-			if (FieldType != null && FieldType.IsAbstract && !IsValueSource)
-			{
-				ConcreteTypes = DiscoverConcreteTypes(FieldType);
-			}
-
-			// A FunctionCall<T>.Function field must only expose functions whose declared return type is assignable to T.
-			if (FieldType == typeof(Function)
-				&& parentViewModel?.Object != null
-				&& parentViewModel.Object.GetType().IsGenericType
-				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(FunctionCall<>))
-			{
-				Type resultType = parentViewModel.Object.GetType().GetGenericArguments()[0];
-				ConcreteTypes = ConcreteTypes
-					.Where(type => FunctionReturns(type, resultType))
-					.OrderBy(type => type.Name)
-					.ToArray();
-			}
-
-			EditCommand = new RelayCommand(_ => EditObjectFromFieldInfo(FieldInfo), _ => IsComplexType);
-			DeleteCommand = new RelayCommand(DeleteItem);
-			AddCommand = new RelayCommand(_ => AddItem());
-			EditPlayerSpawnMenuCommand = new RelayCommand(_ => OpenPlayerSpawnMenu(), _ => IsPlayerSpawnMenu);
-
-			if (IsCollection && FieldValue is IEnumerable enumerable)
-			{
-				Items = new ObservableCollection<ItemViewModel>(
-					enumerable.Cast<object>().Select(item => new ItemViewModel(item, this))
-				);
-			}
-			else
-			{
-				Items = new ObservableCollection<ItemViewModel>();
-			}
-
-			if (IsZone)
-			{
-				ZoneVM = new ZoneViewModel((Zone)FieldValue, FieldInfo, this);
-			}
-		}
-
 		public void DeleteItem(object item)
 		{
 			if (FieldValue is IList list && item is ItemViewModel viewModel)
@@ -471,33 +486,30 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				FieldValue = Activator.CreateInstance(FieldType);
 			}
-			if (FieldValue is IList list)
+
+			if (!(FieldValue is IList list)) return;
+
+			var baseType = FieldType.GetGenericArguments()[0];
+			var typeToCreate = baseType;
+
+			if (baseType.IsAbstract || baseType.IsInterface)
 			{
-				var baseType = FieldType.GetGenericArguments()[0];
-				var typeToCreate = baseType;
-
-				// Check if the base type is abstract or an interface
-				if (baseType.IsAbstract || baseType.IsInterface)
-				{
-					// Ask the user to select a concrete type
-					typeToCreate = OpenTypeSelection(baseType);
-				}
-
-				if (typeToCreate == null) return;
-
-				var newItem = Activator.CreateInstance(typeToCreate);
-				list.Add(newItem);
-				Items.Add(new ItemViewModel(newItem, this));
-				OnPropertyChanged(nameof(FieldValue));
+				typeToCreate = OpenTypeSelection(baseType);
 			}
+
+			if (typeToCreate == null) return;
+
+			var newItem = Activator.CreateInstance(typeToCreate);
+			list.Add(newItem);
+			Items.Add(new ItemViewModel(newItem, this));
+			OnPropertyChanged(nameof(FieldValue));
 		}
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
-			var editorWindow = new ObjectEditorWindow(obj,parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
+			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
 			editorWindow.Show();
 
-			// Update DisplayName when the editor window is closed
 			editorWindow.Closing += (sender, args) =>
 			{
 				itemViewModel?.OnClose();
@@ -513,10 +525,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				var typeToCreate = FieldType;
 
-				// Check if the base type is abstract or an interface
 				if (FieldType.IsAbstract || FieldType.IsInterface)
 				{
-					// Ask the user to select a concrete type
 					typeToCreate = OpenTypeSelection(FieldType);
 				}
 
@@ -529,12 +539,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			EditObject(obj);
 		}
 
-		/// <summary>
-		/// Open a dialog to select among the list of concrete types that inherit from the base type.
-		/// </summary>
 		public Type OpenTypeSelection(Type baseType)
 		{
-			// Retrieve all types that inherit from the base type
 			var concreteTypes = new List<Type>();
 
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
@@ -553,7 +559,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 						Log(loaderException.Message, LogLevel.Error);
 					}
 
-					// Add successfully loaded types only
 					var validTypes = ex.Types.Where(t => t != null && baseType.IsAssignableFrom(t) && !t.IsAbstract);
 					concreteTypes.AddRange(validTypes);
 				}
@@ -567,7 +572,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					DataContext = typeSelectionViewModel
 				};
 
-				// Show the dialog
 				bool? result = typeSelectionForm.ShowDialog();
 				if (result == true && typeSelectionViewModel.SelectedType != null)
 				{
@@ -603,16 +607,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		public virtual void OnPropertyChanged(string propertyName)
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
 		private ObjectEditorViewModel _nestedVM;
 
-		/// <summary>Inline editor for a polymorphic (abstract-typed) field: renders the chosen instance's fields directly.</summary>
 		public ObjectEditorViewModel NestedVM
 		{
 			get
@@ -625,7 +621,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		/// <summary>The concrete type of the current value; setting it swaps the instance (changes the source).</summary>
 		public Type SelectedConcreteType
 		{
 			get => FieldValue?.GetType();
@@ -640,7 +635,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				OnPropertyChanged(nameof(NestedVM));
 			}
 		}
-
 
 		internal void OpenValueSourceEditor()
 		{
@@ -708,6 +702,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			ZoneVM?.Close();
 			_nestedVM?.Close();
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public virtual void OnPropertyChanged(string propertyName)
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
 	}
 
 	public class RelayCommand : ICommand
@@ -741,7 +742,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			Type enumType = value.GetType();
 			if (!enumType.IsEnum) throw new InvalidOperationException("Value must be an enum type");
 
-			// Return the list of enum values
 			return Enum.GetValues(enumType).Cast<Enum>().ToList();
 		}
 
