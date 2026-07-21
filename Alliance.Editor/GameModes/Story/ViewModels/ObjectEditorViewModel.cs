@@ -28,6 +28,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		protected ScenarioEditorViewModel ScenarioVM;
 		protected FieldViewModel ParentVM;
+
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public ObservableCollection<FieldCategoryViewModel> FieldCategories { get; private set; }
@@ -63,15 +64,10 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			CopyCommand = new RelayCommand(_ => CopyObject());
 			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
 
-			// If in design mode, create a dummy object to display in the designer
 			if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
 			{
-				AgentCountCondition obj = new AgentCountCondition(){};
-				obj.TargetCount = new LiteralValue<int>(5);
-				string title = "Alliance - Scenario Editor";
-				ScenarioEditorViewModel parentViewModel = new ScenarioEditorViewModel();
-
-				InitVM(obj, null, parentViewModel, title, WeakGameEntity.Invalid);
+				AgentCountCondition obj = new AgentCountCondition() { TargetCount = new LiteralValue<int>(5) };
+				InitVM(obj, null, new ScenarioEditorViewModel(), "Alliance - Scenario Editor", WeakGameEntity.Invalid);
 			}
 		}
 
@@ -79,36 +75,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			ParentVM = parentVM;
 			GameEntity = gameEntity;
-
-			FieldInfo[] fieldInfos = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
-
-			// If obj holds a ParentEntity reference, use it
-			if (obj is ScriptedEvent scriptedEvent && scriptedEvent.ParentEntity != null)
-			{
-				GameEntity = scriptedEvent.ParentEntity;
-			}
-			// If there is only one non-abstract field of type object, directly open its UI
-			// (example: if the object has only one field of type TWConfig, open the TWConfig directly)
-			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
-			{
-				var singleField = fieldInfos[0];
-				var fieldValue = singleField.GetValue(obj);
-
-				// If the field value is null, instantiate it
-				if (fieldValue == null)
-				{
-					fieldValue = Activator.CreateInstance(singleField.FieldType);
-					singleField.SetValue(obj, fieldValue);
-				}
-
-				title += " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
-				obj = fieldValue;
-			}
-
 			Object = obj;
 			ScenarioVM = scenarioVM;
 			Fields = new ObservableCollection<FieldViewModel>();
 			FieldCategories = new ObservableCollection<FieldCategoryViewModel>();
+
+			UnwrapSingleFieldObject(ref obj, ref title, ref gameEntity);
+			Object = obj;
 
 			RefreshFields();
 			Title = title + " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
@@ -119,6 +92,34 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 
 			OnPropertyChanged(nameof(CanPaste));
+		}
+
+		/// <summary>
+		/// If the object wraps a ScriptedEvent with a ParentEntity, use that as the game entity.
+		/// If the object has a single non-abstract class field (not string), unwrap to edit it directly.
+		/// </summary>
+		private void UnwrapSingleFieldObject(ref object obj, ref string title, ref WeakGameEntity gameEntity)
+		{
+			FieldInfo[] fieldInfos = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+
+			if (obj is ScriptedEvent scriptedEvent && scriptedEvent.ParentEntity != null)
+			{
+				gameEntity = scriptedEvent.ParentEntity;
+			}
+			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass && fieldInfos[0].FieldType != typeof(string))
+			{
+				var singleField = fieldInfos[0];
+				var fieldValue = singleField.GetValue(obj);
+
+				if (fieldValue == null)
+				{
+					fieldValue = Activator.CreateInstance(singleField.FieldType);
+					singleField.SetValue(obj, fieldValue);
+				}
+
+				title += " > " + ScenarioEditorHelper.GetItemDisplayName(obj);
+				obj = fieldValue;
+			}
 		}
 
 		private void CopyObject()
@@ -159,8 +160,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (type.IsArray)
 			{
 				Array sourceArray = (Array)source;
-				Type elementType = type.GetElementType();
-				Array clonedArray = Array.CreateInstance(elementType, sourceArray.Length);
+				Array clonedArray = Array.CreateInstance(type.GetElementType(), sourceArray.Length);
 				for (int i = 0; i < sourceArray.Length; i++)
 				{
 					clonedArray.SetValue(DeepCloneObject(sourceArray.GetValue(i)), i);
@@ -197,7 +197,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 			catch
 			{
-				// Fallback: if no parameterless ctor, keep source reference instead of crashing.
 				return source;
 			}
 
@@ -284,21 +283,45 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void RefreshFields()
 		{
-			// Determine which field names are allowed
-			HashSet<string> allowedFields = null;
-			if(ParentVM?.ParentObject is GameModeSettings settings)
+			HashSet<string> allowedFields = GetAllowedFieldNames();
+			List<FieldInfo> editableFields = GetEditableFields(allowedFields);
+			Dictionary<string, bool> expandedStates = SaveCategoryExpandedStates();
+
+			CloseAllFieldViewModels();
+			Fields.Clear();
+			FieldCategories.Clear();
+
+			ParseAndApplyPhrase(editableFields, out HashSet<string> consumedFieldNames);
+
+			Dictionary<string, FieldCategoryViewModel> categories = BuildFieldViewModels(editableFields, consumedFieldNames, expandedStates);
+
+			foreach (var category in categories.Values)
+			{
+				FieldCategories.Add(category);
+			}
+		}
+
+		private HashSet<string> GetAllowedFieldNames()
+		{
+			if (ParentVM?.ParentObject is GameModeSettings settings)
 			{
 				if (Object is TWConfig)
 				{
-					allowedFields = new HashSet<string>(settings.GetAvailableNativeOptions().Select(o => o.ToString()));
+					return new HashSet<string>(settings.GetAvailableNativeOptions().Select(o => o.ToString()));
 				}
-				else if (Object is Config)
+
+				if (Object is Config)
 				{
-					allowedFields = new HashSet<string>(settings.GetAvailableModOptions());
+					return new HashSet<string>(settings.GetAvailableModOptions());
 				}
 			}
 
-			List<FieldInfo> editableFields = Object.GetType()
+			return null;
+		}
+
+		private List<FieldInfo> GetEditableFields(HashSet<string> allowedFields)
+		{
+			return Object.GetType()
 				.GetFields(BindingFlags.Instance | BindingFlags.Public)
 				.Where(fi =>
 				{
@@ -308,25 +331,28 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					return true;
 				})
 				.ToList();
+		}
 
-			Dictionary<string, bool> expandedStates = new Dictionary<string, bool>();
+		private Dictionary<string, bool> SaveCategoryExpandedStates()
+		{
+			var states = new Dictionary<string, bool>();
 			foreach (var category in FieldCategories)
 			{
-				expandedStates[category.Name] = category.IsExpanded;
+				states[category.Name] = category.IsExpanded;
 			}
+			return states;
+		}
 
-			// Release resources (e.g. zone registrations) held by the field VMs being replaced.
+		private void CloseAllFieldViewModels()
+		{
 			foreach (var field in AllFieldViewModels())
 			{
 				field.Close();
 			}
+		}
 
-			Fields.Clear();
-			FieldCategories.Clear();
-
-			// Build the inline phrase (if the type declares one). Fields rendered inline are excluded
-			// from the field list below; the remaining fields are shown under their category (or "Advanced").
-			HashSet<string> consumedFieldNames;
+		private void ParseAndApplyPhrase(List<FieldInfo> editableFields, out HashSet<string> consumedFieldNames)
+		{
 			List<PhraseLineViewModel> phraseLines = ParsePhrase(editableFields, out consumedFieldNames);
 			PhraseLines.Clear();
 			foreach (var line in phraseLines)
@@ -334,51 +360,50 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				PhraseLines.Add(line);
 			}
 			OnPropertyChanged(nameof(HasPhrase));
+		}
 
-			Dictionary<string, FieldCategoryViewModel> categories = new Dictionary<string, FieldCategoryViewModel>();
+		private Dictionary<string, FieldCategoryViewModel> BuildFieldViewModels(List<FieldInfo> editableFields, HashSet<string> consumedFieldNames, Dictionary<string, bool> expandedStates)
+		{
+			var categories = new Dictionary<string, FieldCategoryViewModel>();
 
 			foreach (FieldInfo fi in editableFields)
 			{
-				ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
-				// If the field has a dependency and the dependency is not satisfied, skip it
-				if (attr != null && !attr.IsDependencySatisfied(Object))
-				{
-					continue;
-				}
-				// Skip fields already shown inline by the phrase
-				if (consumedFieldNames.Contains(fi.Name))
-				{
-					continue;
-				}
-
-				// Skip fields the parent wants to render itself (e.g. Position in the zone editor)
-				if (HiddenFieldNames?.Contains(fi.Name) == true) continue;
+				if (!ShouldShowField(fi, consumedFieldNames)) continue;
 
 				FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
-
-				// Add fields without a category to the Fields collection directly
-				// (or under "Advanced" when a phrase is shown)
-				if (attr == null || attr.Category == null)
-				{
-					if (HasPhrase)
-					{
-						GetOrCreateCategory(categories, expandedStates, "Advanced", false).Fields.Add(fieldVM);
-					}
-					else
-					{
-						Fields.Add(fieldVM);
-					}
-				}
-				// Add fields with a category to the appropriate FieldCategoryViewModel
-				else
-				{
-					GetOrCreateCategory(categories, expandedStates, attr.Category, attr.Category == "General").Fields.Add(fieldVM);
-				}
+				CategorizeField(fieldVM, fi, categories, expandedStates);
 			}
 
-			foreach (var category in categories.Values)
+			return categories;
+		}
+
+		private bool ShouldShowField(FieldInfo fi, HashSet<string> consumedFieldNames)
+		{
+			ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+			if (attr != null && !attr.IsDependencySatisfied(Object)) return false;
+			if (consumedFieldNames.Contains(fi.Name)) return false;
+			if (HiddenFieldNames?.Contains(fi.Name) == true) return false;
+			return true;
+		}
+
+		private void CategorizeField(FieldViewModel fieldVM, FieldInfo fi, Dictionary<string, FieldCategoryViewModel> categories, Dictionary<string, bool> expandedStates)
+		{
+			ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+
+			if (attr == null || attr.Category == null)
 			{
-				FieldCategories.Add(category);
+				if (HasPhrase)
+				{
+					GetOrCreateCategory(categories, expandedStates, "Advanced", false).Fields.Add(fieldVM);
+				}
+				else
+				{
+					Fields.Add(fieldVM);
+				}
+			}
+			else
+			{
+				GetOrCreateCategory(categories, expandedStates, attr.Category, attr.Category == "General").Fields.Add(fieldVM);
 			}
 		}
 
@@ -392,12 +417,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return categories[name];
 		}
 
-		/// <summary>
-		/// Parses the [PhraseTemplate] lines of the edited object (if any) into ordered text/field segments.
-		/// Each declared template string becomes its own line. Returns an empty list when no template is
-		/// declared. <paramref name="consumedFieldNames"/> lists the field names rendered inline (so they
-		/// can be excluded from the field list below).
-		/// </summary>
 		private List<PhraseLineViewModel> ParsePhrase(List<FieldInfo> editableFields, out HashSet<string> consumedFieldNames)
 		{
 			consumedFieldNames = new HashSet<string>();
@@ -423,13 +442,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			ParseSegments(template, editableFields, consumedFieldNames, segments);
 		}
 
-		/// <summary>
-		/// Recursively parses a template into segments. Supports:
-		/// - literal text
-		/// - {FieldName} and {FieldName|Label0|Label1|...} slots (choice dropdown for bool/enum)
-		/// - {?Condition: content} conditional spans, rendered only when Condition holds against the
-		///   edited object (e.g. {?SoundType!=MainMusic: at {SoundZone}}). Nested braces are matched.
-		/// </summary>
 		private void ParseSegments(string text, List<FieldInfo> editableFields, HashSet<string> consumedFieldNames, ObservableCollection<PhraseSegment> segments)
 		{
 			int i = 0;
@@ -437,13 +449,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				int open = text.IndexOf('{', i);
 
-				// Literal text up to the next '{' (or end of string)
 				if (open < 0)
 				{
 					string tail = text.Substring(i);
 					if (!string.IsNullOrEmpty(tail)) segments.Add(new PhraseTextSegment { Text = tail });
 					break;
 				}
+
 				if (open > i)
 				{
 					string lit = text.Substring(i, open - i);
@@ -453,7 +465,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				int close = PhraseTextRenderer.FindMatchingBrace(text, open);
 				if (close < 0)
 				{
-					// Unmatched '{': render the rest as literal text
 					segments.Add(new PhraseTextSegment { Text = text.Substring(open) });
 					break;
 				}
@@ -461,49 +472,55 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				string block = text.Substring(open + 1, close - open - 1);
 				i = close + 1;
 
-				// Conditional span: {?condition: content}
 				if (block.StartsWith("?"))
 				{
-					string inner = block.Substring(1);
-					int sep = inner.IndexOf(':');
-					string condition = sep >= 0 ? inner.Substring(0, sep).Trim() : inner.Trim();
-					string content = sep >= 0 ? inner.Substring(sep + 1) : string.Empty;
-
-					if (PhraseTextRenderer.IsConditionSatisfied(condition, Object))
-					{
-						ParseSegments(content, editableFields, consumedFieldNames, segments);
-					}
+					ParseConditionalSegment(block, editableFields, consumedFieldNames, segments);
 					continue;
 				}
 
-				// Field slot: FieldName or FieldName|Label0|Label1|...
-				int bar = block.IndexOf('|');
-				string fieldName = (bar >= 0 ? block.Substring(0, bar) : block).Trim();
-				FieldInfo fi = editableFields.FirstOrDefault(f => f.Name == fieldName);
-				ConfigPropertyAttribute attr = fi?.GetCustomAttribute<ConfigPropertyAttribute>();
-
-				if (fi != null && (attr == null || attr.IsDependencySatisfied(Object)))
-				{
-					consumedFieldNames.Add(fieldName);
-					FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
-
-					if (bar >= 0)
-					{
-						string[] choices = block.Substring(bar + 1).Split('|');
-						if (choices.Length > 0) fieldVM.ChoiceLabels = choices;
-					}
-
-					segments.Add(new PhraseFieldSegment { Field = fieldVM });
-				}
-				else
-				{
-					// Unknown or dependency-hidden field: render the raw placeholder as literal text
-					segments.Add(new PhraseTextSegment { Text = "{" + block + "}" });
-				}
+				ParseFieldSlot(block, editableFields, consumedFieldNames, segments);
 			}
 		}
 
-		/// <summary>All editable field VMs currently held by this editor, including those rendered inline in a phrase.</summary>
+		private void ParseConditionalSegment(string block, List<FieldInfo> editableFields, HashSet<string> consumedFieldNames, ObservableCollection<PhraseSegment> segments)
+		{
+			string inner = block.Substring(1);
+			int sep = inner.IndexOf(':');
+			string condition = sep >= 0 ? inner.Substring(0, sep).Trim() : inner.Trim();
+			string content = sep >= 0 ? inner.Substring(sep + 1) : string.Empty;
+
+			if (PhraseTextRenderer.IsConditionSatisfied(condition, Object))
+			{
+				ParseSegments(content, editableFields, consumedFieldNames, segments);
+			}
+		}
+
+		private void ParseFieldSlot(string block, List<FieldInfo> editableFields, HashSet<string> consumedFieldNames, ObservableCollection<PhraseSegment> segments)
+		{
+			int bar = block.IndexOf('|');
+			string fieldName = (bar >= 0 ? block.Substring(0, bar) : block).Trim();
+			FieldInfo fi = editableFields.FirstOrDefault(f => f.Name == fieldName);
+			ConfigPropertyAttribute attr = fi?.GetCustomAttribute<ConfigPropertyAttribute>();
+
+			if (fi != null && (attr == null || attr.IsDependencySatisfied(Object)))
+			{
+				consumedFieldNames.Add(fieldName);
+				FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
+
+				if (bar >= 0)
+				{
+					string[] choices = block.Substring(bar + 1).Split('|');
+					if (choices.Length > 0) fieldVM.ChoiceLabels = choices;
+				}
+
+				segments.Add(new PhraseFieldSegment { Field = fieldVM });
+			}
+			else
+			{
+				segments.Add(new PhraseTextSegment { Text = "{" + block + "}" });
+			}
+		}
+
 		private IEnumerable<FieldViewModel> AllFieldViewModels()
 		{
 			foreach (var field in Fields) yield return field;
@@ -520,48 +537,32 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		/// <summary>
-		/// Walks up the parent-editor chain to find the ScriptedEvent this editor is editing within (if any),
-		/// so variable-reference fields can list the variables captured by sibling conditions.
-		/// </summary>
 		public ScriptedEvent FindEnclosingScriptedEvent()
 		{
-			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
-			{
-				if (vm.Object is ScriptedEvent se) return se;
-			}
-			return null;
+			return FindEnclosing<ScriptedEvent>();
 		}
 
-		/// <summary>
-		/// Walks up the parent-editor chain to find the Scenario this editor is editing within (if any),
-		/// so variable-reference fields can also list global variables defined on the scenario.
-		/// </summary>
 		public Scenario FindEnclosingScenario()
 		{
-			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
-			{
-				if (vm.Object is Scenario scenario) return scenario;
-			}
-			return null;
+			return FindEnclosing<Scenario>();
 		}
 
-		/// <summary>
-		/// Walks up the parent-editor chain to find the Act this editor is editing within (if any).
-		/// Used to decide whether named zones are available (scenario context) or not (AL_TriggerAction).
-		/// </summary>
 		public Act FindEnclosingAct()
+		{
+			return FindEnclosing<Act>();
+		}
+
+		private T FindEnclosing<T>() where T : class
 		{
 			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
 			{
-				if (vm.Object is Act act) return act;
+				if (vm.Object is T result) return result;
 			}
 			return null;
 		}
 
 		internal ObjectEditorViewModel ParentEditor => ParentVM?.parentViewModel;
 
-		/// <summary>Refreshes visible expression chips after a nested literal, variable, or function changes.</summary>
 		internal void RefreshValueSourcePreviews()
 		{
 			foreach (FieldViewModel field in AllFieldViewModels())

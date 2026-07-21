@@ -161,7 +161,7 @@
 						<Button x:Name="PART_DecrementButton" Content="-" Width="18" Height="22" Padding="0,0,0,3"/>
 						<TextBox x:Name="PART_TextBox"
 									 Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-									 Width="44" Padding="0,3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
+									 Width="56" Padding="0,3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
 						<Button x:Name="PART_IncrementButton" Content="+" Width="18" Height="22" Padding="0,0,0,3"/>
 					</StackPanel>
 				</ControlTemplate>
@@ -238,14 +238,8 @@
 
 	<!-- Implicit editor for a ZoneViewModel: centered Edit button + compact Anchor/Shape + inline Position. -->
 	<DataTemplate DataType="{x:Type vm:ZoneViewModel}">
-		<Border BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="0,0,0,4">
+		<Border BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="-8,0,0,4" MinWidth="496">
 			<StackPanel Orientation="Vertical">
-				<!-- Centered Edit Zone button -->
-				<Button Content="Edit Zone" Command="{Binding EditZoneCommand}" 
-						HorizontalAlignment="Center" Height="24" Width="80" Padding="0,0,0,1"
-						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-						Margin="0,0,0,4"
-						ToolTip="Click to position this zone on the map."/>
 				<!-- Anchor and Shape fields (Position hidden; rendered inline below) -->
 				<ItemsControl ItemsSource="{Binding ZoneEditor.Fields}">
 					<ItemsControl.ItemTemplate>
@@ -254,18 +248,24 @@
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
+				<!-- Centered Edit Zone button -->
+				<Button Content="Edit Zone" Command="{Binding EditZoneCommand}" 
+						HorizontalAlignment="Center" Height="24" Width="80" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,0,0,4"
+						ToolTip="Click to position this zone on the map."/>
 				<!-- Position inline (under Shape) -->
 				<StackPanel Orientation="Horizontal" Margin="0,4,0,0">
 					<TextBlock Text="Position" VerticalAlignment="Center" Width="100" FontSize="16"/>
-					<TextBlock Text="X:" VerticalAlignment="Center" Margin="2,0,1,0" FontSize="16"/>
+					<TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,1,0" FontSize="16"/>
 					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
 											 Value="{Binding PositionX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 											 VerticalAlignment="Center"/>
-					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="4,0,1,0" FontSize="16"/>
+					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="24,0,1,0" FontSize="16"/>
 					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
 											 Value="{Binding PositionY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 											 VerticalAlignment="Center"/>
-					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="4,0,1,0" FontSize="16"/>
+					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="24,0,1,0" FontSize="16"/>
 					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}"
 											 Value="{Binding PositionZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 											 VerticalAlignment="Center"/>
