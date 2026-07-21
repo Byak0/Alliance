@@ -8,6 +8,7 @@ using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HarmonyLib;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -22,7 +23,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 	/// Server-side base behavior for scenario game mode.
 	/// Responsible for updating scenario state.
 	/// </summary>
-	public class ScenarioBehavior : MissionMultiplayerGameModeBase, IMissionBehavior
+	public class ScenarioBehavior : MissionMultiplayerGameModeBase
 	{
 		public Scenario Scenario => ScenarioManagerServer.Instance.CurrentScenario;
 		public Act Act => ScenarioManagerServer.Instance.CurrentAct;
@@ -42,10 +43,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public bool EnableStateChange { get; private set; }
 
 		private float _checkStateDt;
-
-		public ScenarioBehavior()
-		{
-		}
 
 		public override void OnBehaviorInitialize()
 		{

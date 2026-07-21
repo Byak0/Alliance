@@ -43,10 +43,10 @@ namespace Alliance.Server.Core
 		{
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new MultiplayerOptionsInitial());
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients, null);
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients);
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new MultiplayerOptionsImmediate());
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients, null);
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.IncludeUnsynchronizedClients);
 		}
 
 		public void StartMission(GameModeSettings gameModeSettings)
@@ -66,12 +66,12 @@ namespace Alliance.Server.Core
 		{
 			MissionListener missionListener = new MissionListener();
 			missionListener.SetGameModeSettings(gameModeSettings);
-			EndMissionWithListener(missionListener, logAgentUsage: true);
+			EndMissionWithListener(missionListener);
 		}
 
-		internal void EndMissionWithListener(IMissionListener listener, bool logAgentUsage = false)
+		internal void EndMissionWithListener(IMissionListener listener)
 		{
-			PrepareCurrentMissionForEnd(logAgentUsage);
+			PrepareCurrentMissionForEnd();
 			DisableNativeIntermissionVotes();
 
 			Mission.Current.AddListener(listener);
@@ -79,7 +79,7 @@ namespace Alliance.Server.Core
 			DedicatedCustomServerSubModule.Instance.ServerSideIntermissionManager.EndMission();
 		}
 
-		private void PrepareCurrentMissionForEnd(bool logAgentUsage = false)
+		private void PrepareCurrentMissionForEnd()
 		{
 			if (Mission.Current == null)
 			{
@@ -101,10 +101,6 @@ namespace Alliance.Server.Core
 			foreach (Agent agent in Mission.Current.AllAgents)
 			{
 				agent.SetMortalityState(Agent.MortalityState.Invulnerable);
-				if (logAgentUsage)
-				{
-					Log($"{agent.Name} using {agent.CurrentlyUsedGameObject?.GameEntity.Name} - flag : {agent.AIStateFlags}  | {agent.GetScriptedCombatFlags()}", LogLevel.Debug);
-				}
 			}
 		}
 
@@ -222,19 +218,10 @@ namespace Alliance.Server.Core
 			_gameModeSettings = gameModeSettings;
 		}
 
-		public void SetUseCurrentOptionsForNextMission()
-		{
-			_useCurrentOptionsForNextMission = true;
-		}
-
 		public void OnEndMission()
 		{
-			new Thread(new ParameterizedThreadStart(StartMissionThread.ThreadProc)).Start(new StartMissionThread.StartMissionRequest(_gameModeSettings, _useCurrentOptionsForNextMission));
+			new Thread(StartMissionThread.ThreadProc).Start(new StartMissionThread.StartMissionRequest(_gameModeSettings, _useCurrentOptionsForNextMission));
 			Mission.Current.RemoveListener(this);
-		}
-
-		public void OnInitialDeploymentPlanMade(BattleSideEnum battleSide, bool isFirstPlan)
-		{
 		}
 
 		public void OnMissionModeChange(MissionMode oldMissionMode, bool atStart)

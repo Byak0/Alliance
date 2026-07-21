@@ -1,9 +1,11 @@
+using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Server.Core;
 using Alliance.Server.Extensions.NativeIntermissionVote.Behaviors;
 using Alliance.Server.Extensions.NativeIntermissionVote.NetworkMessages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,15 +28,6 @@ namespace Alliance.Server.Extensions.NativeIntermissionVote
 		private const int WaitBeforeMissionStartMilliseconds = 1000;
 		private const string ScenarioGameType = "Scenario";
 
-		private static readonly List<string> DefaultCultureVotePool = new List<string>
-		{
-			"khuzait",
-			"aserai",
-			"battania",
-			"vlandia",
-			"sturgia",
-			"empire"
-		};
 		private static readonly Dictionary<string, ScenarioVoteCandidate> ScenarioVoteCandidatesByVoteId = new Dictionary<string, ScenarioVoteCandidate>();
 		private static bool _currentVoteIsScenario;
 
@@ -136,6 +129,7 @@ namespace Alliance.Server.Extensions.NativeIntermissionVote
 			}
 
 			votingManager.SortVotesAndPickBest();
+			ApplyDynamicCultureVoteResult(votingManager);
 			votingManager.CurrentVoteState = MultiplayerIntermissionState.CountingForMission;
 
 			string selectedMap = OptionType.Map.GetStrValue();
@@ -159,12 +153,6 @@ namespace Alliance.Server.Extensions.NativeIntermissionVote
 			Log($"Vote setup - gameType={OptionType.GameType.GetStrValue()} | currentState={votingManager.CurrentVoteState} | mapsEnabled={votingManager.IsMapVoteEnabled} | culturesEnabled={votingManager.IsCultureVoteEnabled}", LogLevel.Debug);
 			Log($"Vote setup - current map={OptionType.Map.GetStrValue()} | cultures={OptionType.CultureTeam1.GetStrValue()} vs {OptionType.CultureTeam2.GetStrValue()}", LogLevel.Debug);
 
-			List<string> cultureVotePool = votingManager.CultureVoteItems.Select(item => item.Id).Distinct().ToList();
-			if (cultureVotePool.Count < 3)
-			{
-				cultureVotePool = new List<string>(DefaultCultureVotePool);
-			}
-
 			votingManager.ClearVotes();
 			votingManager.ClearItems();
 			ScenarioVoteCandidatesByVoteId.Clear();
@@ -174,6 +162,8 @@ namespace Alliance.Server.Extensions.NativeIntermissionVote
 				return PrepareScenarioVoteItems(votingManager);
 			}
 
+			List<string> cultureVotePool = GetDynamicCultureVotePool();
+
 			List<string> availableMaps = currentGameModeSettings.GetAvailableMaps().Select(scene => scene.Name).Distinct().Take(MultiplayerIntermissionVotingManager.MaxAllowedMapCount).ToList();
 			Log($"Vote setup - preparing {availableMaps.Count} map candidates.", LogLevel.Debug);
 			for (int i = 0; i < availableMaps.Count; i++)
@@ -182,14 +172,131 @@ namespace Alliance.Server.Extensions.NativeIntermissionVote
 				Log($"Vote setup - map[{i}]={availableMaps[i]}", LogLevel.Debug);
 			}
 
-			Log($"Vote setup - preparing {cultureVotePool.Count} culture candidates.", LogLevel.Debug);
+			Log($"Vote setup - preparing {cultureVotePool.Count} culture candidates from Factions.", LogLevel.Debug);
 			for (int i = 0; i < cultureVotePool.Count; i++)
 			{
 				votingManager.CultureVoteItems.Add(new IntermissionVoteItem(cultureVotePool[i], i));
 				Log($"Vote setup - culture[{i}]={cultureVotePool[i]}", LogLevel.Debug);
 			}
 
-			return availableMaps.Count > 0;
+			return availableMaps.Count > 0 && cultureVotePool.Count > 0;
+		}
+
+		private static List<string> GetDynamicCultureVotePool()
+		{
+			Factions factions;
+			try
+			{
+				factions = Factions.Instance;
+				factions.RefreshAvailablecultures();
+			}
+			catch (Exception exception)
+			{
+				Log($"Vote setup - failed to refresh available cultures through Factions: {exception.Message}", LogLevel.Error);
+				return GetCurrentCultureVotePoolFallback();
+			}
+
+			IEnumerable<string> cultureIds = null;
+			if (factions.OrderedCultureKeys != null && factions.OrderedCultureKeys.Count > 0)
+			{
+				cultureIds = factions.OrderedCultureKeys;
+			}
+			else if (factions.AvailableCultures != null)
+			{
+				cultureIds = factions.AvailableCultures.Keys;
+			}
+
+			List<string> cultureVotePool = new List<string>();
+			if (cultureIds != null)
+			{
+				foreach (string cultureId in cultureIds)
+				{
+					if (string.IsNullOrWhiteSpace(cultureId))
+					{
+						continue;
+					}
+
+					if (factions.AvailableCultures != null && !factions.AvailableCultures.ContainsKey(cultureId))
+					{
+						continue;
+					}
+
+					AddCultureToVotePool(cultureVotePool, cultureId);
+				}
+			}
+
+			if (cultureVotePool.Count == 0)
+			{
+				Log("Vote setup - Factions returned no available culture; falling back to current team cultures.", LogLevel.Warning);
+				return GetCurrentCultureVotePoolFallback();
+			}
+
+			return cultureVotePool;
+		}
+
+		private static List<string> GetCurrentCultureVotePoolFallback()
+		{
+			List<string> cultureVotePool = new List<string>();
+			AddCultureToVotePool(cultureVotePool, OptionType.CultureTeam1.GetStrValue());
+			AddCultureToVotePool(cultureVotePool, OptionType.CultureTeam2.GetStrValue());
+
+			if (cultureVotePool.Count == 0)
+			{
+				Log("Vote setup - no culture candidate could be loaded for native intermission vote.", LogLevel.Error);
+			}
+
+			return cultureVotePool;
+		}
+
+		private static void AddCultureToVotePool(List<string> cultureVotePool, string cultureId)
+		{
+			if (!string.IsNullOrWhiteSpace(cultureId) && !cultureVotePool.Contains(cultureId))
+			{
+				cultureVotePool.Add(cultureId);
+			}
+		}
+
+		private static void ApplyDynamicCultureVoteResult(MultiplayerIntermissionVotingManager votingManager)
+		{
+			if (!votingManager.IsCultureVoteEnabled)
+			{
+				return;
+			}
+
+			List<IntermissionVoteItem> cultureVoteItems = votingManager.CultureVoteItems.ToList();
+			if (cultureVoteItems.Count == 0)
+			{
+				Log("Native vote timeline - no culture vote item available; keeping current culture options.", LogLevel.Warning);
+				return;
+			}
+
+			cultureVoteItems.Sort((culture1, culture2) => -culture1.VoteCount.CompareTo(culture2.VoteCount));
+
+			string selectedCulture1;
+			string selectedCulture2;
+			if (cultureVoteItems[0].VoteCount > 0)
+			{
+				selectedCulture1 = cultureVoteItems[0].Id;
+				selectedCulture2 = cultureVoteItems.Count > 1 ? cultureVoteItems[1].Id : cultureVoteItems[0].Id;
+
+				int totalVoteCount = cultureVoteItems.Select(item => item.VoteCount).Sum();
+				if (totalVoteCount > 0 && 10 * cultureVoteItems[0].VoteCount >= 7 * totalVoteCount)
+				{
+					selectedCulture2 = selectedCulture1;
+				}
+			}
+			else
+			{
+				Random random = new Random();
+				selectedCulture1 = cultureVoteItems[random.Next(0, cultureVoteItems.Count)].Id;
+				selectedCulture2 = cultureVoteItems[random.Next(0, cultureVoteItems.Count)].Id;
+			}
+
+			// TaleWorlds' no-vote culture fallback is hardcoded to the six native cultures.
+			// Re-apply the final culture result from CultureVoteItems so Factions-loaded cultures stay valid.
+			OptionType.CultureTeam1.SetValue(selectedCulture1);
+			OptionType.CultureTeam2.SetValue(selectedCulture2);
+			Log($"Native vote timeline - dynamic culture selection | culture1={selectedCulture1} | culture2={selectedCulture2}", LogLevel.Debug);
 		}
 
 		private static bool PrepareScenarioVoteItems(MultiplayerIntermissionVotingManager votingManager)
