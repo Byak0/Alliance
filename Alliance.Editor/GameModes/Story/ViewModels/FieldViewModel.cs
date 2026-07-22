@@ -494,7 +494,26 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			if (baseType.IsAbstract || baseType.IsInterface)
 			{
-				typeToCreate = OpenTypeSelection(baseType);
+				if (ValueSourceTypeSupport.IsValueSourceType(baseType))
+				{
+					var candidates = ValueSourceTypeSupport.GetConcreteTypes(baseType)
+						.Where(t => !t.IsAbstract)
+						.ToList();
+
+					if (candidates.Count > 0)
+					{
+						var vm = new TypeSelectionViewModel(candidates);
+						var form = new TypeSelectionForm { DataContext = vm };
+						if (form.ShowDialog() == true && vm.SelectedType != null)
+							typeToCreate = vm.SelectedType;
+						else
+							return;
+					}
+				}
+				else
+				{
+					typeToCreate = OpenTypeSelection(baseType);
+				}
 			}
 
 			if (typeToCreate == null) return;

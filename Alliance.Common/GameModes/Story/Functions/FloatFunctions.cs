@@ -1,5 +1,7 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Functions
@@ -24,6 +26,90 @@ namespace Alliance.Common.GameModes.Story.Functions
 	}
 
 	[Serializable]
+	[PhrasePreview("{Left} - {Right}")]
+	[PhraseTemplate("{Left} minus {Right}")]
+	public class SubtractFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddFloatFunction.Resolve(Left, ctx, globals) - AddFloatFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} * {Right}")]
+	[PhraseTemplate("{Left} times {Right}")]
+	public class MultiplyFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(1f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(1f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddFloatFunction.Resolve(Left, ctx, globals) * AddFloatFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} / {Right}")]
+	[PhraseTemplate("{Left} divided by {Right}")]
+	public class DivideFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(1f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		{
+			float right = AddFloatFunction.Resolve(Right, ctx, globals);
+			if (right == 0f) return 0f;
+			return AddFloatFunction.Resolve(Left, ctx, globals) / right;
+		}
+	}
+
+	[Serializable]
+	[PhrasePreview("min({Left}, {Right})")]
+	[PhraseTemplate("minimum of {Left} and {Right}")]
+	public class MinFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> Math.Min(AddFloatFunction.Resolve(Left, ctx, globals), AddFloatFunction.Resolve(Right, ctx, globals));
+	}
+
+	[Serializable]
+	[PhrasePreview("max({Left}, {Right})")]
+	[PhraseTemplate("maximum of {Left} and {Right}")]
+	public class MaxFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> Math.Max(AddFloatFunction.Resolve(Left, ctx, globals), AddFloatFunction.Resolve(Right, ctx, globals));
+	}
+
+	[Serializable]
 	[PhrasePreview("clamp {Value} to {Min}..{Max}")]
 	[PhraseTemplate("clamp {Value} between {Min} and {Max}")]
 	public class ClampFloatFunction : Function
@@ -44,5 +130,126 @@ namespace Alliance.Common.GameModes.Story.Functions
 			if (max < min) (min, max) = (max, min);
 			return Math.Min(Math.Max(AddFloatFunction.Resolve(Value, ctx, globals), min), max);
 		}
+	}
+
+	[Serializable]
+	[PhrasePreview("random from {Min} to {Max}")]
+	[PhraseTemplate("random float from {Min} to {Max}")]
+	public class RandomFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(float);
+
+		[ConfigProperty(label: "Min")]
+		public ValueSource<float> Min = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Max")]
+		public ValueSource<float> Max = new LiteralValue<float>(1f);
+
+		private static readonly Random _rng = new Random();
+
+		public RandomFloatFunction() { }
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		{
+			float min = AddFloatFunction.Resolve(Min, ctx, globals);
+			float max = AddFloatFunction.Resolve(Max, ctx, globals);
+			if (min > max) (min, max) = (max, min);
+			return (float)(min + _rng.NextDouble() * (max - min));
+		}
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} > {Right}")]
+	[PhraseTemplate("{Left} is greater than {Right}")]
+	public class GreaterThanFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(bool);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddFloatFunction.Resolve(Left, ctx, globals) > AddFloatFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} < {Right}")]
+	[PhraseTemplate("{Left} is less than {Right}")]
+	public class LessThanFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(bool);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddFloatFunction.Resolve(Left, ctx, globals) < AddFloatFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} = {Right}")]
+	[PhraseTemplate("{Left} equals {Right}")]
+	public class EqualsFloatFunction : Function
+	{
+		public override Type ReturnType => typeof(bool);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<float> Left = new LiteralValue<float>(0f);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<float> Right = new LiteralValue<float>(0f);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> Math.Abs(AddFloatFunction.Resolve(Left, ctx, globals) - AddFloatFunction.Resolve(Right, ctx, globals)) < float.Epsilon;
+	}
+
+	[Serializable]
+	[PhrasePreview("floor({Value})")]
+	[PhraseTemplate("floor of {Value}")]
+	public class FloorFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Value")]
+		public ValueSource<float> Value = new LiteralValue<float>(0f);
+
+		public FloorFunction() { }
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> (int)Math.Floor(AddFloatFunction.Resolve(Value, ctx, globals));
+	}
+
+	[Serializable]
+	[PhrasePreview("ceil({Value})")]
+	[PhraseTemplate("ceiling of {Value}")]
+	public class CeilFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Value")]
+		public ValueSource<float> Value = new LiteralValue<float>(0f);
+
+		public CeilFunction() { }
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> (int)Math.Ceiling(AddFloatFunction.Resolve(Value, ctx, globals));
+	}
+
+	[Serializable]
+	[PhrasePreview("round({Value})")]
+	[PhraseTemplate("round {Value} to nearest integer")]
+	public class RoundFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Value")]
+		public ValueSource<float> Value = new LiteralValue<float>(0f);
+
+		public RoundFunction() { }
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> (int)Math.Round(AddFloatFunction.Resolve(Value, ctx, globals));
 	}
 }

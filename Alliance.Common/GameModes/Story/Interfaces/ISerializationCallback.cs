@@ -1,4 +1,4 @@
-﻿namespace Alliance.Common.GameModes.Story.Utilities
+﻿namespace Alliance.Common.GameModes.Story.Interfaces
 {
 	/// <summary>
 	/// Interface for objects that need to perform operations before of after serialization.

@@ -2,6 +2,7 @@
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.GameModes.Story.Models;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;

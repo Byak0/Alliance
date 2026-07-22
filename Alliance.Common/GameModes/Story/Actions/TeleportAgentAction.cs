@@ -1,7 +1,7 @@
-using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Library;
@@ -13,6 +13,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Teleport agent to a specified zone.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Teleport {Who} to {Destination}")]
 	[PhraseTemplate("Teleport {Who} to {Destination}")]
 	public class TeleportAgentAction : ActionBase
 	{

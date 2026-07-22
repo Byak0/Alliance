@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Models;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;

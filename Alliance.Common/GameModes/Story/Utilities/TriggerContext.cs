@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Utilities
 {
-	public class VariableStore
+	public class TriggerContext
 	{
 		private readonly Dictionary<string, object> _values = new Dictionary<string, object>();
+
+		public void Set(string key, object value) => _values[key] = value;
 
 		public T Get<T>(string key)
 		{
@@ -12,10 +14,6 @@ namespace Alliance.Common.GameModes.Story
 			return default;
 		}
 
-		public void Set(string key, object value) => _values[key] = value;
-
 		public bool Has(string key) => _values.ContainsKey(key);
-
-		public void Reset() => _values.Clear();
 	}
 }

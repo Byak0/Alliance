@@ -108,7 +108,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				gameEntity = scriptedEvent.ParentEntity;
 			}
 			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
-				&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone))
+				&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone)
+				&& !typeof(System.Collections.IEnumerable).IsAssignableFrom(fieldInfos[0].FieldType))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);

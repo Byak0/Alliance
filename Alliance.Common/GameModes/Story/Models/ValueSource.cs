@@ -1,22 +1,13 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Functions;
-using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
-namespace Alliance.Common.GameModes.Story
+namespace Alliance.Common.GameModes.Story.Models
 {
-	/// <summary>
-	/// Unified expression-tree node for any parameter slot. A slot is always one of:
-	/// <list type="bullet">
-	/// <item><see cref="LiteralValue{T}"/> — a constant edited directly.</item>
-	/// <item><see cref="VariableValue{T}"/> — a reference to a trigger or global variable.</item>
-	/// <item><see cref="FunctionCall{T}"/> — a <see cref="Function"/> invocation whose own parameters are
-	/// <c>ValueSource&lt;X&gt;</c> slots, giving recursive composability (WC3-style expression trees).</item>
-	/// </list>
-	/// </summary>
 	[Serializable]
 	public abstract class ValueSource<T> : IValueSource
 	{
@@ -26,16 +17,11 @@ namespace Alliance.Common.GameModes.Story
 		public abstract T Resolve(TriggerContext ctx, VariableStore globals);
 	}
 
-	/// <summary>Non-generic metadata surface used by serializer and editor infrastructure.</summary>
 	public interface IValueSource
 	{
 		Type ValueType { get; }
 	}
 
-	/// <summary>
-	/// Centralizes the concrete expression-node types valid for a closed <see cref="ValueSource{T}"/>.
-	/// Runtime engine handles cannot be literals: authors obtain them from variables or functions instead.
-	/// </summary>
 	public static class ValueSourceTypeSupport
 	{
 		public static bool IsValueSourceType(Type type)
@@ -115,10 +101,6 @@ namespace Alliance.Common.GameModes.Story
 		}
 	}
 
-	/// <summary>
-	/// A call to a <see cref="Function"/>. The only internal node of the expression tree: recursion comes
-	/// from the function's own <c>ValueSource&lt;X&gt;</c> parameters.
-	/// </summary>
 	[Serializable]
 	[PhrasePreview("{Function}")]
 	public class FunctionCall<T> : ValueSource<T>

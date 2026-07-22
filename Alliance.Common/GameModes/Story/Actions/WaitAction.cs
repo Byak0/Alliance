@@ -1,9 +1,11 @@
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	[Serializable]
+	[PhrasePreview("Wait {Duration} second(s)")]
 	[PhraseTemplate("Wait {Duration} second(s)")]
 	public class WaitAction : ActionBase
 	{
