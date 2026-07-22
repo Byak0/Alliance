@@ -1,4 +1,5 @@
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -82,13 +83,13 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				FieldInfo fi = obj.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
 				object val = fi?.GetValue(obj);
 
-				// Collection field (non-string): render each item's preview, joined by ", ".
-				if (val is IEnumerable enumerable && !(val is string))
+				// Collection field : render each item's preview
+				if (val is IEnumerable enumerable && val is not string)
 				{
 					bool first = true;
 					foreach (object item in enumerable)
 					{
-						if (!first) sb.Append(", ");
+						if (!first && item is not ValueSource<string>) sb.Append(", ");
 						first = false;
 						sb.Append(ScenarioEditorHelper.GetItemDisplayName(item));
 					}

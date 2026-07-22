@@ -1,5 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Conditions

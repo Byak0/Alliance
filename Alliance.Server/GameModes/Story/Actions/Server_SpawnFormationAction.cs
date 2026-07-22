@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;

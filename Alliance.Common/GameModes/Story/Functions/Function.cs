@@ -1,27 +1,11 @@
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Xml.Serialization;
 
 namespace Alliance.Common.GameModes.Story.Functions
 {
 	/// <summary>
-	/// Base for pure computed-value functions composed inside <see cref="ValueSource{T}"/> expression trees.
-	/// <para>
-	/// Three "callable" kinds share the same authoring shape (fields + phrase attributes):
-	/// <list type="bullet">
-	/// <item><see cref="Actions.ActionBase"/> = void function (top-level side effect, lifecycle <c>Register</c>).</item>
-	/// <item><see cref="Conditions.Condition"/> = bool function (top-level predicate).</item>
-	/// <item><see cref="Function"/> = typed-value function (composed inside an expression; no side effects).</item>
-	/// </list>
-	/// </para>
-	/// <para>
-	/// Non-generic on purpose: the serializer discovers concrete subclasses with <c>t.IsSubclassOf</c>
-	/// (see <c>ScenarioSerializer.GetSerializableDerivedTypes</c>), which does not work for open generics.
-	/// </para>
-	/// <para>
-	/// <b>When to add a field as <c>ValueSource&lt;T&gt;</c> vs a plain typed field:</b> only fields whose value
-	/// is resolved at runtime (damage amount, spawn count, who/zone, dynamic message...) become expressions.
-	/// Structural identifiers (map id, variable name, character id, enum type name) stay plain typed fields.
-	/// </para>
+	/// Base for pure computed-value functions composed inside <see cref="ValueSource{T}"/> expression trees.	
 	/// </summary>
 	[Serializable]
 	public abstract class Function

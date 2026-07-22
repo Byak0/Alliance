@@ -1,4 +1,4 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.GameModes.Story.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;

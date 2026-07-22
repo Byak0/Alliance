@@ -1,5 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Xml.Serialization;

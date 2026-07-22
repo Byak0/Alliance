@@ -1,5 +1,7 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Functions
@@ -108,5 +110,118 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public override object Evaluate(TriggerContext ctx, VariableStore globals)
 			=> AddIntFunction.Resolve(Left, ctx, globals) > AddIntFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} * {Right}")]
+	[PhraseTemplate("{Left} times {Right}")]
+	public class MultiplyIntFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<int> Left = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<int> Right = new LiteralValue<int>(1);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddIntFunction.Resolve(Left, ctx, globals) * AddIntFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} / {Right}")]
+	[PhraseTemplate("{Left} divided by {Right}")]
+	public class DivideIntFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<int> Left = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<int> Right = new LiteralValue<int>(1);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		{
+			int right = AddIntFunction.Resolve(Right, ctx, globals);
+			if (right == 0) return 0;
+			return AddIntFunction.Resolve(Left, ctx, globals) / right;
+		}
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} = {Right}")]
+	[PhraseTemplate("{Left} equals {Right}")]
+	public class EqualsIntFunction : Function
+	{
+		public override Type ReturnType => typeof(bool);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<int> Left = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<int> Right = new LiteralValue<int>(0);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddIntFunction.Resolve(Left, ctx, globals) == AddIntFunction.Resolve(Right, ctx, globals);
+	}
+
+	[Serializable]
+	[PhrasePreview("random from {Min} to {Max}")]
+	[PhraseTemplate("random integer from {Min} to {Max}")]
+	public class RandomIntFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Min")]
+		public ValueSource<int> Min = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Max")]
+		public ValueSource<int> Max = new LiteralValue<int>(100);
+
+		private static readonly Random _rng = new Random();
+
+		public RandomIntFunction() { }
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		{
+			int min = AddIntFunction.Resolve(Min, ctx, globals);
+			int max = AddIntFunction.Resolve(Max, ctx, globals);
+			if (min > max) (min, max) = (max, min);
+			return _rng.Next(min, max + 1);
+		}
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} mod {Right}")]
+	[PhraseTemplate("{Left} modulo {Right}")]
+	public class ModuloIntFunction : Function
+	{
+		public override Type ReturnType => typeof(int);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<int> Left = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<int> Right = new LiteralValue<int>(1);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		{
+			int right = AddIntFunction.Resolve(Right, ctx, globals);
+			if (right == 0) return 0;
+			return AddIntFunction.Resolve(Left, ctx, globals) % right;
+		}
+	}
+
+	[Serializable]
+	[PhrasePreview("{Left} < {Right}")]
+	[PhraseTemplate("{Left} is less than {Right}")]
+	public class LessThanIntFunction : Function
+	{
+		public override Type ReturnType => typeof(bool);
+
+		[ConfigProperty(label: "Left")]
+		public ValueSource<int> Left = new LiteralValue<int>(0);
+		[ConfigProperty(label: "Right")]
+		public ValueSource<int> Right = new LiteralValue<int>(0);
+
+		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+			=> AddIntFunction.Resolve(Left, ctx, globals) < AddIntFunction.Resolve(Right, ctx, globals);
 	}
 }
