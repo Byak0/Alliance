@@ -58,6 +58,21 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public object ParentObject => parentViewModel?.Object;
 
+		private bool _isPopupOpen;
+
+		public bool IsPopupOpen
+		{
+			get => _isPopupOpen;
+			set
+			{
+				if (_isPopupOpen != value)
+				{
+					_isPopupOpen = value;
+					OnPropertyChanged(nameof(IsPopupOpen));
+				}
+			}
+		}
+
 		public object FieldValue
 		{
 			get
@@ -527,10 +542,28 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
 			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
+
+			if (itemViewModel != null)
+			{
+				itemViewModel.IsPopupOpen = true;
+			}
+			else
+			{
+				IsPopupOpen = true;
+			}
+
 			editorWindow.Show();
 
 			editorWindow.Closing += (sender, args) =>
 			{
+				if (itemViewModel != null)
+				{
+					itemViewModel.IsPopupOpen = false;
+				}
+				else
+				{
+					IsPopupOpen = false;
+				}
 				itemViewModel?.OnClose();
 				OnPropertyChanged(nameof(FieldValue));
 			};

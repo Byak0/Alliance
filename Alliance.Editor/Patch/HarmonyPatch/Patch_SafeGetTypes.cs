@@ -62,13 +62,12 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 			}
 			catch (ReflectionTypeLoadException e)
 			{
-				Log($"[CCU] Ignored ReflectionTypeLoadException in {__instance.GetName().Name}: {e.LoaderExceptions?.FirstOrDefault()?.Message}", LogLevel.Debug);
 				__result = e.Types.Where(t => t != null).ToArray();
 				return false; // skip original
 			}
 			catch (Exception ex)
 			{
-				Log($"[CCU] SafeGetTypes error for {__instance.GetName().Name} -> {ex.Message}", LogLevel.Error);
+				Log($"[Alliance] SafeGetTypes error for {__instance.GetName().Name} -> {ex.Message}", LogLevel.Error);
 				__result = Array.Empty<Type>();
 				return false;
 			}
