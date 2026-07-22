@@ -7,7 +7,7 @@
 	<!-- Palette de couleurs moderne -->
 	<Color x:Key="PrimaryColor">#3F51B5</Color>
 	<Color x:Key="PrimaryDarkColor">#303F9F</Color>
-	<Color x:Key="AccentColor">#FF4081</Color>
+	<Color x:Key="AccentColor">#36c744</Color>
 	<Color x:Key="BackgroundColor">#FAFAFA</Color>
 	<Color x:Key="SurfaceColor">#FFFFFF</Color>
 	<Color x:Key="BorderColor">#E0E0E0</Color>
@@ -150,6 +150,11 @@
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
+		<Style.Triggers>
+			<DataTrigger Binding="{Binding IsPopupOpen}" Value="True">
+				<Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+			</DataTrigger>
+		</Style.Triggers>
 	</Style>
 
 	<!-- Style TextBox moderne -->

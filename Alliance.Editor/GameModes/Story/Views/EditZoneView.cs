@@ -134,7 +134,7 @@ namespace Alliance.Editor.GameModes.Story.Views
 			}
 
 			// Update the zone's position on click
-			if (Input.IsKeyDown(InputKey.LeftMouseButton))
+			if (Input.IsKeyDown(InputKey.LeftMouseButton) && _sceneView != null)
 			{
 				_sceneView.ProjectedMousePositionOnGround(out var groundPosition, out var groundNormal, true, BodyFlags.BodyOwnerFlora, checkOccludedSurface: true);
 				_editableZone.SetPositionFromWorld(groundPosition);

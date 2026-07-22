@@ -14,6 +14,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private FieldViewModel _fieldViewModel;
 		private string _displayName;
+		private bool _isPopupOpen;
 
 		public string DisplayName
 		{
@@ -24,6 +25,19 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				{
 					_displayName = value;
 					OnPropertyChanged(nameof(DisplayName));
+				}
+			}
+		}
+
+		public bool IsPopupOpen
+		{
+			get => _isPopupOpen;
+			set
+			{
+				if (_isPopupOpen != value)
+				{
+					_isPopupOpen = value;
+					OnPropertyChanged(nameof(IsPopupOpen));
 				}
 			}
 		}
