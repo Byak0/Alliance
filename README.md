@@ -13,6 +13,7 @@ Mod is under heavy development and still far from completion.
 - Admin Menu : Easy-to-use tools for admins and moderators
 - Recruitment Menu : Spawn any troop, with customizable costs
 - Game Mode Launcher : Launch any game mode with plenty of customizable options, directly in-game
+- Native post-match intermission voting : Keep the current game mode running while players vote for the next map and factions
 - Animation Player : Play any animation on any agent, with customizable access for players
 - [Scatter Around Expanded](https://www.nexusmods.com/mountandblade2bannerlord/mods/4134/?tab=description&jump_to_comment=116945223) : Easily place your archers precisely where you want them !
 - VOIP : Speak directly in-game through your character with a localized voice chat
