@@ -4,6 +4,10 @@
 					xmlns:vm="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
 					xmlns:widgets="clr-namespace:Alliance.Editor.GameModes.Story.Widgets" xmlns:local="clr-namespace:Alliance.Editor.GameModes.Story" xmlns:views="clr-namespace:Alliance.Editor.GameModes.Story.Views">
 
+	<ResourceDictionary.MergedDictionaries>
+		<ResourceDictionary Source="ModernTheme.xaml" />
+	</ResourceDictionary.MergedDictionaries>
+	
 	<!-- Font and color definitions -->
 	<FontFamily x:Key="DefaultFontFamily">Arial</FontFamily>
 	<sys:Double x:Key="DefaultFontSize">16</sys:Double>
@@ -327,29 +331,69 @@
 			<!-- Label for the list -->
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" HorizontalAlignment="Left" VerticalAlignment="Center" />
 
-			<!-- ItemsControl to display the list items -->
-			<ItemsControl ItemsSource="{Binding Items}" HorizontalAlignment="Left">
+			<!-- ItemsControl to display the list items (with drag-drop reordering) -->
+			<ItemsControl ItemsSource="{Binding Items}" HorizontalAlignment="Left"
+						  local:DragDropReorderHelper.IsEnabled="True">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Orientation="Horizontal" Margin="0, 8, 0, 0">
-							<Button Content="{Binding DisplayName}"
-									Command="{Binding EditCommand}"
-									ContentTemplate="{StaticResource WrappingButtonText}"
-									ToolTip="{Binding DisplayName}"
-									Width="472"
-									Margin="0"
-									Padding="4,2"
-									FontFamily="{StaticResource DefaultFontFamily}"
-									FontSize="{StaticResource DefaultFontSize}"/>
-							<Button Content="X"
-									Command="{Binding DeleteCommand}"
-									Height="24"
-									Width="24"
-									Margin="8, 0, 0, 0"
-									Background="DarkRed"
-									VerticalAlignment="Center"
-									Padding="0, 0, 0, 0"/>
-						</StackPanel>
+						<Border BorderThickness="6,0,0,0" BorderBrush="Transparent"
+								Padding="0" Margin="0,4,0,0" Cursor="Hand">
+							<Border.Style>
+								<Style TargetType="Border">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+											<Setter Property="Background" Value="#440D6EFD" />
+											<Setter Property="BorderBrush" Value="#FF0D6EFD" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+							<Grid>
+								<Border Background="#440D6EFD" CornerRadius="3"
+										IsHitTestVisible="False"
+										Visibility="Collapsed">
+									<Border.Style>
+										<Style TargetType="Border">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+													<Setter Property="Visibility" Value="Visible" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Border.Style>
+								</Border>
+								<StackPanel Orientation="Horizontal">
+									<Button Content="{Binding DisplayName}"
+											Command="{Binding EditCommand}"
+											ContentTemplate="{StaticResource WrappingButtonText}"
+											ToolTip="{Binding DisplayName}"
+											Width="463"
+											Margin="0"
+											Padding="4,2"
+											FontFamily="{StaticResource DefaultFontFamily}"
+											FontSize="{StaticResource DefaultFontSize}">
+										<Button.Style>
+											<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+														<Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}" />
+														<Setter Property="Foreground" Value="White" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+									<Button Content="X"
+											Command="{Binding DeleteCommand}"
+											Height="24"
+											Width="24"
+											Margin="8, 0, 0, 0"
+											Background="DarkRed"
+											VerticalAlignment="Center"
+											Padding="0, 0, 0, 0"/>
+								</StackPanel>
+							</Grid>
+						</Border>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
@@ -518,7 +562,7 @@
 	<!-- Compact inline editor for a collection: item buttons (edit/delete) + add. Items wrap to fit width. -->
 	<DataTemplate x:Key="InlineListTemplate">
 		<StackPanel Orientation="Vertical" VerticalAlignment="Center">
-			<ItemsControl ItemsSource="{Binding Items}">
+			<ItemsControl ItemsSource="{Binding Items}" local:DragDropReorderHelper.IsEnabled="True">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<WrapPanel Orientation="Horizontal" />
@@ -526,17 +570,57 @@
 				</ItemsControl.ItemsPanel>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<StackPanel Orientation="Horizontal" Margin="0,0,4,4" VerticalAlignment="Center">
-							<Button Content="{Binding DisplayName}" Command="{Binding EditCommand}"
-									ContentTemplate="{StaticResource WrappingButtonText}"
-									MaxWidth="280" Height="24" Padding="6,0"
-									FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-									ToolTip="Edit this item" />
-							<Button Content="×" Command="{Binding DeleteCommand}"
-									Height="24" Width="20" Margin="2,0,0,0" Background="DarkRed" Foreground="White" Padding="0"
-									FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
-									ToolTip="Remove this item" />
-						</StackPanel>
+						<Border BorderThickness="4,0,0,0" BorderBrush="Transparent"
+								Padding="0" Cursor="Hand">
+							<Border.Style>
+								<Style TargetType="Border">
+									<Style.Triggers>
+										<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+											<Setter Property="Background" Value="#440D6EFD" />
+											<Setter Property="BorderBrush" Value="#FF0D6EFD" />
+										</DataTrigger>
+									</Style.Triggers>
+								</Style>
+							</Border.Style>
+							<Grid>
+								<Border Background="#440D6EFD" CornerRadius="3"
+										IsHitTestVisible="False"
+										Visibility="Collapsed">
+									<Border.Style>
+										<Style TargetType="Border">
+											<Style.Triggers>
+												<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+													<Setter Property="Visibility" Value="Visible" />
+												</DataTrigger>
+											</Style.Triggers>
+										</Style>
+									</Border.Style>
+								</Border>
+								<StackPanel Orientation="Horizontal" Margin="0,0,4,4" VerticalAlignment="Center">
+									<Button Content="{Binding DisplayName}" Command="{Binding EditCommand}"
+											ContentTemplate="{StaticResource WrappingButtonText}"
+											MaxWidth="276" Height="24" Padding="6,0"
+											FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+											ToolTip="Edit this item">
+										<Button.Style>
+											<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+												<Style.Triggers>
+													<DataTrigger Binding="{Binding IsDropTarget}" Value="True">
+														<Setter Property="Background" Value="#660D6EFD" />
+														<Setter Property="BorderBrush" Value="#FF0D6EFD" />
+														<Setter Property="Foreground" Value="White" />
+													</DataTrigger>
+												</Style.Triggers>
+											</Style>
+										</Button.Style>
+									</Button>
+									<Button Content="×" Command="{Binding DeleteCommand}"
+											Height="24" Width="20" Margin="2,0,0,0" Background="DarkRed" Foreground="White" Padding="0"
+											FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+											ToolTip="Remove this item" />
+								</StackPanel>
+							</Grid>
+						</Border>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>

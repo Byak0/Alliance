@@ -28,20 +28,21 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Generic settings", tooltip: "Define native and mod settings for this act.")]
 		public ScenarioGameModeSettings ActSettings = new ScenarioGameModeSettings();
 
-		[ConfigProperty(label: "Zones", tooltip: "Reusable named zones for this act. Can be referenced by conditions/actions in the act.")]
-		public List<NamedZone> Zones = new List<NamedZone>();
-
 		[ConfigProperty(label: "Spawn settings", tooltip: "Define how, when and where the players and IA must spawn.")]
 		public SpawnLogic SpawnLogic = new SpawnLogic();
 
-		[ConfigProperty(label: "Objectives", tooltip: "List of objectives to complete in this act.")]
+		[ConfigProperty(label: "Zones", tooltip: "Define specific zones for this act. Can be used anywhere in the act.", category: "Zones")]
+		public List<NamedZone> Zones = new List<NamedZone>();
+
+		[ConfigProperty(label: "Objectives", tooltip: "List of objectives to complete in this act.", category: "Victory conditions")]
 		public List<ObjectiveBase> Objectives = new List<ObjectiveBase>();
 
-		[ConfigProperty(label: "Scripted events", tooltip: "You can define various events that can be triggered based on conditions.")]
-		public List<ScriptedEvent> ConditionalActions = new List<ScriptedEvent>();
-
-		[ConfigProperty(label: "Victory events", tooltip: "Events triggered upon victory.")]
+		[ConfigProperty(label: "Victory events", tooltip: "Events triggered upon victory.", category: "Victory conditions")]
+		[InlineContent]
 		public VictoryLogic VictoryLogic = new VictoryLogic();
+
+		[ConfigProperty(label: "Scripted events", tooltip: "You can define various events that can be triggered based on conditions.", category: "Additional events")]
+		public List<ScriptedEvent> ConditionalActions = new List<ScriptedEvent>();
 
 		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, ScenarioGameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)
 		{

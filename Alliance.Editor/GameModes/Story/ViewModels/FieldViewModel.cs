@@ -31,9 +31,14 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		internal readonly ObjectEditorViewModel parentViewModel;
 		internal readonly ScenarioEditorViewModel scenarioEditorViewModel;
 		private object _fieldValue;
+		private object _redirectParent;
 		private Func<object, object> _valueToEffective;
 		private Func<object, object> _valueFromEffective;
 		private ValueSourceChipViewModel _valueSourceChip;
+		private ObjectEditorWindow _activeEditorWindow;
+		private readonly Dictionary<ItemViewModel, ObjectEditorWindow> _activeItemEditors = new();
+		private Window _activeValueSourcePopup;
+		private readonly Dictionary<ItemViewModel, ValueSourceEditorPopup> _activeValueSourcePopups = new();
 
 		public FieldInfo FieldInfo { get; private set; }
 		public string FieldName { get; private set; }
@@ -41,7 +46,20 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public string Label { get; private set; }
 		public string Tooltip { get; private set; }
 		public bool ShowTooltip { get; private set; }
-		public string[] PossibleValues { get; private set; }
+		private string[] _possibleValues;
+		public string[] PossibleValues
+		{
+			get => _possibleValues;
+			set
+			{
+				if (_possibleValues != value)
+				{
+					_possibleValues = value;
+					OnPropertyChanged(nameof(PossibleValues));
+					OnPropertyChanged(nameof(IsMultiChoiceString));
+				}
+			}
+		}
 		public bool IsMultiChoiceString => PossibleValues != null && PossibleValues.Length > 0;
 		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
@@ -57,6 +75,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ValueSourceChipViewModel ValueSourceChip => _valueSourceChip ??= new ValueSourceChipViewModel(this);
 
 		public object ParentObject => parentViewModel?.Object;
+
+		public void SetRedirectParent(object redirectParent)
+		{
+			_redirectParent = redirectParent;
+		}
 
 		private bool _isPopupOpen;
 
@@ -87,7 +110,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				if (!object.Equals(_fieldValue, storageValue))
 				{
 					_fieldValue = storageValue;
-					FieldInfo.SetValue(parentViewModel.Object, _fieldValue);
+					object target = _redirectParent ?? parentViewModel.Object;
+					FieldInfo.SetValue(target, _fieldValue);
 					OnPropertyChanged(nameof(FieldValue));
 					_valueSourceChip?.Refresh();
 
@@ -106,7 +130,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private bool ShouldRefreshParentOnChange()
 		{
-			if (FieldType == typeof(bool) && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
+			if (ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
 				return true;
 
 			if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
@@ -495,6 +519,23 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
+		public void MoveItem(int fromIndex, int toIndex)
+		{
+			if (fromIndex == toIndex) return;
+			if (!(FieldValue is IList list)) return;
+			if (fromIndex < 0 || fromIndex >= Items.Count || toIndex < 0 || toIndex > Items.Count) return;
+
+			var item = Items[fromIndex].Item;
+
+			list.RemoveAt(fromIndex);
+			int insertIndex = toIndex > fromIndex ? toIndex - 1 : toIndex;
+			list.Insert(insertIndex, item);
+
+			Items.Move(fromIndex, toIndex > fromIndex ? toIndex - 1 : toIndex);
+
+			OnPropertyChanged(nameof(FieldValue));
+		}
+
 		public void AddItem()
 		{
 			if (IsCollection && FieldValue == null)
@@ -511,19 +552,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				if (ValueSourceTypeSupport.IsValueSourceType(baseType))
 				{
-					var candidates = ValueSourceTypeSupport.GetConcreteTypes(baseType)
-						.Where(t => !t.IsAbstract)
-						.ToList();
-
-					if (candidates.Count > 0)
-					{
-						var vm = new TypeSelectionViewModel(candidates);
-						var form = new TypeSelectionForm { DataContext = vm };
-						if (form.ShowDialog() == true && vm.SelectedType != null)
-							typeToCreate = vm.SelectedType;
-						else
-							return;
-					}
+					typeToCreate = GetValueSourceTypeToCreate(baseType);
 				}
 				else
 				{
@@ -534,21 +563,75 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (typeToCreate == null) return;
 
 			var newItem = Activator.CreateInstance(typeToCreate);
+
+			if (typeToCreate.IsGenericType && typeToCreate.GetGenericTypeDefinition() == typeof(LiteralValue<>))
+			{
+				Type valueType = typeToCreate.GetGenericArguments()[0];
+				object defaultValue = ValueSourceTypeSupport.CreateDefaultLiteralValue(valueType);
+				if (defaultValue != null)
+				{
+					typeToCreate.GetField(nameof(LiteralValue<int>.Value))?.SetValue(newItem, defaultValue);
+				}
+			}
+
 			list.Add(newItem);
 			Items.Add(new ItemViewModel(newItem, this));
 			OnPropertyChanged(nameof(FieldValue));
 		}
 
+		private Type GetValueSourceTypeToCreate(Type baseType)
+		{
+			Type typeToCreate = null;
+
+			Type valueSourceType = baseType.GetGenericArguments()[0];
+			bool hasVariables = CollectAvailableVariables(valueSourceType).Length > 0;
+			bool hasFunctions = DiscoverConcreteTypes(typeof(Function)).Any(t => FunctionReturns(t, valueSourceType));
+
+			Type literalType = ValueSourceTypeSupport.SupportsLiteral(valueSourceType) ?
+				literalType = typeof(LiteralValue<>).MakeGenericType(valueSourceType) : null;
+			Type variableType = hasVariables ? typeof(VariableValue<>).MakeGenericType(valueSourceType) : null;
+			Type functionType = hasFunctions ? typeof(FunctionCall<>).MakeGenericType(valueSourceType) : null;
+
+			typeToCreate = literalType ?? variableType ?? functionType;
+
+			return typeToCreate;
+		}
+
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
+			if (itemViewModel != null)
+			{
+				if (_activeItemEditors.TryGetValue(itemViewModel, out var existingWindow) && existingWindow.IsLoaded)
+				{
+					existingWindow.Focus();
+					return;
+				}
+			}
+			else
+			{
+				if (_activeEditorWindow != null && _activeEditorWindow.IsLoaded)
+				{
+					_activeEditorWindow.Focus();
+					return;
+				}
+			}
+
+			if (IsCollection && itemViewModel != null && obj is IValueSource)
+			{
+				OpenValueSourceEditorForListItem(itemViewModel);
+				return;
+			}
+
 			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
 
 			if (itemViewModel != null)
 			{
+				_activeItemEditors[itemViewModel] = editorWindow;
 				itemViewModel.IsPopupOpen = true;
 			}
 			else
 			{
+				_activeEditorWindow = editorWindow;
 				IsPopupOpen = true;
 			}
 
@@ -558,15 +641,64 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				if (itemViewModel != null)
 				{
+					_activeItemEditors.Remove(itemViewModel);
 					itemViewModel.IsPopupOpen = false;
 				}
 				else
 				{
+					_activeEditorWindow = null;
 					IsPopupOpen = false;
 				}
 				itemViewModel?.OnClose();
 				OnPropertyChanged(nameof(FieldValue));
 			};
+		}
+
+		private void OpenValueSourceEditorForListItem(ItemViewModel itemVM)
+		{
+			if (_activeValueSourcePopups.TryGetValue(itemVM, out var existing) && existing.IsLoaded)
+			{
+				existing.Focus();
+				return;
+			}
+
+			Type valueSourceType = FieldType.GetGenericArguments()[0];
+			IList list = FieldValue as IList;
+
+			Func<object> getter = () => itemVM.Item;
+			Action<object> setter = newValue =>
+			{
+				if (list == null) return;
+				int index = list.IndexOf(itemVM.Item);
+				if (index >= 0)
+				{
+					list[index] = newValue;
+					itemVM.ReplaceItem(newValue);
+					OnPropertyChanged(nameof(FieldValue));
+				}
+			};
+
+			var viewModel = new ValueSourceEditorViewModel(
+				valueSourceType, getter, setter, itemVM.DisplayName ?? Label, this);
+
+			var popup = new ValueSourceEditorPopup(viewModel, this)
+			{
+				Owner = Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
+					?? Application.Current?.MainWindow
+			};
+
+			_activeValueSourcePopups[itemVM] = popup;
+			itemVM.IsPopupOpen = true;
+
+			popup.Closed += (_, _) =>
+			{
+				_activeValueSourcePopups.Remove(itemVM);
+				itemVM.IsPopupOpen = false;
+				itemVM.OnClose();
+				OnPropertyChanged(nameof(FieldValue));
+			};
+
+			popup.Show();
 		}
 
 		public void EditObjectFromFieldInfo(FieldInfo fieldInfo)
@@ -691,12 +823,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		internal void OpenValueSourceEditor()
 		{
 			if (!IsValueSource) return;
+
+			if (_activeValueSourcePopup != null && _activeValueSourcePopup.IsLoaded)
+			{
+				_activeValueSourcePopup.Focus();
+				return;
+			}
+
 			ValueSourceEditorPopup popup = new ValueSourceEditorPopup(this)
 			{
 				Owner = Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
 					?? Application.Current?.MainWindow
 			};
-			popup.Closed += (_, _) => RefreshValueSourceDisplay();
+			_activeValueSourcePopup = popup;
+			popup.Closed += (_, _) =>
+			{
+				_activeValueSourcePopup = null;
+				RefreshValueSourceDisplay();
+			};
 			popup.Show();
 		}
 

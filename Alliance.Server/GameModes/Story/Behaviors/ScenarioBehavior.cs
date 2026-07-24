@@ -101,6 +101,13 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			if (Scenario == null || Act == null) return;
 			base.OnMissionTick(dt);
+
+			// Tick victory pipeline every frame for precise timing
+			if (State == ActState.DisplayingResults && !Act.VictoryLogic.IsCompleted)
+			{
+				Act.VictoryLogic.Tick(dt);
+			}
+
 			if (EnableStateChange)
 			{
 				CheckScenarioState(dt);
@@ -143,21 +150,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					}
 					break;
 				case ActState.DisplayingResults:
-					if (CanEndAct())
+					if (Act.VictoryLogic.IsCompleted)
 					{
 						ChangeState(ActState.Completed);
-						EndAct();
 					}
 					break;
 				case ActState.Completed:
 					EnableStateChange = false;
 					break;
 			}
-		}
-
-		private bool CanEndAct()
-		{
-			return _stateDuration > 15f;
 		}
 
 		private void ChangeState(ActState newState)
@@ -204,7 +205,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			//return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			// TODO check if this fix the act starting before spawn ended
-			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + Act.SpawnLogic.TimeBeforeSpawn;
+			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + Act.SpawnLogic.TimeBeforeSpawn.Resolve();
 		}
 
 		private bool CheckObjectives()

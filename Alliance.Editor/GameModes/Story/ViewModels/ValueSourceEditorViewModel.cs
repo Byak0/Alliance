@@ -1,4 +1,3 @@
-using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Models;
 using System;
@@ -42,14 +41,21 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	public sealed class ValueSourceEditorViewModel : INotifyPropertyChanged
 	{
 		private readonly FieldViewModel _owner;
+		private readonly Func<object> _valueGetter;
+		private readonly Action<object> _valueSetter;
 		private readonly Type _valueType;
 		private ValueSourceOriginOption _selectedOrigin;
 		private ObjectEditorViewModel _detailEditor;
+		private string _label;
+		private IReadOnlyList<ValueSourceOriginOption> _origins;
+		private ICommand _closeCommand;
 
-		public string Title => $"Edit {_owner.Label}";
+		public string Title => $"Edit {_label}";
 		public string TargetTypeLabel => _valueType.Name;
-		public IReadOnlyList<ValueSourceOriginOption> Origins { get; }
-		public ICommand CloseCommand { get; }
+		public IReadOnlyList<ValueSourceOriginOption> Origins => _origins;
+		public ICommand CloseCommand => _closeCommand;
+
+		private object CurrentValue => _valueGetter != null ? _valueGetter() : _owner.FieldValue;
 
 		public ValueSourceOriginOption SelectedOrigin
 		{
@@ -60,7 +66,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				_selectedOrigin = value;
 				if (GetCurrentOrigin() != value.Origin)
 				{
-					_owner.FieldValue = CreateSource(value.Origin);
+					object newSource = CreateSource(value.Origin);
+					if (_valueSetter != null)
+						_valueSetter(newSource);
+					else
+						_owner.FieldValue = newSource;
 				}
 				RebuildDetailEditor();
 				OnPropertyChanged(nameof(SelectedOrigin));
@@ -83,29 +93,59 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool HasDetailEditor => DetailEditor != null;
 
 		public ValueSourceEditorViewModel(FieldViewModel owner)
+			: this(owner, null, null) { }
+
+		public ValueSourceEditorViewModel(FieldViewModel owner, Func<object> valueGetter, Action<object> valueSetter)
 		{
 			_owner = owner ?? throw new ArgumentNullException(nameof(owner));
+			_valueGetter = valueGetter;
+			_valueSetter = valueSetter;
 			if (!ValueSourceTypeSupport.TryGetValueType(owner.FieldType, out _valueType))
 			{
 				throw new ArgumentException("The owning field must be ValueSource<T>.", nameof(owner));
 			}
+			_label = owner.Label;
 
+			Init();
+		}
+
+		public ValueSourceEditorViewModel(
+			Type valueSourceType,
+			Func<object> valueGetter,
+			Action<object> valueSetter,
+			string label,
+			FieldViewModel contextField)
+		{
+			_owner = contextField ?? throw new ArgumentNullException(nameof(contextField));
+			_valueGetter = valueGetter ?? throw new ArgumentNullException(nameof(valueGetter));
+			_valueSetter = valueSetter ?? throw new ArgumentNullException(nameof(valueSetter));
+			_label = label;
+			if (!ValueSourceTypeSupport.TryGetValueType(valueSourceType, out _valueType))
+			{
+				throw new ArgumentException("valueSourceType must be ValueSource<T>.", nameof(valueSourceType));
+			}
+
+			Init();
+		}
+
+		private void Init()
+		{
 			bool hasVariables = _owner.CollectAvailableVariables(_valueType).Length > 0;
 			bool hasFunctions = FieldViewModel.DiscoverConcreteTypes(typeof(Function))
 				.Any(t => FieldViewModel.FunctionReturns(t, _valueType));
 
-			Origins = new List<ValueSourceOriginOption>
+			_origins = new List<ValueSourceOriginOption>
 			{
 				new ValueSourceOriginOption(ValueSourceOrigin.Literal, "Literal", ValueSourceTypeSupport.SupportsLiteral(_valueType)),
 				new ValueSourceOriginOption(ValueSourceOrigin.Variable, "Variable", hasVariables),
 				new ValueSourceOriginOption(ValueSourceOrigin.Function, "Function", hasFunctions)
 			};
-			CloseCommand = new RelayCommand(CloseWindow);
+			_closeCommand = new RelayCommand(CloseWindow);
 
 			ValueSourceOrigin? currentOrigin = GetCurrentOrigin();
 			if (currentOrigin.HasValue)
 			{
-				_selectedOrigin = Origins.FirstOrDefault(option => option.Origin == currentOrigin.Value);
+				_selectedOrigin = _origins.FirstOrDefault(option => option.Origin == currentOrigin.Value);
 				RebuildDetailEditor();
 			}
 		}
@@ -123,7 +163,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private ValueSourceOrigin? GetCurrentOrigin()
 		{
-			object source = _owner.FieldValue;
+			object source = CurrentValue;
 			if (source == null) return null;
 
 			Type type = source.GetType();
@@ -144,7 +184,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					sourceType = typeof(LiteralValue<>).MakeGenericType(_valueType);
 					object literal = Activator.CreateInstance(sourceType);
 					sourceType.GetField(nameof(LiteralValue<int>.Value), BindingFlags.Instance | BindingFlags.Public)
-						.SetValue(literal, CreateLiteralDefault());
+						.SetValue(literal, ValueSourceTypeSupport.CreateDefaultLiteralValue(_valueType));
 					return literal;
 				case ValueSourceOrigin.Variable:
 					return Activator.CreateInstance(typeof(VariableValue<>).MakeGenericType(_valueType));
@@ -155,17 +195,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		private object CreateLiteralDefault()
-		{
-			if (_valueType == typeof(Zone)) return new Zone();
-			if (_valueType == typeof(LocalizedString)) return new LocalizedString("");
-			if (_valueType == typeof(string)) return string.Empty;
-			return _valueType.IsValueType ? Activator.CreateInstance(_valueType) : null;
-		}
-
 		private void RebuildDetailEditor()
 		{
-			object source = _owner.FieldValue;
+			object source = CurrentValue;
 			if (source == null)
 			{
 				DetailEditor = null;
@@ -174,7 +206,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			WeakGameEntity entity = _owner.parentViewModel?.GameEntity ?? WeakGameEntity.Invalid;
 			DetailEditor = new ObjectEditorViewModel(source, _owner, _owner.scenarioEditorViewModel, "", entity);
-			_owner.RefreshValueSourceDisplay();
+
+			if (_valueGetter == null)
+				_owner.RefreshValueSourceDisplay();
 		}
 
 		private void OnPropertyChanged(string propertyName)

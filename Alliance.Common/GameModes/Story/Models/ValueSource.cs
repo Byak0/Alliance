@@ -8,11 +8,22 @@ using System.Xml.Serialization;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
+	/// <summary>
+	/// Unified expression-tree node for any parameter slot. A slot is always one of:
+	/// <list type="bullet">
+	/// <item><see cref="LiteralValue{T}"/> — a constant edited directly.</item>
+	/// <item><see cref="VariableValue{T}"/> — a reference to a trigger or global variable.</item>
+	/// <item><see cref="FunctionCall{T}"/> — a <see cref="Function"/> invocation whose own parameters are
+	/// <c>ValueSource&lt;X&gt;</c> slots, giving recursive composability (WC3-style expression trees).</item>
+	/// </list>
+	/// </summary>
 	[Serializable]
 	public abstract class ValueSource<T> : IValueSource
 	{
 		[XmlIgnore]
 		public Type ValueType => typeof(T);
+
+		public virtual T Resolve() => Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
 
 		public abstract T Resolve(TriggerContext ctx, VariableStore globals);
 	}
@@ -52,6 +63,14 @@ namespace Alliance.Common.GameModes.Story.Models
 					|| valueType == typeof(decimal)
 					|| valueType == typeof(LocalizedString)
 					|| valueType == typeof(Zone));
+		}
+
+		public static object CreateDefaultLiteralValue(Type valueType)
+		{
+			if (valueType == typeof(Zone)) return new Zone();
+			if (valueType == typeof(LocalizedString)) return new LocalizedString("");
+			if (valueType == typeof(string)) return string.Empty;
+			return valueType.IsValueType ? Activator.CreateInstance(valueType) : null;
 		}
 
 		public static IReadOnlyList<Type> GetConcreteTypes(Type valueSourceType)
