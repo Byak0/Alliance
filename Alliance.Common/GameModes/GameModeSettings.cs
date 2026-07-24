@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -23,9 +24,11 @@ namespace Alliance.Common.GameModes
 		public string GameModeDescription;
 
 		[ConfigProperty(label: "Native options", tooltip: "Native options from TW.")]
+		[InlineContent]
 		public TWConfig TWOptions;
 
 		[ConfigProperty(label: "Mod options", tooltip: "Additional options from Alliance.")]
+		[InlineContent]
 		public Config ModOptions;
 
 		public GameModeSettings(string gameMode, string gameModeName, string gameModeDescription)

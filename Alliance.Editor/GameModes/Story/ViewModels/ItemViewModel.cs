@@ -10,11 +10,12 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 	/// </summary>
 	public class ItemViewModel : INotifyPropertyChanged
 	{
-		public object Item { get; }
+		public object Item { get; private set; }
 
 		private FieldViewModel _fieldViewModel;
 		private string _displayName;
 		private bool _isPopupOpen;
+		private bool _isDropTarget;
 
 		public string DisplayName
 		{
@@ -42,6 +43,19 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
+		public bool IsDropTarget
+		{
+			get => _isDropTarget;
+			set
+			{
+				if (_isDropTarget != value)
+				{
+					_isDropTarget = value;
+					OnPropertyChanged(nameof(IsDropTarget));
+				}
+			}
+		}
+
 		public ICommand EditCommand { get; }
 		public ICommand DeleteCommand { get; }
 
@@ -63,6 +77,12 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public void UpdateDisplayName(object sender = null, EventArgs args = null)
 		{
 			DisplayName = ScenarioEditorHelper.GetItemDisplayName(Item, _fieldViewModel.parentViewModel.SelectedLanguage);
+		}
+
+		public void ReplaceItem(object newItem)
+		{
+			Item = newItem;
+			UpdateDisplayName();
 		}
 
 		public void OnClose()

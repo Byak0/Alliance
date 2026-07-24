@@ -322,6 +322,38 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return null;
 		}
 
+		private HashSet<string> GetAllowedFieldNamesForInnerObject(object innerObj)
+		{
+			if (Object is GameModeSettings settings)
+			{
+				if (innerObj is TWConfig)
+				{
+					return new HashSet<string>(settings.GetAvailableNativeOptions().Select(o => o.ToString()));
+				}
+
+				if (innerObj is Config)
+				{
+					return new HashSet<string>(settings.GetAvailableModOptions());
+				}
+			}
+
+			return null;
+		}
+
+		private List<FieldInfo> GetInnerEditableFields(object obj, HashSet<string> allowedFields)
+		{
+			return obj.GetType()
+				.GetFields(BindingFlags.Instance | BindingFlags.Public)
+				.Where(fi =>
+				{
+					ConfigPropertyAttribute attr = fi.GetCustomAttribute<ConfigPropertyAttribute>();
+					if (attr != null && !attr.IsEditable) return false;
+					if (allowedFields != null && !allowedFields.Contains(fi.Name)) return false;
+					return true;
+				})
+				.ToList();
+		}
+
 		private List<FieldInfo> GetEditableFields(HashSet<string> allowedFields)
 		{
 			return Object.GetType()
@@ -365,6 +397,17 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			OnPropertyChanged(nameof(HasPhrase));
 		}
 
+		private void InheritParentPossibleValues(FieldInfo fi, FieldViewModel fieldVM)
+		{
+			if (ParentVM?.PossibleValues != null
+				&& ParentVM.IsValueSource
+				&& fi.Name == nameof(LiteralValue<string>.Value)
+				&& fi.FieldType == typeof(string))
+			{
+				fieldVM.PossibleValues = ParentVM.PossibleValues;
+			}
+		}
+
 		private Dictionary<string, FieldCategoryViewModel> BuildFieldViewModels(List<FieldInfo> editableFields, HashSet<string> consumedFieldNames, Dictionary<string, bool> expandedStates)
 		{
 			var categories = new Dictionary<string, FieldCategoryViewModel>();
@@ -373,7 +416,26 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				if (!ShouldShowField(fi, consumedFieldNames)) continue;
 
+				if (fi.GetCustomAttribute<InlineContentAttribute>() != null)
+				{
+					object innerObj = fi.GetValue(Object);
+					if (innerObj != null)
+					{
+						HashSet<string> innerAllowedFields = GetAllowedFieldNamesForInnerObject(innerObj);
+						foreach (FieldInfo innerFi in GetInnerEditableFields(innerObj, innerAllowedFields))
+						{
+							FieldViewModel innerFieldVM = new FieldViewModel(innerFi, innerFi.GetValue(innerObj), this, ScenarioVM);
+							innerFieldVM.SetRedirectParent(innerObj);
+							CategorizeField(innerFieldVM, innerFi, categories, expandedStates);
+						}
+					}
+					continue;
+				}
+
 				FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
+
+				InheritParentPossibleValues(fi, fieldVM);
+
 				CategorizeField(fieldVM, fi, categories, expandedStates);
 			}
 
@@ -509,6 +571,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				consumedFieldNames.Add(fieldName);
 				FieldViewModel fieldVM = new FieldViewModel(fi, fi.GetValue(Object), this, ScenarioVM);
+
+				InheritParentPossibleValues(fi, fieldVM);
 
 				if (bar >= 0)
 				{

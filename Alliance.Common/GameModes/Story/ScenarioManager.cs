@@ -163,11 +163,10 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateInProgress?.Invoke();
 					break;
 				case ActState.DisplayingResults:
-					CurrentAct.VictoryLogic.OnDisplayResults(CurrentWinner);
+					CurrentAct.VictoryLogic.Execute();
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
 					OnActStateCompleted?.Invoke();
 					break;
 			}
@@ -180,6 +179,11 @@ namespace Alliance.Common.GameModes.Story
 				foreach (ScriptedEvent scriptedEvent in CurrentAct.ConditionalActions)
 				{
 					scriptedEvent.Tick(dt);
+				}
+
+				if (ActState == ActState.DisplayingResults && !CurrentAct.VictoryLogic.IsCompleted)
+				{
+					CurrentAct.VictoryLogic.Tick(dt);
 				}
 			}
 		}

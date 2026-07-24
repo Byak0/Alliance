@@ -52,16 +52,14 @@ namespace Alliance.Common.GameModes.Story.Models
 				desc: new LocalizedString("Description")
 				);
 
-			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
+			List<ActionBase> act1VictoryActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new StartGameAction("", new GameModeSettings())
-			};
+			}; 
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1VictoryActions);
 			Act act1 = new Act(
 				name: new LocalizedString("Act 1"),
 				desc: new LocalizedString(""),

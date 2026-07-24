@@ -11,8 +11,8 @@
 	<UserControl.Resources>
 		<ResourceDictionary>
 			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="ScenarioEditorResources.xaml" />
 				<ResourceDictionary Source="ModernTheme.xaml" />
+				<ResourceDictionary Source="ScenarioEditorResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
 			<!-- Implicit templates for the phrase segments (selected by runtime item type) -->

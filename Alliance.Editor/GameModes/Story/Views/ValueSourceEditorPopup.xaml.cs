@@ -18,6 +18,14 @@ namespace Alliance.Editor.GameModes.Story.Views
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 		}
 
+		/// <summary>Allows the caller to supply a pre-built ViewModel (e.g. for list items).</summary>
+		public ValueSourceEditorPopup(ValueSourceEditorViewModel viewModel, FieldViewModel _)
+		{
+			InitializeComponent();
+			DataContext = viewModel;
+			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+		}
+
 		private void Window_Closing(object sender, CancelEventArgs e)
 		{
 			if (DataContext is ValueSourceEditorViewModel viewModel)

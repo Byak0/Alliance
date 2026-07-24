@@ -34,8 +34,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 1 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.NoRespawn }
@@ -48,17 +48,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1ActionsDisplayResults = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1ActionActComplete = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_lobby",lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1ActionsDisplayResults, act1ActionActComplete);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1ActionsDisplayResults);
 			Act act1 = new Act(
 				name: new LocalizedString("BFHD act 1 name"),
 				desc: new LocalizedString("BFHD act 1 description"),
@@ -100,8 +98,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 3, 1 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.MaxLivesPerPlayer,
 					RespawnStrategy.NoRespawn }
@@ -109,13 +107,11 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act2ActionsDisplayResults = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act2ActionActComplete = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new StartGameAction("bfhd_helms_deep_lobby", lobbyGameModeSettings)
 			};
-			VictoryLogic act2VictoryLogic = new VictoryLogic(act2ActionsDisplayResults, act2ActionActComplete);
+			VictoryLogic act2VictoryLogic = new VictoryLogic(act2ActionsDisplayResults);
 			Act act2 = new Act(
 				name: new LocalizedString("BFHD act2 name"),
 				desc: new LocalizedString("BFHD act2 desc"),
@@ -167,8 +163,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 1500 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.TagsThenFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Zones },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -181,16 +177,14 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
 			};
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("GP act 1 name"),
 				desc: new LocalizedString("GP act 1 description"),
@@ -231,8 +225,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -240,17 +234,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act2DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act2CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 2))
 			};
 
-			VictoryLogic act2VictoryLogic = new VictoryLogic(act2DisplayResultsActions, act2CompletedActions);
+			VictoryLogic act2VictoryLogic = new VictoryLogic(act2DisplayResultsActions);
 			Act act2 = new Act(
 				name: new LocalizedString("GP act 2 name"),
 				desc: new LocalizedString("GP act 2 description"),
@@ -290,8 +282,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -299,17 +291,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act3DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act3CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 3))
 			};
 
-			VictoryLogic act3VictoryLogic = new VictoryLogic(act3DisplayResultsActions, act3CompletedActions);
+			VictoryLogic act3VictoryLogic = new VictoryLogic(act3DisplayResultsActions);
 			Act act3 = new Act(
 				name: new LocalizedString("GP act 3 name"),
 				desc: new LocalizedString("GP act 3 description"),
@@ -349,8 +339,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -358,14 +348,12 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act4DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act4CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings)
 			};
 
-			VictoryLogic act4VictoryLogic = new VictoryLogic(act4DisplayResultsActions, act4CompletedActions);
+			VictoryLogic act4VictoryLogic = new VictoryLogic(act4DisplayResultsActions);
 			Act act4 = new Act(
 				name: new LocalizedString("GP act 4 name"),
 				desc: new LocalizedString("GP act 4 description"),
@@ -417,8 +405,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 200, 4000 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.MaxLivesPerTeam,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -436,17 +424,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings2))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("GdCFinal act 1 name"),
 				desc: new LocalizedString("GdCFinal act 1 description"),
@@ -499,8 +485,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 0, 1000 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.TagsThenFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Zones },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -518,17 +504,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("Amazonia", lobbyGameModeSettings),
 					new StartGameAction("Amazonia", lobbyGameModeSettings2))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("OrgaDefault act 1 name"),
 				desc: new LocalizedString("OrgaDefault act 1 description"),

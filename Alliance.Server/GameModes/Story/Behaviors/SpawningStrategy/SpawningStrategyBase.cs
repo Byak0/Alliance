@@ -458,10 +458,10 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			switch (SpawnLogic.LocationStrategies[(int)peer.Team.Side])
 			{
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					if (!FlagUsableForTeam(peer.Team)) return false;
 					break;
-				case LocationStrategy.TagsThenFlags:
+				case LocationStrategy.Zones:
 					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0 && !FlagUsableForTeam(peer.Team)) return false;
 					break;
 			}
@@ -517,18 +517,18 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			switch (SpawnLogic.LocationStrategies[(int)playerSide])
 			{
-				case LocationStrategy.OnlyTags:
+				case LocationStrategy.Spawnpoint:
 					position = GetTagLocation(playerTeam, hasMount, firstSpawn);
 					break;
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					position = GetFlagLocation(playerTeam);
 					break;
-				case LocationStrategy.TagsThenFlags:
+				case LocationStrategy.Zones:
 					position = firstSpawn ? GetTagLocation(playerTeam, hasMount) : GetFlagLocation(playerTeam);
 					break;
-				case LocationStrategy.PlayerChoice:
-					position = GetPlayerSelectedLocation(peer);
-					break;
+				//case LocationStrategy.PlayerChoice:
+				//	position = GetPlayerSelectedLocation(peer);
+				//	break;
 			}
 
 			return position;
@@ -541,13 +541,13 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			switch (SpawnLogic.LocationStrategies[(int)team.Side])
 			{
-				case LocationStrategy.OnlyTags:
+				case LocationStrategy.Spawnpoint:
 					position = GetTagLocation(team, hasMount, firstSpawn);
 					break;
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					position = GetFlagLocation(team);
 					break;
-				case LocationStrategy.TagsThenFlags:
+				case LocationStrategy.Zones:
 					position = firstSpawn ? GetTagLocation(team, hasMount) : GetFlagLocation(team);
 					break;
 				default:
@@ -592,8 +592,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		{
 			_spawningTimer = 0;
 			_playersToRespawn = new List<NetworkCommunicator>();
-			_timeBeforeSpawn = SpawnLogic.TimeBeforeSpawn;
-			_timeBeforeRespawn = SpawnLogic.TimeBeforeRespawn;
+			_timeBeforeSpawn = SpawnLogic.TimeBeforeSpawn.Resolve();
+			_timeBeforeRespawn = SpawnLogic.TimeBeforeRespawn.Resolve();
 
 			// Init available cultures based on current act
 			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
@@ -614,7 +614,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			ScenarioPersistentData.Instance.PlayerUsedLives = new Dictionary<NetworkCommunicator, int>();
 
 			// Reset or add lives to Players/Teams
-			if (SpawnLogic.KeepLivesFromPreviousAct)
+			if (SpawnLogic.KeepLivesFromPreviousAct.Resolve())
 			{
 				List<NetworkCommunicator> players = ScenarioPersistentData.Instance.PlayerRemainingLives.Keys.ToList();
 				foreach (NetworkCommunicator player in players)
@@ -659,11 +659,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				// Broadcast the updated player spawn menu to all players
 				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
 
-				if(SpawnLogic.OfficerSelectionStrategy == OfficerSelectionStrategy.PlayerVote)
+				if(SpawnLogic.OfficerSelection == OfficerSelectionStrategy.PlayerVote)
 				{
 					PlayerSpawnBehavior.StartElectionCountdown(_timeBeforeSpawn, false);
 				}
-				else if (SpawnLogic.OfficerSelectionStrategy == OfficerSelectionStrategy.RandomOfficer)
+				else if (SpawnLogic.OfficerSelection == OfficerSelectionStrategy.RandomOfficer)
 				{
 					PlayerSpawnBehavior.StartElectionCountdown(_timeBeforeSpawn, true);
 				}
