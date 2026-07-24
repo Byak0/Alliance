@@ -145,7 +145,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			ValueSourceOrigin? currentOrigin = GetCurrentOrigin();
 			if (currentOrigin.HasValue)
 			{
-				_selectedOrigin = _origins.FirstOrDefault(option => option.Origin == currentOrigin.Value);
+				_selectedOrigin = _origins.FirstOrDefault(option => option.Origin == currentOrigin.Value && option.IsAvailable);
+			}
+
+			if(_selectedOrigin == null)
+			{
+				_selectedOrigin = _origins.FirstOrDefault(o => o.IsAvailable);
+				if (_selectedOrigin != null)
+				{
+					object newSource = CreateSource(_selectedOrigin.Origin);
+					if (_valueSetter != null)
+						_valueSetter(newSource);
+					else
+						_owner.FieldValue = newSource;
+				}
+			}
+
+			if (_selectedOrigin != null)
+			{
 				RebuildDetailEditor();
 			}
 		}
