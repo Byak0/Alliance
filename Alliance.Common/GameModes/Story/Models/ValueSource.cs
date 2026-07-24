@@ -106,7 +106,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	public class VariableValue<T> : ValueSource<T>
 	{
 		[ConfigProperty(label: "Variable", tooltip: "Trigger or global variable holding the value.")]
-		public string VariableName = "";
+		public string VariableName;
 
 		public VariableValue() { }
 

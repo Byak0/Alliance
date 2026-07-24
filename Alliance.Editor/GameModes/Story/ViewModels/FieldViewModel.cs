@@ -287,7 +287,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				&& FieldName == nameof(VariableValue<int>.VariableName))
 			{
 				Type valueType = parentViewModel.Object.GetType().GetGenericArguments()[0];
-				PossibleValues = CollectAvailableVariables(valueType);
+				object objectToIgnoreVarFrom = parentViewModel?.ParentEditor?.Object;
+				PossibleValues = CollectAvailableVariables(valueType, objectToIgnoreVarFrom);
 				IsChoiceLocked = true;
 			}
 		}
@@ -419,7 +420,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		internal string[] CollectAvailableVariables(Type variableType)
+		internal string[] CollectAvailableVariables(Type variableType, object triggerCtx = null)
 		{
 			List<string> names = new List<string>();
 
@@ -429,7 +430,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				return names.ToArray();
 			}
 
-			CollectTriggerVariableNames(variableType, names);
+			CollectTriggerVariableNames(variableType, names, triggerCtx);
 			CollectGlobalVariableNames(variableType, names);
 
 			return names.ToArray();
@@ -448,26 +449,70 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		private void CollectTriggerVariableNames(Type variableType, List<string> names)
+		private void CollectTriggerVariableNames(Type variableType, List<string> names, object triggerCtx = null)
 		{
-			ScriptedEvent scriptedEvent = parentViewModel?.FindEnclosingScriptedEvent();
-			if (scriptedEvent == null) return;
+			object root = (object)parentViewModel?.FindEnclosingScriptedEvent()
+				?? parentViewModel?.FindEnclosingAct();
+			if (root == null) return;
+			CollectTriggerVariablesFromObject(root, variableType, names, new HashSet<object>());
 
-			foreach (Condition condition in scriptedEvent.Conditions)
+			// Remove variables produced by the current object itself (or given context) to prevent self-reference.
+			object currentObj = triggerCtx ?? parentViewModel?.Object;
+			if (currentObj != null)
 			{
-				if (condition == null) continue;
-
-				foreach (FieldInfo f in condition.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
+				foreach (FieldInfo f in currentObj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
 				{
 					VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
-					if (outAttr?.VariableType == null) continue;
-					if (!variableType.IsAssignableFrom(outAttr.VariableType)) continue;
+					if (outAttr?.VariableType != null && variableType.IsAssignableFrom(outAttr.VariableType))
+					{
+						string name = f.GetValue(currentObj) as string;
+						if (!string.IsNullOrWhiteSpace(name))
+						{
+							names.Remove(name);
+						}
+					}
+				}
+			}
+		}
 
-					string name = f.GetValue(condition) as string;
+		private static void CollectTriggerVariablesFromObject(object obj, Type variableType, List<string> names, HashSet<object> visited)
+		{
+			if (obj == null || !visited.Add(obj)) return;
+
+			Type type = obj.GetType();
+			if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType) return;
+
+			foreach (FieldInfo f in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+			{
+				VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
+				if (outAttr?.VariableType != null && variableType.IsAssignableFrom(outAttr.VariableType))
+				{
+					string name = f.GetValue(obj) as string;
 					if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
 					{
 						names.Add(name);
 					}
+				}
+			}
+
+			if (obj is IList list)
+			{
+				foreach (var item in list)
+				{
+					CollectTriggerVariablesFromObject(item, variableType, names, visited);
+				}
+				return;
+			}
+
+			foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
+			{
+				Type ft = field.FieldType;
+				if (ft.IsPrimitive || ft == typeof(string) || ft.IsEnum || ft.IsValueType) continue;
+
+				object fieldValue = field.GetValue(obj);
+				if (fieldValue != null)
+				{
+					CollectTriggerVariablesFromObject(fieldValue, variableType, names, visited);
 				}
 			}
 		}
