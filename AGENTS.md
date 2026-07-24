@@ -31,6 +31,17 @@ Every game mode is registered symmetrically on Client and Server. Follow this ch
    The string name must match on both sides.
 5. **Default behaviors**: Use `DefaultClientBehaviors.GetDefaultBehaviors(scoreboardData)` / `DefaultServerBehaviors.GetDefaultBehaviors(scoreboardData)` as base lists, then `.AppendList(...)` custom behaviors.
 
+## Scenario System
+The complete contributor documentation for creating custom playable scenarios and understanding the internal runtime flow is in `docs/scenario-system.md`.
+
+Key implementation points:
+- Scenario XML files are discovered from every enabled module's `Scenarios/` folder by `ScenarioManager.RefreshAvailableScenarios()`.
+- `Scenario` and `Act` data live under `Alliance.Common/GameModes/Story/Models/`; XML serialization is handled by `ScenarioSerializer`.
+- Runtime ownership is server-authoritative: `ScenarioManagerServer` selects the scenario/act, starts or reuses the mission, and `ScenarioBehavior` drives the `ActState` state machine.
+- Clients mirror scenario state through `StoryHandler` and the scenario network messages (`InitScenarioMessage`, `UpdateScenarioMessage`, `ObjectivesProgressMessage`, `SyncScenarioLivesMessage`).
+- Scenario authors use objectives, conditions, actions, `SpawnLogic`, `VictoryLogic`, and optional scene-level `AL_TriggerAction` scripts to build gameplay.
+- If a scenario should end through the configured post-match flow, use `EndScenarioAction` rather than manually starting another mode.
+
 ## Network Messages
 All custom messages live in `Common/.../NetworkMessages/FromServer/` or `FromClient/`.
 
@@ -125,6 +136,7 @@ Log("Warning", LogLevel.Warning);
 `LogLevel.Debug` logs are stripped from Release builds. On the server, output goes to the console; on the client, it appears in-game chat.
 
 ## Key Files & Directories
+- `docs/scenario-system.md` – scenario authoring and internal runtime documentation
 - `Alliance.Common/Core/Configuration/Models/DefaultConfig.cs` – all configurable settings
 - `Alliance.Common/Extensions/IHandlerRegister.cs` – mission-scoped and global network handler registration contracts
 - `Alliance.Client/Core/ClientGlobalAutoHandler.cs` / `Alliance.Server/Core/ServerGlobalAutoHandler.cs` – global handler auto-registration

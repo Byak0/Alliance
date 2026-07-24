@@ -27,6 +27,9 @@ Mod is under heavy development and still far from completion.
 - Scenario creation menu : Make your own Scenario, with custom objectives, events and rules
 - Powerful and highly customizable scripts for map makers : Freely combine our custom triggers and actions to create unique behavior. Trigger a trap when entering a zone, toggle a light when using an object, spawn creatures once in a while...
 
+# Documentation
+- [Scenario System](docs/scenario-system.md) : Create custom playable scenarios and understand their internal structure, runtime flow, objectives, actions, conditions, spawn logic, XML format and deployment.
+
 # New Game Modes
 - Players VS Commanders : One team of players face off against one or multiple commanders who can spawn an army of bots and command them
 - Commanders VS Commanders : Two team of commanders face off with the army composition they want

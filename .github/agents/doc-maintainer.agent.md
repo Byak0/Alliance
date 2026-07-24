@@ -54,6 +54,7 @@ At the time this agent was created, the known Markdown documentation files are:
 |---|---|
 | `README.md` | Public project overview, feature summary, installation and contribution info |
 | `AGENTS.md` | Main AI agent guide for the Alliance workspace |
+| `docs/scenario-system.md` | Scenario authoring and internal runtime structure documentation |
 | `.github/agents/tw-native-explorer.agent.md` | Specialized agent for decompiled TaleWorlds native code exploration |
 | `.github/agents/doc-maintainer.agent.md` | This documentation maintenance agent |
 
