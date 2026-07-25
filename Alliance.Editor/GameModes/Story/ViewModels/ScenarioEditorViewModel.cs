@@ -139,6 +139,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 					// Deserialize the scenario from the selected file
 					Scenario = ScenarioSerializer.DeserializeScenarioFromPath(_currentFilePath);
+					if (Scenario == null) return;
 					ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 					OnPropertyChanged(nameof(ObjectEditorVM));
 				}
