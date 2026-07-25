@@ -16,7 +16,6 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
-using static Alliance.Common.Utilities.SerializeHelper;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -36,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			get
 			{
-				_xmlSerializer ??= CreateSerializer(
+				_xmlSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(Scenario),
 					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
@@ -48,29 +47,13 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			get
 			{
-				_conditionalActionSerializer ??= CreateSerializer(
+				_conditionalActionSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(ScriptedEvent),
 					typeof(Condition), typeof(ActionBase),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
 				return _conditionalActionSerializer;
 			}
 		}
-
-		/// <summary>
-		/// Creates an XmlSerializer that can serialize a given root type and include all derived types of specified base types.
-		/// </summary>
-		/// <param name="rootType">The type of the root object to serialize.</param>
-		/// <param name="baseTypes">The base types for which all derived types should be included.</param>
-		/// <returns>A configured XmlSerializer.</returns>
-		/*private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
-		{
-			List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes)
-				.Distinct()
-				.ToList();
-			derivedTypes.AddRange(GetClosedValueSourceTypes(rootType, derivedTypes));
-
-			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
-		}*/
 
 		/// <summary>
 		/// XmlSerializer cannot register open generic types such as <c>LiteralValue&lt;&gt;</c>. Discover
@@ -342,35 +325,12 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					return cachedTypeNames;
 				}
 
-				HashSet<string> computedTypeNames = GetSerializableDerivedTypes(baseType)
+				HashSet<string> computedTypeNames = SerializeHelper.GetSerializableDerivedTypes(baseType)
 					.SelectMany(GetXmlTypeNames)
 					.ToHashSet();
 				_knownTypeNamesCache[baseType] = computedTypeNames;
 				return computedTypeNames;
 			}
-		}
-
-		private static IEnumerable<Type> GetSerializableDerivedTypes(params Type[] baseTypes)
-		{
-			IEnumerable<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(a =>
-				{
-					try
-					{
-						return a.GetTypes();
-					}
-					catch (ReflectionTypeLoadException ex)
-					{
-						return ex.Types.Where(t => t != null);
-					}
-					catch
-					{
-						return Enumerable.Empty<Type>();
-					}
-				});
-		
-			return allTypes
-				.Where(t => t != null && !t.IsAbstract && baseTypes.Any(t.IsSubclassOf));
 		}
 
 		private static IEnumerable<string> GetXmlTypeNames(Type type)

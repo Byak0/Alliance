@@ -1,6 +1,7 @@
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Functions;
+using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					typeof(Function)
 				};
 
-				List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes.ToArray());
+				List<Type> derivedTypes = SerializeHelper.GetSerializableDerivedTypes(baseTypes.ToArray()).ToList();
 				// also scan ValueSource<> types used as fields in those derived types
 				foreach (Type t in derivedTypes)
 				{
@@ -81,21 +82,6 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					}
 				}
 			}
-		}
-
-		private static List<Type> GetSerializableDerivedTypes(params Type[] baseTypes)
-		{
-			IEnumerable<Type> allTypes = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(a =>
-				{
-					try { return a.GetTypes(); }
-					catch (ReflectionTypeLoadException ex) { return ex.Types.Where(t => t != null); }
-					catch { return Enumerable.Empty<Type>(); }
-				});
-
-			return allTypes
-				.Where(t => t != null && !t.IsAbstract && baseTypes.Any(t.IsSubclassOf))
-				.ToList();
 		}
 	}
 }
