@@ -6,11 +6,13 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// <summary>
 	/// Server-side implementation for ending a scenario and starting the configured post-match transition.
 	/// </summary>
+	[OverrideAction(typeof(EndScenarioAction))]
 	public class Server_EndScenarioAction : EndScenarioAction
 	{
-		public override void Execute()
+		public override ActionTask Execute()
 		{
 			GameModeStarter.Instance.StartPostMatchTransition();
+			return ActionTask.CompletedTask;
 		}
 	}
 }

@@ -11,7 +11,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Each leaf project annotates its variant subclasses with <see cref="OverrideActionAttribute"/>.
 	/// <see cref="Initialize"/> scans every loaded assembly and maps the Common base action type to the
 	/// variant type available in the current process. Because each process only loads its own target
-	/// assembly, the map holds the right variant per target with no per-action factory method.
+	/// assembly, the map holds the right variant per target.
 	/// </para>
 	/// Actions without a registered override are used as-is (the deserialized Common instance).
 	/// </summary>

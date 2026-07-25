@@ -16,7 +16,6 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
-using static Alliance.Common.Utilities.SerializeHelper;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -36,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			get
 			{
-				_xmlSerializer ??= CreateSerializer(
+				_xmlSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(Scenario),
 					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
@@ -48,7 +47,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			get
 			{
-				_conditionalActionSerializer ??= CreateSerializer(
+				_conditionalActionSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(ScriptedEvent),
 					typeof(Condition), typeof(ActionBase),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
@@ -64,7 +63,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// <returns>A configured XmlSerializer.</returns>
 		private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
 		{
-			List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes)
+			List<Type> derivedTypes = SerializeHelper.GetSerializableDerivedTypes(baseTypes)
 				.Distinct()
 				.ToList();
 			derivedTypes.AddRange(GetClosedValueSourceTypes(rootType, derivedTypes));
@@ -342,7 +341,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					return cachedTypeNames;
 				}
 
-				HashSet<string> computedTypeNames = GetSerializableDerivedTypes(baseType)
+				HashSet<string> computedTypeNames = SerializeHelper.GetSerializableDerivedTypes(baseType)
 					.SelectMany(GetXmlTypeNames)
 					.ToHashSet();
 				_knownTypeNamesCache[baseType] = computedTypeNames;
