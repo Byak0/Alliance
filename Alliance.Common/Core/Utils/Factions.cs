@@ -10,12 +10,11 @@ namespace Alliance.Common.Core.Utils
 	/// </summary>
 	public class Factions
 	{
-		public List<string> NativeCultures = new List<string>() { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait" };
 		public Dictionary<string, BasicCultureObject> AvailableCultures;
 		public List<string> OrderedCultureKeys;
 
 		private static readonly Factions instance = new Factions();
-		public static Factions Instance { get { return instance; } }
+		public static Factions Instance => instance;
 
 		static Factions()
 		{

@@ -1,4 +1,5 @@
 ﻿using Alliance.Client.Core.Providers;
+using Alliance.Client.Extensions.NativeIntermissionVote.Handlers;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -17,6 +18,7 @@ using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
+using Alliance.Client.Core;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
@@ -73,6 +75,7 @@ namespace Alliance.Client
 
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
+			ClientGlobalAutoHandler.Initialize();
 		}
 
 		private void AddGameModes()

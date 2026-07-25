@@ -3,6 +3,7 @@ using Alliance.Common.Core.Security;
 using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Patch;
 using Alliance.Common.Utilities;
+using Alliance.Server.Core;
 using Alliance.Server.Core.Configuration;
 using Alliance.Server.Core.Security;
 using Alliance.Server.GameModes.BattleRoyale;
@@ -53,6 +54,7 @@ namespace Alliance.Server
 			AnimationSystem.Instance.Init();
 
 			SceneList.Initialize();
+			ServerGlobalAutoHandler.Initialize();
 
 			Log("Alliance behaviors initialized.", LogLevel.Debug);
 		}
@@ -71,7 +73,6 @@ namespace Alliance.Server
 		{
 			// Load ExtendedCharacter.xml into usable ExtendedCharacterObjects
 			ExtendedXMLLoader.Init();
-
 			ScenarioManagerServer.Initialize();
 		}
 

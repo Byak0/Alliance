@@ -828,10 +828,10 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 		private void OnPostRoundEnd()
 		{
-			// Go back to Lobby on match end
+			// Start the configured post-match transition
 			if (RoundController.IsMatchEnding)
 			{
-				GameModeStarter.Instance.StartLobby(MultiplayerOptions.OptionType.Map.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+				GameModeStarter.Instance.StartPostMatchTransition();
 			}
 			else if (UseGold())
 			{

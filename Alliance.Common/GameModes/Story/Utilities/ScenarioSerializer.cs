@@ -16,6 +16,7 @@ using System.Text;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using static Alliance.Common.Utilities.Logger;
+using static Alliance.Common.Utilities.SerializeHelper;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -61,7 +62,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		/// <param name="rootType">The type of the root object to serialize.</param>
 		/// <param name="baseTypes">The base types for which all derived types should be included.</param>
 		/// <returns>A configured XmlSerializer.</returns>
-		private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
+		/*private static XmlSerializer CreateSerializer(Type rootType, params Type[] baseTypes)
 		{
 			List<Type> derivedTypes = GetSerializableDerivedTypes(baseTypes)
 				.Distinct()
@@ -69,7 +70,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			derivedTypes.AddRange(GetClosedValueSourceTypes(rootType, derivedTypes));
 
 			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
-		}
+		}*/
 
 		/// <summary>
 		/// XmlSerializer cannot register open generic types such as <c>LiteralValue&lt;&gt;</c>. Discover
