@@ -2,6 +2,7 @@
 using Alliance.Common.GameModes.Story.Actions;
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -16,6 +17,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		private ActionTask _currentTask;
 		private bool _isExecuting;
 
+		[XmlIgnore]
 		public bool IsCompleted { get; private set; }
 
 		public VictoryLogic() { }

@@ -35,10 +35,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			get
 			{
-				_xmlSerializer ??= SerializeHelper.CreateSerializer(
+				_xmlSerializer ??= CreateScenarioSerializer(
 					rootType: typeof(Scenario),
 					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
-					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
 				return _xmlSerializer;
 			}
 		}
@@ -50,9 +50,20 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				_conditionalActionSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(ScriptedEvent),
 					typeof(Condition), typeof(ActionBase),
-					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor));
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
 				return _conditionalActionSerializer;
 			}
+		}
+
+		private static XmlSerializer CreateScenarioSerializer(Type rootType, params Type[] baseTypes)
+		{
+			List<Type> derivedTypes = SerializeHelper.GetSerializableDerivedTypes(baseTypes)
+				.Distinct()
+				.ToList();
+			// Add ValueSource<T> and its derived types
+			derivedTypes.AddRange(GetClosedValueSourceTypes(rootType, derivedTypes));
+
+			return new XmlSerializer(rootType, derivedTypes.Distinct().ToArray());
 		}
 
 		/// <summary>
@@ -172,20 +183,28 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			// Check if the file exists before deserializing
 			if (File.Exists(filename))
 			{
-				using (TextReader reader = new StreamReader(filename))
+				try
 				{
-					Scenario scenario = (Scenario)XmlSerializer.Deserialize(reader);
-
-					if (scenario is ISerializationCallback deserializationCallback)
+					using (TextReader reader = new StreamReader(filename))
 					{
-						deserializationCallback.OnAfterDeserialize();
+						Scenario scenario = (Scenario)XmlSerializer.Deserialize(reader);
+
+						if (scenario is ISerializationCallback deserializationCallback)
+						{
+							deserializationCallback.OnAfterDeserialize();
+						}
+
+						RecursiveActionReplace(scenario);
+
+						RecursiveSerializationCallBack(scenario, obj => obj.OnAfterDeserialize());
+
+						return scenario;
 					}
-
-					RecursiveActionReplace(scenario);
-
-					RecursiveSerializationCallBack(scenario, obj => obj.OnAfterDeserialize());
-
-					return scenario;
+				}
+				catch (Exception ex)
+				{
+					Log($"Failed to deserialize scenario from '{filename}': {ex.Message}", LogLevel.Error);
+					return null;
 				}
 			}
 			else
