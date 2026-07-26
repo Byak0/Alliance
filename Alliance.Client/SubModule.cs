@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Alliance.Client.Core;
 using TaleWorlds.Core;
+using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
 using Module = TaleWorlds.MountAndBlade.Module;
@@ -76,6 +77,7 @@ namespace Alliance.Client
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
 			ClientGlobalAutoHandler.Initialize();
+			UIConfig.DoNotUseGeneratedPrefabs = true;
 		}
 
 		private void AddGameModes()
