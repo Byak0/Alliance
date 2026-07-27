@@ -1,3 +1,4 @@
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	{
 		public bool IsCompleted { get; protected set; }
 		public event Action OnTaskCompleted;
-		public abstract void Tick(float dt);
+		public abstract void Tick(float dt, VariableStore context);
 
 		public static readonly ActionTask CompletedTask = new CompletedTask();
 
@@ -25,7 +26,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			IsCompleted = true;
 		}
 
-		public override void Tick(float dt) { }
+		public override void Tick(float dt, VariableStore context) { }
 	}
 
 	public sealed class WaitTask : ActionTask
@@ -39,7 +40,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			_elapsed = 0f;
 		}
 
-		public override void Tick(float dt)
+		public override void Tick(float dt, VariableStore context)
 		{
 			if (IsCompleted) return;
 			_elapsed += dt;
@@ -66,7 +67,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			}
 		}
 
-		public override void Tick(float dt)
+		public override void Tick(float dt, VariableStore context)
 		{
 			if (IsCompleted) return;
 
@@ -78,10 +79,10 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 			if (_currentTask == null)
 			{
-				_currentTask = _actions[_index].Execute();
+				_currentTask = _actions[_index].Execute(context);
 			}
 
-			_currentTask.Tick(dt);
+			_currentTask.Tick(dt, context);
 
 			if (_currentTask.IsCompleted)
 			{

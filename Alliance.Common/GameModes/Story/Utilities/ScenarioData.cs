@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -17,11 +18,26 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			Float,
 			Bool,
 			String,
-			Enum
+			Enum,
+			Agent
 		}
 
 		private static List<Type> _availableEnumTypes;
 		private static readonly object _cacheLock = new object();
+
+		public static Type GetVariableType(VariableType variableType)
+		{
+			return variableType switch
+			{
+				VariableType.Int => typeof(int),
+				VariableType.Float => typeof(float),
+				VariableType.Bool => typeof(bool),
+				VariableType.String => typeof(string),
+				VariableType.Enum => typeof(Enum),
+				VariableType.Agent => typeof(Agent),
+				_ => throw new ArgumentOutOfRangeException(nameof(variableType), variableType, null)
+			};
+		}
 
 		/// <summary>
 		/// Scans all enum types used in Condition, ActionBase, and Function

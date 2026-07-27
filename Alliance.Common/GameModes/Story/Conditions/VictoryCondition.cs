@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Core;
+﻿using Alliance.Common.GameModes.Story.Utilities;
+using TaleWorlds.Core;
 
 namespace Alliance.Common.GameModes.Story.Conditions
 {
@@ -13,9 +14,9 @@ namespace Alliance.Common.GameModes.Story.Conditions
 
 		public VictoryCondition() { }
 
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
-			return context.CurrentWinner == ExpectedWinner;
+			return ScenarioManager.Instance?.CurrentWinner == ExpectedWinner;
 		}
 	}
 }

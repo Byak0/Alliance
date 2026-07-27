@@ -19,12 +19,12 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ConcatFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			StringBuilder sb = new StringBuilder();
 			foreach (ValueSource<string> vs in Values)
 			{
-				sb.Append(vs?.Resolve(ctx, globals) ?? "");
+				sb.Append(vs?.Resolve(context) ?? "");
 			}
 			return sb.ToString();
 		}
@@ -44,10 +44,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public FormatStringFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string template = Template?.Resolve(ctx, globals) ?? "{0}";
-			string value = Value?.Resolve(ctx, globals) ?? "";
+			string template = Template?.Resolve(context) ?? "{0}";
+			string value = Value?.Resolve(context) ?? "";
 			return string.Format(template, value);
 		}
 	}
@@ -68,11 +68,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public SubstringFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
-			int start = AddIntFunction.Resolve(Start, ctx, globals);
-			int length = AddIntFunction.Resolve(Length, ctx, globals);
+			string value = Value?.Resolve(context) ?? "";
+			int start = AddIntFunction.Resolve(Start, context);
+			int length = AddIntFunction.Resolve(Length, context);
 			if (start < 0 || start >= value.Length) return "";
 			if (length <= 0) return value.Substring(start);
 			return value.Substring(start, Math.Min(length, value.Length - start));
@@ -91,9 +91,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public StringLengthFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
+			string value = Value?.Resolve(context) ?? "";
 			return value.Length;
 		}
 	}
@@ -110,9 +110,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ToUpperFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
+			string value = Value?.Resolve(context) ?? "";
 			return value.ToUpper();
 		}
 	}
@@ -129,9 +129,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ToLowerFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
+			string value = Value?.Resolve(context) ?? "";
 			return value.ToLower();
 		}
 	}
@@ -150,10 +150,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public StartsWithFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
-			string prefix = Prefix?.Resolve(ctx, globals) ?? "";
+			string value = Value?.Resolve(context) ?? "";
+			string prefix = Prefix?.Resolve(context) ?? "";
 			return value.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
 		}
 	}
@@ -172,10 +172,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ContainsStringFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			string value = Value?.Resolve(ctx, globals) ?? "";
-			string substr = Substring?.Resolve(ctx, globals) ?? "";
+			string value = Value?.Resolve(context) ?? "";
+			string substr = Substring?.Resolve(context) ?? "";
 			return value.IndexOf(substr, StringComparison.OrdinalIgnoreCase) >= 0;
 		}
 	}

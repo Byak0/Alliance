@@ -18,11 +18,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Resolve(Left, ctx, globals) + Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> Resolve(Left, context) + Resolve(Right, context);
 
-		internal static float Resolve(ValueSource<float> source, TriggerContext ctx, VariableStore globals)
-			=> source?.Resolve(ctx, globals) ?? 0f;
+		internal static float Resolve(ValueSource<float> source, VariableStore context)
+			=> source?.Resolve(context) ?? 0f;
 	}
 
 	[Serializable]
@@ -37,8 +37,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddFloatFunction.Resolve(Left, ctx, globals) - AddFloatFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddFloatFunction.Resolve(Left, context) - AddFloatFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -53,8 +53,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(1f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddFloatFunction.Resolve(Left, ctx, globals) * AddFloatFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddFloatFunction.Resolve(Left, context) * AddFloatFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -69,11 +69,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(1f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			float right = AddFloatFunction.Resolve(Right, ctx, globals);
+			float right = AddFloatFunction.Resolve(Right, context);
 			if (right == 0f) return 0f;
-			return AddFloatFunction.Resolve(Left, ctx, globals) / right;
+			return AddFloatFunction.Resolve(Left, context) / right;
 		}
 	}
 
@@ -89,8 +89,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Math.Min(AddFloatFunction.Resolve(Left, ctx, globals), AddFloatFunction.Resolve(Right, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> Math.Min(AddFloatFunction.Resolve(Left, context), AddFloatFunction.Resolve(Right, context));
 	}
 
 	[Serializable]
@@ -105,8 +105,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Math.Max(AddFloatFunction.Resolve(Left, ctx, globals), AddFloatFunction.Resolve(Right, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> Math.Max(AddFloatFunction.Resolve(Left, context), AddFloatFunction.Resolve(Right, context));
 	}
 
 	[Serializable]
@@ -123,12 +123,12 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Max")]
 		public ValueSource<float> Max = new LiteralValue<float>(1f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			float min = AddFloatFunction.Resolve(Min, ctx, globals);
-			float max = AddFloatFunction.Resolve(Max, ctx, globals);
+			float min = AddFloatFunction.Resolve(Min, context);
+			float max = AddFloatFunction.Resolve(Max, context);
 			if (max < min) (min, max) = (max, min);
-			return Math.Min(Math.Max(AddFloatFunction.Resolve(Value, ctx, globals), min), max);
+			return Math.Min(Math.Max(AddFloatFunction.Resolve(Value, context), min), max);
 		}
 	}
 
@@ -148,10 +148,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public RandomFloatFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			float min = AddFloatFunction.Resolve(Min, ctx, globals);
-			float max = AddFloatFunction.Resolve(Max, ctx, globals);
+			float min = AddFloatFunction.Resolve(Min, context);
+			float max = AddFloatFunction.Resolve(Max, context);
 			if (min > max) (min, max) = (max, min);
 			return (float)(min + _rng.NextDouble() * (max - min));
 		}
@@ -169,8 +169,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddFloatFunction.Resolve(Left, ctx, globals) > AddFloatFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddFloatFunction.Resolve(Left, context) > AddFloatFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -185,8 +185,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddFloatFunction.Resolve(Left, ctx, globals) < AddFloatFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddFloatFunction.Resolve(Left, context) < AddFloatFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -201,8 +201,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<float> Right = new LiteralValue<float>(0f);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Math.Abs(AddFloatFunction.Resolve(Left, ctx, globals) - AddFloatFunction.Resolve(Right, ctx, globals)) < float.Epsilon;
+		public override object Evaluate(VariableStore context)
+			=> Math.Abs(AddFloatFunction.Resolve(Left, context) - AddFloatFunction.Resolve(Right, context)) < float.Epsilon;
 	}
 
 	[Serializable]
@@ -217,8 +217,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public FloorFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> (int)Math.Floor(AddFloatFunction.Resolve(Value, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> (int)Math.Floor(AddFloatFunction.Resolve(Value, context));
 	}
 
 	[Serializable]
@@ -233,8 +233,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public CeilFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> (int)Math.Ceiling(AddFloatFunction.Resolve(Value, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> (int)Math.Ceiling(AddFloatFunction.Resolve(Value, context));
 	}
 
 	[Serializable]
@@ -249,7 +249,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public RoundFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> (int)Math.Round(AddFloatFunction.Resolve(Value, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> (int)Math.Round(AddFloatFunction.Resolve(Value, context));
 	}
 }

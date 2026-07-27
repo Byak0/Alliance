@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -13,13 +14,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 		// Create a dictionary with modified agents and their original speaking range
 		Dictionary<Agent, int> AgentsWithCustomRange = new Dictionary<Agent, int>();
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (Mission.Current == null) return ActionTask.CompletedTask;
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			int voipRange = VOIP_Range?.Resolve(ctx, globals) ?? 0;
-			List<Agent> targets = Who?.Resolve(ctx, globals) ?? new List<Agent>();
+			int voipRange = VOIP_Range?.Resolve(context) ?? 0;
+			List<Agent> targets = Who?.Resolve(context) ?? new List<Agent>();
 			// Set the speaking range for all agents in the targets list
 			foreach (Agent agent in targets)
 			{

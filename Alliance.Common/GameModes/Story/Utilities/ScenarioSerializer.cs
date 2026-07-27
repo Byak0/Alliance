@@ -99,7 +99,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				Type type = UnwrapCollectionType(pending.Dequeue());
 				if (type == null || !visited.Add(type)) continue;
-				if (ValueSourceTypeSupport.IsValueSourceType(type))
+				if (ValueSourceHelper.IsValueSourceType(type))
 				{
 					valueSourceTypes.Add(type);
 					continue;
@@ -109,7 +109,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
 				{
 					Type fieldType = UnwrapCollectionType(field.FieldType);
-					if (ValueSourceTypeSupport.IsValueSourceType(fieldType))
+					if (ValueSourceHelper.IsValueSourceType(fieldType))
 					{
 						valueSourceTypes.Add(fieldType);
 					}
@@ -120,7 +120,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				}
 			}
 
-			return valueSourceTypes.SelectMany(ValueSourceTypeSupport.GetConcreteTypes);
+			return valueSourceTypes.SelectMany(ValueSourceHelper.GetConcreteTypes);
 		}
 
 		private static Type UnwrapCollectionType(Type type)

@@ -1,3 +1,4 @@
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Xml.Serialization;
@@ -19,8 +20,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		/// <summary>
 		/// Computes the value. Reads its own <c>[ConfigProperty]</c> fields (typically <c>ValueSource&lt;X&gt;</c>
-		/// parameters), resolves them through <c>.Resolve(ctx, globals)</c>, then returns the boxed result.
+		/// parameters), resolves them through <c>.Resolve(context)</c>, then returns the boxed result.
 		/// </summary>
-		public abstract object Evaluate(TriggerContext ctx, VariableStore globals);
+		public abstract object Evaluate(VariableStore context);
 	}
 }

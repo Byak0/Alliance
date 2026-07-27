@@ -20,13 +20,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 			_gameEntity = entity;
 		}
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-
-			string tag = Tag?.Resolve(ctx, globals) ?? "";
-			bool defaultVis = DefaultVisibility?.Resolve(ctx, globals) ?? true;
+			string tag = Tag?.Resolve(context) ?? "";
+			bool defaultVis = DefaultVisibility?.Resolve(context) ?? true;
 
 			bool target;
 			if (VisibilityType == Visibility.Switch)

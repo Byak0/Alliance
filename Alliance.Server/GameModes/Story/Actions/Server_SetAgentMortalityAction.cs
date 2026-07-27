@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -10,13 +11,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 	[OverrideAction(typeof(SetAgentMortalityAction))]
 	public class Server_SetAgentMortalityAction : SetAgentMortalityAction
 	{
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (Mission.Current == null) return ActionTask.CompletedTask;
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			MortalityState state = State?.Resolve(ctx, globals) ?? MortalityState.Invulnerable;
-			List<Agent> targets = Who?.Resolve(ctx, globals) ?? new List<Agent>();
+			MortalityState state = State?.Resolve(context) ?? MortalityState.Invulnerable;
+			List<Agent> targets = Who?.Resolve(context) ?? new List<Agent>();
 			foreach (Agent agent in targets)
 			{
 				agent.SetMortalityState(state);

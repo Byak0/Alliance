@@ -9,80 +9,40 @@ using System.Xml.Serialization;
 namespace Alliance.Common.GameModes.Story.Models
 {
 	/// <summary>
+	/// Non-generic base class for <see cref="ValueSource{T}"/>. Used for editor.
+	/// </summary>
+	public abstract class ValueSource
+	{
+		public abstract Type ValueType { get; }
+		public object ResolveObject(VariableStore context = null) => ResolveObject(context, ScenarioManager.Instance.Globals);
+		public abstract object ResolveObject(VariableStore context, VariableStore globals);
+	}
+
+	/// <summary>
 	/// Unified expression-tree node for any parameter slot. A slot is always one of:
 	/// <list type="bullet">
 	/// <item><see cref="LiteralValue{T}"/> — a constant edited directly.</item>
-	/// <item><see cref="VariableValue{T}"/> — a reference to a trigger or global variable.</item>
+	/// <item><see cref="VariableValue{T}"/> — a reference to a local or global variable.</item>
 	/// <item><see cref="FunctionCall{T}"/> — a <see cref="Function"/> invocation whose own parameters are
 	/// <c>ValueSource&lt;X&gt;</c> slots, giving recursive composability (WC3-style expression trees).</item>
 	/// </list>
 	/// </summary>
 	[Serializable]
-	public abstract class ValueSource<T> : IValueSource
+	public abstract class ValueSource<T> : ValueSource, IValueSource
 	{
 		[XmlIgnore]
-		public Type ValueType => typeof(T);
+		public override Type ValueType => typeof(T);
 
-		public virtual T Resolve() => Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+		public override object ResolveObject(VariableStore context, VariableStore globals) => Resolve(context, globals);
 
-		public abstract T Resolve(TriggerContext ctx, VariableStore globals);
+		public virtual T Resolve(VariableStore context = null) => Resolve(context, ScenarioManager.Instance.Globals);
+
+		public abstract T Resolve(VariableStore context, VariableStore globals);
 	}
 
 	public interface IValueSource
 	{
 		Type ValueType { get; }
-	}
-
-	public static class ValueSourceTypeSupport
-	{
-		public static bool IsValueSourceType(Type type)
-		{
-			return type != null
-				&& type.IsGenericType
-				&& type.GetGenericTypeDefinition() == typeof(ValueSource<>);
-		}
-
-		public static bool TryGetValueType(Type valueSourceType, out Type valueType)
-		{
-			if (IsValueSourceType(valueSourceType))
-			{
-				valueType = valueSourceType.GetGenericArguments()[0];
-				return true;
-			}
-
-			valueType = null;
-			return false;
-		}
-
-		public static bool SupportsLiteral(Type valueType)
-		{
-			return valueType != null
-				&& (valueType.IsPrimitive
-					|| valueType.IsEnum
-					|| valueType == typeof(string)
-					|| valueType == typeof(decimal)
-					|| valueType == typeof(LocalizedString)
-					|| valueType == typeof(Zone));
-		}
-
-		public static object CreateDefaultLiteralValue(Type valueType)
-		{
-			if (valueType == typeof(Zone)) return new Zone();
-			if (valueType == typeof(LocalizedString)) return new LocalizedString("");
-			if (valueType == typeof(string)) return string.Empty;
-			return valueType.IsValueType ? Activator.CreateInstance(valueType) : null;
-		}
-
-		public static IReadOnlyList<Type> GetConcreteTypes(Type valueSourceType)
-		{
-			if (!TryGetValueType(valueSourceType, out Type valueType)) return Array.Empty<Type>();
-
-			List<Type> types = new List<Type>();
-			if (SupportsLiteral(valueType)) types.Add(typeof(LiteralValue<>).MakeGenericType(valueType));
-			types.Add(typeof(VariableValue<>).MakeGenericType(valueType));
-			types.Add(typeof(FunctionCall<>).MakeGenericType(valueType));
-			return types;
-		}
 	}
 
 	[Serializable]
@@ -97,7 +57,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public LiteralValue(T value) { Value = value; }
 
-		public override T Resolve(TriggerContext ctx, VariableStore globals) => Value;
+		public override T Resolve(VariableStore context, VariableStore globals) => Value;
 	}
 
 	[Serializable]
@@ -105,15 +65,15 @@ namespace Alliance.Common.GameModes.Story.Models
 	[PhraseTemplate("{VariableName}")]
 	public class VariableValue<T> : ValueSource<T>
 	{
-		[ConfigProperty(label: "Variable", tooltip: "Trigger or global variable holding the value.")]
+		[ConfigProperty(label: "Variable", tooltip: "Local or global variable holding the value.")]
 		public string VariableName;
 
 		public VariableValue() { }
 
-		public override T Resolve(TriggerContext ctx, VariableStore globals)
+		public override T Resolve(VariableStore context, VariableStore globals)
 		{
-			if (ctx != null && ctx.Has(VariableName))
-				return ctx.Get<T>(VariableName);
+			if (context != null && context.Has(VariableName))
+				return context.Get<T>(VariableName);
 			if (globals != null && globals.Has(VariableName))
 				return globals.Get<T>(VariableName);
 			return default;
@@ -131,10 +91,10 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public FunctionCall(Function function) { Function = function; }
 
-		public override T Resolve(TriggerContext ctx, VariableStore globals)
+		public override T Resolve(VariableStore context, VariableStore globals)
 		{
 			if (Function == null) return default;
-			object result = Function.Evaluate(ctx, globals);
+			object result = Function.Evaluate(context);
 			return result is T typed ? typed : default;
 		}
 	}

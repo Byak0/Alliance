@@ -1,8 +1,8 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
 using TaleWorlds.Engine;
 
@@ -43,10 +43,10 @@ namespace Alliance.Common.GameModes.Story.Actions
 			ActionIfFalse.ForEach(a => a.Register(entity));
 		}
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			bool result = true;
-			Condition.ForEach(c => result &= c.Evaluate(ScenarioManager.Instance));
+			Condition.ForEach(c => result &= c.Evaluate(context));
 
 			List<ActionBase> branch = result ? ActionIfTrue : ActionIfFalse;
 			if (branch == null || branch.Count == 0)
@@ -55,7 +55,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			}
 			if (branch.Count == 1)
 			{
-				return branch[0].Execute();
+				return branch[0].Execute(context);
 			}
 			return new SequenceTask(branch);
 		}

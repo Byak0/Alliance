@@ -18,11 +18,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Resolve(Left, ctx, globals) + Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> Resolve(Left, context) + Resolve(Right, context);
 
-		internal static int Resolve(ValueSource<int> source, TriggerContext ctx, VariableStore globals)
-			=> source?.Resolve(ctx, globals) ?? 0;
+		internal static int Resolve(ValueSource<int> source, VariableStore context)
+			=> source?.Resolve(context) ?? 0;
 	}
 
 	[Serializable]
@@ -37,8 +37,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddIntFunction.Resolve(Left, ctx, globals) - AddIntFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddIntFunction.Resolve(Left, context) - AddIntFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -53,8 +53,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Math.Min(AddIntFunction.Resolve(Left, ctx, globals), AddIntFunction.Resolve(Right, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> Math.Min(AddIntFunction.Resolve(Left, context), AddIntFunction.Resolve(Right, context));
 	}
 
 	[Serializable]
@@ -69,8 +69,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> Math.Max(AddIntFunction.Resolve(Left, ctx, globals), AddIntFunction.Resolve(Right, ctx, globals));
+		public override object Evaluate(VariableStore context)
+			=> Math.Max(AddIntFunction.Resolve(Left, context), AddIntFunction.Resolve(Right, context));
 	}
 
 	[Serializable]
@@ -87,12 +87,12 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Max")]
 		public ValueSource<int> Max = new LiteralValue<int>(1);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			int min = AddIntFunction.Resolve(Min, ctx, globals);
-			int max = AddIntFunction.Resolve(Max, ctx, globals);
+			int min = AddIntFunction.Resolve(Min, context);
+			int max = AddIntFunction.Resolve(Max, context);
 			if (max < min) (min, max) = (max, min);
-			return Math.Min(Math.Max(AddIntFunction.Resolve(Value, ctx, globals), min), max);
+			return Math.Min(Math.Max(AddIntFunction.Resolve(Value, context), min), max);
 		}
 	}
 
@@ -108,8 +108,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddIntFunction.Resolve(Left, ctx, globals) > AddIntFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddIntFunction.Resolve(Left, context) > AddIntFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -124,8 +124,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(1);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddIntFunction.Resolve(Left, ctx, globals) * AddIntFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddIntFunction.Resolve(Left, context) * AddIntFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -140,11 +140,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(1);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			int right = AddIntFunction.Resolve(Right, ctx, globals);
+			int right = AddIntFunction.Resolve(Right, context);
 			if (right == 0) return 0;
-			return AddIntFunction.Resolve(Left, ctx, globals) / right;
+			return AddIntFunction.Resolve(Left, context) / right;
 		}
 	}
 
@@ -160,8 +160,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddIntFunction.Resolve(Left, ctx, globals) == AddIntFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddIntFunction.Resolve(Left, context) == AddIntFunction.Resolve(Right, context);
 	}
 
 	[Serializable]
@@ -180,10 +180,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public RandomIntFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			int min = AddIntFunction.Resolve(Min, ctx, globals);
-			int max = AddIntFunction.Resolve(Max, ctx, globals);
+			int min = AddIntFunction.Resolve(Min, context);
+			int max = AddIntFunction.Resolve(Max, context);
 			if (min > max) (min, max) = (max, min);
 			return _rng.Next(min, max + 1);
 		}
@@ -201,11 +201,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(1);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			int right = AddIntFunction.Resolve(Right, ctx, globals);
+			int right = AddIntFunction.Resolve(Right, context);
 			if (right == 0) return 0;
-			return AddIntFunction.Resolve(Left, ctx, globals) % right;
+			return AddIntFunction.Resolve(Left, context) % right;
 		}
 	}
 
@@ -221,7 +221,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(0);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> AddIntFunction.Resolve(Left, ctx, globals) < AddIntFunction.Resolve(Right, ctx, globals);
+		public override object Evaluate(VariableStore context)
+			=> AddIntFunction.Resolve(Left, context) < AddIntFunction.Resolve(Right, context);
 	}
 }

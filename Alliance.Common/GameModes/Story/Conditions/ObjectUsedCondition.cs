@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.CustomScripts.Scripts;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
@@ -98,7 +99,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			}
 		}
 
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
 			// If the object has been used, return true and reset the used flag (unless AllowMultipleUses is false)
 			if (_used)

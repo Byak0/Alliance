@@ -19,23 +19,21 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public ValueSource<List<Agent>> Who = new VariableValue<List<Agent>>();
 		public ValueSource<int> TargetCount = new LiteralValue<int>(1);		
 		public bool ExactCountOnly = false;
-		[ConfigProperty(label: "Captured agents", tooltip: "When condition is fulfilled, matching agents will be stored under this variable name for later use.")]
+		[ConfigProperty(label: "Captured agents", tooltip: "When condition is fulfilled, matching agents will be stored under this temporary variable name within this scripted event.")]
 		[VariableOutput(typeof(List<Agent>))]
 		public string CapturedAgents = "TriggeringAgents";
 
 		public AgentCountCondition() { }
 
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
 			if (Mission.Current == null) return false;
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			List<Agent> targets = Who?.Resolve(ctx, globals) ?? new List<Agent>();
-			int targetCount = TargetCount?.Resolve(ctx, globals) ?? 0;
+			List<Agent> targets = Who?.Resolve(context) ?? new List<Agent>();
+			int targetCount = TargetCount?.Resolve(context) ?? 0;
 			bool result = ExactCountOnly ? targets.Count == targetCount : targets.Count >= targetCount;
 			if (result && targets.Count > 0)
 			{
-				ctx?.Set(CapturedAgents, new List<Agent>(targets));
+				context?.Set(CapturedAgents, new List<Agent>(targets));
 			}
 			return result;
 		}

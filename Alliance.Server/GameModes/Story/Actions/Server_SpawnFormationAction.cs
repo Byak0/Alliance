@@ -28,23 +28,21 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_SpawnFormationAction() : base() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
-			_ = SpawnAsync();
+			_ = SpawnAsync(context);
 			return ActionTask.CompletedTask;
 		}
 
-		private async Task SpawnAsync()
+		private async Task SpawnAsync(VariableStore context)
 		{
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			Formation formation = null;
 
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			Zone spawnZoneObj = SpawnZone?.Resolve(ctx, globals);
-			Vec3 spawnCenter = spawnZoneObj != null ? spawnZoneObj.ResolveCenter(ctx, globals) : Vec3.Zero;
+			Zone spawnZoneObj = SpawnZone?.Resolve(context);
+			Vec3 spawnCenter = spawnZoneObj != null ? spawnZoneObj.ResolveCenter(context) : Vec3.Zero;
 			float spawnRadius = spawnZoneObj?.Radius ?? 0f;
 
 			// Check if a player control this formation
@@ -100,7 +98,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
-				int spawnCount = characterToSpawn.SpawnCount?.Resolve(ctx, globals) ?? 0;
+				int spawnCount = characterToSpawn.SpawnCount?.Resolve(context) ?? 0;
 				int numberToSpawn = characterToSpawn.IsPercentage ? 
 					SpawnHelper.GetTroopCountFromPercentage(spawnCount) : 
 					spawnCount;
@@ -138,8 +136,8 @@ namespace Alliance.Server.GameModes.Story.Actions
 				switch (MoveOrder)
 				{
 					case MoveOrderType.Move:
-						Zone dirZoneObj = Direction?.Resolve(ctx, globals);
-						Vec3 dirCenter = dirZoneObj != null ? dirZoneObj.ResolveCenter(ctx, globals) : Vec3.Zero;
+						Zone dirZoneObj = Direction?.Resolve(context);
+						Vec3 dirCenter = dirZoneObj != null ? dirZoneObj.ResolveCenter(context) : Vec3.Zero;
 						float dirRadius = dirZoneObj?.Radius ?? 0f;
 						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(dirCenter, dirRadius);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);

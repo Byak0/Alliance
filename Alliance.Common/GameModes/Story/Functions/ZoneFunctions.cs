@@ -27,12 +27,13 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ZoneContainsAgentFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Zone zone = Zone?.Resolve(ctx, globals);
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Zone zone = Zone?.Resolve(context);
+			Agent agent = Agent?.Resolve(context);
 			if (zone == null || agent == null) return false;
-			return zone.Contains(agent.Position, ctx, globals);
+			return zone.Contains(agent.Position, context);
+
 		}
 	}
 
@@ -55,14 +56,14 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ZoneAgentCountFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			if (Mission.Current == null) return 0;
-			Zone zone = Zone?.Resolve(ctx, globals);
+			Zone zone = Zone?.Resolve(context);
 			if (zone == null) return 0;
 
 			int count = 0;
-			Vec3 center = zone.ResolveCenter(ctx, globals);
+			Vec3 center = zone.ResolveCenter(context);
 
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(center.AsVec2, zone.Shape.BoundingRadius, agents);
@@ -70,7 +71,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 			{
 				if (agent?.Team == null) continue;
 				if (Side != SideType.All && (int)agent.Team.Side != (int)Side) continue;
-				if (!zone.Contains(agent.Position, ctx, globals)) continue;
+				if (!zone.Contains(agent.Position, context)) continue;
 				if (Target == TargetType.All) { count++; continue; }
 				if (Target == TargetType.Bots && agent.IsPlayerControlled) continue;
 				if (Target == TargetType.Players && !agent.IsPlayerControlled) continue;
@@ -100,20 +101,20 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public IsZoneEmptyFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			if (Mission.Current == null) return true;
-			Zone zone = Zone?.Resolve(ctx, globals);
+			Zone zone = Zone?.Resolve(context);
 			if (zone == null) return true;
 
-			Vec3 center = zone.ResolveCenter(ctx, globals);
+			Vec3 center = zone.ResolveCenter(context);
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(center.AsVec2, zone.Shape.BoundingRadius, agents);
 			foreach (Agent agent in agents)
 			{
 				if (agent?.Team == null) continue;
 				if (Side != SideType.All && (int)agent.Team.Side != (int)Side) continue;
-				if (!zone.Contains(agent.Position, ctx, globals)) continue;
+				if (!zone.Contains(agent.Position, context)) continue;
 				if (Target == TargetType.All) return false;
 				if (Target == TargetType.Bots && agent.IsPlayerControlled) continue;
 				if (Target == TargetType.Players && !agent.IsPlayerControlled) continue;
@@ -147,9 +148,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public NearestZoneToAgentFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			if (agent == null || ScenarioManager.Instance.CurrentAct == null) return null;
 
 			Vec3 agentPos = agent.Position;
@@ -160,7 +161,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 			{
 				if (named?.Zone == null) continue;
 				if (Filtered && !string.IsNullOrEmpty(ZoneNamePrefix) && !named.Name.StartsWith(ZoneNamePrefix)) continue;
-				Vec3 center = named.Zone.ResolveCenter(ctx, globals);
+				Vec3 center = named.Zone.ResolveCenter(context);
 				float d = agentPos.DistanceSquared(center);
 				if (d < bestDist) { bestDist = d; best = named.Zone; }
 			}
@@ -184,12 +185,12 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public DistanceBetweenZonesFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Zone a = ZoneA?.Resolve(ctx, globals);
-			Zone b = ZoneB?.Resolve(ctx, globals);
+			Zone a = ZoneA?.Resolve(context);
+			Zone b = ZoneB?.Resolve(context);
 			if (a == null || b == null) return float.MaxValue;
-			return a.ResolveCenter(ctx, globals).Distance(b.ResolveCenter(ctx, globals));
+			return a.ResolveCenter(context).Distance(b.ResolveCenter(context));
 		}
 	}
 }

@@ -10,19 +10,19 @@ using TaleWorlds.Engine;
 namespace Alliance.Common.GameModes.Story.Models
 {
 	/// <summary>
-	/// A conditional action is a set of conditions and actions that are triggered when the conditions are met.
+	/// A scripted event is a set of conditions and actions that are triggered when the conditions are met.
 	/// </summary>
 	[PhrasePreview("{Name} — {#Conditions} condition(s) → {#Actions} action(s)")]
 	public class ScriptedEvent
 	{
-		public string Name = "Conditional Action";
+		public string Name = "Scripted Event";
 		[ConfigProperty(label: "Conditions", tooltip: "If multiple conditions are set, they must all be true to trigger the actions.")]
 		public List<Condition> Conditions = new List<Condition>();
 		[ConfigProperty(label: "Actions", tooltip: "Actions triggered when conditions are met.")]
 		public List<ActionBase> Actions = new List<ActionBase>();
-		[ConfigProperty(label: "Enabled", tooltip: "Enable or disable the conditional action.")]
+		[ConfigProperty(label: "Enabled", tooltip: "Enable or disable the scripted event.")]
 		public bool Enabled = true;
-		[ConfigProperty(label: "One Time Only", tooltip: "If true, the conditional action will only trigger once.")]
+		[ConfigProperty(label: "One Time Only", tooltip: "If true, the scripted event will only trigger once.")]
 		public bool OneTimeOnly = false;
 		[ConfigProperty(label: "Refresh Delay", tooltip: "Delay between condition checks in seconds. Longer delays are preferable for performance.")]
 		public float RefreshDelay = 1f;
@@ -42,12 +42,14 @@ namespace Alliance.Common.GameModes.Story.Models
 		private PipelineState _pipelineState = PipelineState.Idle;
 		private int _actionIndex;
 		private ActionTask _currentTask;
+		private VariableStore _localContext;
 
 		public ScriptedEvent() { }
 
 		public void Register(WeakGameEntity entity)
 		{
 			_enabled = Enabled;
+			_localContext = new VariableStore();
 			_pipelineState = PipelineState.Idle;
 			_currentTask = null;
 
@@ -78,14 +80,14 @@ namespace Alliance.Common.GameModes.Story.Models
 			// --- Pipeline running: tick the current action ---
 			if (_pipelineState == PipelineState.Running)
 			{
-				_currentTask?.Tick(dt);
+				_currentTask?.Tick(dt, _localContext);
 
 				if (_currentTask != null && _currentTask.IsCompleted)
 				{
 					_actionIndex++;
 					if (_actionIndex < Actions.Count)
 					{
-						_currentTask = Actions[_actionIndex].Execute();
+						_currentTask = Actions[_actionIndex].Execute(_localContext);
 					}
 					else
 					{
@@ -103,8 +105,8 @@ namespace Alliance.Common.GameModes.Story.Models
 				{
 					_enabled = false;
 				}
-				ScenarioManager.Instance.CurrentTriggerContext = null;
 				_pipelineState = PipelineState.Idle;
+				_localContext = new VariableStore();
 				return;
 			}
 
@@ -113,12 +115,10 @@ namespace Alliance.Common.GameModes.Story.Models
 			if (_refreshTimer < RefreshDelay) return;
 			_refreshTimer = 0f;
 
-			ScenarioManager.Instance.CurrentTriggerContext = new TriggerContext();
-
 			bool conditionsMet = true;
 			foreach (Condition condition in Conditions)
 			{
-				if (!condition.Evaluate(ScenarioManager.Instance))
+				if (!condition.Evaluate(_localContext))
 				{
 					conditionsMet = false;
 					break;
@@ -130,29 +130,24 @@ namespace Alliance.Common.GameModes.Story.Models
 				// Start the async pipeline
 				_pipelineState = PipelineState.Running;
 				_actionIndex = 0;
-				_currentTask = Actions.Count > 0 ? Actions[0].Execute() : ActionTask.CompletedTask;
+				_currentTask = Actions.Count > 0 ? Actions[0].Execute(_localContext) : ActionTask.CompletedTask;
 
 				// Tick the first task immediately
-				_currentTask?.Tick(0f);
+				_currentTask?.Tick(0f, _localContext);
 				if (_currentTask != null && _currentTask.IsCompleted)
 				{
 					_actionIndex++;
 					if (_actionIndex < Actions.Count)
 					{
-						_currentTask = Actions[_actionIndex].Execute();
+						_currentTask = Actions[_actionIndex].Execute(_localContext);
 					}
 					else
 					{
 						_pipelineState = PipelineState.Done;
 						_currentTask = null;
-						ScenarioManager.Instance.CurrentTriggerContext = null;
 						if (OneTimeOnly) _enabled = false;
 					}
 				}
-			}
-			else
-			{
-				ScenarioManager.Instance.CurrentTriggerContext = null;
 			}
 		}
 	}

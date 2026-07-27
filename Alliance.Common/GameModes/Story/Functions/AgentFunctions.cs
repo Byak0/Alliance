@@ -37,7 +37,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public AgentsInZoneFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			List<Agent> result = new List<Agent>();
 			if (Mission.Current == null) return result;
@@ -46,30 +46,30 @@ namespace Alliance.Common.GameModes.Story.Functions
 			{
 				foreach (Agent agent in Mission.Current.Agents)
 				{
-					if (Matches(agent, null, ctx, globals)) result.Add(agent);
+					if (Matches(agent, null, context)) result.Add(agent);
 				}
 				return result;
 			}
 
 			if (Zone == null) return result;
-			Zone zone = Zone.Resolve(ctx, globals);
+			Zone zone = Zone.Resolve(context);
 			if (zone == null) return result;
-			Vec3 center = zone.ResolveCenter(ctx, globals);
+			Vec3 center = zone.ResolveCenter(context);
 
 			MBList<Agent> agents = new MBList<Agent>();
 			Mission.Current.GetNearbyAgents(center.AsVec2, zone.Shape.BoundingRadius, agents);
 			foreach (Agent agent in agents)
 			{
-				if (Matches(agent, zone, ctx, globals)) result.Add(agent);
+				if (Matches(agent, zone, context)) result.Add(agent);
 			}
 			return result;
 		}
 
-		private bool Matches(Agent agent, Zone zone, TriggerContext ctx, VariableStore globals)
+		private bool Matches(Agent agent, Zone zone, VariableStore context)
 		{
 			if (agent?.Team == null) return false;
 			if (Side != SideType.All && (int)agent.Team.Side != (int)Side) return false;
-			if (zone != null && !zone.Contains(agent.Position, ctx, globals)) return false;
+			if (zone != null && !zone.Contains(agent.Position, context)) return false;
 			if (Target == TargetType.All) return true;
 			if (Target == TargetType.Bots && agent.IsPlayerControlled) return false;
 			if (Target == TargetType.Players && !agent.IsPlayerControlled) return false;
@@ -95,9 +95,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public FirstAgentOfFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			List<Agent> agents = List?.Resolve(ctx, globals);
+			List<Agent> agents = List?.Resolve(context);
 			return agents != null && agents.Count > 0 ? (object)agents[0] : null;
 		}
 	}
@@ -115,9 +115,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public CountOfFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			List<Agent> agents = List?.Resolve(ctx, globals);
+			List<Agent> agents = List?.Resolve(context);
 			return agents?.Count ?? 0;
 		}
 	}
@@ -141,10 +141,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public NearestAgentToFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			if (Mission.Current == null || Source == null) return null;
-			Agent source = Source.Resolve(ctx, globals);
+			Agent source = Source.Resolve(context);
 			if (source == null) return null;
 
 			Agent best = null;
@@ -178,7 +178,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetPlayerCountFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
 			if (Mission.Current == null) return 0;
 			int count = 0;
@@ -203,9 +203,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetPlayerNameFromAgentFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			if (agent == null) return "";
 			return agent.MissionPeer?.Name ?? agent.Name;
 		}
@@ -224,9 +224,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetPlayerIdFromAgentFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			if (agent?.MissionPeer == null) return "";
 			return agent.MissionPeer.GetNetworkPeer().VirtualPlayer.Id.ToString();
 		}
@@ -247,10 +247,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public DistanceBetweenAgentsFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent src = Source?.Resolve(ctx, globals);
-			Agent tgt = Target?.Resolve(ctx, globals);
+			Agent src = Source?.Resolve(context);
+			Agent tgt = Target?.Resolve(context);
 			if (src == null || tgt == null) return float.MaxValue;
 			return src.Position.Distance(tgt.Position);
 		}
@@ -269,9 +269,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public IsAgentAliveFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			return agent != null && agent.IsActive();
 		}
 	}
@@ -289,9 +289,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetAgentHealthFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			return agent?.Health ?? 0f;
 		}
 	}

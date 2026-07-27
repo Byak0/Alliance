@@ -1,5 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -7,7 +8,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	[PhrasePreview("Increment {VariableName} by {Amount}")]
 	[PhraseTemplate("Increment {VariableName} by {Amount}")]
-	public class IncrementVariableAction : ActionBase
+	public class IncrementGlobalVariableAction : ActionBase
 	{
 		[ConfigProperty(label: "Variable Name", tooltip: "Name of the global variable to increment.")]
 		[VariableRef(typeof(float))]
@@ -17,9 +18,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 		[DependsOnVariable("VariableName")]
 		public float Amount = 1f;
 
-		public IncrementVariableAction() { }
+		public IncrementGlobalVariableAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (string.IsNullOrWhiteSpace(VariableName)) return ActionTask.CompletedTask;
 

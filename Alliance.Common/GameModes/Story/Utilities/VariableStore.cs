@@ -2,6 +2,10 @@ using System.Collections.Generic;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
+	/// <summary>
+	/// A simple key-value store for variables used in Scenario/ScriptedEvent.
+	/// It allows storing and retrieving values of any type by string keys.
+	/// </summary>
 	public class VariableStore
 	{
 		private readonly Dictionary<string, object> _values = new Dictionary<string, object>();

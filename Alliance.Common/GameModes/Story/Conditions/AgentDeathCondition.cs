@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Behaviors;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -52,7 +53,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		}
 
 		// Check if number of specific agent  is reached to trigger condition
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
 			if (_deathCount >= DeathQuota)
 			{

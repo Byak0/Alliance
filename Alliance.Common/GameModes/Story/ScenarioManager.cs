@@ -50,14 +50,7 @@ namespace Alliance.Common.GameModes.Story
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
 		/// <summary>
-		/// Variables captured by conditions during the current ScriptedEvent evaluation. Set by ScriptedEvent.Tick
-		/// while conditions are evaluated and actions executed; null otherwise. Conditions write to it, actions read it.
-		/// </summary>
-		public TriggerContext CurrentTriggerContext { get; set; }
-
-		/// <summary>
-		/// Global variables for the current scenario. Initialized from Scenario.Variables on scenario start.
-		/// Server-authoritative; clients receive read-only mirrors via network sync.
+		/// Global variables for the current scenario. Initialized from Scenario.Variables on scenario start.		
 		/// </summary>
 		public VariableStore Globals { get; protected set; } = new VariableStore();
 
@@ -78,7 +71,7 @@ namespace Alliance.Common.GameModes.Story
 
 		/// <summary>
 		/// Initializes global variables from the current scenario definition.
-		/// Parses each ScenarioVariable.DefaultValue according to its VariableType and seeds the store.
+		/// Parses each ScenarioVariable.DefaultValue according to its VariableType.
 		/// </summary>
 		protected virtual void InitGlobals()
 		{
@@ -113,21 +106,6 @@ namespace Alliance.Common.GameModes.Story
 				default:
 					return raw;
 			}
-		}
-
-
-
-		/// <summary>
-		/// Resolves a variable by name, searching first in the current trigger context (from condition evaluation),
-		/// then in the scenario global variable store. Returns default(T) if not found.
-		/// </summary>
-		public T ResolveVariable<T>(string name)
-		{
-			if (CurrentTriggerContext != null && CurrentTriggerContext.Has(name))
-				return CurrentTriggerContext.Get<T>(name);
-			if (Globals != null && Globals.Has(name))
-				return Globals.Get<T>(name);
-			return default;
 		}
 
 		public virtual void StopScenario()
