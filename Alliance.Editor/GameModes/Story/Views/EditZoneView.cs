@@ -89,7 +89,7 @@ namespace Alliance.Editor.GameModes.Story.Views
 				// ResolveCenter honours the anchor (world/host/entity/agent). In the editor, ctx/globals
 				// are null: host-relative uses the editor GameEntity set on Zone.HostEntity by ZoneViewModel;
 				// agent/remote-entity anchors degrade to the raw offset.
-				Vec3 position = zone.ResolveCenter();
+				Vec3 position = zone.ResolveCenter(null);
 				float radius = zone.Shape?.BoundingRadius ?? 1f;
 				uint color = isEditable ? _editableColor : _colorList[colorIndex % _colorList.Count];
 

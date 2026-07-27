@@ -1,4 +1,5 @@
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Server.Core;
 
 namespace Alliance.Server.GameModes.Story.Actions
@@ -9,7 +10,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	[OverrideAction(typeof(EndScenarioAction))]
 	public class Server_EndScenarioAction : EndScenarioAction
 	{
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			GameModeStarter.Instance.StartPostMatchTransition();
 			return ActionTask.CompletedTask;

@@ -16,8 +16,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Value")]
 		public ValueSource<bool> Value = new LiteralValue<bool>(false);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> !(Value?.Resolve(ctx, globals) ?? false);
+		public override object Evaluate(VariableStore context)
+			=> !(Value?.Resolve(context) ?? false);
 	}
 
 	[Serializable]
@@ -32,8 +32,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<bool> Right = new LiteralValue<bool>(false);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> (Left?.Resolve(ctx, globals) ?? false) && (Right?.Resolve(ctx, globals) ?? false);
+		public override object Evaluate(VariableStore context)
+			=> (Left?.Resolve(context) ?? false) && (Right?.Resolve(context) ?? false);
 	}
 
 	[Serializable]
@@ -48,7 +48,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 		[ConfigProperty(label: "Right")]
 		public ValueSource<bool> Right = new LiteralValue<bool>(false);
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
-			=> (Left?.Resolve(ctx, globals) ?? false) || (Right?.Resolve(ctx, globals) ?? false);
+		public override object Evaluate(VariableStore context)
+			=> (Left?.Resolve(context) ?? false) || (Right?.Resolve(context) ?? false);
 	}
 }

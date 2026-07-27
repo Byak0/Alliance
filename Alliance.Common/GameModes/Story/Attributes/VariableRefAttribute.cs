@@ -13,7 +13,7 @@ namespace Alliance.Common.GameModes.Story.Attributes
 	{
 		public Type VariableType { get; }
 
-		public VariableRefAttribute(Type variableType)
+		public VariableRefAttribute(Type variableType = null)
 		{
 			VariableType = variableType;
 		}

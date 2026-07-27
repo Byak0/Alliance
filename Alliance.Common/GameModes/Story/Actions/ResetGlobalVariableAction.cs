@@ -1,21 +1,23 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	[Serializable]
+	[PhrasePreview("Reset {VariableName}")]
 	[PhraseTemplate("Reset {VariableName}")]
-	public class ResetVariableAction : ActionBase
+	public class ResetGlobalVariableAction : ActionBase
 	{
 		[ConfigProperty(label: "Variable Name", tooltip: "Name of the global variable to reset to its default value.")]
-		[VariableRef(typeof(object))]
+		[VariableRef]
 		public string VariableName = "";
 
-		public ResetVariableAction() { }
+		public ResetGlobalVariableAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (string.IsNullOrWhiteSpace(VariableName)) return ActionTask.CompletedTask;
 
@@ -34,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 			if (def != null)
 			{
-				object parsed = SetVariableAction.ParseValue(def.DefaultValue, def.Type);
+				object parsed = SetGlobalVariableAction.ParseValue(def.DefaultValue, def.Type);
 				ScenarioManager.Instance.Globals.Set(VariableName, parsed);
 			}
 			return ActionTask.CompletedTask;

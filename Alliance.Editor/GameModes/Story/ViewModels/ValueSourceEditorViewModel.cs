@@ -1,31 +1,24 @@
 using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
 using TaleWorlds.Engine;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
-	public enum ValueSourceOrigin
-	{
-		Literal,
-		Variable,
-		Function
-	}
-
 	/// <summary>One selectable origin in the expression editor's top-level dropdown.</summary>
 	public sealed class ValueSourceOriginOption
 	{
-		public ValueSourceOrigin Origin { get; }
+		public ValueSourceHelper.ValueSourceOrigin Origin { get; }
 		public string Label { get; }
 		public bool IsAvailable { get; }
 
-		public ValueSourceOriginOption(ValueSourceOrigin origin, string label, bool isAvailable = true)
+		public ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin origin, string label, bool isAvailable = true)
 		{
 			Origin = origin;
 			Label = label;
@@ -64,9 +57,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				if (value == null || !value.IsAvailable || ReferenceEquals(_selectedOrigin, value)) return;
 				_selectedOrigin = value;
-				if (GetCurrentOrigin() != value.Origin)
+				if (ValueSourceHelper.GetCurrentOrigin(CurrentValue) != value.Origin)
 				{
-					object newSource = CreateSource(value.Origin);
+					object newSource = ValueSourceHelper.CreateSource(value.Origin, _valueType);
 					if (_valueSetter != null)
 						_valueSetter(newSource);
 					else
@@ -100,7 +93,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			_owner = owner ?? throw new ArgumentNullException(nameof(owner));
 			_valueGetter = valueGetter;
 			_valueSetter = valueSetter;
-			if (!ValueSourceTypeSupport.TryGetValueType(owner.FieldType, out _valueType))
+			if (!ValueSourceHelper.TryGetValueType(owner.FieldType, out _valueType))
 			{
 				throw new ArgumentException("The owning field must be ValueSource<T>.", nameof(owner));
 			}
@@ -120,7 +113,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			_valueGetter = valueGetter ?? throw new ArgumentNullException(nameof(valueGetter));
 			_valueSetter = valueSetter ?? throw new ArgumentNullException(nameof(valueSetter));
 			_label = label;
-			if (!ValueSourceTypeSupport.TryGetValueType(valueSourceType, out _valueType))
+			if (!ValueSourceHelper.TryGetValueType(valueSourceType, out _valueType))
 			{
 				throw new ArgumentException("valueSourceType must be ValueSource<T>.", nameof(valueSourceType));
 			}
@@ -130,19 +123,23 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private void Init()
 		{
-			bool hasVariables = _owner.CollectAvailableVariables(_valueType).Length > 0;
-			bool hasFunctions = FieldViewModel.DiscoverConcreteTypes(typeof(Function))
-				.Any(t => FieldViewModel.FunctionReturns(t, _valueType));
+			Scenario scenario = _owner.parentViewModel?.FindEnclosingScenario();
+			Act act = _owner.parentViewModel?.FindEnclosingAct();
+			ScriptedEvent localObject = _owner.parentViewModel?.FindEnclosingScriptedEvent();
+
+			bool hasVariables = ValueSourceHelper.CollectAvailableVariables(_valueType, scenario, act, localObject, _owner.ParentObject).Length > 0;
+			bool hasFunctions = ValueSourceHelper.DiscoverConcreteTypes(typeof(Function))
+				.Any(t => ValueSourceHelper.FunctionReturns(t, _valueType));
 
 			_origins = new List<ValueSourceOriginOption>
 			{
-				new ValueSourceOriginOption(ValueSourceOrigin.Literal, "Literal", ValueSourceTypeSupport.SupportsLiteral(_valueType)),
-				new ValueSourceOriginOption(ValueSourceOrigin.Variable, "Variable", hasVariables),
-				new ValueSourceOriginOption(ValueSourceOrigin.Function, "Function", hasFunctions)
+				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Literal, "Literal", ValueSourceHelper.SupportsLiteral(_valueType)),
+				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Variable, "Variable", hasVariables),
+				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Function, "Function", hasFunctions)
 			};
 			_closeCommand = new RelayCommand(CloseWindow);
 
-			ValueSourceOrigin? currentOrigin = GetCurrentOrigin();
+			ValueSourceHelper.ValueSourceOrigin? currentOrigin = ValueSourceHelper.GetCurrentOrigin(CurrentValue);
 			if (currentOrigin.HasValue)
 			{
 				_selectedOrigin = _origins.FirstOrDefault(option => option.Origin == currentOrigin.Value && option.IsAvailable);
@@ -153,7 +150,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				_selectedOrigin = _origins.FirstOrDefault(o => o.IsAvailable);
 				if (_selectedOrigin != null)
 				{
-					object newSource = CreateSource(_selectedOrigin.Origin);
+					object newSource = ValueSourceHelper.CreateSource(_selectedOrigin.Origin, _valueType);
 					if (_valueSetter != null)
 						_valueSetter(newSource);
 					else
@@ -176,40 +173,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private void CloseWindow(object parameter)
 		{
 			if (parameter is Window window) window.Close();
-		}
-
-		private ValueSourceOrigin? GetCurrentOrigin()
-		{
-			object source = CurrentValue;
-			if (source == null) return null;
-
-			Type type = source.GetType();
-			if (!type.IsGenericType) return null;
-			Type definition = type.GetGenericTypeDefinition();
-			if (definition == typeof(LiteralValue<>)) return ValueSourceOrigin.Literal;
-			if (definition == typeof(VariableValue<>)) return ValueSourceOrigin.Variable;
-			if (definition == typeof(FunctionCall<>)) return ValueSourceOrigin.Function;
-			return null;
-		}
-
-		private object CreateSource(ValueSourceOrigin origin)
-		{
-			Type sourceType;
-			switch (origin)
-			{
-				case ValueSourceOrigin.Literal:
-					sourceType = typeof(LiteralValue<>).MakeGenericType(_valueType);
-					object literal = Activator.CreateInstance(sourceType);
-					sourceType.GetField(nameof(LiteralValue<int>.Value), BindingFlags.Instance | BindingFlags.Public)
-						.SetValue(literal, ValueSourceTypeSupport.CreateDefaultLiteralValue(_valueType));
-					return literal;
-				case ValueSourceOrigin.Variable:
-					return Activator.CreateInstance(typeof(VariableValue<>).MakeGenericType(_valueType));
-				case ValueSourceOrigin.Function:
-					return Activator.CreateInstance(typeof(FunctionCall<>).MakeGenericType(_valueType));
-				default:
-					throw new ArgumentOutOfRangeException(nameof(origin));
-			}
 		}
 
 		private void RebuildDetailEditor()

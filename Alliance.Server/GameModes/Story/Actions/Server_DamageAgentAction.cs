@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -10,13 +11,11 @@ namespace Alliance.Server.GameModes.Story.Actions
 	[OverrideAction(typeof(DamageAgentAction))]
 	public class Server_DamageAgentAction : DamageAgentAction
 	{
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (Mission.Current == null) return ActionTask.CompletedTask;
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			int damage = Damage?.Resolve(ctx, globals) ?? 0;
-			List<Agent> targets = Who?.Resolve(ctx, globals) ?? new List<Agent>();
+			int damage = Damage?.Resolve(context) ?? 0;
+			List<Agent> targets = Who?.Resolve(context) ?? new List<Agent>();
 			foreach (Agent agent in targets)
 			{
 				CoreUtils.TakeDamage(agent, damage);

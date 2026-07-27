@@ -3,6 +3,7 @@ using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -39,18 +40,18 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public PlaySoundAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
-			float volume = Volume?.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals) ?? 1f;
+			float volume = Volume?.Resolve(context) ?? 1f;
 
 			switch (SoundType)
 			{
 				case SoundCategory.AudioLocal:
-					PlayLocalizedSound(volume);
+					PlayLocalizedSound(context, volume);
 					break;
 				case SoundCategory.MusicLocal:
-					PlayLocalizedMusic(volume);
+					PlayLocalizedMusic(context, volume);
 					break;
 				case SoundCategory.MainMusic:
 					PlayMainMusic();
@@ -73,13 +74,13 @@ namespace Alliance.Common.GameModes.Story.Actions
 			}
 		}
 
-		private void PlayLocalizedMusic(float volume)
+		private void PlayLocalizedMusic(VariableStore context, float volume)
 		{
 			if (string.IsNullOrEmpty(SoundName) || Mission.Current == null || SoundZone == null) return;
 
-			Zone zone = SoundZone.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			Zone zone = SoundZone.Resolve(context);
 			if (zone == null) return;
-			Vec3 center = zone.ResolveCenter(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			Vec3 center = zone.ResolveCenter(context);
 
 			if (IsNativeSound(SoundName))
 			{
@@ -91,13 +92,13 @@ namespace Alliance.Common.GameModes.Story.Actions
 			}
 		}
 
-		private void PlayLocalizedSound(float volume)
+		private void PlayLocalizedSound(VariableStore context, float volume)
 		{
 			if (string.IsNullOrEmpty(SoundName)) return;
 
-			Zone zone = SoundZone.Resolve(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			Zone zone = SoundZone.Resolve(context);
 			if (zone == null) return;
-			Vec3 center = zone.ResolveCenter(ScenarioManager.Instance.CurrentTriggerContext, ScenarioManager.Instance.Globals);
+			Vec3 center = zone.ResolveCenter(context);
 
 			if (IsNativeSound(SoundName))
 			{

@@ -21,9 +21,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetAgentPositionFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			return agent?.Position ?? Vec3.Zero;
 		}
 	}
@@ -41,10 +41,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public GetZoneCenterFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Zone zone = Zone?.Resolve(ctx, globals);
-			return zone?.ResolveCenter(ctx, globals) ?? Vec3.Zero;
+			Zone zone = Zone?.Resolve(context);
+			return zone?.ResolveCenter(context) ?? Vec3.Zero;
 		}
 	}
 
@@ -63,10 +63,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public AddVec3Function() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 a = Left?.Resolve(ctx, globals) ?? Vec3.Zero;
-			Vec3 b = Right?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 a = Left?.Resolve(context) ?? Vec3.Zero;
+			Vec3 b = Right?.Resolve(context) ?? Vec3.Zero;
 			return a + b;
 		}
 	}
@@ -86,10 +86,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public SubtractVec3Function() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 a = Left?.Resolve(ctx, globals) ?? Vec3.Zero;
-			Vec3 b = Right?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 a = Left?.Resolve(context) ?? Vec3.Zero;
+			Vec3 b = Right?.Resolve(context) ?? Vec3.Zero;
 			return a - b;
 		}
 	}
@@ -109,10 +109,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public ScaleVec3Function() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 v = Value?.Resolve(ctx, globals) ?? Vec3.Zero;
-			float f = Factor?.Resolve(ctx, globals) ?? 1f;
+			Vec3 v = Value?.Resolve(context) ?? Vec3.Zero;
+			float f = Factor?.Resolve(context) ?? 1f;
 			return v * f;
 		}
 	}
@@ -134,11 +134,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public MakePositionFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			float x = AddFloatFunction.Resolve(X, ctx, globals);
-			float y = AddFloatFunction.Resolve(Y, ctx, globals);
-			float z = AddFloatFunction.Resolve(Z, ctx, globals);
+			float x = AddFloatFunction.Resolve(X, context);
+			float y = AddFloatFunction.Resolve(Y, context);
+			float z = AddFloatFunction.Resolve(Z, context);
 			return new Vec3(x, y, z);
 		}
 	}
@@ -156,9 +156,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public PositionXFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 v = Value?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 v = Value?.Resolve(context) ?? Vec3.Zero;
 			return v.x;
 		}
 	}
@@ -176,9 +176,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public PositionYFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 v = Value?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 v = Value?.Resolve(context) ?? Vec3.Zero;
 			return v.y;
 		}
 	}
@@ -196,9 +196,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public PositionZFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 v = Value?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 v = Value?.Resolve(context) ?? Vec3.Zero;
 			return v.z;
 		}
 	}
@@ -218,10 +218,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public DirectionBetweenPositionsFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 a = Source?.Resolve(ctx, globals) ?? Vec3.Zero;
-			Vec3 b = Target?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 a = Source?.Resolve(context) ?? Vec3.Zero;
+			Vec3 b = Target?.Resolve(context) ?? Vec3.Zero;
 			Vec3 dir = b - a;
 			return dir.LengthSquared > 0 ? dir.NormalizedCopy() : Vec3.Zero;
 		}
@@ -242,10 +242,10 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public DistanceBetweenPositionsFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 a = Source?.Resolve(ctx, globals) ?? Vec3.Zero;
-			Vec3 b = Target?.Resolve(ctx, globals) ?? Vec3.Zero;
+			Vec3 a = Source?.Resolve(context) ?? Vec3.Zero;
+			Vec3 b = Target?.Resolve(context) ?? Vec3.Zero;
 			return a.Distance(b);
 		}
 	}
@@ -267,11 +267,11 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		public LerpPositionFunction() { }
 
-		public override object Evaluate(TriggerContext ctx, VariableStore globals)
+		public override object Evaluate(VariableStore context)
 		{
-			Vec3 a = Source?.Resolve(ctx, globals) ?? Vec3.Zero;
-			Vec3 b = Target?.Resolve(ctx, globals) ?? Vec3.Zero;
-			float t = AddFloatFunction.Resolve(Alpha, ctx, globals);
+			Vec3 a = Source?.Resolve(context) ?? Vec3.Zero;
+			Vec3 b = Target?.Resolve(context) ?? Vec3.Zero;
+			float t = AddFloatFunction.Resolve(Alpha, context);
 			return Vec3.Lerp(a, b, Math.Min(Math.Max(t, 0f), 1f));
 		}
 	}

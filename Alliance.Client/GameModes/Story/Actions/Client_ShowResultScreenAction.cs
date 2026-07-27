@@ -1,5 +1,6 @@
 ﻿using Alliance.Client.GameModes.Story.Views;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -15,7 +16,7 @@ namespace Alliance.Client.GameModes.Story.Actions
 	{
 		public Client_ShowResultScreenAction() : base() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (Mission.Current.PlayerTeam == null)
 			{

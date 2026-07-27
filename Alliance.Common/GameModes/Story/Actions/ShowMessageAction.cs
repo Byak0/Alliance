@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -26,7 +27,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public ShowMessageAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			switch (MessageType)
 			{

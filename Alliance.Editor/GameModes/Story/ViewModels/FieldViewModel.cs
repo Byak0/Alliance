@@ -19,7 +19,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
-using Condition = Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -63,7 +62,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsMultiChoiceString => PossibleValues != null && PossibleValues.Length > 0;
 		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
-		public bool IsValueSource => ValueSourceTypeSupport.IsValueSourceType(FieldType);
+		public bool IsValueSource => ValueSourceHelper.IsValueSourceType(FieldType);
 		public bool IsComplexType => !IsValueSource && !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
 		public bool IsZone => FieldType == typeof(Zone);
@@ -219,11 +218,22 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			FieldType = fieldInfo.FieldType;
 			_fieldValue = fieldValue;
 
+			// Read and apply config attribute (Label, Tooltip, PossibleValues)
 			ApplyConfigPropertyAttribute(fieldInfo);
+
+			// Collect possible values for variable reference dropdowns, if applicable
 			ApplyVariableReferenceDropdowns(fieldInfo);
+
+			// Special handling for ScenarioVariable fields
 			ApplyScenarioVariableFields();
+
+			// Special handling for fields that depend on another variable's type
 			ApplyDependsOnVariableAttribute(fieldInfo);
+
+			// Discover concrete types for polymorphic fields (abstract/interface)
 			DiscoverPolymorphicTypes();
+
+			// Filter concrete types for FunctionCall<T> fields to only those that return the correct type
 			FilterFunctionCallTypes();
 
 			// Commands
@@ -274,10 +284,14 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private void ApplyVariableReferenceDropdowns(FieldInfo fieldInfo)
 		{
+			Scenario scenario = parentViewModel?.FindEnclosingScenario();
+			Act act = parentViewModel?.FindEnclosingAct();
+			object localObject = (object)parentViewModel?.FindEnclosingScriptedEvent() ?? parentViewModel?.FindEnclosingAct();
+
 			VariableRefAttribute variableRef = fieldInfo.GetCustomAttribute<VariableRefAttribute>();
 			if (variableRef != null)
 			{
-				PossibleValues = CollectAvailableVariables(variableRef.VariableType);
+				PossibleValues = ValueSourceHelper.CollectAvailableVariables(variableRef.VariableType, scenario, act, localObject);
 				IsChoiceLocked = true;
 			}
 
@@ -288,7 +302,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				Type valueType = parentViewModel.Object.GetType().GetGenericArguments()[0];
 				object objectToIgnoreVarFrom = parentViewModel?.ParentEditor?.Object;
-				PossibleValues = CollectAvailableVariables(valueType, objectToIgnoreVarFrom);
+				PossibleValues = ValueSourceHelper.CollectAvailableVariables(valueType, scenario, act, localObject, objectToIgnoreVarFrom);
 				IsChoiceLocked = true;
 			}
 		}
@@ -356,6 +370,50 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			ScenarioVariable matchedVar = scenario?.Variables?.FirstOrDefault(v => v.Name == varName);
 			if (matchedVar == null) return;
 
+			// If target field is a ValueSource, we'll need to set it to ValueSource<T> where T is the type of the matched variable.
+			bool isValueSource = ValueSourceHelper.IsValueSourceType(FieldType);			
+			if(isValueSource)
+			{
+				// Get CLR type from variable definition (resolve actual enum type, not typeof(Enum))
+				Type clrType = matchedVar.Type == VariableType.Enum
+					? (ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == matchedVar.EnumTypeName) ?? typeof(string))
+					: ScenarioData.GetVariableType(matchedVar.Type);
+				Type abstractValueSource = typeof(ValueSource<>).MakeGenericType(clrType);
+
+				// Only create new instance if existing value is null or wrong type
+				if (FieldValue == null || FieldValue.GetType().GetGenericTypeDefinition() != typeof(ValueSource<>)
+					&& !abstractValueSource.IsAssignableFrom(FieldValue.GetType()))
+				{
+					// Use the helper to get initial concrete type (literal/variable/function)
+					Type targetConcrete = ValueSourceHelper.GetValueSourceTypeToCreate(
+					clrType, scenario,
+					parentViewModel.FindEnclosingAct(),
+					parentViewModel.FindEnclosingScriptedEvent(),
+					parentViewModel?.ParentEditor?.Object);
+					var newItem = Activator.CreateInstance(targetConcrete);
+					if (targetConcrete.GetGenericTypeDefinition() == typeof(LiteralValue<>))
+					{
+						Type valueType = targetConcrete.GetGenericArguments()[0];
+						object defaultValue = ValueSourceHelper.CreateDefaultLiteralValue(valueType);
+						if (defaultValue != null)
+							targetConcrete.GetField(nameof(LiteralValue<int>.Value))?.SetValue(newItem, defaultValue);
+					}
+					FieldValue = newItem;
+				}
+
+				FieldType = abstractValueSource;
+
+				// If enum, set PossibleValues for the literal sub-editor
+				if (matchedVar.Type == VariableType.Enum)
+				{
+					Type enumType = !string.IsNullOrEmpty(matchedVar.EnumTypeName) ?
+									ScenarioData.AvailableEnumTypes().FirstOrDefault(t => t.Name == matchedVar.EnumTypeName) : null;
+					if(enumType != null) PossibleValues = Enum.GetNames(enumType);
+				}
+
+				return;
+			}
+
 			switch (matchedVar.Type)
 			{
 				case VariableType.Int:
@@ -391,7 +449,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			if (FieldType != null && FieldType.IsAbstract && !IsValueSource)
 			{
-				ConcreteTypes = DiscoverConcreteTypes(FieldType);
+				ConcreteTypes = ValueSourceHelper.DiscoverConcreteTypes(FieldType);
 			}
 		}
 
@@ -407,7 +465,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			Type resultType = parentViewModel.Object.GetType().GetGenericArguments()[0];
 			ConcreteTypes = ConcreteTypes
-				.Where(type => FunctionReturns(type, resultType))
+				.Where(type => ValueSourceHelper.FunctionReturns(type, resultType))
 				.OrderBy(type => type.Name)
 				.ToArray();
 		}
@@ -418,129 +476,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				ZoneVM = new ZoneViewModel((Zone)FieldValue, FieldInfo, this);
 			}
-		}
-
-		internal string[] CollectAvailableVariables(Type variableType, object triggerCtx = null)
-		{
-			List<string> names = new List<string>();
-
-			if (variableType == typeof(Zone))
-			{
-				CollectZoneNames(names);
-				return names.ToArray();
-			}
-
-			CollectTriggerVariableNames(variableType, names, triggerCtx);
-			CollectGlobalVariableNames(variableType, names);
-
-			return names.ToArray();
-		}
-
-		private void CollectZoneNames(List<string> names)
-		{
-			Act parentAct = parentViewModel?.FindEnclosingAct();
-			if (parentAct?.Zones != null)
-			{
-				foreach (var zone in parentAct.Zones)
-				{
-					if (zone == null || string.IsNullOrWhiteSpace(zone.Name)) continue;
-					if (!names.Contains(zone.Name)) names.Add(zone.Name);
-				}
-			}
-		}
-
-		private void CollectTriggerVariableNames(Type variableType, List<string> names, object triggerCtx = null)
-		{
-			object root = (object)parentViewModel?.FindEnclosingScriptedEvent()
-				?? parentViewModel?.FindEnclosingAct();
-			if (root == null) return;
-			CollectTriggerVariablesFromObject(root, variableType, names, new HashSet<object>());
-
-			// Remove variables produced by the current object itself (or given context) to prevent self-reference.
-			object currentObj = triggerCtx ?? parentViewModel?.Object;
-			if (currentObj != null)
-			{
-				foreach (FieldInfo f in currentObj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public))
-				{
-					VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
-					if (outAttr?.VariableType != null && variableType.IsAssignableFrom(outAttr.VariableType))
-					{
-						string name = f.GetValue(currentObj) as string;
-						if (!string.IsNullOrWhiteSpace(name))
-						{
-							names.Remove(name);
-						}
-					}
-				}
-			}
-		}
-
-		private static void CollectTriggerVariablesFromObject(object obj, Type variableType, List<string> names, HashSet<object> visited)
-		{
-			if (obj == null || !visited.Add(obj)) return;
-
-			Type type = obj.GetType();
-			if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType) return;
-
-			foreach (FieldInfo f in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
-			{
-				VariableOutputAttribute outAttr = f.GetCustomAttribute<VariableOutputAttribute>();
-				if (outAttr?.VariableType != null && variableType.IsAssignableFrom(outAttr.VariableType))
-				{
-					string name = f.GetValue(obj) as string;
-					if (!string.IsNullOrWhiteSpace(name) && !names.Contains(name))
-					{
-						names.Add(name);
-					}
-				}
-			}
-
-			if (obj is IList list)
-			{
-				foreach (var item in list)
-				{
-					CollectTriggerVariablesFromObject(item, variableType, names, visited);
-				}
-				return;
-			}
-
-			foreach (FieldInfo field in type.GetFields(BindingFlags.Instance | BindingFlags.Public))
-			{
-				Type ft = field.FieldType;
-				if (ft.IsPrimitive || ft == typeof(string) || ft.IsEnum || ft.IsValueType) continue;
-
-				object fieldValue = field.GetValue(obj);
-				if (fieldValue != null)
-				{
-					CollectTriggerVariablesFromObject(fieldValue, variableType, names, visited);
-				}
-			}
-		}
-
-		private void CollectGlobalVariableNames(Type variableType, List<string> names)
-		{
-			Scenario parentScenario = parentViewModel?.FindEnclosingScenario();
-			if (parentScenario?.Variables == null) return;
-
-			foreach (var scVar in parentScenario.Variables)
-			{
-				if (scVar == null || string.IsNullOrWhiteSpace(scVar.Name)) continue;
-				if (!TypeMatchesFilter(variableType, scVar.Type)) continue;
-				if (!names.Contains(scVar.Name)) names.Add(scVar.Name);
-			}
-		}
-
-		private static bool TypeMatchesFilter(Type filterType, VariableType varType)
-		{
-			return varType switch
-			{
-				VariableType.Int => filterType == typeof(int) || filterType == typeof(float),
-				VariableType.Float => filterType == typeof(float),
-				VariableType.Bool => filterType == typeof(bool),
-				VariableType.String => filterType == typeof(string),
-				VariableType.Enum => filterType == typeof(string),
-				_ => filterType == typeof(object),
-			};
 		}
 
 		private object[] GetEnumOrderedValues()
@@ -595,9 +530,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			if (baseType.IsAbstract || baseType.IsInterface)
 			{
-				if (ValueSourceTypeSupport.IsValueSourceType(baseType))
+				if (ValueSourceHelper.IsValueSourceType(baseType))
 				{
-					typeToCreate = GetValueSourceTypeToCreate(baseType);
+					Scenario scenario = parentViewModel?.FindEnclosingScenario();
+					Act act = parentViewModel?.FindEnclosingAct();
+					object localObject = (object) parentViewModel?.FindEnclosingScriptedEvent() ?? act;
+					object objectToIgnore = parentViewModel?.ParentEditor?.Object;
+					typeToCreate = ValueSourceHelper.GetValueSourceTypeToCreate(baseType, scenario, act, localObject, objectToIgnore);
 				}
 				else
 				{
@@ -612,7 +551,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (typeToCreate.IsGenericType && typeToCreate.GetGenericTypeDefinition() == typeof(LiteralValue<>))
 			{
 				Type valueType = typeToCreate.GetGenericArguments()[0];
-				object defaultValue = ValueSourceTypeSupport.CreateDefaultLiteralValue(valueType);
+				object defaultValue = ValueSourceHelper.CreateDefaultLiteralValue(valueType);
 				if (defaultValue != null)
 				{
 					typeToCreate.GetField(nameof(LiteralValue<int>.Value))?.SetValue(newItem, defaultValue);
@@ -622,24 +561,6 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			list.Add(newItem);
 			Items.Add(new ItemViewModel(newItem, this));
 			OnPropertyChanged(nameof(FieldValue));
-		}
-
-		private Type GetValueSourceTypeToCreate(Type baseType)
-		{
-			Type typeToCreate = null;
-
-			Type valueSourceType = baseType.GetGenericArguments()[0];
-			bool hasVariables = CollectAvailableVariables(valueSourceType).Length > 0;
-			bool hasFunctions = DiscoverConcreteTypes(typeof(Function)).Any(t => FunctionReturns(t, valueSourceType));
-
-			Type literalType = ValueSourceTypeSupport.SupportsLiteral(valueSourceType) ?
-				literalType = typeof(LiteralValue<>).MakeGenericType(valueSourceType) : null;
-			Type variableType = hasVariables ? typeof(VariableValue<>).MakeGenericType(valueSourceType) : null;
-			Type functionType = hasFunctions ? typeof(FunctionCall<>).MakeGenericType(valueSourceType) : null;
-
-			typeToCreate = literalType ?? variableType ?? functionType;
-
-			return typeToCreate;
 		}
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
@@ -868,6 +789,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		internal void OpenValueSourceEditor()
 		{
 			if (!IsValueSource) return;
+			if (!FieldType.IsGenericType) return;
 
 			if (_activeValueSourcePopup != null && _activeValueSourcePopup.IsLoaded)
 			{
@@ -894,50 +816,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			_valueSourceChip?.Refresh();
 			OnPropertyChanged(nameof(FieldValue));
 		}
-
-		internal static bool FunctionReturns(Type functionType, Type resultType)
-		{
-			if (functionType == null || resultType == null || functionType.IsAbstract) return false;
-			try
-			{
-				if (Activator.CreateInstance(functionType) is Function function)
-				{
-					return resultType.IsAssignableFrom(function.ReturnType);
-				}
-			}
-			catch
-			{
-			}
-			return false;
-		}
-
-		internal static Type[] DiscoverConcreteTypes(Type baseType)
-		{
-			List<Type> types = new List<Type>();
-			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				try
-				{
-					foreach (var t in assembly.GetTypes())
-					{
-						if (baseType.IsAssignableFrom(t) && !t.IsAbstract) types.Add(t);
-					}
-				}
-				catch (ReflectionTypeLoadException ex)
-				{
-					if (ex.Types != null)
-					{
-						foreach (var t in ex.Types)
-						{
-							if (t != null && baseType.IsAssignableFrom(t) && !t.IsAbstract) types.Add(t);
-						}
-					}
-				}
-				catch { }
-			}
-			return types.ToArray();
-		}
-
+		
 		public void Close()
 		{
 			ZoneVM?.Close();

@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
-using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 
@@ -37,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			FallBack
 		}
 
-		public abstract bool Evaluate(ScenarioManager context);
+		public abstract bool Evaluate(VariableStore context);
 
 		public virtual void Register(WeakGameEntity entity)
 		{

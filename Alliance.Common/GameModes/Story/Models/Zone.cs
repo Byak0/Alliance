@@ -43,14 +43,14 @@ namespace Alliance.Common.GameModes.Story.Models
 		public float Radius => Shape?.BoundingRadius ?? 0f;
 
 		/// <summary>World-space center of the zone, resolved through its anchor.</summary>
-		public Vec3 ResolveCenter(TriggerContext ctx = null, VariableStore globals = null)
-			=> Anchor != null ? Anchor.Resolve(Position, HostEntity, ctx, globals) : Position;
+		public Vec3 ResolveCenter(VariableStore ctx)
+			=> Anchor != null ? Anchor.Resolve(Position, HostEntity, ctx) : Position;
 
 		/// <summary>Precise containment test in world space (delegates to the shape).</summary>
-		public bool Contains(Vec3 worldPoint, TriggerContext ctx = null, VariableStore globals = null)
+		public bool Contains(Vec3 worldPoint, VariableStore ctx)
 		{
 			if (Shape == null) return false;
-			return Shape.Contains(ResolveCenter(ctx, globals), worldPoint);
+			return Shape.Contains(ResolveCenter(ctx), worldPoint);
 		}
 
 		/// <summary>Stores the host entity and lets the anchor resolve/cache its target (e.g. named entity).</summary>

@@ -22,7 +22,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	public abstract class ZoneAnchor
 	{
 		/// <summary>Resolves the zone's world-space center from its local position.</summary>
-		public abstract Vec3 Resolve(Vec3 localPos, WeakGameEntity host, TriggerContext ctx, VariableStore globals);
+		public abstract Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context);
 
 		/// <summary>Inverse of <see cref="Resolve"/>: world point → local offset (for click placement in editor).</summary>
 		public virtual Vec3 WorldToLocal(Vec3 worldPos, WeakGameEntity host) => worldPos;
@@ -36,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	[PhrasePreview("")]
 	public class WorldAnchor : ZoneAnchor
 	{
-		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, TriggerContext ctx, VariableStore globals) => localPos;
+		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context) => localPos;
 	}
 
 	/// <summary>
@@ -48,7 +48,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	[PhrasePreview("relative to host entity")]
 	public class HostEntityAnchor : ZoneAnchor
 	{
-		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, TriggerContext ctx, VariableStore globals)
+		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context)
 			=> host.IsValid ? host.GlobalPosition + localPos : localPos;
 
 		public override Vec3 WorldToLocal(Vec3 worldPos, WeakGameEntity host)
@@ -68,7 +68,7 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public override void OnRegister(WeakGameEntity host) => _cached = ZoneEntityLookup.ByName(EntityName);
 
-		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, TriggerContext ctx, VariableStore globals)
+		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context)
 		{
 			if (!_cached.IsValid) _cached = ZoneEntityLookup.ByName(EntityName);
 			return _cached.IsValid ? _cached.GlobalPosition + localPos : localPos;
@@ -89,9 +89,9 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Agent", tooltip: "Agent to follow: a variable or a function such as nearest agent.")]
 		public ValueSource<Agent> Agent = new VariableValue<Agent>();
 
-		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, TriggerContext ctx, VariableStore globals)
+		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context)
 		{
-			Agent agent = Agent?.Resolve(ctx, globals);
+			Agent agent = Agent?.Resolve(context);
 			return agent != null ? agent.Position + localPos : localPos;
 		}
 	}

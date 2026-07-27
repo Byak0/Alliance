@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -36,7 +37,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			_lastTriggerTime = Mission.Current?.GetMissionTimeInSeconds() ?? 0f;
 		}
 
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
 			if (_triggered && TypeOfTimer != TimerType.TriggerAndWaitAgain)
 			{

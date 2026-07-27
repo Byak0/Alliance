@@ -1,6 +1,7 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Conditions
@@ -17,9 +18,9 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		[ConfigProperty(label: "Value", tooltip: "Boolean literal, variable, or function expression.")]
 		public ValueSource<bool> Value = new LiteralValue<bool>(true);
 
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
-			return Value?.Resolve(context.CurrentTriggerContext, context.Globals) ?? false;
+			return Value?.Resolve(context) ?? false;
 		}
 	}
 }

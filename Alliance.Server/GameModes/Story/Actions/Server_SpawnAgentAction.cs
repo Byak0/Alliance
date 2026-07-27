@@ -20,30 +20,28 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_SpawnAgentAction() : base() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
-			Spawn();
+			Spawn(context);
 			return ActionTask.CompletedTask;
 		}
 
-		private async void Spawn()
+		private async void Spawn(VariableStore context)
 		{
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(CharacterId);
 			float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(Difficulty);
-			TriggerContext ctx = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			int spawnCount = SpawnCount?.Resolve(ctx, globals) ?? 0;
+			int spawnCount = SpawnCount?.Resolve(context) ?? 0;
 			int numbertoSpawn = IsPercentage ? 
 				SpawnHelper.GetTroopCountFromPercentage(spawnCount) : 
 				spawnCount;
 
-			Zone spawnZone = SpawnZone?.Resolve(ctx, globals);
-			Zone dirZone = Direction?.Resolve(ctx, globals);
-			Vec3 spawnCenter = spawnZone != null ? spawnZone.ResolveCenter(ctx, globals) : Vec3.Zero;
-			Vec3 dirCenter = dirZone != null ? dirZone.ResolveCenter(ctx, globals) : Vec3.Zero;
+			Zone spawnZone = SpawnZone?.Resolve(context);
+			Zone dirZone = Direction?.Resolve(context);
+			Vec3 spawnCenter = spawnZone != null ? spawnZone.ResolveCenter(context) : Vec3.Zero;
+			Vec3 dirCenter = dirZone != null ? dirZone.ResolveCenter(context) : Vec3.Zero;
 			float spawnRadius = spawnZone?.Radius ?? 0f;
 			float dirRadius = dirZone?.Radius ?? 0f;
 

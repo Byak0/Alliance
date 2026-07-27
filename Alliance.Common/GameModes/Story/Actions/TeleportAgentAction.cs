@@ -22,18 +22,16 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public TeleportAgentAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
 			if (Who == null || Destination == null) return ActionTask.CompletedTask;
 
-			TriggerContext context = ScenarioManager.Instance.CurrentTriggerContext;
-			VariableStore globals = ScenarioManager.Instance.Globals;
-			Zone dest = Destination.Resolve(context, globals);
+			Zone dest = Destination.Resolve(context);
 			if (dest == null) return ActionTask.CompletedTask;
 
-			Vec3 center = dest.ResolveCenter(context, globals);
-			List<Agent> agents = Who.Resolve(context, globals);
+			Vec3 center = dest.ResolveCenter(context);
+			List<Agent> agents = Who.Resolve(context);
 			if (agents == null) return ActionTask.CompletedTask;
 			foreach (Agent agent in agents)
 			{

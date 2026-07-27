@@ -1,5 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -14,7 +15,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public ToggleVariableAction() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			if (string.IsNullOrWhiteSpace(VariableName)) return ActionTask.CompletedTask;
 

@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 
 namespace Alliance.Server.GameModes.Story.Actions
 {
@@ -10,7 +11,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 	{
 		public Server_StartScenarioAction() : base() { }
 
-		public override ActionTask Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			ScenarioManagerServer.Instance.StartScenario(ScenarioId, ActIndex);
 			return ActionTask.CompletedTask;
