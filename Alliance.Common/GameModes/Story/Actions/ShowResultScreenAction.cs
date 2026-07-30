@@ -1,6 +1,7 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -31,5 +32,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public LocalizedString TextDefenderLost = new("The defender has lost the act !");
 
 		public ShowResultScreenAction() { }
+
+		public override ActionTask Execute(VariableStore context)
+		{
+			ExecuteOnClient(context);
+			return ActionTask.CompletedTask;
+		}
 	}
 }

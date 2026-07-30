@@ -16,10 +16,18 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return default;
 		}
 
+		public object Get(string key)
+		{
+			_values.TryGetValue(key, out object v);
+			return v;
+		}
+
 		public void Set(string key, object value) => _values[key] = value;
 
 		public bool Has(string key) => _values.ContainsKey(key);
 
 		public void Reset() => _values.Clear();
+
+		public IEnumerable<KeyValuePair<string, object>> GetAllEntries() => _values;
 	}
 }

@@ -29,6 +29,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public override ActionTask Execute(VariableStore context)
 		{
+			ExecuteOnClient(context);
+			return ActionTask.CompletedTask;
+		}
+
+		public override void ExecuteClient()
+		{
 			switch (MessageType)
 			{
 				case MessageFormat.SystemNotification:
@@ -41,7 +47,6 @@ namespace Alliance.Common.GameModes.Story.Actions
 					InformationManager.DisplayMessage(new InformationMessage(Message.LocalizedText, Color.White));
 					break;
 			}
-			return ActionTask.CompletedTask;
 		}
 	}
 }

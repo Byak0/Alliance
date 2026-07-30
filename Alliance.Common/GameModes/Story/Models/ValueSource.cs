@@ -3,7 +3,6 @@ using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace Alliance.Common.GameModes.Story.Models
@@ -28,7 +27,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	/// </list>
 	/// </summary>
 	[Serializable]
-	public abstract class ValueSource<T> : ValueSource, IValueSource
+	public abstract class ValueSource<T> : ValueSource
 	{
 		[XmlIgnore]
 		public override Type ValueType => typeof(T);
@@ -38,11 +37,6 @@ namespace Alliance.Common.GameModes.Story.Models
 		public virtual T Resolve(VariableStore context = null) => Resolve(context, ScenarioManager.Instance.Globals);
 
 		public abstract T Resolve(VariableStore context, VariableStore globals);
-	}
-
-	public interface IValueSource
-	{
-		Type ValueType { get; }
 	}
 
 	[Serializable]

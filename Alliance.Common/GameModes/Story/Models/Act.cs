@@ -73,6 +73,13 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				namedZone.Zone?.Register(WeakGameEntity.Invalid);
 			}
+			if (VictoryLogic?.ActionsOnVictory != null)
+			{
+				foreach (var action in VictoryLogic.ActionsOnVictory)
+				{
+					action.Register(WeakGameEntity.Invalid);
+				}
+			}
 		}
 
 		public void UnregisterObjectives()
@@ -86,6 +93,17 @@ namespace Alliance.Common.GameModes.Story.Models
 				foreach (Condition condition in conditionalAction.Conditions)
 				{
 					condition.Unregister();
+				}
+				foreach (var action in conditionalAction.Actions)
+				{
+					action.UnassignActionId();
+				}
+			}
+			if (VictoryLogic?.ActionsOnVictory != null)
+			{
+				foreach (var action in VictoryLogic.ActionsOnVictory)
+				{
+					action.UnassignActionId();
 				}
 			}
 		}

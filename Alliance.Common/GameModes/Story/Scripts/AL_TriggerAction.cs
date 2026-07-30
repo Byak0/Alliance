@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Conditions;
+﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -41,6 +42,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		{
 			_scriptedEvent = ScenarioSerializer.DeserializeScriptedEvent(GetCombinedChunks(), GetEntityContextForLogs());
 			_scriptedEvent.Register(GameEntity);
+			ActionBase.AssignActionIds(_scriptedEvent, ActionBase.MakeEntityScopeId(Id));
 		}
 
 		public override void AfterMissionStart()
@@ -58,9 +60,16 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		protected override void OnRemoved(int removeReason)
 		{
 			base.OnRemoved(removeReason);
-			foreach (Condition condition in _scriptedEvent?.Conditions)
+			if (_scriptedEvent != null)
 			{
-				condition.Unregister();
+				foreach (Condition condition in _scriptedEvent.Conditions)
+				{
+					condition.Unregister();
+				}
+				foreach (var action in _scriptedEvent.Actions)
+				{
+					action.UnassignActionId();
+				}
 			}
 		}
 
