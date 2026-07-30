@@ -19,6 +19,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
+using ValueSource = Alliance.Common.GameModes.Story.Models.ValueSource;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -582,7 +583,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				}
 			}
 
-			if (IsCollection && itemViewModel != null && obj is IValueSource)
+			if (IsCollection && itemViewModel != null && obj is ValueSource)
 			{
 				OpenValueSourceEditorForListItem(itemViewModel);
 				return;

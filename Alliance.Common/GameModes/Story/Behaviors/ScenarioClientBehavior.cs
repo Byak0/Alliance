@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.TroopSpawner.Interfaces;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using TaleWorlds.MountAndBlade;
@@ -33,11 +34,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 		{
 			base.OnRemoveBehavior();
 			MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
-		}
-
-		public override void OnMissionTick(float dt)
-		{
-			ScenarioManager.Instance.OnMissionTick(dt);
+			ActionBase.ClearRegistry();
 		}
 
 		private void OnMyClientSynchronized()

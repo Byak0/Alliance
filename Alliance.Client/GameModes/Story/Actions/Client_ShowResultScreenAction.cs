@@ -1,6 +1,5 @@
 ﻿using Alliance.Client.GameModes.Story.Views;
 using Alliance.Common.GameModes.Story.Actions;
-using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -16,11 +15,11 @@ namespace Alliance.Client.GameModes.Story.Actions
 	{
 		public Client_ShowResultScreenAction() : base() { }
 
-		public override ActionTask Execute(VariableStore context)
+		public override void ExecuteClient()
 		{
 			if (Mission.Current.PlayerTeam == null)
 			{
-				return ActionTask.CompletedTask;
+				return;
 			}
 			BattleSideEnum playerSide = Mission.Current.PlayerTeam.Side;
 			ScenarioView sv = Mission.Current.GetMissionBehavior<ScenarioView>();
@@ -40,7 +39,6 @@ namespace Alliance.Client.GameModes.Story.Actions
 			}
 			Color color = isWinner ? new Color(0.4f, 0.7f, 0.1f) : new Color(0.7f, 0.1f, 0.1f);
 			sv?.ShowResultScreen(title, description, color);
-			return ActionTask.CompletedTask;
 		}
 	}
 }

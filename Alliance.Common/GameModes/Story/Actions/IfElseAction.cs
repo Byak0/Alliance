@@ -38,6 +38,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public override void Register(WeakGameEntity entity)
 		{
+			base.Register(entity);
 			Condition.ForEach(c => c.Register(entity));
 			ActionIfTrue.ForEach(a => a.Register(entity));
 			ActionIfFalse.ForEach(a => a.Register(entity));

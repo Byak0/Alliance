@@ -1,6 +1,7 @@
 ﻿using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
@@ -61,6 +62,12 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			ObjectivesBehavior = Mission.Current.GetMissionBehavior<ObjectivesBehavior>();
 			ClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
 
+			// Re-register actions for this mission. StartScenario() already registered
+			// them, but a map change creates a new mission whose OnRemoveBehavior
+			// wipes the registry. ClearScope makes this idempotent.
+			if (Act != null)
+				ActionBase.AssignActionIds(Act, Scenario.Acts.IndexOf(Act));
+
 			ChangeState(ActState.AwaitingPlayerJoin);
 			EnableStateChange = true;
 		}
@@ -101,6 +108,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			if (Scenario == null || Act == null) return;
 			base.OnMissionTick(dt);
+
+			// Tick ScriptedEvents during active states
+			if (State > ActState.SpawningParticipants && State < ActState.Completed)
+			{
+				foreach (ScriptedEvent scriptedEvent in Act.ConditionalActions)
+				{
+					scriptedEvent.Tick(dt);
+				}
+			}
 
 			// Tick victory pipeline every frame for precise timing
 			if (State == ActState.DisplayingResults && !Act.VictoryLogic.IsCompleted)
@@ -246,6 +262,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public override void OnRemoveBehavior()
 		{
 			ScenarioManagerServer.Instance.CurrentAct?.UnregisterObjectives();
+			ActionBase.ClearRegistry();
 			GameNetwork.RemoveNetworkHandler(this);
 		}
 

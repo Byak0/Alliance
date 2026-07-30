@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -66,6 +67,7 @@ namespace Alliance.Common.GameModes.Story
 			ActState = state;
 			CurrentWinner = BattleSideEnum.None;
 			InitGlobals();
+			ActionBase.AssignActionIds(act, CurrentActIndex);
 			OnStartScenario?.Invoke();
 		}
 
@@ -150,21 +152,7 @@ namespace Alliance.Common.GameModes.Story
 			}
 		}
 
-		public virtual void OnMissionTick(float dt)
-		{
-			if (CurrentAct != null && ActState > ActState.SpawningParticipants)
-			{
-				foreach (ScriptedEvent scriptedEvent in CurrentAct.ConditionalActions)
-				{
-					scriptedEvent.Tick(dt);
-				}
-
-				if (ActState == ActState.DisplayingResults && !CurrentAct.VictoryLogic.IsCompleted)
-				{
-					CurrentAct.VictoryLogic.Tick(dt);
-				}
-			}
-		}
+		public virtual void OnMissionTick(float dt) { }
 
 		/// <summary>
 		/// Sets the winner of the current act.

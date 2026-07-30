@@ -1,9 +1,11 @@
 ﻿using Alliance.Common.Extensions;
 using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using System;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -17,6 +19,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<UpdateScenarioMessage>(HandleServerEventUpdateScenarioMessage);
 			reg.Register<ObjectivesProgressMessage>(HandleServerEventObjectivesProgressMessage);
 			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
+			reg.Register<ExecuteActionMessage>(HandleExecuteActionMessage);
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)
@@ -82,6 +85,25 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			ScenarioClientBehavior scenarioClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
 			scenarioClientBehavior?.UpdateLives(message.RespawnStrategy, message.TeamRemainingLives, message.PlayerRemainingLives);
+		}
+
+		public void HandleExecuteActionMessage(ExecuteActionMessage message)
+		{
+			try
+			{
+				var action = ActionBase.FindById(message.ScopeId, message.ActionId);
+				if (action == null)
+				{
+					Log($"ExecuteActionMessage: no action with scope {message.ScopeId}, id {message.ActionId}", LogLevel.Warning);
+					return;
+				}
+				action.InjectSyncData(message.Data);
+				action.ExecuteClient();
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to process ExecuteActionMessage: {ex.Message}", LogLevel.Error);
+			}
 		}
 	}
 }

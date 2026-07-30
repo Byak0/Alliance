@@ -68,10 +68,9 @@ namespace Alliance.Common.GameModes.Story.Models
 		}
 
 		/// <summary>
-		/// Check if the conditions are met and execute the actions if they are.
-		/// Uses a cooperative async pipeline so that actions with duration (e.g. WaitAction)
-		/// are awaited over multiple ticks. The pipeline is anti-reentrant: while running,
-		/// condition re-evaluation is blocked.
+		/// Evaluates conditions and runs the async action pipeline.
+		/// Should only be called on the server (see <see cref="ScenarioBehavior"/>).
+		/// On the client, actions are driven by <see cref="ExecuteActionMessage"/>.
 		/// </summary>
 		public void Tick(float dt)
 		{
