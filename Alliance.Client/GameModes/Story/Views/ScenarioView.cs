@@ -36,6 +36,8 @@ namespace Alliance.Client.GameModes.Story.Views
 			ViewOrderPriority = 25;
 		}
 
+		public ScenarioVM GetDataSource() => _dataSource;
+
 		public override void OnMissionScreenInitialize()
 		{
 			InitializeLayer();

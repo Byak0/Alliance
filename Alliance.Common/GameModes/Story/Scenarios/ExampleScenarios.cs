@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using static Alliance.Common.GameModes.Story.Conditions.Condition;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Story.Scenarios
@@ -66,21 +67,21 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			TimerObjective act1objective1 = new TimerObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 1 timer objective"),
-				new LocalizedString("BFHD act 1 timer objective desc"),
-				true, true, 3600);
-			KillCountObjective act1objective2 = new KillCountObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 1 killcount objective"),
-				new LocalizedString("BFHD act 1 killcount objective desc"),
-				true, true, 10000);
-			KillAllObjective act1objective3 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("BFHD act 1 KillAllObjective"),
-				new LocalizedString("BFHD act 1 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 1 timer objective"),
+			new LocalizedString("BFHD act 1 timer objective desc"),
+			true, true, new TimerCondition { WaitTime = 3600, TypeOfTimer = TimerCondition.TimerType.TriggerOnce });
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 1 killcount objective"),
+			new LocalizedString("BFHD act 1 killcount objective desc"),
+			true, true, new KillCountCondition(SideType.Attacker, 10000));
+		Objective act1objective3 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("BFHD act 1 KillAllObjective"),
+			new LocalizedString("BFHD act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			act1.Objectives.Add(act1objective3);
@@ -121,16 +122,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act2SpawnLogic,
 				victoryLogic: act2VictoryLogic
 				);
-			KillAllObjective act2objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 2 KillAllObjective"),
-				new LocalizedString("BFHD act 2 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act2objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("BFHD act 2 KillAllObjective2"),
-				new LocalizedString("BFHD act 2 KillAllObjective2 desc"),
-				true, false);
+		Objective act2objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 2 KillAllObjective"),
+			new LocalizedString("BFHD act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act2objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("BFHD act 2 KillAllObjective2"),
+			new LocalizedString("BFHD act 2 KillAllObjective2 desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act2.Objectives.Add(act2objective1);
 			act2.Objectives.Add(act2objective2);
 			bfhd.Acts.Add(act2);
@@ -194,16 +195,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			KillAllObjective act1objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 1 KillAllObjective"),
-				new LocalizedString("GP act 1 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act1objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 1 CaptureObjective"),
-				new LocalizedString("GP act 1 CaptureObjective desc"),
-				true, false, "farm");
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 1 KillAllObjective"),
+			new LocalizedString("GP act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 1 CaptureObjective"),
+			new LocalizedString("GP act 1 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("farm", SideType.Attacker));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			Test.Acts.Add(act1);
@@ -252,16 +253,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act2SpawnLogic,
 				victoryLogic: act2VictoryLogic
 				);
-			KillAllObjective act2objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 2 KillAllObjective"),
-				new LocalizedString("GP act 2 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act2objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 2 CaptureObjective"),
-				new LocalizedString("GP act 2 CaptureObjective desc"),
-				true, false, "camp");
+		Objective act2objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 2 KillAllObjective"),
+			new LocalizedString("GP act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act2objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 2 CaptureObjective"),
+			new LocalizedString("GP act 2 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("camp", SideType.Attacker));
 			act2.Objectives.Add(act2objective1);
 			act2.Objectives.Add(act2objective2);
 			Test.Acts.Add(act2);
@@ -309,16 +310,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act3SpawnLogic,
 				victoryLogic: act3VictoryLogic
 				);
-			KillAllObjective act3objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 3 KillAllObjective"),
-				new LocalizedString("GP act 3 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act3objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 3 CaptureObjective"),
-				new LocalizedString("GP act 3 CaptureObjective desc"),
-				true, false, "castle");
+		Objective act3objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 3 KillAllObjective"),
+			new LocalizedString("GP act 3 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act3objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 3 CaptureObjective"),
+			new LocalizedString("GP act 3 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("castle", SideType.Attacker));
 			act3.Objectives.Add(act3objective1);
 			act3.Objectives.Add(act3objective2);
 			Test.Acts.Add(act3);
@@ -363,16 +364,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act4SpawnLogic,
 				victoryLogic: act4VictoryLogic
 				);
-			KillAllObjective act4objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 4 KillAllObjective"),
-				new LocalizedString("GP act 4 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act4objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 4 KillAllObjective2"),
-				new LocalizedString("GP act 4 KillAllObjective2 desc"),
-				true, false);
+		Objective act4objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 4 KillAllObjective"),
+			new LocalizedString("GP act 4 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act4objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 4 KillAllObjective2"),
+			new LocalizedString("GP act 4 KillAllObjective2 desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act4.Objectives.Add(act4objective1);
 			act4.Objectives.Add(act4objective2);
 			Test.Acts.Add(act4);
@@ -442,16 +443,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			TimerObjective act1objective1 = new TimerObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GdCFinal act 1 TimerObjective"),
-				new LocalizedString("GdCFinal act 1 TimerObjective desc"),
-				true, false, 3600);
-			KillAllObjective act1objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GdCFinal act 1 KillAllObjective"),
-				new LocalizedString("GdCFinal act 1 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GdCFinal act 1 TimerObjective"),
+			new LocalizedString("GdCFinal act 1 TimerObjective desc"),
+			true, false, new TimerCondition { WaitTime = 3600, TypeOfTimer = TimerCondition.TimerType.TriggerOnce });
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GdCFinal act 1 KillAllObjective"),
+			new LocalizedString("GdCFinal act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenarGdCFinal.Acts.Add(act1);
@@ -522,16 +523,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			KillAllObjective act1objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("OrgaDefault act 1 KillAllObjective"),
-				new LocalizedString("OrgaDefault act 1 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act1objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("OrgaDefault act 2 KillAllObjective"),
-				new LocalizedString("OrgaDefault act 2 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("OrgaDefault act 1 KillAllObjective"),
+			new LocalizedString("OrgaDefault act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("OrgaDefault act 2 KillAllObjective"),
+			new LocalizedString("OrgaDefault act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenarOrgaDefault.Acts.Add(act1);

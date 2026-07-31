@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
 using System;
 using System.Collections.Generic;
@@ -69,16 +70,16 @@ namespace Alliance.Common.GameModes.Story.Models
 				spawnLogic: new SpawnLogic(),
 				victoryLogic: act1VictoryLogic
 				);
-			KillAllObjective act1objective1 = new KillAllObjective(
+			Objective act1objective1 = new Objective(
 				BattleSideEnum.Defender,
 				new LocalizedString("Kill all attackers"),
 				new LocalizedString(""),
-				true, false);
-			KillAllObjective act1objective2 = new KillAllObjective(
+				true, false, new SideEliminatedCondition(Condition.SideType.Attacker));
+			Objective act1objective2 = new Objective(
 				BattleSideEnum.Attacker,
 				new LocalizedString("Kill all defenders"),
 				new LocalizedString(""),
-				true, false);
+				true, false, new SideEliminatedCondition(Condition.SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenario.Acts.Add(act1);

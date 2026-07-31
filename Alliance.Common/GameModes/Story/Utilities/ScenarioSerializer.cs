@@ -37,7 +37,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				_xmlSerializer ??= CreateScenarioSerializer(
 					rootType: typeof(Scenario),
-					typeof(ObjectiveBase), typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
+					typeof(Objective), typeof(ProgressElement),
+					typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
 				return _xmlSerializer;
 			}
@@ -49,7 +50,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				_conditionalActionSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(ScriptedEvent),
-					typeof(Condition), typeof(ActionBase),
+					typeof(Condition), typeof(ActionBase), typeof(ProgressElement),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
 				return _conditionalActionSerializer;
 			}

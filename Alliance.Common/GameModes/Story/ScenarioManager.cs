@@ -205,7 +205,7 @@ namespace Alliance.Common.GameModes.Story
 
 		private bool CheckObjectivesForSide(BattleSideEnum side)
 		{
-			List<ObjectiveBase> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
+			List<Objective> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
 
 			if (objectives.Count == 0)
 			{
@@ -213,18 +213,16 @@ namespace Alliance.Common.GameModes.Story
 				return false;
 			}
 
+			VariableStore context = Globals;
 			bool sideWin = true;
 
-			foreach (ObjectiveBase objective in objectives)
+			foreach (Objective objective in objectives)
 			{
-				bool objectiveCompleted = objective.CheckObjective();
+				bool objectiveCompleted = objective.Check(context);
 				LogObjectiveProgress(objective, objectiveCompleted);
 
 				if (objectiveCompleted)
 				{
-					objective.Active = false; // Disable objective to no longer check it
-
-					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
 						SetWinner(objective.Side);
@@ -238,7 +236,6 @@ namespace Alliance.Common.GameModes.Story
 				}
 			}
 
-			// If all objectives for the side are completed, the side wins
 			if (sideWin)
 			{
 				SetWinner(side);
@@ -248,16 +245,11 @@ namespace Alliance.Common.GameModes.Story
 			return false;
 		}
 
-		/// <summary>
-		/// Logs the progress of the given objective.
-		/// </summary>
-		public virtual void LogObjectiveProgress(ObjectiveBase objective, bool objectiveCompleted)
+		public virtual void LogObjectiveProgress(Objective objective, bool objectiveCompleted)
 		{
 			string logMessage = objectiveCompleted
-				? $"{objective.Name.LocalizedText} ({objective.Side}) completed : {objective.GetProgressAsString()}"
-				: $"{objective.Name.LocalizedText} ({objective.Side}) : {objective.GetProgressAsString()}";
-
-			ConsoleColor logColor = objectiveCompleted ? ConsoleColor.Green : ConsoleColor.Cyan;
+				? $"{objective.Name.LocalizedText} ({objective.Side}) completed"
+				: $"{objective.Name.LocalizedText} ({objective.Side})";
 
 			Log(logMessage, LogLevel.Debug);
 		}
