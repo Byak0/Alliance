@@ -18,6 +18,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<InitScenarioMessage>(HandleServerEventInitScenarioMessage);
 			reg.Register<UpdateScenarioMessage>(HandleServerEventUpdateScenarioMessage);
 			reg.Register<ObjectivesProgressMessage>(HandleServerEventObjectivesProgressMessage);
+			reg.Register<SyncObjectiveProgressMessage>(HandleSyncObjectiveProgress);
 			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
 			reg.Register<ExecuteActionMessage>(HandleExecuteActionMessage);
 		}
@@ -78,6 +79,15 @@ namespace Alliance.Client.GameModes.Story.Handlers
 				objBehavior.TotalAttackerDead = message.AttackersDead;
 				objBehavior.TotalDefenderDead = message.DefendersDead;
 				objBehavior.StartTimerAsClient(message.TimerStart, message.TimerDuration);
+			}
+		}
+
+		public void HandleSyncObjectiveProgress(SyncObjectiveProgressMessage message)
+		{
+			var view = Mission.Current.GetMissionBehavior<Views.ScenarioView>();
+			if (view != null)
+			{
+				view.GetDataSource()?.SetSyncedProgress(message.Objectives);
 			}
 		}
 

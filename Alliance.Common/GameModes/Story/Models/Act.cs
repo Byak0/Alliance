@@ -35,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		public List<NamedZone> Zones = new List<NamedZone>();
 
 		[ConfigProperty(label: "Objectives", tooltip: "List of objectives to complete in this act.", category: "Victory conditions")]
-		public List<ObjectiveBase> Objectives = new List<ObjectiveBase>();
+		public List<Objective> Objectives = new List<Objective>();
 
 		[ConfigProperty(label: "Victory events", tooltip: "Events triggered upon victory.", category: "Victory conditions")]
 		[InlineContent]
@@ -53,17 +53,16 @@ namespace Alliance.Common.GameModes.Story.Models
 			ActSettings = actSettings;
 			SpawnLogic = spawnLogic;
 			VictoryLogic = victoryLogic;
-			Objectives = new List<ObjectiveBase>();
+			Objectives = new List<Objective>();
 		}
 
 		public Act() { }
 
 		public void RegisterObjectives()
 		{
-			foreach (ObjectiveBase objective in Objectives)
+			foreach (Objective objective in Objectives)
 			{
 				objective.Reset();
-				objective.RegisterForUpdate();
 			}
 			foreach (ScriptedEvent conditionalAction in ConditionalActions)
 			{
@@ -84,9 +83,9 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public void UnregisterObjectives()
 		{
-			foreach (ObjectiveBase objective in Objectives)
+			foreach (Objective objective in Objectives)
 			{
-				objective.UnregisterForUpdate();
+				objective.Unregister();
 			}
 			foreach (ScriptedEvent conditionalAction in ConditionalActions)
 			{
