@@ -21,9 +21,13 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		public bool AllowMultipleUses;
 		[ConfigProperty(label: "Restrict to parent entity", tooltip: "If enabled, condition will only check its parent entity and children (entity MUST have any MissionObject script, can be AL_TriggerAction).")]
 		public bool ParentEntityOnly;
+		[ConfigProperty(label: "Captured user", tooltip: "Agent who used the object will be stored under this temporary variable name within this scripted event.")]
+		[VariableOutput(typeof(Agent))]
+		public string User = "User";
 
 		private bool _used;
 		private WeakGameEntity _gameEntity;
+		private Agent _lastUser;
 
 		public ObjectUsedCondition() { }
 
@@ -90,9 +94,11 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			return usableObjects;
 		}
 
-		private void OnUse()
+		private void OnUse(Agent userAgent)
 		{
 			_used = true;
+			_lastUser = userAgent;
+
 			if (!AllowMultipleUses)
 			{
 				Unregister();
@@ -104,6 +110,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			// If the object has been used, return true and reset the used flag (unless AllowMultipleUses is false)
 			if (_used)
 			{
+				context?.Set(User, _lastUser);
 				_used = !AllowMultipleUses;
 				return true;
 			}

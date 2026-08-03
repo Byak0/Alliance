@@ -22,7 +22,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 	/// </summary>
 	public class CS_UsableObject : UsableMachine
 	{
-		public event Action OnUse;
+		public event Action<Agent> OnUse;
 
 		public string ObjectId;
 
@@ -247,7 +247,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		protected virtual void AfterUse(Agent userAgent, bool actionCompleted = true)
 		{
 			NumberOfUse++;
-			OnUse?.Invoke();
+			OnUse?.Invoke(userAgent);
 
 			if (NumberOfUseMax > 0)
 			{
