@@ -421,6 +421,16 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					object innerObj = fi.GetValue(Object);
 					if (innerObj != null)
 					{
+						// For ValueSource fields, keep the FieldViewModel intact so the
+						// ValueSource editor (Literal/Variable/Function picker) is shown,
+						// instead of unwrapping the inner LiteralValue fields.
+						if (ValueSourceHelper.IsValueSourceType(fi.FieldType))
+						{
+							FieldViewModel vsFieldVM = new FieldViewModel(fi, innerObj, this, ScenarioVM);
+							CategorizeField(vsFieldVM, fi, categories, expandedStates);
+							continue;
+						}
+
 						HashSet<string> innerAllowedFields = GetAllowedFieldNamesForInnerObject(innerObj);
 						foreach (FieldInfo innerFi in GetInnerEditableFields(innerObj, innerAllowedFields))
 						{

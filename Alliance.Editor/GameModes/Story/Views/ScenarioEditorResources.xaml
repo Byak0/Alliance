@@ -253,8 +253,8 @@
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>
 				<!-- Centered Edit Zone button -->
-				<Button Content="Edit Zone" Command="{Binding EditZoneCommand}" 
-						HorizontalAlignment="Center" Height="24" Width="80" Padding="0,0,0,1"
+				<Button Content="Place Zone on map" Command="{Binding EditZoneCommand}" 
+						HorizontalAlignment="Center" Height="24" Width="160" Padding="0,0,0,1"
 						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
 						Margin="0,0,0,4"
 						ToolTip="Click to position this zone on the map."/>
