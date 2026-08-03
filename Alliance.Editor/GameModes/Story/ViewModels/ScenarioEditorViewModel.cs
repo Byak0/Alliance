@@ -1,11 +1,13 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
+using Alliance.Common.GameModes.Story.Validation;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -163,6 +165,28 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private void SaveScenarioToFile(string filePath)
 		{
+			var issues = Scenario.Validate();
+			var errors = issues.Where(i => i.Severity == ValidationSeverity.Error).ToList();
+			var warnings = issues.Where(i => i.Severity != ValidationSeverity.Error).ToList();
+
+			if (errors.Count > 0)
+			{
+				string msg = "Cannot save — the scenario has errors:\n\n" +
+					string.Join("\n", errors.Select(i => i.ToString())) +
+					"\n\nFix these before saving.";
+				MessageBox.Show(msg, "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (warnings.Count > 0)
+			{
+				string msg = "The scenario has potential issues:\n\n" +
+					string.Join("\n", warnings.Select(i => i.ToString())) +
+					"\n\nSave anyway?";
+				if (MessageBox.Show(msg, "Validation Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+					return;
+			}
+
 			try
 			{
 				Scenario.Version++;

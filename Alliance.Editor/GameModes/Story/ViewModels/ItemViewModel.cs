@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -68,7 +69,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				_fieldViewModel.scenarioEditorViewModel.OnLanguageChange += UpdateDisplayName;
 			}
 
-			DisplayName = ScenarioEditorHelper.GetItemDisplayName(item, _fieldViewModel.parentViewModel.SelectedLanguage);
+			UpdateDisplayName();
 
 			EditCommand = new RelayCommand(_ => _fieldViewModel.EditObject(Item, this));
 			DeleteCommand = new RelayCommand(_ => _fieldViewModel.DeleteItem(this));
@@ -76,7 +77,16 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void UpdateDisplayName(object sender = null, EventArgs args = null)
 		{
-			DisplayName = ScenarioEditorHelper.GetItemDisplayName(Item, _fieldViewModel.parentViewModel.SelectedLanguage);
+			string baseName = ScenarioEditorHelper.GetItemDisplayName(Item, _fieldViewModel.parentViewModel.SelectedLanguage);
+
+			if (Item is ProgressValue)
+			{
+				int index = _fieldViewModel.Items?.IndexOf(this) ?? 0;
+				if (index >= 0)
+					baseName = $"{{{index}}}  {baseName}";
+			}
+
+			DisplayName = baseName;
 		}
 
 		public void ReplaceItem(object newItem)

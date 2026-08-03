@@ -496,6 +496,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				list.Remove(viewModel.Item);
 				Items.Remove(viewModel);
+				RefreshItemDisplayNames();
 				OnPropertyChanged(nameof(FieldValue));
 			}
 		}
@@ -514,6 +515,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			Items.Move(fromIndex, toIndex > fromIndex ? toIndex - 1 : toIndex);
 
+			RefreshItemDisplayNames();
 			OnPropertyChanged(nameof(FieldValue));
 		}
 
@@ -561,7 +563,14 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			list.Add(newItem);
 			Items.Add(new ItemViewModel(newItem, this));
+			RefreshItemDisplayNames();
 			OnPropertyChanged(nameof(FieldValue));
+		}
+
+		private void RefreshItemDisplayNames()
+		{
+			foreach (var item in Items)
+				item.UpdateDisplayName();
 		}
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
@@ -587,6 +596,18 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				OpenValueSourceEditorForListItem(itemViewModel);
 				return;
+			}
+
+			if (IsCollection && itemViewModel != null)
+			{
+				var vsField = obj.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
+					.FirstOrDefault(f => f.GetCustomAttribute<InlineContentAttribute>() != null
+									  && ValueSourceHelper.IsValueSourceType(f.FieldType));
+				if (vsField != null)
+				{
+					OpenValueSourceEditorForWrappedItem(itemViewModel, obj, vsField);
+					return;
+				}
 			}
 
 			var editorWindow = new ObjectEditorWindow(obj, parentViewModel.GameEntity, this, scenarioEditorViewModel, parentViewModel.Title);
@@ -643,6 +664,46 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 					itemVM.ReplaceItem(newValue);
 					OnPropertyChanged(nameof(FieldValue));
 				}
+			};
+
+			var viewModel = new ValueSourceEditorViewModel(
+				valueSourceType, getter, setter, itemVM.DisplayName ?? Label, this);
+
+			var popup = new ValueSourceEditorPopup(viewModel, this)
+			{
+				Owner = Application.Current?.Windows.OfType<Window>().FirstOrDefault(window => window.IsActive)
+					?? Application.Current?.MainWindow
+			};
+
+			_activeValueSourcePopups[itemVM] = popup;
+			itemVM.IsPopupOpen = true;
+
+			popup.Closed += (_, _) =>
+			{
+				_activeValueSourcePopups.Remove(itemVM);
+				itemVM.IsPopupOpen = false;
+				itemVM.OnClose();
+				OnPropertyChanged(nameof(FieldValue));
+			};
+
+			popup.Show();
+		}
+
+		private void OpenValueSourceEditorForWrappedItem(ItemViewModel itemVM, object wrapper, FieldInfo vsField)
+		{
+			if (_activeValueSourcePopups.TryGetValue(itemVM, out var existing) && existing.IsLoaded)
+			{
+				existing.Focus();
+				return;
+			}
+
+			Type valueSourceType = vsField.FieldType;
+
+			Func<object> getter = () => vsField.GetValue(wrapper);
+			Action<object> setter = newValue =>
+			{
+				vsField.SetValue(wrapper, newValue);
+				OnPropertyChanged(nameof(FieldValue));
 			};
 
 			var viewModel = new ValueSourceEditorViewModel(

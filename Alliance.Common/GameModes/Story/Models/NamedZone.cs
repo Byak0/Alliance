@@ -15,6 +15,9 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Name", tooltip: "Unique name within this act. Referenced by 'named zone' pickers.")]
 		public string Name = "Zone1";
 
+		[ConfigProperty(label: "Enabled", tooltip: "Disabled zones can be ignored by some functions (NearestZoneToAgentFunction) or spawn logic. Can be toggled at runtime with a 'Set zone state' action.")]
+		public bool Enabled = true;
+
 		[ConfigProperty(label: "Zone", tooltip: "The reusable zone definition.")]
 		public Zone Zone = new Zone();
 

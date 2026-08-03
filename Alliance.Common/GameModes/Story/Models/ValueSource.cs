@@ -66,10 +66,9 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		public override T Resolve(VariableStore context, VariableStore globals)
 		{
-			if (context != null && context.Has(VariableName))
-				return context.Get<T>(VariableName);
-			if (globals != null && globals.Has(VariableName))
-				return globals.Get<T>(VariableName);
+			if(String.IsNullOrEmpty(VariableName)) return default;
+			if (context != null && context.Has(VariableName)) return context.Get<T>(VariableName);
+			if (globals != null && globals.Has(VariableName)) return globals.Get<T>(VariableName);
 			return default;
 		}
 	}

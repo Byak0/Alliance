@@ -1,10 +1,14 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
+using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Validation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
+using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
@@ -57,7 +61,7 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				new ShowResultScreenAction(),
 				new WaitAction() { Duration = new LiteralValue<float>(15f) },
-				new StartGameAction("", new GameModeSettings())
+				new EndScenarioAction()
 			}; 
 
 			VictoryLogic act1VictoryLogic = new VictoryLogic(act1VictoryActions);
@@ -70,21 +74,59 @@ namespace Alliance.Common.GameModes.Story.Models
 				spawnLogic: new SpawnLogic(),
 				victoryLogic: act1VictoryLogic
 				);
+			ValueSource<int> attackerCount = new FunctionCall<int>(
+				new CountOfFunction {
+					List = new FunctionCall<List<TaleWorlds.MountAndBlade.Agent>>(
+						new AgentsInZoneFunction { Anywhere = true, Side = SideType.Attacker })
+				});
+			ValueSource<int> defenderCount = new FunctionCall<int>(
+				new CountOfFunction {
+					List = new FunctionCall<List<TaleWorlds.MountAndBlade.Agent>>(
+						new AgentsInZoneFunction { Anywhere = true, Side = SideType.Defender })
+				});
+
 			Objective act1objective1 = new Objective(
 				BattleSideEnum.Defender,
 				new LocalizedString("Kill all attackers"),
 				new LocalizedString(""),
-				true, false, new SideEliminatedCondition(Condition.SideType.Attacker));
+				true, false,
+				new SideEliminatedCondition(SideType.Attacker),
+				new List<ProgressElement> {
+					new TextElement(new LocalizedString("Enemies remaining: {0}"), new IntValue(attackerCount))
+				});
 			Objective act1objective2 = new Objective(
 				BattleSideEnum.Attacker,
 				new LocalizedString("Kill all defenders"),
 				new LocalizedString(""),
-				true, false, new SideEliminatedCondition(Condition.SideType.Defender));
+				true, false,
+				new SideEliminatedCondition(SideType.Defender),
+				new List<ProgressElement> {
+					new TextElement(new LocalizedString("Enemies remaining: {0}"), new IntValue(defenderCount))
+				});
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenario.Acts.Add(act1);
 
 			return scenario;
+		}
+
+		public List<ValidationIssue> Validate()
+		{
+			var issues = new List<ValidationIssue>();
+
+			if (Acts == null || Acts.Count == 0)
+			{
+				issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario", "No acts defined."));
+				return issues;
+			}
+
+			for (int i = 0; i < Acts.Count; i++)
+			{
+				if (Acts[i] == null) continue;
+				issues.AddRange(Acts[i].Validate(i));
+			}
+
+			return issues;
 		}
 	}
 }

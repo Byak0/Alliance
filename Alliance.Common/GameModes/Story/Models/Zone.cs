@@ -10,11 +10,11 @@ using TaleWorlds.Library;
 namespace Alliance.Common.GameModes.Story.Models
 {
 	/// <summary>
-	/// A positioned region of space, composed of three independent axes:
+	/// A positioned region of space, composed of :
 	/// <list type="bullet">
 	/// <item><see cref="Anchor"/>: what <see cref="Position"/> is relative to (world, host entity, named entity, agent).</item>
 	/// <item><see cref="Shape"/>: the geometry (circle today, box/polygon tomorrow).</item>
-	/// <item><see cref="Position"/>: the authored coordinates, interpreted through the anchor.</item>
+	/// <item><see cref="Position"/>: coordinates, interpreted through the anchor.</item>
 	/// </list>
 	/// </summary>
 	[Serializable]
@@ -46,7 +46,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		public Vec3 ResolveCenter(VariableStore ctx)
 			=> Anchor != null ? Anchor.Resolve(Position, HostEntity, ctx) : Position;
 
-		/// <summary>Precise containment test in world space (delegates to the shape).</summary>
+		/// <summary>Precise containment test in world space (delegates to the shape). Disabled zones never contain anything.</summary>
 		public bool Contains(Vec3 worldPoint, VariableStore ctx)
 		{
 			if (Shape == null) return false;

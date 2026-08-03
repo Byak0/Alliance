@@ -131,14 +131,14 @@ namespace Alliance.Common.GameModes.Story.Behaviors
                 var el = objective.Progress[i];
                 ref var d = ref result[i];
 
-                if (el is TextElement text)
-                {
-                    d.Type = 0;
-                    var values = new object[text.Values?.Count ?? 0];
-                    for (int j = 0; j < values.Length; j++)
-                        values[j] = text.Values[j]?.ResolveObject(context, globals);
-                    d.Values = values;
-                }
+				if (el is TextElement text)
+				{
+					d.Type = 0;
+					var values = new object[text.Values?.Count ?? 0];
+					for (int j = 0; j < values.Length; j++)
+						values[j] = text.Values[j]?.Resolve(context, globals);
+					d.Values = values;
+				}
                 else if (el is BarElement bar)
                 {
                     d.Type = 1;

@@ -131,10 +131,17 @@ namespace Alliance.Common.GameModes.Story.Functions
 	/// Returns the first match by distance, or null if no zones match.
 	/// </summary>
 	[Serializable]
-	[PhrasePreview("nearest zone {?Filtered:with prefix {ZoneNamePrefix} to }{!Filtered:zone to }{Agent}")]
-	[PhraseTemplate("nearest zone {Filtered|to |with prefix}{?Filtered:{ZoneNamePrefix} to}{Agent}")]
+	[PhrasePreview("nearest zone ({Filter}) {?Filtered:with prefix {ZoneNamePrefix} to }{!Filtered:zone to }{Agent}")]
+	[PhraseTemplate("nearest zone ({Filter}) {Filtered|to |with prefix}{?Filtered:{ZoneNamePrefix} to}{Agent}")]
 	public class NearestZoneToAgentFunction : Function
 	{
+		public enum ZoneFilter
+		{
+			EnabledOnly,
+			DisabledOnly,
+			Any
+		}
+
 		public override Type ReturnType => typeof(Zone);
 
 		[ConfigProperty(label: "Agent", tooltip: "Agent to measure distance from.")]
@@ -145,6 +152,9 @@ namespace Alliance.Common.GameModes.Story.Functions
 
 		[ConfigProperty(label: "Zone name prefix", tooltip: "Only consider zones whose name starts with this prefix.", dependency: nameof(Filtered))]
 		public string ZoneNamePrefix = "";
+
+		[ConfigProperty(label: "Zone filter", tooltip: "Filter zones by enabled/disabled state.")]
+		public ZoneFilter Filter = ZoneFilter.EnabledOnly;
 
 		public NearestZoneToAgentFunction() { }
 
@@ -160,6 +170,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 			foreach (NamedZone named in ScenarioManager.Instance.CurrentAct.Zones)
 			{
 				if (named?.Zone == null) continue;
+				if (Filter == ZoneFilter.EnabledOnly && !named.Enabled) continue;
+				if (Filter == ZoneFilter.DisabledOnly && named.Enabled) continue;
 				if (Filtered && !string.IsNullOrEmpty(ZoneNamePrefix) && !named.Name.StartsWith(ZoneNamePrefix)) continue;
 				Vec3 center = named.Zone.ResolveCenter(context);
 				float d = agentPos.DistanceSquared(center);

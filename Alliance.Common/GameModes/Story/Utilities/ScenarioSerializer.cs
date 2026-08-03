@@ -37,7 +37,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			{
 				_xmlSerializer ??= CreateScenarioSerializer(
 					rootType: typeof(Scenario),
-					typeof(Objective), typeof(ProgressElement),
+					typeof(Objective), typeof(ProgressElement), typeof(ProgressValue),
 					typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
 					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
 				return _xmlSerializer;

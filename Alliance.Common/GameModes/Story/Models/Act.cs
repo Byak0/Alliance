@@ -2,9 +2,11 @@
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
+using Alliance.Common.GameModes.Story.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.Core;
 using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Models
@@ -107,7 +109,43 @@ namespace Alliance.Common.GameModes.Story.Models
 			}
 		}
 
-		/// <summary>Runtime lookup used by <c>NamedZoneFunction</c>. Returns the first match by name, or null.</summary>
-		public Zone FindNamedZone(string name) => Zones.FirstOrDefault(z => z?.Name == name)?.Zone;
+		public List<ValidationIssue> Validate(int actIndex)
+		{
+			var issues = new List<ValidationIssue>();
+			string actLabel = $"Act {actIndex + 1}" + (Name?.GetText("English") != null ? $" '{Name.GetText("English")}'" : "");
+
+			if (Objectives == null || Objectives.Count == 0)
+			{
+				issues.Add(new ValidationIssue(ValidationSeverity.Error, actLabel, "No objectives. The act cannot be won."));
+			}
+			else
+			{
+				var attackerObjs = Objectives.Where(o => o.Side == BattleSideEnum.Attacker).ToList();
+				var defenderObjs = Objectives.Where(o => o.Side == BattleSideEnum.Defender).ToList();
+
+				if (attackerObjs.Count == 0)
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Attackers — only Defenders can win this act."));
+				if (defenderObjs.Count == 0)
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Defenders — only Attackers can win this act."));
+
+				var instantWinAttacker = attackerObjs.Count(o => o.InstantActWin);
+				var instantWinDefender = defenderObjs.Count(o => o.InstantActWin);
+				if (instantWinAttacker > 1)
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinAttacker} Attacker objectives have Instant Win — first to complete wins (race condition)."));
+				if (instantWinDefender > 1)
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinDefender} Defender objectives have Instant Win — first to complete wins (race condition)."));
+
+				foreach (var obj in Objectives)
+				{
+					string objLabel = $"{actLabel} > Objective '{obj.Name?.GetText("English") ?? "?"}'";
+					issues.AddRange(obj.Validate(objLabel));
+				}
+			}
+
+			if (LoadMap && string.IsNullOrWhiteSpace(MapID))
+				issues.Add(new ValidationIssue(ValidationSeverity.Error, actLabel, "Load Map is enabled but no Map ID is set."));
+
+			return issues;
+		}
 	}
 }
