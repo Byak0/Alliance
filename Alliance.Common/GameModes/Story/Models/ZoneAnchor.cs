@@ -55,28 +55,29 @@ namespace Alliance.Common.GameModes.Story.Models
 			=> host.IsValid ? worldPos - host.GlobalPosition : worldPos;
 	}
 
-	/// <summary>Relative to a scene entity identified by its Name.</summary>
+	/// <summary>Relative to a scene entity.</summary>
 	[Serializable]
-	[PhrasePreview("relative to entity '{EntityName}'")]
+	[PhrasePreview("relative to entity '{Entity}'")]
 	public class EntityAnchor : ZoneAnchor
 	{
-		[ConfigProperty(label: "Entity name", tooltip: "Name of the scene entity to follow (as set in the modding kit).")]
-		public string EntityName = "";
+		[ConfigProperty(label: "Entity", tooltip: "Scene entity to follow.")]
+		[VariableRef(typeof(WeakGameEntity))]
+		public ValueSource<WeakGameEntity> Entity = new VariableValue<WeakGameEntity>();
 
 		[XmlIgnore]
 		private WeakGameEntity _cached;
 
-		public override void OnRegister(WeakGameEntity host) => _cached = ZoneEntityLookup.ByName(EntityName);
+		public override void OnRegister(WeakGameEntity host) => _cached = Entity.Resolve(null);
 
 		public override Vec3 Resolve(Vec3 localPos, WeakGameEntity host, VariableStore context)
 		{
-			if (!_cached.IsValid) _cached = ZoneEntityLookup.ByName(EntityName);
+			if (!_cached.IsValid) _cached = Entity.Resolve(context);
 			return _cached.IsValid ? _cached.GlobalPosition + localPos : localPos;
 		}
 
 		public override Vec3 WorldToLocal(Vec3 worldPos, WeakGameEntity host)
 		{
-			WeakGameEntity e = _cached.IsValid ? _cached : ZoneEntityLookup.ByName(EntityName);
+			WeakGameEntity e = _cached.IsValid ? _cached : Entity.Resolve(null);
 			return e.IsValid ? worldPos - e.GlobalPosition : worldPos;
 		}
 	}

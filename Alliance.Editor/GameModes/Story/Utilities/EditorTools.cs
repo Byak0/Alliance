@@ -28,6 +28,8 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		{
 			_playerSpawnMenuView.OnMissionTick(dt);
 			EditZoneView.Tick(dt);
+			EditEntityView.Tick(dt);
+			EditFrameView.Tick(dt);
 		}
 
 		public void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
@@ -53,6 +55,15 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		public void SetEditableZone(Zone zone)
 		{
 			EditZoneView.SetEditableZone(zone);
+		}
+
+		/// <summary>
+		/// Enters entity pick mode: the next entity selected in the editor viewport is captured into a
+		/// <see cref="GameEntityRef"/> (with an attached <c>AL_EntityMarker</c> GUID) and passed to the callback.
+		/// </summary>
+		public void BeginEntityPick(Action<GameEntityRef> onPicked)
+		{
+			EditEntityView.BeginPick(onPicked);
 		}
 
 		/// <summary>

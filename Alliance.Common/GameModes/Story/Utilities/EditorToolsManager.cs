@@ -43,5 +43,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		{
 			EditorTools?.OpenEditor(obj, onCloseCallback);
 		}
+
+		public static void BeginEntityPick(Action<GameEntityRef> onPicked)
+		{
+			EditorTools?.BeginEntityPick(onPicked);
+		}
 	}
 }

@@ -13,5 +13,6 @@ namespace Alliance.Common.GameModes.Story.Interfaces
 		public void SetEditableZone(Zone zone);
 		public void ClearZones();
 		public void OpenEditor(object obj, Action<object> onCloseCallback);
+		public void BeginEntityPick(Action<GameEntityRef> onPicked);
 	}
 }

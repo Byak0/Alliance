@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 
 namespace Alliance.Common.GameModes.Story.Utilities
@@ -47,7 +49,9 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					|| valueType == typeof(string)
 					|| valueType == typeof(decimal)
 					|| valueType == typeof(LocalizedString)
-					|| valueType == typeof(Zone));
+					|| valueType == typeof(Zone)
+					|| valueType == typeof(WeakGameEntity)
+					|| valueType == typeof(MatrixFrame));
 		}
 
 		public static object CreateDefaultLiteralValue(Type valueType)
@@ -58,12 +62,35 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return valueType.IsValueType ? Activator.CreateInstance(valueType) : null;
 		}
 
+		/// <summary>The concrete literal ValueSource type for a value type, or null if literals aren't supported.
+		/// WeakGameEntity and MatrixFrame have dedicated literal types; everything else uses LiteralValue&lt;T&gt;.</summary>
+		public static Type GetLiteralType(Type valueType)
+		{
+			if (!SupportsLiteral(valueType)) return null;
+			if (valueType == typeof(WeakGameEntity)) return typeof(SceneEntityLiteralValue);
+			if (valueType == typeof(MatrixFrame)) return typeof(FrameLiteralValue);
+			return typeof(LiteralValue<>).MakeGenericType(valueType);
+		}
+
+		/// <summary>Instantiates the literal ValueSource for a value type, with a sensible default value.</summary>
+		public static object CreateLiteralSource(Type valueType)
+		{
+			if (valueType == typeof(WeakGameEntity)) return new SceneEntityLiteralValue();
+			if (valueType == typeof(MatrixFrame)) return new FrameLiteralValue();
+			Type literalType = typeof(LiteralValue<>).MakeGenericType(valueType);
+			object literal = Activator.CreateInstance(literalType);
+			literalType.GetField(nameof(LiteralValue<int>.Value), BindingFlags.Instance | BindingFlags.Public)
+				.SetValue(literal, CreateDefaultLiteralValue(valueType));
+			return literal;
+		}
+
 		public static IReadOnlyList<Type> GetConcreteTypes(Type valueSourceType)
 		{
 			if (!TryGetValueType(valueSourceType, out Type valueType)) return Array.Empty<Type>();
 
 			List<Type> types = new List<Type>();
-			if (SupportsLiteral(valueType)) types.Add(typeof(LiteralValue<>).MakeGenericType(valueType));
+			Type literalType = GetLiteralType(valueType);
+			if (literalType != null) types.Add(literalType);
 			types.Add(typeof(VariableValue<>).MakeGenericType(valueType));
 			types.Add(typeof(FunctionCall<>).MakeGenericType(valueType));
 			return types;
@@ -72,6 +99,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		public static ValueSourceOrigin? GetCurrentOrigin(object source)
 		{
 			if (source == null) return null;
+			if (source is SceneEntityLiteralValue) return ValueSourceOrigin.Literal;
+			if (source is FrameLiteralValue) return ValueSourceOrigin.Literal;
 
 			Type type = source.GetType();
 			if (!type.IsGenericType) return null;
@@ -84,15 +113,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 
 		public static object CreateSource(ValueSourceOrigin origin, Type valueType)
 		{
-			Type sourceType;
 			switch (origin)
 			{
 				case ValueSourceOrigin.Literal:
-					sourceType = typeof(LiteralValue<>).MakeGenericType(valueType);
-					object literal = Activator.CreateInstance(sourceType);
-					sourceType.GetField(nameof(LiteralValue<int>.Value), BindingFlags.Instance | BindingFlags.Public)
-						.SetValue(literal, ValueSourceHelper.CreateDefaultLiteralValue(valueType));
-					return literal;
+					return CreateLiteralSource(valueType);
 				case ValueSourceOrigin.Variable:
 					return Activator.CreateInstance(typeof(VariableValue<>).MakeGenericType(valueType));
 				case ValueSourceOrigin.Function:
@@ -112,8 +136,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			bool hasVariables = CollectAvailableVariables(concreteType, scenario, act, localObject, objectToIgnore).Length > 0;
 			bool hasFunctions = DiscoverConcreteTypes(typeof(Function)).Any(t => FunctionReturns(t, concreteType));
 
-			Type literalType = ValueSourceHelper.SupportsLiteral(concreteType) ?
-				literalType = typeof(LiteralValue<>).MakeGenericType(concreteType) : null;
+			Type literalType = GetLiteralType(concreteType);
 			Type variableType = hasVariables ? typeof(VariableValue<>).MakeGenericType(concreteType) : null;
 			Type functionType = hasFunctions ? typeof(FunctionCall<>).MakeGenericType(concreteType) : null;
 

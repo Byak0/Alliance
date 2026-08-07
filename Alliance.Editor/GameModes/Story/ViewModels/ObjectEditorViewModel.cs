@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
+using Alliance.Editor.GameModes.Story.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,14 +33,12 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public object Object { get; set; }
 		public ObservableCollection<FieldViewModel> Fields { get; private set; }
 		public ObservableCollection<FieldCategoryViewModel> FieldCategories { get; private set; }
-		/// <summary>The phrase lines rendered inline (one per declared template string); empty when the type has no template.</summary>
 		public ObservableCollection<PhraseLineViewModel> PhraseLines { get; } = new ObservableCollection<PhraseLineViewModel>();
 		public bool HasPhrase => PhraseLines.Count > 0;
 		public string Title { get; set; }
 		public string SelectedLanguage => ScenarioVM?.SelectedLanguage ?? "English";
 		public WeakGameEntity GameEntity { get; set; }
 		public bool CanPaste => _clipboardObject != null && _clipboardType == Object?.GetType();
-		/// <summary>Field names to skip when rendering (e.g., "Position" shown inline by a parent template).</summary>
 		public HashSet<string> HiddenFieldNames { get; set; }
 
 		public ICommand CopyCommand { get; }
@@ -91,6 +90,10 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				ScenarioVM.OnLanguageChange += UpdateAllFieldsLanguage;
 			}
 
+			// Wire the in-editor ghost preview for frame-hosting actions (Spawn/Move). No-op for other
+			// objects; nested editors don't disturb the parent's ghost (ownership-tracked).
+			FrameGhostService.Attach(this, Object, () => (object)FindEnclosingScriptedEvent() ?? FindEnclosingAct());
+
 			OnPropertyChanged(nameof(CanPaste));
 		}
 
@@ -107,9 +110,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				gameEntity = scriptedEvent.ParentEntity;
 			}
-			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
-				&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone)
-				&& !typeof(System.Collections.IEnumerable).IsAssignableFrom(fieldInfos[0].FieldType))
+		else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
+			&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone)
+			&& fieldInfos[0].FieldType != typeof(GameEntityRef)
+			&& fieldInfos[0].FieldType != typeof(FrameValue)
+			&& !typeof(System.Collections.IEnumerable).IsAssignableFrom(fieldInfos[0].FieldType))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);
@@ -434,6 +439,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 						HashSet<string> innerAllowedFields = GetAllowedFieldNamesForInnerObject(innerObj);
 						foreach (FieldInfo innerFi in GetInnerEditableFields(innerObj, innerAllowedFields))
 						{
+							ConfigPropertyAttribute attr = innerFi.GetCustomAttribute<ConfigPropertyAttribute>();
+							if (!attr.IsDependencySatisfied(innerObj)) continue;
 							FieldViewModel innerFieldVM = new FieldViewModel(innerFi, innerFi.GetValue(innerObj), this, ScenarioVM);
 							innerFieldVM.SetRedirectParent(innerObj);
 							CategorizeField(innerFieldVM, innerFi, categories, expandedStates);
@@ -654,6 +661,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				field.Close();
 			}
+
+			FrameGhostService.Detach(this);
 
 			if (ScenarioVM != null)
 			{

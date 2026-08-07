@@ -88,7 +88,14 @@
 			  Foreground="{StaticResource DefaultFontColor}"
 			  Width="264"
 			  VerticalAlignment="Center"
-			  ToolTip="{Binding Tooltip}">
+			  ToolTip="{Binding Tooltip}"
+			  VirtualizingStackPanel.IsVirtualizing="True"
+			  ScrollViewer.CanContentScroll="True">
+			<ComboBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
+				</ItemsPanelTemplate>
+			</ComboBox.ItemsPanel>
 			<ComboBox.Style>
 				<Style TargetType="ComboBox">
 					<Setter Property="IsEditable" Value="True"/>
@@ -285,6 +292,36 @@
 		</StackPanel>
 	</DataTemplate>
 
+	<!-- Implicit editor for an EntityRefViewModel: "Select entity on map" button + picked entity name. -->
+	<DataTemplate DataType="{x:Type vm:EntityRefViewModel}">
+		<Border BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="-8,0,0,4" MinWidth="300">
+			<StackPanel Orientation="Vertical">
+				<Button Content="Select entity on map" Command="{Binding PickEntityCommand}"
+						HorizontalAlignment="Center" Height="24" Width="180" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,0,0,4"
+						ToolTip="Click, then select an entity in the scene to attach a marker and reference it."/>
+				<TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center"
+						   FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						   Foreground="#FF555555" Margin="0,2,0,0"/>
+			</StackPanel>
+		</Border>
+	</DataTemplate>
+
+	<!-- Template for a direct GameEntityRef field (e.g. SceneEntityLiteralValue.Ref): pick editor. -->
+	<DataTemplate x:Key="EntityRefTemplate">
+		<StackPanel Orientation="Vertical">
+			<ContentControl Content="{Binding EntityRefVM}" VerticalAlignment="Top" Width="Auto"/>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for a direct FrameValue field (e.g. FrameLiteralValue.Frame): placement editor. -->
+	<DataTemplate x:Key="FrameTemplate">
+		<StackPanel Orientation="Vertical">
+			<ContentControl Content="{Binding FrameVM}" VerticalAlignment="Top" Width="Auto"/>
+		</StackPanel>
+	</DataTemplate>
+
 	<!-- All runtime value slots are compact hyperlinks. Clicking opens Literal / Variable / Function editing -->
 	<DataTemplate x:Key="ValueSourceTemplate">
 		<StackPanel Orientation="Horizontal">
@@ -451,15 +488,21 @@
 							<DataTrigger Binding="{Binding IsPolymorphicField}" Value="True">
 								<Setter Property="ContentTemplate" Value="{StaticResource PolymorphicFieldTemplate}"/>
 							</DataTrigger>
-							<DataTrigger Binding="{Binding IsZone}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
-							</DataTrigger>
-							<DataTrigger Binding="{Binding IsValueSource}" Value="True">
-								<Setter Property="ContentTemplate" Value="{StaticResource ValueSourceTemplate}"/>
-							</DataTrigger>
+						<DataTrigger Binding="{Binding IsZone}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsGameEntityRef}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource EntityRefTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsFrameValue}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource FrameTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsValueSource}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource ValueSourceTemplate}"/>
+						</DataTrigger>
 						</Style.Triggers>
 					</Style>
 				</ContentControl.Style>
@@ -482,7 +525,14 @@
 					FontSize="14"
 					VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
 					Height="32" MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-					ToolTip="{Binding Tooltip}">
+					ToolTip="{Binding Tooltip}"
+					VirtualizingStackPanel.IsVirtualizing="True"
+					ScrollViewer.CanContentScroll="True">
+			<ComboBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
+				</ItemsPanelTemplate>
+			</ComboBox.ItemsPanel>
 			<ComboBox.Style>
 				<Style TargetType="ComboBox">
 					<Setter Property="IsEditable" Value="True"/>
@@ -674,6 +724,12 @@
 						<DataTrigger Binding="{Binding IsZone}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource ZoneTemplate}"/>
 						</DataTrigger>
+						<DataTrigger Binding="{Binding IsGameEntityRef}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource EntityRefTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsFrameValue}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource FrameTemplate}"/>
+						</DataTrigger>
 						<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
 						</DataTrigger>
@@ -688,6 +744,55 @@
 				</Style>
 			</ContentControl.Style>
 		</ContentControl>
+	</DataTemplate>
+
+	<!-- Implicit editor for a FrameViewModel: position/rotation/scale strings + "Place on map" ghost button. -->
+	<DataTemplate DataType="{x:Type vm:FrameViewModel}">
+		<Border BorderBrush="#FFCFD4DA" BorderThickness="1" CornerRadius="4" Padding="6,4" Margin="-8,0,0,4" MinWidth="420">
+			<StackPanel Orientation="Vertical">
+				<!-- Position -->
+				<StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+					<TextBlock Text="Position" VerticalAlignment="Center" Width="90" FontSize="16"/>
+					<TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+				</StackPanel>
+				<!-- Rotation (radians) -->
+				<StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+					<TextBlock Text="Rotation" VerticalAlignment="Center" Width="90" FontSize="16"/>
+					<TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding RotationX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding RotationY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding RotationZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+				</StackPanel>
+				<!-- Scale -->
+				<StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+					<TextBlock Text="Scale" VerticalAlignment="Center" Width="90" FontSize="16"/>
+					<TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ScaleX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Y:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ScaleY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+					<TextBlock Text="Z:" VerticalAlignment="Center" Margin="12,0,2,0" FontSize="16"/>
+					<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ScaleZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"/>
+				</StackPanel>
+				<Button Content="Place on map" Command="{Binding PlaceCommand}"
+						HorizontalAlignment="Center" Height="24" Width="160" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,4,0,0"
+						ToolTip="Click, then move the ghost in the scene (wheel = rotate, click = confirm)."/>
+				<Button Content="Copy from origin" Command="{Binding CopyFromOriginCommand}"
+						Visibility="{Binding CanCopyFromOrigin, Converter={StaticResource BoolToVisibilityConverter}}"
+						HorizontalAlignment="Center" Height="24" Width="160" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,4,0,0"
+						ToolTip="Copy the entity's current frame into the destination."/>
+			</StackPanel>
+		</Border>
 	</DataTemplate>
 
 </ResourceDictionary>

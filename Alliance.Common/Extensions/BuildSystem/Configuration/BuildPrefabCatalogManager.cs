@@ -19,24 +19,25 @@ namespace Alliance.Common.Extensions.BuildSystem.Configuration
 		private const string PresetFileName = "BuildPrefabPreset.xml";
 
 		private static readonly object _lock = new object();
-		private static BuildPrefabCatalog _catalog;
-		public static BuildPrefabCatalog Catalog => _catalog;
+		public static BuildPrefabCatalog Catalog { get; private set; }
+		public static string[] AllPrefabNames { get; private set;}
 
 		public static string PresetPath => PathHelper.GetAllianceDocumentFilePath(PresetFileName);
 
 		public static void Initialize()
 		{
-			if (_catalog != null)
+			if (Catalog != null)
 			{
 				return;
 			}
 
 			lock (_lock)
 			{
-				if (_catalog == null)
+				if (Catalog == null)
 				{
-					_catalog = GenerateCatalogFromModules();
-					Log($"[BuildPrefabCatalog] Initialized {_catalog.Prefabs.Count} prefabs in memory.", LogLevel.Information);
+					Catalog = GenerateCatalogFromModules();
+					AllPrefabNames = Catalog.Prefabs.Select(x => x.Id).ToArray();
+					Log($"[BuildPrefabCatalog] Initialized {Catalog.Prefabs.Count} prefabs in memory.", LogLevel.Information);
 				}
 			}
 		}
@@ -68,7 +69,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Configuration
 			BuildPrefabPreset preset = LoadOrCreatePreset();
 
 			HashSet<string> catalogIds = new HashSet<string>(
-				_catalog.Prefabs.Select(x => x.Id),
+				AllPrefabNames,
 				StringComparer.OrdinalIgnoreCase);
 
 			return preset.AllowedPrefabs
@@ -174,7 +175,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Configuration
 			preset.AllowedPrefabs ??= new List<BuildPrefabReference>();
 
 			HashSet<string> catalogIds = new HashSet<string>(
-				_catalog.Prefabs.Select(x => x.Id),
+				AllPrefabNames,
 				StringComparer.OrdinalIgnoreCase);
 
 			preset.AllowedPrefabs = preset.AllowedPrefabs

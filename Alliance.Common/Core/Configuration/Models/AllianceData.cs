@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.Audio;
+using Alliance.Common.Extensions.BuildSystem.Configuration;
 using Alliance.Common.Utilities;
 using System;
 using TaleWorlds.Core;
@@ -8,7 +9,7 @@ namespace Alliance.Common.Core.Configuration.Models
 {
 	/// <summary>
 	/// Data for Alliance : available maps, cultures, battlesides, characters, etc.
-	/// Used in editor and in-game to display options.
+	/// Used in editor and in-game to display options, dropdown lists...
 	/// </summary>
 	public static class AllianceData
 	{
@@ -22,7 +23,8 @@ namespace Alliance.Common.Core.Configuration.Models
 			Item,
 			GameMode,
 			Sounds,
-			Difficulty
+			Difficulty,
+			Prefab
 		}
 
 		public enum Difficulty
@@ -49,6 +51,8 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		public static string[] AvailableSounds() => AudioPlayer.Instance.GetAvailableSounds();
 
+		public static string[] AvailablePrefabs() => BuildPrefabCatalogManager.AllPrefabNames;
+
 		public static readonly string[] AvailableSides = new string[] { BattleSideEnum.Defender.ToString(), BattleSideEnum.Attacker.ToString() };
 
 		public static readonly string[] AvailableGameModes = new string[] { "Lobby", "Scenario", "BattleRoyale", "PvC", "CvC", "CaptainX", "BattleX", "SiegeX", "Captain", "Battle", "Siege", "Skirmish" };
@@ -74,6 +78,7 @@ namespace Alliance.Common.Core.Configuration.Models
 				DataTypes.GameMode => AvailableGameModes,
 				DataTypes.Sounds => AvailableSounds(),
 				DataTypes.Difficulty => AvailableDifficulties,
+				DataTypes.Prefab => AvailablePrefabs(),
 				_ => Array.Empty<string>(),
 			};
 		}

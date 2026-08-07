@@ -14,7 +14,13 @@ namespace Alliance.Common.Core.Configuration.Models
 		public float MaxValue { get; }
 		public string[] PossibleValues => AllianceData.GetData(DataType);
 		public AllianceData.DataTypes DataType { get; }
+
+		// A string representing a dependency condition for this property. The format is:
+		// - "{FieldName}" (the property is enabled if the field is true)
+		// - "?{FieldName}=Value" (you can use =, !=, >, <, >=, <= for comparison)
+		// - "?{FieldName}=Value&?{FieldName2}!=Value2" (you can use multiple conditions separated by &)
 		public string Dependency { get; }
+
 		public string Category { get; }
 
 		public ConfigPropertyAttribute(
@@ -42,16 +48,35 @@ namespace Alliance.Common.Core.Configuration.Models
 			if (string.IsNullOrEmpty(Dependency))
 				return true;
 
-			string fieldName = Dependency;
+			// Support compound conditions joined by '&' (all must be satisfied).
+			if (Dependency.IndexOf('&') >= 0)
+			{
+				string[] parts = Dependency.Split('&');
+				foreach (string part in parts)
+				{
+					if (!EvaluateSingleCondition(part.Trim(), configInstance)) return false;
+				}
+				return true;
+			}
+
+			return EvaluateSingleCondition(Dependency, configInstance);
+		}
+
+		private bool EvaluateSingleCondition(string dependency, object configInstance)
+		{
+			if (string.IsNullOrEmpty(dependency))
+				return true;
+
+			string fieldName = dependency;
 			string op = null;
 			string compareStr = null;
 
-			if (Dependency[0] == '?')
+			if (dependency[0] == '?')
 			{
 				int opIdx = -1;
-				for (int i = 1; i < Dependency.Length; i++)
+				for (int i = 1; i < dependency.Length; i++)
 				{
-					char c = Dependency[i];
+					char c = dependency[i];
 					if (c == '=' || c == '!' || c == '>' || c == '<')
 					{
 						opIdx = i;
@@ -61,14 +86,14 @@ namespace Alliance.Common.Core.Configuration.Models
 
 				if (opIdx > 0)
 				{
-					fieldName = Dependency.Substring(1, opIdx - 1);
-					int opLen = (opIdx + 1 < Dependency.Length && Dependency[opIdx + 1] == '=') ? 2 : 1;
-					op = Dependency.Substring(opIdx, opLen);
-					compareStr = Dependency.Substring(opIdx + opLen);
+					fieldName = dependency.Substring(1, opIdx - 1);
+					int opLen = (opIdx + 1 < dependency.Length && dependency[opIdx + 1] == '=') ? 2 : 1;
+					op = dependency.Substring(opIdx, opLen);
+					compareStr = dependency.Substring(opIdx + opLen);
 				}
 				else
 				{
-					fieldName = Dependency.Substring(1);
+					fieldName = dependency.Substring(1);
 				}
 			}
 

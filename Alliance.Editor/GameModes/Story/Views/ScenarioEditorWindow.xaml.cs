@@ -16,6 +16,8 @@ namespace Alliance.Editor.GameModes.Story.Views
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
+
+			Topmost = true;
 		}
 
 		private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

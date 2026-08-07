@@ -67,11 +67,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsComplexType => !IsValueSource && !FieldType.IsEnum && !IsLocalizedString && !IsCollection && !FieldType.IsPrimitive && FieldType != typeof(string) && FieldType != typeof(bool);
 		public bool IsCollection => typeof(IEnumerable).IsAssignableFrom(FieldType) && FieldType != typeof(string);
 		public bool IsZone => FieldType == typeof(Zone);
+		public bool IsGameEntityRef => FieldType == typeof(GameEntityRef);
+		public bool IsFrameValue => FieldType == typeof(FrameValue);
 		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
 		public Type[] ConcreteTypes { get; private set; } = Array.Empty<Type>();
 		public bool IsPolymorphicField => FieldType != null && FieldType.IsAbstract && ConcreteTypes.Length > 0;
 		public ObservableCollection<ItemViewModel> Items { get; }
 		public ZoneViewModel ZoneVM { get; private set; }
+		public EntityRefViewModel EntityRefVM { get; private set; }
+		public FrameViewModel FrameVM { get; private set; }
 		public ValueSourceChipViewModel ValueSourceChip => _valueSourceChip ??= new ValueSourceChipViewModel(this);
 
 		public object ParentObject => parentViewModel?.Object;
@@ -130,7 +134,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private bool ShouldRefreshParentOnChange()
 		{
-			if (ConfigPropertyAttribute.HasDependents(FieldInfo.Name, parentViewModel.Object))
+			object holder = _redirectParent ?? parentViewModel?.Object;
+
+			if (holder != null && ConfigPropertyAttribute.HasDependents(FieldInfo.Name, holder))
 				return true;
 
 			if (parentViewModel.HasPhrase && (FieldType == typeof(bool) || FieldType.IsEnum))
@@ -139,7 +145,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (parentViewModel?.Object is ScenarioVariable && FieldName == nameof(ScenarioVariable.EnumTypeName))
 				return true;
 
-			if (parentViewModel?.Object != null && parentViewModel.Object.GetType()
+			if (holder != null && holder.GetType()
 				.GetFields(BindingFlags.Public | BindingFlags.Instance)
 				.Any(f => f.GetCustomAttribute<DependsOnVariableAttribute>()?.SourceField == FieldName))
 				return true;
@@ -256,6 +262,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 
 			InitializeZoneViewModel();
+			InitializeEntityRefViewModel();
+			InitializeFrameViewModel();
 		}
 
 		private void ApplyConfigPropertyAttribute(FieldInfo fieldInfo)
@@ -476,6 +484,22 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			if (IsZone)
 			{
 				ZoneVM = new ZoneViewModel((Zone)FieldValue, FieldInfo, this);
+			}
+		}
+
+		private void InitializeEntityRefViewModel()
+		{
+			if (IsGameEntityRef)
+			{
+				EntityRefVM = new EntityRefViewModel((GameEntityRef)FieldValue, this);
+			}
+		}
+
+		private void InitializeFrameViewModel()
+		{
+			if (IsFrameValue)
+			{
+				FrameVM = new FrameViewModel((FrameValue)FieldValue, this);
 			}
 		}
 
@@ -882,6 +906,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public void Close()
 		{
 			ZoneVM?.Close();
+			EntityRefVM?.Close();
+			FrameVM?.Close();
 			_nestedVM?.Close();
 		}
 
