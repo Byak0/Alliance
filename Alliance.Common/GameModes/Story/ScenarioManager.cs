@@ -105,6 +105,10 @@ namespace Alliance.Common.GameModes.Story
 					return false;
 				case VariableType.String:
 					return raw ?? "";
+				case VariableType.Agent:
+				case VariableType.GameEntity:
+					// Runtime-only reference types have no meaningful serialized default.
+					return null;
 				default:
 					return raw;
 			}

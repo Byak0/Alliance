@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Utilities
@@ -19,7 +20,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			Bool,
 			String,
 			Enum,
-			Agent
+			Agent,
+			GameEntity
 		}
 
 		private static List<Type> _availableEnumTypes;
@@ -35,6 +37,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				VariableType.String => typeof(string),
 				VariableType.Enum => typeof(Enum),
 				VariableType.Agent => typeof(Agent),
+				VariableType.GameEntity => typeof(WeakGameEntity),
 				_ => throw new ArgumentOutOfRangeException(nameof(variableType), variableType, null)
 			};
 		}

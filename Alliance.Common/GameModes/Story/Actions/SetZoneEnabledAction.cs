@@ -21,6 +21,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 		}
 
 		[ConfigProperty(label: "Zone", tooltip: "Name of a zone from this act's Zones list.")]
+		[VariableRef(typeof(Zone))]
 		public string ZoneName = "";
 
 		[ConfigProperty(label: "State", tooltip: "Action to perform on the zone. Toggle switches between enabled and disabled.")]

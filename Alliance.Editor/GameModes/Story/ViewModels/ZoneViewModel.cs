@@ -53,6 +53,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				// Refresh UI when the zone is updated from the scene (click placement / wheel).
 				ZoneEditor?.RefreshFields();
 				OnPropertyChanged(nameof(Radius));
+				OnPropertyChanged(nameof(PositionX));
+				OnPropertyChanged(nameof(PositionY));
+				OnPropertyChanged(nameof(PositionZ));
 			});
 		}
 

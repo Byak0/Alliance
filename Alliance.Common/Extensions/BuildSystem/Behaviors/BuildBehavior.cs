@@ -24,9 +24,12 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 		}
 
 		private readonly Dictionary<int, BuildEntry> _builtEntities = new();
+		private readonly HashSet<UIntPtr> _trackedPointers = new();
 		private int _nextBuildIndex;
 
 		public IReadOnlyDictionary<int, BuildEntry> BuiltEntities => _builtEntities;
+
+		public bool IsTracked(GameEntity entity) => entity != null && _trackedPointers.Contains(entity.WeakEntity.Pointer);
 
 		/// <summary>
 		/// Raised after an entity has been fully built/tracked AND its scripts
@@ -39,6 +42,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 		{
 			base.OnBehaviorInitialize();
 			_builtEntities.Clear();
+			_trackedPointers.Clear();
 			_nextBuildIndex = 0;
 			// If mission has rounds, add a listener to disable UsableMachines at the end of each round.
 			MultiplayerRoundController roundComponent = Mission.Current?.GetMissionBehavior<MultiplayerRoundController>();
@@ -180,6 +184,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 				Frame = frame,
 				Entity = entity
 			};
+			if (entity != null) _trackedPointers.Add(entity.WeakEntity.Pointer);
 
 			if (buildIndex >= _nextBuildIndex)
 			{
@@ -347,6 +352,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 
 			if (entry.Entity != null)
 			{
+				_trackedPointers.Remove(entry.Entity.WeakEntity.Pointer);
 				DisableUsableMachines(entry.Entity);
 				entry.Entity.SetVisibilityExcludeParents(false);
 				entry.Entity.RemoveAllChildren();

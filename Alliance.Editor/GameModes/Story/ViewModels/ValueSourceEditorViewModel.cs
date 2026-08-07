@@ -125,7 +125,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			Scenario scenario = _owner.parentViewModel?.FindEnclosingScenario();
 			Act act = _owner.parentViewModel?.FindEnclosingAct();
-			ScriptedEvent localObject = _owner.parentViewModel?.FindEnclosingScriptedEvent();
+			object localObject = (object)_owner.parentViewModel?.FindEnclosingScriptedEvent() ?? act;
 
 			bool hasVariables = ValueSourceHelper.CollectAvailableVariables(_valueType, scenario, act, localObject, _owner.ParentObject).Length > 0;
 			bool hasFunctions = ValueSourceHelper.DiscoverConcreteTypes(typeof(Function))

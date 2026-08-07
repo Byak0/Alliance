@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -41,7 +42,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 		public static int MakeEntityScopeId(MissionObjectId id) =>
 			EntityScopeBase + (id.CreatedAtRuntime ? SceneEntityRange : 0) + id.Id;
 
+		[XmlIgnore]
 		public int ScopeId { get; private set; }
+		[XmlIgnore]
 		public int ActionId { get; private set; }
 
 		private static readonly Dictionary<(int scopeId, int actionId), ActionBase> _allActions = new();
