@@ -10,9 +10,8 @@ using TaleWorlds.MountAndBlade;
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
-	/// Delete a <see cref="WeakGameEntity"/>. Prefers the synced path through <see cref="BuildBehavior"/>
-	/// for build-tracked entities (broadcasts <c>SyncPrefabRemoval</c>); otherwise removes the entity
-	/// directly. Operates through the weak handle for both paths.
+	/// Delete a <see cref="WeakGameEntity"/>. Sync is handled by <see cref="BuildBehavior.BroadcastDelete"/>
+	/// (BuildIndex for spawned entities, AL_EntityMarker RefId for marked scene entities).
 	/// </summary>
 	[Serializable]
 	[PhrasePreview("Delete {Entity}")]
@@ -30,32 +29,22 @@ namespace Alliance.Common.GameModes.Story.Actions
 			if (!e.IsValid) return ActionTask.CompletedTask;
 
 			BuildBehavior build = Mission.Current?.GetMissionBehavior<BuildBehavior>();
-			int? idx = FindBuildIndex(build, e);
-			if (idx.HasValue)
-			{
-				build.RemovePrefab(idx.Value);
-				return ActionTask.CompletedTask;
-			}
 
-			// Not build-tracked: remove directly (same sequence as BuildBehavior.RemovePrefab).
-			e.SetVisibilityExcludeParents(false);
-			e.RemoveAllChildren();
-			e.Remove(0);
+			// Sync while the entity still exists
+			build?.BroadcastDelete(e);
+
+			if (build != null && build.TryGetBuildIndex(e, out int buildIndex))
+			{
+				build.RemovePrefab(buildIndex);
+			}
+			else
+			{
+				e.SetVisibilityExcludeParents(false);
+				e.RemoveAllChildren();
+				e.Remove(0);
+			}
 
 			return ActionTask.CompletedTask;
-		}
-
-		private static int? FindBuildIndex(BuildBehavior build, WeakGameEntity target)
-		{
-			if (build == null || !target.IsValid) return null;
-			foreach (var kvp in build.BuiltEntities)
-			{
-				if (kvp.Value.Entity != null && kvp.Value.Entity.WeakEntity == target)
-				{
-					return kvp.Key;
-				}
-			}
-			return null;
 		}
 	}
 }

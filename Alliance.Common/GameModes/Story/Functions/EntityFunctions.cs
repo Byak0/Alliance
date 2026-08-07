@@ -1,6 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.BuildSystem;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
-using Alliance.Common.Extensions.CustomScripts.Scripts;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;

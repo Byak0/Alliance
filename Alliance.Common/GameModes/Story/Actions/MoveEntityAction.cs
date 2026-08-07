@@ -1,17 +1,18 @@
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
+using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
-	/// Move a <see cref="WeakGameEntity"/> to a zone (its center), optionally applying a heading rotation.
-	/// Moves the entity through its <see cref="WeakGameEntity"/> handle directly. Networking the move for
-	/// MissionObject-backed entities is a follow-up (see plan §9.3).
+	/// Move a <see cref="WeakGameEntity"/> to a destination <see cref="MatrixFrame"/>. The move is synced
+	/// to clients by <see cref="BuildBehavior.BroadcastMove"/>.
 	/// </summary>
 	[Serializable]
 	[PhrasePreview("Move {Entity} to {Destination}")]
@@ -33,10 +34,11 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 			MatrixFrame? dest = Destination?.Resolve(context);
 			if (dest == null) return ActionTask.CompletedTask;
-			
+
 			e.SetGlobalFrame(dest.Value);
 			e.SetFrameChanged();
 
+			Mission.Current?.GetMissionBehavior<BuildBehavior>()?.BroadcastMove(e, dest.Value);
 			return ActionTask.CompletedTask;
 		}
 	}

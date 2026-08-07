@@ -45,8 +45,6 @@ namespace Alliance.Common.GameModes
 			SetDefaultModOptions();
 		}
 
-
-
 		public GameModeSettings() { }
 
 		/// <summary>

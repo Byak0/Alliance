@@ -12,10 +12,9 @@ namespace Alliance.Common.GameModes.Story.Actions
 {
 	/// <summary>
 	/// Spawn a prefab entity (from the build catalog) at a precise <see cref="MatrixFrame"/> (position +
-	/// rotation + scale), optionally capturing it into a local variable for the current
-	/// <see cref="ScriptedEvent"/>. Spawning is server-authoritative and synced to clients through
-	/// <see cref="BuildBehavior"/>. Promote the capture to a global with a follow-up
-	/// <see cref="SetGlobalVariableAction"/> if it must outlive the action pipeline.
+	/// rotation + scale), optionally capturing it into a local variable for the current <see cref="ScriptedEvent"/>.
+	/// Spawning is server-authoritative and synced to clients through <see cref="BuildBehavior"/>.
+	/// Can be followed with a <see cref="SetGlobalVariableAction"/> if entity needs to be registered globally.
 	/// </summary>
 	[Serializable]
 	[PhrasePreview("Spawn {Prefab} {Frame} {?CaptureAs!=:({CaptureAs})}")]
@@ -36,7 +35,6 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public override ActionTask Execute(VariableStore context)
 		{
-			if (!GameNetwork.IsServer) return ActionTask.CompletedTask;
 			if (Mission.Current?.Scene == null) return ActionTask.CompletedTask;
 
 			MatrixFrame frame = Frame?.Resolve(context) ?? MatrixFrame.Identity;
@@ -45,11 +43,19 @@ namespace Alliance.Common.GameModes.Story.Actions
 			if (build == null) return ActionTask.CompletedTask;
 
 			int idx = build.AllocateBuildIndex();
+			if (idx == -1) return ActionTask.CompletedTask;
+
 			GameEntity entity = build.BuildPrefab(idx, Prefab, frame);
 
-			if (entity != null && !string.IsNullOrWhiteSpace(CaptureAs))
+			if (entity != null)
 			{
-				context?.Set(CaptureAs, entity.WeakEntity);
+				// Sync to clients
+				build.BroadcastCreation(idx, Prefab, frame, entity);
+
+				if (!string.IsNullOrWhiteSpace(CaptureAs))
+				{
+					context?.Set(CaptureAs, entity.WeakEntity);
+				}
 			}
 
 			return ActionTask.CompletedTask;
