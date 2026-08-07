@@ -9,7 +9,7 @@ namespace Alliance.Common.GameModes.Story.Models
 	/// save/load and at runtime. Holds the <c>RefId</c> of an <c>AL_EntityMarker</c> script attached to
 	/// the entity (a stable GUID), so the reference survives rename/duplication of the entity.
 	/// Resolved to a live <see cref="TaleWorlds.Engine.WeakGameEntity"/> at runtime through
-	/// <see cref="Alliance.Common.GameModes.Story.Utilities.EntityMarkerIndex"/>.
+	/// <see cref="Alliance.Common.Extensions.BuildSystem.EntityMarkerIndex"/>.
 	/// </summary>
 	[Serializable]
 	[PhrasePreview("{DisplayName}")]

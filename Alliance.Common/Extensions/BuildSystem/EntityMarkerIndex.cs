@@ -1,18 +1,14 @@
-using Alliance.Common.Extensions.CustomScripts.Scripts;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
-namespace Alliance.Common.GameModes.Story.Utilities
+namespace Alliance.Common.Extensions.BuildSystem
 {
 	/// <summary>
-	/// Builds and caches the <c>RefId → WeakGameEntity</c> map for the current mission scene, so that
-	/// <see cref="Models.GameEntityRef"/> descriptors resolve in O(1) at runtime.
-	/// <para>The index is rebuilt lazily on first use and whenever the active scene changes (i.e. on a
-	/// new mission), so no behavior hook is required. Scene entities are static after mission load, so a
-	/// single pass is enough; dynamically spawned entities are tracked through capture variables, not
-	/// this index.</para>
+	/// Builds and caches the <c>RefId → WeakGameEntity</c> map for the current scene, so that marked
+	/// entities resolve in O(1) at runtime. Rebuilt lazily on first use and whenever the active scene
+	/// changes (new mission / editor scene).
 	/// </summary>
 	public static class EntityMarkerIndex
 	{
@@ -27,7 +23,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return _byRefId.TryGetValue(refId, out WeakGameEntity weak) ? weak : WeakGameEntity.Invalid;
 		}
 
-		/// <summary>Rebuilds the index from the given scene (e.g. on mission start). Safe to call explicitly.</summary>
+		/// <summary>Rebuilds the index from the given scene.</summary>
 		public static void Build(Scene scene)
 		{
 			_byRefId = new Dictionary<string, WeakGameEntity>();
