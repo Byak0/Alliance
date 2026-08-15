@@ -1,4 +1,10 @@
-﻿using Alliance.Common.Core.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows.Forms;
+using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.UI.VM.Options;
@@ -18,14 +24,13 @@ using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using JetBrains.Annotations;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
+using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
+using static Alliance.Common.Utilities.Logger;
 using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
@@ -34,7 +39,6 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 	public class GameModeMenuVM : ViewModel
 	{
 		public event EventHandler OnCloseMenu;
-		public GameModeSettings GameModeSettings;
 
 		private MBBindingList<GameModeCardVM> _gameModes;
 		private GameModeCardVM _selectedGameMode;
@@ -46,6 +50,9 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 		private MBBindingList<OptionCategoryVM> _modOptionCategories;
 		private string _playerSpawnMenuShortDesc;
 		private PlayerSpawnMenu _playerSpawnMenuInstance;
+		private SaveFileDialog _saveFile;
+		private OpenFileDialog _openFile;
+		private GameModeSettings _gameModeSettings = new GameModeSettings();
 
 		public GameModeMenuVM()
 		{
@@ -63,6 +70,22 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new DuelGameModeSettings()),
 				new GameModeCardVM(new Action<GameModeCardVM>(OnGameModeSelected), new ScenarioGameModeSettings())
 			};
+
+			_saveFile = new SaveFileDialog();
+			_saveFile.Title = "Save Map Preset";
+			_saveFile.FileName = "map_preset";
+			_saveFile.DefaultExt = ".xml";
+			_saveFile.CreatePrompt = false;
+			_saveFile.OverwritePrompt = true;
+			_saveFile.Filter = "XML File (.xml)|*.xml";
+			_saveFile.InitialDirectory = Path.GetFullPath(Path.Combine(ModuleHelper.GetModuleFullPath(Common.SubModule.CurrentModuleName), "Map_Presets"));
+			_saveFile.AddExtension = true;
+			_openFile = new OpenFileDialog();
+			_openFile.Title = "Load MAP Preset";
+			_openFile.FileName = "";
+			_openFile.DefaultExt = ".xml";
+			_openFile.Filter = "XML File (.xml)|*.xml";
+			_openFile.InitialDirectory = Path.GetFullPath(Path.Combine(ModuleHelper.GetModuleFullPath(Common.SubModule.CurrentModuleName), "Map_Presets"));
 
 			OnGameModeSelected(GameModes[0]);
 		}
@@ -335,12 +358,12 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			else if (Maps.Count > 0) OnMapSelected(Maps[0]);
 		}
 
-		private void RefreshNativeOptions()
+		private void RefreshNativeOptions(bool loadingfromfile = false)
 		{
 			NativeOptions = new MBBindingList<OptionVM>();
 
 			// Set default options only if selected map is not a Scenario Act
-			if (_selectedMap is not ActCardVM)
+			if (_selectedMap is not ActCardVM && !loadingfromfile )
 			{
 				_selectedGameMode.GameModeSettings.SetDefaultNativeOptions();
 				_selectedGameMode.GameModeSettings.TWOptions[OptionType.Map] = _selectedMap.MapInfo.Name;
@@ -542,6 +565,36 @@ namespace Alliance.Client.Extensions.GameModeMenu.ViewModels
 			}
 
 			return choices;
+		}
+
+		[UsedImplicitly]
+		public void Load()
+		{
+			if (_openFile.ShowDialog() == DialogResult.OK)
+			{
+				if (GameModeSettings.TryLoadFromFile(_openFile.FileName, out GameModeSettings newSettings))
+				{
+					string PreviousGameMode = (string)_selectedGameMode.GameModeSettings.TWOptions[OptionType.GameType];
+
+					_selectedGameMode.GameModeSettings = newSettings;
+					_selectedGameMode.GameModeSettings.TWOptions[OptionType.Map] = _selectedMap.MapInfo.Name;
+					_selectedGameMode.GameModeSettings.TWOptions[OptionType.GameType] = PreviousGameMode;
+
+					RefreshNativeOptions(loadingfromfile: true);
+					RefreshModOptionsUI();
+					Log($"Preset loaded from {_openFile.FileName}", LogLevel.Information);
+				}
+			}
+		}
+
+		[UsedImplicitly]
+		public void Save()
+		{
+			if (_saveFile.ShowDialog() == DialogResult.OK)
+			{
+				//_gameModeSettings.SaveToFile(_saveFile.FileName);
+				_selectedGameMode.GameModeSettings.SaveToFile(_saveFile.FileName);
+			}
 		}
 
 		public void CloseMenu()

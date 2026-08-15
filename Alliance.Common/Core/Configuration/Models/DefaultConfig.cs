@@ -148,6 +148,8 @@ namespace Alliance.Common.Core.Configuration.Models
 		public bool EnableRaceRestrictionOnStuff = true;
 		[ConfigProperty(true, "Authorize Poll", "Authorize everyone to use the GameMode menu when in Lobby.", category: "Advanced settings")]
 		public bool AuthorizePoll = false;
+		[ConfigProperty(true, "Loop current mode with native vote", "At match end, keep the current game mode and use native intermission votes for map and factions (top voted choices are picked).", category: "Advanced settings")]
+		public bool LoopCurrentModeWithNativeVote = false;
 
 		public DefaultConfig()
 		{

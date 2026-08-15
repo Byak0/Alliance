@@ -31,7 +31,7 @@ namespace Alliance.Server.GameModes.Story
 			{
 				Act currentAct = currentScenario.Acts[actIndex];
 				StartScenario(currentScenario, currentAct, state);
-				Log($"Starting scenario \"{currentScenario?.Name.LocalizedText}\" at act {actIndex + 1}", LogLevel.Debug);
+				Log($"Starting scenario \"{currentScenario.Name.LocalizedText}\" at act {actIndex + 1}", LogLevel.Debug);
 			}
 			else
 			{
@@ -44,14 +44,18 @@ namespace Alliance.Server.GameModes.Story
 			base.StartScenario(scenario, act, state);
 
 			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
-			if (act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
+			if (Mission.Current == null || act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
 			{
 				// If currently in a Scenario, prevent it from changing state
-				Mission.Current.GetMissionBehavior<ScenarioBehavior>()?.StopScenario();
+				Mission.Current?.GetMissionBehavior<ScenarioBehavior>()?.StopScenario();
+				if (act.MapID != null)
+				{
+					act.ActSettings.TWOptions[OptionType.Map] = act.MapID;
+				}
 
 				// Log the start
 				string log2 = $"Starting scenario \"{scenario.Name.LocalizedText}\" - Act \"{act.Name.LocalizedText}\" on map {act.MapID}...";
-				Log(log2, LogLevel.Information);
+				Log(log2);
 				SendMessageToAll(log2);
 				GameModeStarter.Instance.StartMission(act.ActSettings);
 				return;
@@ -59,7 +63,7 @@ namespace Alliance.Server.GameModes.Story
 
 			// Log the start
 			string log = $"Starting scenario \"{scenario.Name.LocalizedText}\" - Act \"{act.Name.LocalizedText}\"...";
-			Log(log, LogLevel.Information);
+			Log(log);
 			SendMessageToAll(log);
 
 			// Else, just apply new act settings to the current mission
@@ -91,7 +95,7 @@ namespace Alliance.Server.GameModes.Story
 		/// </summary>
 		public void SyncActState(ActState newState)
 		{
-			float stateRemainingTime = (float)(Mission.Current?.GetMissionBehavior<ScenarioBehavior>()?.TimerComponent.GetRemainingTime(false));
+			float stateRemainingTime = Mission.Current?.GetMissionBehavior<ScenarioBehavior>()?.TimerComponent.GetRemainingTime(false) ?? 0f;
 			GameNetwork.BeginBroadcastModuleEvent();
 			GameNetwork.WriteMessage(new UpdateScenarioMessage(newState, MissionTime.Now.NumberOfTicks, MathF.Ceiling(stateRemainingTime)));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);

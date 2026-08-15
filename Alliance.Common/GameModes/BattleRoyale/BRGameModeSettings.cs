@@ -25,11 +25,6 @@ namespace Alliance.Common.GameModes.BattleRoyale
 			ModOptions.BRZoneLifeTime = 300;
 		}
 
-		public override List<SceneInfo> GetAvailableMaps()
-		{
-			return base.GetAvailableMaps();
-		}
-
 		public override List<OptionType> GetAvailableNativeOptions()
 		{
 			return new List<OptionType>
