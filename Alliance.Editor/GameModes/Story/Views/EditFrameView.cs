@@ -75,7 +75,16 @@ namespace Alliance.Editor.GameModes.Story.Views
 		public static void BeginPlace(object owner, Action<FrameValue> onPlaced, MatrixFrame baseFrame)
 		{
 			GhostEntry entry = _entries.Find(e => ReferenceEquals(e.Owner, owner));
-			if (entry == null) return;
+			if (entry == null)
+			{
+				entry = new GhostEntry
+				{
+					Owner = owner,
+					LabelGetter = () => "Frame",
+					Color = _palette[_entries.Count % _palette.Length]
+				};
+			}
+			_sceneView = MBEditor.GetEditorSceneView();
 			_placing = entry;
 			_onPlaced = onPlaced;
 			_leftWasDown = true;
@@ -89,6 +98,10 @@ namespace Alliance.Editor.GameModes.Story.Views
 
 		public static void Tick(float dt)
 		{
+			// Always fetch the current editor scene view - it changes when a new scene is loaded, so a
+			// cached reference goes stale and placement/projection silently stops working.
+			_sceneView = MBEditor.GetEditorSceneView();
+
 			// Rebuild any ghost whose source changed.
 			foreach (var e in _entries) EnsureEntryGhost(e);
 

@@ -18,6 +18,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages
 		public static readonly CompressionInfo.Float FullRangeFloatCompressionInfo = new(float.MinValue, float.MaxValue, 4);
 		public static readonly CompressionInfo.Float ZonePositionCompressionInfo = new(float.MinValue, float.MaxValue, 2);
 		public static readonly CompressionInfo.Float ZoneRadiusCompressionInfo = new(0f, 1000f, 2);
+		public static readonly CompressionInfo.Float CinematicTimeCompressionInfo = new(0f, 86400f, 32);
 
 		// ── Message sending helpers ───────────────────────────────────────
 

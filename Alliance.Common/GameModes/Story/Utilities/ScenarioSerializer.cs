@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.Utilities;
 using System;
@@ -39,7 +40,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 					rootType: typeof(Scenario),
 					typeof(Objective), typeof(ProgressElement), typeof(ProgressValue),
 					typeof(ActionBase), typeof(Condition), typeof(GameModeSettings),
-					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>),
+					typeof(CinematicTrack), typeof(CinematicKeyframe));
 				return _xmlSerializer;
 			}
 		}
@@ -51,7 +53,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				_conditionalActionSerializer ??= SerializeHelper.CreateSerializer(
 					rootType: typeof(ScriptedEvent),
 					typeof(Condition), typeof(ActionBase), typeof(ProgressElement),
-					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>));
+					typeof(Function), typeof(Zone), typeof(ZoneShape), typeof(ZoneAnchor), typeof(ValueSource<>),
+					typeof(CinematicTrack), typeof(CinematicKeyframe));
 				return _conditionalActionSerializer;
 			}
 		}

@@ -5,6 +5,7 @@ using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
+using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
@@ -49,7 +50,8 @@ namespace Alliance.Client.GameModes
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
-				new BuildBehavior()
+				new BuildBehavior(),
+				new CinematicView()
 			};
 		}
 	}

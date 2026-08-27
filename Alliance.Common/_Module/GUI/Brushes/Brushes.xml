@@ -411,4 +411,13 @@
 			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="0" ExtendLeft="4" ExtendRight="4" ExtendBottom="4" OverlayXOffset="4" OverlayYOffset="0" ColorFactor="0.6"/>
 		</Layers>
 	</Brush>
+
+	<Brush Name="Cinematic.Subtitle" Font="Galahad">
+		<Layers>
+			<BrushLayer Name="Default" Color="#FFFFFFFF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default" FontColor="#000000FF" TextGlowRadius="0.1" TextBlur="0.1" TextShadowOffset="0.2" TextOutlineAmount="0.1" TextOutlineColor="#00000000" FontSize="24" />
+		</Styles>
+	</Brush>
 </Brushes>

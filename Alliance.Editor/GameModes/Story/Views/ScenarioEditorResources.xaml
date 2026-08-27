@@ -28,6 +28,7 @@
 
 	<vm:EnumToListConverter x:Key="EnumToListConverter" />
 	<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+	<widgets:HexToBrushConverter x:Key="HexToBrushConverter" />
 
 	<!-- Template for a label with a tooltip (optional) -->
 	<DataTemplate x:Key="LabelWithTooltipTemplate">
@@ -72,6 +73,22 @@
 					<ToolTip Content="{Binding Tooltip}" />
 				</TextBox.ToolTip>
 			</TextBox>
+		</StackPanel>
+	</DataTemplate>
+
+	<!-- Template for hex color strings -->
+	<DataTemplate x:Key="ColorStringTemplate">
+		<StackPanel Orientation="Horizontal">
+			<!-- Include the Label/Tooltip -->
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<widgets:ColorPickerBox Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+									Width="200" Height="24"
+									VerticalAlignment="Center">
+				<widgets:ColorPickerBox.ToolTip>
+					<ToolTip Content="{Binding Tooltip}" />
+				</widgets:ColorPickerBox.ToolTip>
+			</widgets:ColorPickerBox>
 		</StackPanel>
 	</DataTemplate>
 
@@ -175,6 +192,88 @@
 									 Width="56" Padding="0,3" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center"/>
 						<Button x:Name="PART_IncrementButton" Content="+" Width="18" Height="22" Padding="0,0,0,3"/>
 					</StackPanel>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- Hex color picker (#RRGGBBAA): swatch + validated text box + palette/RGB slider popup. -->
+	<Style TargetType="{x:Type widgets:ColorPickerBox}">
+		<Setter Property="Height" Value="26"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type widgets:ColorPickerBox}">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<Border x:Name="PART_Swatch" Width="26" Height="18" CornerRadius="2" BorderBrush="#FF8A929C"
+								BorderThickness="1" Margin="0,0,4,0" VerticalAlignment="Center"/>
+						<TextBox x:Name="PART_TextBox" Grid.Column="1" Padding="2" VerticalContentAlignment="Center"
+								 VerticalAlignment="Stretch" BorderThickness="1"/>
+						<ToggleButton x:Name="PART_DropDownToggle" Grid.Column="2" Content="▾" Width="22" FontSize="10"
+									 Focusable="False" TabIndex="-1"/>
+						<Popup x:Name="PART_Popup" AllowsTransparency="True" StaysOpen="False" Placement="Bottom"
+							   PlacementTarget="{Binding ElementName=PART_TextBox}">
+							<Border Background="#FFF5F6F8" BorderBrush="#FF8A929C" BorderThickness="1" CornerRadius="4"
+									Padding="10" Margin="12" Width="248">
+								<Border.Effect>
+									<DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.25"/>
+								</Border.Effect>
+								<StackPanel>
+									<TextBlock Text="Presets" FontSize="12" Foreground="#FF6B7480" Margin="0,0,0,4"/>
+									<ItemsControl x:Name="PART_Palette">
+										<ItemsControl.ItemsPanel>
+											<ItemsPanelTemplate>
+												<WrapPanel/>
+											</ItemsPanelTemplate>
+										</ItemsControl.ItemsPanel>
+										<ItemsControl.ItemTemplate>
+											<DataTemplate>
+												<Button Focusable="False" Cursor="Hand" Margin="1" ToolTip="{Binding}">
+													<Button.Template>
+														<ControlTemplate TargetType="Button">
+															<Border x:Name="Bd" Width="20" Height="20" CornerRadius="3" BorderBrush="#FF8A929C"
+																	BorderThickness="1" Background="{Binding Converter={StaticResource HexToBrushConverter}}"/>
+															<ControlTemplate.Triggers>
+																<Trigger Property="IsMouseOver" Value="True">
+																	<Setter TargetName="Bd" Property="BorderBrush" Value="#FF1F6FEB"/>
+																</Trigger>
+															</ControlTemplate.Triggers>
+														</ControlTemplate>
+													</Button.Template>
+												</Button>
+											</DataTemplate>
+										</ItemsControl.ItemTemplate>
+									</ItemsControl>
+									<TextBlock Text="Components" FontSize="12" Foreground="#FF6B7480" Margin="0,10,0,4"/>
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="16"/>
+											<ColumnDefinition Width="*"/>
+											<ColumnDefinition Width="28"/>
+										</Grid.ColumnDefinitions>
+									<Grid.RowDefinitions>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+										<RowDefinition Height="Auto"/>
+									</Grid.RowDefinitions>
+									<TextBlock Text="R" Grid.Row="0" Grid.Column="0" FontSize="12" VerticalAlignment="Center"/>
+									<Slider x:Name="PART_RedSlider" Grid.Row="0" Grid.Column="1" Minimum="0" Maximum="255" Margin="2,2" Focusable="False"/>
+									<TextBlock x:Name="PART_RedValue" Grid.Row="0" Grid.Column="2" FontSize="12" VerticalAlignment="Center" TextAlignment="Right"/>
+									<TextBlock Text="G" Grid.Row="1" Grid.Column="0" FontSize="12" VerticalAlignment="Center"/>
+									<Slider x:Name="PART_GreenSlider" Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="255" Margin="2,2" Focusable="False"/>
+									<TextBlock x:Name="PART_GreenValue" Grid.Row="1" Grid.Column="2" FontSize="12" VerticalAlignment="Center" TextAlignment="Right"/>
+									<TextBlock Text="B" Grid.Row="2" Grid.Column="0" FontSize="12" VerticalAlignment="Center"/>
+									<Slider x:Name="PART_BlueSlider" Grid.Row="2" Grid.Column="1" Minimum="0" Maximum="255" Margin="2,2" Focusable="False"/>
+									<TextBlock x:Name="PART_BlueValue" Grid.Row="2" Grid.Column="2" FontSize="12" VerticalAlignment="Center" TextAlignment="Right"/>
+								</Grid>
+								</StackPanel>
+							</Border>
+						</Popup>
+					</Grid>
 				</ControlTemplate>
 			</Setter.Value>
 		</Setter>
@@ -357,6 +456,21 @@
 		</StackPanel>
 	</DataTemplate>
 
+	<!-- Template for Cinematic - Show button to open the dedicated timeline editor -->
+	<DataTemplate x:Key="CinematicTemplate">
+		<StackPanel Orientation="Horizontal">
+			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
+
+			<Button Content="Open Editor"
+					Command="{Binding EditCinematicCommand}"
+					Height="24"
+					Width="128"
+					Padding="0, 0, 0, 0"
+					FontFamily="{StaticResource DefaultFontFamily}"
+					FontSize="{StaticResource DefaultFontSize}"/>
+		</StackPanel>
+	</DataTemplate>
+
 	<!-- Button content that wraps long text (capped to a few lines) instead of stretching the button. -->
 	<DataTemplate x:Key="WrappingButtonText">
 		<TextBlock Text="{Binding}" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxHeight="60" />
@@ -458,6 +572,9 @@
 							<DataTrigger Binding="{Binding FieldType}" Value="{x:Type sys:String}">
 								<Setter Property="ContentTemplate" Value="{StaticResource StringTemplate}"/>
 							</DataTrigger>
+							<DataTrigger Binding="{Binding IsColorString}" Value="True">
+								<Setter Property="ContentTemplate" Value="{StaticResource ColorStringTemplate}"/>
+							</DataTrigger>
 							<DataTrigger Binding="{Binding IsMultiChoiceString}" Value="True">
 								<Setter Property="ContentTemplate" Value="{StaticResource StringMultiChoiceTemplate}"/>
 							</DataTrigger>
@@ -499,6 +616,9 @@
 						</DataTrigger>
 						<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource PlayerSpawnMenuTemplate}"/>
+						</DataTrigger>
+						<DataTrigger Binding="{Binding IsCinematic}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource CinematicTemplate}"/>
 						</DataTrigger>
 						<DataTrigger Binding="{Binding IsValueSource}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource ValueSourceTemplate}"/>
@@ -733,6 +853,9 @@
 						<DataTrigger Binding="{Binding IsPlayerSpawnMenu}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
 						</DataTrigger>
+						<DataTrigger Binding="{Binding IsCinematic}" Value="True">
+							<Setter Property="ContentTemplate" Value="{StaticResource InlineEditButtonTemplate}"/>
+						</DataTrigger>
 						<!-- Choice slots win over plain bool/enum (declared last on purpose). -->
 						<DataTrigger Binding="{Binding IsChoice}" Value="True">
 							<Setter Property="ContentTemplate" Value="{StaticResource InlineChoiceTemplate}"/>
@@ -785,6 +908,11 @@
 						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
 						Margin="0,4,0,0"
 						ToolTip="Click, then move the ghost in the scene (wheel = rotate, click = confirm)."/>
+				<Button Content="Capture from camera" Command="{Binding CaptureFromCameraCommand}"
+						HorizontalAlignment="Center" Height="24" Width="180" Padding="0,0,0,1"
+						FontFamily="{StaticResource DefaultFontFamily}" FontSize="{StaticResource DefaultFontSize}"
+						Margin="0,4,0,0"
+						ToolTip="Snapshots the current editor fly-camera view into this frame (e.g. a camera keyframe). Fly the editor view to the shot you want, then click."/>
 				<Button Content="Copy from origin" Command="{Binding CopyFromOriginCommand}"
 						Visibility="{Binding CanCopyFromOrigin, Converter={StaticResource BoolToVisibilityConverter}}"
 						HorizontalAlignment="Center" Height="24" Width="160" Padding="0,0,0,1"

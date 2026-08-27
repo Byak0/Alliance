@@ -1,6 +1,5 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes;
-using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
@@ -110,11 +109,11 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			{
 				gameEntity = scriptedEvent.ParentEntity;
 			}
-		else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
-			&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone)
-			&& fieldInfos[0].FieldType != typeof(GameEntityRef)
-			&& fieldInfos[0].FieldType != typeof(FrameValue)
-			&& !typeof(System.Collections.IEnumerable).IsAssignableFrom(fieldInfos[0].FieldType))
+			else if (fieldInfos.Length == 1 && !fieldInfos[0].FieldType.IsAbstract && fieldInfos[0].FieldType.IsClass
+				&& fieldInfos[0].FieldType != typeof(string) && fieldInfos[0].FieldType != typeof(Zone)
+				&& fieldInfos[0].FieldType != typeof(GameEntityRef)
+				&& fieldInfos[0].FieldType != typeof(FrameValue)
+				&& !typeof(IEnumerable).IsAssignableFrom(fieldInfos[0].FieldType))
 			{
 				var singleField = fieldInfos[0];
 				var fieldValue = singleField.GetValue(obj);
@@ -154,7 +153,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			OnPropertyChanged(nameof(CanPaste));
 		}
 
-		private static object DeepCloneObject(object source)
+		internal static object DeepCloneObject(object source)
 		{
 			if (source == null) return null;
 
@@ -258,7 +257,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			return new Hashtable();
 		}
 
-		private static void CopyObjectState(object source, object target)
+		internal static void CopyObjectState(object source, object target)
 		{
 			if (source == null || target == null || source.GetType() != target.GetType()) return;
 
