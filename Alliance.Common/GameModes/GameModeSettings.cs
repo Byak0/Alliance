@@ -1,16 +1,16 @@
-using Alliance.Common.Core.Configuration;
-using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.GameModes.Story.Attributes;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Alliance.Common.Core.Configuration;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Utilities;
 using TaleWorlds.ModuleManager;
+using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 using static Alliance.Common.Utilities.SceneList;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
-using System;
 
 namespace Alliance.Common.GameModes
 {
@@ -29,11 +29,9 @@ namespace Alliance.Common.GameModes
 		public string GameModeDescription;
 
 		[ConfigProperty(label: "Native options", tooltip: "Native options from TW.")]
-		[InlineContent]
 		public TWConfig TWOptions;
 
 		[ConfigProperty(label: "Mod options", tooltip: "Additional options from Alliance.")]
-		[InlineContent]
 		public Config ModOptions;
 
 		public GameModeSettings(string gameMode, string gameModeName, string gameModeDescription)

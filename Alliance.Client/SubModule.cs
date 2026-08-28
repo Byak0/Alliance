@@ -1,5 +1,4 @@
 ﻿using Alliance.Client.Core.Providers;
-using Alliance.Client.Extensions.NativeIntermissionVote.Handlers;
 using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
@@ -9,7 +8,6 @@ using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
-using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
@@ -20,6 +18,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Alliance.Client.Core;
 using TaleWorlds.Core;
+using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
 using Module = TaleWorlds.MountAndBlade.Module;
@@ -39,8 +38,6 @@ namespace Alliance.Client
 				Assembly.GetAssembly(typeof(Client.SubModule))
 			};
 			KeyBinder.Initialize(assemblies);
-
-			ActionOverrideRegistry.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
@@ -76,6 +73,7 @@ namespace Alliance.Client
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
 			ClientGlobalAutoHandler.Initialize();
+			UIConfig.DoNotUseGeneratedPrefabs = true;
 		}
 
 		private void AddGameModes()

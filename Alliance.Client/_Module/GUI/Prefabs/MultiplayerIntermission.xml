@@ -57,9 +57,9 @@
               <Children>
                 <MultiplayerFactionBannerWidget UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" FactionCode="@NextFactionACultureID" BannerWidget="Banner" IconWidget="Icon" CultureColor1="@NextFactionACultureColor1" CultureColor2="@NextFactionACultureColor2">
                   <Children>
-                    <BrushWidget Id="Banner" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPIntermission.Banner.Left"/>
-                    <BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@NextFactionACultureID" Brush="ButtonSimpleBrush"/>
-                    <Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="220" SuggestedHeight="220" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <!--<BrushWidget Id="Banner" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPIntermission.Banner.Left"/>-->
+                    <!--<Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="220" SuggestedHeight="220" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                    <BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@NextFactionACultureID" Brush="ButtonSimpleBrush" Brush.GlobalAlphaFactor="0.7"/>
                   </Children>
                 </MultiplayerFactionBannerWidget>
               </Children>
@@ -70,9 +70,9 @@
               <Children>
                 <MultiplayerFactionBannerWidget UpdateChildrenStates="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" FactionCode="@NextFactionBCultureID" BannerWidget="Banner" IconWidget="Icon" CultureColor1="@NextFactionBCultureColor1" CultureColor2="@NextFactionBCultureColor2">
                   <Children>
-                    <BrushWidget Id="Banner" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPIntermission.Banner.Right"/>
-                    <BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@NextFactionBCultureID" Brush="ButtonSimpleBrush"/>
-                    <Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="220" SuggestedHeight="220" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <!--<BrushWidget Id="Banner" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPIntermission.Banner.Right"/>-->
+                    <!--<Widget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="220" SuggestedHeight="220" HorizontalAlignment="Center" VerticalAlignment="Center"/>-->
+                    <BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@NextFactionBCultureID" Brush="ButtonSimpleBrush" Brush.GlobalAlphaFactor="0.7"/>
                   </Children>
                 </MultiplayerFactionBannerWidget>
               </Children>
@@ -146,11 +146,11 @@
         
                     <!-- Culture Sigil -->
                     <!-- Display nothing in this native widget (transparent brush) -->
-                    <MultiplayerLobbyClassFilterFactionItemButtonWidget ButtonType="Radio" IsSelected="@IsSelected" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="214" SuggestedHeight="251" HorizontalAlignment="Center" Command.Click="ExecuteVote" Brush="Alliance.TransparentBrush">
+                    <MultiplayerLobbyClassFilterFactionItemButtonWidget DoNotPassEventsToChildren="true" ButtonType="Radio" IsSelected="@IsSelected" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="214" SuggestedHeight="251" HorizontalAlignment="Center" Command.Click="ExecuteVote" Brush="Alliance.TransparentBrush">
                       <Children>
                         <HintWidget DataSource="{Hint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
                         <!-- Display faction icon using our custom BannerWidget -->
-                        <BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode" Brush="ButtonSimpleBrush"/>
+                        <BannerWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode" Brush="ButtonSimpleBrush" Brush.GlobalAlphaFactor="0.7"/>
                       </Children>
                     </MultiplayerLobbyClassFilterFactionItemButtonWidget>
                     <ListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" MarginTop="10" StackLayout.LayoutMethod="HorizontalLeftToRight">
