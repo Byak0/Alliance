@@ -4,7 +4,7 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// Server → client: start playing a cinematic.
+	/// Start playing a cinematic.
 	/// Two addressing modes:
 	/// - By Id : scenario-scoped cinematic, resolved from the loaded scenario
 	/// - By action ref : inline cinematic of a <c>PlayCinematicAction</c> in a AL_TriggerAction

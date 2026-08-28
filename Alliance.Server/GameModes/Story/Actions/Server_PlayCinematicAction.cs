@@ -9,12 +9,9 @@ using static Alliance.Common.Utilities.Logger;
 namespace Alliance.Server.GameModes.Story.Actions
 {
 	/// <summary>
-	/// Server override of <see cref="PlayCinematicAction"/>. Actions only execute server-side, so the
-	/// server is responsible for telling the chosen audience of clients to start playback:
-	/// it broadcasts a <see cref="PlayCinematicMessage"/> (by Id for scenario-scoped cinematics, by
-	/// action ref for the inline copy of an <c>AL_TriggerAction</c>-hosted action) and registers an
-	/// authoritative timeline in <see cref="CinematicServerBehavior"/> so <c>EventTrack</c> actions
-	/// fire server-side.
+	/// Server override: broadcasts a PlayCinematicMessage to the audience (by Id for
+	/// scenario-scoped cinematics, by action ref for inline ones) and registers a
+	/// server-side timeline in CinematicServerBehavior so EventTrack actions fire server-side.
 	/// </summary>
 	[OverrideAction(typeof(PlayCinematicAction))]
 	public class Server_PlayCinematicAction : PlayCinematicAction

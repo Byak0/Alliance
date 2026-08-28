@@ -12,6 +12,8 @@ namespace Alliance.Common.Extensions.Cinematics
 	/// </summary>
 	public interface ICinematicPlaybackSink
 	{
+		bool RequiresVisualSampling { get; }
+
 		/// <summary>Called every frame with the sampled camera (only when a camera track exists).</summary>
 		void OnCameraState(in CameraState state);
 

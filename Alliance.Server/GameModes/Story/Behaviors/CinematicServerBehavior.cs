@@ -13,13 +13,11 @@ using static Alliance.Common.Utilities.Logger;
 namespace Alliance.Server.GameModes.Story.Behaviors
 {
 	/// <summary>
-	/// Authoritative server-side cinematic timelines.
-	/// One PlaybackRecord per running cinematic - multiple cinematics can run concurrently for different audiences.
-	/// The server player only consumes <c>EventTrack</c> actions (executed server-side here, ticking their tasks to completion).
-	/// Camera/audio/visual tracks are client-side effects.
-	/// <para>Registrations arrive from <c>Server_PlayCinematicAction.Execute</c>, which runs on the
-	/// parallel entity tick of <c>AL_TriggerAction</c> - hence the concurrent queues, drained on the
-	/// main-thread <c>OnMissionTick</c>.</para>
+	/// Authoritative server-side cinematic timelines. One record per running cinematic;
+	/// several can run concurrently for different audiences. The server player only consumes
+	/// EventTrack actions - camera/audio/visual tracks are client-side effects.
+	/// Registrations arrive from the parallel entity tick of AL_TriggerAction, hence the
+	/// concurrent queues drained on the main-thread OnMissionTick.
 	/// </summary>
 	public class CinematicServerBehavior : MissionBehavior
 	{
@@ -40,6 +38,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			private readonly PlaybackRecord _record;
 			public ServerCinematicSink(PlaybackRecord record) => _record = record;
+
+			public bool RequiresVisualSampling => false;
 
 			public void OnCameraState(in CameraState state) { }
 			public void OnScreen(float letterbox, float fadeAlpha) { }

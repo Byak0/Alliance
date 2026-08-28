@@ -11,9 +11,8 @@ using Alliance.Common.Extensions.Cinematics.Models;
 namespace Alliance.Editor.Extensions.Cinematics.Views
 {
 	/// <summary>
-	/// The single, dedicated cinematic editor. Opened from both Scenario.Cinematics and
-	/// PlayCinematicAction. Hosts transport/scrubber, a draggable camera-keyframe timeline lane, an inspector,
-	/// capture, and preview (rendered by <see cref="EditorTools"/>).
+	/// The cinematic timeline editor window (transport, lanes, inspector, capture, preview).
+	/// Opened from Scenario.Cinematics and from PlayCinematicAction.
 	/// </summary>
 	public partial class CinematicEditorWindow : Window
 	{

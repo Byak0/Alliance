@@ -20,9 +20,9 @@ using Alliance.Common.Patch.HarmonyPatch;
 namespace Alliance.Common.Extensions.Cinematics
 {
 	/// <summary>
-	/// Client-side playback of cinematics started by <c>PlayCinematicMessage</c> (and by the editor preview).
-	/// Owns the custom camera, the Gauntlet overlay layer and the local <see cref="CinematicPlayer"/>.
-	/// <para>A client never plays multiple cinematics simultaneously - starting one stops the previous.</para>
+	/// Client-side playback of cinematics started by PlayCinematicMessage (and by the editor preview).
+	/// Owns the custom camera, the Gauntlet overlay layer and the local CinematicPlayer.
+	/// Only one cinematic plays at a time - starting one stops the previous.
 	/// </summary>
 	public class CinematicView : MissionView, ICinematicPlaybackSink, ICinematicBindings
 	{
@@ -260,6 +260,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		/// <summary>Scene receiving visual effects (color grade, photo-mode DoF): the mission scene in
 		/// live play, the modding-kit scene in editor preview (Mission is null there).</summary>
 		private Scene EffectsScene => Mission?.Scene ?? (IsEditorMode ? MBEditor._editorScene : null);
+
+		public bool RequiresVisualSampling => true;
 
 		public void OnCameraState(in CameraState state)
 		{
