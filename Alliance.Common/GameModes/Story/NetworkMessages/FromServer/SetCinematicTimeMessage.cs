@@ -4,9 +4,8 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// Server → client: seek the named (already playing) cinematic to an absolute time in seconds.
-	/// Used for resync (pauses, debug) and future admin/late-join tooling. Ignored by clients not
-	/// playing that cinematic.
+	/// Server -> client: seek the named (already playing) cinematic to an absolute time in seconds.
+	/// Ignored by clients not playing that cinematic.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class SetCinematicTimeMessage : GameNetworkMessage

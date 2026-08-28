@@ -6,9 +6,8 @@ using TaleWorlds.Library;
 namespace Alliance.Common.Extensions.Cinematics
 {
 	/// <summary>
-	/// Pure interpolation helpers for cinematic keyframes. Implements the curve model used across Unreal/Unity: 
-	/// smoothstep/smootherstep presets, linear, constant, and a Catmull-Rom path 
-	/// for camera positions (passes through every point, auto-smooth, no tangent editing).
+	/// Interpolation helpers for cinematic keyframes: linear, constant (step), smoothstep easing,
+	/// and Catmull-Rom paths for camera positions.
 	/// </summary>
 	public static class KeyframeEvaluator
 	{
@@ -16,7 +15,7 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public static float Smootherstep(float t) => t * t * t * (t * (t * 6f - 15f) + 10f);
 
-		/// <summary>Maps a raw [0,1] segment parameter to the curve implied by <paramref name="interp"/>.</summary>
+		/// <summary>Eases a raw [0,1] segment parameter according to the interpolation mode.</summary>
 		public static float CurveT(Interpolation interp, float t)
 		{
 			switch (interp)
@@ -40,8 +39,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		}
 
 		/// <summary>
-		/// Finds the keyframes bracketing <paramref name="time"/>. <paramref name="before"/>/<paramref name="after"/>
-		/// are the neighbours (clamped at the ends) used for Catmull-Rom. Returns false when the list is empty.
+		/// Finds the keyframes bracketing the given time. before/after are the neighbours
+		/// (clamped at the ends) used for Catmull-Rom. Returns false when the list is empty.
 		/// </summary>
 		public static bool Bracket<T>(IList<T> keyframes, float time,
 			out T prev, out T next, out T before, out T after, out float localT) where T : CinematicKeyframe
@@ -78,8 +77,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		}
 
 		/// <summary>
-		/// Samples a <see cref="CameraKeyframe"/> segment into a <see cref="CameraState"/>.
-		/// <paramref name="before"/>/<paramref name="after"/> are the Catmull-Rom neighbours (may equal prev/next).
+		/// Samples a camera keyframe segment into a CameraState. before/after are the
+		/// Catmull-Rom neighbours (may equal prev/next).
 		/// </summary>
 		public static CameraState EvaluateCamera(
 			CameraKeyframe prev, CameraKeyframe next, CameraKeyframe before, CameraKeyframe after, float localT)

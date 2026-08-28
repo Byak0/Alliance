@@ -3,13 +3,12 @@
 namespace Alliance.Common.Extensions.Cinematics
 {
 	/// <summary>
-	/// Camera math helpers. Bannerlord cameras look along <c>-rotation.u</c> (<see cref="TaleWorlds.Engine.Camera.Direction"/>),
-	/// so a correct look-at must set <c>u = -forward</c>. This replicates the native
-	/// <c>PopupSceneCameraPath.CreateLookAt</c> construction so authored / procedural camera frames aim properly.
+	/// Camera math helpers. Bannerlord cameras look along -rotation.u, so a look-at must set
+	/// u = -forward (same construction as native PopupSceneCameraPath.CreateLookAt).
 	/// </summary>
 	public static class CameraMath
 	{
-		/// <summary>Builds a camera <see cref="MatrixFrame"/> at <paramref name="position"/> looking at <paramref name="target"/>.</summary>
+		/// <summary>Builds a camera frame at the given position looking at the target.</summary>
 		public static MatrixFrame LookAtFrame(Vec3 position, Vec3 target, Vec3? upVector = null)
 		{
 			Vec3 up = upVector ?? new Vec3(0f, 0f, 1f);

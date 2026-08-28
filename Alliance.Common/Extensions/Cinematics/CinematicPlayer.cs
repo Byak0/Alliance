@@ -9,9 +9,9 @@ using TaleWorlds.Library;
 namespace Alliance.Common.Extensions.Cinematics
 {
 	/// <summary>
-	/// Cinematic clock + sampler. Advances playback time, interpolates the <see cref="CameraTrack"/> (and applies any <see cref="LookAtTrack"/>),
-	/// and emits every side-effect to an <see cref="ICinematicPlaybackSink"/>.
-	/// Pure data - no engine camera code - so this can be used on client and server.
+	/// Cinematic clock + sampler. Advances playback time and emits side effects
+	/// (camera, overlay, subtitles, keyframe crossings) to an ICinematicPlaybackSink.
+	/// Pure data - no engine camera code - so it runs identically on client, server and editor preview.
 	/// </summary>
 	public class CinematicPlayer
 	{
@@ -97,9 +97,13 @@ namespace Alliance.Common.Extensions.Cinematics
 				}
 			}
 
-			SampleScreen(_currentTime, duration);
-			SampleCamera(_currentTime);
-			SampleSubtitle(_currentTime);
+			if (_sink != null && _sink.RequiresVisualSampling)
+			{
+				SampleScreen(_currentTime, duration);
+				SampleCamera(_currentTime);
+				SampleSubtitle(_currentTime);
+			}
+
 			FireCrossings(prevTime, _currentTime);
 
 			if (!wrapped)
@@ -299,9 +303,11 @@ namespace Alliance.Common.Extensions.Cinematics
 			List<CinematicTrack> tracks = _cinematic.Tracks;
 			if (tracks == null) return;
 
+			bool visuals = _sink.RequiresVisualSampling;
 			foreach (CinematicTrack track in tracks)
 			{
 				if (track == null || !track.Enabled || track.Muted) continue;
+				if (!visuals && track is not EventTrack) continue;
 
 				switch (track)
 				{

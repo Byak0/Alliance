@@ -44,12 +44,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 			return null;
 		}
 
-		/// <summary>
-		/// Playback is server-driven: <c>Server_PlayCinematicAction</c> broadcasts a
-		/// <c>PlayCinematicMessage</c> to the audience and registers an authoritative timeline for
-		/// server-side event actions. Actions never execute on clients (ScriptedEvents tick
-		/// server-side only), so this base implementation has nothing to do.
-		/// </summary>
+		/// <summary>Nothing to do here - playback is server-driven (see Server_PlayCinematicAction).</summary>
 		public override ActionTask Execute(VariableStore context)
 		{
 			return ActionTask.CompletedTask;

@@ -4,7 +4,7 @@ using TaleWorlds.MountAndBlade.Network.Messages;
 namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// Server → client: stop the named cinematic (if playing). Used when an act ends or the scenario
+	/// Server -> client: stop the named cinematic (if playing). Used when an act ends or the scenario
 	/// aborts playback early. The cinematic <see cref="CinematicId"/> may be empty to stop any active one.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]

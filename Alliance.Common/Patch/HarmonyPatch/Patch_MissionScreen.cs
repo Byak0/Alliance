@@ -11,12 +11,9 @@ using static Alliance.Common.Utilities.Logger;
 namespace Alliance.Common.Patch.HarmonyPatch
 {
     /// <summary>
-    /// Natively <c>MissionScreen.HandleUserInput</c> freezes input whenever <c>CustomCamera != null</c>.
-    /// The transpiler swaps the native "CustomCamera == null" test
-    /// for a call to <see cref="HandleInputNormally"/>: identical to native behavior unless
-    /// <see cref="FreeInputEnabled"/> is set, in which case input stays live while a cinematic camera
-    /// renders (cinematic <c>AgentBehaviorMode.Free</c>).
-    /// Patch needed because <c>HandleUserInput</c> is not virtual - no clean override exists.
+    /// Natively MissionScreen.HandleUserInput freezes input whenever CustomCamera != null.
+    /// This transpiler replaces that test with a runtime gate (HandleInputNormally) so input
+    /// stays live during Free-agent-mode cinematics. Patched because HandleUserInput is not virtual.
     /// </summary>
     class Patch_MissionScreen
     {
