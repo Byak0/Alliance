@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿#if !SERVER
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,3 +97,4 @@ namespace Alliance.Common.Patch.HarmonyPatch
         }
     }
 }
+#endif

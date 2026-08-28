@@ -6,7 +6,6 @@ using System.Linq;
 using TaleWorlds.Engine;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.Library;
-using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.Cinematics
 {
@@ -292,10 +291,10 @@ namespace Alliance.Common.Extensions.Cinematics
 						Font = string.IsNullOrEmpty(kf.Font) ? "Galahad" : kf.Font,
 						HAlign = kf.HPosition switch
 						{
-							SubtitleHPosition.Left => TextHorizontalAlignment.Left,
-							SubtitleHPosition.Center => TextHorizontalAlignment.Center,
-							SubtitleHPosition.Right => TextHorizontalAlignment.Right,
-							_ => TextHorizontalAlignment.Center
+							SubtitleHPosition.Left => HorizontalAlignment.Left,
+							SubtitleHPosition.Center => HorizontalAlignment.Center,
+							SubtitleHPosition.Right => HorizontalAlignment.Right,
+							_ => HorizontalAlignment.Center
 						},
 						VAlign = kf.VPosition switch
 						{

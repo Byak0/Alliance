@@ -1,5 +1,4 @@
 ﻿using TaleWorlds.GauntletUI;
-using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.Cinematics.Models
 {
@@ -13,7 +12,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public int FontSize;
 		public string FontColor;
 		public string Font;
-		public TextHorizontalAlignment HAlign;
+		public HorizontalAlignment HAlign;
 		public VerticalAlignment VAlign;
 	}
 }

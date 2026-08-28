@@ -5,7 +5,6 @@ using Alliance.Common.Utilities;
 using System;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.Engine.GauntletUI;
 
 namespace Alliance.Common.Core.Configuration.Models
 {
@@ -57,7 +56,14 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		public static string[] AvailablePrefabs() => BuildPrefabCatalogManager.AllPrefabNames;
 
-		public static string[] AvailableFonts() => UIResourceManager.FontFactory.GetFonts().Select(UIResourceManager.FontFactory.GetFontName).Where(n => !string.IsNullOrEmpty(n)).OrderBy(n => n).ToArray();
+		public static string[] AvailableFonts()
+		{
+#if !SERVER
+			return TaleWorlds.Engine.GauntletUI.UIResourceManager.FontFactory.GetFonts().Select(TaleWorlds.Engine.GauntletUI.UIResourceManager.FontFactory.GetFontName).Where(n => !string.IsNullOrEmpty(n)).OrderBy(n => n).ToArray();
+#else
+			return Array.Empty<string>();
+#endif
+		}
 
 		public static readonly string[] AvailableSides = new string[] { BattleSideEnum.Defender.ToString(), BattleSideEnum.Attacker.ToString() };
 

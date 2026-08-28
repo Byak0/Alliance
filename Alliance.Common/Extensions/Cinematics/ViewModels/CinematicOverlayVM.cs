@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.Cinematics.Models;
+﻿#if !SERVER
+using Alliance.Common.Extensions.Cinematics.Models;
 using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI;
@@ -103,7 +104,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		private int _fontSize = 28;
 		private string _fontColor = "#FFFFFFFF";
 		private string _font = "Galahad";
-		private TextHorizontalAlignment _hAlign = TextHorizontalAlignment.Center;
+		private HorizontalAlignment _hAlign = HorizontalAlignment.Center;
 		private VerticalAlignment _vAlign = VerticalAlignment.Bottom;
 
 		/// <summary>The keyframe this item renders - stable identity for recycling across frames.</summary>
@@ -154,9 +155,10 @@ namespace Alliance.Common.Extensions.Cinematics
 		public Font FontObject => UIResourceManager.FontFactory?.GetMappedFontForLocalization(_font);
 
 		[DataSourceProperty]
-		public TextHorizontalAlignment HAlign { get => _hAlign; set { _hAlign = value; OnPropertyChanged(); } }
+		public HorizontalAlignment HAlign { get => _hAlign; set { _hAlign = value; OnPropertyChanged(); } }
 
 		[DataSourceProperty]
 		public VerticalAlignment VAlign { get => _vAlign; set { _vAlign = value; OnPropertyChanged(); } }
 	}
 }
+#endif
