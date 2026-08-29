@@ -176,7 +176,8 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			// Deserialize each scenario
 			foreach (string file in files)
 			{
-				scenarios.Add(DeserializeScenarioFromPath(file));
+				Scenario scenario = DeserializeScenarioFromPath(file);
+				if(scenario != null) scenarios.Add(scenario);
 			}
 
 			return scenarios;

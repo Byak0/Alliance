@@ -245,7 +245,7 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 		public void ReleaseCamera()
 		{
 			_updateCamera = false;
-			MissionScreen.UpdateFreeCamera(MissionScreen.CustomCamera.Frame);
+			if(MissionScreen.CustomCamera != null) MissionScreen.UpdateFreeCamera(MissionScreen.CustomCamera.Frame);
 			MissionScreen.CustomCamera = null;
 			_camera.ReleaseCamera();
 		}

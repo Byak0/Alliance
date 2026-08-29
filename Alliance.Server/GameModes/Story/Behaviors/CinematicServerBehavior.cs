@@ -19,10 +19,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 	/// Registrations arrive from the parallel entity tick of AL_TriggerAction, hence the
 	/// concurrent queues drained on the main-thread OnMissionTick.
 	/// </summary>
-	public class CinematicServerBehavior : MissionBehavior
+	public class CinematicServerBehavior : MissionNetwork, IMissionBehavior
 	{
-		public override MissionBehaviorType BehaviorType => MissionBehaviorType.Logic;
-
 		/// <summary>One running cinematic. Keyed by <see cref="Cinematic.Id"/> (stable per instance).</summary>
 		private class PlaybackRecord
 		{
