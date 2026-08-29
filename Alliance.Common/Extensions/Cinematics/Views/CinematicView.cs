@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -42,6 +43,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		private ScreenBase _overlayScreen;
 		private CinematicOverlayVM _overlayVM;
 		private bool _photoModeOn;
+		private readonly HashSet<GauntletLayer> _hiddenUiLayers = new HashSet<GauntletLayer>();
 
 		private SceneView _editorSceneView;
 
@@ -81,7 +83,10 @@ namespace Alliance.Common.Extensions.Cinematics
 				Skip();
 
 			if (_player != null && _player.IsPlaying)
+			{
 				_player.Tick(dt);
+				HideOtherUiLayers();
+			}
 		}
 
 #if DEBUG
@@ -92,10 +97,12 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		private void PlayTestCinematic()
 		{
-			Agent main = Agent.Main;
+			Agent main = Mission.Current.Agents.GetRandomElement();
 			Vec3 eye = main != null
 				? main.Position + new Vec3(0f, 0f, main.GetEyeGlobalHeight())
 				: (MissionScreen?.CombatCamera?.Frame.origin ?? Vec3.Zero);
+			MatrixFrame frame = MissionScreen?.CombatCamera?.Frame ?? MatrixFrame.Zero;
+			float fov = MissionScreen?.CombatCamera?.GetFovVertical() * 60 ?? 70f;
 
 			Cinematic cinematic = new Cinematic
 			{
@@ -106,16 +113,16 @@ namespace Alliance.Common.Extensions.Cinematics
 			_debugModeIndex = (_debugModeIndex + 1) % _debugModes.Length;
 
 			CameraTrack camTrack = new CameraTrack();
-			camTrack.Keyframes.Add(new CameraKeyframe(0f) { Frame = FrameValue.FromFrame(Orbit(eye, 4f, 1.2f, 0.6f)), Fov = 60f });
-			camTrack.Keyframes.Add(new CameraKeyframe(3f) { Frame = FrameValue.FromFrame(Orbit(eye, 5f, 1.6f, 2.1f)), Fov = 50f, Interpolation = Interpolation.CatmullRom });
-			camTrack.Keyframes.Add(new CameraKeyframe(6f) { Frame = FrameValue.FromFrame(Orbit(eye, 4f, 1.2f, 3.6f)), Fov = 60f, Interpolation = Interpolation.CatmullRom });
+			camTrack.Keyframes.Add(new CameraKeyframe(0f) { Frame = FrameValue.FromFrame(frame), Fov = fov });
+			camTrack.Keyframes.Add(new CameraKeyframe(3f) { Frame = FrameValue.FromFrame(Orbit(eye, 5f, 1.6f, 2.1f)), Fov = 70f, Interpolation = Interpolation.CatmullRom });
+			camTrack.Keyframes.Add(new CameraKeyframe(6f) { Frame = FrameValue.FromFrame(frame), Fov = fov, Interpolation = Interpolation.CatmullRom });
 			cinematic.Tracks.Add(camTrack);
 
 			OverlayTrack OverlayTrack = new OverlayTrack();
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0f) { Letterbox = 0.2f, FadeAlpha = 1f });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0.5f) { Letterbox = 0.2f, FadeAlpha = 0f, Interpolation = Interpolation.CatmullRom });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(5.5f) { Letterbox = 0.2f, FadeAlpha = 0f });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(6f) { Letterbox = 0.2f, FadeAlpha = 1f, Interpolation = Interpolation.CatmullRom });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0f) { Letterbox = 0f, FadeAlpha = 0f });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(1.5f) { Letterbox = 0.2f, FadeAlpha = 0f, Interpolation = Interpolation.CatmullRom });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(5f) { Letterbox = 0.2f, FadeAlpha = 0f });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(6f) { Letterbox = 0f, FadeAlpha = 0f, Interpolation = Interpolation.CatmullRom });
 			cinematic.Tracks.Add(OverlayTrack);
 
 			SubtitleTrack subTrack = new SubtitleTrack();
@@ -317,6 +324,7 @@ namespace Alliance.Common.Extensions.Cinematics
 					_overlayLayer = new GauntletLayer("CinematicOverlay", 40);
 					_overlayLayer.LoadMovie("CinematicOverlay", _overlayVM);
 					_overlayScreen.AddLayer(_overlayLayer);
+					HideOtherUiLayers();
 				}
 			}
 			catch (Exception ex) { Log($"Cinematic overlay init failed: {ex.Message}", LogLevel.Warning); }
@@ -324,6 +332,7 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		private void StopEffects()
 		{
+			RestoreUiLayers();
 			if (_overlayLayer != null && _overlayScreen != null)
 			{
 				try { _overlayScreen.RemoveLayer(_overlayLayer); } catch { }
@@ -333,6 +342,34 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 			Scene restoreScene = EffectsScene;
 			if (_photoModeOn && restoreScene != null) { restoreScene.SetPhotoModeOn(false); _photoModeOn = false; }
+		}
+
+		/// <summary>Hides every Gauntlet layer of the screen except the cinematic overlay, so no HUD shows over
+		/// the cinematic. Restored by RestoreUiLayers when playback stops.</summary>
+		private void HideOtherUiLayers()
+		{
+			if (IsEditorMode || _overlayLayer == null) return;
+			ScreenBase screen = _overlayScreen;
+			if (screen == null) return;
+			foreach (ScreenLayer layer in screen.Layers)
+			{
+				if (layer == _overlayLayer || !(layer is GauntletLayer gauntletLayer)) continue;
+				Widget root = gauntletLayer.UIContext?.Root;
+				if (root == null || !root.IsVisible) continue;
+				root.IsVisible = false;
+				_hiddenUiLayers.Add(gauntletLayer);
+			}
+		}
+
+		private void RestoreUiLayers()
+		{
+			foreach (GauntletLayer layer in _hiddenUiLayers)
+			{
+				if (layer.IsFinalized) continue;
+				Widget root = layer.UIContext?.Root;
+				if (root != null) root.IsVisible = true;
+			}
+			_hiddenUiLayers.Clear();
 		}
 
 		public void OnScreen(float letterbox, float fadeAlpha)
