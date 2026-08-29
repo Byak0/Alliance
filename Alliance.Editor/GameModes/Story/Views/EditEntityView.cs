@@ -2,7 +2,6 @@ using Alliance.Common.Extensions.BuildSystem;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
-using System.Windows.Controls.Primitives;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.MountAndBlade;
@@ -35,7 +34,7 @@ namespace Alliance.Editor.GameModes.Story.Views
 			_picking = true;
 			_rightClickHeld = false;
 			_rightClickHoldTime = 0f;
-			Log("[EditEntityView] Pick mode active — select an entity in the scene (right-click to cancel).", LogLevel.Debug);
+			Log("[EditEntityView] Pick mode active - select an entity in the scene (right-click to cancel).", LogLevel.Debug);
 		}
 
 		public static void CancelPick()

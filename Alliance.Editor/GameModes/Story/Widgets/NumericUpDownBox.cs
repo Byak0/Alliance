@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -16,6 +17,12 @@ namespace Alliance.Editor.GameModes.Story.Widgets
 		static NumericUpDownBox()
 		{
 			DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownBox), new FrameworkPropertyMetadata(typeof(NumericUpDownBox)));
+		}
+
+		public NumericUpDownBox()
+		{
+			Loaded += (s, e) => Dispatcher.BeginInvoke((Action)(() => OnValueChanged(null, Value)), System.Windows.Threading.DispatcherPriority.DataBind);
+			DataContextChanged += (s, e) => Dispatcher.BeginInvoke((Action)(() => OnValueChanged(null, Value)), System.Windows.Threading.DispatcherPriority.DataBind);
 		}
 
 		public override void OnApplyTemplate()
@@ -40,11 +47,10 @@ namespace Alliance.Editor.GameModes.Story.Widgets
 			{
 				_textBox.PreviewTextInput += OnPreviewTextInput;
 				_textBox.MouseWheel += OnMouseWheel;
-				_textBox.LostFocus += OnLostFocus; // Handle lost focus to apply the value
+				_textBox.LostFocus += OnLostFocus;
 				DataObject.AddPastingHandler(_textBox, OnPaste);
 			}
 
-			// Ensure the initial value is displayed correctly
 			OnValueChanged(null, Value);
 		}
 
@@ -68,15 +74,12 @@ namespace Alliance.Editor.GameModes.Story.Widgets
 		{
 			if (_textBox != null)
 			{
-				// Explicitly handle int and float cases
 				if (newValue is int intValue)
-				{
 					_textBox.Text = intValue.ToString();
-				}
 				else if (newValue is float floatValue)
-				{
-					_textBox.Text = floatValue.ToString("F2"); // Limit decimal places for better display
-				}
+					_textBox.Text = floatValue.ToString("F2");
+				else if (newValue is double doubleValue)
+					_textBox.Text = doubleValue.ToString("F2");
 			}
 		}
 

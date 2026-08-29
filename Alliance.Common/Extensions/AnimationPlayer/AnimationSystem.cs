@@ -7,7 +7,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.View;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AnimationPlayer
@@ -197,7 +196,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			}
 		}
 
-		public void PlayAnimation(AgentVisuals agentVisuals, string actionName)
+#if !SERVER
+		public void PlayAnimation(TaleWorlds.MountAndBlade.View.AgentVisuals agentVisuals, string actionName)
 		{
 			if (ActionNameToAnimation.TryGetValue(actionName, out Animation animation))
 			{
@@ -209,7 +209,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			}
 		}
 
-		public void PlayAnimation(AgentVisuals agentVisuals, Animation animation)
+		public void PlayAnimation(TaleWorlds.MountAndBlade.View.AgentVisuals agentVisuals, Animation animation)
 		{
 			if (agentVisuals == null)
 			{
@@ -269,6 +269,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				}
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Play animation on specified formation with a random wait time for each agent.

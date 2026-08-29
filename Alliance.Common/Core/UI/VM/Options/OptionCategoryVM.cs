@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Library;
+﻿#if !SERVER
+using TaleWorlds.Library;
 
 namespace Alliance.Common.Core.UI.VM.Options
 {
@@ -63,3 +64,4 @@ namespace Alliance.Common.Core.UI.VM.Options
 		}
 	}
 }
+#endif

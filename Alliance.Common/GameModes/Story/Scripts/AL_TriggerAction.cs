@@ -152,7 +152,8 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public override TickRequirement GetTickRequirement()
 		{
-			return TickRequirement.TickParallel | base.GetTickRequirement();
+			if(GameNetwork.IsServer) return TickRequirement.TickParallel | base.GetTickRequirement();
+			else return TickRequirement.None;			
 		}
 
 		protected override void OnTickParallel(float dt)

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿#if !SERVER
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
@@ -656,3 +657,4 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 		}
 	}
 }
+#endif

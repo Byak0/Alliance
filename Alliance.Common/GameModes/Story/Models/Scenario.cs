@@ -2,11 +2,11 @@
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Functions;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.GameModes.Story.Validation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TaleWorlds.Core;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
 
@@ -34,6 +34,9 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		[ConfigProperty(label: "Variables", tooltip: "Global variables available throughout the scenario. Variables can be used in conditions and actions via ValueSource fields.")]
 		public List<ScenarioVariable> Variables = new List<ScenarioVariable>();
+
+		[ConfigProperty(label: "Cinematics", tooltip: "Cinematics defined on this scenario. Reference them by Id from a PlayCinematicAction, or play them from conditional actions / victory logic.")]
+		public List<Cinematic> Cinematics = new List<Cinematic>();
 
 		public Scenario(LocalizedString name, LocalizedString desc)
 		{

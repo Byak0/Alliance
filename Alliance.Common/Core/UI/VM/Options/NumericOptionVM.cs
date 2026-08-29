@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !SERVER
+using System;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
@@ -126,3 +127,4 @@ namespace Alliance.Common.Core.UI.VM.Options
 		}
 	}
 }
+#endif

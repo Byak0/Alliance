@@ -69,7 +69,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
                     component.HasSpawnedAgentVisuals = false;
                     Log("HasSpawnedAgentVisuals = false for peer: " + component.Name + " because he just changed his team", LogLevel.Debug);
                     component.SpawnCountThisRound = 0;
-                    Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().RemoveAgentVisuals(component, sync: true);
+                    //Mission.Current.GetMissionBehavior<MultiplayerMissionAgentVisualSpawnComponent>().RemoveAgentVisuals(component, sync: true);
                 }
 
                 if (!____gameModeServer.IsGameModeHidingAllAgentVisuals && !networkPeer.IsServerPeer)

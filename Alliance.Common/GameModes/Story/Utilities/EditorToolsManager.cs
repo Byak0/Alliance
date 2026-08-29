@@ -1,7 +1,9 @@
 ﻿using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using System;
+using TaleWorlds.Library;
 
 namespace Alliance.Common.GameModes.Story.Utilities
 {
@@ -13,11 +15,28 @@ namespace Alliance.Common.GameModes.Story.Utilities
 	public static class EditorToolsManager
 	{
 		public static IEditorTools EditorTools;
+		public static Cinematic ActiveEditingCinematic;
 
 		public static void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
 		{
 			EditorTools?.OpenPlayerSpawnMenu(playerSpawnMenu, onCloseCallback);
 		}
+
+		/// <summary>Returns the live editor (fly) camera frame, or null if the editor camera isn't available.
+		/// Used by "Capture from camera" on camera keyframes.</summary>
+		public static MatrixFrame? CaptureEditorCameraFrame()
+		{
+			return EditorTools?.CaptureEditorCameraFrame();
+		}
+
+		public static bool IsPreviewing => EditorTools?.IsPreviewing ?? false;
+		public static bool IsPreviewPaused => EditorTools?.IsPreviewPaused ?? false;
+		public static void PlayPreview(Cinematic cinematic, Action<float> onTime, Action onFinished) => EditorTools?.PlayPreview(cinematic, onTime, onFinished);
+		public static void PausePreview() => EditorTools?.PausePreview();
+		public static void ResumePreview() => EditorTools?.ResumePreview();
+		public static void SeekPreview(float time) => EditorTools?.SeekPreview(time);
+		public static void SamplePreview() => EditorTools?.SamplePreview();
+		public static void StopPreview() => EditorTools?.StopPreview();
 
 		public static void AddZoneToEditor(Zone zone, string zoneName, Action onEditCallback)
 		{

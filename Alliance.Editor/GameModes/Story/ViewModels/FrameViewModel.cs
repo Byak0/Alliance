@@ -1,10 +1,12 @@
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using TaleWorlds.Engine;
+using TaleWorlds.Library;
 
 namespace Alliance.Editor.GameModes.Story.ViewModels
 {
@@ -21,6 +23,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public ICommand PlaceCommand { get; }
 		public ICommand CopyFromOriginCommand { get; }
+		public ICommand CaptureFromCameraCommand { get; }
 
 		/// <summary>True when this frame belongs to a MoveEntityAction whose Entity resolves to a live
 		/// scene entity, so its current frame can be copied into the destination.</summary>
@@ -41,7 +44,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 			PlaceCommand = new RelayCommand(_ => Place());
 			CopyFromOriginCommand = new RelayCommand(_ => CopyFromOrigin(), _ => CanCopyFromOrigin);
+			CaptureFromCameraCommand = new RelayCommand(_ => CaptureFromCamera(), _ => EditorToolsManager.EditorTools != null);
 			EvaluateCanCopyFromOrigin();
+		}
+
+		/// <summary>Snapshots the current editor fly-camera view into this frame (the cinematic
+		/// "Capture View" action, available on every Frame field - e.g. camera keyframes).</summary>
+		public void CaptureFromCamera()
+		{
+			MatrixFrame? captured = EditorToolsManager.CaptureEditorCameraFrame();
+			if (!captured.HasValue)
+			{
+				System.Windows.MessageBox.Show(
+					"Couldn't capture the editor camera", "", 
+					System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+				return;
+			}
+			_frame.CopyFrom(FrameValue.FromFrame(captured.Value));
+			RefreshAll();
 		}
 
 		public float PositionX { get => _frame.Px; set => Set(ref _frame.Px, value, nameof(PositionX)); }

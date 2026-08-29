@@ -4,8 +4,10 @@ using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Functions;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
+using Alliance.Editor.Extensions.Cinematics.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,6 +49,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public string Tooltip { get; private set; }
 		public bool ShowTooltip { get; private set; }
 		private string[] _possibleValues;
+		private bool _isColorDataType;
 		public string[] PossibleValues
 		{
 			get => _possibleValues;
@@ -61,6 +64,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 		public bool IsMultiChoiceString => PossibleValues != null && PossibleValues.Length > 0;
+		/// <summary>True for string fields explicitly marked as hex colors (#RRGGBBAA) via
+		/// <c>[ConfigProperty(dataType: DataTypes.Color)]</c> - edited with ColorPickerBox.</summary>
+		public bool IsColorString => FieldType == typeof(string) && _isColorDataType;
 		public bool IsChoiceLocked { get; set; }
 		public bool IsLocalizedString => typeof(LocalizedString).IsAssignableFrom(FieldType);
 		public bool IsValueSource => ValueSourceHelper.IsValueSourceType(FieldType);
@@ -70,6 +76,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public bool IsGameEntityRef => FieldType == typeof(GameEntityRef);
 		public bool IsFrameValue => FieldType == typeof(FrameValue);
 		public bool IsPlayerSpawnMenu => FieldType == typeof(PlayerSpawnMenu);
+		public bool IsCinematic => FieldType == typeof(Cinematic);
 		public Type[] ConcreteTypes { get; private set; } = Array.Empty<Type>();
 		public bool IsPolymorphicField => FieldType != null && FieldType.IsAbstract && ConcreteTypes.Length > 0;
 		public ObservableCollection<ItemViewModel> Items { get; }
@@ -213,7 +220,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ICommand DeleteCommand { get; }
 		public ICommand AddCommand { get; }
 		public ICommand EditPlayerSpawnMenuCommand { get; }
-		public ICommand InlineEditCommand => IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand : EditCommand;
+		public ICommand EditCinematicCommand { get; }
+		public ICommand InlineEditCommand => IsPlayerSpawnMenu ? EditPlayerSpawnMenuCommand
+			: (IsCinematic ? EditCinematicCommand : EditCommand);
 
 		public FieldViewModel(FieldInfo fieldInfo, object fieldValue, ObjectEditorViewModel parentViewModel, ScenarioEditorViewModel scenarioEditorViewModel)
 		{
@@ -248,6 +257,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			DeleteCommand = new RelayCommand(DeleteItem);
 			AddCommand = new RelayCommand(_ => AddItem());
 			EditPlayerSpawnMenuCommand = new RelayCommand(_ => OpenPlayerSpawnMenu(), _ => IsPlayerSpawnMenu);
+			EditCinematicCommand = new RelayCommand(_ => OpenCinematic(), _ => IsCinematic);
 
 			// Collection items
 			if (IsCollection && FieldValue is IEnumerable enumerable)
@@ -275,6 +285,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				Label = attribute.Label ?? FieldName;
 				Tooltip = attribute.Tooltip;
 				ShowTooltip = !string.IsNullOrEmpty(Tooltip);
+				_isColorDataType = attribute.DataType == AllianceData.DataTypes.Color;
 				try
 				{
 					PossibleValues = attribute.PossibleValues;
@@ -599,6 +610,14 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public void EditObject(object obj, ItemViewModel itemViewModel = null)
 		{
+			// Cinematics always open the dedicated timeline editor (single, consistent UI), whether reached
+			// from a field or a list item (e.g. Scenario.Cinematics).
+			if (obj is Cinematic cinematic)
+			{
+				OpenCinematicEditor(cinematic);
+				return;
+			}
+
 			if (itemViewModel != null)
 			{
 				if (_activeItemEditors.TryGetValue(itemViewModel, out var existingWindow) && existingWindow.IsLoaded)
@@ -840,6 +859,32 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			else
 			{
 				Log("PlayerSpawnMenu was closed without changes.", LogLevel.Warning);
+			}
+		}
+
+		public void OpenCinematic()
+		{
+			if (!(FieldValue is Cinematic cinematic))
+			{
+				// Field was null (e.g. the optional inline cinematic on PlayCinematicAction) - create it
+				cinematic = new Cinematic();
+				FieldValue = cinematic;
+			}
+			OpenCinematicEditor(cinematic);
+		}
+
+		private void OpenCinematicEditor(Cinematic cinematic)
+		{
+			var window = new CinematicEditorWindow(cinematic, _ => OnPropertyChanged(nameof(FieldValue)));
+			window.Show();
+		}
+
+		private void OnCinematicClosed(Cinematic cinematic)
+		{
+			if (cinematic != null)
+			{
+				FieldValue = cinematic;
+				OnPropertyChanged(nameof(FieldValue));
 			}
 		}
 

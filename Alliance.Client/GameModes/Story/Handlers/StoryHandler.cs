@@ -3,9 +3,10 @@ using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.Cinematics;
 using System;
-using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -21,6 +22,9 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<SyncObjectiveProgressMessage>(HandleSyncObjectiveProgress);
 			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
 			reg.Register<ExecuteActionMessage>(HandleExecuteActionMessage);
+			reg.Register<PlayCinematicMessage>(HandlePlayCinematicMessage);
+			reg.Register<StopCinematicMessage>(HandleStopCinematicMessage);
+			reg.Register<SetCinematicTimeMessage>(HandleSetCinematicTimeMessage);
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)
@@ -112,7 +116,77 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			}
 			catch (Exception ex)
 			{
-				Log($"Failed to process ExecuteActionMessage: {ex.Message}", LogLevel.Error);
+				Log($"Failed to execute action: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandlePlayCinematicMessage(PlayCinematicMessage message)
+		{
+			try
+			{
+				Cinematic cinematic = message.UseActionRef
+					? TryGetCinematicFromAction(message.ScopeId, message.ActionId)
+					: ScenarioManager.Instance.CurrentScenario?.Cinematics?.Find(c => c != null && c.Id == message.CinematicId);
+				if (cinematic == null)
+				{
+					Log($"PlayCinematicMessage: cinematic not found ({(message.UseActionRef ? $"scope={message.ScopeId}, action={message.ActionId}" : $"'{message.CinematicId}'")}).", LogLevel.Warning);
+					return;
+				}
+
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				view?.PlayCinematic(cinematic, message.StartTimeInSeconds, message.IsSkippable, message.UseViewerOrigin);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to play cinematic: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleStopCinematicMessage(StopCinematicMessage message)
+		{
+			try
+			{
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				if (view == null) return;
+				// Empty id = wildcard (e.g. scenario abort); otherwise only stop the named cinematic.
+				if (string.IsNullOrEmpty(message.CinematicId) || view.PlayingCinematicId == message.CinematicId)
+					view.StopCinematic();
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to stop cinematic: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleSetCinematicTimeMessage(SetCinematicTimeMessage message)
+		{
+			try
+			{
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				if (view == null) return;
+				if (view.PlayingCinematicId == message.CinematicId)
+					view.Seek(message.TimeInSeconds);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to set cinematic time: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		/// <summary>Resolves the inline cinematic of an entity- or act-scoped PlayCinematicAction
+		/// through the (ScopeId, ActionId) action registry.</summary>
+		private Cinematic TryGetCinematicFromAction(int scopeId, int actionId)
+		{
+			try
+			{
+				if (ActionBase.FindById(scopeId, actionId) is PlayCinematicAction action && action.Cinematic != null)
+					return action.Cinematic;
+				return null;
+			}
+			catch (Exception ex)
+			{
+				Log($"Error getting cinematic from action (scope={scopeId}, id={actionId}): {ex.Message}", LogLevel.Error);
+				return null;
 			}
 		}
 	}

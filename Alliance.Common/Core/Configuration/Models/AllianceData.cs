@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.BuildSystem.Configuration;
 using Alliance.Common.Utilities;
 using System;
+using System.Linq;
 using TaleWorlds.Core;
 
 namespace Alliance.Common.Core.Configuration.Models
@@ -24,7 +25,9 @@ namespace Alliance.Common.Core.Configuration.Models
 			GameMode,
 			Sounds,
 			Difficulty,
-			Prefab
+			Prefab,
+			Font,
+			Color
 		}
 
 		public enum Difficulty
@@ -53,6 +56,15 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		public static string[] AvailablePrefabs() => BuildPrefabCatalogManager.AllPrefabNames;
 
+		public static string[] AvailableFonts()
+		{
+#if !SERVER
+			return TaleWorlds.Engine.GauntletUI.UIResourceManager.FontFactory.GetFonts().Select(TaleWorlds.Engine.GauntletUI.UIResourceManager.FontFactory.GetFontName).Where(n => !string.IsNullOrEmpty(n)).OrderBy(n => n).ToArray();
+#else
+			return Array.Empty<string>();
+#endif
+		}
+
 		public static readonly string[] AvailableSides = new string[] { BattleSideEnum.Defender.ToString(), BattleSideEnum.Attacker.ToString() };
 
 		public static readonly string[] AvailableGameModes = new string[] { "Lobby", "Scenario", "BattleRoyale", "PvC", "CvC", "CaptainX", "BattleX", "SiegeX", "Captain", "Battle", "Siege", "Skirmish" };
@@ -79,6 +91,8 @@ namespace Alliance.Common.Core.Configuration.Models
 				DataTypes.Sounds => AvailableSounds(),
 				DataTypes.Difficulty => AvailableDifficulties,
 				DataTypes.Prefab => AvailablePrefabs(),
+				DataTypes.Font => AvailableFonts(),
+				DataTypes.Color => Array.Empty<string>(),
 				_ => Array.Empty<string>(),
 			};
 		}

@@ -1,0 +1,23 @@
+<Prefab>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center">
+			<Children>
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="WhiteSquareBrush" Brush.Color="#000000FF" Brush.GlobalAlphaFactor="@FadeAlpha" />
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="@LetterboxHeight" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="WhiteSquareBrush" Brush.Color="#000000FF" />
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="@LetterboxHeight" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="WhiteSquareBrush" Brush.Color="#000000FF" />
+			<TextWidget HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginRight="40" MarginBottom="60"
+						Text="Press Space to skip" Brush="Cinematic.Subtitle" Brush.FontSize="18" IsVisible="@IsSkippable" />
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" DataSource="{Subtitles}">
+					<ItemTemplate>
+					<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren"
+								VerticalAlignment="@VAlign"
+								Text="@Text" Brush="Cinematic.Subtitle"
+								Brush.GlobalAlphaFactor="@Alpha" Brush.FontSize="@FontSize"
+								Brush.FontColor="@FontColor" Brush.Font="@FontObject" Brush.TextHorizontalAlignment="@HAlign"
+								MarginLeft="80" MarginRight="80" MarginTop="40" MarginBottom="40" />
+					</ItemTemplate>
+				</Widget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

@@ -1,10 +1,10 @@
 ﻿using Alliance.Common.Extensions.ShrinkingZone.NetworkMessages.FromServer;
+using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.TwoDimension;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.ShrinkingZone.Behaviors
@@ -135,10 +135,10 @@ namespace Alliance.Common.Extensions.ShrinkingZone.Behaviors
             for (int i = 0; i < _emitters.Count; ++i)
             {
                 float angle = _currentAngle + i * angleStep;
-                float radianAngle = angle * Mathf.Deg2Rad;
+                float radianAngle = MathHelper.ToRadian(angle);
 
-                float x = ZoneOrigin.x + CurrentRadius * Mathf.Cos(radianAngle);
-                float y = ZoneOrigin.y + CurrentRadius * Mathf.Sin(radianAngle);
+                float x = ZoneOrigin.x + CurrentRadius * TaleWorlds.Library.MathF.Cos(radianAngle);
+                float y = ZoneOrigin.y + CurrentRadius * TaleWorlds.Library.MathF.Sin(radianAngle);
 
                 Vec3 newPosition = new Vec3(x, y, Mission.Scene.GetTerrainHeight(new Vec2(x, y)) + EMITTER_Z_OFFSET);
 
