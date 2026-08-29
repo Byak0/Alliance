@@ -417,7 +417,7 @@
 			<BrushLayer Name="Default" Color="#FFFFFFFF" />
 		</Layers>
 		<Styles>
-			<Style Name="Default" FontColor="#000000FF" TextGlowRadius="0.1" TextBlur="0.1" TextShadowOffset="0.2" TextOutlineAmount="0.1" TextOutlineColor="#00000000" FontSize="24" />
+			<Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0.1" TextBlur="0.1" TextShadowOffset="0.2" TextOutlineAmount="0.1" TextOutlineColor="#00000000" FontSize="24" />
 		</Styles>
 	</Brush>
 </Brushes>

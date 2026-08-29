@@ -95,9 +95,9 @@ namespace Alliance.Common.Extensions.Cinematics
 			vm.Font = state.Font;
 			vm.HAlign = state.HAlign switch
 			{
-				SubtitleHPosition.Left => HorizontalAlignment.Left,
-				SubtitleHPosition.Right => HorizontalAlignment.Right,
-				_ => HorizontalAlignment.Center
+				SubtitleHPosition.Left => TextHorizontalAlignment.Left,
+				SubtitleHPosition.Right => TextHorizontalAlignment.Right,
+				_ => TextHorizontalAlignment.Center
 			};
 			vm.VAlign = state.VAlign switch
 			{
@@ -115,7 +115,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		private int _fontSize = 28;
 		private string _fontColor = "#FFFFFFFF";
 		private string _font = "Galahad";
-		private HorizontalAlignment _hAlign = HorizontalAlignment.Center;
+		private TextHorizontalAlignment _hAlign = TextHorizontalAlignment.Center;
 		private VerticalAlignment _vAlign = VerticalAlignment.Bottom;
 
 		/// <summary>The keyframe this item renders - stable identity for recycling across frames.</summary>
@@ -165,11 +165,22 @@ namespace Alliance.Common.Extensions.Cinematics
 		[DataSourceProperty]
 		public Font FontObject => UIResourceManager.FontFactory?.GetMappedFontForLocalization(_font);
 
+		/// <summary>Text alignment inside the stretched subtitle widget. Must be
+		/// TaleWorlds.TwoDimension.TextHorizontalAlignment to match Brush.TextHorizontalAlignment.
+		/// Enum values are boxed for OnPropertyChangedWithValue (its generic overload is class-constrained).</summary>
 		[DataSourceProperty]
-		public HorizontalAlignment HAlign { get => _hAlign; set { _hAlign = value; OnPropertyChanged(); } }
+		public TextHorizontalAlignment HAlign
+		{
+			get => _hAlign;
+			set { if (value != _hAlign) { _hAlign = value; OnPropertyChangedWithValue((object)value); } }
+		}
 
 		[DataSourceProperty]
-		public VerticalAlignment VAlign { get => _vAlign; set { _vAlign = value; OnPropertyChanged(); } }
+		public VerticalAlignment VAlign
+		{
+			get => _vAlign;
+			set { if (value != _vAlign) { _vAlign = value; OnPropertyChangedWithValue((object)value); } }
+		}
 	}
 }
 #endif

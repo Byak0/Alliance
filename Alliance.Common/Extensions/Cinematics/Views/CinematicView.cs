@@ -31,12 +31,12 @@ namespace Alliance.Common.Extensions.Cinematics
 		private Camera _camera;
 		private bool _wasFirstPerson;
 		private bool _agentHidden;
-		private AgentControllerType _savedController;
-		private bool _controllerSaved;
 
 		private CinematicPlayer _player;
 		private bool _useViewerOrigin;
 		private bool _skippable;
+		private bool _mainAgentControllerDisabled;
+		private bool _savedMainAgentControllerDisabled;
 
 		private GauntletLayer _overlayLayer;
 		private ScreenBase _overlayScreen;
@@ -112,14 +112,14 @@ namespace Alliance.Common.Extensions.Cinematics
 			cinematic.Tracks.Add(camTrack);
 
 			OverlayTrack OverlayTrack = new OverlayTrack();
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0f) { Letterbox = 0.12f, FadeAlpha = 1f });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0.5f) { Letterbox = 0.12f, FadeAlpha = 0f, Interpolation = Interpolation.CatmullRom });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(5.5f) { Letterbox = 0.12f, FadeAlpha = 0f });
-			OverlayTrack.Keyframes.Add(new OverlayKeyframe(6f) { Letterbox = 0.12f, FadeAlpha = 1f, Interpolation = Interpolation.CatmullRom });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0f) { Letterbox = 0.2f, FadeAlpha = 1f });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(0.5f) { Letterbox = 0.2f, FadeAlpha = 0f, Interpolation = Interpolation.CatmullRom });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(5.5f) { Letterbox = 0.2f, FadeAlpha = 0f });
+			OverlayTrack.Keyframes.Add(new OverlayKeyframe(6f) { Letterbox = 0.2f, FadeAlpha = 1f, Interpolation = Interpolation.CatmullRom });
 			cinematic.Tracks.Add(OverlayTrack);
 
 			SubtitleTrack subTrack = new SubtitleTrack();
-			subTrack.Keyframes.Add(new SubtitleKeyframe(0.4f) { Text = new LocalizedString("Test - " + cinematic.AgentBehavior), Duration = 3f });
+			subTrack.Keyframes.Add(new SubtitleKeyframe(0.4f) { Text = new LocalizedString("Test - " + cinematic.AgentBehavior), Duration = 3f, HPosition = SubtitleHPosition.Center });
 			cinematic.Tracks.Add(subTrack);
 
 			PlayCinematic(cinematic, MissionTime.Now.NumberOfTicks / 10000000f, true, false);
@@ -184,11 +184,11 @@ namespace Alliance.Common.Extensions.Cinematics
 			Patch_MissionScreen.FreeInputEnabled = false;
 			ReleaseCamera();
 			if (_agentHidden) { Agent.Main?.AgentVisuals?.SetVisible(true); _agentHidden = false; }
-			if (_controllerSaved && Agent.Main != null)
+			if (_mainAgentControllerDisabled)
 			{
-				Agent.Main.SetIsAIPaused(false);
-				Agent.Main.Controller = _savedController;
-				_controllerSaved = false;
+				MissionMainAgentController mainAgentController = Mission?.GetMissionBehavior<MissionMainAgentController>();
+				if (mainAgentController != null) mainAgentController.IsDisabled = _savedMainAgentControllerDisabled;
+				_mainAgentControllerDisabled = false;
 			}
 			// Photo-mode off + color-grade restore happen in StopEffects (also covers editor scene).
 			StopEffects();
@@ -238,23 +238,41 @@ namespace Alliance.Common.Extensions.Cinematics
 			Agent main = Agent.Main;
 			if (main == null) return;
 
-			_savedController = main.Controller;
-			_controllerSaved = true;
-
 			switch (mode)
 			{
 				case AgentBehaviorMode.Hide:
 					main.AgentVisuals?.SetVisible(false);
 					_agentHidden = true;
-					main.Controller = AgentControllerType.AI;
-					main.SetIsAIPaused(true);
+					LockAgent(main);
 					break;
 				case AgentBehaviorMode.Lock:
-					main.Controller = AgentControllerType.AI;
-					main.SetIsAIPaused(true);
+					LockAgent(main);
 					break;
 				// Free: agent stays player-controlled; input stays live via Patch_MissionScreen.
 			}
+		}
+
+		// Freezes the local player's agent.
+		private void LockAgent(Agent main)
+		{
+			ClearAgentInput(main);
+			MissionMainAgentController mainAgentController = Mission.GetMissionBehavior<MissionMainAgentController>();
+			if (mainAgentController != null)
+			{
+				_savedMainAgentControllerDisabled = mainAgentController.IsDisabled;
+				_mainAgentControllerDisabled = true;
+				mainAgentController.IsDisabled = true;
+			}
+		}
+
+		/// <summary>MissionMainAgentController is the only writer of the main agent's input; once disabled it
+		/// stops rewriting it, so any held movement key would stay latched in MovementInputVector and keep
+		/// moving the agent (and keep being synced to the server). Zero it like native conversation mode does.</summary>
+		private static void ClearAgentInput(Agent main)
+		{
+			main.MovementFlags = Agent.MovementControlFlag.None;
+			main.EventControlFlags = Agent.EventControlFlag.None;
+			main.MovementInputVector = Vec2.Zero;
 		}
 
 		/// <summary>Scene receiving visual effects (color grade, photo-mode DoF): the mission scene in
