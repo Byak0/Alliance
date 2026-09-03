@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 
 namespace Alliance.Common.Core.Configuration.Models
@@ -119,7 +121,7 @@ namespace Alliance.Common.Core.Configuration.Models
 			foreach (FieldInfo field in fields)
 			{
 				ConfigPropertyAttribute attr = field.GetCustomAttribute<ConfigPropertyAttribute>();
-				if (attr != null && GetDependencyFieldName(attr.Dependency) == fieldName)
+				if (attr != null && GetDependencyFieldNames(attr.Dependency).Contains(fieldName))
 				{
 					return true;
 				}
@@ -127,23 +129,33 @@ namespace Alliance.Common.Core.Configuration.Models
 			return false;
 		}
 
-		private static string GetDependencyFieldName(string dependency)
+		/// <summary>All field names referenced by a dependency expression (compound expressions joined
+		/// by '&' reference several) - used to know which changes must refresh dependents.</summary>
+		public static IEnumerable<string> GetDependencyFieldNames(string dependency)
 		{
-			if (string.IsNullOrEmpty(dependency))
-				return null;
-
-			if (dependency[0] == '?')
+			if (string.IsNullOrEmpty(dependency)) yield break;
+			foreach (string part in dependency.Split('&'))
 			{
-				for (int i = 1; i < dependency.Length; i++)
-				{
-					char c = dependency[i];
-					if (c == '=' || c == '!' || c == '>' || c == '<')
-						return dependency.Substring(1, i - 1);
-				}
-				return dependency.Substring(1);
-			}
+				string condition = part.Trim();
+				if (string.IsNullOrEmpty(condition)) continue;
 
-			return dependency;
+				if (condition[0] == '?')
+				{
+					for (int i = 1; i < condition.Length; i++)
+					{
+						char c = condition[i];
+						if (c == '=' || c == '!' || c == '>' || c == '<')
+						{
+							yield return condition.Substring(1, i - 1);
+							break;
+						}
+					}
+				}
+				else
+				{
+					yield return condition;
+				}
+			}
 		}
 
 		private static bool EvaluateExpression(object fieldValue, string op, string compareStr)

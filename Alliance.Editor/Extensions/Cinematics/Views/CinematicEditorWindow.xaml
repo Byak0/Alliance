@@ -245,45 +245,64 @@
 							</StackPanel>
 						</Grid>
 
-						<TextBlock Text="Position" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4" />
-						<Grid Margin="0,0,0,8">
-							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionX}" /></StackPanel>
-							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionY}" /></StackPanel>
-							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionZ}" /></StackPanel>
-						</Grid>
+					<TextBlock Text="Position" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
+							   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
+					<Grid Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
+						<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+						<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionX}" /></StackPanel>
+						<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionY}" /></StackPanel>
+						<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionZ}" /></StackPanel>
+					</Grid>
 
-						<TextBlock Text="Rotation (°)" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
-								   Visibility="{Binding SelectedKeyframe.HasNoTarget, Converter={StaticResource BoolToVisibilityConverter}}" />
-						<Grid Margin="0,0,0,10" Visibility="{Binding SelectedKeyframe.HasNoTarget, Converter={StaticResource BoolToVisibilityConverter}}">
-							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pitch" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationXDeg}" /></StackPanel>
-							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Roll" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationYDeg}" /></StackPanel>
-							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Yaw" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationZDeg}" /></StackPanel>
-						</Grid>
+					<TextBlock Text="Rotation (°)" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
+							   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
+					<Grid Margin="0,0,0,10" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
+						<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+						<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pitch" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationXDeg}" /></StackPanel>
+						<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Roll" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationYDeg}" /></StackPanel>
+						<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Yaw" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationZDeg}" /></StackPanel>
+					</Grid>
 
-						<TextBlock Text="Target" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4" />
-						<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-							<TextBlock Text="Look at" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+					<!-- Relative frame (target + offset) -->
+					<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+						<TextBlock Text="Frame mode" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+						<ComboBox Width="110" FontSize="11"
+									ItemsSource="{Binding SelectedKeyframe.FrameModeOptions}"
+									SelectedItem="{Binding SelectedKeyframe.FrameMode}" />
+						<TextBlock Text="Tracking" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="12,0,6,0"
+								   Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<ComboBox Width="90" FontSize="11"
+									Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}"
+									ItemsSource="{Binding SelectedKeyframe.TrackModeOptions}"
+									SelectedItem="{Binding SelectedKeyframe.TrackMode}" />
+					</StackPanel>
+					<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}">
+						<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+							<TextBlock Text="Frame target" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
 							<ComboBox Width="120" FontSize="11"
-										ItemsSource="{Binding SelectedKeyframe.LookAtOptions}"
-										SelectedItem="{Binding SelectedKeyframe.LookAt}" />
+										ItemsSource="{Binding SelectedKeyframe.TargetTypeOptions}"
+										SelectedItem="{Binding SelectedKeyframe.FrameTargetType}" />
 						</StackPanel>
-						<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsTargetEntity, Converter={StaticResource BoolToVisibilityConverter}}">
-							<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,4,0,0" HorizontalAlignment="Left"
-									Command="{Binding SelectedKeyframe.PickTargetEntityCommand}" ToolTip="Open entity editor">
-								<TextBlock Text="{Binding SelectedKeyframe.LookAtEntityDisplayName}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
-							</Button>
-						</StackPanel>
-						<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsTargetPosition, Converter={StaticResource BoolToVisibilityConverter}}">
-							<TextBlock Text="Target position" FontSize="11" Foreground="#FF6B7480" />
-							<Grid>
-								<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-								<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.LookAtPosX}" /></StackPanel>
-								<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.LookAtPosY}" /></StackPanel>
-								<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.LookAtPosZ}" /></StackPanel>
-							</Grid>
-						</StackPanel>
+						<TextBox Width="220" FontSize="11" Margin="0,0,0,4" ToolTip="Scenario variable holding the Agent"
+								 Text="{Binding SelectedKeyframe.FrameTargetAgentVariable}"
+								 Visibility="{Binding SelectedKeyframe.FrameTargetIsAgent, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<TextBox Width="220" FontSize="11" Margin="0,0,0,4" ToolTip="AL_EntityMarker GUID of the entity"
+								 Text="{Binding SelectedKeyframe.FrameTargetEntityRefId}"
+								 Visibility="{Binding SelectedKeyframe.FrameTargetIsEntity, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<Grid Visibility="{Binding SelectedKeyframe.FrameTargetIsPosition, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4">
+							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pos X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosX}" /></StackPanel>
+							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Pos Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosY}" /></StackPanel>
+							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Pos Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosZ}" /></StackPanel>
+						</Grid>
+						<TextBlock Text="Offset (target space)" FontSize="11" Foreground="#FF6B7480" Margin="0,2,0,2" />
+						<Grid>
+							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetX}" /></StackPanel>
+							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetY}" /></StackPanel>
+							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetZ}" /></StackPanel>
+						</Grid>
+					</StackPanel>
 
 						<StackPanel Orientation="Horizontal">
 							<Button Content="Capture View" Height="30" Width="120" Margin="0,0,6,0" Padding="0" VerticalContentAlignment="Center" Command="{Binding SelectedKeyframe.CaptureCommand}" />
@@ -394,13 +413,22 @@
 										</Grid>
 									</StackPanel>
 								</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:LookAtKeyframeVM}">
-									<StackPanel>
-										<TextBlock Text="Target role" FontSize="11" Foreground="#FF6B7480" />
-										<TextBox Text="{Binding TargetRole}" Margin="0,0,0,6" />
-										<CheckBox Content="Use explicit position" IsChecked="{Binding UsePosition}" />
-									</StackPanel>
-								</DataTemplate>
+							<DataTemplate DataType="{x:Type vm:LookAtKeyframeVM}">
+								<StackPanel>
+									<TextBlock Text="Target" FontSize="11" Foreground="#FF6B7480" />
+									<ComboBox FontSize="11" ItemsSource="{Binding TargetTypeOptions}" SelectedItem="{Binding TargetType}" Margin="0,0,0,6" />
+									<TextBox Text="{Binding AgentVariable}" Margin="0,0,0,6" ToolTip="Scenario variable holding the Agent"
+											 Visibility="{Binding IsAgent, Converter={StaticResource BoolToVisibilityConverter}}" />
+									<TextBox Text="{Binding EntityRefId}" Margin="0,0,0,6" ToolTip="AL_EntityMarker GUID of the entity"
+											 Visibility="{Binding IsEntity, Converter={StaticResource BoolToVisibilityConverter}}" />
+									<Grid Visibility="{Binding IsPosition, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,6">
+										<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+										<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionX}" /></StackPanel>
+										<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionY}" /></StackPanel>
+										<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionZ}" /></StackPanel>
+									</Grid>
+								</StackPanel>
+							</DataTemplate>
 								<DataTemplate DataType="{x:Type vm:EventKeyframeVM}">
 									<StackPanel>
 										<Button Content="Edit Actions" Height="28" Margin="0,0,0,4" Padding="8,0" Command="{Binding EditActionsCommand}" />
@@ -429,8 +457,12 @@
 				<TextBlock VerticalAlignment="Center" Margin="0,0,16,0" Foreground="#FF6B7480" FontSize="11"
 						   Text="{Binding EffectiveDuration, StringFormat='effective: {0:F1}s'}" />
 			<CheckBox Content="Skippable" IsChecked="{Binding IsSkippable}" Margin="0,0,16,0" VerticalAlignment="Center" />
-				<TextBlock Text="Main agent" VerticalAlignment="Center" Margin="0,0,4,0" />
-				<ComboBox Width="120" VerticalContentAlignment="Center" ItemsSource="{Binding AgentBehaviorOptions}" SelectedItem="{Binding AgentBehavior}" />
+				<TextBlock Text="Agents" VerticalAlignment="Center" Margin="0,0,4,0" />
+				<ComboBox Width="110" VerticalContentAlignment="Center" ItemsSource="{Binding AgentBehaviorOptions}" SelectedItem="{Binding AgentBehavior}"
+						  ToolTip="Free/Lock affect the local player; Hide modes also hide the matching agents (and their mounts) on every receiver" />
+				<TextBlock Text="Invulnerability" VerticalAlignment="Center" Margin="16,0,4,0" />
+				<ComboBox Width="90" VerticalContentAlignment="Center" ItemsSource="{Binding InvulnerabilityOptions}" SelectedItem="{Binding Invulnerability}"
+						  ToolTip="Who is invulnerable (server-side, mission-wide) for the duration of the cinematic" />
 			</StackPanel>
 		</Border>
 	</Grid>

@@ -91,6 +91,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 				action.ScopeId = scopeId;
 				action.ActionId = nextId++;
 				_allActions[(scopeId, action.ActionId)] = action;
+				action.GetSyncFields();
+				ValueSourceHelper.PrewarmDynamicSlots(action);
 			}
 
 			foreach (var child in GetChildren(obj))
@@ -133,24 +135,18 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		// ── Sync infrastructure ──────────────────────────────────────────
 
-		[Serializable]
-		public struct SyncFieldInfo
-		{
-			public string Name;
-			public FieldInfo Field;
-		}
+		private static readonly Dictionary<Type, FieldInfo[]> _syncFieldsCache = new();
 
-		private static readonly Dictionary<Type, SyncFieldInfo[]> _syncFieldsCache = new();
-
-		public SyncFieldInfo[] GetSyncFields()
+		public FieldInfo[] GetSyncFields()
 		{
 			Type type = GetType();
 			if (_syncFieldsCache.TryGetValue(type, out var fields)) return fields;
 
+			// Sorted by name to ensure deterministic order
 			fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance)
 				.Where(f => f.GetCustomAttribute<SyncToClientAttribute>() != null
 						&& typeof(ValueSource).IsAssignableFrom(f.FieldType))
-				.Select(f => new SyncFieldInfo { Name = f.Name, Field = f })
+				.OrderBy(f => f.Name, StringComparer.Ordinal)
 				.ToArray();
 
 			_syncFieldsCache[type] = fields;
@@ -159,53 +155,34 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public bool HasSyncToClientFields => GetSyncFields().Length > 0;
 
-		/// <summary>
-		/// Packs resolved [SyncToClient] field values into a VariableStore and sends
-		/// them to all clients. Call explicitly from <see cref="Execute"/> to opt in.
-		/// </summary>
+		/// <summary>Resolves the [SyncToClient] fields server-side and sends the bare values to all
+		/// clients, positionally. Call explicitly from Execute to opt in.</summary>
 		protected void ExecuteOnClient(VariableStore context = null)
 		{
 			if (!GameNetwork.IsServer) return;
 
-			var data = new VariableStore();
+			var values = new List<object>();
 			VariableStore globals = ScenarioManager.Instance?.Globals;
 
-			foreach (var sf in GetSyncFields())
+			foreach (FieldInfo field in GetSyncFields())
 			{
-				var vs = (ValueSource)sf.Field.GetValue(this);
-				if (vs == null) continue;
-				data.Set(sf.Name, vs.ResolveObject(context, globals));
+				var vs = (ValueSource)field.GetValue(this);
+				// Nulls keep their position so the client's slots stay aligned.
+				values.Add(vs?.ResolveObject(context, globals));
 			}
 
-			StoryMessages.SendExecuteAction(ScopeId, ActionId, data);
+			StoryMessages.SendExecuteAction(ScopeId, ActionId, values);
 		}
 
-		/// <summary>
-		/// Called on the client when an <see cref="ExecuteActionMessage"/> arrives.
-		/// Replaces each synced field with a <see cref="LiteralValue{T}"/> holding the
-		/// received value. Fields not present in <paramref name="data"/> are left untouched.
-		/// </summary>
-		public void InjectSyncData(VariableStore data)
+		/// <summary>Client side of ExecuteOnClient: rewrites each synced field with the received value
+		/// as a Literal, positionally. No-op on count mismatch.</summary>
+		public void InjectSyncData(List<object> values)
 		{
-			foreach (var sf in GetSyncFields())
+			FieldInfo[] fields = GetSyncFields();
+			if (values == null || values.Count != fields.Length) return;
+			for (int i = 0; i < fields.Length; i++)
 			{
-				if (!data.Has(sf.Name)) continue;
-
-				Type fieldType = sf.Field.FieldType;
-				if (!fieldType.IsGenericType) continue;
-
-				Type valueType = fieldType.GetGenericArguments()[0];
-				Type literalType = typeof(LiteralValue<>).MakeGenericType(valueType);
-
-				object literal = sf.Field.GetValue(this);
-				if (literal == null || literal.GetType() != literalType)
-				{
-					literal = Activator.CreateInstance(literalType);
-					sf.Field.SetValue(this, literal);
-				}
-
-				object value = data.Get(sf.Name);
-				literalType.GetField("Value").SetValue(literal, value);
+				ValueSourceHelper.SetSlotLiteral(this, fields[i], values[i]);
 			}
 		}
 	}

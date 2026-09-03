@@ -77,31 +77,28 @@ namespace Alliance.Common.Extensions.Cinematics
 		}
 
 		/// <summary>
-		/// Samples a camera keyframe segment into a CameraState. before/after are the
-		/// Catmull-Rom neighbours (may equal prev/next).
+		/// Samples a camera keyframe segment into a CameraState. prev/next delimit the segment;
+		/// before/after are the outer neighbours the Catmull-Rom position path needs to bend smoothly
+		/// through prev/next (clamped at track ends). All other values blend between prev and next only.
 		/// </summary>
 		public static CameraState EvaluateCamera(
-			CameraKeyframe prev, CameraKeyframe next, CameraKeyframe before, CameraKeyframe after, float localT)
+			CameraKeyframe prev, CameraKeyframe next, float localT,
+			MatrixFrame prevFrame, MatrixFrame nextFrame, MatrixFrame beforeFrame, MatrixFrame afterFrame)
 		{
-			// Single keyframe (all four identical).
+			// Single keyframe (segment endpoints identical).
 			if (ReferenceEquals(prev, next))
 			{
-				return CameraFromKeyframe(prev);
+				return CameraFromKeyframe(prev, prevFrame);
 			}
 
 			Interpolation interp = next.Interpolation;
 			bool constant = interp == Interpolation.Constant;
 			float curveT = CurveT(interp, localT);
 
-			MatrixFrame prevFrame = prev.Frame.ToFrame();
-			MatrixFrame nextFrame = next.Frame.ToFrame();
-
 			Vec3 origin;
 			if (interp == Interpolation.CatmullRom)
 			{
-				Vec3 p0 = before.Frame.ToFrame().origin;
-				Vec3 p3 = after.Frame.ToFrame().origin;
-				origin = CatmullRom(p0, prevFrame.origin, nextFrame.origin, p3, localT, next.Tension);
+				origin = CatmullRom(beforeFrame.origin, prevFrame.origin, nextFrame.origin, afterFrame.origin, localT, next.Tension);
 			}
 			else if (constant)
 			{
@@ -132,12 +129,11 @@ namespace Alliance.Common.Extensions.Cinematics
 			return state;
 		}
 
-		public static CameraState CameraFromKeyframe(CameraKeyframe kf)
+		public static CameraState CameraFromKeyframe(CameraKeyframe kf, MatrixFrame frame)
 		{
-			MatrixFrame f = kf.Frame.ToFrame();
 			return new CameraState
 			{
-				Frame = f,
+				Frame = frame,
 				Fov = kf.Fov,
 				Near = kf.NearPlane,
 				Far = kf.FarPlane,

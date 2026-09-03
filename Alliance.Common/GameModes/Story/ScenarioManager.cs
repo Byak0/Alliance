@@ -68,7 +68,29 @@ namespace Alliance.Common.GameModes.Story
 			CurrentWinner = BattleSideEnum.None;
 			InitGlobals();
 			ActionBase.AssignActionIds(act, CurrentActIndex);
+			PrewarmCinematics();
 			OnStartScenario?.Invoke();
+		}
+
+		/// <summary>Load-time warm-up of the dynamic-slot field cache: scenario cinematics are referenced
+		/// by name and never walked by AssignActionIds, so warm them (and every act, since any act may
+		/// become current later) here - before any cinematic can play.</summary>
+		protected void PrewarmCinematics()
+		{
+			if (CurrentScenario?.Cinematics != null)
+			{
+				foreach (var cinematic in CurrentScenario.Cinematics)
+				{
+					if (cinematic != null) ValueSourceHelper.PrewarmDynamicSlots(cinematic);
+				}
+			}
+			if (CurrentScenario?.Acts != null)
+			{
+				foreach (var otherAct in CurrentScenario.Acts)
+				{
+					if (otherAct != null) ValueSourceHelper.PrewarmDynamicSlots(otherAct);
+				}
+			}
 		}
 
 		/// <summary>

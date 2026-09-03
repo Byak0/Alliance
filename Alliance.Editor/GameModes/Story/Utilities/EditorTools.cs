@@ -132,7 +132,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 			_cinematicView.EditorSceneView = MBEditor.GetEditorSceneView();
 			Patch_SceneEditorScreen.ActiveCinematicView = _cinematicView;
-			_cinematicView.PlayCinematic(cinematic, 0f, false, false);
+			_cinematicView.PlayCinematic(cinematic, 0f, false, null);
 		}
 
 		public void PausePreview() { _previewPaused = true; }

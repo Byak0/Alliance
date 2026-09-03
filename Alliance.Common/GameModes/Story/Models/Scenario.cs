@@ -35,7 +35,7 @@ namespace Alliance.Common.GameModes.Story.Models
 		[ConfigProperty(label: "Variables", tooltip: "Global variables available throughout the scenario. Variables can be used in conditions and actions via ValueSource fields.")]
 		public List<ScenarioVariable> Variables = new List<ScenarioVariable>();
 
-		[ConfigProperty(label: "Cinematics", tooltip: "Cinematics defined on this scenario. Reference them by Id from a PlayCinematicAction, or play them from conditional actions / victory logic.")]
+		[ConfigProperty(label: "Cinematics", tooltip: "Cinematics defined on this scenario, identified by their unique name. Reference them by name from a PlayCinematicAction or the act intro cinematic slot.")]
 		public List<Cinematic> Cinematics = new List<Cinematic>();
 
 		public Scenario(LocalizedString name, LocalizedString desc)
@@ -121,6 +121,28 @@ namespace Alliance.Common.GameModes.Story.Models
 			{
 				issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario", "No acts defined."));
 				return issues;
+			}
+
+			// Variables are identified by name: duplicates would shadow each other in the variable stores.
+			var variableNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			foreach (ScenarioVariable variable in Variables ?? new List<ScenarioVariable>())
+			{
+				if (variable == null) continue;
+				if (string.IsNullOrWhiteSpace(variable.Name))
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Variables", "A variable has no name."));
+				else if (!variableNames.Add(variable.Name))
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Variables", $"Duplicate variable name '{variable.Name}'. Variable names must be unique."));
+			}
+
+			// Cinematics are identified by name: duplicates would break by-name references.
+			var cinematicNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			foreach (Cinematic cinematic in Cinematics ?? new List<Cinematic>())
+			{
+				if (cinematic == null) continue;
+				if (string.IsNullOrWhiteSpace(cinematic.Name))
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Cinematics", "A cinematic has no name."));
+				else if (!cinematicNames.Add(cinematic.Name))
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Cinematics", $"Duplicate cinematic name '{cinematic.Name}'. Cinematic names must be unique."));
 			}
 
 			for (int i = 0; i < Acts.Count; i++)

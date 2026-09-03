@@ -315,6 +315,13 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 				IsChoiceLocked = true;
 			}
 
+			CinematicRefAttribute cinematicRef = fieldInfo.GetCustomAttribute<CinematicRefAttribute>();
+			if (cinematicRef != null)
+			{
+				PossibleValues = ValueSourceHelper.CollectAvailableCinematics(scenario);
+				IsChoiceLocked = true;
+			}
+
 			if (parentViewModel?.Object != null
 				&& parentViewModel.Object.GetType().IsGenericType
 				&& parentViewModel.Object.GetType().GetGenericTypeDefinition() == typeof(VariableValue<>)

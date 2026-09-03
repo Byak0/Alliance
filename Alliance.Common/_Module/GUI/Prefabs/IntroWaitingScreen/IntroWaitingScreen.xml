@@ -1,0 +1,17 @@
+<Prefab>
+	<Window>
+		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+			<Children>
+				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="WhiteSquareBrush" Brush.Color="#000000FF" />
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
+					<Children>
+						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center"
+									Text="@Title" Brush="Cinematic.Subtitle" Brush.FontColor="#FFFFFFFF" Brush.FontSize="36" />
+						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80"
+									Text="@CounterText" Brush="Cinematic.Subtitle" Brush.FontColor="#FFDDDDDD" Brush.FontSize="28" />
+					</Children>
+				</Widget>
+			</Children>
+		</Widget>
+	</Window>
+</Prefab>

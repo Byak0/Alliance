@@ -36,12 +36,14 @@ namespace Alliance.Common.Extensions.Cinematics
 	}
 
 	/// <summary>
-	/// Resolves role names and the local viewer frame.
+	/// Resolves <see cref="CinematicTarget"/>s to world frames for the local machine: viewer targets
+	/// against the local player (or editor preview), specific agents through the server-resolved map
+	/// carried by PlayCinematicMessage, entities through the BuildSystem marker index.
 	/// </summary>
 	public interface ICinematicBindings
 	{
-		MatrixFrame? ViewerFrame { get; }
-		Vec3? ResolveRolePosition(string role);
-		Vec3? ResolveEntityPosition(string entityRefId);
+		/// <summary>Full world frame of the target, or null when it cannot be resolved (the player then
+		/// falls back to the previous resolved frame).</summary>
+		MatrixFrame? ResolveTargetFrame(CinematicTarget target);
 	}
 }

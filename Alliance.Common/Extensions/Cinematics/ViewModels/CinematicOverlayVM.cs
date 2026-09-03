@@ -1,6 +1,7 @@
 ﻿#if !SERVER
 using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
+using Alliance.Common.GameModes.Story.Models;
 using System.Collections.Generic;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI;
@@ -11,9 +12,15 @@ namespace Alliance.Common.Extensions.Cinematics
 {
 	public class CinematicOverlayVM : ViewModel
 	{
+		/// <summary>Localized skip hint (add translations here per language code).</summary>
+		public static readonly LocalizedString SkipHintText = new LocalizedString("Press Space to skip");
+
 		private float _fadeAlpha;
 		private float _letterboxHeight;
 		private bool _isSkippable;
+
+		[DataSourceProperty]
+		public string SkipHint => SkipHintText.LocalizedText;
 
 		[DataSourceProperty]
 		public float FadeAlpha

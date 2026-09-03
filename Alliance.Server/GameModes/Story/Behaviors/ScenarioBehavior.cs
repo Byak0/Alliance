@@ -1,15 +1,15 @@
-﻿using Alliance.Client.GameModes.PvC;
+using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
+using Alliance.Common.GameModes.Story.Utilities;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HarmonyLib;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -145,6 +145,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				case ActState.AwaitingPlayerJoin:
 					if (EnoughPlayersJoined())
 					{
+						BroadcastWaitingScreen(false, 0, 0);
 						ChangeState(ActState.SpawningParticipants);
 						StartSpawn();
 					}
@@ -156,6 +157,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 						StartAct();
 						SetStartingGold();
 						SyncObjectives();
+						PlayIntroCinematic();
 					}
 					break;
 				case ActState.InProgress:
@@ -205,16 +207,23 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
 			int playersReady = 0;
+			int playersTotal = 0;
 			foreach (ICommunicator peer in GameNetwork.NetworkPeers)
 			{
+				playersTotal++;
 				if (peer.IsSynchronized) playersReady++;
 			}
-			string log = "Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")";
-			Log(log);
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new ServerMessage(log));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			Log("Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")");
+			// Drive the client waiting screen (full-black, ready/total counter) while in this state.
+			BroadcastWaitingScreen(true, playersReady, playersTotal);
 			return playersReady >= minPlayersForStart;
+		}
+
+		private void BroadcastWaitingScreen(bool visible, int ready, int total)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(new WaitingScreenStateMessage(visible, ready, total));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
 		}
 
 		private bool InitialSpawnFinished()
@@ -239,6 +248,25 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			Log("Alliance - Starting act...", LogLevel.Debug);
 			TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+		}
+
+		// Plays the act's optional intro cinematic once teams and characters are set and agents spawned.
+		private void PlayIntroCinematic()
+		{
+			string introCinematicName = Act?.SpawnLogic?.IntroCinematicName;
+			if (string.IsNullOrEmpty(introCinematicName)) return;
+			try
+			{
+				var action = new Actions.Server_PlayCinematicAction
+				{
+					CinematicName = introCinematicName
+				};
+				action.Execute(new VariableStore());
+			}
+			catch (Exception ex)
+			{
+				Log($"Intro cinematic failed: {ex.Message}", LogLevel.Warning);
+			}
 		}
 
 		private void DisplayResults()

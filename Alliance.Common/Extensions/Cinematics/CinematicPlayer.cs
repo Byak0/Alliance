@@ -21,6 +21,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		private readonly ICinematicPlaybackSink _sink;
 		private readonly ICinematicBindings _bindings;
 		private readonly HashSet<CinematicKeyframe> _fired = new HashSet<CinematicKeyframe>();
+		/// <summary>Frozen-mode target frames, captured on first successful resolution per keyframe.</summary>
+		private readonly Dictionary<CameraKeyframe, MatrixFrame> _frozenFrames = new Dictionary<CameraKeyframe, MatrixFrame>();
 
 		private float _currentTime;
 		private float _lastTime = -1f;
@@ -43,6 +45,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			_currentTime = 0f;
 			_lastTime = -1f;
 			_fired.Clear();
+			_frozenFrames.Clear();
 			_playing = _cinematic != null && Duration > 0f;
 		}
 
@@ -58,6 +61,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			_currentTime = Math.Max(0f, time);
 			_lastTime = _currentTime;
 			_fired.Clear();
+			_frozenFrames.Clear();
 		}
 
 		/// <summary>Re-samples every continuous track (camera, screen overlay, subtitles) at the current
@@ -89,6 +93,7 @@ namespace Alliance.Common.Extensions.Cinematics
 					_currentTime -= duration;
 					prevTime = -1f;
 					_fired.Clear();
+					_frozenFrames.Clear();
 					wrapped = true;
 				}
 				else
@@ -168,51 +173,37 @@ namespace Alliance.Common.Extensions.Cinematics
 				return;
 			}
 
-			CameraState state = KeyframeEvaluator.EvaluateCamera(prev, next, before, after, localT);
-			state = ApplyKeyframeTarget(state, prev, next, localT);
+			// Resolve each keyframe's effective world frame first: absolute frames come straight from the
+			// data, relative frames resolve their target at sample time (or from the frozen cache) and
+			// apply the offset in target space. Absolute and relative keyframes can mix in one track.
+			MatrixFrame prevFrame = EffectiveFrame(prev);
+			MatrixFrame nextFrame = EffectiveFrame(next);
+			MatrixFrame beforeFrame = EffectiveFrame(before);
+			MatrixFrame afterFrame = EffectiveFrame(after);
+
+			CameraState state = KeyframeEvaluator.EvaluateCamera(prev, next, localT, prevFrame, nextFrame, beforeFrame, afterFrame);
 			state = ApplyLookAt(state, time);
 			_sink?.OnCameraState(state);
 		}
 
-		private CameraState ApplyKeyframeTarget(CameraState state, CameraKeyframe prev, CameraKeyframe next, float localT)
+		/// <summary>World frame of a camera keyframe: its stored absolute frame, or its relative target
+		/// (resolved live or frozen at first resolution) with the offset applied in target space. Falls
+		/// back to the stored frame when a relative target cannot be resolved.</summary>
+		private MatrixFrame EffectiveFrame(CameraKeyframe kf)
 		{
-			if (prev.LookAt == LookAtMode.None && next.LookAt == LookAtMode.None) return state;
-			Vec3? prevTarget = ResolveKeyframeTarget(prev);
-			Vec3? nextTarget = ResolveKeyframeTarget(next);
-			if (prevTarget == null && nextTarget == null) return state;
-
-			float curveT = KeyframeEvaluator.CurveT(next.Interpolation, localT);
-			MatrixFrame? prevLook = prevTarget.HasValue ? CameraMath.LookAtFrame(state.Frame.origin, prevTarget.Value) : (MatrixFrame?)null;
-			MatrixFrame? nextLook = nextTarget.HasValue ? CameraMath.LookAtFrame(state.Frame.origin, nextTarget.Value) : (MatrixFrame?)null;
-
-			Mat3 rot;
-			if (prevLook != null && nextLook != null)
-				rot = Mat3.Lerp(prevLook.Value.rotation, nextLook.Value.rotation, curveT);
-			else if (prevLook != null)
-				rot = Mat3.Lerp(prevLook.Value.rotation, state.Frame.rotation, curveT);
-			else
-				rot = Mat3.Lerp(state.Frame.rotation, nextLook.Value.rotation, curveT);
-
-			state.Frame = new MatrixFrame(rot, state.Frame.origin);
-			return state;
+			if (kf.FrameMode != CameraFrameMode.Relative) return kf.Frame.ToFrame();
+			MatrixFrame? target = ResolveFrameTarget(kf, kf.FrameTarget, kf.TrackMode);
+			if (!target.HasValue) return kf.Frame.ToFrame();
+			return target.Value * kf.FrameOffset.ToFrame();
 		}
 
-		private Vec3? ResolveKeyframeTarget(CameraKeyframe kf)
+		private MatrixFrame? ResolveFrameTarget(CameraKeyframe kf, CinematicTarget target, TargetTrackMode trackMode)
 		{
-			switch (kf.LookAt)
-			{
-				case LookAtMode.MainAgent:
-					return _bindings?.ResolveRolePosition("MainAgent");
-				case LookAtMode.Entity:
-					{
-						WeakGameEntity e = kf.LookAtEntity?.Resolve(null) ?? WeakGameEntity.Invalid;
-						return e.IsValid ? e.GetGlobalFrame().origin : (Vec3?)null;
-					}
-				case LookAtMode.Position:
-					return kf.LookAtPosition?.ToFrame().origin;
-				default:
-					return null;
-			}
+			if (target == null || target.Type == CinematicTargetType.None) return null;
+			if (trackMode == TargetTrackMode.Frozen && _frozenFrames.TryGetValue(kf, out MatrixFrame cached)) return cached;
+			MatrixFrame? resolved = _bindings?.ResolveTargetFrame(target);
+			if (trackMode == TargetTrackMode.Frozen && resolved.HasValue) _frozenFrames[kf] = resolved.Value;
+			return resolved;
 		}
 
 		private CameraState ApplyLookAt(CameraState state, float time)
@@ -227,8 +218,8 @@ namespace Alliance.Common.Extensions.Cinematics
 				return state;
 			}
 
-			Vec3? targetPrev = ResolveTarget(prev);
-			Vec3? targetNext = ResolveTarget(next);
+			Vec3? targetPrev = LookAtTargetPosition(prev);
+			Vec3? targetNext = LookAtTargetPosition(next);
 			if (!targetPrev.HasValue && !targetNext.HasValue) return state;
 
 			Vec3 target;
@@ -244,12 +235,10 @@ namespace Alliance.Common.Extensions.Cinematics
 			return state;
 		}
 
-		private Vec3? ResolveTarget(LookAtKeyframe kf)
+		private Vec3? LookAtTargetPosition(LookAtKeyframe kf)
 		{
-			if (kf == null) return null;
-			if (kf.UsePosition) return kf.TargetPosition?.ToFrame().origin;
-			if (!string.IsNullOrEmpty(kf.TargetRole)) return _bindings?.ResolveRolePosition(kf.TargetRole);
-			return null;
+			if (kf?.Target == null || kf.Target.Type == CinematicTargetType.None) return null;
+			return _bindings?.ResolveTargetFrame(kf.Target)?.origin;
 		}
 
 		// Reused sample buffers - hosts must not hold references to these lists (they are refilled every tick).

@@ -67,10 +67,6 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_MissionPeer.Patch();
 			patchSuccess &= Patch_ActionSetCode.Patch();
 			patchSuccess &= Patch_AgentStatCalculateModel.Patch();
-#if !SERVER
-			// Cinematic camera: keep player input alive while a Free-agent-mode cinematic renders
-			patchSuccess &= Patch_MissionScreen.Patch();
-#endif
 #if !SERVER && DEBUG
 			//patchSuccess &= Patch_WidgetExtensions.Patch();
 #endif

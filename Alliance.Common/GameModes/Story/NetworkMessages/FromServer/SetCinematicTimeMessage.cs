@@ -1,4 +1,4 @@
-﻿using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
@@ -10,13 +10,13 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class SetCinematicTimeMessage : GameNetworkMessage
 	{
-		private string _cinematicId;
+		private string _cinematicName;
 		private float _timeInSeconds;
 
-		public string CinematicId
+		public string CinematicName
 		{
-			get => _cinematicId;
-			private set => _cinematicId = value;
+			get => _cinematicName;
+			private set => _cinematicName = value;
 		}
 
 		public float TimeInSeconds
@@ -27,22 +27,22 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 
 		public SetCinematicTimeMessage() { }
 
-		public SetCinematicTimeMessage(string cinematicId, float timeInSeconds)
+		public SetCinematicTimeMessage(string cinematicName, float timeInSeconds)
 		{
-			_cinematicId = cinematicId;
+			_cinematicName = cinematicName;
 			_timeInSeconds = timeInSeconds;
 		}
 
 		protected override void OnWrite()
 		{
-			WriteStringToPacket(CinematicId);
+			WriteStringToPacket(CinematicName);
 			WriteFloatToPacket(TimeInSeconds, StoryMessages.CinematicTimeCompressionInfo);
 		}
 
 		protected override bool OnRead()
 		{
 			bool bufferReadValid = true;
-			CinematicId = ReadStringFromPacket(ref bufferReadValid);
+			CinematicName = ReadStringFromPacket(ref bufferReadValid);
 			if (!bufferReadValid) return false;
 			TimeInSeconds = ReadFloatFromPacket(StoryMessages.CinematicTimeCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
@@ -50,6 +50,6 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 
 		protected override MultiplayerMessageFilter OnGetLogFilter() => MultiplayerMessageFilter.Mission;
 
-		protected override string OnGetLogFormat() => $"Set cinematic '{CinematicId}' time to {TimeInSeconds:F2}s";
+		protected override string OnGetLogFormat() => $"Set cinematic '{CinematicName}' time to {TimeInSeconds:F2}s";
 	}
 }

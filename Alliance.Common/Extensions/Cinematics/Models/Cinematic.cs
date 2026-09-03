@@ -10,14 +10,12 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 	/// <summary>
 	/// A data-driven cinematic: a timeline of tracks/keyframes that drive the camera, audio, visibility, agents and game events.
 	/// Serialized inside a <see cref="Scenario"/> or a <c>PlayCinematicAction</c> within an <c>AL_TriggerAction</c> entity.
+	/// Identified by its <see cref="Name"/> (like scenario variables) - names must be unique per scenario.
 	/// </summary>
 	[Serializable]
 	public class Cinematic
 	{
-		[ConfigProperty(false)]
-		public string Id;
-
-		[ConfigProperty(label: "Name")]
+		[ConfigProperty(label: "Name", tooltip: "Unique name identifying this cinematic within the scenario (referenced by PlayCinematicAction and the intro cinematic slot).")]
 		public string Name = "New cinematic";
 
 		[ConfigProperty(label: "Duration (s)", tooltip: "Total length. Leave 0 to derive from the last keyframe time.", minValue: 0, maxValue: 3600)]
@@ -35,8 +33,11 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		[ConfigProperty(label: "Fade out (s)", tooltip: "Fade to black at the end of the cinematic. Only used when no Overlay track is present.", minValue: 0, maxValue: 10, category: "Transitions")]
 		public float FadeOutSec;
 
-		[ConfigProperty(label: "Main agent", tooltip: "What happens to the player's main agent during playback.", category: "Playback")]
+		[ConfigProperty(label: "Agent behavior", tooltip: "What happens to agents during playback. Free/Lock affect the local player; HidePlayers/HideAll also hide the matching agents (and their mounts) on every receiver.", category: "Playback")]
 		public AgentBehaviorMode AgentBehavior = AgentBehaviorMode.Lock;
+
+		[ConfigProperty(label: "Invulnerability", tooltip: "Who is invulnerable for the duration of the cinematic. Applied by the server, mission-wide (not audience-scoped); mortality states are restored when it ends.", category: "Playback")]
+		public InvulnerabilityMode Invulnerability = InvulnerabilityMode.None;
 
 		[ConfigProperty(label: "Audience", tooltip: "Who sees this cinematic.", category: "Playback")]
 		public Audience Audience = new Audience();
@@ -44,12 +45,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		[ConfigProperty(label: "Tracks", tooltip: "The timeline tracks (camera, audio, events, ...). Add as many as you need.")]
 		public List<CinematicTrack> Tracks = new List<CinematicTrack>();
 
-		public Cinematic()
-		{
-			Id = Convert.ToBase64String(Guid.NewGuid().ToByteArray())
-				.Substring(0, 8)
-				.Replace("/", "_").Replace("+", "-");
-		}
+		public Cinematic() { }
 
 		/// <summary>Effective duration: <see cref="DurationSec"/> if set, otherwise the latest keyframe end
 		/// (keyframe time, plus display duration for hold-style keyframes such as subtitles).</summary>
@@ -77,22 +73,5 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public T FindTrack<T>() where T : CinematicTrack
 			=> (Tracks ?? Enumerable.Empty<CinematicTrack>())
 				.OfType<T>().FirstOrDefault(t => t != null && t.Enabled && !t.Muted);
-	}
-
-	/// <summary>
-	/// Lightweight reference to a <see cref="Cinematic"/> stored on the owning <see cref="Scenario"/>.
-	/// Resolved at runtime via <see cref="ScenarioManager"/>'s <c>CurrentScenario.Cinematics</c>.
-	/// </summary>
-	[Serializable]
-	public class CinematicRef
-	{
-		[ConfigProperty(label: "Cinematic Id", tooltip: "The Id of a cinematic defined on this scenario. Leave empty to use an inline cinematic.")]
-		public string CinematicId = "";
-
-		public CinematicRef() { }
-
-		public CinematicRef(string cinematicId) => CinematicId = cinematicId;
-
-		public bool IsEmpty => string.IsNullOrEmpty(CinematicId);
 	}
 }

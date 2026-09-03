@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
@@ -235,7 +235,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			if (UsePlayerSpawnMenu)
 			{
 				PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(player);
-				
+
 				if (playerAssignment?.Character != null)
 				{
 					basicCharacterObject = playerAssignment.Character.Character;
@@ -243,6 +243,36 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
 					healthMultiplier = playerAssignment.Character.HealthMultiplier;
 					customCulture = playerAssignment.Formation.MainCulture;
+				}
+			}
+			else if (SpawnLogic.CharacterAssignment == CharacterAssignmentMode.Auto
+				&& SpawnLogic.CharacterAutoRule == CharacterAutoAssignmentRule.RandomFromMenu)
+			{
+				// Random pick from the player's side pool in the spawn menu (officer characters excluded).
+				// Falls back to the default unit when the menu has no character for that side.
+				List<(PlayerFormation Formation, AvailableCharacter Character)> pool = new List<(PlayerFormation, AvailableCharacter)>();
+				foreach (PlayerTeam team in PlayerSpawnMenu.Instance?.Teams ?? new List<PlayerTeam>())
+				{
+					if (team?.TeamSide != peer.Team.Side) continue;
+					foreach (PlayerFormation formation in team.Formations ?? new List<PlayerFormation>())
+					{
+						foreach (AvailableCharacter available in formation?.AvailableCharacters ?? new List<AvailableCharacter>())
+						{
+							if (available?.Character != null && !available.Officer) pool.Add((formation, available));
+						}
+					}
+				}
+				if (pool.Count > 0)
+				{
+					(PlayerFormation formation, AvailableCharacter pick) = pool[MBRandom.RandomInt(pool.Count)];
+					basicCharacterObject = pick.Character;
+					mPHeroClassForPeer = pick.Character.GetHeroClass();
+					healthMultiplier = pick.HealthMultiplier;
+					customCulture = formation.MainCulture;
+				}
+				else
+				{
+					Log($"No character found in the spawn menu for side {peer.Team.Side} - falling back to the default unit for {player.UserName}.", LogLevel.Warning);
 				}
 			}
 
@@ -594,7 +624,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			_playersToRespawn = new List<NetworkCommunicator>();
 			_timeBeforeSpawn = SpawnLogic.TimeBeforeSpawn.Resolve();
 			_timeBeforeRespawn = SpawnLogic.TimeBeforeRespawn.Resolve();
-
 			// Init available cultures based on current act
 			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
 			string cultureDefender = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam2].ToString();
@@ -649,8 +678,19 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				};
 			}
 
-			// Use the player spawn menu if defined in SpawnLogic
-			UsePlayerSpawnMenu = PlayerSpawnBehavior != null && !SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty();
+			// Team auto-assignment: reassign every peer's team according to the configured rule before
+			// any spawn happens (in PlayerSelection mode the team selection flow decides, unchanged).
+			if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
+
+			// The menu is always installed server-side when defined: it drives the selection flow in
+			// PlayerSelection mode, and provides the character pool for the RandomFromMenu auto rule.
+			if (!SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty()) PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu;
+
+			// Use the player spawn menu only in PlayerSelection mode AND when it is defined.
+			// Auto mode skips menus entirely: characters are assigned by the configured auto rule.
+			UsePlayerSpawnMenu = PlayerSpawnBehavior != null
+				&& SpawnLogic.CharacterAssignment == CharacterAssignmentMode.PlayerSelection
+				&& !SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty();
 			
 			if (UsePlayerSpawnMenu)
 			{
@@ -721,6 +761,59 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				}
 
 				SyncLivesToPeer(peer);
+			}
+		}
+
+		/// <summary>Server-side team assignment (TeamAssignment = Auto), applied at spawn session start
+		/// before any player spawns. MissionPeer.Team's setter propagates the change (agents, gold, UI).</summary>
+		private void ApplyTeamAssignment()
+		{
+			switch (SpawnLogic.TeamAutoRule)
+			{
+				case TeamAutoAssignmentRule.AllAttackers:
+					foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+					{
+						MissionPeer mp = peer?.GetComponent<MissionPeer>();
+						if (mp != null) mp.Team = Mission.Current.AttackerTeam;
+					}
+					break;
+
+				case TeamAutoAssignmentRule.AllDefenders:
+					foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+					{
+						MissionPeer mp = peer?.GetComponent<MissionPeer>();
+						if (mp != null) mp.Team = Mission.Current.DefenderTeam;
+					}
+					break;
+
+				case TeamAutoAssignmentRule.Balanced:
+					{
+						// Move players from the bigger side to the smaller one until both differ by at most one.
+						List<MissionPeer> attackers = new List<MissionPeer>();
+						List<MissionPeer> defenders = new List<MissionPeer>();
+						foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+						{
+							MissionPeer mp = peer?.GetComponent<MissionPeer>();
+							if (mp?.Team == null) continue;
+							if (mp.Team == Mission.Current.AttackerTeam) attackers.Add(mp);
+							else if (mp.Team == Mission.Current.DefenderTeam) defenders.Add(mp);
+						}
+						while (attackers.Count - defenders.Count > 1)
+						{
+							MissionPeer mover = attackers[attackers.Count - 1];
+							attackers.RemoveAt(attackers.Count - 1);
+							mover.Team = Mission.Current.DefenderTeam;
+							defenders.Add(mover);
+						}
+						while (defenders.Count - attackers.Count > 1)
+						{
+							MissionPeer mover = defenders[defenders.Count - 1];
+							defenders.RemoveAt(defenders.Count - 1);
+							mover.Team = Mission.Current.AttackerTeam;
+							attackers.Add(mover);
+						}
+					}
+					break;
 			}
 		}
 

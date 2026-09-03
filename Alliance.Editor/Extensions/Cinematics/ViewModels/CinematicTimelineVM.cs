@@ -1,9 +1,9 @@
-﻿using Alliance.Editor.GameModes.Story.ViewModels;
-using Alliance.Editor.GameModes.Story.Views;
+using Alliance.Editor.GameModes.Story.ViewModels;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.Cinematics.Models;
+using TaleWorlds.MountAndBlade;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -14,7 +14,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
-using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
 namespace Alliance.Editor.Extensions.Cinematics.ViewModels
@@ -158,8 +157,8 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		{
 			get
 			{
-				if (!_isPlaying) return "▶ Play";
-				return _isPaused ? "▶ Resume" : "⏸ Pause";
+				if (!_isPlaying) return "? Play";
+				return _isPaused ? "? Resume" : "? Pause";
 			}
 		}
 
@@ -210,6 +209,8 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public bool IsSkippable { get => _cinematic.IsSkippable; set { _cinematic.IsSkippable = value; OnPropertyChanged(); } }
 		public AgentBehaviorMode AgentBehavior { get => _cinematic.AgentBehavior; set { _cinematic.AgentBehavior = value; OnPropertyChanged(); } }
 		public Array AgentBehaviorOptions => Enum.GetValues(typeof(AgentBehaviorMode));
+		public InvulnerabilityMode Invulnerability { get => _cinematic.Invulnerability; set { _cinematic.Invulnerability = value; OnPropertyChanged(); } }
+		public Array InvulnerabilityOptions => Enum.GetValues(typeof(InvulnerabilityMode));
 
 		public ICommand PlayPauseCommand { get; }
 		public ICommand StopCommand { get; }
@@ -371,7 +372,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			}
 		}
 
-		/// <summary>Called when the window is closing (title-bar ✕): stops the preview and notifies the host.</summary>
+		/// <summary>Called when the window is closing (title-bar ?): stops the preview and notifies the host.</summary>
 		public void OnExternalClose()
 		{
 			Stop();
@@ -513,27 +514,15 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			SelectCommand = new RelayCommand(_ => _parent.SelectedKeyframe = this);
 			CaptureCommand = new RelayCommand(_ => _parent.CaptureInto(this));
 			DeleteCommand = new RelayCommand(_ => _parent.DeleteKeyframe(this));
-			PickTargetEntityCommand = new RelayCommand(_ => OpenEntityValueSource());
 		}
 
-		private void OpenEntityValueSource()
+		private void RefreshTargetVisibilities()
 		{
-			var wrapper = new LookAtEntityEditor { Entity = Keyframe.LookAtEntity };
-			var oevm = new ObjectEditorViewModel(wrapper, null, null, "Target entity", WeakGameEntity.Invalid);
-			FieldViewModel fieldVM = oevm.Fields.FirstOrDefault(f => f.FieldInfo?.Name == "Entity")
-				?? oevm.FieldCategories?.SelectMany(c => c.Fields).FirstOrDefault(f => f.FieldInfo?.Name == "Entity");
-			if (fieldVM == null) return;
-
-			var popup = new ValueSourceEditorPopup(fieldVM)
-			{
-				Owner = System.Windows.Application.Current?.Windows.OfType<System.Windows.Window>().FirstOrDefault(w => w.IsActive)
-			};
-			popup.Closed += (_, _) =>
-			{
-				Keyframe.LookAtEntity = wrapper.Entity;
-				OnPropertyChanged(nameof(LookAtEntityDisplayName));
-			};
-			popup.Show();
+			OnPropertyChanged(nameof(IsFrameAbsolute));
+			OnPropertyChanged(nameof(IsFrameRelative));
+			OnPropertyChanged(nameof(FrameTargetIsPosition));
+			OnPropertyChanged(nameof(FrameTargetIsAgent));
+			OnPropertyChanged(nameof(FrameTargetIsEntity));
 		}
 
 		public float Time
@@ -567,27 +556,37 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public bool IsCatmullRom => Keyframe.Interpolation == Interpolation.CatmullRom;
 		public Array InterpolationOptions => Enum.GetValues(typeof(Interpolation));
 
-		public LookAtMode LookAt { get => Keyframe.LookAt; set { Keyframe.LookAt = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasTarget)); OnPropertyChanged(nameof(HasNoTarget)); OnPropertyChanged(nameof(IsTargetEntity)); OnPropertyChanged(nameof(IsTargetPosition)); } }
-		public bool HasTarget => Keyframe.LookAt != LookAtMode.None;
-		public bool HasNoTarget => Keyframe.LookAt == LookAtMode.None;
-		public bool IsTargetEntity => Keyframe.LookAt == LookAtMode.Entity;
-		public bool IsTargetPosition => Keyframe.LookAt == LookAtMode.Position;
-		public Array LookAtOptions => Enum.GetValues(typeof(LookAtMode));
-		public string LookAtEntityDisplayName
+		// --- Frame mode (absolute world frame vs target-relative frame) ---
+		public CameraFrameMode FrameMode
 		{
-			get
-			{
-				if (Keyframe.LookAtEntity is SceneEntityLiteralValue lit && !string.IsNullOrEmpty(lit.Ref?.RefId))
-					return lit.Ref.DisplayName ?? lit.Ref.RefId;
-				if (Keyframe.LookAtEntity is VariableValue<WeakGameEntity> var && !string.IsNullOrEmpty(var.VariableName))
-					return "Variable: " + var.VariableName;
-				return "set value";
-			}
+			get => Keyframe.FrameMode;
+			set { Keyframe.FrameMode = value; OnPropertyChanged(); RefreshTargetVisibilities(); }
 		}
-		public ICommand PickTargetEntityCommand { get; }
-		public float LookAtPosX { get => Keyframe.LookAtPosition.Px; set { Keyframe.LookAtPosition.Px = value; OnPropertyChanged(); } }
-		public float LookAtPosY { get => Keyframe.LookAtPosition.Py; set { Keyframe.LookAtPosition.Py = value; OnPropertyChanged(); } }
-		public float LookAtPosZ { get => Keyframe.LookAtPosition.Pz; set { Keyframe.LookAtPosition.Pz = value; OnPropertyChanged(); } }
+		public Array FrameModeOptions => Enum.GetValues(typeof(CameraFrameMode));
+		public bool IsFrameAbsolute => Keyframe.FrameMode == CameraFrameMode.Absolute;
+		public bool IsFrameRelative => Keyframe.FrameMode == CameraFrameMode.Relative;
+
+		public TargetTrackMode TrackMode { get => Keyframe.TrackMode; set { Keyframe.TrackMode = value; OnPropertyChanged(); } }
+		public Array TrackModeOptions => Enum.GetValues(typeof(TargetTrackMode));
+
+		public CinematicTargetType FrameTargetType
+		{
+			get => Keyframe.FrameTarget.Type;
+			set { Keyframe.FrameTarget.Type = value; OnPropertyChanged(); RefreshTargetVisibilities(); }
+		}
+		public bool FrameTargetIsPosition => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.Position;
+		public bool FrameTargetIsAgent => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.SpecificAgent;
+		public bool FrameTargetIsEntity => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.SpecificEntity;
+		public string FrameTargetAgentVariable { get => (Keyframe.FrameTarget.AgentVariable as VariableValue<Agent>)?.VariableName; set { CinematicTargetEditing.EnsureAgentVariableSlot(Keyframe.FrameTarget).VariableName = value; OnPropertyChanged(); } }
+		public string FrameTargetEntityRefId { get => Keyframe.FrameTarget.Entity?.RefId; set { Keyframe.FrameTarget.Entity.RefId = value; OnPropertyChanged(); } }
+		public float FrameTargetPosX { get => Keyframe.FrameTarget.Position.Px; set { Keyframe.FrameTarget.Position.Px = value; OnPropertyChanged(); } }
+		public float FrameTargetPosY { get => Keyframe.FrameTarget.Position.Py; set { Keyframe.FrameTarget.Position.Py = value; OnPropertyChanged(); } }
+		public float FrameTargetPosZ { get => Keyframe.FrameTarget.Position.Pz; set { Keyframe.FrameTarget.Position.Pz = value; OnPropertyChanged(); } }
+		public float OffsetX { get => Keyframe.FrameOffset.Px; set { Keyframe.FrameOffset.Px = value; OnPropertyChanged(); } }
+		public float OffsetY { get => Keyframe.FrameOffset.Py; set { Keyframe.FrameOffset.Py = value; OnPropertyChanged(); } }
+		public float OffsetZ { get => Keyframe.FrameOffset.Pz; set { Keyframe.FrameOffset.Pz = value; OnPropertyChanged(); } }
+
+		public Array TargetTypeOptions => Enum.GetValues(typeof(CinematicTargetType));
 
 		public float X { get => _x; set { _x = value; OnPropertyChanged(); } }
 		public bool IsSelected
@@ -856,8 +855,20 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 	public class LookAtKeyframeVM : GenericKeyframeVM
 	{
 		private LookAtKeyframe Kf => (LookAtKeyframe)Model;
-		public string TargetRole { get => Kf.TargetRole; set { Kf.TargetRole = value; OnPropertyChanged(); } }
-		public bool UsePosition { get => Kf.UsePosition; set { Kf.UsePosition = value; OnPropertyChanged(); } }
+		public CinematicTargetType TargetType
+		{
+			get => Kf.Target.Type;
+			set { Kf.Target.Type = value; OnPropertyChanged(); OnPropertyChanged(nameof(IsPosition)); OnPropertyChanged(nameof(IsAgent)); OnPropertyChanged(nameof(IsEntity)); }
+		}
+		public bool IsPosition => Kf.Target.Type == CinematicTargetType.Position;
+		public bool IsAgent => Kf.Target.Type == CinematicTargetType.SpecificAgent;
+		public bool IsEntity => Kf.Target.Type == CinematicTargetType.SpecificEntity;
+		public string AgentVariable { get => (Kf.Target.AgentVariable as VariableValue<Agent>)?.VariableName; set { CinematicTargetEditing.EnsureAgentVariableSlot(Kf.Target).VariableName = value; OnPropertyChanged(); } }
+		public string EntityRefId { get => Kf.Target.Entity?.RefId; set { Kf.Target.Entity.RefId = value; OnPropertyChanged(); } }
+		public float PositionX { get => Kf.Target.Position.Px; set { Kf.Target.Position.Px = value; OnPropertyChanged(); } }
+		public float PositionY { get => Kf.Target.Position.Py; set { Kf.Target.Position.Py = value; OnPropertyChanged(); } }
+		public float PositionZ { get => Kf.Target.Position.Pz; set { Kf.Target.Position.Pz = value; OnPropertyChanged(); } }
+		public Array TargetTypeOptions => Enum.GetValues(typeof(CinematicTargetType));
 		public LookAtKeyframeVM(LookAtKeyframe kf) : base(kf) { }
 	}
 
@@ -872,10 +883,14 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		}
 	}
 
-	[Serializable]
-	public class LookAtEntityEditor
+	internal static class CinematicTargetEditing
 	{
-		[ConfigProperty(label: "Target entity")]
-		public ValueSource<WeakGameEntity> Entity = new SceneEntityLiteralValue();
+		public static VariableValue<Agent> EnsureAgentVariableSlot(CinematicTarget target)
+		{
+			if (target.AgentVariable is VariableValue<Agent> variable) return variable;
+			variable = new VariableValue<Agent>();
+			target.AgentVariable = variable;
+			return variable;
+		}
 	}
 }

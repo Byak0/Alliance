@@ -27,7 +27,5 @@ namespace Alliance.Common.GameModes.Story.Utilities
 		public bool Has(string key) => _values.ContainsKey(key);
 
 		public void Reset() => _values.Clear();
-
-		public IEnumerable<KeyValuePair<string, object>> GetAllEntries() => _values;
 	}
 }

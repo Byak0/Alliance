@@ -7,6 +7,7 @@ using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
+using Alliance.Common.GameModes.Story.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Source.Missions;
@@ -51,7 +52,8 @@ namespace Alliance.Client.GameModes
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
 				new BuildBehavior(),
-				new CinematicView()
+				new CinematicView(),
+				new IntroWaitingView()
 			};
 		}
 	}

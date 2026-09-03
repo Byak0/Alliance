@@ -1,4 +1,4 @@
-ï»¿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Objectives;
@@ -12,7 +12,7 @@ using TaleWorlds.Engine;
 namespace Alliance.Common.GameModes.Story.Models
 {
 	[Serializable]
-	[PhrasePreview("{Name}{?LoadMap: â€” {MapID}}")]
+	[PhrasePreview("{Name}{?LoadMap: — {MapID}}")]
 	public class Act
 	{
 		[ConfigProperty(label: "Act name")]
@@ -124,16 +124,16 @@ namespace Alliance.Common.GameModes.Story.Models
 				var defenderObjs = Objectives.Where(o => o.Side == BattleSideEnum.Defender).ToList();
 
 				if (attackerObjs.Count == 0)
-					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Attackers â€” only Defenders can win this act."));
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Attackers — only Defenders can win this act."));
 				if (defenderObjs.Count == 0)
-					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Defenders â€” only Attackers can win this act."));
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "No objectives for Defenders — only Attackers can win this act."));
 
 				var instantWinAttacker = attackerObjs.Count(o => o.InstantActWin);
 				var instantWinDefender = defenderObjs.Count(o => o.InstantActWin);
 				if (instantWinAttacker > 1)
-					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinAttacker} Attacker objectives have Instant Win â€” first to complete wins (race condition)."));
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinAttacker} Attacker objectives have Instant Win — first to complete wins (race condition)."));
 				if (instantWinDefender > 1)
-					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinDefender} Defender objectives have Instant Win â€” first to complete wins (race condition)."));
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, $"{instantWinDefender} Defender objectives have Instant Win — first to complete wins (race condition)."));
 
 				foreach (var obj in Objectives)
 				{
@@ -144,6 +144,32 @@ namespace Alliance.Common.GameModes.Story.Models
 
 			if (LoadMap && string.IsNullOrWhiteSpace(MapID))
 				issues.Add(new ValidationIssue(ValidationSeverity.Error, actLabel, "Load Map is enabled but no Map ID is set."));
+
+			// Start flow validation
+			if (SpawnLogic != null)
+			{
+				bool menuDefined = SpawnLogic.PlayerSpawnMenu?.Teams != null && SpawnLogic.PlayerSpawnMenu.Teams.Count > 0;
+				if (SpawnLogic.CharacterAssignment == CharacterAssignmentMode.Auto
+					&& SpawnLogic.CharacterAutoRule == CharacterAutoAssignmentRule.DefaultUnits
+					&& (string.IsNullOrWhiteSpace(SpawnLogic.DefaultCharacterAttacker?.Resolve()) || string.IsNullOrWhiteSpace(SpawnLogic.DefaultCharacterDefender?.Resolve())))
+				{
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, actLabel, "Character assignment = Auto / Default units but no default unit is set for both sides. Players would spawn without a character."));
+				}
+				if (SpawnLogic.CharacterAssignment == CharacterAssignmentMode.Auto
+					&& SpawnLogic.CharacterAutoRule == CharacterAutoAssignmentRule.RandomFromMenu
+					&& !menuDefined)
+				{
+					issues.Add(new ValidationIssue(ValidationSeverity.Error, actLabel, "Character assignment = Auto / Random from menu but the player spawn menu is empty. Players would fall back to the default units."));
+				}
+				if (SpawnLogic.CharacterAssignment == CharacterAssignmentMode.PlayerSelection && !menuDefined)
+				{
+					issues.Add(new ValidationIssue(ValidationSeverity.Warning, actLabel, "Character assignment = Player selection but the player spawn menu is empty - the default units will be used instead."));
+				}
+				if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto && SpawnLogic.TeamAutoRule == TeamAutoAssignmentRule.Balanced)
+				{
+					issues.Add(new ValidationIssue(ValidationSeverity.Info, actLabel, "Team auto rule = Balanced: sides are evened out at spawn start, overriding the players' team selection."));
+				}
+			}
 
 			return issues;
 		}

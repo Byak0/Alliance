@@ -12,14 +12,8 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	[Serializable]
 	public class LookAtKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Target role", tooltip: "Role name resolved at runtime (e.g. \"Boss\", \"MainAgent\", \"Viewer\"). Leave empty to use the explicit position below.", category: "Target")]
-		public string TargetRole = "";
-
-		[ConfigProperty(label: "Use explicit position", tooltip: "Bypass role resolution and aim at the position below.", category: "Target")]
-		public bool UsePosition;
-
-		[ConfigProperty(label: "Target position", tooltip: "World position to aim at when no role is used (or the role cannot be resolved).", category: "Target", dependency: "?UsePosition")]
-		public FrameValue TargetPosition = new FrameValue();
+		[ConfigProperty(label: "Target", tooltip: "What the camera aims at while this keyframe is active. Target = None disables the override.", category: "Target")]
+		public CinematicTarget Target = new CinematicTarget();
 
 		public LookAtKeyframe() { }
 

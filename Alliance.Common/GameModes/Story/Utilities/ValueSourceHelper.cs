@@ -161,6 +161,21 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return collectedVar.ToArray();
 		}
 
+		/// <summary>Ids of the cinematics defined on the scenario (with an empty "none" entry first),
+		/// feeding the [CinematicRef] dropdowns in the editor.</summary>
+		public static string[] CollectAvailableCinematics(Scenario scenario)
+		{
+			List<string> ids = new List<string> { "" };
+			if (scenario?.Cinematics != null)
+			{
+				foreach (var cinematic in scenario.Cinematics)
+				{
+					if (cinematic != null && !string.IsNullOrEmpty(cinematic.Name)) ids.Add(cinematic.Name);
+				}
+			}
+			return ids.ToArray();
+		}
+
 		public static void CollectZoneNames(List<string> collectedVar, Act parentAct)
 		{
 			if (parentAct?.Zones != null)
@@ -248,6 +263,147 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				if (variableType != null && !TypeMatchesFilter(variableType, scVar)) continue;
 				if (!names.Contains(scVar.Name)) names.Add(scVar.Name);
 			}
+		}
+
+		/// <summary>One dynamic slot of an object graph: a non-literal ValueSource (Variable or
+		/// FunctionCall) living in a field or a list item, that callers can read or rewrite.</summary>
+		public readonly struct DynamicSlot
+		{
+			public readonly object Owner;
+			public readonly FieldInfo Field;
+			/// <summary>For list-item slots: the list and index (Field is null).</summary>
+			public readonly IList List;
+			public readonly int ListIndex;
+			public DynamicSlot(object owner, FieldInfo field) { Owner = owner; Field = field; List = null; ListIndex = -1; }
+			public DynamicSlot(IList list, int index) { Owner = null; Field = null; List = list; ListIndex = index; }
+		}
+
+		/// <summary>Collects the [SyncToClient]-marked ValueSource fields (and lists of them) of the
+		/// object graph, in a deterministic order. The server resolves these slots in order, ships the
+		/// bare values, and the client rewrites slot N with value N as a Literal. Slot internals are not
+		/// walked: the server resolves whole expressions, the client replaces them.</summary>
+		public static List<DynamicSlot> CollectDynamicSlots(object root)
+		{
+			List<DynamicSlot> slots = new List<DynamicSlot>();
+			CollectDynamicSlots(root, slots, new HashSet<object>());
+			return slots;
+		}
+
+		/// <summary>Load-time warm-up: populates the per-type field cache so the first play/execution
+		/// pays no reflection cost.</summary>
+		public static void PrewarmDynamicSlots(object root) => CollectDynamicSlots(root);
+
+		/// <summary>Per-type public instance fields, sorted by name so the walk order is deterministic.</summary>
+		private static readonly Dictionary<Type, FieldInfo[]> FieldsCache = new Dictionary<Type, FieldInfo[]>();
+
+		private static FieldInfo[] GetFieldsCached(Type type)
+		{
+			if (!FieldsCache.TryGetValue(type, out FieldInfo[] fields))
+			{
+				fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public);
+				System.Array.Sort(fields, (a, b) => string.CompareOrdinal(a.Name, b.Name));
+				FieldsCache[type] = fields;
+			}
+			return fields;
+		}
+
+		private static void CollectDynamicSlots(object obj, List<DynamicSlot> slots, HashSet<object> visited)
+		{
+			if (obj == null || !visited.Add(obj)) return;
+
+			Type type = obj.GetType();
+			if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType) return;
+			if (!type.IsSerializable && !type.IsGenericType && !typeof(ValueSource).IsAssignableFrom(type)) return;
+
+			if (obj is IList list)
+			{
+				foreach (object item in list) CollectDynamicSlots(item, slots, visited);
+				return;
+			}
+
+			foreach (FieldInfo field in GetFieldsCached(type))
+			{
+				Type ft = field.FieldType;
+				if (ft.IsPrimitive || ft == typeof(string) || ft.IsEnum || ft.IsValueType) continue;
+
+				// Collection is opt-in ([SyncToClient]); traversal always descends so marked slots
+				// nested anywhere in the graph are found.
+				if (field.GetCustomAttribute<Attributes.SyncToClientAttribute>() != null)
+				{
+					if (typeof(ValueSource).IsAssignableFrom(ft))
+					{
+						object value = field.GetValue(obj);
+						// Literal slots need no sync; null slots neither. Both sides classify identically
+						// from the shared data, so the walk order matches.
+						if (value == null) continue;
+						Type runtimeType = value.GetType();
+						if (runtimeType.IsGenericType && runtimeType.GetGenericTypeDefinition() == typeof(LiteralValue<>)) continue;
+						slots.Add(new DynamicSlot(obj, field));
+						continue;
+					}
+
+					if (ft.IsGenericType && ft.GetGenericTypeDefinition() == typeof(List<>)
+						&& typeof(ValueSource).IsAssignableFrom(ft.GetGenericArguments()[0]))
+					{
+						IList slotList = (IList)field.GetValue(obj);
+						if (slotList == null) continue;
+						for (int i = 0; i < slotList.Count; i++)
+						{
+							object item = slotList[i];
+							if (item == null) continue;
+							Type itemType = item.GetType();
+							if (itemType.IsGenericType && itemType.GetGenericTypeDefinition() == typeof(LiteralValue<>)) continue;
+							slots.Add(new DynamicSlot(slotList, i));
+						}
+						continue;
+					}
+				}
+
+				object fieldValue = field.GetValue(obj);
+				if (fieldValue != null) CollectDynamicSlots(fieldValue, slots, visited);
+			}
+		}
+
+		/// <summary>The ValueSource held by a slot (field or list item), or null.</summary>
+		public static ValueSource GetSlotValueSource(in DynamicSlot slot)
+		{
+			return slot.Field != null ? (ValueSource)slot.Field.GetValue(slot.Owner) : (ValueSource)slot.List[slot.ListIndex];
+		}
+
+		/// <summary>Rewrites a slot (field or list item) with a received value as a Literal.</summary>
+		public static bool SetSlotLiteral(in DynamicSlot slot, object value)
+		{
+			if (slot.Field != null) return SetSlotLiteral(slot.Owner, slot.Field, value);
+			return SetSlotLiteral(slot.List, slot.ListIndex, value);
+		}
+
+		/// <summary>Writes the value into a ValueSource field as a Literal, creating it when needed.
+		/// Shared by the cinematic dynamic-data path and ActionBase's [SyncToClient] injection.</summary>
+		public static bool SetSlotLiteral(object owner, FieldInfo field, object value)
+		{
+			Type fieldType = field.FieldType;
+			if (!fieldType.IsGenericType) return false;
+			object literal = BuildLiteral(fieldType.GetGenericArguments()[0], value);
+			field.SetValue(owner, literal);
+			return true;
+		}
+
+		/// <summary>Replaces a list item with a Literal holding the value.</summary>
+		public static bool SetSlotLiteral(IList list, int index, object value)
+		{
+			object item = list[index];
+			Type itemType = item?.GetType();
+			if (itemType == null || !itemType.IsGenericType) return false;
+			list[index] = BuildLiteral(itemType.GetGenericArguments()[0], value);
+			return true;
+		}
+
+		private static object BuildLiteral(Type valueType, object value)
+		{
+			Type literalType = typeof(LiteralValue<>).MakeGenericType(valueType);
+			object literal = Activator.CreateInstance(literalType);
+			literalType.GetField(nameof(LiteralValue<int>.Value)).SetValue(literal, value);
+			return literal;
 		}
 
 		public static Type[] DiscoverConcreteTypes(Type baseType)

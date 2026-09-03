@@ -1,29 +1,30 @@
-﻿using TaleWorlds.MountAndBlade;
+using System.Collections.Generic;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 {
 	/// <summary>
-	/// Start playing a cinematic.
-	/// Two addressing modes:
-	/// - By Id : scenario-scoped cinematic, resolved from the loaded scenario
-	/// - By action ref : inline cinematic of a <c>PlayCinematicAction</c> in a AL_TriggerAction
+	/// Start playing a cinematic. The cinematic itself is never sent: receivers use their local copy,
+	/// addressed by name (scenario cinematics) or by (ScopeId, ActionId) (inline action cinematics).
+	/// StartTimeInSeconds is the shared anchor everyone (including late joiners) catches up to;
+	/// DynamicValues carries the resolved values of the cinematic's dynamic slots, in walk order.
 	/// </summary>
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class PlayCinematicMessage : GameNetworkMessage
 	{
-		private string _cinematicId;
+		private string _cinematicName;
 		private int _scopeId;
 		private int _actionId;
 		private bool _useActionRef;
 		private float _startTimeInSeconds;
-		private bool _isSkippable;
-		private bool _useViewerOrigin;
+		private List<object> _dynamicValues;
 
-		public string CinematicId
+		/// <summary>Name of the scenario cinematic to play (when not using the action ref).</summary>
+		public string CinematicName
 		{
-			get => _cinematicId;
-			private set => _cinematicId = value;
+			get => _cinematicName;
+			private set => _cinematicName = value;
 		}
 
 		public int ScopeId
@@ -38,7 +39,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			private set => _actionId = value;
 		}
 
-		/// <summary>True when the cinematic is the inline copy of the referenced action (entity-scoped).</summary>
+		/// <summary>True when addressing the inline cinematic of the referenced action (entity-scoped).</summary>
 		public bool UseActionRef
 		{
 			get => _useActionRef;
@@ -51,43 +52,35 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			private set => _startTimeInSeconds = value;
 		}
 
-		public bool IsSkippable
+		/// <summary>Resolved values for the cinematic's dynamic slots, in walk order. May be null.</summary>
+		public List<object> DynamicValues
 		{
-			get => _isSkippable;
-			private set => _isSkippable = value;
-		}
-
-		/// <summary>When true, the client resolves the "Viewer" role to its own agent (per-viewer variant).</summary>
-		public bool UseViewerOrigin
-		{
-			get => _useViewerOrigin;
-			private set => _useViewerOrigin = value;
+			get => _dynamicValues;
+			private set => _dynamicValues = value;
 		}
 
 		public PlayCinematicMessage() { }
 
-		/// <summary>Scenario-scoped cinematic, resolved by Id on the receiving client.</summary>
-		public PlayCinematicMessage(string cinematicId, long startTimeInTicks, bool isSkippable, bool useViewerOrigin)
+		/// <summary>Scenario-scoped cinematic, resolved by name on the receiving client.</summary>
+		public PlayCinematicMessage(string cinematicName, long startTimeInTicks, List<object> dynamicValues)
 		{
 			_useActionRef = false;
-			_cinematicId = cinematicId;
+			_cinematicName = cinematicName;
 			_scopeId = 0;
 			_actionId = 0;
 			_startTimeInSeconds = startTimeInTicks / 10000000f;
-			_isSkippable = isSkippable;
-			_useViewerOrigin = useViewerOrigin;
+			_dynamicValues = dynamicValues;
 		}
 
 		/// <summary>Entity-scoped inline cinematic, resolved from the action registry on the receiving client.</summary>
-		public PlayCinematicMessage(int scopeId, int actionId, long startTimeInTicks, bool isSkippable, bool useViewerOrigin)
+		public PlayCinematicMessage(int scopeId, int actionId, long startTimeInTicks, List<object> dynamicValues)
 		{
 			_useActionRef = true;
-			_cinematicId = null;
+			_cinematicName = null;
 			_scopeId = scopeId;
 			_actionId = actionId;
 			_startTimeInSeconds = startTimeInTicks / 10000000f;
-			_isSkippable = isSkippable;
-			_useViewerOrigin = useViewerOrigin;
+			_dynamicValues = dynamicValues;
 		}
 
 		protected override void OnWrite()
@@ -100,11 +93,14 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			}
 			else
 			{
-				WriteStringToPacket(CinematicId);
+				WriteStringToPacket(CinematicName);
 			}
 			WriteFloatToPacket(StartTimeInSeconds, StoryMessages.CinematicTimeCompressionInfo);
-			WriteBoolToPacket(IsSkippable);
-			WriteBoolToPacket(UseViewerOrigin);
+			WriteIntToPacket(DynamicValues?.Count ?? 0, StoryMessages.DynamicSlotCountCompressionInfo);
+			foreach (object value in DynamicValues ?? new List<object>())
+			{
+				StoryMessages.WriteSyncValue(value);
+			}
 		}
 
 		protected override bool OnRead()
@@ -122,22 +118,28 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			}
 			else
 			{
-				CinematicId = ReadStringFromPacket(ref bufferReadValid);
+				CinematicName = ReadStringFromPacket(ref bufferReadValid);
 				if (!bufferReadValid) return false;
 			}
 
 			StartTimeInSeconds = ReadFloatFromPacket(StoryMessages.CinematicTimeCompressionInfo, ref bufferReadValid);
 			if (!bufferReadValid) return false;
-			IsSkippable = ReadBoolFromPacket(ref bufferReadValid);
+			int count = ReadIntFromPacket(StoryMessages.DynamicSlotCountCompressionInfo, ref bufferReadValid);
 			if (!bufferReadValid) return false;
-			UseViewerOrigin = ReadBoolFromPacket(ref bufferReadValid);
+			DynamicValues = new List<object>(count);
+			for (int i = 0; i < count; i++)
+			{
+				object value = StoryMessages.ReadSyncValue(ref bufferReadValid);
+				if (!bufferReadValid) return false;
+				DynamicValues.Add(value);
+			}
 			return bufferReadValid;
 		}
 
 		protected override MultiplayerMessageFilter OnGetLogFilter() => MultiplayerMessageFilter.Mission;
 
 		protected override string OnGetLogFormat() => UseActionRef
-			? $"Play cinematic (action scope={ScopeId}, id={ActionId}) (skippable={IsSkippable}, viewerOrigin={UseViewerOrigin})"
-			: $"Play cinematic '{CinematicId}' (skippable={IsSkippable}, viewerOrigin={UseViewerOrigin})";
+			? $"Play cinematic (action scope={ScopeId}, id={ActionId})"
+			: $"Play cinematic '{CinematicName}'";
 	}
 }

@@ -1,7 +1,8 @@
-﻿#if !SERVER
+#if !SERVER
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using System;
@@ -16,7 +17,6 @@ using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 using static Alliance.Common.Utilities.Logger;
-using Alliance.Common.Patch.HarmonyPatch;
 
 namespace Alliance.Common.Extensions.Cinematics
 {
@@ -28,16 +28,21 @@ namespace Alliance.Common.Extensions.Cinematics
 	public class CinematicView : MissionView, ICinematicPlaybackSink, ICinematicBindings
 	{
 		private const float Deg2Rad = 0.017453292f;
+		/// <summary>Below this elapsed time, receivers start the cinematic from the beginning instead of
+		/// seeking (see the catch-up logic in PlayCinematic).</summary>
+		private const float CatchUpLeniencySec = 0.2f;
 
 		private Camera _camera;
 		private bool _wasFirstPerson;
-		private bool _agentHidden;
+		private readonly List<Agent> _hiddenAgents = new List<Agent>();
 
 		private CinematicPlayer _player;
-		private bool _useViewerOrigin;
 		private bool _skippable;
 		private bool _mainAgentControllerDisabled;
 		private bool _savedMainAgentControllerDisabled;
+		private bool _savedAllowInputWithCustomCamera;
+		/// <summary>The pose the player was watching from when the cinematic started (ViewerCamera target).</summary>
+		private MatrixFrame? _viewerCameraFrame;
 
 		private GauntletLayer _overlayLayer;
 		private ScreenBase _overlayScreen;
@@ -51,8 +56,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		public bool IsEditorMode => MissionScreen == null && _editorSceneView != null;
 		public bool IsPlaying => _player != null && _player.IsPlaying;
 		public float CurrentTime => _player?.CurrentTime ?? 0f;
-		/// <summary>Id of the currently playing cinematic, or null. Used for stop-by-id matching.</summary>
-		public string PlayingCinematicId => _player?.Cinematic?.Id;
+		/// <summary>Name of the currently playing cinematic, or null. Used for stop-by-name matching.</summary>
+		public string PlayingCinematicName => _player?.Cinematic?.Name;
 
 		public void ReapplyEditorCamera()
 		{
@@ -91,7 +96,7 @@ namespace Alliance.Common.Extensions.Cinematics
 
 #if DEBUG
 		private static readonly AgentBehaviorMode[] _debugModes =
-			{ AgentBehaviorMode.Lock, AgentBehaviorMode.Hide, AgentBehaviorMode.Free };
+			{ AgentBehaviorMode.Lock, AgentBehaviorMode.HidePlayers, AgentBehaviorMode.HideAll, AgentBehaviorMode.Free };
 		private int _debugModeIndex;
 		private int _authoredIndex;
 
@@ -129,7 +134,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			subTrack.Keyframes.Add(new SubtitleKeyframe(0.4f) { Text = new LocalizedString("Test - " + cinematic.AgentBehavior), Duration = 3f, HPosition = SubtitleHPosition.Center });
 			cinematic.Tracks.Add(subTrack);
 
-			PlayCinematic(cinematic, MissionTime.Now.NumberOfTicks / 10000000f, true, false);
+			PlayCinematic(cinematic, MissionTime.Now.NumberOfTicks / 10000000f, true, null);
 			Log($"[Cinematic] test - mode={cinematic.AgentBehavior} (Home=cycle, End=authored)", LogLevel.Debug);
 		}
 
@@ -147,7 +152,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				Log("[Cinematic] no authored cinematic on the current scenario", LogLevel.Debug);
 				return;
 			}
-			PlayCinematic(cinematic, MissionTime.Now.NumberOfTicks / 10000000f, cinematic.IsSkippable, false);
+			PlayCinematic(cinematic, MissionTime.Now.NumberOfTicks / 10000000f, cinematic.IsSkippable, null);
 			Log($"[Cinematic] previewing authored '{cinematic.Name}' ({_authoredIndex}/{list.Count})", LogLevel.Debug);
 		}
 
@@ -158,28 +163,37 @@ namespace Alliance.Common.Extensions.Cinematics
 		}
 #endif
 
-		public void PlayCinematic(Cinematic cinematic, float startTimeInSeconds, bool isSkippable, bool useViewerOrigin)
+		public void PlayCinematic(Cinematic cinematic, float startTimeInSeconds, bool isSkippable, List<object> dynamicValues)
 		{
 			if (cinematic == null) return;
 			StopCinematic();
 
-			_useViewerOrigin = useViewerOrigin;
 			_skippable = isSkippable;
+			// Rewrite the local copy's dynamic slots with the server-resolved values
+			ApplyDynamicValues(cinematic, dynamicValues);
+			// ViewerCamera targets resolve to the pose the player was watching from when the cinematic
+			// started - captured before the cinematic camera takes over.
+			_viewerCameraFrame = MissionScreen?.CombatCamera?.Frame;
 
 			TakeCamera();
 			ApplyAgentBehaviorOnStart(cinematic.AgentBehavior);
-			// Free mode: keep player input alive while the cinematic camera renders (Patch_MissionScreen gate).
-			Patch_MissionScreen.FreeInputEnabled =
-				MissionScreen != null && cinematic.AgentBehavior == AgentBehaviorMode.Free;
+			// Free mode: keep player input alive while the cinematic camera renders.
+			if (MissionScreen != null)
+			{
+				_savedAllowInputWithCustomCamera = MissionScreen.AllowInputWithCustomCamera;
+				MissionScreen.AllowInputWithCustomCamera = cinematic.AgentBehavior == AgentBehaviorMode.Free;
+			}
 			StartEffects();
 
 			_player = new CinematicPlayer(cinematic, this, this);
 			_player.Start();
 
+			// Catch-up from the shared anchor: elapsed = mission time now - mission time at cinematic start.
+			// (except if we're within the leniency window).
 			if (!IsEditorMode && Mission.Current != null && startTimeInSeconds > 0f)
 			{
 				float elapsed = (MissionTime.Now.NumberOfTicks / 10000000f) - startTimeInSeconds;
-				if (elapsed > 0f) _player.Seek(elapsed);
+				if (elapsed > CatchUpLeniencySec) _player.Seek(elapsed);
 			}
 
 			if (!_player.IsPlaying) StopCinematic();
@@ -188,9 +202,10 @@ namespace Alliance.Common.Extensions.Cinematics
 		public void StopCinematic()
 		{
 			if (_player != null) { _player.Stop(); _player = null; }
-			Patch_MissionScreen.FreeInputEnabled = false;
+			if (MissionScreen != null) MissionScreen.AllowInputWithCustomCamera = _savedAllowInputWithCustomCamera;
+			_viewerCameraFrame = null;
 			ReleaseCamera();
-			if (_agentHidden) { Agent.Main?.AgentVisuals?.SetVisible(true); _agentHidden = false; }
+			RestoreHiddenAgents();
 			if (_mainAgentControllerDisabled)
 			{
 				MissionMainAgentController mainAgentController = Mission?.GetMissionBehavior<MissionMainAgentController>();
@@ -242,27 +257,59 @@ namespace Alliance.Common.Extensions.Cinematics
 		private void ApplyAgentBehaviorOnStart(AgentBehaviorMode mode)
 		{
 			if (Mission == null) return;
-			Agent main = Agent.Main;
-			if (main == null) return;
 
 			switch (mode)
 			{
-				case AgentBehaviorMode.Hide:
-					main.AgentVisuals?.SetVisible(false);
-					_agentHidden = true;
-					LockAgent(main);
+				case AgentBehaviorMode.HidePlayers:
+					HideAgents(agent => agent.IsPlayerControlled);
+					LockLocalAgent();
+					break;
+				case AgentBehaviorMode.HideAll:
+					HideAgents(_ => true);
+					LockLocalAgent();
 					break;
 				case AgentBehaviorMode.Lock:
-					LockAgent(main);
+					LockLocalAgent();
 					break;
 				// Free: agent stays player-controlled; input stays live via Patch_MissionScreen.
 			}
 		}
 
-		// Freezes the local player's agent.
-		private void LockAgent(Agent main)
+		/// <summary>Hides the agents matching the predicate, plus their mounts.
+		/// Everything hidden is tracked and restored by RestoreHiddenAgents when playback stops.</summary>
+		private void HideAgents(Func<Agent, bool> predicate)
 		{
-			ClearAgentInput(main);
+			foreach (Agent agent in Mission.Agents)
+			{
+				if (!predicate(agent)) continue;
+				HideAgent(agent);
+				HideAgent(agent.MountAgent);
+			}
+		}
+
+		private void HideAgent(Agent agent)
+		{
+			if (agent == null || _hiddenAgents.Contains(agent)) return;
+			agent.AgentVisuals?.SetVisible(false);
+			_hiddenAgents.Add(agent);
+		}
+
+		private void RestoreHiddenAgents()
+		{
+			foreach (Agent agent in _hiddenAgents)
+			{
+				// Agents removed from the mission since (death, mission end) are long gone - skip them.
+				if (Mission == null || !Mission.Agents.Contains(agent)) continue;
+				agent.AgentVisuals?.SetVisible(true);
+			}
+			_hiddenAgents.Clear();
+		}
+
+		// Freezes the local player's agent.
+		private void LockLocalAgent()
+		{
+			Agent main = Agent.Main;
+			if (main != null) ClearAgentInput(main);
 			MissionMainAgentController mainAgentController = Mission.GetMissionBehavior<MissionMainAgentController>();
 			if (mainAgentController != null)
 			{
@@ -272,9 +319,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 		}
 
-		/// <summary>MissionMainAgentController is the only writer of the main agent's input; once disabled it
-		/// stops rewriting it, so any held movement key would stay latched in MovementInputVector and keep
-		/// moving the agent (and keep being synced to the server). Zero it like native conversation mode does.</summary>
+		// Zero it like native conversation mode does.
 		private static void ClearAgentInput(Agent main)
 		{
 			main.MovementFlags = Agent.MovementControlFlag.None;
@@ -404,7 +449,8 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public void OnAgentAnimation(string role, string actionName, string facialAnimation, bool loop)
 		{
-			Agent agent = ResolveAgent(role);
+			// Stub track: no role resolution yet, only the local player's agent.
+			Agent agent = Agent.Main;
 			if (agent == null) return;
 			try
 			{
@@ -428,51 +474,83 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public void OnFinished() => StopCinematic();
 
-		public MatrixFrame? ViewerFrame
+		private readonly HashSet<CinematicTargetType> _warnedTargetTypes = new HashSet<CinematicTargetType>();
+
+		/// <summary>Resolves a target to a full world frame on the local machine: viewer targets against
+		/// the local player (or editor preview), specific agents through their literal slots (rewritten
+		/// with the server-resolved values), entities through the BuildSystem marker index.</summary>
+		public MatrixFrame? ResolveTargetFrame(CinematicTarget target)
 		{
-			get
+			if (target == null || target.Type == CinematicTargetType.None) return null;
+
+			switch (target.Type)
 			{
-				Agent main = Agent.Main;
-				return main != null
-					? new MatrixFrame(main.Frame.rotation, main.Position + new Vec3(0f, 0f, main.GetEyeGlobalHeight()))
-					: (MatrixFrame?)null;
+				case CinematicTargetType.Position:
+					return target.Position?.ToFrame();
+
+				case CinematicTargetType.ViewerAgent:
+					{
+						Agent main = Agent.Main;
+						// Editor preview has no agents - unresolvable there.
+						return main != null
+							? new MatrixFrame(main.Frame.rotation, main.Position + new Vec3(0f, 0f, main.GetEyeGlobalHeight()))
+							: (MatrixFrame?)null;
+					}
+
+				case CinematicTargetType.ViewerCamera:
+					// Captured at cinematic start; null in editor preview (no combat camera there).
+					return _viewerCameraFrame;
+
+				case CinematicTargetType.SpecificAgent:
+					{
+						// The slot was rewritten to a Literal by ApplyDynamicValues, so resolving it is a
+						// plain local lookup of the server-picked agent (null in editor preview).
+						Agent agent = target.AgentVariable?.Resolve(null, null);
+						if (agent != null)
+						{
+							return new MatrixFrame(agent.Frame.rotation, agent.Position + new Vec3(0f, 0f, agent.GetEyeGlobalHeight()));
+						}
+						WarnUnresolvedOnce(target.Type, null);
+						return null;
+					}
+
+				case CinematicTargetType.SpecificEntity:
+					{
+						if (target.Entity == null || string.IsNullOrEmpty(target.Entity.RefId)) return null;
+						try
+						{
+							WeakGameEntity wge = BuildSystem.EntityMarkerIndex.Resolve(target.Entity.RefId);
+							if (wge.IsValid) return wge.GetGlobalFrame();
+						}
+						catch { }
+						return null;
+					}
+
+				default:
+					return null;
 			}
 		}
 
-		// Roles known so far: MainAgent / Viewer / Player (all resolve to the local player's agent).
-		// Custom named roles (e.g. "Boss") are a planned extension - unknown roles resolve to null with a
-		// one-time warning instead of silently falling back to the main agent.
-		private static bool IsViewerRole(string role) => role == "MainAgent" || role == "Viewer" || role == "Player";
-		private readonly HashSet<string> _warnedUnknownRoles = new HashSet<string>();
-
-		public Vec3? ResolveRolePosition(string role)
+		// Rewrites the local cinematic copy's dynamic slots with the server-resolved values
+		private static void ApplyDynamicValues(Cinematic cinematic, List<object> dynamicValues)
 		{
-			if (string.IsNullOrEmpty(role)) return null;
-			Agent agent = ResolveAgent(role, warn: false);
-			// Eye height so look-at targets aim consistently with ViewerFrame.
-			return agent != null ? agent.Position + new Vec3(0f, 0f, agent.GetEyeGlobalHeight()) : (Vec3?)null;
+			if (dynamicValues == null || dynamicValues.Count == 0) return;
+			List<ValueSourceHelper.DynamicSlot> slots = ValueSourceHelper.CollectDynamicSlots(cinematic);
+			if (slots.Count != dynamicValues.Count)
+			{
+				Log($"[Cinematic] Dynamic data mismatch (server sent {dynamicValues.Count} values, local copy has {slots.Count} slots) - skipping rewrite.", LogLevel.Warning);
+				return;
+			}
+			for (int i = 0; i < slots.Count; i++)
+			{
+				ValueSourceHelper.SetSlotLiteral(slots[i], dynamicValues[i]);
+			}
 		}
 
-		public Vec3? ResolveEntityPosition(string entityRefId)
+		private void WarnUnresolvedOnce(CinematicTargetType type, string detail)
 		{
-			if (string.IsNullOrEmpty(entityRefId)) return null;
-			try
-			{
-				WeakGameEntity wge = BuildSystem.EntityMarkerIndex.Resolve(entityRefId);
-				if (wge.IsValid) return wge.GetGlobalFrame().origin;
-			}
-			catch { }
-			return null;
-		}
-
-		private Agent ResolveAgent(string role, bool warn = true)
-		{
-			if (string.IsNullOrEmpty(role) || IsViewerRole(role)) return Agent.Main;
-			if (warn && _warnedUnknownRoles.Add(role))
-			{
-				Log($"[Cinematic] Unknown role '{role}' - supported roles: MainAgent, Viewer, Player.", LogLevel.Warning);
-			}
-			return null;
+			if (_warnedTargetTypes.Add(type))
+				Log($"[Cinematic] Target {type} '{detail ?? ""}' could not be resolved - camera falls back to the stored frame.", LogLevel.Warning);
 		}
 	}
 }

@@ -98,32 +98,32 @@
 			<!-- Include the Label/Tooltip -->
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
-		<ComboBox ItemsSource="{Binding PossibleValues}"
-			  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-			  FontFamily="{StaticResource DefaultFontFamily}"
-			  FontSize="{StaticResource DefaultFontSize}"
-			  Foreground="{StaticResource DefaultFontColor}"
-			  Width="264"
-			  VerticalAlignment="Center"
-			  ToolTip="{Binding Tooltip}"
-			  VirtualizingStackPanel.IsVirtualizing="True"
-			  ScrollViewer.CanContentScroll="True">
-			<ComboBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
-				</ItemsPanelTemplate>
-			</ComboBox.ItemsPanel>
-			<ComboBox.Style>
-				<Style TargetType="ComboBox">
-					<Setter Property="IsEditable" Value="True"/>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
-							<Setter Property="IsEditable" Value="False"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ComboBox.Style>
-		</ComboBox>
+	<ComboBox ItemsSource="{Binding PossibleValues}"
+		  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		  FontFamily="{StaticResource DefaultFontFamily}"
+		  FontSize="{StaticResource DefaultFontSize}"
+		  Foreground="{StaticResource DefaultFontColor}"
+		  Width="264"
+		  VerticalAlignment="Center"
+		  ToolTip="{Binding Tooltip}"
+		  VirtualizingStackPanel.IsVirtualizing="True"
+		  ScrollViewer.CanContentScroll="True">
+		<ComboBox.ItemsPanel>
+			<ItemsPanelTemplate>
+				<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
+			</ItemsPanelTemplate>
+		</ComboBox.ItemsPanel>
+		<ComboBox.Style>
+			<Style TargetType="ComboBox">
+				<Setter Property="IsEditable" Value="True"/>
+				<Style.Triggers>
+					<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
+						<Setter Property="IsEditable" Value="False"/>
+					</DataTrigger>
+				</Style.Triggers>
+			</Style>
+		</ComboBox.Style>
+	</ComboBox>
 		</StackPanel>
 	</DataTemplate>
 

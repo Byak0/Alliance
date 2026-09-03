@@ -3,17 +3,31 @@ using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TaleWorlds.Engine;
 
 namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 {
-	public enum LookAtMode { None, MainAgent, Entity, Position }
+	public enum CameraFrameMode { Absolute, Relative }
+
+	/// <summary>Frozen = capture the target frame once when the cinematic starts. Track = follow the target every tick.</summary>
+	public enum TargetTrackMode { Frozen, Track }
 
 	[Serializable]
 	public class CameraKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Camera frame", tooltip: "World position + rotation of the camera. Use \"Capture View\" in the editor to set it from the current in-scene camera.", category: "Transform")]
+		[ConfigProperty(label: "Camera frame", tooltip: "World position + rotation of the camera. Use \"Capture View\" in the editor to set it from the current in-scene camera.", category: "Transform", dependency: "?FrameMode=Absolute")]
 		public FrameValue Frame = new FrameValue();
+
+		[ConfigProperty(label: "Frame mode", tooltip: "Absolute = world-space frame. Relative = frame resolved from the target below, with the offset applied in the target's local space (enables travels like player camera → point of interest → player's agent).", category: "Transform")]
+		public CameraFrameMode FrameMode;
+
+		[ConfigProperty(label: "Frame target", tooltip: "What the camera frame is relative to.", category: "Transform", dependency: "?FrameMode=Relative")]
+		public CinematicTarget FrameTarget = new CinematicTarget(CinematicTargetType.ViewerCamera);
+
+		[ConfigProperty(label: "Frame offset", tooltip: "Offset applied in the target's local space when Frame mode = Relative (e.g. 3m behind, 1m above).", category: "Transform", dependency: "?FrameMode=Relative")]
+		public FrameValue FrameOffset = new FrameValue();
+
+		[ConfigProperty(label: "Tracking", tooltip: "Frozen = capture the target frame once at the start. Track = follow the target every tick.", category: "Transform", dependency: "?FrameMode=Relative")]
+		public TargetTrackMode TrackMode = TargetTrackMode.Track;
 
 		[ConfigProperty(label: "FOV (vertical, degrees)", minValue: 1, maxValue: 179, category: "Lens")]
 		public float Fov = 60f;
@@ -41,15 +55,6 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 
 		[ConfigProperty(label: "Exposure", minValue: 0, maxValue: 8, category: "Depth of Field", dependency: "?DoFEnabled")]
 		public float Exposure = 1f;
-
-		[ConfigProperty(label: "Look at", tooltip: "Override camera rotation to aim at a target. Controls the segment leading up to this keyframe.", category: "Target")]
-		public LookAtMode LookAt;
-
-		[ConfigProperty(label: "Target entity", tooltip: "Entity to aim at.", category: "Target")]
-		public ValueSource<WeakGameEntity> LookAtEntity = new SceneEntityLiteralValue();
-
-		[ConfigProperty(label: "Target position", tooltip: "World position to aim at.", category: "Target")]
-		public FrameValue LookAtPosition = new FrameValue();
 
 		public CameraKeyframe() { }
 

@@ -11,13 +11,27 @@
 	}
 
 	/// <summary>
-	/// What happens to the player's main agent while a cinematic is playing.
+	/// What happens to agents while a cinematic is playing. Free/Lock affect the local player;
+	/// the Hide modes also freeze the local player and hide the matching agents (and their mounts)
+	/// locally on every receiver - remote players keep control of their own agents.
 	/// </summary>
 	public enum AgentBehaviorMode
 	{
-		Hide,
+		Free,
 		Lock,
-		Free
+		HidePlayers,
+		HideAll
+	}
+
+	/// <summary>
+	/// Who is made invulnerable (server-side, mission-wide) for the duration of a cinematic.
+	/// </summary>
+	public enum InvulnerabilityMode
+	{
+		None,
+		Players,
+		Bots,
+		All
 	}
 
 	/// <summary>
@@ -27,8 +41,7 @@
 	{
 		All,
 		Team,
-		Players,
-		RelativeToViewer
+		Players
 	}
 
 	public enum CameraCutMode

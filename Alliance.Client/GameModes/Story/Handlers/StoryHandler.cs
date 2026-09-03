@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions;
+using Alliance.Common.Extensions;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
@@ -7,6 +7,7 @@ using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.Cinematics;
 using System;
+using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -25,6 +26,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<PlayCinematicMessage>(HandlePlayCinematicMessage);
 			reg.Register<StopCinematicMessage>(HandleStopCinematicMessage);
 			reg.Register<SetCinematicTimeMessage>(HandleSetCinematicTimeMessage);
+			reg.Register<WaitingScreenStateMessage>(HandleWaitingScreenStateMessage);
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)
@@ -105,13 +107,13 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			try
 			{
-				var action = ActionBase.FindById(message.ScopeId, message.ActionId);
+				ActionBase action = ActionBase.FindById(message.ScopeId, message.ActionId);
 				if (action == null)
 				{
 					Log($"ExecuteActionMessage: no action with scope {message.ScopeId}, id {message.ActionId}", LogLevel.Warning);
 					return;
 				}
-				action.InjectSyncData(message.Data);
+				action.InjectSyncData(message.DynamicValues);
 				action.ExecuteClient();
 			}
 			catch (Exception ex)
@@ -126,15 +128,17 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			{
 				Cinematic cinematic = message.UseActionRef
 					? TryGetCinematicFromAction(message.ScopeId, message.ActionId)
-					: ScenarioManager.Instance.CurrentScenario?.Cinematics?.Find(c => c != null && c.Id == message.CinematicId);
+					: ScenarioManager.Instance.CurrentScenario?.Cinematics?.Find(c => c != null && c.Name == message.CinematicName);
 				if (cinematic == null)
 				{
-					Log($"PlayCinematicMessage: cinematic not found ({(message.UseActionRef ? $"scope={message.ScopeId}, action={message.ActionId}" : $"'{message.CinematicId}'")}).", LogLevel.Warning);
+					Log($"PlayCinematicMessage: cinematic not found ({(message.UseActionRef ? $"scope={message.ScopeId}, action={message.ActionId}" : $"'{message.CinematicName}'")}).", LogLevel.Warning);
 					return;
 				}
 
+				// The server-resolved dynamic values (one per dynamic slot of the cinematic, in walk
+				// order): the view rewrites its local copy's slots to literals with them.
 				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
-				view?.PlayCinematic(cinematic, message.StartTimeInSeconds, message.IsSkippable, message.UseViewerOrigin);
+				view?.PlayCinematic(cinematic, message.StartTimeInSeconds, cinematic.IsSkippable, message.DynamicValues);
 			}
 			catch (Exception ex)
 			{
@@ -149,7 +153,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
 				if (view == null) return;
 				// Empty id = wildcard (e.g. scenario abort); otherwise only stop the named cinematic.
-				if (string.IsNullOrEmpty(message.CinematicId) || view.PlayingCinematicId == message.CinematicId)
+				if (string.IsNullOrEmpty(message.CinematicName) || view.PlayingCinematicName == message.CinematicName)
 					view.StopCinematic();
 			}
 			catch (Exception ex)
@@ -164,12 +168,25 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			{
 				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
 				if (view == null) return;
-				if (view.PlayingCinematicId == message.CinematicId)
+				if (view.PlayingCinematicName == message.CinematicName)
 					view.Seek(message.TimeInSeconds);
 			}
 			catch (Exception ex)
 			{
 				Log($"Failed to set cinematic time: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleWaitingScreenStateMessage(WaitingScreenStateMessage message)
+		{
+			try
+			{
+				IntroWaitingView view = Mission.Current?.GetMissionBehavior<IntroWaitingView>();
+				view?.SetState(message.Visible, message.ReadyPlayers, message.TotalPlayers);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to update waiting screen: {ex.Message}", LogLevel.Error);
 			}
 		}
 
