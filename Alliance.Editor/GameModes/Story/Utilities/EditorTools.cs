@@ -169,11 +169,11 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		public void SetEditableZone(Zone zone) => EditZoneView.SetEditableZone(zone);
 		public void BeginEntityPick(Action<GameEntityRef> onPicked) => EditEntityView.BeginPick(onPicked);
 
-		public void OpenEditor(object obj, Action<object> onCloseCallback)
+		public void OpenEditor(object obj, Action<object> onCloseCallback, Scenario explicitScenario = null)
 		{
 			if (_objectEditorWindow == null || !_objectEditorWindow.IsLoaded)
 			{
-				_objectEditorWindow = new ObjectEditorWindow(obj);
+				_objectEditorWindow = new ObjectEditorWindow(obj, null, null, "Object Editor", explicitScenario);
 				_objectEditorWindow.Show();
 				_objectEditorWindow.Closed += (s, e) =>
 				{

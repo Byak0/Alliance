@@ -882,7 +882,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private void OpenCinematicEditor(Cinematic cinematic)
 		{
-			var window = new CinematicEditorWindow(cinematic, _ => OnPropertyChanged(nameof(FieldValue)));
+			var window = new CinematicEditorWindow(cinematic, _ => OnPropertyChanged(nameof(FieldValue)), parentViewModel?.FindEnclosingScenario());
 			window.Show();
 		}
 

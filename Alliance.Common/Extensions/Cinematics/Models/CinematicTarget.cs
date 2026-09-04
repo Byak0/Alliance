@@ -2,6 +2,7 @@ using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.Cinematics.Models
@@ -36,8 +37,9 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		[SyncToClient]
 		public ValueSource<Agent> AgentVariable = new VariableValue<Agent>();
 
-		[ConfigProperty(label: "Entity", tooltip: "Entity to target, resolved locally through its AL_EntityMarker.", category: "Target", dependency: "?Type=SpecificEntity")]
-		public GameEntityRef Entity = new GameEntityRef();
+		[ConfigProperty(label: "Entity", tooltip: "Entity to target: a scene entity (literal, picked visually) or a variable holding one.", category: "Target", dependency: "?Type=SpecificEntity")]
+		[SyncToClient]
+		public ValueSource<WeakGameEntity> Entity = new SceneEntityLiteralValue();
 
 		public CinematicTarget() { }
 

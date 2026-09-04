@@ -2,7 +2,6 @@
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Extensions.Cinematics.Models;
 using System;
-using System.Collections.Generic;
 using TaleWorlds.Library;
 
 namespace Alliance.Common.GameModes.Story.Interfaces
@@ -25,7 +24,7 @@ namespace Alliance.Common.GameModes.Story.Interfaces
 		public void RemoveZoneFromEditor(Zone zone);
 		public void SetEditableZone(Zone zone);
 		public void ClearZones();
-		public void OpenEditor(object obj, Action<object> onCloseCallback);
+		public void OpenEditor(object obj, Action<object> onCloseCallback, Scenario explicitScenario = null);
 		public void BeginEntityPick(Action<GameEntityRef> onPicked);
 	}
 }

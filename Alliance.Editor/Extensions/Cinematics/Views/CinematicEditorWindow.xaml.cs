@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Utilities;
+﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.Extensions.Cinematics.ViewModels;
 using System;
 using System.Windows;
@@ -18,10 +19,10 @@ namespace Alliance.Editor.Extensions.Cinematics.Views
 	{
 		private readonly CinematicTimelineVM _vm;
 
-		public CinematicEditorWindow(Cinematic cinematic, Action<Cinematic> onClosed)
+		public CinematicEditorWindow(Cinematic cinematic, Action<Cinematic> onClosed, Scenario scenario = null)
 		{
 			InitializeComponent();
-			_vm = new CinematicTimelineVM(cinematic, onClosed);
+			_vm = new CinematicTimelineVM(cinematic, onClosed, scenario);
 			DataContext = _vm;
 
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
@@ -32,6 +33,8 @@ namespace Alliance.Editor.Extensions.Cinematics.Views
 		{
 			var cursor = System.Windows.Forms.Cursor.Position;
 			var work = SystemParameters.WorkArea;
+			MaxHeight = work.Height - 40;
+			Height = Math.Min(Height, MaxHeight);
 			Left = cursor.X;
 			Top = cursor.Y;
 			if (Left + ActualWidth > work.Right) Left = work.Right - ActualWidth;

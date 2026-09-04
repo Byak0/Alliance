@@ -244,6 +244,27 @@ namespace Alliance.Common.Extensions.Cinematics
 		// Reused sample buffers - hosts must not hold references to these lists (they are refilled every tick).
 		private readonly List<SubtitleState> _activeSubtitles = new List<SubtitleState>();
 
+		/// <summary>Fills the text's {0}, {1}... placeholders with the TextArgs values (on clients the
+		/// argument slots were rewritten to literals with the server-resolved values) and normalizes
+		/// line breaks to '\n' - the only form Gauntlet's text parser treats as a line break.</summary>
+		private static string FormatSubtitleText(SubtitleKeyframe kf)
+		{
+			string text = (kf.Text?.GetText() ?? "").Replace("\r\n", "\n").Replace("\r", "\n");
+			if (kf.TextArgs == null || kf.TextArgs.Count == 0) return text;
+			try
+			{
+				// Resolve through the globals store (not null): on the editor preview slots stay
+				// un-rewritten Variables/Functions, and functions already resolve their own args
+				// against ScenarioManager.Instance.Globals - direct variable slots must do the same.
+				object[] args = kf.TextArgs.Select(a => (object)a?.Resolve(null)).ToArray();
+				return string.Format(text, args);
+			}
+			catch (FormatException)
+			{
+				return text;
+			}
+		}
+
 		private void SampleSubtitle(float time)
 		{
 			if (_sink == null) return;
@@ -272,11 +293,16 @@ namespace Alliance.Common.Extensions.Cinematics
 					_activeSubtitles.Add(new SubtitleState
 					{
 						Source = kf,
-						Text = kf.Text?.GetText() ?? "",
+						Text = FormatSubtitleText(kf),
 						Alpha = alpha,
 						FontSize = kf.FontSize,
 						FontColor = HexColor.Normalize(kf.FontColor),
 						Font = string.IsNullOrEmpty(kf.Font) ? "Galahad" : kf.Font,
+						GlowRadius = kf.GlowRadius,
+						Blur = kf.Blur,
+						ShadowOffset = kf.ShadowOffset,
+						OutlineAmount = kf.OutlineAmount,
+						ScrollProgress = kf.Scroll && kf.Duration > 0f ? elapsed / kf.Duration : -1f,
 						HAlign = kf.HPosition,
 						VAlign = kf.VPosition
 					});

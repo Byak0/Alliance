@@ -94,19 +94,28 @@ namespace Alliance.Common.GameModes.Story
 		}
 
 		/// <summary>
-		/// Initializes global variables from the current scenario definition.
-		/// Parses each ScenarioVariable.DefaultValue according to its VariableType.
+		/// Initializes global variables from a scenario definition without starting it
+		/// (used by the modding kit, where no scenario is running during previews).
 		/// </summary>
-		protected virtual void InitGlobals()
+		public void LoadGlobals(Scenario scenario)
 		{
 			Globals = new VariableStore();
-			if (CurrentScenario?.Variables == null) return;
-			foreach (ScenarioVariable sv in CurrentScenario.Variables)
+			if (scenario?.Variables == null) return;
+			foreach (ScenarioVariable sv in scenario.Variables)
 			{
 				if (string.IsNullOrWhiteSpace(sv.Name)) continue;
 				object val = ParseDefaultValue(sv.DefaultValue, sv.Type);
 				Globals.Set(sv.Name, val);
 			}
+		}
+
+		/// <summary>
+		/// Initializes global variables from the current scenario definition.
+		/// Parses each ScenarioVariable.DefaultValue according to its VariableType.
+		/// </summary>
+		protected virtual void InitGlobals()
+		{
+			LoadGlobals(CurrentScenario);
 		}
 
 		/// <summary>

@@ -58,9 +58,9 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			EditorTools?.ClearZones();
 		}
 
-		public static void OpenEditor(object obj, Action<object> onCloseCallback)
+		public static void OpenEditor(object obj, Action<object> onCloseCallback, Scenario explicitScenario = null)
 		{
-			EditorTools?.OpenEditor(obj, onCloseCallback);
+			EditorTools?.OpenEditor(obj, onCloseCallback, explicitScenario);
 		}
 
 		public static void BeginEntityPick(Action<GameEntityRef> onPicked)

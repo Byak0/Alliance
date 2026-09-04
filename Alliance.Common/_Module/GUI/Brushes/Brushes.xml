@@ -412,7 +412,16 @@
 		</Layers>
 	</Brush>
 
-	<Brush Name="Cinematic.Subtitle" Font="Galahad">
+	<Brush Name="Alliance.Cinematic.Subtitle" Font="Galahad">
+		<Layers>
+			<BrushLayer Name="Default" Color="#FFFFFFFF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" TextOutlineColor="#00000000" FontSize="24" />
+		</Styles>
+	</Brush>
+	
+	<Brush Name="Alliance.IntroWaiting.Text" Font="Galahad">
 		<Layers>
 			<BrushLayer Name="Default" Color="#FFFFFFFF" />
 		</Layers>

@@ -105,7 +105,7 @@ A scenario is the top-level XML root.
 | `Name`, `Description` | Localized text displayed to players and tools. |
 | `Acts` | Ordered list of playable scenario chapters. |
 | `Variables` | Global scenario variables available to conditions, actions and ValueSources. |
-| `Cinematics` | Cinematics defined on this scenario, playable by Id through `PlayCinematicAction` (see `docs/cinematics.md`). |
+| `Cinematics` | Cinematics defined on this scenario, playable by name through `PlayCinematicAction` (see `docs/cinematics.md`). |
 
 ### `Act`
 
@@ -132,14 +132,18 @@ The settings contain:
 
 ### `SpawnLogic`
 
-`SpawnLogic` defines how players and AI enter the act.
+`SpawnLogic` defines how players and AI enter the act. The editor groups it into clear categories:
+**Team assignment** → **Character assignment** → **Start flow** → per-side initial spawn / respawn.
 
 | Field group | Purpose |
 |---|---|
-| `PlayerSpawnMenu` | Optional team/formation/character selection menu. If configured, it is broadcast to clients at spawn session start. |
-| `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Fallback characters when no player spawn menu assignment is available. |
-| `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote`. |
-| `TimeBeforeSpawn`, `TimeBeforeRespawn` | Initial spawn preparation delay and respawn delay. |
+| `TeamAssignment` | `PlayerSelection` = players choose their side in the team selection flow. `Auto` = the server assigns teams at spawn start, using `TeamAutoRule`: `Balanced` (sides evened out, difference of at most one), `AllAttackers` or `AllDefenders`. |
+| `CharacterAssignment` | `PlayerSelection` = players pick formation/character in the `PlayerSpawnMenu` (with `OfficerSelection` strategy). `Auto` = no menus, characters assigned by `CharacterAutoRule`: `DefaultUnits` (the per-side default units) or `RandomFromMenu` (random pick from the player's side pool in the menu, officers excluded). |
+| `PlayerSpawnMenu` | Team/formation/character menu. Used in `PlayerSelection` mode, and as the character pool for `RandomFromMenu`. |
+| `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Characters used by the `DefaultUnits` auto rule (only visible for that rule in the editor). |
+| `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote` (PlayerSelection mode only). |
+| `IntroCinematicName` | Optional cinematic (by scenario name) played when the act starts, after teams and characters are set and agents spawned. |
+| `TimeBeforeSpawn`, `TimeWhenSpawnIsAllowed` | Selection/spawn window timings (Start flow). |
 | `DefaultSpawnTagAttacker`, `DefaultSpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
 | `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `OnlyTags`, `OnlyFlags`, `TagsThenFlags` or `PlayerChoice`. |
 | `RespawnStrategyAttacker`, `RespawnStrategyDefender` | Respawn policy: `NoRespawn`, `MaxLivesPerTeam` or `MaxLivesPerPlayer`. |
@@ -147,6 +151,22 @@ The settings contain:
 | `KeepLivesFromPreviousAct` | Adds the new act lives to remaining lives instead of resetting them. |
 
 Spawn points are read from scene entities tagged `spawnpoint`. Additional tags select a side or custom spawn group. Parent zones tagged `starting` are preferred for initial spawn. Spawn points tagged `exclude_mounted` are penalized for mounted agents.
+
+#### Act start flow
+
+The waiting screen is always enabled: while the server is in `AwaitingPlayerJoin`, clients show a
+full-black screen (hiding all other mission UI) with the ready/total player counter, driven by
+`WaitingScreenStateMessage`. Once enough players are loaded: team assignment runs (menu selection or
+auto rule), then character assignment (menu session or auto rule), then the act starts and the
+optional intro cinematic is played to everyone — combine it with viewer-relative camera targets so
+the cinematic ends on each player's own character (see `docs/cinematics.md`).
+
+Two reference flows:
+1. *Cinematic-first*: waiting screen → `TeamAssignment = Auto` + `CharacterAssignment = Auto`
+   (everything assigned in the background) → intro cinematic ending on each player's character →
+   control handed over.
+2. *Menu-driven*: waiting screen → team selection → spawn menu (characters, officers) → optional
+   intro cinematic → gameplay.
 
 ## Objectives and victory
 
@@ -376,6 +396,3 @@ When adding new scenario building blocks:
 4. If the action needs runtime behavior only on server or client, add a `Server_`/`Client_` subclass in the matching project, annotated with `[OverrideAction(typeof(...))]`.
 5. Keep networked behavior server-authoritative; synchronize clients with explicit messages if UI or state must update.
 6. Test XML serialization/deserialization with existing scenario files.
-
-
-

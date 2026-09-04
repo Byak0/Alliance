@@ -1,8 +1,11 @@
+using Alliance.Common.Extensions.BuildSystem;
 using Alliance.Common.Patch;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
+using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story.NetworkMessages
 {
@@ -111,6 +114,15 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages
 					GameNetworkMessage.WriteAgentIndexToPacket(agents[i] != null ? (int)agents[i].Index : -1);
 				}
 			}
+			else if (value is WeakGameEntity entity)
+			{
+				// Entities travel as their AL_EntityMarker RefId; receivers resolve locally.
+				GameNetworkMessage.WriteIntToPacket(9, ValueTagCompressionInfo);
+				string refId = EntityMarkerIndex.GetRefId(entity);
+				if (string.IsNullOrEmpty(refId))
+					Log($"[StoryMessages] Synced entity value has no AL_EntityMarker RefId - receivers will resolve it as invalid.", LogLevel.Warning);
+				GameNetworkMessage.WriteStringToPacket(refId ?? "");
+			}
 			else
 			{
 				GameNetworkMessage.WriteIntToPacket(4, ValueTagCompressionInfo);
@@ -162,6 +174,12 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages
 							agents.Add(Mission.MissionNetworkHelper.GetAgentFromIndex(index, true));
 						}
 						return agents;
+					}
+				case 9:
+					{
+						string refId = GameNetworkMessage.ReadStringFromPacket(ref valid);
+						if (!valid) return null;
+						return EntityMarkerIndex.Resolve(refId);
 					}
 				default: valid = false; return null;
 			}

@@ -1,9 +1,11 @@
 using Alliance.Editor.GameModes.Story.ViewModels;
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.Cinematics.Models;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.Engine;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -78,6 +81,9 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		}
 
 		private readonly Cinematic _cinematic;
+		/// <summary>The scenario the cinematic belongs to (null for standalone inline copies) - gives
+		/// the timeline's value-source popups their variable context.</summary>
+		public Scenario Scenario { get; }
 		private readonly Action<Cinematic> _onClosed;
 		private CameraKeyframeVM _selected;
 		private float _currentTime;
@@ -90,6 +96,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public string[] AvailableTrackTypes { get; } =
 		{
 			"Overlay",
+			"LookAt",
 			"Event", "EntityVisibility", "AgentAnimation", "Audio", "Subtitle"
 		};
 
@@ -230,10 +237,11 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public bool CanPasteCinematic => _cinematicClipboard != null;
 		private static object _cinematicClipboard;
 
-		public CinematicTimelineVM(Cinematic cinematic, Action<Cinematic> onClosed)
+		public CinematicTimelineVM(Cinematic cinematic, Action<Cinematic> onClosed, Scenario scenario = null)
 		{
 			_cinematic = cinematic;
 			_onClosed = onClosed;
+			Scenario = scenario;
 			EditorToolsManager.ActiveEditingCinematic = cinematic;
 			Title = "Cinematic Editor" + (!string.IsNullOrEmpty(cinematic?.Name) ? " - " + cinematic.Name : "");
 			RebuildKeyframes();
@@ -287,7 +295,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			if (_selected != null) _selected.RefreshAll();
 			if (_selectedGeneric != null)
 			{
-				var newVm = GenericKeyframeVM.Create((CinematicKeyframe)target);
+				var newVm = GenericKeyframeVM.Create((CinematicKeyframe)target, this);
 				SelectedGenericKeyframe = newVm;
 			}
 			RecomputeKeyframePositions();
@@ -300,6 +308,9 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		{
 			if (!IsPlaying)
 			{
+				// Editor preview runs without a started scenario - seed the globals store so value
+				// slots (subtitle text args, target variables...) resolve with authored defaults.
+				if (Scenario != null) ScenarioManager.Instance.LoadGlobals(Scenario);
 				EditorToolsManager.PlayPreview(_cinematic, t =>
 				{
 					_playbackUpdating = true;
@@ -514,15 +525,22 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			SelectCommand = new RelayCommand(_ => _parent.SelectedKeyframe = this);
 			CaptureCommand = new RelayCommand(_ => _parent.CaptureInto(this));
 			DeleteCommand = new RelayCommand(_ => _parent.DeleteKeyframe(this));
+			EditFrameTargetAgentCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditAgent(_parent, Keyframe.FrameTarget.AgentVariable,
+					value => { Keyframe.FrameTarget.AgentVariable = value; OnPropertyChanged(nameof(FrameTargetAgentDisplay)); }));
+			EditFrameTargetEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(_parent, Keyframe.FrameTarget.Entity,
+					value => { Keyframe.FrameTarget.Entity = value; OnPropertyChanged(nameof(FrameTargetEntityDisplay)); }));
 		}
 
 		private void RefreshTargetVisibilities()
 		{
 			OnPropertyChanged(nameof(IsFrameAbsolute));
 			OnPropertyChanged(nameof(IsFrameRelative));
-			OnPropertyChanged(nameof(FrameTargetIsPosition));
 			OnPropertyChanged(nameof(FrameTargetIsAgent));
 			OnPropertyChanged(nameof(FrameTargetIsEntity));
+			OnPropertyChanged(nameof(FrameTargetAgentDisplay));
+			OnPropertyChanged(nameof(FrameTargetEntityDisplay));
 		}
 
 		public float Time
@@ -560,7 +578,18 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public CameraFrameMode FrameMode
 		{
 			get => Keyframe.FrameMode;
-			set { Keyframe.FrameMode = value; OnPropertyChanged(); RefreshTargetVisibilities(); }
+			set
+			{
+				Keyframe.FrameMode = value;
+				// Coerce stale target types (None/Position are not offered in relative mode).
+				if (value == CameraFrameMode.Relative
+					&& (Keyframe.FrameTarget.Type == CinematicTargetType.None || Keyframe.FrameTarget.Type == CinematicTargetType.Position))
+				{
+					Keyframe.FrameTarget.Type = CinematicTargetType.ViewerCamera;
+				}
+				OnPropertyChanged();
+				RefreshTargetVisibilities();
+			}
 		}
 		public Array FrameModeOptions => Enum.GetValues(typeof(CameraFrameMode));
 		public bool IsFrameAbsolute => Keyframe.FrameMode == CameraFrameMode.Absolute;
@@ -574,14 +603,16 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			get => Keyframe.FrameTarget.Type;
 			set { Keyframe.FrameTarget.Type = value; OnPropertyChanged(); RefreshTargetVisibilities(); }
 		}
-		public bool FrameTargetIsPosition => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.Position;
+		/// <summary>Relative frame targets: None and Position are meaningless here (a static position
+		/// is what FrameMode = Absolute already does).</summary>
+		public CinematicTargetType[] FrameTargetTypeOptions { get; } =
+			{ CinematicTargetType.ViewerAgent, CinematicTargetType.ViewerCamera, CinematicTargetType.SpecificAgent, CinematicTargetType.SpecificEntity };
 		public bool FrameTargetIsAgent => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.SpecificAgent;
 		public bool FrameTargetIsEntity => IsFrameRelative && Keyframe.FrameTarget.Type == CinematicTargetType.SpecificEntity;
-		public string FrameTargetAgentVariable { get => (Keyframe.FrameTarget.AgentVariable as VariableValue<Agent>)?.VariableName; set { CinematicTargetEditing.EnsureAgentVariableSlot(Keyframe.FrameTarget).VariableName = value; OnPropertyChanged(); } }
-		public string FrameTargetEntityRefId { get => Keyframe.FrameTarget.Entity?.RefId; set { Keyframe.FrameTarget.Entity.RefId = value; OnPropertyChanged(); } }
-		public float FrameTargetPosX { get => Keyframe.FrameTarget.Position.Px; set { Keyframe.FrameTarget.Position.Px = value; OnPropertyChanged(); } }
-		public float FrameTargetPosY { get => Keyframe.FrameTarget.Position.Py; set { Keyframe.FrameTarget.Position.Py = value; OnPropertyChanged(); } }
-		public float FrameTargetPosZ { get => Keyframe.FrameTarget.Position.Pz; set { Keyframe.FrameTarget.Position.Pz = value; OnPropertyChanged(); } }
+		public string FrameTargetAgentDisplay => CinematicTargetEditing.DescribeAgent(Keyframe.FrameTarget.AgentVariable);
+		public string FrameTargetEntityDisplay => CinematicTargetEditing.DescribeEntity(Keyframe.FrameTarget.Entity);
+		public ICommand EditFrameTargetAgentCommand { get; }
+		public ICommand EditFrameTargetEntityCommand { get; }
 		public float OffsetX { get => Keyframe.FrameOffset.Px; set { Keyframe.FrameOffset.Px = value; OnPropertyChanged(); } }
 		public float OffsetY { get => Keyframe.FrameOffset.Py; set { Keyframe.FrameOffset.Py = value; OnPropertyChanged(); } }
 		public float OffsetZ { get => Keyframe.FrameOffset.Pz; set { Keyframe.FrameOffset.Pz = value; OnPropertyChanged(); } }
@@ -694,7 +725,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 
 		private void EditInWpf()
 		{
-			EditorToolsManager.OpenEditor(Track, _ => RebuildMarkers());
+			EditorToolsManager.OpenEditor(Track, _ => RebuildMarkers(), _parent?.Scenario);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -740,7 +771,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 						m.IsSelected = false;
 				IsSelected = true;
 				if (_lane?._parent != null)
-					_lane._parent.SelectedGenericKeyframe = GenericKeyframeVM.Create(keyframe);
+					_lane._parent.SelectedGenericKeyframe = GenericKeyframeVM.Create(keyframe, _lane._parent);
 			});
 		}
 
@@ -762,6 +793,14 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public CinematicKeyframe Model { get; }
 		public string KeyTypeName => Model?.GetType().Name.Replace("Keyframe", " Key");
 
+		/// <summary>The model field's ConfigProperty tooltip, so hand-written timeline labels can show
+		/// the same (i) info icon as the auto-generated object editor.</summary>
+		protected string TooltipOf(string fieldName)
+		{
+			FieldInfo field = Model?.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
+			return field?.GetCustomAttribute<ConfigPropertyAttribute>()?.Tooltip;
+		}
+
 		public float Time
 		{
 			get => Model.Time;
@@ -777,7 +816,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 
 		protected GenericKeyframeVM(CinematicKeyframe model) { Model = model; }
 
-		public static GenericKeyframeVM Create(CinematicKeyframe kf)
+		public static GenericKeyframeVM Create(CinematicKeyframe kf, CinematicTimelineVM timeline = null)
 		{
 			switch (kf)
 			{
@@ -785,9 +824,9 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 				case AudioKeyframe au: return new AudioKeyframeVM(au);
 				case EntityVisibilityKeyframe ev: return new EntityVisibilityKeyframeVM(ev);
 				case AgentAnimationKeyframe am: return new AgentAnimationKeyframeVM(am);
-				case SubtitleKeyframe st: return new SubtitleKeyframeVM(st);
-				case LookAtKeyframe la: return new LookAtKeyframeVM(la);
-				case EventKeyframe evk: return new EventKeyframeVM(evk);
+				case SubtitleKeyframe st: return new SubtitleKeyframeVM(st, timeline);
+				case LookAtKeyframe la: return new LookAtKeyframeVM(la, timeline);
+				case EventKeyframe evk: return new EventKeyframeVM(evk, timeline);
 				default: return new GenericKeyframeVM(kf);
 			}
 		}
@@ -832,28 +871,50 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 	public class SubtitleKeyframeVM : GenericKeyframeVM
 	{
 		private SubtitleKeyframe Kf => (SubtitleKeyframe)Model;
+		private readonly CinematicTimelineVM _parent;
+		public string TextTooltip => TooltipOf(nameof(SubtitleKeyframe.Text));
 		public string Text { get => Kf.Text?.GetText() ?? ""; set { if (Kf.Text != null) { Kf.Text.SetText("English", value); OnPropertyChanged(); } } }
+		public int ArgCount => Kf.TextArgs?.Count ?? 0;
+		public ICommand EditTextArgsCommand { get; }
+		public bool Scroll { get => Kf.Scroll; set { Kf.Scroll = value; OnPropertyChanged(); } }
 		public float Duration { get => Kf.Duration; set { Kf.Duration = value; OnPropertyChanged(); } }
 		public float FadeSec { get => Kf.FadeSec; set { Kf.FadeSec = value; OnPropertyChanged(); } }
 		public int FontSize { get => Kf.FontSize; set { Kf.FontSize = value; OnPropertyChanged(); } }
+		public float GlowRadius { get => Kf.GlowRadius; set { Kf.GlowRadius = Clamp01(value); OnPropertyChanged(); } }
+		public float Blur { get => Kf.Blur; set { Kf.Blur = Clamp01(value); OnPropertyChanged(); } }
+		public float ShadowOffset { get => Kf.ShadowOffset; set { Kf.ShadowOffset = Clamp01(value); OnPropertyChanged(); } }
+		public float OutlineAmount { get => Kf.OutlineAmount; set { Kf.OutlineAmount = Clamp01(value); OnPropertyChanged(); } }
 		public string FontColor { get => Kf.FontColor; set { Kf.FontColor = HexColor.Normalize(value); OnPropertyChanged(); } }
 		public string Font { get => Kf.Font; set { Kf.Font = value; OnPropertyChanged(); } }
 		public SubtitleHPosition HPosition { get => Kf.HPosition; set { Kf.HPosition = value; OnPropertyChanged(); } }
 		public SubtitleVPosition VPosition { get => Kf.VPosition; set { Kf.VPosition = value; OnPropertyChanged(); } }
 		public Array HPositionOptions => Enum.GetValues(typeof(SubtitleHPosition));
 		public Array VPositionOptions => Enum.GetValues(typeof(SubtitleVPosition));
-		public string[] FontOptions
+		public string[] FontOptions => AllianceData.AvailableFonts();
+
+		public SubtitleKeyframeVM(SubtitleKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
 		{
-			get
-			{
-				return AllianceData.AvailableFonts();
-			}
+			_parent = parent;
+			EditTextArgsCommand = new RelayCommand(_ => EditorToolsManager.OpenEditor(
+				new SubtitleTextArgsEditor { TextArgs = kf.TextArgs },
+				_ => OnPropertyChanged(nameof(ArgCount)), _parent?.Scenario));
 		}
-		public SubtitleKeyframeVM(SubtitleKeyframe kf) : base(kf) { }
+
+		/// <summary>Editor-only wrapper so the text-arguments popup shows just that list, not the whole
+		/// keyframe. Holds the keyframe's list instance - edits apply directly.</summary>
+		private class SubtitleTextArgsEditor
+		{
+			[ConfigProperty(label: "Text arguments", tooltip: "Values filling the {0}, {1}... placeholders of the text, in order.")]
+			public List<ValueSource<string>> TextArgs;
+		}
+
+		// Text effect values are normalized 0..1 (Gauntlet brush style range).
+		private static float Clamp01(float v) => Math.Min(1f, Math.Max(0f, v));
 	}
 
 	public class LookAtKeyframeVM : GenericKeyframeVM
 	{
+		private readonly CinematicTimelineVM _parent;
 		private LookAtKeyframe Kf => (LookAtKeyframe)Model;
 		public CinematicTargetType TargetType
 		{
@@ -863,34 +924,116 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public bool IsPosition => Kf.Target.Type == CinematicTargetType.Position;
 		public bool IsAgent => Kf.Target.Type == CinematicTargetType.SpecificAgent;
 		public bool IsEntity => Kf.Target.Type == CinematicTargetType.SpecificEntity;
-		public string AgentVariable { get => (Kf.Target.AgentVariable as VariableValue<Agent>)?.VariableName; set { CinematicTargetEditing.EnsureAgentVariableSlot(Kf.Target).VariableName = value; OnPropertyChanged(); } }
-		public string EntityRefId { get => Kf.Target.Entity?.RefId; set { Kf.Target.Entity.RefId = value; OnPropertyChanged(); } }
+		public string AgentDisplay => CinematicTargetEditing.DescribeAgent(Kf.Target.AgentVariable);
+		public string EntityDisplay => CinematicTargetEditing.DescribeEntity(Kf.Target.Entity);
+		public ICommand EditAgentCommand { get; }
+		public ICommand EditEntityCommand { get; }
 		public float PositionX { get => Kf.Target.Position.Px; set { Kf.Target.Position.Px = value; OnPropertyChanged(); } }
 		public float PositionY { get => Kf.Target.Position.Py; set { Kf.Target.Position.Py = value; OnPropertyChanged(); } }
 		public float PositionZ { get => Kf.Target.Position.Pz; set { Kf.Target.Position.Pz = value; OnPropertyChanged(); } }
 		public Array TargetTypeOptions => Enum.GetValues(typeof(CinematicTargetType));
-		public LookAtKeyframeVM(LookAtKeyframe kf) : base(kf) { }
+
+		public LookAtKeyframeVM(LookAtKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
+		{
+			_parent = parent;
+			EditAgentCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditAgent(_parent, Kf.Target.AgentVariable,
+					value => { Kf.Target.AgentVariable = value; OnPropertyChanged(nameof(AgentDisplay)); }));
+			EditEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(_parent, Kf.Target.Entity,
+					value => { Kf.Target.Entity = value; OnPropertyChanged(nameof(EntityDisplay)); }));
+		}
 	}
 
 	public class EventKeyframeVM : GenericKeyframeVM
 	{
 		private EventKeyframe Kf => (EventKeyframe)Model;
+		private readonly CinematicTimelineVM _parent;
 		public int ActionCount => Kf.Actions?.Count ?? 0;
 		public ICommand EditActionsCommand { get; }
-		public EventKeyframeVM(EventKeyframe kf) : base(kf)
+		public EventKeyframeVM(EventKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
 		{
-			EditActionsCommand = new RelayCommand(_ => EditorToolsManager.OpenEditor(Kf, _ => OnPropertyChanged(nameof(ActionCount))));
+			_parent = parent;
+			EditActionsCommand = new RelayCommand(_ => EditorToolsManager.OpenEditor(Kf, _ => OnPropertyChanged(nameof(ActionCount)), _parent?.Scenario));
 		}
 	}
 
 	internal static class CinematicTargetEditing
 	{
-		public static VariableValue<Agent> EnsureAgentVariableSlot(CinematicTarget target)
+		/// <summary>Short label describing an agent target slot for the inspector hyperlinks.</summary>
+		public static string DescribeAgent(ValueSource<Agent> slot)
 		{
-			if (target.AgentVariable is VariableValue<Agent> variable) return variable;
-			variable = new VariableValue<Agent>();
-			target.AgentVariable = variable;
-			return variable;
+			return slot switch
+			{
+				null => "set target agent",
+				VariableValue<Agent> v when !string.IsNullOrEmpty(v.VariableName) => "Variable: " + v.VariableName,
+				VariableValue<Agent> => "set target agent",
+				_ => slot.GetType().Name,
+			};
 		}
+
+		/// <summary>Short label describing an entity target slot for the inspector hyperlinks.</summary>
+		public static string DescribeEntity(ValueSource<WeakGameEntity> slot)
+		{
+			return slot switch
+			{
+				null => "set target entity",
+				SceneEntityLiteralValue lit when !string.IsNullOrEmpty(lit.Ref?.RefId)
+					=> string.IsNullOrEmpty(lit.Ref.DisplayName) ? lit.Ref.RefId : lit.Ref.DisplayName,
+				SceneEntityLiteralValue => "set target entity",
+				VariableValue<WeakGameEntity> v when !string.IsNullOrEmpty(v.VariableName) => "Variable: " + v.VariableName,
+				_ => slot.GetType().Name,
+			};
+		}
+
+		/// <summary>Opens the value source editor popup on an agent target slot. The wrapper gives the
+		/// popup a single-field object to edit; its value is written back through <paramref name="apply"/>.</summary>
+		public static void EditAgent(CinematicTimelineVM timeline, ValueSource<Agent> current, Action<ValueSource<Agent>> apply)
+		{
+			var wrapper = new TargetAgentEditor { Agent = current ?? new VariableValue<Agent>() };
+			TimelineValueSourceEditor.Open(timeline, wrapper, nameof(TargetAgentEditor.Agent),
+				value => apply((ValueSource<Agent>)value));
+		}
+
+		/// <summary>Entity-flavoured counterpart of <see cref="EditAgent"/>.</summary>
+		public static void EditEntity(CinematicTimelineVM timeline, ValueSource<WeakGameEntity> current, Action<ValueSource<WeakGameEntity>> apply)
+		{
+			var wrapper = new TargetEntityEditor { Entity = current ?? new SceneEntityLiteralValue() };
+			TimelineValueSourceEditor.Open(timeline, wrapper, nameof(TargetEntityEditor.Entity),
+				value => apply((ValueSource<WeakGameEntity>)value));
+		}
+	}
+
+	/// <summary>Shows the value source editor popup for one field of a small wrapper object, with the
+	/// timeline's scenario as variable context (the wrapper has no scenario-editor parent chain).</summary>
+	internal static class TimelineValueSourceEditor
+	{
+		public static void Open(CinematicTimelineVM timeline, object wrapper, string fieldName, Action<object> onClosed)
+		{
+			var editorVm = new ObjectEditorViewModel(wrapper, null, null, fieldName, WeakGameEntity.Invalid, timeline?.Scenario);
+			FieldViewModel field = editorVm.Fields.FirstOrDefault(f => f.FieldInfo?.Name == fieldName)
+				?? editorVm.FieldCategories?.SelectMany(c => c.Fields).FirstOrDefault(f => f.FieldInfo?.Name == fieldName);
+			if (field == null) return;
+
+			var popup = new Alliance.Editor.GameModes.Story.Views.ValueSourceEditorPopup(field)
+			{
+				Owner = System.Windows.Application.Current?.Windows.OfType<System.Windows.Window>().FirstOrDefault(w => w.IsActive)
+			};
+			popup.Closed += (_, _) => onClosed(field.FieldInfo?.GetValue(wrapper));
+			popup.Show();
+		}
+	}
+
+	/// <summary>Single-field editor objects for the target slot popups (see CinematicTargetEditing).</summary>
+	internal class TargetAgentEditor
+	{
+		[ConfigProperty(label: "Agent target", tooltip: "Value source resolving to the Agent the camera frame is relative to.")]
+		public ValueSource<Agent> Agent = new VariableValue<Agent>();
+	}
+
+	internal class TargetEntityEditor
+	{
+		[ConfigProperty(label: "Entity target", tooltip: "Value source resolving to the Entity the camera frame is relative to: a scene entity (literal) or a variable holding one.")]
+		public ValueSource<WeakGameEntity> Entity = new SceneEntityLiteralValue();
 	}
 }

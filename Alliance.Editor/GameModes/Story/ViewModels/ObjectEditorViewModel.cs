@@ -27,6 +27,9 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private static Type _clipboardType;
 
 		protected ScenarioEditorViewModel ScenarioVM;
+		/// <summary>Scenario context for editors opened outside the scenario editor chain (e.g. the
+		/// cinematic timeline popups) - used by FindEnclosingScenario for variable dropdowns.</summary>
+		public Scenario ExplicitScenario { get; private set; }
 		protected FieldViewModel ParentVM;
 
 		public object Object { get; set; }
@@ -43,18 +46,18 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ICommand CopyCommand { get; }
 		public ICommand PasteCommand { get; }
 
-		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity)
+		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity, Scenario explicitScenario = null)
 		{
 			CopyCommand = new RelayCommand(_ => CopyObject());
 			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
-			InitVM(obj, parentVM, scenarioVM, title, gameEntity);
+			InitVM(obj, parentVM, scenarioVM, title, gameEntity, explicitScenario);
 		}
 
-		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title)
+		public ObjectEditorViewModel(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, Scenario explicitScenario = null)
 		{
 			CopyCommand = new RelayCommand(_ => CopyObject());
 			PasteCommand = new RelayCommand(_ => PasteObject(), _ => CanPaste);
-			InitVM(obj, parentVM, scenarioVM, title, WeakGameEntity.Invalid);
+			InitVM(obj, parentVM, scenarioVM, title, WeakGameEntity.Invalid, explicitScenario);
 		}
 
 		public ObjectEditorViewModel()
@@ -69,12 +72,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			}
 		}
 
-		private void InitVM(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity)
+		private void InitVM(object obj, FieldViewModel parentVM, ScenarioEditorViewModel scenarioVM, string title, WeakGameEntity gameEntity, Scenario explicitScenario = null)
 		{
 			ParentVM = parentVM;
 			GameEntity = gameEntity;
 			Object = obj;
 			ScenarioVM = scenarioVM;
+			// For editors opened outside the scenario editor chain (cinematic timeline popups): the
+			// scenario the data belongs to, so variable dropdowns can list its variables.
+			ExplicitScenario = explicitScenario;
 			Fields = new ObservableCollection<FieldViewModel>();
 			FieldCategories = new ObservableCollection<FieldCategoryViewModel>();
 
@@ -627,7 +633,15 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		public Scenario FindEnclosingScenario()
 		{
-			return FindEnclosing<Scenario>();
+			// Walk the editor chain; pick up ExplicitScenario declared on ANY editor in the chain
+			// (e.g. a popup wrapper opened outside the scenario-editor chain), not only on the entry
+			// editor - nested detail editors (value-source popups) call this from deeper in the chain.
+			for (ObjectEditorViewModel vm = this; vm != null; vm = vm.ParentVM?.parentViewModel)
+			{
+				if (vm.Object is Scenario result) return result;
+				if (vm.ExplicitScenario != null) return vm.ExplicitScenario;
+			}
+			return null;
 		}
 
 		public Act FindEnclosingAct()

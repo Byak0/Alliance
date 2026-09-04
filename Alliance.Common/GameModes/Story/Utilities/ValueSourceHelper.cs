@@ -307,6 +307,16 @@ namespace Alliance.Common.GameModes.Story.Utilities
 			return fields;
 		}
 
+		/// <summary>A slot is dynamic (needs syncing) when it is a Variable or FunctionCall - literals of
+		/// any shape resolve locally on every machine.</summary>
+		private static bool IsDynamicSlot(object value)
+		{
+			if (value == null) return false;
+			Type t = value.GetType();
+			return t.IsGenericType
+				&& (t.GetGenericTypeDefinition() == typeof(VariableValue<>) || t.GetGenericTypeDefinition() == typeof(FunctionCall<>));
+		}
+
 		private static void CollectDynamicSlots(object obj, List<DynamicSlot> slots, HashSet<object> visited)
 		{
 			if (obj == null || !visited.Add(obj)) return;
@@ -332,13 +342,10 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				{
 					if (typeof(ValueSource).IsAssignableFrom(ft))
 					{
-						object value = field.GetValue(obj);
-						// Literal slots need no sync; null slots neither. Both sides classify identically
-						// from the shared data, so the walk order matches.
-						if (value == null) continue;
-						Type runtimeType = value.GetType();
-						if (runtimeType.IsGenericType && runtimeType.GetGenericTypeDefinition() == typeof(LiteralValue<>)) continue;
-						slots.Add(new DynamicSlot(obj, field));
+						// Only Variable and FunctionCall slots are dynamic: literals (including
+						// SceneEntityLiteralValue) resolve locally and need no sync. Both sides classify
+						// identically from the shared data, so the walk order matches.
+						if (IsDynamicSlot(field.GetValue(obj))) slots.Add(new DynamicSlot(obj, field));
 						continue;
 					}
 
@@ -349,11 +356,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 						if (slotList == null) continue;
 						for (int i = 0; i < slotList.Count; i++)
 						{
-							object item = slotList[i];
-							if (item == null) continue;
-							Type itemType = item.GetType();
-							if (itemType.IsGenericType && itemType.GetGenericTypeDefinition() == typeof(LiteralValue<>)) continue;
-							slots.Add(new DynamicSlot(slotList, i));
+							if (IsDynamicSlot(slotList[i])) slots.Add(new DynamicSlot(slotList, i));
 						}
 						continue;
 					}

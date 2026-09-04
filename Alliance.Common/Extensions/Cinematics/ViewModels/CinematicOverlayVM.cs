@@ -1,4 +1,4 @@
-﻿#if !SERVER
+#if !SERVER
 using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using Alliance.Common.GameModes.Story.Models;
@@ -60,9 +60,11 @@ namespace Alliance.Common.Extensions.Cinematics
 			{
 				Subtitles.Clear();
 				_subtitleMap.Clear();
+				StructureVersion++;
 				return;
 			}
 
+			bool structureChanged = false;
 			_seenSources.Clear();
 			foreach (SubtitleState state in subtitles)
 			{
@@ -77,6 +79,7 @@ namespace Alliance.Common.Extensions.Cinematics
 					ApplyState(vm, state);
 					_subtitleMap[state.Source] = vm;
 					Subtitles.Add(vm);
+					structureChanged = true;
 				}
 			}
 
@@ -89,9 +92,15 @@ namespace Alliance.Common.Extensions.Cinematics
 				{
 					Subtitles.Remove(_subtitleMap[key]);
 					_subtitleMap.Remove(key);
+					structureChanged = true;
 				}
 			}
+			if (structureChanged) StructureVersion++;
 		}
+
+		/// <summary>Incremented whenever the Subtitles item set changes (add/remove/clear). Consumers
+		/// that cache item widgets by tree position use it to know when to re-collect.</summary>
+		internal int StructureVersion { get; private set; }
 
 		private static void ApplyState(SubtitleItemVM vm, in SubtitleState state)
 		{
@@ -106,13 +115,28 @@ namespace Alliance.Common.Extensions.Cinematics
 				SubtitleHPosition.Right => TextHorizontalAlignment.Right,
 				_ => TextHorizontalAlignment.Center
 			};
-			vm.VAlign = state.VAlign switch
+			if (state.ScrollProgress >= 0f)
 			{
-				SubtitleVPosition.Top => VerticalAlignment.Top,
-				SubtitleVPosition.Center => VerticalAlignment.Center,
-				_ => VerticalAlignment.Bottom
-			};
+				// Scrolling subtitles ignore the vertical position: top-anchored, the top margin slides
+				// from +screenH (text fully below the screen) to -screenH (fully above it), so the text
+				// enters and exits offscreen. Blank lines and duration control pacing and layout.
+				vm.VAlign = VerticalAlignment.Top;
+				float screenH = TaleWorlds.Engine.Screen.RealScreenResolution.y;
+				vm.MarginTop = screenH * (1f - 2f * state.ScrollProgress);
+			}
+			else
+			{
+				vm.VAlign = state.VAlign switch
+				{
+					SubtitleVPosition.Top => VerticalAlignment.Top,
+					SubtitleVPosition.Center => VerticalAlignment.Center,
+					_ => VerticalAlignment.Bottom
+				};
+				vm.MarginTop = DefaultMarginTop;
+			}
 		}
+
+		private const float DefaultMarginTop = 40f;
 	}
 
 	public class SubtitleItemVM : ViewModel
@@ -122,8 +146,9 @@ namespace Alliance.Common.Extensions.Cinematics
 		private int _fontSize = 28;
 		private string _fontColor = "#FFFFFFFF";
 		private string _font = "Galahad";
+		private float _marginTop = 40f;
 		private TextHorizontalAlignment _hAlign = TextHorizontalAlignment.Center;
-		private VerticalAlignment _vAlign = VerticalAlignment.Bottom;
+		private object _vAlign = VerticalAlignment.Bottom;
 
 		/// <summary>The keyframe this item renders - stable identity for recycling across frames.</summary>
 		internal object Source { get; set; }
@@ -172,9 +197,6 @@ namespace Alliance.Common.Extensions.Cinematics
 		[DataSourceProperty]
 		public Font FontObject => UIResourceManager.FontFactory?.GetMappedFontForLocalization(_font);
 
-		/// <summary>Text alignment inside the stretched subtitle widget. Must be
-		/// TaleWorlds.TwoDimension.TextHorizontalAlignment to match Brush.TextHorizontalAlignment.
-		/// Enum values are boxed for OnPropertyChangedWithValue (its generic overload is class-constrained).</summary>
 		[DataSourceProperty]
 		public TextHorizontalAlignment HAlign
 		{
@@ -182,12 +204,24 @@ namespace Alliance.Common.Extensions.Cinematics
 			set { if (value != _hAlign) { _hAlign = value; OnPropertyChangedWithValue((object)value); } }
 		}
 
+		/// <summary>Boxed VerticalAlignment. Typed as object on purpose: the widget fires its change
+		/// notification with a string ("Top"/"Center"/"Bottom") and Gauntlet pushes it back here.
+		/// Pushback strings are stored silently (never re-notified - a string cannot be written into
+		/// the enum widget property); only our own boxed enums are pushed forward, breaking the loop.</summary>
 		[DataSourceProperty]
-		public VerticalAlignment VAlign
+		public object VAlign
 		{
 			get => _vAlign;
-			set { if (value != _vAlign) { _vAlign = value; OnPropertyChangedWithValue((object)value); } }
+			set
+			{
+				if (Equals(value, _vAlign)) return;
+				_vAlign = value;
+				if (value is VerticalAlignment) OnPropertyChangedWithValue(value);
+			}
 		}
+
+		[DataSourceProperty]
+		public float MarginTop { get => _marginTop; set { _marginTop = value; OnPropertyChangedWithValue(value); } }
 	}
 }
 #endif

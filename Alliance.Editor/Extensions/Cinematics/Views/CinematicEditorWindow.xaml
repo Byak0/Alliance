@@ -6,7 +6,7 @@
 		xmlns:vm="clr-namespace:Alliance.Editor.Extensions.Cinematics.ViewModels"
 		xmlns:widgets="clr-namespace:Alliance.Editor.GameModes.Story.Widgets"
 		mc:Ignorable="d"
-		Title="{Binding Title}" Width="980" SizeToContent="Height" MinHeight="440"
+		Title="{Binding Title}" Width="980" Height="620" MinHeight="440" MinWidth="820"
 		FontFamily="Arial" FontSize="14"
 		Icon="pack://application:,,,/Alliance.Editor;component/Resources/alliance_ico.ico"
 		Loaded="Window_Loaded" Closing="Window_Closing">
@@ -43,7 +43,7 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
 			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 
@@ -70,11 +70,11 @@
 		<Grid Grid.Row="2" Margin="0,0,0,12">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*" />
-				<ColumnDefinition Width="340" />
+				<ColumnDefinition Width="400" />
 			</Grid.ColumnDefinitions>
 
 			<!-- Timeline -->
-			<Grid Grid.Column="0" VerticalAlignment="Top">
+			<Grid Grid.Column="0">
 				<Grid.ColumnDefinitions>
 					<ColumnDefinition Width="90" />
 					<ColumnDefinition Width="*" />
@@ -84,7 +84,7 @@
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
 					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
+					<RowDefinition Height="*" />
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
@@ -136,47 +136,49 @@
 				</Border>
 
 				<!-- Other tracks -->
-				<ItemsControl Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding OtherTracks}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Border BorderBrush="#FFD1D5DB" BorderThickness="0,0,0,1">
-								<Grid>
-									<Grid.ColumnDefinitions>
-										<ColumnDefinition Width="90" />
-										<ColumnDefinition Width="*" />
-										<ColumnDefinition Width="22" />
-									</Grid.ColumnDefinitions>
-									<StackPanel Grid.Column="0" VerticalAlignment="Center">
-										<TextBlock Text="{Binding DisplayName}" Style="{StaticResource TrackLabel}" Margin="0,0,0,2" />
-										<Button Content="+ Key" Height="20" Padding="2,0" FontSize="10" Command="{Binding AddKeyCommand}" />
-									</StackPanel>
-									<Border Grid.Column="1" Height="36" Background="#FFEDEFF2" ClipToBounds="True" MouseLeftButtonDown="Lane_MouseLeftButtonDown">
-										<Canvas Height="36">
-											<ItemsControl ItemsSource="{Binding Markers}">
-												<ItemsControl.ItemsPanel><ItemsPanelTemplate><Canvas Height="36" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
-												<ItemsControl.ItemContainerStyle>
-													<Style TargetType="ContentPresenter">
-														<Setter Property="Canvas.Left" Value="{Binding X}" />
-														<Setter Property="Canvas.Top" Value="18" />
-													</Style>
-												</ItemsControl.ItemContainerStyle>
-												<ItemsControl.ItemTemplate>
-													<DataTemplate>
-														<Thumb Template="{StaticResource KeyframeMarkerTemplate}" Cursor="Hand"
-															   PreviewMouseLeftButtonDown="Marker_PreviewMouseLeftButtonDown"
-															   DragDelta="Marker_DragDelta" ToolTip="{Binding Time, StringFormat={}{0:F2}s}" />
-													</DataTemplate>
-												</ItemsControl.ItemTemplate>
-											</ItemsControl>
-										</Canvas>
-									</Border>
-									<Button Grid.Column="2" Content="✕" FontSize="9" Width="18" Height="18" Margin="2,0,0,0" Padding="0"
-											VerticalAlignment="Center" Command="{Binding DeleteCommand}" ToolTip="Delete track" />
-								</Grid>
-							</Border>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
+				<ScrollViewer Grid.Row="3" Grid.ColumnSpan="3" VerticalScrollBarVisibility="Auto">
+					<ItemsControl ItemsSource="{Binding OtherTracks}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border BorderBrush="#FFD1D5DB" BorderThickness="0,0,0,1">
+									<Grid>
+										<Grid.ColumnDefinitions>
+											<ColumnDefinition Width="90" />
+											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="22" />
+										</Grid.ColumnDefinitions>
+										<StackPanel Grid.Column="0" VerticalAlignment="Center">
+											<TextBlock Text="{Binding DisplayName}" Style="{StaticResource TrackLabel}" Margin="0,0,0,2" />
+											<Button Content="+ Key" Height="20" Padding="2,0" FontSize="10" Command="{Binding AddKeyCommand}" />
+										</StackPanel>
+										<Border Grid.Column="1" Height="36" Background="#FFEDEFF2" ClipToBounds="True" MouseLeftButtonDown="Lane_MouseLeftButtonDown">
+											<Canvas Height="36">
+												<ItemsControl ItemsSource="{Binding Markers}">
+													<ItemsControl.ItemsPanel><ItemsPanelTemplate><Canvas Height="36" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+													<ItemsControl.ItemContainerStyle>
+														<Style TargetType="ContentPresenter">
+															<Setter Property="Canvas.Left" Value="{Binding X}" />
+															<Setter Property="Canvas.Top" Value="18" />
+														</Style>
+													</ItemsControl.ItemContainerStyle>
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<Thumb Template="{StaticResource KeyframeMarkerTemplate}" Cursor="Hand"
+																   PreviewMouseLeftButtonDown="Marker_PreviewMouseLeftButtonDown"
+																   DragDelta="Marker_DragDelta" ToolTip="{Binding Time, StringFormat={}{0:F2}s}" />
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+												</ItemsControl>
+											</Canvas>
+										</Border>
+										<Button Grid.Column="2" Content="✕" FontSize="9" Width="18" Height="18" Margin="2,0,0,0" Padding="0"
+												VerticalAlignment="Center" Command="{Binding DeleteCommand}" ToolTip="Delete track" />
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
 
 				<!-- Playhead cursor overlay -->
 				<Grid Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" IsHitTestVisible="False">
@@ -193,257 +195,294 @@
 
 			<!-- Inspector -->
 			<Border Grid.Column="1" Background="#FFF6F8FA" BorderBrush="#FFBFC6CF" BorderThickness="1" CornerRadius="4" Padding="12" Margin="12,20,0,0">
-				<Grid>
-					<TextBlock VerticalAlignment="Top" Foreground="#FF8A929C" FontSize="13"
-							   Text="Select or add a keyframe to edit it."
-							   Visibility="{Binding NoSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
+				<ScrollViewer VerticalScrollBarVisibility="Auto">
+					<Grid>
+						<TextBlock VerticalAlignment="Top" Foreground="#FF8A929C" FontSize="13"
+								   Text="Select or add a keyframe to edit it."
+								   Visibility="{Binding NoSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-					<!-- Camera keyframe inspector -->
-					<StackPanel Visibility="{Binding HasSelection, Converter={StaticResource BoolToVisibilityConverter}}">
-						<DockPanel Margin="0,0,0,8">
-							<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-								<Button Content="Copy" Width="56" Height="24" Margin="0,0,4,0" Padding="0" FontSize="11" Command="{Binding CopyKeyframeCommand}" />
-								<Button Content="Paste" Width="56" Height="24" Padding="0" FontSize="11" Command="{Binding PasteKeyframeCommand}" />
-							</StackPanel>
-							<TextBlock Text="Camera Key" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" />
-						</DockPanel>
-
-						<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-							<TextBlock Text="Interpolation" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
-							<ComboBox Width="120" FontSize="11"
-										ItemsSource="{Binding SelectedKeyframe.InterpolationOptions}"
-										SelectedItem="{Binding SelectedKeyframe.Interpolation}" />
-						</StackPanel>
-
-						<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsCatmullRom, Converter={StaticResource BoolToVisibilityConverter}}">
-							<TextBlock Text="Tension" FontSize="11" Foreground="#FF6B7480" />
-							<DockPanel>
-								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Tension}" DockPanel.Dock="Right" Margin="4,0,0,0" />
-								<Slider Value="{Binding SelectedKeyframe.Tension}" Minimum="-1" Maximum="1" SmallChange="0.05" VerticalAlignment="Center" />
-							</DockPanel>
-						</StackPanel>
-
-						<TextBlock Text="Time &amp; Lens" Foreground="#FF6B7480" FontSize="12" Margin="0,0,0,4" />
-						<Grid Margin="0,0,0,8">
-							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-							<Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
-							<StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,6,4">
-								<TextBlock Text="Time (s)" FontSize="11" Foreground="#FF6B7480" />
-								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Time}" />
-							</StackPanel>
-							<StackPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,4">
-								<TextBlock Text="FOV" FontSize="11" Foreground="#FF6B7480" />
-								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Fov}" />
-							</StackPanel>
-							<StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,6,0">
-								<TextBlock Text="Near" FontSize="11" Foreground="#FF6B7480" />
-								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.NearPlane}" />
-							</StackPanel>
-							<StackPanel Grid.Row="1" Grid.Column="1" Margin="6,0,0,0">
-								<TextBlock Text="Far" FontSize="11" Foreground="#FF6B7480" />
-								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FarPlane}" />
-							</StackPanel>
-						</Grid>
-
-					<TextBlock Text="Position" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
-							   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
-					<Grid Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
-						<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-						<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionX}" /></StackPanel>
-						<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionY}" /></StackPanel>
-						<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionZ}" /></StackPanel>
-					</Grid>
-
-					<TextBlock Text="Rotation (°)" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
-							   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
-					<Grid Margin="0,0,0,10" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
-						<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-						<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pitch" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationXDeg}" /></StackPanel>
-						<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Roll" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationYDeg}" /></StackPanel>
-						<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Yaw" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationZDeg}" /></StackPanel>
-					</Grid>
-
-					<!-- Relative frame (target + offset) -->
-					<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-						<TextBlock Text="Frame mode" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
-						<ComboBox Width="110" FontSize="11"
-									ItemsSource="{Binding SelectedKeyframe.FrameModeOptions}"
-									SelectedItem="{Binding SelectedKeyframe.FrameMode}" />
-						<TextBlock Text="Tracking" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="12,0,6,0"
-								   Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}" />
-						<ComboBox Width="90" FontSize="11"
-									Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}"
-									ItemsSource="{Binding SelectedKeyframe.TrackModeOptions}"
-									SelectedItem="{Binding SelectedKeyframe.TrackMode}" />
-					</StackPanel>
-					<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}">
-						<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-							<TextBlock Text="Frame target" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
-							<ComboBox Width="120" FontSize="11"
-										ItemsSource="{Binding SelectedKeyframe.TargetTypeOptions}"
-										SelectedItem="{Binding SelectedKeyframe.FrameTargetType}" />
-						</StackPanel>
-						<TextBox Width="220" FontSize="11" Margin="0,0,0,4" ToolTip="Scenario variable holding the Agent"
-								 Text="{Binding SelectedKeyframe.FrameTargetAgentVariable}"
-								 Visibility="{Binding SelectedKeyframe.FrameTargetIsAgent, Converter={StaticResource BoolToVisibilityConverter}}" />
-						<TextBox Width="220" FontSize="11" Margin="0,0,0,4" ToolTip="AL_EntityMarker GUID of the entity"
-								 Text="{Binding SelectedKeyframe.FrameTargetEntityRefId}"
-								 Visibility="{Binding SelectedKeyframe.FrameTargetIsEntity, Converter={StaticResource BoolToVisibilityConverter}}" />
-						<Grid Visibility="{Binding SelectedKeyframe.FrameTargetIsPosition, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,4">
-							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pos X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosX}" /></StackPanel>
-							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Pos Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosY}" /></StackPanel>
-							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Pos Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FrameTargetPosZ}" /></StackPanel>
-						</Grid>
-						<TextBlock Text="Offset (target space)" FontSize="11" Foreground="#FF6B7480" Margin="0,2,0,2" />
-						<Grid>
-							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetX}" /></StackPanel>
-							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetY}" /></StackPanel>
-							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetZ}" /></StackPanel>
-						</Grid>
-					</StackPanel>
-
-						<StackPanel Orientation="Horizontal">
-							<Button Content="Capture View" Height="30" Width="120" Margin="0,0,6,0" Padding="0" VerticalContentAlignment="Center" Command="{Binding SelectedKeyframe.CaptureCommand}" />
-							<Button Content="Delete" Height="30" Width="80" Padding="0" VerticalContentAlignment="Center" Command="{Binding SelectedKeyframe.DeleteCommand}" />
-						</StackPanel>
-					</StackPanel>
-
-					<!-- Generic keyframe inspector -->
-					<StackPanel Visibility="{Binding HasGenericSelection, Converter={StaticResource BoolToVisibilityConverter}}">
-						<DockPanel Margin="0,0,0,8">
-							<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-								<Button Content="Copy" Width="56" Height="24" Margin="0,0,4,0" Padding="0" FontSize="11" Command="{Binding CopyKeyframeCommand}" />
-								<Button Content="Paste" Width="56" Height="24" Padding="0" FontSize="11" Command="{Binding PasteKeyframeCommand}" />
-							</StackPanel>
-							<TextBlock Text="{Binding SelectedGenericKeyframe.KeyTypeName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" />
-						</DockPanel>
-
-						<StackPanel Margin="0,0,0,8">
-							<TextBlock Text="Time (s)" FontSize="11" Foreground="#FF6B7480" />
-							<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedGenericKeyframe.Time}" />
-						</StackPanel>
-
-						<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-							<TextBlock Text="Interpolation" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
-							<ComboBox Width="120" FontSize="11"
-										ItemsSource="{Binding SelectedGenericKeyframe.InterpolationOptions}"
-										SelectedItem="{Binding SelectedGenericKeyframe.Interpolation}" />
-						</StackPanel>
-
-						<ContentControl Content="{Binding SelectedGenericKeyframe}">
-							<ContentControl.Resources>
-								<DataTemplate DataType="{x:Type vm:OverlayKeyframeVM}">
-									<StackPanel>
-										<TextBlock Text="Letterbox" FontSize="11" Foreground="#FF6B7480" />
-										<DockPanel Margin="0,0,0,6">
-											<TextBox Text="{Binding Letterbox, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
-											<Slider Value="{Binding Letterbox}" Minimum="0" Maximum="1" SmallChange="0.01" VerticalAlignment="Center" />
-										</DockPanel>
-										<TextBlock Text="Black" FontSize="11" Foreground="#FF6B7480" />
-										<DockPanel>
-											<TextBox Text="{Binding FadeAlpha, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
-											<Slider Value="{Binding FadeAlpha}" Minimum="0" Maximum="1" SmallChange="0.01" VerticalAlignment="Center" />
-										</DockPanel>
-									</StackPanel>
-								</DataTemplate>
-							<DataTemplate DataType="{x:Type vm:AudioKeyframeVM}">
-									<StackPanel>
-										<TextBlock Text="Sound event" FontSize="11" Foreground="#FF6B7480" />
-										<TextBox Text="{Binding SoundEvent}" Margin="0,0,0,6" />
-										<TextBlock Text="Volume" FontSize="11" Foreground="#FF6B7480" />
-										<DockPanel>
-											<TextBox Text="{Binding Volume, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
-											<Slider Value="{Binding Volume}" Minimum="0" Maximum="2" SmallChange="0.05" VerticalAlignment="Center" />
-										</DockPanel>
-										<CheckBox Content="Loop" IsChecked="{Binding Loop}" Margin="0,6,0,0" />
-									</StackPanel>
-								</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:EntityVisibilityKeyframeVM}">
-									<CheckBox Content="Visible" IsChecked="{Binding Visible}" />
-								</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:AgentAnimationKeyframeVM}">
-									<StackPanel>
-										<TextBlock Text="Target role" FontSize="11" Foreground="#FF6B7480" />
-										<TextBox Text="{Binding TargetRole}" Margin="0,0,0,6" />
-										<TextBlock Text="Action name" FontSize="11" Foreground="#FF6B7480" />
-										<TextBox Text="{Binding ActionName}" Margin="0,0,0,6" />
-										<CheckBox Content="Loop" IsChecked="{Binding Loop}" />
-									</StackPanel>
-								</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:SubtitleKeyframeVM}">
-									<StackPanel>
-										<TextBlock Text="Text" FontSize="11" Foreground="#FF6B7480" />
-										<TextBox Text="{Binding Text}" Margin="0,0,0,6" AcceptsReturn="True" MinLines="2" />
-										<Grid Margin="0,0,0,6">
-											<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-											<StackPanel Grid.Column="0" Margin="0,0,4,0">
-												<TextBlock Text="Duration (s)" FontSize="11" Foreground="#FF6B7480" />
-												<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding Duration}" />
-											</StackPanel>
-											<StackPanel Grid.Column="1" Margin="4,0,0,0">
-												<TextBlock Text="Fade (s)" FontSize="11" Foreground="#FF6B7480" />
-												<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FadeSec}" />
-											</StackPanel>
-										</Grid>
-										<Grid Margin="0,0,0,6">
-											<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-											<StackPanel Grid.Column="0" Margin="0,0,4,0">
-												<TextBlock Text="Font size" FontSize="11" Foreground="#FF6B7480" />
-												<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FontSize}" />
-											</StackPanel>
-										<StackPanel Grid.Column="1" Margin="4,0,0,0">
-											<TextBlock Text="Color" FontSize="11" Foreground="#FF6B7480" />
-											<widgets:ColorPickerBox Text="{Binding FontColor}" FontSize="11" Height="24" VerticalAlignment="Center" />
-										</StackPanel>
-										</Grid>
-									<TextBlock Text="Font" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
-									<ComboBox FontSize="11" ItemsSource="{Binding FontOptions}" SelectedItem="{Binding Font}" Margin="0,0,0,6" />
-									<Grid Margin="0,0,0,6">
-										<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-										<StackPanel Grid.Column="0" Margin="0,0,4,0">
-											<TextBlock Text="Horizontal" FontSize="11" Foreground="#FF6B7480" />
-											<ComboBox FontSize="11" ItemsSource="{Binding HPositionOptions}" SelectedItem="{Binding HPosition}" />
-										</StackPanel>
-											<StackPanel Grid.Column="1" Margin="4,0,0,0">
-												<TextBlock Text="Vertical" FontSize="11" Foreground="#FF6B7480" />
-												<ComboBox FontSize="11" ItemsSource="{Binding VPositionOptions}" SelectedItem="{Binding VPosition}" />
-											</StackPanel>
-										</Grid>
-									</StackPanel>
-								</DataTemplate>
-							<DataTemplate DataType="{x:Type vm:LookAtKeyframeVM}">
-								<StackPanel>
-									<TextBlock Text="Target" FontSize="11" Foreground="#FF6B7480" />
-									<ComboBox FontSize="11" ItemsSource="{Binding TargetTypeOptions}" SelectedItem="{Binding TargetType}" Margin="0,0,0,6" />
-									<TextBox Text="{Binding AgentVariable}" Margin="0,0,0,6" ToolTip="Scenario variable holding the Agent"
-											 Visibility="{Binding IsAgent, Converter={StaticResource BoolToVisibilityConverter}}" />
-									<TextBox Text="{Binding EntityRefId}" Margin="0,0,0,6" ToolTip="AL_EntityMarker GUID of the entity"
-											 Visibility="{Binding IsEntity, Converter={StaticResource BoolToVisibilityConverter}}" />
-									<Grid Visibility="{Binding IsPosition, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,6">
-										<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
-										<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionX}" /></StackPanel>
-										<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionY}" /></StackPanel>
-										<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionZ}" /></StackPanel>
-									</Grid>
+						<!-- Camera keyframe inspector -->
+						<StackPanel Visibility="{Binding HasSelection, Converter={StaticResource BoolToVisibilityConverter}}">
+							<DockPanel Margin="0,0,0,8">
+								<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+									<Button Content="Copy" Width="56" Height="24" Margin="0,0,4,0" Padding="0" FontSize="11" Command="{Binding CopyKeyframeCommand}" />
+									<Button Content="Paste" Width="56" Height="24" Padding="0" FontSize="11" Command="{Binding PasteKeyframeCommand}" />
 								</StackPanel>
-							</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:EventKeyframeVM}">
-									<StackPanel>
-										<Button Content="Edit Actions" Height="28" Margin="0,0,0,4" Padding="8,0" Command="{Binding EditActionsCommand}" />
-										<TextBlock FontSize="11" Foreground="#FF6B7480" Text="{Binding ActionCount, StringFormat='{}{0} action(s)'}" />
-									</StackPanel>
-								</DataTemplate>
-								<DataTemplate DataType="{x:Type vm:GenericKeyframeVM}">
-									<TextBlock Text="No inline editor for this type." FontSize="12" Foreground="#FF8A929C" />
-								</DataTemplate>
-							</ContentControl.Resources>
-						</ContentControl>
+								<TextBlock Text="Camera Key" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" />
+							</DockPanel>
 
-						<Button Content="Delete" Height="30" Width="80" Margin="0,10,0,0" Padding="0" VerticalContentAlignment="Center" Command="{Binding DeleteGenericKeyframeCommand}" />
-					</StackPanel>
-				</Grid>
+							<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+								<TextBlock Text="Interpolation" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+								<ComboBox Width="120" FontSize="11"
+											ItemsSource="{Binding SelectedKeyframe.InterpolationOptions}"
+											SelectedItem="{Binding SelectedKeyframe.Interpolation}" />
+							</StackPanel>
+
+							<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsCatmullRom, Converter={StaticResource BoolToVisibilityConverter}}">
+								<TextBlock Text="Tension" FontSize="11" Foreground="#FF6B7480" />
+								<DockPanel>
+									<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Tension}" DockPanel.Dock="Right" Margin="4,0,0,0" />
+									<Slider Value="{Binding SelectedKeyframe.Tension}" Minimum="-1" Maximum="1" SmallChange="0.05" VerticalAlignment="Center" />
+								</DockPanel>
+							</StackPanel>
+
+							<TextBlock Text="Time &amp; Lens" Foreground="#FF6B7480" FontSize="12" Margin="0,0,0,4" />
+							<Grid Margin="0,0,0,8">
+								<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+								<Grid.RowDefinitions><RowDefinition Height="Auto" /><RowDefinition Height="Auto" /></Grid.RowDefinitions>
+								<StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,6,4">
+									<TextBlock Text="Time (s)" FontSize="11" Foreground="#FF6B7480" />
+									<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Time}" />
+								</StackPanel>
+								<StackPanel Grid.Row="0" Grid.Column="1" Margin="6,0,0,4">
+									<TextBlock Text="FOV" FontSize="11" Foreground="#FF6B7480" />
+									<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.Fov}" />
+								</StackPanel>
+								<StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,6,0">
+									<TextBlock Text="Near" FontSize="11" Foreground="#FF6B7480" />
+									<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.NearPlane}" />
+								</StackPanel>
+								<StackPanel Grid.Row="1" Grid.Column="1" Margin="6,0,0,0">
+									<TextBlock Text="Far" FontSize="11" Foreground="#FF6B7480" />
+									<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.FarPlane}" />
+								</StackPanel>
+							</Grid>
+
+						<TextBlock Text="Position" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
+								   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<Grid Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
+							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionX}" /></StackPanel>
+							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionY}" /></StackPanel>
+							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.PositionZ}" /></StackPanel>
+						</Grid>
+
+						<TextBlock Text="Rotation (°)" Foreground="#FF6B7480" FontSize="12" Margin="0,4,0,4"
+								   Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}" />
+						<Grid Margin="0,0,0,10" Visibility="{Binding SelectedKeyframe.IsFrameAbsolute, Converter={StaticResource BoolToVisibilityConverter}}">
+							<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+							<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="Pitch" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationXDeg}" /></StackPanel>
+							<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Roll" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationYDeg}" /></StackPanel>
+							<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Yaw" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.RotationZDeg}" /></StackPanel>
+						</Grid>
+
+						<!-- Relative frame (target + offset) -->
+						<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+							<TextBlock Text="Frame mode" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+							<ComboBox Width="110" FontSize="11"
+										ItemsSource="{Binding SelectedKeyframe.FrameModeOptions}"
+										SelectedItem="{Binding SelectedKeyframe.FrameMode}" />
+							<TextBlock Text="Tracking" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="12,0,6,0"
+									   Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}" />
+							<ComboBox Width="90" FontSize="11"
+										Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}"
+										ItemsSource="{Binding SelectedKeyframe.TrackModeOptions}"
+										SelectedItem="{Binding SelectedKeyframe.TrackMode}" />
+						</StackPanel>
+						<StackPanel Margin="0,0,0,8" Visibility="{Binding SelectedKeyframe.IsFrameRelative, Converter={StaticResource BoolToVisibilityConverter}}">
+							<StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+								<TextBlock Text="Frame target" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+								<ComboBox Width="120" FontSize="11"
+											ItemsSource="{Binding SelectedKeyframe.FrameTargetTypeOptions}"
+											SelectedItem="{Binding SelectedKeyframe.FrameTargetType}" />
+							</StackPanel>
+							<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+									Visibility="{Binding SelectedKeyframe.FrameTargetIsAgent, Converter={StaticResource BoolToVisibilityConverter}}"
+									Command="{Binding SelectedKeyframe.EditFrameTargetAgentCommand}" ToolTip="Open value source editor">
+								<TextBlock Text="{Binding SelectedKeyframe.FrameTargetAgentDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+							</Button>
+							<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+									Visibility="{Binding SelectedKeyframe.FrameTargetIsEntity, Converter={StaticResource BoolToVisibilityConverter}}"
+									Command="{Binding SelectedKeyframe.EditFrameTargetEntityCommand}" ToolTip="Open entity editor">
+								<TextBlock Text="{Binding SelectedKeyframe.FrameTargetEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+							</Button>
+							<TextBlock Text="Offset (target space)" FontSize="11" Foreground="#FF6B7480" Margin="0,2,0,2" />
+							<Grid>
+								<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+								<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetX}" /></StackPanel>
+								<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetY}" /></StackPanel>
+								<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedKeyframe.OffsetZ}" /></StackPanel>
+							</Grid>
+						</StackPanel>
+
+							<StackPanel Orientation="Horizontal">
+								<Button Content="Capture View" Height="30" Width="120" Margin="0,0,6,0" Padding="0" VerticalContentAlignment="Center" Command="{Binding SelectedKeyframe.CaptureCommand}" />
+								<Button Content="Delete" Height="30" Width="80" Padding="0" VerticalContentAlignment="Center" Command="{Binding SelectedKeyframe.DeleteCommand}" />
+							</StackPanel>
+						</StackPanel>
+
+						<!-- Generic keyframe inspector -->
+						<StackPanel Visibility="{Binding HasGenericSelection, Converter={StaticResource BoolToVisibilityConverter}}">
+							<DockPanel Margin="0,0,0,8">
+								<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+									<Button Content="Copy" Width="56" Height="24" Margin="0,0,4,0" Padding="0" FontSize="11" Command="{Binding CopyKeyframeCommand}" />
+									<Button Content="Paste" Width="56" Height="24" Padding="0" FontSize="11" Command="{Binding PasteKeyframeCommand}" />
+								</StackPanel>
+								<TextBlock Text="{Binding SelectedGenericKeyframe.KeyTypeName}" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" />
+							</DockPanel>
+
+							<StackPanel Margin="0,0,0,8">
+								<TextBlock Text="Time (s)" FontSize="11" Foreground="#FF6B7480" />
+								<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding SelectedGenericKeyframe.Time}" />
+							</StackPanel>
+
+							<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+								<TextBlock Text="Interpolation" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,6,0" />
+								<ComboBox Width="120" FontSize="11"
+											ItemsSource="{Binding SelectedGenericKeyframe.InterpolationOptions}"
+											SelectedItem="{Binding SelectedGenericKeyframe.Interpolation}" />
+							</StackPanel>
+
+							<ContentControl Content="{Binding SelectedGenericKeyframe}">
+								<ContentControl.Resources>
+									<DataTemplate DataType="{x:Type vm:OverlayKeyframeVM}">
+										<StackPanel>
+											<TextBlock Text="Letterbox" FontSize="11" Foreground="#FF6B7480" />
+											<DockPanel Margin="0,0,0,6">
+												<TextBox Text="{Binding Letterbox, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
+												<Slider Value="{Binding Letterbox}" Minimum="0" Maximum="1" SmallChange="0.01" VerticalAlignment="Center" />
+											</DockPanel>
+											<TextBlock Text="Black" FontSize="11" Foreground="#FF6B7480" />
+											<DockPanel>
+												<TextBox Text="{Binding FadeAlpha, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
+												<Slider Value="{Binding FadeAlpha}" Minimum="0" Maximum="1" SmallChange="0.01" VerticalAlignment="Center" />
+											</DockPanel>
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:AudioKeyframeVM}">
+										<StackPanel>
+											<TextBlock Text="Sound event" FontSize="11" Foreground="#FF6B7480" />
+											<TextBox Text="{Binding SoundEvent}" Margin="0,0,0,6" />
+											<TextBlock Text="Volume" FontSize="11" Foreground="#FF6B7480" />
+											<DockPanel>
+												<TextBox Text="{Binding Volume, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
+												<Slider Value="{Binding Volume}" Minimum="0" Maximum="2" SmallChange="0.05" VerticalAlignment="Center" />
+											</DockPanel>
+											<CheckBox Content="Loop" IsChecked="{Binding Loop}" Margin="0,6,0,0" />
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:EntityVisibilityKeyframeVM}">
+										<CheckBox Content="Visible" IsChecked="{Binding Visible}" />
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:AgentAnimationKeyframeVM}">
+										<StackPanel>
+											<TextBlock Text="Target role" FontSize="11" Foreground="#FF6B7480" />
+											<TextBox Text="{Binding TargetRole}" Margin="0,0,0,6" />
+											<TextBlock Text="Action name" FontSize="11" Foreground="#FF6B7480" />
+											<TextBox Text="{Binding ActionName}" Margin="0,0,0,6" />
+											<CheckBox Content="Loop" IsChecked="{Binding Loop}" />
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:SubtitleKeyframeVM}">
+										<StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="Text" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" />
+												<Image Source="pack://application:,,,/Alliance.Editor;component/Resources/alliance_help2.png"
+													   Width="16" Height="16" Margin="4,0,0,0" VerticalAlignment="Center" Cursor="Hand"
+													   ToolTip="{Binding TextTooltip}" />
+											</StackPanel>
+											<TextBox Text="{Binding Text}" Margin="0,0,0,4" AcceptsReturn="True" MinLines="2" MaxHeight="160"
+													 TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+											<Button Content="Edit text arguments" Height="24" Margin="0,0,0,6" Padding="8,0" FontSize="11"
+													Command="{Binding EditTextArgsCommand}" ToolTip="Values filling {0}, {1}... placeholders in the text" />
+											<CheckBox Content="Scrolling (credits-style)" IsChecked="{Binding Scroll}" Margin="0,0,0,6" />
+											<Grid Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0">
+													<TextBlock Text="Duration (s)" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding Duration}" />
+												</StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,0,0">
+													<TextBlock Text="Fade (s)" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FadeSec}" />
+												</StackPanel>
+											</Grid>
+											<Grid Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0">
+													<TextBlock Text="Font size" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FontSize}" />
+												</StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,0,0">
+													<TextBlock Text="Color" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:ColorPickerBox Text="{Binding FontColor}" FontSize="11" Height="24" VerticalAlignment="Center" />
+												</StackPanel>
+											</Grid>
+											<Grid Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0">
+													<TextBlock Text="Glow radius" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding GlowRadius}" />
+												</StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,0,0">
+													<TextBlock Text="Blur" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding Blur}" />
+												</StackPanel>
+											</Grid>
+											<Grid Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0">
+													<TextBlock Text="Shadow offset" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ShadowOffset}" />
+												</StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,0,0">
+													<TextBlock Text="Outline amount" FontSize="11" Foreground="#FF6B7480" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding OutlineAmount}" />
+												</StackPanel>
+											</Grid>
+											<TextBlock Text="Font" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+											<ComboBox FontSize="11" ItemsSource="{Binding FontOptions}" SelectedItem="{Binding Font}" Margin="0,0,0,6" />
+											<Grid Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0">
+													<TextBlock Text="Horizontal" FontSize="11" Foreground="#FF6B7480" />
+													<ComboBox FontSize="11" ItemsSource="{Binding HPositionOptions}" SelectedItem="{Binding HPosition}" />
+												</StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,0,0">
+													<TextBlock Text="Vertical" FontSize="11" Foreground="#FF6B7480" />
+													<ComboBox FontSize="11" ItemsSource="{Binding VPositionOptions}" SelectedItem="{Binding VPosition}" />
+												</StackPanel>
+											</Grid>
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:LookAtKeyframeVM}">
+										<StackPanel>
+											<TextBlock Text="Target" FontSize="11" Foreground="#FF6B7480" />
+											<ComboBox FontSize="11" ItemsSource="{Binding TargetTypeOptions}" SelectedItem="{Binding TargetType}" Margin="0,0,0,6" />
+											<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,6" HorizontalAlignment="Left"
+													Visibility="{Binding IsAgent, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding EditAgentCommand}" ToolTip="Open value source editor">
+												<TextBlock Text="{Binding AgentDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+											</Button>
+											<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,6" HorizontalAlignment="Left"
+													Visibility="{Binding IsEntity, Converter={StaticResource BoolToVisibilityConverter}}"
+													Command="{Binding EditEntityCommand}" ToolTip="Open value source editor">
+												<TextBlock Text="{Binding EntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+											</Button>
+											<Grid Visibility="{Binding IsPosition, Converter={StaticResource BoolToVisibilityConverter}}" Margin="0,0,0,6">
+												<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+												<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionX}" /></StackPanel>
+												<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionY}" /></StackPanel>
+												<StackPanel Grid.Column="2" Margin="4,0,0,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PositionZ}" /></StackPanel>
+											</Grid>
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:EventKeyframeVM}">
+										<StackPanel>
+											<Button Content="Edit Actions" Height="28" Margin="0,0,0,4" Padding="8,0" Command="{Binding EditActionsCommand}" />
+											<TextBlock FontSize="11" Foreground="#FF6B7480" Text="{Binding ActionCount, StringFormat='{}{0} action(s)'}" />
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:GenericKeyframeVM}">
+										<TextBlock Text="No inline editor for this type." FontSize="12" Foreground="#FF8A929C" />
+									</DataTemplate>
+								</ContentControl.Resources>
+							</ContentControl>
+
+							<Button Content="Delete" Height="30" Width="80" Margin="0,10,0,0" Padding="0" VerticalContentAlignment="Center" Command="{Binding DeleteGenericKeyframeCommand}" />
+						</StackPanel>
+					</Grid>
+				</ScrollViewer>
 			</Border>
 		</Grid>
 

@@ -384,6 +384,8 @@ namespace Alliance.Common.Extensions.Cinematics
 				_overlayLayer = null;
 				_overlayVM = null;
 				_overlayScreen = null;
+				_subtitleWidgets = null;
+				_subtitleWidgetsVersion = -1;
 			}
 			Scene restoreScene = EffectsScene;
 			if (_photoModeOn && restoreScene != null) { restoreScene.SetPhotoModeOn(false); _photoModeOn = false; }
@@ -426,7 +428,53 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public void OnSubtitles(List<SubtitleState> subtitles)
 		{
-			_overlayVM?.UpdateSubtitles(subtitles);
+			if (_overlayVM == null) return;
+			_overlayVM.UpdateSubtitles(subtitles);
+			ApplySubtitleTextStyles(subtitles);
+		}
+
+		/// <summary>Writes glow/blur/shadow/outline on each subtitle widget's own brush. Widgets render
+		/// from a per-widget CLONE of the brush (BrushWidget.Brush), and these style properties have no
+		/// one-level pass-through on Brush to bind from the prefab like FontSize - so they are set from
+		/// code, matched to the subtitle items by list order. The widget list is cached and re-collected
+		/// only when the subtitle item set changes; styles themselves are re-applied every call.</summary>
+		private void ApplySubtitleTextStyles(List<SubtitleState> states)
+		{
+			Widget root = _overlayLayer?.UIContext?.Root;
+			if (root == null || states == null || states.Count == 0) return;
+
+			if (_subtitleWidgets == null || _subtitleWidgetsVersion != _overlayVM.StructureVersion)
+			{
+				List<Widget> widgets = _subtitleWidgets ??= new List<Widget>();
+				widgets.Clear();
+				CollectWidgetsById(root, "SubtitleText", widgets);
+				_subtitleWidgetsVersion = _overlayVM.StructureVersion;
+			}
+
+			int count = Math.Min(_subtitleWidgets.Count, states.Count);
+			for (int i = 0; i < count; i++)
+			{
+				if (_subtitleWidgets[i] is not BrushWidget brushWidget) continue;
+				TaleWorlds.GauntletUI.Style style = brushWidget.Brush.DefaultStyle;
+				SubtitleState state = states[i];
+				if (style.TextGlowRadius != state.GlowRadius) style.TextGlowRadius = state.GlowRadius;
+				if (style.TextBlur != state.Blur) style.TextBlur = state.Blur;
+				if (style.TextShadowOffset != state.ShadowOffset) style.TextShadowOffset = state.ShadowOffset;
+				if (style.TextOutlineAmount != state.OutlineAmount) style.TextOutlineAmount = state.OutlineAmount;
+			}
+
+			// Item widgets are created during layout - a subtitle added this frame may have no widget
+			// yet. Force a re-collect next call until the tree catches up.
+			if (_subtitleWidgets.Count < states.Count) _subtitleWidgetsVersion = -1;
+		}
+
+		private List<Widget> _subtitleWidgets;
+		private int _subtitleWidgetsVersion = -1;
+
+		private static void CollectWidgetsById(Widget widget, string id, List<Widget> found)
+		{
+			if (widget.Id == id) found.Add(widget);
+			for (int i = 0; i < widget.ChildCount; i++) CollectWidgetsById(widget.GetChild(i), id, found);
 		}
 
 		public void OnAudio(string soundEvent, float volume, bool loop)
@@ -504,8 +552,9 @@ namespace Alliance.Common.Extensions.Cinematics
 				case CinematicTargetType.SpecificAgent:
 					{
 						// The slot was rewritten to a Literal by ApplyDynamicValues, so resolving it is a
-						// plain local lookup of the server-picked agent (null in editor preview).
-						Agent agent = target.AgentVariable?.Resolve(null, null);
+						// plain local lookup of the server-picked agent. Unrewritten variable slots (editor
+						// preview) fall back to the scenario globals store (null in editor preview without one).
+						Agent agent = target.AgentVariable?.Resolve(null);
 						if (agent != null)
 						{
 							return new MatrixFrame(agent.Frame.rotation, agent.Position + new Vec3(0f, 0f, agent.GetEyeGlobalHeight()));
@@ -516,13 +565,11 @@ namespace Alliance.Common.Extensions.Cinematics
 
 				case CinematicTargetType.SpecificEntity:
 					{
-						if (target.Entity == null || string.IsNullOrEmpty(target.Entity.RefId)) return null;
-						try
-						{
-							WeakGameEntity wge = BuildSystem.EntityMarkerIndex.Resolve(target.Entity.RefId);
-							if (wge.IsValid) return wge.GetGlobalFrame();
-						}
-						catch { }
+						// Literal scene-entity slots resolve locally; variable/function slots were
+						// rewritten with the server-resolved entity.
+						WeakGameEntity entity = target.Entity?.Resolve(null) ?? WeakGameEntity.Invalid;
+						if (entity.IsValid) return entity.GetGlobalFrame();
+						WarnUnresolvedOnce(target.Type, null);
 						return null;
 					}
 

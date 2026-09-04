@@ -6,9 +6,9 @@
 				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 					<Children>
 						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center"
-									Text="@Title" Brush="Cinematic.Subtitle" Brush.FontColor="#FFFFFFFF" Brush.FontSize="36" />
+									Text="@Title" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFFFFFFF" Brush.FontSize="36" />
 						<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80"
-									Text="@CounterText" Brush="Cinematic.Subtitle" Brush.FontColor="#FFDDDDDD" Brush.FontSize="28" />
+									Text="@CounterText" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFDDDDDD" Brush.FontSize="28" />
 					</Children>
 				</Widget>
 			</Children>

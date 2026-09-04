@@ -13,6 +13,7 @@ namespace Alliance.Common.Extensions.BuildSystem
 	public static class EntityMarkerIndex
 	{
 		private static Dictionary<string, WeakGameEntity> _byRefId;
+		private static Dictionary<WeakGameEntity, string> _byEntity;
 		private static Scene _indexedScene;
 
 		/// <summary>Resolves a marker RefId to its entity, or <see cref="WeakGameEntity.Invalid"/>.</summary>
@@ -23,10 +24,19 @@ namespace Alliance.Common.Extensions.BuildSystem
 			return _byRefId.TryGetValue(refId, out WeakGameEntity weak) ? weak : WeakGameEntity.Invalid;
 		}
 
+		/// <summary>Reverse lookup: the marker RefId of an entity, or null when it has none.</summary>
+		public static string GetRefId(WeakGameEntity entity)
+		{
+			EnsureBuilt();
+			if (!entity.IsValid || _byEntity == null) return null;
+			return _byEntity.TryGetValue(entity, out string refId) ? refId : null;
+		}
+
 		/// <summary>Rebuilds the index from the given scene.</summary>
 		public static void Build(Scene scene)
 		{
 			_byRefId = new Dictionary<string, WeakGameEntity>();
+			_byEntity = new Dictionary<WeakGameEntity, string>();
 			_indexedScene = scene;
 			if (scene == null) return;
 
@@ -40,6 +50,7 @@ namespace Alliance.Common.Extensions.BuildSystem
 					if (!string.IsNullOrEmpty(marker.RefId))
 					{
 						_byRefId[marker.RefId] = e.WeakEntity;
+						_byEntity[e.WeakEntity] = marker.RefId;
 						count++;
 					}
 				}
@@ -50,6 +61,7 @@ namespace Alliance.Common.Extensions.BuildSystem
 		public static void Clear()
 		{
 			_byRefId = null;
+			_byEntity = null;
 			_indexedScene = null;
 		}
 

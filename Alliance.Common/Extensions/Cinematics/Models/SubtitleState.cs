@@ -16,6 +16,12 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public int FontSize;
 		public string FontColor;
 		public string Font;
+		public float GlowRadius;
+		public float Blur;
+		public float ShadowOffset;
+		public float OutlineAmount;
+		/// <summary>Progress of a scrolling (credits-style) subtitle in [0..1], or negative when static.</summary>
+		public float ScrollProgress;
 		public SubtitleHPosition HAlign;
 		public SubtitleVPosition VAlign;
 	}
