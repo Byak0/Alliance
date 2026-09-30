@@ -63,6 +63,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 					if (kf is not CinematicKeyframe ckf) continue;
 					float end = ckf.Time;
 					if (ckf is SubtitleKeyframe subtitle && subtitle.Duration > 0f) end += subtitle.Duration;
+					if (ckf is EntityActionKeyframe entityMove && entityMove.Kind == EntityActionKind.MoveTo) end += entityMove.MoveDuration;
 					if (end > max) max = end;
 				}
 			}

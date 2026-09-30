@@ -1,8 +1,10 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.Cinematics.Models
@@ -44,5 +46,29 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public CinematicTarget() { }
 
 		public CinematicTarget(CinematicTargetType type) { Type = type; }
+
+		/// <summary>Resolves this target to a world frame for authoritative/editor-side execution:
+		/// Position, SpecificEntity and SpecificAgent resolve from data; Viewer targets return null
+		/// (per-receiver concepts cannot be executed server-side).</summary>
+		public MatrixFrame? ResolveWorldFrame(VariableStore context)
+		{
+			switch (Type)
+			{
+				case CinematicTargetType.Position:
+					return Position.ToFrame();
+				case CinematicTargetType.SpecificEntity:
+				{
+					WeakGameEntity entity = Entity?.Resolve(context) ?? WeakGameEntity.Invalid;
+					return entity.IsValid ? entity.GetGlobalFrame() : (MatrixFrame?)null;
+				}
+				case CinematicTargetType.SpecificAgent:
+				{
+					Agent agent = AgentVariable?.Resolve(context);
+					return agent != null ? new MatrixFrame(agent.Frame.rotation, agent.Position) : (MatrixFrame?)null;
+				}
+				default:
+					return null;
+			}
+		}
 	}
 }

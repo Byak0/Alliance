@@ -1,7 +1,10 @@
 ﻿using Alliance.Common.Extensions.Cinematics.Models;
+using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
+using System;
 using System.Collections.Generic;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
 namespace Alliance.Common.Extensions.Cinematics
@@ -25,9 +28,17 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		void OnAudio(string soundEvent, float volume, bool loop);
 
-		void OnEntityVisibility(GameEntityRef entity, bool visible);
+		/// <summary>Instant entity command (SetVisible / Teleport / Fx) - fired once on crossing.
+		/// MoveTo is continuous and arrives through <see cref="OnEntityMove"/> instead.</summary>
+		void OnEntityAction(EntityActionKeyframe keyframe);
 
-		void OnAgentAnimation(string role, string actionName, string facialAnimation, bool loop);
+		/// <summary>Called every tick while a MoveTo keyframe is active. t is the eased [0..1]
+		/// progress; startFrame was captured when the keyframe first became active.</summary>
+		void OnEntityMove(EntityActionKeyframe keyframe, MatrixFrame startFrame, float t);
+
+		/// <summary>Agent staging command. On the server the sink executes it authoritatively against
+		/// the resolved track target; in the editor preview the puppet host handles it.</summary>
+		void OnAgentAction(AgentActionTrack track, AgentActionKeyframe keyframe);
 
 		void OnEventActions(List<ActionBase> actions);
 
@@ -45,5 +56,9 @@ namespace Alliance.Common.Extensions.Cinematics
 		/// <summary>Full world frame of the target, or null when it cannot be resolved (the player then
 		/// falls back to the previous resolved frame).</summary>
 		MatrixFrame? ResolveTargetFrame(CinematicTarget target);
+
+		/// <summary>Entity held by a ValueSource slot (literal marker or rewritten variable), or
+		/// <see cref="WeakGameEntity.Invalid"/> when unresolvable on this machine.</summary>
+		WeakGameEntity ResolveEntity(ValueSource<WeakGameEntity> slot);
 	}
 }

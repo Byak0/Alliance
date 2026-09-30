@@ -85,22 +85,27 @@ namespace Alliance.Common.Core.Utils
 			// A single CharacterObject can appear in multiple MPClassDivisions with different roles
 			Dictionary<string, HashSet<ClassType>> characterClassTypes = LoadCharacterClassTypesFromMPClassDivisions();
 
-			// Retrieve all loaded BasicCharacterObjects (only works in game context, will be empty in modding kit context)
-			MBReadOnlyList<BasicCharacterObject> _characterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
+		// Retrieve all loaded BasicCharacterObjects (only works in game context, will be empty in modding kit context)
+		MBReadOnlyList<BasicCharacterObject> _characterObjects = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>();
 
-			// Case 1: We have loaded BasicCharacterObjects (game context) - create stubs from these objects and supplement with MPClassDivisions info
-			if (_characterObjects?.Count > 0)
+		// Only multiplayer characters are staged: filter by the ids declared in MPCharacters XMLs
+		// (the editor game loads NPCCharacters too, which would otherwise pollute the list).
+		HashSet<string> mpCharacterIds = LoadMPCharacterIds();
+
+		// Case 1: We have loaded BasicCharacterObjects (game context) - create stubs from these objects and supplement with MPClassDivisions info
+		if (_characterObjects?.Count > 0)
+		{
+			foreach (BasicCharacterObject character in _characterObjects)
 			{
-				foreach (BasicCharacterObject character in _characterObjects)
-				{
-					if (character?.Culture == null) continue;
-					HashSet<ClassType> classTypes = characterClassTypes.TryGetValue(character.StringId, out HashSet<ClassType> foundClassTypes)
-						? foundClassTypes
-						: new HashSet<ClassType> { ClassType.None };
-					BasicCharacterStub stub = new BasicCharacterStub(character.StringId, character.Name, character.Culture, classTypes, character);
-					_characterStubs.Add(stub);
-				}
+				if (character?.Culture == null) continue;
+				if (!mpCharacterIds.Contains(character.StringId)) continue;
+				HashSet<ClassType> classTypes = characterClassTypes.TryGetValue(character.StringId, out HashSet<ClassType> foundClassTypes)
+					? foundClassTypes
+					: new HashSet<ClassType> { ClassType.None };
+				BasicCharacterStub stub = new BasicCharacterStub(character.StringId, character.Name, character.Culture, classTypes, character);
+				_characterStubs.Add(stub);
 			}
+		}
 			// Case 2: No BasicCharacterObjects loaded (modding kit context) - create stubs from MPCharacters XML
 			else
 			{
@@ -117,6 +122,28 @@ namespace Alliance.Common.Core.Utils
 				}
 				MPCharactersByCulture[stub.Culture].Add(stub);
 			}
+		}
+
+		/// <summary>
+		/// Ids of the characters declared in MPCharacters XMLs (all active modules).
+		/// </summary>
+		private HashSet<string> LoadMPCharacterIds()
+		{
+			HashSet<string> ids = new HashSet<string>();
+			try
+			{
+				XmlDocument mergedMPCharactersXML = MBObjectManager.GetMergedXmlForManaged("MPCharacters", false);
+				foreach (XmlNode node in mergedMPCharactersXML?.SelectNodes("//NPCCharacter") ?? new XmlDocument().SelectNodes("//none"))
+				{
+					string id = node.Attributes?["id"]?.Value;
+					if (!string.IsNullOrEmpty(id)) ids.Add(id);
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"Error loading MPCharacters XML ids: {ex.Message}", LogLevel.Error);
+			}
+			return ids;
 		}
 
 		/// <summary>

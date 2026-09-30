@@ -1,5 +1,9 @@
+using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.Cinematics.Models;
+using Alliance.Common.Extensions.Cinematics.Models.Tracks;
+using Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
@@ -7,7 +11,10 @@ using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -41,9 +48,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			public bool Finished;
 		}
 
-		/// <summary>Server sink: routes EventTrack actions into the record; every visual callback is a no-op.</summary>
+		/// <summary>Server sink: routes EventTrack actions into the record and executes AgentActionTrack
+		/// commands authoritatively; every other visual callback is a no-op.</summary>
 		private class ServerCinematicSink : ICinematicPlaybackSink
 		{
+			private const float Deg2Rad = 0.017453292f;
 			private readonly PlaybackRecord _record;
 			public ServerCinematicSink(PlaybackRecord record) => _record = record;
 
@@ -53,8 +62,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			public void OnScreen(float letterbox, float fadeAlpha) { }
 			public void OnSubtitles(List<SubtitleState> subtitles) { }
 			public void OnAudio(string soundEvent, float volume, bool loop) { }
-			public void OnEntityVisibility(GameEntityRef entity, bool visible) { }
-			public void OnAgentAnimation(string role, string actionName, string facialAnimation, bool loop) { }
+			public void OnEntityAction(EntityActionKeyframe keyframe) { }
+			public void OnEntityMove(EntityActionKeyframe keyframe, MatrixFrame startFrame, float t) { }
 
 			public void OnEventActions(List<ActionBase> actions)
 			{
@@ -73,7 +82,178 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				}
 			}
 
+			public void OnAgentAction(AgentActionTrack track, AgentActionKeyframe keyframe)
+			{
+				try
+				{
+					ExecuteAgentAction(track, keyframe);
+				}
+				catch (Exception ex)
+				{
+					Log($"Cinematic agent action '{keyframe?.Kind}' failed on server: {ex.Message}", LogLevel.Warning);
+				}
+			}
+
 			public void OnFinished() => _record.Finished = true;
+
+			/// <summary>True-agent mode only: resolves the variable slots and applies the command to
+			/// every agent. Locomotion and body animations replicate natively to clients. Staged
+			/// extras never reach the server - clients run them deterministically.</summary>
+			private void ExecuteAgentAction(AgentActionTrack track, AgentActionKeyframe kf)
+			{
+				if (track.Target?.IsTrueMode != true) return;
+
+			List<Agent> agents = track.Target.ResolveAgents(_record.Context);
+			if (agents.Count == 0)
+			{
+				Log($"[Cinematic] Agent action '{kf?.Kind}' skipped: the track target resolved to no agent on the server.", LogLevel.Warning);
+				return;
+			}
+
+			Vec2[] offsets = CaptureFormationOffsets(agents, kf);
+			for (int i = 0; i < agents.Count; i++)
+			{
+				Agent agent = agents[i];
+				if (agent == null) continue;
+				try
+				{
+					ExecuteOnAgent(agent, kf, i, offsets);
+				}
+				catch (Exception ex)
+				{
+					Log($"Cinematic agent action '{kf.Kind}' failed for an agent: {ex.Message}", LogLevel.Warning);
+				}
+			}
+		}
+
+			/// <summary>Local-space offsets of each agent within its group's current arrangement
+			/// (centroid + mean facing), captured once per Teleport/MoveTo keyframe so each agent
+			/// keeps its spot around the destination ('Keep formation offset'). Null when the
+			/// option is off or the action has no destination.</summary>
+			private static Vec2[] CaptureFormationOffsets(List<Agent> agents, AgentActionKeyframe kf)
+			{
+				if (!kf.KeepFormationOffset || kf.Kind != AgentActionKind.Teleport && kf.Kind != AgentActionKind.MoveTo)
+				{
+					return null;
+				}
+
+				Vec2 center = Vec2.Zero;
+				Vec2 facingSum = Vec2.Zero;
+				int count = 0;
+				foreach (Agent agent in agents)
+				{
+					if (agent == null) continue;
+					center += agent.Position.AsVec2;
+					facingSum += agent.Frame.rotation.f.AsVec2;
+					count++;
+				}
+				Vec2[] offsets = new Vec2[agents.Count];
+				if (count <= 1) return offsets;
+
+				MatrixFrame groupFrame = MatrixFrame.Identity;
+				groupFrame.rotation.ApplyEulerAngles(new Vec3(0f, 0f, facingSum.RotationInRadians));
+				groupFrame.origin = new Vec3(center.x / count, center.y / count, 0f);
+				for (int i = 0; i < agents.Count; i++)
+				{
+					if (agents[i] == null) continue;
+					Vec3 local = groupFrame.TransformToLocal(agents[i].Position);
+					offsets[i] = new Vec2(local.x, local.y);
+				}
+				return offsets;
+			}
+
+			/// <summary>The keyframe destination, plus the agent's captured formation offset
+			/// rotated into the destination's orientation (null offsets = exact destination point).</summary>
+			private static Vec3 MemberDestination(MatrixFrame frame, int index, Vec2[] offsets)
+			{
+				return offsets != null
+					? frame.TransformToParent(new Vec3(offsets[index].x, offsets[index].y, 0f))
+					: frame.origin;
+			}
+
+			private void ExecuteOnAgent(Agent agent, AgentActionKeyframe kf, int index, Vec2[] offsets)
+			{
+				switch (kf.Kind)
+				{
+					case AgentActionKind.Teleport:
+						{
+							MatrixFrame? frame = kf.Destination?.ResolveWorldFrame(_record.Context);
+							if (!frame.HasValue)
+							{
+								Log("[Cinematic] Agent Teleport skipped: destination could not be resolved (position/marker/variable/agent).", LogLevel.Warning);
+								break;
+							}
+							Vec3 position = MemberDestination(frame.Value, index, offsets);
+							// Mounted agents move as a pair: the mount carries the rider - teleporting
+							// the rider alone would leave the mount behind.
+							Agent mover = agent.MountAgent ?? agent;
+							mover.TeleportToPosition(position);
+							ScriptAgentTo(mover, position, frame.Value.rotation.f.AsVec2.RotationInRadians, walk: true);
+							break;
+						}
+
+					case AgentActionKind.MoveTo:
+						{
+							MatrixFrame? destination = kf.Destination?.ResolveWorldFrame(_record.Context);
+							if (!destination.HasValue)
+							{
+								Log("[Cinematic] Agent MoveTo skipped: destination could not be resolved (position/marker/variable).", LogLevel.Warning);
+								break;
+							}
+							Vec3 origin = MemberDestination(destination.Value, index, offsets);
+							float travelDirection = (origin - agent.Position).AsVec2.RotationInRadians;
+							float arrivalFacing = kf.ArrivalFacingDeg >= 0f ? kf.ArrivalFacingDeg * Deg2Rad : travelDirection;
+							float? customSpeed = kf.Speed == AgentMoveSpeed.Custom ? Math.Max(0.1f, kf.CustomSpeed) : (float?)null;
+							// Scripted locomotion goes to the mount of mounted agents (it carries the rider).
+							ScriptAgentTo(agent.MountAgent ?? agent, origin, arrivalFacing, walk: kf.Speed == AgentMoveSpeed.Walk, customSpeed);
+							break;
+						}
+
+					case AgentActionKind.PlayAnimation:
+						// Routed through the AnimationSystem: auto-fixes the agent's action set and
+						// broadcasts SyncAnimation so clients replay it reliably.
+						if (!string.IsNullOrEmpty(kf.ActionName)
+							&& AnimationSystem.Instance.ActionNameToAnimation != null
+							&& AnimationSystem.Instance.ActionNameToAnimation.TryGetValue(kf.ActionName, out Animation animation))
+						{
+							Animation played = new Animation(animation.Index, animation.Name, kf.ActionSpeed, animation.MaxDuration);
+							AnimationSystem.Instance.PlayAnimation(agent, played, synchronize: true, loop: kf.Loop, channel: kf.Channel);
+						}
+						// Optional mount action, played on the mount agent and replicated the same way.
+						if (!string.IsNullOrEmpty(kf.MountActionName) && agent.MountAgent != null
+							&& AnimationSystem.Instance.ActionNameToAnimation != null
+							&& AnimationSystem.Instance.ActionNameToAnimation.TryGetValue(kf.MountActionName, out Animation mountAnimation))
+						{
+							Animation playedMount = new Animation(mountAnimation.Index, mountAnimation.Name, kf.ActionSpeed, mountAnimation.MaxDuration);
+							AnimationSystem.Instance.PlayAnimation(agent.MountAgent, playedMount, synchronize: true, loop: kf.Loop, channel: 0);
+						}
+						break;
+
+					case AgentActionKind.PlayFacial:
+						if (!string.IsNullOrEmpty(kf.FacialAnimName))
+							agent.SetAgentFacialAnimation(Agent.FacialAnimChannel.High, kf.FacialAnimName, kf.FacialLoop);
+						break;
+
+					case AgentActionKind.SetVisible:
+						// Visuals-only on every machine (server included); clients apply it locally too.
+						agent.AgentVisuals?.SetVisible(kf.Visible);
+						if (kf.IncludeMount && agent.MountAgent != null) agent.MountAgent.AgentVisuals?.SetVisible(kf.Visible);
+						break;
+				}
+			}
+
+		/// <summary>Orders the native scripted movement (TaleWorlds' cutscene/conversation primitive):
+		/// real locomotion with footsteps, avoids obstacles. DoNotRun enforces the walk pace. A custom
+		/// speed (m/s) overrides the native speed limit instead; -1f restores the default limit.</summary>
+		private static void ScriptAgentTo(Agent agent, Vec3 position, float facingRadians, bool walk, float? customSpeed = null)
+		{
+			Scene scene = Mission.Current?.Scene;
+			if (scene == null) return;
+			WorldPosition worldPosition = new WorldPosition(scene, position);
+			Agent.AIScriptedFrameFlags flags = walk && !customSpeed.HasValue ? Agent.AIScriptedFrameFlags.DoNotRun : Agent.AIScriptedFrameFlags.None;
+			agent.SetScriptedPositionAndDirection(ref worldPosition, facingRadians, false, flags);
+			agent.SetMaximumSpeedLimit(customSpeed ?? -1f, isMultiplier: false);
+		}
 		}
 
 		private readonly ConcurrentQueue<(Cinematic Cinematic, PlayCinematicMessage Message, List<NetworkCommunicator> Peers)> _pendingStarts = new ConcurrentQueue<(Cinematic, PlayCinematicMessage, List<NetworkCommunicator>)>();
@@ -81,6 +261,23 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		private readonly ConcurrentQueue<(string Id, float Time)> _pendingSeeks = new ConcurrentQueue<(string, float)>();
 		private readonly List<PlaybackRecord> _records = new List<PlaybackRecord>();
 		private readonly Dictionary<Agent, Agent.MortalityState> _savedMortality = new Dictionary<Agent, Agent.MortalityState>();
+		/// <summary>Persistent staged-extras groups (persist=true), synced to late joiners. Key = cinematic name # track index.</summary>
+		private readonly Dictionary<string, PersistentFakeGroup> _persistentFakeGroups = new Dictionary<string, PersistentFakeGroup>();
+		private readonly HashSet<NetworkCommunicator> _fakeGroupsSynced = new HashSet<NetworkCommunicator>();
+
+		/// <summary>A persist=true staged-extras group standing in the world after its cinematic ended.</summary>
+		private class PersistentFakeGroup
+		{
+			public string Key;
+			public string CharacterId;
+			public string CultureId;
+			public int Count;
+			public CinematicFormationLayout Layout;
+			public int Rows;
+			public float Spacing;
+			public bool WeaponsDrawn;
+			public MatrixFrame FinalFrame;
+		}
 
 		/// <summary>Registers a server playback record (thread-safe), replacing any record with the
 		/// same cinematic name. The broadcast message is kept to re-send to late joiners.</summary>
@@ -137,6 +334,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				}
 				if (record.Finished) RemoveRecordAt(i);
 			}
+
+			SyncFakeGroupsToNewPeers();
 		}
 
 		/// <summary>Agents spawning while an invulnerability cinematic runs (respawns, reinforcements)
@@ -155,6 +354,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			_pendingStarts.Clear();
 			_pendingStops.Clear();
 			_savedMortality.Clear();
+			// Mission end: entities die with the scene - drop the registries.
+			_persistentFakeGroups.Clear();
+			_fakeGroupsSynced.Clear();
 		}
 
 		private void DrainPending()
@@ -254,13 +456,98 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		private void RemoveRecordAt(int index)
 		{
+			RegisterPersistentGroups(_records[index]);
 			_records.RemoveAt(index);
 			RefreshInvulnerability();
+		}
+
+		/// <summary>When a cinematic stops/finishes/gets replaced, its persist=true staged tracks
+		/// remain standing in the world: register the group (keyed, replacing on replay) so late
+		/// joiners receive a snapshot of where the extras stand.</summary>
+		private void RegisterPersistentGroups(PlaybackRecord record)
+		{
+			Cinematic cinematic = record?.Cinematic;
+			if (cinematic?.Tracks == null) return;
+
+			for (int i = 0; i < cinematic.Tracks.Count; i++)
+			{
+				if (cinematic.Tracks[i] is not AgentActionTrack track) continue;
+				if (track.Target?.IsStagedMode != true || !track.Target.Persist) continue;
+
+				string key = $"{cinematic.Name}#{i}";
+				_persistentFakeGroups[key] = new PersistentFakeGroup
+				{
+					Key = key,
+					CharacterId = track.Target.CharacterId,
+					CultureId = track.Target.CultureId,
+					Count = track.Target.Count,
+					Layout = track.Target.Layout,
+					Rows = track.Target.Rows,
+				Spacing = track.Target.Spacing,
+				WeaponsDrawn = track.Target.WeaponsDrawn,
+				// The group stands at its last ordered destination (fallback: authored origin).
+				FinalFrame = ComputeFinalStagingFrame(track, record)
+				};
+				// Everyone gets a fresh snapshot (clients holding this key locally deduplicate).
+				_fakeGroupsSynced.Clear();
+			}
+		}
+
+		private MatrixFrame ComputeFinalStagingFrame(AgentActionTrack track, PlaybackRecord record)
+		{
+			AgentActionKeyframe last = null;
+			foreach (AgentActionKeyframe kf in track.Keyframes ?? Enumerable.Empty<AgentActionKeyframe>())
+			{
+				if (kf == null || (kf.Kind != AgentActionKind.Teleport && kf.Kind != AgentActionKind.MoveTo)) continue;
+				if (last == null || kf.Time >= last.Time) last = kf;
+			}
+			if (last != null)
+			{
+				MatrixFrame? frame = last.Destination?.ResolveWorldFrame(record.Context);
+				if (frame.HasValue) return frame.Value;
+			}
+			return track.Target.Origin.ToFrame();
+		}
+
+		/// <summary>Sends the persistent-group snapshot to every newly synchronized peer.</summary>
+		private void SyncFakeGroupsToNewPeers()
+		{
+			if (_persistentFakeGroups.Count == 0) return;
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (peer == null || !peer.IsSynchronized || _fakeGroupsSynced.Contains(peer)) continue;
+				List<FakeAgentGroupData> groups = new List<FakeAgentGroupData>();
+				foreach (PersistentFakeGroup group in _persistentFakeGroups.Values)
+				{
+					groups.Add(new FakeAgentGroupData
+					{
+						Key = group.Key,
+						CharacterId = group.CharacterId,
+						CultureId = group.CultureId,
+						Count = group.Count,
+						Layout = group.Layout,
+						Rows = group.Rows,
+					Spacing = group.Spacing,
+					WeaponsDrawn = group.WeaponsDrawn,
+					X = group.FinalFrame.origin.x,
+						Y = group.FinalFrame.origin.y,
+						Z = group.FinalFrame.origin.z,
+						Yaw = group.FinalFrame.rotation.f.AsVec2.RotationInRadians
+					});
+				}
+				GameNetwork.BeginModuleEventAsServer(peer);
+				GameNetwork.WriteMessage(new SyncFakeAgentGroups(groups));
+				GameNetwork.EndModuleEventAsServer();
+				_fakeGroupsSynced.Add(peer);
+			}
 		}
 
 		private void ClearRecords()
 		{
 			_records.Clear();
+			// Scenario abort resets the world: persistent groups go with it.
+			_persistentFakeGroups.Clear();
+			_fakeGroupsSynced.Clear();
 			RefreshInvulnerability();
 		}
 

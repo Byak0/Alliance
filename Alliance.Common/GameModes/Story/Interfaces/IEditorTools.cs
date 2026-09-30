@@ -9,6 +9,8 @@ namespace Alliance.Common.GameModes.Story.Interfaces
 	public interface IEditorTools
 	{
 		public void Tick(float dt);
+		/// <summary>Starts the editor game creation on first call (kit context) so fakes can use the full AgentVisuals pipeline.</summary>
+		public void EnsureEditorGame();
 		public void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback);
 		/// <summary>Returns the live editor (fly) camera frame, or null if not available.</summary>
 		public MatrixFrame? CaptureEditorCameraFrame();

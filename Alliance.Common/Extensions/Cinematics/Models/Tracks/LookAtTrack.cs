@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	[Serializable]
 	public class LookAtKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Target", tooltip: "What the camera aims at while this keyframe is active. Target = None disables the override.", category: "Target")]
+		[ConfigProperty(label: "Target", tooltip: "What the camera aims at while this keyframe is active. Target = None disables the override.")]
 		public CinematicTarget Target = new CinematicTarget();
 
 		public LookAtKeyframe() { }

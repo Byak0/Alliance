@@ -1,9 +1,11 @@
 using Alliance.Editor.GameModes.Story.ViewModels;
+using Alliance.Editor.GameModes.Story.Views;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.Cinematics.Models;
+using Alliance.Common.Core.Utils;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.Engine;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
@@ -53,8 +55,8 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			{ typeof(AudioTrack), Rgb(0x66, 0xBB, 0x6A) },
 			{ typeof(SubtitleTrack), Rgb(0x26, 0xC6, 0xDA) },
 			{ typeof(EventTrack), Rgb(0xEF, 0x53, 0x50) },
-			{ typeof(EntityVisibilityTrack), Rgb(0x42, 0xA5, 0xF5) },
-			{ typeof(AgentAnimationTrack), Rgb(0x26, 0xA6, 0x9A) },
+			{ typeof(EntityTrack), Rgb(0x42, 0xA5, 0xF5) },
+			{ typeof(AgentActionTrack), Rgb(0x26, 0xA6, 0x9A) },
 			{ typeof(LookAtTrack), Rgb(0xFF, 0xEE, 0x58) },
 		};
 
@@ -97,7 +99,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		{
 			"Overlay",
 			"LookAt",
-			"Event", "EntityVisibility", "AgentAnimation", "Audio", "Subtitle"
+			"Event", "Entity", "Agent", "Audio", "Subtitle"
 		};
 
 		private string _selectedTrackType = "Overlay";
@@ -495,8 +497,8 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			"Overlay" => new OverlayTrack(),
 			"LookAt" => new LookAtTrack(),
 			"Event" => new EventTrack(),
-			"EntityVisibility" => new EntityVisibilityTrack(),
-			"AgentAnimation" => new AgentAnimationTrack(),
+			"Entity" => new EntityTrack(),
+			"Agent" => new AgentActionTrack(),
 			"Audio" => new AudioTrack(),
 			"Subtitle" => new SubtitleTrack(),
 			_ => null
@@ -669,11 +671,18 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			? Track?.GetType().Name.Replace("Track", "") ?? "Track"
 			: Track.Name;
 
+		/// <summary>Left-column header: agent lanes read "Agent" (the target button below carries the details).</summary>
+		public string HeaderText => HasAgentTarget ? "Agent" : DisplayName;
+
+		/// <summary>Agent lanes show their target as a wide clickable button on top of the lane.</summary>
+		public bool HasAgentTarget => Track is AgentActionTrack;
+		public string AgentTargetLabel => (Track as AgentActionTrack)?.Target?.EditorLabel ?? "set agent target";
+		public ICommand EditAgentTargetCommand { get; }
+
 		/// <summary>Fill color for this lane's markers (per track type).</summary>
 		public SolidColorBrush NormalFill => CinematicTimelineVM.BrushForTrack(Track);
 
 		public ICommand DeleteCommand { get; }
-		public ICommand EditInWpfCommand { get; }
 		public ICommand AddKeyCommand { get; }
 
 		public TrackLaneVM(CinematicTrack track, CinematicTimelineVM parent)
@@ -681,9 +690,24 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			Track = track;
 			_parent = parent;
 			DeleteCommand = new RelayCommand(_ => _parent.DeleteTrack(this));
-			EditInWpfCommand = new RelayCommand(_ => EditInWpf());
 			AddKeyCommand = new RelayCommand(_ => AddKey());
+			EditAgentTargetCommand = new RelayCommand(_ => EditAgentTarget());
 			RebuildMarkers();
+		}
+
+		/// <summary>Opens the object editor on the lane's CinematicAgent: mode toggle, the true-agent
+		/// variable list, or the staged-extras formation definition (auto-rendered from ConfigProperty).</summary>
+		private void EditAgentTarget()
+		{
+			if (Track is not AgentActionTrack agentTrack) return;
+			EditorToolsManager.OpenEditor(agentTrack.Target,
+				_ =>
+				{
+					OnPropertyChanged(nameof(AgentTargetLabel));
+					// The selected keyframe's layout follows the target mode (actions vs clips, facial...).
+					_parent?.SelectedGenericKeyframe?.RefreshTargetMode();
+				},
+				_parent?.Scenario);
 		}
 
 		public void AddKey()
@@ -696,8 +720,8 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 				OverlayTrack _ => new OverlayKeyframe(t) { Letterbox = 0.1f },
 				AudioTrack _ => new AudioKeyframe(t) { Volume = 1f },
 				SubtitleTrack _ => new SubtitleKeyframe(t) { Duration = 3f },
-				EntityVisibilityTrack _ => new EntityVisibilityKeyframe(t),
-				AgentAnimationTrack _ => new AgentAnimationKeyframe(t),
+				EntityTrack _ => new EntityActionKeyframe(t),
+				AgentActionTrack _ => new AgentActionKeyframe(t),
 				EventTrack _ => new EventKeyframe(t),
 				_ => null
 			};
@@ -721,11 +745,6 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public void RecomputePositions(float dur, float usable, float pad)
 		{
 			foreach (var m in Markers) m.RecomputeX(dur, usable, pad);
-		}
-
-		private void EditInWpf()
-		{
-			EditorToolsManager.OpenEditor(Track, _ => RebuildMarkers(), _parent?.Scenario);
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -793,6 +812,10 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public CinematicKeyframe Model { get; }
 		public string KeyTypeName => Model?.GetType().Name.Replace("Keyframe", " Key");
 
+		/// <summary>Hook for subclasses whose layout depends on context that can change while the
+		/// keyframe stays selected (e.g. the agent track's target mode).</summary>
+		public virtual void RefreshTargetMode() { }
+
 		/// <summary>The model field's ConfigProperty tooltip, so hand-written timeline labels can show
 		/// the same (i) info icon as the auto-generated object editor.</summary>
 		protected string TooltipOf(string fieldName)
@@ -820,10 +843,10 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		{
 			switch (kf)
 			{
-				case OverlayKeyframe sk: return new OverlayKeyframeVM(sk);
+				case OverlayKeyframe ov: return new OverlayKeyframeVM(ov);
 				case AudioKeyframe au: return new AudioKeyframeVM(au);
-				case EntityVisibilityKeyframe ev: return new EntityVisibilityKeyframeVM(ev);
-				case AgentAnimationKeyframe am: return new AgentAnimationKeyframeVM(am);
+				case EntityActionKeyframe ea: return new EntityActionKeyframeVM(ea, timeline);
+				case AgentActionKeyframe ak: return new AgentActionKeyframeVM(ak, timeline);
 				case SubtitleKeyframe st: return new SubtitleKeyframeVM(st, timeline);
 				case LookAtKeyframe la: return new LookAtKeyframeVM(la, timeline);
 				case EventKeyframe evk: return new EventKeyframeVM(evk, timeline);
@@ -852,20 +875,236 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public AudioKeyframeVM(AudioKeyframe kf) : base(kf) { }
 	}
 
-	public class EntityVisibilityKeyframeVM : GenericKeyframeVM
+	public class EntityActionKeyframeVM : GenericKeyframeVM
 	{
-		private EntityVisibilityKeyframe Kf => (EntityVisibilityKeyframe)Model;
+		private const float Rad2Deg = 180f / (float)Math.PI;
+		private const float Deg2Rad = (float)Math.PI / 180f;
+
+		private EntityActionKeyframe Kf => (EntityActionKeyframe)Model;
+		private readonly CinematicTimelineVM _parent;
+
+		public EntityActionKind Kind
+		{
+			get => Kf.Kind;
+			set { Kf.Kind = value; OnPropertyChanged(); RefreshVisibilities(); }
+		}
+		public Array KindOptions => Enum.GetValues(typeof(EntityActionKind));
+		public bool IsSetVisible => Kf.Kind == EntityActionKind.SetVisible;
+		public bool IsDestination => Kf.Kind == EntityActionKind.Teleport || Kf.Kind == EntityActionKind.MoveTo;
+		public bool IsMoveTo => Kf.Kind == EntityActionKind.MoveTo;
+		public bool IsFx => Kf.Kind == EntityActionKind.Fx;
+
+		public string EntityDisplay => CinematicTargetEditing.DescribeEntity(Kf.Entity);
+		public ICommand EditEntityCommand { get; }
+		public ICommand PickDestinationCommand { get; }
+
+		/// <summary>Destination kind: a position with facing, or the frame of a marker/variable entity
+		/// (use a marker's rotation to author gate openings).</summary>
+		public CinematicTargetType DestinationType
+		{
+			get => Kf.Destination.Type;
+			set { Kf.Destination.Type = value; OnPropertyChanged(); RefreshDestinationVisibilities(); }
+		}
+		public CinematicTargetType[] DestinationTypeOptions { get; } =
+			{ CinematicTargetType.Position, CinematicTargetType.SpecificEntity };
+		public bool IsDestinationPosition => Kf.Destination.Type == CinematicTargetType.Position;
+		public bool IsDestinationEntity => Kf.Destination.Type == CinematicTargetType.SpecificEntity;
+		public string DestinationEntityDisplay => CinematicTargetEditing.DescribeEntity(Kf.Destination.Entity);
+		public ICommand EditDestinationEntityCommand { get; }
+
 		public bool Visible { get => Kf.Visible; set { Kf.Visible = value; OnPropertyChanged(); } }
-		public EntityVisibilityKeyframeVM(EntityVisibilityKeyframe kf) : base(kf) { }
+		public float DestX { get => Kf.Destination.Position.Px; set { Kf.Destination.Position.Px = value; OnPropertyChanged(); } }
+		public float DestY { get => Kf.Destination.Position.Py; set { Kf.Destination.Position.Py = value; OnPropertyChanged(); } }
+		public float DestZ { get => Kf.Destination.Position.Pz; set { Kf.Destination.Position.Pz = value; OnPropertyChanged(); } }
+		public float DestYawDeg { get => Kf.Destination.Position.Rz * Rad2Deg; set { Kf.Destination.Position.Rz = value * Deg2Rad; OnPropertyChanged(); } }
+		public float MoveDuration { get => Kf.MoveDuration; set { Kf.MoveDuration = Math.Max(0.1f, value); OnPropertyChanged(); } }
+		public EntityMoveEasing Easing { get => Kf.Easing; set { Kf.Easing = value; OnPropertyChanged(); } }
+		public Array EasingOptions => Enum.GetValues(typeof(EntityMoveEasing));
+		public EntityFxMode Fx { get => Kf.Fx; set { Kf.Fx = value; OnPropertyChanged(); } }
+		public Array FxOptions => Enum.GetValues(typeof(EntityFxMode));
+		public bool FxChildren { get => Kf.FxChildren; set { Kf.FxChildren = value; OnPropertyChanged(); } }
+
+		public EntityActionKeyframeVM(EntityActionKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
+		{
+			_parent = parent;
+			EditEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(_parent, Kf.Entity,
+					value => { Kf.Entity = value; OnPropertyChanged(nameof(EntityDisplay)); }));
+			EditDestinationEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(_parent, Kf.Destination.Entity,
+					value =>
+					{
+						Kf.Destination.Entity = value;
+						OnPropertyChanged(nameof(DestinationEntityDisplay));
+					}));
+			PickDestinationCommand = new RelayCommand(_ => EditFrameView.BeginPlace(
+				owner: Model,
+				onPlaced: frameValue =>
+				{
+					Kf.Destination.Position.CopyFrom(frameValue);
+					OnPropertyChanged(nameof(DestX));
+					OnPropertyChanged(nameof(DestY));
+					OnPropertyChanged(nameof(DestZ));
+					OnPropertyChanged(nameof(DestYawDeg));
+				},
+				baseFrame: Kf.Destination.Position.ToFrame()));
+		}
+
+		private void RefreshVisibilities()
+		{
+			OnPropertyChanged(nameof(IsSetVisible));
+			OnPropertyChanged(nameof(IsDestination));
+			OnPropertyChanged(nameof(IsMoveTo));
+			OnPropertyChanged(nameof(IsFx));
+			RefreshDestinationVisibilities();
+		}
+
+		private void RefreshDestinationVisibilities()
+		{
+			OnPropertyChanged(nameof(IsDestinationPosition));
+			OnPropertyChanged(nameof(IsDestinationEntity));
+			OnPropertyChanged(nameof(DestinationEntityDisplay));
+		}
 	}
 
-	public class AgentAnimationKeyframeVM : GenericKeyframeVM
+	public class AgentActionKeyframeVM : GenericKeyframeVM
 	{
-		private AgentAnimationKeyframe Kf => (AgentAnimationKeyframe)Model;
-		public string TargetRole { get => Kf.TargetRole; set { Kf.TargetRole = value; OnPropertyChanged(); } }
+		private const float Rad2Deg = 180f / (float)Math.PI;
+		private const float Deg2Rad = (float)Math.PI / 180f;
+
+		private AgentActionKeyframe Kf => (AgentActionKeyframe)Model;
+		private readonly CinematicTimelineVM _parent;
+
+		/// <summary>Target mode of the owning lane, driving which fields apply: true agents
+		/// (AgentsFromScene) play actions and support facial animations - including the kit
+		/// stand-in, rendered as a full AgentVisuals; fake agents (NewFakeAgents) play raw
+		/// animation clips only. Unknown lane defaults to the true-agent layout.
+		/// Re-evaluated through <see cref="RefreshTargetMode"/> when the mode is edited while
+		/// the keyframe stays selected.</summary>
+		private bool _stagedTarget;
+		public bool StagedTarget => _stagedTarget;
+		public bool TrueTarget => !_stagedTarget;
+
+		/// <summary>The lane's agent target is shown/edited on the lane itself (in place of the name).</summary>
+		public AgentActionKind Kind
+		{
+			get => Kf.Kind;
+			set { Kf.Kind = value; OnPropertyChanged(); RefreshVisibilities(); }
+		}
+		public Array KindOptions => Enum.GetValues(typeof(AgentActionKind));
+		public bool IsTeleport => Kf.Kind == AgentActionKind.Teleport;
+		public bool IsMoveTo => Kf.Kind == AgentActionKind.MoveTo;
+		public bool IsDestination => Kf.Kind == AgentActionKind.Teleport || Kf.Kind == AgentActionKind.MoveTo;
+		public bool IsPlayAnimation => Kf.Kind == AgentActionKind.PlayAnimation;
+		public bool IsPlayFacial => Kf.Kind == AgentActionKind.PlayFacial;
+		public bool IsSetVisible => Kf.Kind == AgentActionKind.SetVisible;
+
+		/// <summary>Destination kind: a position, the frame of a marker/variable entity, or an agent's
+		/// position (same picker pattern as the camera frame target). Shared by Teleport and MoveTo.</summary>
+		public CinematicTargetType DestinationType
+		{
+			get => Kf.Destination.Type;
+			set { Kf.Destination.Type = value; OnPropertyChanged(); RefreshDestinationVisibilities(); }
+		}
+		public CinematicTargetType[] DestinationTypeOptions { get; } =
+			{ CinematicTargetType.Position, CinematicTargetType.SpecificEntity, CinematicTargetType.SpecificAgent };
+		public bool IsDestinationPosition => Kf.Destination.Type == CinematicTargetType.Position;
+		public bool IsDestinationEntity => Kf.Destination.Type == CinematicTargetType.SpecificEntity;
+		public string DestinationEntityDisplay => CinematicTargetEditing.DescribeEntity(Kf.Destination.Entity);
+		public ICommand EditDestinationEntityCommand { get; }
+		public ICommand PickDestinationCommand { get; }
+
+		// Destination position (when DestinationType = Position) - shared by Teleport and MoveTo.
+		public float DstX { get => Kf.Destination.Position.Px; set { Kf.Destination.Position.Px = value; OnPropertyChanged(); } }
+		public float DstY { get => Kf.Destination.Position.Py; set { Kf.Destination.Position.Py = value; OnPropertyChanged(); } }
+		public float DstZ { get => Kf.Destination.Position.Pz; set { Kf.Destination.Position.Pz = value; OnPropertyChanged(); } }
+		public float DstYawDeg { get => Kf.Destination.Position.Rz * Rad2Deg; set { Kf.Destination.Position.Rz = value * Deg2Rad; OnPropertyChanged(); } }
+		public bool KeepFormationOffset { get => Kf.KeepFormationOffset; set { Kf.KeepFormationOffset = value; OnPropertyChanged(); } }
+		public AgentMoveSpeed Speed { get => Kf.Speed; set { Kf.Speed = value; OnPropertyChanged(); OnPropertyChanged(nameof(IsCustomSpeed)); } }
+		public Array SpeedOptions => Enum.GetValues(typeof(AgentMoveSpeed));
+		public bool IsCustomSpeed => Kf.Speed == AgentMoveSpeed.Custom;
+		public float CustomSpeed { get => Kf.CustomSpeed; set { Kf.CustomSpeed = Math.Max(0.1f, Math.Min(15f, value)); OnPropertyChanged(); } }
+		public float ArrivalFacingDeg { get => Kf.ArrivalFacingDeg; set { Kf.ArrivalFacingDeg = value; OnPropertyChanged(); } }
+		public string MoveAnimation { get => Kf.MoveAnimation; set { Kf.MoveAnimation = value; OnPropertyChanged(); } }
+		public string MountMoveAnimation { get => Kf.MountMoveAnimation; set { Kf.MountMoveAnimation = value; OnPropertyChanged(); } }
+		public string[] MoveClipOptions => AllianceData.AvailableClips();
+		public string[] MountMoveClipOptions => AllianceData.AvailableClips();
+
 		public string ActionName { get => Kf.ActionName; set { Kf.ActionName = value; OnPropertyChanged(); } }
+		public string ClipName { get => Kf.ClipName; set { Kf.ClipName = value; OnPropertyChanged(); } }
+		public string MountActionName { get => Kf.MountActionName; set { Kf.MountActionName = value; OnPropertyChanged(); } }
+		public string MountClipName { get => Kf.MountClipName; set { Kf.MountClipName = value; OnPropertyChanged(); } }
+		public string[] ActionOptions => AllianceData.AvailableAnimations();
+		public string[] ClipOptions => AllianceData.AvailableClips();
+		public int Channel { get => Kf.Channel; set { Kf.Channel = Math.Max(0, Math.Min(3, value)); OnPropertyChanged(); } }
 		public bool Loop { get => Kf.Loop; set { Kf.Loop = value; OnPropertyChanged(); } }
-		public AgentAnimationKeyframeVM(AgentAnimationKeyframe kf) : base(kf) { }
+		public float ActionSpeed { get => Kf.ActionSpeed; set { Kf.ActionSpeed = Math.Max(0.1f, value); OnPropertyChanged(); } }
+
+		public string FacialAnimName { get => Kf.FacialAnimName; set { Kf.FacialAnimName = value; OnPropertyChanged(); } }
+		public bool FacialLoop { get => Kf.FacialLoop; set { Kf.FacialLoop = value; OnPropertyChanged(); } }
+		public string[] FacialAnimOptions => AllianceData.AvailableFacialAnimations();
+
+		public bool Visible { get => Kf.Visible; set { Kf.Visible = value; OnPropertyChanged(); } }
+		public bool IncludeMount { get => Kf.IncludeMount; set { Kf.IncludeMount = value; OnPropertyChanged(); } }
+
+		public AgentActionKeyframeVM(AgentActionKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
+		{
+			_parent = parent;
+			RefreshTargetMode();
+			EditDestinationEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(parent, Kf.Destination.Entity,
+					value =>
+					{
+						Kf.Destination.Entity = value;
+						OnPropertyChanged(nameof(DestinationEntityDisplay));
+					}));
+			PickDestinationCommand = new RelayCommand(_ => EditFrameView.BeginPlace(
+				owner: Model,
+				onPlaced: frameValue =>
+				{
+					Kf.Destination.Position.CopyFrom(frameValue);
+					OnPropertyChanged(nameof(DstX));
+					OnPropertyChanged(nameof(DstY));
+					OnPropertyChanged(nameof(DstZ));
+					OnPropertyChanged(nameof(DstYawDeg));
+				},
+				baseFrame: Kf.Destination.Position.ToFrame()));
+		}
+
+		/// <summary>The AgentActionTrack whose keyframes own this keyframe (null when detached).</summary>
+		private AgentActionTrack FindOwningTrack()
+		{
+			return _parent?.OtherTracks?
+				.Select(l => l.Track).OfType<AgentActionTrack>()
+				.FirstOrDefault(t => t.Keyframes?.Contains(Kf) == true);
+		}
+
+		/// <summary>Re-evaluates the owning lane's target mode (called at selection and when the
+		/// mode is edited while the keyframe stays selected).</summary>
+		public override void RefreshTargetMode()
+		{
+			_stagedTarget = FindOwningTrack()?.Target?.IsStagedMode == true;
+			OnPropertyChanged(nameof(StagedTarget));
+			OnPropertyChanged(nameof(TrueTarget));
+		}
+
+		private void RefreshVisibilities()
+		{
+			OnPropertyChanged(nameof(IsTeleport));
+			OnPropertyChanged(nameof(IsMoveTo));
+			OnPropertyChanged(nameof(IsDestination));
+			OnPropertyChanged(nameof(IsPlayAnimation));
+			OnPropertyChanged(nameof(IsPlayFacial));
+			OnPropertyChanged(nameof(IsSetVisible));
+			RefreshDestinationVisibilities();
+		}
+
+		private void RefreshDestinationVisibilities()
+		{
+			OnPropertyChanged(nameof(IsDestinationPosition));
+			OnPropertyChanged(nameof(IsDestinationEntity));
+			OnPropertyChanged(nameof(DestinationEntityDisplay));
+		}
 	}
 
 	public class SubtitleKeyframeVM : GenericKeyframeVM

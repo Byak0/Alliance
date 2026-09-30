@@ -1,4 +1,4 @@
-﻿<Window x:Class="Alliance.Editor.Extensions.Cinematics.Views.CinematicEditorWindow"
+<Window x:Class="Alliance.Editor.Extensions.Cinematics.Views.CinematicEditorWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -147,11 +147,21 @@
 											<ColumnDefinition Width="*" />
 											<ColumnDefinition Width="22" />
 										</Grid.ColumnDefinitions>
-										<StackPanel Grid.Column="0" VerticalAlignment="Center">
-											<TextBlock Text="{Binding DisplayName}" Style="{StaticResource TrackLabel}" Margin="0,0,0,2" />
-											<Button Content="+ Key" Height="20" Padding="2,0" FontSize="10" Command="{Binding AddKeyCommand}" />
-										</StackPanel>
-										<Border Grid.Column="1" Height="36" Background="#FFEDEFF2" ClipToBounds="True" MouseLeftButtonDown="Lane_MouseLeftButtonDown">
+									<StackPanel Grid.Column="0" VerticalAlignment="Center">
+										<TextBlock Text="{Binding HeaderText}" Style="{StaticResource TrackLabel}" Margin="0,0,0,2" />
+										<Button Content="+ Key" Height="20" Padding="2,0" FontSize="10" Command="{Binding AddKeyCommand}" />
+									</StackPanel>
+									<StackPanel Grid.Column="1">
+										<!-- Agent lanes: wide clickable button carrying the agent target (hidden for other tracks). -->
+										<Button Height="22" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Padding="4,0"
+												Background="#FFEDEFF2" BorderThickness="0"
+												Visibility="{Binding HasAgentTarget, Converter={StaticResource BoolToVisibilityConverter}}"
+												Command="{Binding EditAgentTargetCommand}"
+												ToolTip="Agent target - click to edit (applies to the whole lane)">
+											<TextBlock Text="{Binding AgentTargetLabel}" Foreground="CornflowerBlue" TextDecorations="Underline"
+													   FontSize="11" TextTrimming="CharacterEllipsis" />
+										</Button>
+										<Border Height="36" Background="#FFEDEFF2" ClipToBounds="True" MouseLeftButtonDown="Lane_MouseLeftButtonDown">
 											<Canvas Height="36">
 												<ItemsControl ItemsSource="{Binding Markers}">
 													<ItemsControl.ItemsPanel><ItemsPanelTemplate><Canvas Height="36" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
@@ -171,6 +181,7 @@
 												</ItemsControl>
 											</Canvas>
 										</Border>
+									</StackPanel>
 										<Button Grid.Column="2" Content="✕" FontSize="9" Width="18" Height="18" Margin="2,0,0,0" Padding="0"
 												VerticalAlignment="Center" Command="{Binding DeleteCommand}" ToolTip="Delete track" />
 									</Grid>
@@ -361,16 +372,149 @@
 											<CheckBox Content="Loop" IsChecked="{Binding Loop}" Margin="0,6,0,0" />
 										</StackPanel>
 									</DataTemplate>
-									<DataTemplate DataType="{x:Type vm:EntityVisibilityKeyframeVM}">
-										<CheckBox Content="Visible" IsChecked="{Binding Visible}" />
-									</DataTemplate>
-									<DataTemplate DataType="{x:Type vm:AgentAnimationKeyframeVM}">
+									<DataTemplate DataType="{x:Type vm:EntityActionKeyframeVM}">
 										<StackPanel>
-											<TextBlock Text="Target role" FontSize="11" Foreground="#FF6B7480" />
-											<TextBox Text="{Binding TargetRole}" Margin="0,0,0,6" />
-											<TextBlock Text="Action name" FontSize="11" Foreground="#FF6B7480" />
-											<TextBox Text="{Binding ActionName}" Margin="0,0,0,6" />
-											<CheckBox Content="Loop" IsChecked="{Binding Loop}" />
+											<TextBlock Text="Action" FontSize="11" Foreground="#FF6B7480" />
+											<ComboBox FontSize="11" ItemsSource="{Binding KindOptions}" SelectedItem="{Binding Kind}" Margin="0,0,0,6" />
+											<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,6" HorizontalAlignment="Left"
+													Command="{Binding EditEntityCommand}" ToolTip="Open entity editor">
+												<TextBlock Text="{Binding EntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+											</Button>
+											<CheckBox Content="Visible" IsChecked="{Binding Visible}" Margin="0,0,0,6"
+													  Visibility="{Binding IsSetVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+											<StackPanel Visibility="{Binding IsDestination, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Destination" FontSize="11" Foreground="#FF6B7480" />
+												<ComboBox FontSize="11" ItemsSource="{Binding DestinationTypeOptions}" SelectedItem="{Binding DestinationType}" Margin="0,0,0,4" />
+												<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+														Visibility="{Binding IsDestinationEntity, Converter={StaticResource BoolToVisibilityConverter}}"
+														Command="{Binding EditDestinationEntityCommand}" ToolTip="Open destination entity editor">
+													<TextBlock Text="{Binding DestinationEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+												</Button>
+												<Grid Margin="0,0,0,6" Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestX}" /></StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestY}" /></StackPanel>
+													<StackPanel Grid.Column="2" Margin="4,0,4,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestZ}" /></StackPanel>
+													<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
+															Command="{Binding PickDestinationCommand}" ToolTip="Click a ground position in the scene (wheel = rotate, right-click = cancel)" />
+												</Grid>
+												<TextBlock Text="Facing (yaw °)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2"
+														   Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}" />
+												<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestYawDeg}" Margin="0,0,0,6"
+																		  Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}" />
+											</StackPanel>
+											<StackPanel Visibility="{Binding IsMoveTo, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Duration (s)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding MoveDuration}" Margin="0,0,0,6" />
+												<TextBlock Text="Easing" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<ComboBox FontSize="11" ItemsSource="{Binding EasingOptions}" SelectedItem="{Binding Easing}" Margin="0,0,0,6" />
+											</StackPanel>
+											<StackPanel Visibility="{Binding IsFx, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Effect" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<ComboBox FontSize="11" ItemsSource="{Binding FxOptions}" SelectedItem="{Binding Fx}" Margin="0,0,0,6" />
+												<CheckBox Content="Include children" IsChecked="{Binding FxChildren}" Margin="0,0,0,6" />
+											</StackPanel>
+										</StackPanel>
+									</DataTemplate>
+									<DataTemplate DataType="{x:Type vm:AgentActionKeyframeVM}">
+										<StackPanel>
+											<TextBlock Text="Action" FontSize="11" Foreground="#FF6B7480" />
+											<ComboBox FontSize="11" ItemsSource="{Binding KindOptions}" SelectedItem="{Binding Kind}" Margin="0,0,0,6" />
+											<StackPanel Visibility="{Binding IsDestination, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Destination" FontSize="11" Foreground="#FF6B7480" />
+												<ComboBox FontSize="11" ItemsSource="{Binding DestinationTypeOptions}" SelectedItem="{Binding DestinationType}" Margin="0,0,0,4" />
+												<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+														Visibility="{Binding IsDestinationEntity, Converter={StaticResource BoolToVisibilityConverter}}"
+														Command="{Binding EditDestinationEntityCommand}" ToolTip="Open destination entity editor">
+													<TextBlock Text="{Binding DestinationEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+												</Button>
+												<Grid Margin="0,0,0,6" Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstX}" /></StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstY}" /></StackPanel>
+													<StackPanel Grid.Column="2" Margin="4,0,4,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstZ}" /></StackPanel>
+													<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
+															Command="{Binding PickDestinationCommand}" ToolTip="Click a ground position in the scene (wheel = rotate, right-click = cancel)" />
+												</Grid>
+												<TextBlock Text="Facing (yaw °)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2"
+														   Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}" />
+											<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstYawDeg}" Margin="0,0,0,6"
+																	  Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}" />
+											<CheckBox Content="Keep formation offset" IsChecked="{Binding KeepFormationOffset}" Margin="0,0,0,6"
+													  ToolTip="Each agent keeps its spot relative to the group: true agents keep their current arrangement (rotated to face the destination), fake agents keep their slot in the authored formation. Unchecked: every agent converges on the exact destination point." />
+										</StackPanel>
+											<StackPanel Visibility="{Binding IsMoveTo, Converter={StaticResource BoolToVisibilityConverter}}">
+												<Grid Margin="0,0,0,6">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0">
+														<TextBlock Text="Speed" FontSize="11" Foreground="#FF6B7480" />
+														<ComboBox FontSize="11" ItemsSource="{Binding SpeedOptions}" SelectedItem="{Binding Speed}" />
+														<StackPanel Orientation="Horizontal" Margin="0,4,0,0"
+																	Visibility="{Binding IsCustomSpeed, Converter={StaticResource BoolToVisibilityConverter}}">
+															<TextBlock Text="m/s" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" Margin="0,0,4,0" />
+															<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding CustomSpeed}" ToolTip="Custom locomotion speed in meters per second (walk ~1.6, run ~4)." />
+														</StackPanel>
+													</StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,0,0">
+														<TextBlock Text="Arrival facing (°, -1 = travel dir.)" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ArrivalFacingDeg}" />
+													</StackPanel>
+												</Grid>
+											<TextBlock Text="Move clip (preview)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+											<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding MoveClipOptions}" Text="{Binding MoveAnimation, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																	  ToolTip="Rider clip played while moving (fake agents; true agents use the native walk/run). Leave empty to slide.">
+											</widgets:FilterableComboBox>
+											<TextBlock Text="Mount move clip (preview)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+											<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding MountMoveClipOptions}" Text="{Binding MountMoveAnimation, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																	  ToolTip="Clip played on the MOUNT of fake agents while moving. Leave empty to auto-pick the horse walk/trot by pace.">
+											</widgets:FilterableComboBox>
+										</StackPanel>
+											<StackPanel Visibility="{Binding IsPlayAnimation, Converter={StaticResource BoolToVisibilityConverter}}">
+											<StackPanel Visibility="{Binding TrueTarget, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Action (true agents)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding ActionOptions}" Text="{Binding ActionName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6" />
+												<TextBlock Text="Mount action (true agents)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding ActionOptions}" Text="{Binding MountActionName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																		  ToolTip="Body action played on the mount of a true agent. Leave empty to let the mount keep its idle.">
+												</widgets:FilterableComboBox>
+											</StackPanel>
+											<StackPanel Visibility="{Binding StagedTarget, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Clip (fake agents)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding ClipOptions}" Text="{Binding ClipName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																		  ToolTip="Raw animation clip played by fake agents (staged extras). Clips loop when authored as looping; with Loop checked they are re-fired on their duration.">
+												</widgets:FilterableComboBox>
+												<TextBlock Text="Mount clip (fake agents)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding ClipOptions}" Text="{Binding MountClipName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																		  ToolTip="Raw animation clip played on the mount of a fake agent. Leave empty to let the mount keep its idle.">
+												</widgets:FilterableComboBox>
+											</StackPanel>
+												<Grid Margin="0,0,0,6">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0">
+														<TextBlock Text="Channel" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding Channel}" />
+													</StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,0,0">
+														<TextBlock Text="Speed" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding ActionSpeed}" />
+													</StackPanel>
+												</Grid>
+												<CheckBox Content="Loop" IsChecked="{Binding Loop}" Margin="0,0,0,6"
+														  ToolTip="True agents: keep the action looping (cyclic flag) until another keyframe changes it. Fake agents: clips loop as authored - this has no effect." />
+											</StackPanel>
+											<StackPanel Visibility="{Binding IsPlayFacial, Converter={StaticResource BoolToVisibilityConverter}}">
+												<StackPanel Visibility="{Binding TrueTarget, Converter={StaticResource BoolToVisibilityConverter}}">
+													<TextBlock Text="Facial animation" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+													<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding FacialAnimOptions}" Text="{Binding FacialAnimName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
+																			  ToolTip="True agents only: the native facial system requires the agent-visuals pipeline, which fake agents don't have.">
+													</widgets:FilterableComboBox>
+													<CheckBox Content="Loop" IsChecked="{Binding FacialLoop}" Margin="0,0,0,6" />
+												</StackPanel>
+											</StackPanel>
+											<StackPanel Visibility="{Binding IsSetVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+												<CheckBox Content="Visible" IsChecked="{Binding Visible}" Margin="0,0,0,6" />
+												<CheckBox Content="Include mount" IsChecked="{Binding IncludeMount}" Margin="0,0,0,6" />
+											</StackPanel>
 										</StackPanel>
 									</DataTemplate>
 									<DataTemplate DataType="{x:Type vm:SubtitleKeyframeVM}">

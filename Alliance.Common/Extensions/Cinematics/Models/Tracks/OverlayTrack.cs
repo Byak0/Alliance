@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,10 +7,10 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	[Serializable]
 	public class OverlayKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Letterbox", tooltip: "Height of the black bars as a fraction of screen height (0 = none, 1 = fully covered).", minValue: 0, maxValue: 1, category: "Bars")]
+		[ConfigProperty(label: "Letterbox", tooltip: "Height of the black bars as a fraction of screen height (0 = none, 1 = fully covered).", minValue: 0, maxValue: 1)]
 		public float Letterbox;
 
-		[ConfigProperty(label: "Black", tooltip: "Black fade amount (0 = fully visible, 1 = fully black).", minValue: 0, maxValue: 1, category: "Fade")]
+		[ConfigProperty(label: "Black", tooltip: "Black fade amount (0 = fully visible, 1 = fully black).", minValue: 0, maxValue: 1)]
 		public float FadeAlpha;
 
 		public OverlayKeyframe() { }

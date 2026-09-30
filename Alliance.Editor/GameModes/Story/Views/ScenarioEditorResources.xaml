@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 					xmlns:sys="clr-namespace:System;assembly=mscorlib"
 					xmlns:vm="clr-namespace:Alliance.Editor.GameModes.Story.ViewModels"
@@ -98,32 +98,24 @@
 			<!-- Include the Label/Tooltip -->
 			<ContentControl Content="{Binding}" ContentTemplate="{StaticResource LabelWithTooltipTemplate}" VerticalAlignment="Center" />
 
-	<ComboBox ItemsSource="{Binding PossibleValues}"
+	<widgets:FilterableComboBox ItemsSource="{Binding PossibleValues}"
 		  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 		  FontFamily="{StaticResource DefaultFontFamily}"
 		  FontSize="{StaticResource DefaultFontSize}"
 		  Foreground="{StaticResource DefaultFontColor}"
 		  Width="264"
 		  VerticalAlignment="Center"
-		  ToolTip="{Binding Tooltip}"
-		  VirtualizingStackPanel.IsVirtualizing="True"
-		  ScrollViewer.CanContentScroll="True">
-		<ComboBox.ItemsPanel>
-			<ItemsPanelTemplate>
-				<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
-			</ItemsPanelTemplate>
-		</ComboBox.ItemsPanel>
-		<ComboBox.Style>
-			<Style TargetType="ComboBox">
-				<Setter Property="IsEditable" Value="True"/>
-				<Style.Triggers>
-					<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
-						<Setter Property="IsEditable" Value="False"/>
-					</DataTrigger>
-				</Style.Triggers>
-			</Style>
-		</ComboBox.Style>
-	</ComboBox>
+		  ToolTip="{Binding Tooltip}">
+	<widgets:FilterableComboBox.Style>
+		<Style TargetType="widgets:FilterableComboBox">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
+					<Setter Property="IsReadOnly" Value="True"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</widgets:FilterableComboBox.Style>
+</widgets:FilterableComboBox>
 		</StackPanel>
 	</DataTemplate>
 
@@ -640,30 +632,24 @@
 	</DataTemplate>
 
 	<DataTemplate x:Key="InlineStringMultiChoiceTemplate">
-		<ComboBox ItemsSource="{Binding PossibleValues}"
-					Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-					FontSize="14"
-					VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
-					Height="32" MaxWidth="240" local:ComboBoxAutoSize.AutoSize="True" VerticalAlignment="Center" Margin="4,0"
-					ToolTip="{Binding Tooltip}"
-					VirtualizingStackPanel.IsVirtualizing="True"
-					ScrollViewer.CanContentScroll="True">
-			<ComboBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<VirtualizingStackPanel VirtualizingStackPanel.IsVirtualizing="True" />
-				</ItemsPanelTemplate>
-			</ComboBox.ItemsPanel>
-			<ComboBox.Style>
-				<Style TargetType="ComboBox">
-					<Setter Property="IsEditable" Value="True"/>
-					<Style.Triggers>
-						<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
-							<Setter Property="IsEditable" Value="False"/>
-						</DataTrigger>
-					</Style.Triggers>
-				</Style>
-			</ComboBox.Style>
-		</ComboBox>
+		<widgets:FilterableComboBox ItemsSource="{Binding PossibleValues}"
+		  Text="{Binding FieldValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		  FontFamily="{StaticResource DefaultFontFamily}"
+		  FontSize="{StaticResource DefaultFontSize}"
+		  Foreground="{StaticResource DefaultFontColor}"
+		  Width="264"
+		  VerticalAlignment="Center"
+		  ToolTip="{Binding Tooltip}">
+	<widgets:FilterableComboBox.Style>
+		<Style TargetType="widgets:FilterableComboBox">
+			<Style.Triggers>
+				<DataTrigger Binding="{Binding IsChoiceLocked}" Value="True">
+					<Setter Property="IsReadOnly" Value="True"/>
+				</DataTrigger>
+			</Style.Triggers>
+		</Style>
+	</widgets:FilterableComboBox.Style>
+</widgets:FilterableComboBox>
 	</DataTemplate>
 
 	<DataTemplate x:Key="InlineLocalizedStringTemplate">

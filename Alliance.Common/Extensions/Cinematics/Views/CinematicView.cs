@@ -1,4 +1,6 @@
 #if !SERVER
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
@@ -11,12 +13,13 @@ using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
-using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
+using TaleWorlds.ObjectSystem;
 using TaleWorlds.ScreenSystem;
 using static Alliance.Common.Utilities.Logger;
+using TaleWorlds.InputSystem;
 
 namespace Alliance.Common.Extensions.Cinematics
 {
@@ -35,6 +38,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		private Camera _camera;
 		private bool _wasFirstPerson;
 		private readonly List<Agent> _hiddenAgents = new List<Agent>();
+		/// <summary>Fake agents spawned for staged-extras tracks of the current cinematic (per-machine).</summary>
+		private readonly Dictionary<AgentActionTrack, List<FakeAgent>> _stagedFakes = new Dictionary<AgentActionTrack, List<FakeAgent>>();
 
 		private CinematicPlayer _player;
 		private bool _skippable;
@@ -71,6 +76,9 @@ namespace Alliance.Common.Extensions.Cinematics
 		{
 			base.OnRemoveBehavior();
 			StopCinematic();
+			// Mission end: nothing survives the scene (entities die with it) - drop the registries.
+			FakeAgent.DespawnAll();
+			FakeAgentStore.Clear();
 		}
 
 		public override void OnPreDisplayMissionTick(float dt)
@@ -79,19 +87,75 @@ namespace Alliance.Common.Extensions.Cinematics
 #if DEBUG
 			if (Mission != null)
 			{
-				if (Input.IsKeyPressed(InputKey.Home)) PlayTestCinematic();
-				else if (Input.IsKeyPressed(InputKey.End)) PlayAuthoredCinematic();
+				if (TaleWorlds.InputSystem.Input.InputManager != null)
+				{
+					if (TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Home) && Mission.Current != null && Mission.Current.Agents.Count > 0)
+						PlayTestCinematic();
+					else if (TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.End))
+					{
+						// Kit test missions: play the cinematic currently open in the editor for real
+						// (staged extras, agent actions, camera - the full pipeline in a live mission).
+						Cinematic active = EditorToolsManager.ActiveEditingCinematic;
+						if (active != null)
+						{
+							Log($"[Cinematic] Playing edited cinematic '{active.Name}' in the test mission.", LogLevel.Debug);
+							PlayCinematic(active, MissionTime.Now.NumberOfTicks / 10000000f, true, null);
+						}
+						else
+						{
+							PlayAuthoredCinematic();
+						}
+					}
+				}
 			}
 #endif
 			// Skip is local-only by design: never broadcast, other players keep watching.
-			if (Mission != null && !IsEditorMode && IsPlaying && _skippable && Input.IsKeyPressed(InputKey.Space))
+			if (Mission != null && !IsEditorMode && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Space))
 				Skip();
 
 			if (_player != null && _player.IsPlaying)
 			{
 				_player.Tick(dt);
 				HideOtherUiLayers();
+				// Staged extras move on their own blockout locomotion (client-deterministic).
+				FakeAgent.TickAll(dt, MissionScreen?.CombatCamera?.Frame.origin);
 			}
+		}
+
+		/// <summary>Spawns per-machine FakeAgents for every staged-extras track of the cinematic.
+		/// Staged commands are then executed locally by every client, deterministically.</summary>
+		private void SpawnStagedFakes(Cinematic cinematic)
+		{
+			if (Mission?.Scene == null) return;
+			// Context diagnostic: what the kit test-mission provides vs the in-game mission.
+			int characterCount = -1;
+			try { characterCount = MBObjectManager.Instance?.GetObjectTypeList<BasicCharacterObject>()?.Count ?? -1; }
+			catch { }
+			Log($"[Cinematic] Mission context: Game.Current={Game.Current != null}, BasicCharacters={characterCount}", LogLevel.Debug);
+
+			for (int i = 0; i < cinematic.Tracks.Count; i++)
+			{
+				if (cinematic.Tracks[i] is not AgentActionTrack track || track.Target?.IsStagedMode != true) continue;
+				// Key matches the server-side persistent group key (cinematic name # track index).
+				string key = $"{cinematic.Name}#{i}";
+				List<FakeAgent> fakes = track.Target.SpawnFakes(Mission.Scene);
+				if (fakes.Count > 0)
+				{
+					_stagedFakes[track] = fakes;
+					FakeAgentStore.Track(key, fakes);
+				}
+			}
+		}
+
+		private void DespawnStagedFakes(bool evenPersistent)
+		{
+			foreach (KeyValuePair<AgentActionTrack, List<FakeAgent>> kv in _stagedFakes)
+			{
+				bool persist = kv.Key?.Target?.Persist == true;
+				if (evenPersistent || !persist)
+					foreach (FakeAgent fake in kv.Value) fake?.Despawn();
+			}
+			_stagedFakes.Clear();
 		}
 
 #if DEBUG
@@ -102,6 +166,11 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		private void PlayTestCinematic()
 		{
+			if (Mission.Current == null || Mission.Current.Agents.Count == 0)
+			{
+				Log("[Cinematic] Test cinematic skipped: no agents in the mission to stage on.", LogLevel.Warning);
+				return;
+			}
 			Agent main = Mission.Current.Agents.GetRandomElement();
 			Vec3 eye = main != null
 				? main.Position + new Vec3(0f, 0f, main.GetEyeGlobalHeight())
@@ -177,6 +246,7 @@ namespace Alliance.Common.Extensions.Cinematics
 
 			TakeCamera();
 			ApplyAgentBehaviorOnStart(cinematic.AgentBehavior);
+			SpawnStagedFakes(cinematic);
 			// Free mode: keep player input alive while the cinematic camera renders.
 			if (MissionScreen != null)
 			{
@@ -206,6 +276,9 @@ namespace Alliance.Common.Extensions.Cinematics
 			_viewerCameraFrame = null;
 			ReleaseCamera();
 			RestoreHiddenAgents();
+			// Non-persistent staged extras die with the cinematic; persistent ones survive (synced to
+			// late joiners by the server registry) and are cleaned up at mission end.
+			DespawnStagedFakes(evenPersistent: false);
 			if (_mainAgentControllerDisabled)
 			{
 				MissionMainAgentController mainAgentController = Mission?.GetMissionBehavior<MissionMainAgentController>();
@@ -484,30 +557,131 @@ namespace Alliance.Common.Extensions.Cinematics
 			catch (Exception ex) { Log($"Cinematic audio '{soundEvent}' failed: {ex.Message}", LogLevel.Warning); }
 		}
 
-		public void OnEntityVisibility(GameEntityRef entity, bool visible)
+		/// <summary>Entity held by a ValueSource slot: literal scene-entity slots resolve locally through
+		/// the marker index; variable/function slots were rewritten with the server-resolved entity.</summary>
+		public WeakGameEntity ResolveEntity(ValueSource<WeakGameEntity> slot)
+			=> slot?.Resolve(null) ?? WeakGameEntity.Invalid;
+
+		public void OnEntityAction(EntityActionKeyframe kf)
 		{
-			if (entity == null || string.IsNullOrEmpty(entity.RefId)) return;
-			try
+			WeakGameEntity entity = ResolveEntity(kf?.Entity);
+			if (!entity.IsValid)
 			{
-				WeakGameEntity wge = Alliance.Common.Extensions.BuildSystem.EntityMarkerIndex.Resolve(entity.RefId);
-				if (wge.IsValid) wge.SetVisibilityExcludeParents(visible);
+				if (_warnedEntityKeyframes.Add(kf))
+					Log($"[Cinematic] Entity action '{kf.Kind}' skipped: its entity could not be resolved on this machine.", LogLevel.Warning);
+				return;
 			}
-			catch (Exception ex) { Log($"Cinematic entity-visibility failed: {ex.Message}", LogLevel.Warning); }
+
+			switch (kf.Kind)
+			{
+				case EntityActionKind.SetVisible:
+					entity.SetVisibilityExcludeParents(kf.Visible);
+					break;
+				case EntityActionKind.Teleport:
+					{
+						MatrixFrame? destination = kf.Destination?.ResolveWorldFrame(null);
+						if (destination.HasValue) entity.SetGlobalFrame(destination.Value);
+						break;
+					}
+				case EntityActionKind.Fx:
+					switch (kf.Fx)
+					{
+						case EntityFxMode.Burst: entity.BurstEntityParticle(kf.FxChildren); break;
+						case EntityFxMode.Pause: entity.PauseParticleSystem(kf.FxChildren); break;
+						case EntityFxMode.Resume: entity.ResumeParticleSystem(kf.FxChildren); break;
+					}
+					break;
+			}
 		}
 
-		public void OnAgentAnimation(string role, string actionName, string facialAnimation, bool loop)
+		/// <summary>Client-local kinematic MoveTo: position and rotation interpolated between the frame
+		/// captured at keyframe start and the resolved destination. Deterministic from the shared clock.</summary>
+		public void OnEntityMove(EntityActionKeyframe kf, MatrixFrame startFrame, float t)
 		{
-			// Stub track: no role resolution yet, only the local player's agent.
-			Agent agent = Agent.Main;
-			if (agent == null) return;
-			try
+			WeakGameEntity entity = ResolveEntity(kf?.Entity);
+			if (!entity.IsValid) return;
+			MatrixFrame? destinationFrame = kf.Destination?.ResolveWorldFrame(null);
+			if (!destinationFrame.HasValue) return;
+			MatrixFrame destination = destinationFrame.Value;
+			MatrixFrame frame = new MatrixFrame(
+				Mat3.Lerp(startFrame.rotation, destination.rotation, t),
+				Vec3.Lerp(startFrame.origin, destination.origin, t));
+			entity.SetGlobalFrame(frame, false);
+		}
+
+		public void OnAgentAction(AgentActionTrack track, AgentActionKeyframe kf)
+		{
+			if (track == null || kf == null) return;
+
+			if (IsEditorMode)
 			{
-				if (!string.IsNullOrEmpty(actionName))
-					agent.SetActionChannel(0, ActionIndexCache.Create(actionName));
-				if (!string.IsNullOrEmpty(facialAnimation))
-					agent.SetAgentFacialAnimation(Agent.FacialAnimChannel.High, facialAnimation, loop);
+				// Modding-kit preview: the editor's staged fakes execute the command.
+				CinematicPreviewBridge.PreviewAgentActionHandler?.Invoke(track, kf);
+				return;
 			}
-			catch (Exception ex) { Log($"Cinematic agent-animation failed: {ex.Message}", LogLevel.Warning); }
+
+			// Staged extras: per-machine fakes - every client executes everything locally,
+			// deterministically from the shared cinematic clock.
+			if (track.Target?.IsStagedMode == true && _stagedFakes.TryGetValue(track, out List<FakeAgent> fakes))
+			{
+				MatrixFrame? destination = kf.Kind is AgentActionKind.Teleport or AgentActionKind.MoveTo
+					? kf.Destination?.ResolveWorldFrame(null)
+					: null;
+				for (int i = 0; i < fakes.Count; i++)
+				{
+					FakeAgent fake = fakes[i];
+					if (fake == null || !fake.IsValid) continue;
+					switch (kf.Kind)
+					{
+						case AgentActionKind.Teleport:
+							if (destination.HasValue) fake.Teleport(kf.KeepFormationOffset ? track.Target.GetMemberFrame(destination.Value, i) : destination.Value);
+							break;
+						case AgentActionKind.MoveTo:
+							if (destination.HasValue)
+							{
+								MatrixFrame member = kf.KeepFormationOffset ? track.Target.GetMemberFrame(destination.Value, i) : destination.Value;
+								fake.MoveTo(member, kf.Speed == AgentMoveSpeed.Run, kf.MoveAnimation,
+									kf.Speed == AgentMoveSpeed.Custom ? kf.CustomSpeed : (float?)null, kf.MountMoveAnimation);
+							}
+							break;
+						case AgentActionKind.PlayAnimation:
+							fake.PlayClip(kf.ClipName, kf.ActionSpeed, kf.Loop);
+							fake.PlayMountClip(kf.MountClipName, kf.ActionSpeed, kf.Loop);
+							break;
+						case AgentActionKind.PlayFacial:
+							if (!string.IsNullOrEmpty(kf.FacialAnimName)) fake.SetFacialAnimation(kf.FacialAnimName, kf.FacialLoop);
+							break;
+						case AgentActionKind.SetVisible:
+							fake.SetVisible(kf.Visible);
+							break;
+					}
+				}
+				return;
+			}
+
+			// True agents, live play: the server executes teleport/move/body animations authoritatively
+			// and they replicate natively. Visibility and facial animations do not replicate reliably -
+			// apply them locally too (the agent slots are the server-resolved literals).
+			foreach (Agent agent in track.Target.ResolveAgents(null))
+			{
+				if (agent == null) continue;
+				switch (kf.Kind)
+				{
+					case AgentActionKind.SetVisible:
+						SetAgentVisible(agent, kf.Visible, kf.IncludeMount);
+						break;
+					case AgentActionKind.PlayFacial:
+						if (!string.IsNullOrEmpty(kf.FacialAnimName))
+							agent.SetAgentFacialAnimation(Agent.FacialAnimChannel.High, kf.FacialAnimName, kf.FacialLoop);
+						break;
+				}
+			}
+		}
+
+		private static void SetAgentVisible(Agent agent, bool visible, bool includeMount)
+		{
+			agent.AgentVisuals?.SetVisible(visible);
+			if (includeMount && agent.MountAgent != null) agent.MountAgent.AgentVisuals?.SetVisible(visible);
 		}
 
 		public void OnEventActions(List<ActionBase> actions)
@@ -523,6 +697,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		public void OnFinished() => StopCinematic();
 
 		private readonly HashSet<CinematicTargetType> _warnedTargetTypes = new HashSet<CinematicTargetType>();
+		private readonly HashSet<CinematicKeyframe> _warnedEntityKeyframes = new HashSet<CinematicKeyframe>();
 
 		/// <summary>Resolves a target to a full world frame on the local machine: viewer targets against
 		/// the local player (or editor preview), specific agents through their literal slots (rewritten

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Editor.Extensions.Cinematics.ViewModels;
 using System;
@@ -27,6 +28,12 @@ namespace Alliance.Editor.Extensions.Cinematics.Views
 
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
 			Topmost = true;
+
+			// Make characters/items/animations available for the preview fakes: starts the editor
+			// game on first open (loaded per-tick by EditorTools, see EnsureEditorGame), and warms
+			// up the parsed native data (skins/monsters/items) on a background thread so the first
+			// preview launch doesn't hitch on XML parsing.
+			EditorToolsManager.EditorTools?.EnsureEditorGame();
 		}
 
 		private void Window_Loaded(object sender, EventArgs e)

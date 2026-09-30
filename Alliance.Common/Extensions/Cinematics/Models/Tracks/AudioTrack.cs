@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,13 +12,13 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	[Serializable]
 	public class AudioKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Sound event", tooltip: "Native sound event path (e.g. \"event:/vo/narrator_intro\").", category: "Audio")]
+		[ConfigProperty(label: "Sound event", tooltip: "Native sound event path (e.g. \"event:/vo/narrator_intro\").")]
 		public string SoundEvent = "";
 
-		[ConfigProperty(label: "Volume", minValue: 0, maxValue: 2, category: "Audio")]
+		[ConfigProperty(label: "Volume", minValue: 0, maxValue: 2)]
 		public float Volume = 1f;
 
-		[ConfigProperty(label: "Loop", category: "Audio")]
+		[ConfigProperty(label: "Loop")]
 		public bool Loop;
 
 		public AudioKeyframe() { }

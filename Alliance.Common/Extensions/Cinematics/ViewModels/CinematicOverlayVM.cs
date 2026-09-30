@@ -122,7 +122,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				// enters and exits offscreen. Blank lines and duration control pacing and layout.
 				vm.VAlign = VerticalAlignment.Top;
 				float screenH = TaleWorlds.Engine.Screen.RealScreenResolution.y;
-				vm.MarginTop = screenH * (1f - 2f * state.ScrollProgress);
+				vm.MarginTop = screenH * (1f - 2.5f * state.ScrollProgress);
 			}
 			else
 			{

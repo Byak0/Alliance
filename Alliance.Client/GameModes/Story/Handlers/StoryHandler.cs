@@ -1,4 +1,7 @@
 using Alliance.Common.Extensions;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
@@ -8,6 +11,8 @@ using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.Cinematics;
 using System;
 using System.Collections.Generic;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -27,6 +32,26 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<StopCinematicMessage>(HandleStopCinematicMessage);
 			reg.Register<SetCinematicTimeMessage>(HandleSetCinematicTimeMessage);
 			reg.Register<WaitingScreenStateMessage>(HandleWaitingScreenStateMessage);
+			reg.Register<SyncFakeAgentGroups>(HandleSyncFakeAgentGroups);
+		}
+
+		/// <summary>Late joiners receive a snapshot of the persistent staged-extras groups standing in
+		/// the world (definition + current frame). Locally staged keys (the client played the cinematic
+		/// itself) are skipped to avoid duplicates.</summary>
+		public void HandleSyncFakeAgentGroups(SyncFakeAgentGroups message)
+		{
+			Scene scene = Mission.Current?.Scene;
+			if (scene == null) return;
+
+			foreach (FakeAgentGroupData group in message.Groups)
+			{
+				if (string.IsNullOrEmpty(group?.Key) || FakeAgentStore.Has(group.Key)) continue;
+				MatrixFrame frame = MatrixFrame.Identity;
+				frame.origin = new Vec3(group.X, group.Y, group.Z);
+				frame.rotation.ApplyEulerAngles(new Vec3(0f, 0f, group.Yaw));
+				List<FakeAgent> fakes = CinematicAgent.SpawnFormation(scene, group.Key, group.CharacterId, group.CultureId, group.Count, group.Layout, group.Rows, group.Spacing, group.WeaponsDrawn, frame);
+				Log($"Synced persistent staged extras '{group.Key}' ({fakes.Count} agents).", LogLevel.Debug);
+			}
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)

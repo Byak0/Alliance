@@ -47,8 +47,8 @@ Every keyframe has a `Time` (seconds), an `Interpolation` mode (`CatmullRom` smo
 | `EventTrack` | A list of scenario `ActionBase`, fired once when the playhead crosses the keyframe | Implemented. Actions execute **server-side** (authoritative) and client-side through their usual client overrides. |
 | `LookAtTrack` | Aim override: a target (see below), at times independent of the camera path | Implemented. The single aiming mechanism - camera rotation is overridden to follow the target. |
 | `AudioTrack` | Sound event name, volume, loop | Partial. Plays the sound event; volume and loop are not applied yet. |
-| `EntityVisibilityTrack` | Entity reference + visible flag | Stub. |
-| `AgentAnimationTrack` | Role, action name, facial animation, loop | Stub (planned rework). |
+| `EntityTrack` | Typed keyframes: `SetVisible`, `Teleport` (instant), `MoveTo` (position + rotation interpolated over a duration, Linear/SmoothStep), `Fx` (`Burst`/`Pause`/`Resume` particle command) | Fully implemented. Movement is client-local kinematic - derived from the shared clock, so it syncs without traffic and late joiners compute the correct mid-travel pose. FX are explicit commands, not visibility side-effects. |
+| `AgentActionTrack` | One lane per staged subject (track target = a variable/function holding one or more Agents, server-resolved — e.g. "agents in zone", "list with agent"). Typed keyframes: `Teleport`, `MoveTo` (destination: position, marker/variable entity or an agent's position; native scripted movement, Walk/Run/Custom speed (m/s), arrival facing; both share *Keep formation offset*, default on: each agent keeps its spot relative to the group - true agents keep their current arrangement (centroid + mean facing, rotated into the destination's orientation), fake agents keep their authored formation slot - instead of stacking on the point; mounted true agents move as a pair: the teleport/scripted order targets the mount, which carries the rider), `PlayAnimation` (true agents: `Action` + optional `Mount action`; fake agents: `Clip` + optional `Mount clip`, raw animation clips; channel, speed), `PlayFacial`, `SetVisible` (local per receiver) | Implemented. Commands execute server-side (`CinematicServerBehavior`) for every agent of the list and replicate natively. Editor preview stages a dressed GameEntity per track moved by keyframes with animations played as raw clips; falls back to sphere blockout when character resources are unavailable (availability in the kit is lazy - see *The modding kit environment*). Not AgentVisuals - those are mission-side and crash in the kit scene. |
 
 ### Targets
 
@@ -142,6 +142,56 @@ In `Free` agent mode, the native `MissionScreen.AllowInputWithCustomCamera` flag
 
 A short intro cinematic: add a `Cinematic` to the scenario, add a `CameraTrack` with 2-3 keyframes captured from the editor view, an `OverlayTrack` with a letterbox of 0.1 fading in from black, then a `PlayCinematicAction` (by name, audience `All`) in the act's `ConditionalActions` behind a mission-start condition.
 
+## The modding kit environment
+
+The kit loads **no game-type XML at startup** — no `Game` exists until a tool needs one. TaleWorlds' editor scripts create it lazily (`if (Game.Current == null) { new EditorGameManager().DoLoadingForGameManager(); }` in `CharacterSpawner`, `ItemVisualizer`, `CharacterDebugSpawner`, ...). Game creation then loads, in order:
+
+| Stage | XML ids |
+|---|---|
+| Game texts (at game creation) | every `GameText` id declared by the active modules (incl. our `Languages`) |
+| `LoadBasicFiles` | `Monsters`, `SkeletonScales`, `ItemModifiers`, `ItemModifierGroups`, `CraftingPieces`, `WeaponDescriptions`, `CraftingTemplates`, `BodyProperties`, `SkillSets` |
+| `LoadCustomGameXmls` | `Items`, `EquipmentRosters`, `NPCCharacters`, `SPCultures` |
+
+Additional facts:
+
+- `MPCharacters` / `MPClassDivisions` (declared in `Alliance.Editor/_Module/SubModule.xml`) are never loaded by the editor game; custom ids like `ItemsExtended` only load if our code calls `LoadXML` — `ExtendedXMLLoader.Init()` is currently wired in the Client/SP/Server submodules only, not the Editor one.
+- `action_sets.xml` / `action_types.xml` are loaded earlier as **native module data** (not through `SubModule.xml <Xmls>`). They back every action name used by `AgentActionTrack` and are what the kit Model Viewer animation list displays; raw animation clips only exist inside `.tpac` resources (Resource Browser) and are usable only once registered in an `action_sets.xml`.
+- Game creation runs `InitializeGameStarter` in our submodules — i.e. `AnimationSystem.Instance.Init()` only happens once a Game exists; before that its action dictionaries are empty.
+
+TW reference: `TW_References/BannerlordSource/TaleWorlds/MountAndBlade/EditorGameManager.cs`, `EditorGame.cs` (`LoadCustomGameXmls`), `Core/Game.cs` (`LoadBasicFiles`), `View/Scripts/CharacterSpawner.cs`.
+
+### Impact on the cinematic preview
+
+`EditorTools.SpawnPreviewPuppets` stages `AgentActionTrack` stand-ins from `BasicCharacterObject`s (`PreviewCharacterId`) and the `Monster` "human" resources, and logs a diagnostic line (`Game.Current`, `BasicCharacters`, `Monster 'human'`) each time. Until a Game has been created in the kit, those lookups fail and stand-ins fall back to the generic human/blockout.
+
+### FakeAgent dressing model
+
+`FakeAgent` mirrors the native agent-visuals recipe on raw entities:
+
+- **Skeleton & animation**: fakes have **two rendering paths**, chosen by the track's target mode. `AgentsFromScene` tracks preview their stand-in as a full native **AgentVisuals** (one per track, mirroring TaleWorlds' `CharacterSpawner`: facegen action set `as_*_facegen`, generated skin, morph node) - facial animations work (native Mid channel), weapons/holsters are placed natively, and the monster's walking speed applies; their keyframes use **actions** (`Action`/`Mount action`, plus `PlayFacial`). `NewFakeAgents` tracks (staged extras, crowds) **always** use the cheap **raw entity** path (simple skeleton + hand-bound meshes - the AgentVisuals path is also budget-capped at `MaxAgentVisualsFakes` = 64 for any other caller) and their keyframes use **animation clips** (`Clip`/`Mount clip`); facial animations are impossible there (the native facial system is agent-visuals-side) and the UI hides them. In both paths body animation is **raw clips** (`SetAnimationAtChannel`, from `skins.xml`/`action_sets.xml` via `NativeMpData`, which also parses `monsters.xml` - walking speed, item bones, rider-sit bone, `base_monster` inheritance); clips authored as cyclic loop natively, others are re-fired by watching the skeleton channel parameter (normalized clip progress) run out - no duration math, correct at any playback speed. `NativeMpData` also keeps the catalog of registered clip names (editor suggestions).
+- **Body meshes** come from the same `skins.xml` entry (per race + gender: head, body, shoulders, hands, feet, underwear), with parts hidden by armor filtered out exactly like the native `Equipment.GetSkinMeshesMask`: every equipped armor's coverage (`covers_head/body/hands/legs`) is AND-ed into the visible-parts mask.
+- **Armor/quiver meshes** are skinned onto the skeleton (`AddMultiMeshToSkeleton`).
+- **Sheathed weapons** are placed per holster family, matching what each engine path produces: standard holsters (hips, quivers, bows, backs) use the engine's root-frame query (`MBItem.GetHolsterFrameByIndex` + the item's rotation-aware `holster_position_shift`); back-carried shields (the only case the engine frame reads wrong, ~0.3 low) instead place from **`item_holsters.xml`** - the holster bone (generic `biped_*` name resolved through the monster's bone table, mirroring the engine's HumanBone mapping) with its authored local frame. Both compose the item's own Weapon component frame (`position`/`rotation`) when the **bare weapon mesh** is strapped (its pivot is the grip - axes, maces, polearms, each shield); authored scabbard/quiver meshes already contain the weapon oriented and take it as identity. Holster slots are allocated distinct per simultaneously holstered item (first free of each item's list). The authored **`show_holster_when_drawn`** flag decides whether the empty holster stays visible when the weapon is drawn. **Drawn** wields at most one weapon per hand: the first weapon of the equipment (slot order) goes to the main hand, the shield to the off-hand - MP rosters never pair shields with two-handed setups, so a present shield is always wielded (spears/lances are template-typed `TwoHandedPolearm` yet one-handable, exactly how native cavalry holds them). Drawn weapons bind their wielded mesh to the skeleton's item bone (`r_finger0` / `l_finger0` per monsters.xml, resolved at runtime, hand bones as fallback); shields sit on the off-hand *secondary* item bone (`l_foretwist1`, native `ForceAttachOffHandSecondaryItemBone` flag). **Crafted weapons** (MP weapons are piece-composed and carry no authored mesh) are composed through the game's crafting cache (`CraftedDataView` - the smithy UI source, cached per design; needs the game objects, skipped otherwise) and sheathe on the same `item_holsters.xml` bones. Ammo is always worn as its quiver (its base mesh is the projectile). The full-visuals path places weapons natively either way.
+- **Equipment variety**: characters carry several battle rosters in their XML (the game picks `RandomBattleEquipment` at spawn). `NativeMpData` parses them all; each fake picks one deterministically from its creation seed (staged groups pass the member index, so every machine - late joiners included - dresses the group identically).
+- **Mounts** (character equipment slots `Horse` + `HorseHarness`): the simple path spawns the mount as an entity with the mount monster's skeleton (`CreateSimpleSkeleton`; the monster id comes from the horse item's `<Horse monster="...">` component), wearing the horse body (+mane) and harness meshes. The rider is re-parented onto it with its frame pinned to the mount's rider-sit bone (read once the mount's idle pose is applied - fresh skeletons sit in a meaningless bind pose; upright rider frame, the native riding convention that mounted animations are authored for - no constants, any mount/rider build seats itself). When mounted, the mount is the hierarchy root: movement moves the mount and the rider follows. The mount idles on `horse_stand_1` and mounted riders on `horse_rider_stand_1` (the native mounted idle - standing `inventory_idle` when on foot); `MoveTo` strides the mount automatically (`horse_walkfast` / `horse_gait_trot_2` by pace, or the authored *Mount move clip* keyframe field) and both idle again on arrival. `PlayAnimation` keyframes expose `Clip` + `Mount clip` fields for fake agents (raw clips) alongside `Action` + `Mount action` for true agents (server-side through the AnimationSystem sync). The full-visuals path does not stage a separate mount (its inventory-preview mount support skews the meshes on the rider skeleton); true-agent teleports move rider+mount as a pair instead.
+- **Character data**: fakes are built from a `NativeMpData.CharacterDefinition` (the character's parsed XML: race, female flag, culture, equipment slots) - never from a `BasicCharacterObject`. The definition drives everything; unresolvable values (race, monster, skeleton, skins/action-set entry, item data) are logged as errors and the fake (or the affected feature) is skipped instead of being built from wrong data.
+
+### Force-loading the editor game from our submodule
+
+To have characters/items/animations available immediately, start TaleWorlds' own editor pipeline from the submodule (gated on editor mode; `MBGameManager.StartNewGame` is public):
+
+```csharp
+protected override void OnBeforeInitialModuleScreenSetAsRoot()
+{
+    if (MBEditor.IsEditModeOn && Game.Current == null)
+        MBGameManager.StartNewGame(new EditorGameManager());
+}
+```
+
+Afterwards any additional id can be pulled with the usual per-id API (e.g. in `OnGameInitializationFinished`): `game.ObjectManager.LoadXML("MPCharacters")` (registered types permitting), and `ExtendedXMLLoader.Init()` becomes usable in the kit.
+
+Do **not** cherry-pick XMLs before any Game exists: `MBObjectManager.LoadXML` needs registered types and the `Default*` singletons, which all register through `Game.Current.ObjectManager` (and `DefaultCharacterAttributes`' constructor is `internal`). A synchronous alternative is `Game.CreateGame(new EditorGame(), new EditorGameManager()).DoLoading()`, but it skips native `LoadModuleData` (engine data such as action sets) — prefer `StartNewGame`.
+
 ## Extending in code
 
 To add a new track type:
@@ -155,7 +205,8 @@ To add a new track type:
 
 - Only one cinematic at a time per client (last-started wins the camera); the server supports concurrent cinematics for different audiences.
 - Chat and server announcements remain visible during cinematics (accepted; only Gauntlet layers are hidden).
-- `AgentAnimationTrack` needs a rework: action-name pickers, proper body-action looping, target model usage.
+- `AgentActionTrack`: action names are free text with a filterable suggestion list (`FilterableComboBox`, no live preview of the action); body-action looping follows the native action set flags; agent `MoveTo` arrival time is approximate (path-dependent) - the timeline arrival marker is a follow-up; facial animations have no puppet preview; stand-in dressing depends on the kit's lazy game loading (see *The modding kit environment*).
+- Keyframes authored at exactly t = 0 are not fired as crossings (they must sit past the first tick) - start them at ~0.05 s.
 - `AudioTrack` ignores volume and loop.
 - Editor preview: `ViewerCamera` targets cannot resolve in the modding-kit preview (no combat camera); `SpecificAgent` targets resolve in-game only.
 - Entity pickers in the timeline inspector are plain RefId text fields for now (the full entity picker integration is a follow-up).

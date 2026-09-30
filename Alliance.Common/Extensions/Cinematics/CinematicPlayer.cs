@@ -23,6 +23,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		private readonly HashSet<CinematicKeyframe> _fired = new HashSet<CinematicKeyframe>();
 		/// <summary>Frozen-mode target frames, captured on first successful resolution per keyframe.</summary>
 		private readonly Dictionary<CameraKeyframe, MatrixFrame> _frozenFrames = new Dictionary<CameraKeyframe, MatrixFrame>();
+		/// <summary>Entity MoveTo start frames, captured when the keyframe first becomes active.</summary>
+		private readonly Dictionary<EntityActionKeyframe, MatrixFrame> _entityMoveStart = new Dictionary<EntityActionKeyframe, MatrixFrame>();
 
 		private float _currentTime;
 		private float _lastTime = -1f;
@@ -46,6 +48,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			_lastTime = -1f;
 			_fired.Clear();
 			_frozenFrames.Clear();
+			_entityMoveStart.Clear();
 			_playing = _cinematic != null && Duration > 0f;
 		}
 
@@ -62,17 +65,19 @@ namespace Alliance.Common.Extensions.Cinematics
 			_lastTime = _currentTime;
 			_fired.Clear();
 			_frozenFrames.Clear();
+			_entityMoveStart.Clear();
 		}
 
-		/// <summary>Re-samples every continuous track (camera, screen overlay, subtitles) at the current
-		/// time without advancing playback and without firing discrete events — used when seeking/scrubbing
-		/// while paused in the editor.</summary>
+		/// <summary>Re-samples every continuous track (camera, screen overlay, subtitles, entity moves)
+		/// at the current time without advancing playback and without firing discrete events — used when
+		/// seeking/scrubbing while paused in the editor.</summary>
 		public void SampleOnce()
 		{
 			if (!_playing || _cinematic == null) return;
 			SampleScreen(_currentTime, Duration);
 			SampleCamera(_currentTime);
 			SampleSubtitle(_currentTime);
+			SampleEntities(_currentTime);
 		}
 
 		public void Tick(float dt)
@@ -81,8 +86,11 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (dt > MaxStep) dt = MaxStep;
 			if (dt <= 0f) return;
 
-			float prevTime = _currentTime;
+			// _lastTime is -1 after Start/loop-wrap: the first tick then uses prevTime -1 so keyframes
+			// authored at exactly t=0 are fired (a 0 > 0 test would skip them forever).
+			float prevTime = _lastTime >= 0f ? _currentTime : _lastTime;
 			_currentTime += dt;
+			_lastTime = _currentTime;
 			float duration = Duration;
 			bool wrapped = false;
 
@@ -91,9 +99,10 @@ namespace Alliance.Common.Extensions.Cinematics
 				if (_cinematic.Loop)
 				{
 					_currentTime -= duration;
-					prevTime = -1f;
+					_lastTime = -1f;
 					_fired.Clear();
 					_frozenFrames.Clear();
+					_entityMoveStart.Clear();
 					wrapped = true;
 				}
 				else
@@ -107,6 +116,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				SampleScreen(_currentTime, duration);
 				SampleCamera(_currentTime);
 				SampleSubtitle(_currentTime);
+				SampleEntities(_currentTime);
 			}
 
 			FireCrossings(prevTime, _currentTime);
@@ -312,6 +322,41 @@ namespace Alliance.Common.Extensions.Cinematics
 			_sink.OnSubtitles(_activeSubtitles);
 		}
 
+		/// <summary>Samples entity MoveTo sections: resolves each entity's start frame when its keyframe
+		/// first becomes active, then reports eased progress to the sink every tick. Because progress is
+		/// derived from the shared cinematic clock, playback syncs without traffic and a seek/late join
+		/// mid-travel computes the correct pose (start capture assumes the entity was at its authored
+		/// place when the cinematic began - previous keys on the same entity are replayed by seek).</summary>
+		private void SampleEntities(float time)
+		{
+			if (_sink == null) return;
+			foreach (CinematicTrack track in _cinematic.Tracks ?? Enumerable.Empty<CinematicTrack>())
+			{
+				if (track is not EntityTrack entityTrack || !track.Enabled || track.Muted) continue;
+				if (entityTrack.Keyframes == null) continue;
+
+				foreach (EntityActionKeyframe kf in entityTrack.Keyframes)
+				{
+					if (kf == null || kf.Kind != EntityActionKind.MoveTo || kf.MoveDuration <= 0f) continue;
+					if (time < kf.Time || time > kf.Time + kf.MoveDuration) continue;
+
+					if (!_entityMoveStart.TryGetValue(kf, out MatrixFrame startFrame))
+					{
+						WeakGameEntity entity = _bindings?.ResolveEntity(kf.Entity) ?? WeakGameEntity.Invalid;
+						if (!entity.IsValid) continue;
+						startFrame = entity.GetGlobalFrame();
+						_entityMoveStart[kf] = startFrame;
+					}
+
+					float t = (time - kf.Time) / kf.MoveDuration;
+					if (t < 0f) t = 0f;
+					else if (t > 1f) t = 1f;
+					if (kf.Easing == EntityMoveEasing.SmoothStep) t = KeyframeEvaluator.Smoothstep(t);
+					_sink.OnEntityMove(kf, startFrame, t);
+				}
+			}
+		}
+
 		private void FireCrossings(float prevTime, float currentTime)
 		{
 			if (_sink == null) return;
@@ -322,21 +367,30 @@ namespace Alliance.Common.Extensions.Cinematics
 			foreach (CinematicTrack track in tracks)
 			{
 				if (track == null || !track.Enabled || track.Muted) continue;
-				if (!visuals && track is not EventTrack) continue;
+				// The server only needs tracks whose effects it is authoritative for: EventTrack
+				// actions, and AgentActionTracks staging true agents. Staged extras are per-machine
+				// visuals - every client runs their commands deterministically from the shared clock.
+				bool firesOnServer = track is EventTrack
+					|| (track is AgentActionTrack targetTrack && (targetTrack.Target?.IsTrueMode ?? false));
+				if (!visuals && !firesOnServer) continue;
 
 				switch (track)
 				{
 					case EventTrack et:
 						Fire(et.Keyframes, prevTime, currentTime, kf => _sink.OnEventActions(kf.Actions));
 						break;
-				case AudioTrack at:
-					Fire(at.Keyframes, prevTime, currentTime, kf => _sink.OnAudio(kf.SoundEvent, kf.Volume, kf.Loop));
-					break;
-				case EntityVisibilityTrack vt:
-						Fire(vt.Keyframes, prevTime, currentTime, kf => _sink.OnEntityVisibility(kf.Entity, kf.Visible));
+					case AudioTrack at:
+						Fire(at.Keyframes, prevTime, currentTime, kf => _sink.OnAudio(kf.SoundEvent, kf.Volume, kf.Loop));
 						break;
-					case AgentAnimationTrack mt:
-						Fire(mt.Keyframes, prevTime, currentTime, kf => _sink.OnAgentAnimation(kf.TargetRole, kf.ActionName, kf.FacialAnimation, kf.Loop));
+					case EntityTrack vt:
+						// MoveTo is continuous (SampleEntities) - only instant kinds cross.
+						Fire(vt.Keyframes, prevTime, currentTime, kf =>
+						{
+							if (kf.Kind != EntityActionKind.MoveTo) _sink.OnEntityAction(kf);
+						});
+						break;
+					case AgentActionTrack agentTrack:
+						Fire(agentTrack.Keyframes, prevTime, currentTime, kf => _sink.OnAgentAction(agentTrack, kf));
 						break;
 				}
 			}

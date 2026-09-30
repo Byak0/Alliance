@@ -79,6 +79,31 @@ namespace Alliance.Common.GameModes.Story.Functions
 	}
 
 	/// <summary>
+	/// Exposes a single-agent slot as a one-element list. Bridges an agent variable onto the
+	/// multi-agent slots (<c>ValueSource&lt;List&lt;Agent&gt;&gt;</c>, e.g. agent action tracks).
+	/// </summary>
+	[Serializable]
+	[PhrasePreview("list with {Agent}")]
+	[PhraseTemplate("list with {Agent}")]
+	public class AgentAsListFunction : Function
+	{
+		public override Type ReturnType => typeof(List<Agent>);
+
+		[ConfigProperty(label: "Agent", tooltip: "Single-agent slot (variable or function) to expose as a one-element list.")]
+		public ValueSource<Agent> Agent = new VariableValue<Agent>();
+
+		public AgentAsListFunction() { }
+
+		public override object Evaluate(VariableStore context)
+		{
+			List<Agent> result = new List<Agent>();
+			Agent agent = Agent?.Resolve(context);
+			if (agent != null) result.Add(agent);
+			return result;
+		}
+	}
+
+	/// <summary>
 	/// Returns the first agent of a list (or null when empty). Bridges a multi-agent source
 	/// (<c>ValueSource&lt;List&lt;Agent&gt;&gt;</c>) onto a single-agent slot
 	/// (<c>ValueSource&lt;Agent&gt;</c>).
