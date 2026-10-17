@@ -301,6 +301,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
+		/// <summary>Continuous tableaus render every frame; the others share the frame's render
+		/// budget (round-robin). Bind to item selection so only the selected preview renders at full rate.</summary>
+		public bool ContinuousRendering
+		{
+			set
+			{
+				_characterTableau.Continuous = value;
+			}
+		}
+
 		public AL_CharacterTableauTextureProvider()
 		{
 			_characterTableau = new AL_CharacterTableau();

@@ -1,4 +1,5 @@
 ﻿#if !SERVER
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using System;
 using TaleWorlds.Core;
@@ -587,6 +588,19 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			AvailableCharacter = availableCharacter;
 			FillFrom(availableCharacter.Character, seed);
+		}
+
+		/// <summary>Catalog-based fill for contexts without live character objects (e.g. the editor):
+		/// the tableau dresses itself from the character definition through the FakeAgent pipeline.</summary>
+		public void FillFrom(AllianceData.CharacterDefinition definition)
+		{
+			if (definition == null) return;
+
+			CharStringId = definition.Id;
+			IsFemale = definition.IsFemale;
+			BasicCultureObject culture = !string.IsNullOrEmpty(definition.CultureId) && Factions.Instance.AvailableCultures.TryGetValue(definition.CultureId, out culture) ? culture : null;
+			ArmorColor1 = culture?.Color ?? uint.MaxValue;
+			ArmorColor2 = culture?.Color2 ?? uint.MaxValue;
 		}
 
 		public void FillFrom(BasicCharacterObject character, int seed = -1)

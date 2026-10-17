@@ -1,9 +1,9 @@
-﻿#if !SERVER
-using Alliance.Common.Extensions.AnimationPlayer;
+#if !SERVER
+using Alliance.Common.Core.Utils;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.Core.ViewModelCollection;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.Options;
 using TaleWorlds.InputSystem;
@@ -16,13 +16,32 @@ using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 {
+	/// <summary>
+	/// Renders a live 3D character preview into a tableau texture. The dressed body is a
+	/// <see cref="FakeAgent"/> (single dressing pipeline shared with cinematics/editor, native
+	/// AgentVisuals when available, cheap raw skeleton otherwise), spawned into the shared
+	/// <see cref="ALCharacterTableauSceneCache"/> scene.
+	///
+	/// Rendering is scheduled: tableaus flagged as continuous (e.g. the selected menu item) render
+	/// every frame, the others take turns so that at most one non-continuous tableau renders per
+	/// frame. Animations are driven manually through <see cref="FakeAgent.TickOnce"/> with real
+	/// elapsed time, so sharing one scene no longer speeds animations up (the former tick-skip hack).
+	/// </summary>
 	public class AL_CharacterTableau
 	{
-		private static int _lastTableauIndex = 0;
-		private static int _nbTableauEnabled = 0;
+		// Two tableau ticks less than this apart are considered part of the same rendered frame.
+		private static readonly TimeSpan FrameGateInterval = TimeSpan.FromMilliseconds(4);
 
-		private int _nbTickSkipped;
-		private float _delaySinceLastUpdate;
+		// Registered tableaus, for the render scheduler.
+		private static readonly List<AL_CharacterTableau> _instances = new List<AL_CharacterTableau>();
+		private static DateTime _lastFrameUtc = DateTime.MinValue;
+		private static int _rrCursor;
+		private static AL_CharacterTableau _rrCurrent;
+
+		private FakeAgent _fake;
+		private string _fakePoolKey;
+		private int _equipmentSeed;
+
 		private int _slotIndex;
 		private MatrixFrame _camPos;
 		private float _verticalFov = (float)Math.PI / 4f;
@@ -54,16 +73,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private bool _isFinalized;
 		private MatrixFrame _mountSpawnPoint;
 		private MatrixFrame _bannerSpawnPoint;
-		private float _animationFrequencyThreshold = 2.5f;
 		private MatrixFrame _characterSpawnPoint;
 		private MatrixFrame _mountSpawnPointSwapped;
 		private MatrixFrame _characterSpawnPointSwapped;
-		private AgentVisuals _agentVisuals;
-		private AgentVisuals _mountVisuals;
-		private int _agentVisualLoadingCounter;
-		private int _mountVisualLoadingCounter;
-		private int _initialLoadingCounter;
-		private string _idleFaceAnim;
 		private Scene _tableauScene;
 		private MBAgentRendererSceneController _agentRendererSceneController;
 		private Camera _continuousRenderCamera;
@@ -76,10 +88,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private uint _clothColor2 = new Color(1f, 1f, 1f).ToUnsignedInteger();
 		private bool _isRotatingCharacter;
 		private bool _isCharacterMountPlacesSwapped;
-		private string _mountCreationKey = "";
 		private string _equipmentCode = "";
-		private bool _isEquipmentAnimActive;
-		private float _animationGap;
 		private float _mainCharacterRotation;
 		private bool _isEnabled;
 		private float RenderScale = 1f;
@@ -87,86 +96,79 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private int _latestWidth = -1;
 		private int _latestHeight = -1;
 		private string _bodyPropertiesCode;
-		private BodyProperties _bodyProperties = BodyProperties.Default;
 		private bool _isFemale;
-		private CharacterViewModel.StanceTypes _stanceIndex;
-		private Equipment _equipment;
+		private CharacterViewModelStance _stanceIndex;
 		private Banner _banner;
-		private int _race;
 		private bool _isBannerShownInBackground;
 		private ItemObject _bannerItem;
 		private GameEntity _bannerEntity;
-		private int _leftHandEquipmentIndex;
-		private int _rightHandEquipmentIndex;
+		private int _leftHandEquipmentIndex = -1;
+		private int _rightHandEquipmentIndex = -1;
 		private bool _isEquipmentIndicesDirty;
-
-		private ActionIndexCache _idleAction = ActionIndexCache.act_none;
-		private float _idleAnimationTimer;
-
-		private bool _customAnimationStartScheduled;
-		private float _customAnimationTimer;
-		private string _customAnimationName;
-		private ActionIndexCache _customAnimation = ActionIndexCache.act_none;
-		private MBActionSet _characterActionSet;
-
 		private bool _isVisualsDirty;
+		private bool _forceRenderOnce;
 		private Light _light;
 
-		private static readonly ActionIndexCache act_cheer_1 = ActionIndexCache.Create("act_arena_winner_1");
-		private static readonly ActionIndexCache act_inventory_idle_start = ActionIndexCache.Create("act_inventory_idle_start");
-		private static readonly ActionIndexCache act_inventory_glove_equip = ActionIndexCache.Create("act_inventory_glove_equip");
-		private static readonly ActionIndexCache act_inventory_cloth_equip = ActionIndexCache.Create("act_inventory_cloth_equip");
-		private static readonly ActionIndexCache act_horse_stand = ActionIndexCache.Create("act_horse_idle_1");
-		private static readonly ActionIndexCache act_camel_stand = ActionIndexCache.Create("act_camel_stand_1");
+		private string _idleActionName;
+		private string _idleFaceAnim;
+		private float _idleAnimationTimer;
+
+		private string _customAnimationName;
+		private string _customAnimation;
+		private float _customAnimationTimer;
+		private bool _customAnimationStartScheduled;
 
 		public Texture Texture { get; private set; }
 
-		public bool IsRunningCustomAnimation
-		{
-			get
-			{
-				return _customAnimation != ActionIndexCache.act_none || _customAnimationStartScheduled;
-			}
-		}
+		public bool IsRunningCustomAnimation => _customAnimation != null || _customAnimationStartScheduled;
 
 		public bool ShouldLoopCustomAnimation { get; set; }
 
 		public float CustomAnimationWaitDuration { get; set; }
 
-		private TableauView View
-		{
-			get
-			{
-				if (Texture != null)
-				{
-					return Texture.TableauView;
-				}
+		/// <summary>When true (default) the tableau renders every frame. When false it shares the
+		/// frame's render budget with the other non-continuous tableaus (round-robin) - bind it to
+		/// the item selection so only the selected preview animates smoothly.</summary>
+		public bool Continuous { get; set; } = true;
 
-				return null;
-			}
-		}
+		private TableauView View => Texture?.TableauView;
 
 		public AL_CharacterTableau()
 		{
-			_leftHandEquipmentIndex = -1;
-			_rightHandEquipmentIndex = -1;
-			_isVisualsDirty = false;
-			_equipment = new Equipment();
 			SetEnabled(enabled: true);
 			FirstTimeInit();
+			_instances.Add(this);
 		}
 
 		public void OnTick(float dt)
 		{
-			// Hack mechanic to counter sped up animations.
-			// We're using the same scene across tableaus for better performance, but it causes animations to speed up
-			// due to how tableau scenes render.
-			// So we skip most ticks to "slow down" animations and keep them at correct speed.
-			_delaySinceLastUpdate += dt;
-			_nbTickSkipped++;
-			if (_nbTickSkipped < _nbTableauEnabled) return;
+			if (_isFinalized) return;
 
-			if (_agentVisuals == null) return;
+			// The provider ticks once per rendered UI frame - multiple instances ticking within the
+			// same frame are gated so only the scheduled ones actually render.
+			bool shouldRender = ShouldRenderThisFrame();
+
+			_delaySinceLastUpdate += dt;
+			if (!shouldRender) return;
+
+			// Shared-scene animation speedup workaround (former tick-skip hack): the fake advances
+			// with the real time elapsed since its last rendered tick, not with the render rate.
+			float elapsed = _delaySinceLastUpdate;
+			_delaySinceLastUpdate = 0f;
+
+			// Rebuild BEFORE the null check below: with no fake yet (first open, or a rebuild that
+			// found nothing to dress) this is the only place that creates it - returning first would
+			// deadlock the tableau in its empty state. (The old pipeline built its visuals eagerly
+			// in FirstTimeInit; the FakeAgent rebuild is lazy now.)
+			if (_isVisualsDirty)
+			{
+				RebuildFake();
+				_isVisualsDirty = false;
+			}
+
+			if (_fake == null) return;
+
+			_fake.TickOnce(elapsed);
 
 			// Custom animation scheduling
 			if (_customAnimationStartScheduled)
@@ -174,40 +176,33 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				StartCustomAnimation();
 			}
 
-			// Custom animation looping (except for act_none)
-			if (_customAnimation != ActionIndexCache.act_none && _characterActionSet.IsValid)
+			// Custom animation looping
+			if (_customAnimation != null)
 			{
-				_customAnimationTimer += _delaySinceLastUpdate;
-				float duration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _customAnimation);
-
-				if (_customAnimationTimer > duration)
+				float duration = AllianceData.Instance.GetClipDuration(_customAnimation);
+				if (duration > 0f)
 				{
-					if (_customAnimationTimer > duration + CustomAnimationWaitDuration)
+					_customAnimationTimer += elapsed;
+					if (_customAnimationTimer > duration)
 					{
-						if (ShouldLoopCustomAnimation)
-							StartCustomAnimation();
-						else
-							StopCustomAnimationIfCantContinue();
-					}
-					else
-					{
-						AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
+						if (_customAnimationTimer > duration + CustomAnimationWaitDuration)
+						{
+							if (ShouldLoopCustomAnimation) StartCustomAnimation();
+							else StopCustomAnimation();
+						}
 					}
 				}
 			}
-			// Idle animation looping (except for act_none)
-			else if (_idleAction != ActionIndexCache.act_none)
+			// Idle animation looping (restart non-cyclic idle clips)
+			else if (_idleActionName != null)
 			{
-				// Only handle idle looping when no custom animation is playing
-				_idleAnimationTimer += _delaySinceLastUpdate;
-				float idleDuration = MBActionSet.GetActionAnimationDuration(_characterActionSet, _idleAction);
-
-				if (idleDuration > 0 && _idleAnimationTimer >= idleDuration)
+				float idleDuration = AllianceData.Instance.GetClipDuration(_idleActionName);
+				if (idleDuration > 0f)
 				{
-					// Add optional wait delay between loops
+					_idleAnimationTimer += elapsed;
 					if (_idleAnimationTimer > idleDuration)
 					{
-						AnimationSystem.Instance.PlayAnimation(_agentVisuals, _idleAction.GetName());
+						PlayIdleAction();
 						_idleAnimationTimer = 0f;
 					}
 				}
@@ -231,7 +226,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				}
 				else
 				{
-					_camAnimTimer += _delaySinceLastUpdate;
+					_camAnimTimer += elapsed;
 
 					float t = Math.Min(1f, _camAnimTimer / _camAnimDuration);
 					t = t * t * (3f - 2f * t); // smoothstep
@@ -245,71 +240,56 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				}
 			}
 
-			// Animation gap timer
-			if (_animationFrequencyThreshold > _animationGap)
+			// Update weapon indices
+			if (_isEquipmentIndicesDirty && _fake.UsesAgentVisuals)
 			{
-				_animationGap += _delaySinceLastUpdate;
-			}
-
-			// Tick visuals
-			if (_isEnabled)
-			{
-				_agentVisuals?.TickVisuals();
-				_mountVisuals?.TickVisuals();
+				_fake.AgentVisuals?.GetVisuals().SetWieldedWeaponIndices(_rightHandEquipmentIndex, _leftHandEquipmentIndex);
+				_isEquipmentIndicesDirty = false;
 			}
 
 			// Render texture view
-			if (View != null)
+			if (View != null && _isEnabled)
 			{
 				View.SetDoNotRenderThisFrame(false);
 				View.SetContinuousRendering(true);
 			}
+		}
 
-			// Refresh visuals if dirty
-			if (_isVisualsDirty)
+		private float _delaySinceLastUpdate;
+
+		/// <summary>True when this tableau may render this frame: continuous tableaus always,
+		/// the others one at a time (round-robin) so the shared scene renders at a bounded rate.</summary>
+		private bool ShouldRenderThisFrame()
+		{
+			if (_forceRenderOnce)
 			{
-				RefreshCharacterTableau();
-				_isVisualsDirty = false;
+				_forceRenderOnce = false;
+				return true;
 			}
 
-			// Check resource loading
-			if (_agentVisualLoadingCounter > 0 && _agentVisuals.GetEntity().CheckResources(true, true))
-				_agentVisualLoadingCounter--;
-
-			if (_mountVisualLoadingCounter > 0 && _mountVisuals.GetEntity().CheckResources(true, true))
-				_mountVisualLoadingCounter--;
-
-			// Once loading is done, enable visuals
-			if (_mountVisualLoadingCounter == 0 && _agentVisualLoadingCounter == 0)
+			// The shared scene advances its skeletons on EVERY tableau render: rendering several
+			// tableaus in the same frame multiplies their animation speed. Exactly ONE tableau
+			// renders per frame - continuous ones are preferred (the selected preview animates at
+			// full rate when alone), the others take turns when no continuous one is enabled.
+			if (DateTime.UtcNow - _lastFrameUtc > FrameGateInterval)
 			{
-				_mountVisuals?.SetVisible(_bodyProperties != BodyProperties.Default);
-				_agentVisuals?.SetVisible(_bodyProperties != BodyProperties.Default);
-				if (_pendingLightEnable)
+				_lastFrameUtc = DateTime.UtcNow;
+				_rrCurrent = null;
+				for (int pass = 0; pass < 2 && _rrCurrent == null; pass++)
 				{
-					_pendingLightEnable = false;
-					EnableLightInner();
-				}
-				if (_pendingCameraAnim)
-				{
-					_pendingCameraAnimTick++;
-					if (_pendingCameraAnimTick > 2)
+					for (int probe = 0; probe < _instances.Count; probe++)
 					{
-						_pendingCameraAnimTick = 0;
-						_pendingCameraAnim = false;
-						AnimateCameraInner(_pendingCamData.Elev, _pendingCamData.Strafe, _pendingCamData.Zoom, _pendingCamData.Pitch, _pendingCamData.Yaw, _pendingCamData.Roll, _pendingCamData.Fov, _pendingCamData.Duration);
+						AL_CharacterTableau candidate = _instances[(_rrCursor + probe) % _instances.Count];
+						if (candidate != null && candidate._isEnabled && (pass == 0 ? candidate.Continuous : true))
+						{
+							_rrCurrent = candidate;
+							_rrCursor = (_rrCursor + probe + 1) % _instances.Count;
+							break;
+						}
 					}
 				}
 			}
-
-			// Update weapon indices
-			if (_isEquipmentIndicesDirty)
-			{
-				_agentVisuals.GetVisuals().SetWieldedWeaponIndices(_rightHandEquipmentIndex, _leftHandEquipmentIndex);
-				_isEquipmentIndicesDirty = false;
-			}
-
-			_delaySinceLastUpdate = 0f;
-			_nbTickSkipped = 0;
+			return _rrCurrent == this;
 		}
 
 		/// <summary>
@@ -352,38 +332,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public float GetCustomAnimationProgressRatio()
 		{
-			if (_customAnimation != null && _characterActionSet.IsValid)
-			{
-				float actionAnimationDuration = MBAnimation.GetAnimationDuration(_customAnimation.Index);
-				if (actionAnimationDuration == 0f)
-				{
-					return -1f;
-				}
-
-				return _customAnimationTimer / actionAnimationDuration;
-			}
-
-			return -1f;
-		}
-
-		private void StopCustomAnimationIfCantContinue()
-		{
-			bool flag = false;
-			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none && !string.IsNullOrEmpty(_customAnimationName))
-			{
-				ActionIndexCache actionAnimationContinueToAction = MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, in _customAnimation);
-				if (actionAnimationContinueToAction.Index >= 0)
-				{
-					_customAnimationName = actionAnimationContinueToAction.GetName();
-					StartCustomAnimation();
-					flag = true;
-				}
-			}
-			if (!flag)
-			{
-				StopCustomAnimation();
-				_customAnimationTimer = -1f;
-			}
+			if (_customAnimation == null) return -1f;
+			float duration = AllianceData.Instance.GetClipDuration(_customAnimation);
+			if (duration <= 0f) return -1f;
+			return _customAnimationTimer / duration;
 		}
 
 		public void SetEnabled(bool enabled)
@@ -392,8 +344,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			_isEnabled = enabled;
 			View?.SetEnable(_isEnabled);
-			if (enabled) _nbTableauEnabled++;
-			else _nbTableauEnabled--;
 		}
 
 		public void SetLeftHandWieldedEquipmentIndex(int index)
@@ -435,28 +385,38 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			View.SetCamera(_continuousRenderCamera);
 			View.SetScene(_tableauScene);
+			_forceRenderOnce = true;
 		}
+
+		private static int _lastTableauIndex = 0;
 
 		public void SetCharStringID(string charStringId)
 		{
 			if (_charStringId != charStringId)
 			{
 				_charStringId = charStringId;
+				_equipmentSeed = string.IsNullOrEmpty(charStringId) ? 0 : (int)(TaleWorlds.Library.Common.GetDJB2(charStringId) % 1000);
+				_isVisualsDirty = true;
 			}
 		}
 
 		public void OnFinalize()
 		{
+			_isFinalized = true;
+			_instances.Remove(this);
+			if (_rrCurrent == this) _rrCurrent = null;
+
+			// The fake goes back to the shared pool (parked invisible) - destroying it would
+			// reload all its meshes on the next widget showing the same character.
+			FakeAgentPool.Return(_fakePoolKey, _fake);
+			_fake = null;
+
 			Camera continuousRenderCamera = _continuousRenderCamera;
 			if (continuousRenderCamera != null)
 			{
 				continuousRenderCamera.ReleaseCameraEntity();
 				_continuousRenderCamera = null;
 			}
-			_agentVisuals?.ResetNextFrame();
-			_agentVisuals = null;
-			_mountVisuals?.ResetNextFrame();
-			_mountVisuals = null;
 			TableauView view = View;
 			view?.SetEnable(value: false);
 			if (_tableauScene != null)
@@ -488,7 +448,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			Texture?.Release();
 			Texture = null;
-			_isFinalized = true;
 		}
 
 		public void SetBodyProperties(string bodyPropertiesCode)
@@ -496,25 +455,16 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (_bodyPropertiesCode != bodyPropertiesCode)
 			{
 				_bodyPropertiesCode = bodyPropertiesCode;
-				if (!string.IsNullOrEmpty(bodyPropertiesCode) && BodyProperties.FromString(bodyPropertiesCode, out var bodyProperties))
-				{
-					_bodyProperties = bodyProperties;
-				}
-				else
-				{
-					_bodyProperties = BodyProperties.Default;
-				}
-
 				_isVisualsDirty = true;
 			}
 		}
 
 		public void SetStanceIndex(int index)
 		{
-			if (_stanceIndex != (CharacterViewModel.StanceTypes)index)
+			if (_stanceIndex != (CharacterViewModelStance)index)
 			{
-				_stanceIndex = (CharacterViewModel.StanceTypes)index;
-				_isVisualsDirty = true;
+				_stanceIndex = (CharacterViewModelStance)index;
+				AdjustCharacterForStanceIndex();
 			}
 		}
 
@@ -532,46 +482,30 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private void AdjustCharacterForStanceIndex()
 		{
+			// Stances adjust the camera framing only - the body itself is a FakeAgent whose pose
+			// is driven by its idle clip (and mounts are part of its hierarchy).
 			switch (_stanceIndex)
 			{
-				case CharacterViewModel.StanceTypes.EmphasizeFace:
+				case CharacterViewModelStance.EmphasizeFace:
 					_initialCamPos.Elevate(-2f);
 					_initialCamPos.Advance(0.5f);
-					AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
-					_idleAnimationTimer = 0f;
 					break;
-				case CharacterViewModel.StanceTypes.SideView:
-				case CharacterViewModel.StanceTypes.OnMount:
-					if (_agentVisuals != null)
-					{
-						if (_equipment[10].Item != null)
-						{
-							_initialCamPos.Advance(0.5f);
-
-							AnimationSystem.Instance.PlayAnimation(_agentVisuals, _mountVisuals.GetEntity().Skeleton.GetActionAtChannel(0).GetName());
-							_idleAnimationTimer = 0f;
-						}
-						else
-						{
-							_initialCamPos.Elevate(-2f);
-							_initialCamPos.Advance(0.5f);
-							AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
-							_idleAnimationTimer = 0f;
-						}
-					}
-
-					break;
-				case CharacterViewModel.StanceTypes.CelebrateVictory:
-					AnimationSystem.Instance.PlayAnimation(_agentVisuals, act_cheer_1.GetName());
-					_idleAnimationTimer = 0f;
-					break;
-				case CharacterViewModel.StanceTypes.None:
-					AnimationSystem.Instance.PlayAnimation(_agentVisuals, GetIdleAction().GetName());
-					_idleAnimationTimer = 0f;
+				case CharacterViewModelStance.SideView:
+				case CharacterViewModelStance.OnMount:
+					_initialCamPos.Advance(0.5f);
 					break;
 			}
 			_camPos = _initialCamPos;
 			_camTargetFrame = _initialCamPos;
+		}
+
+		private enum CharacterViewModelStance
+		{
+			None,
+			EmphasizeFace,
+			SideView,
+			CelebrateVictory,
+			OnMount
 		}
 
 		public void SetIsFemale(bool isFemale)
@@ -586,19 +520,32 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		public void SetIsBannerShownInBackground(bool isBannerShownInBackground)
 		{
 			_isBannerShownInBackground = isBannerShownInBackground;
-			_isVisualsDirty = true;
+			UpdateBannerItem();
 		}
 
 		public void SetRace(int race)
 		{
-			_race = race;
-			_isVisualsDirty = true;
+			// No-op kept for prefab/VM compatibility: the FakeAgent dresses from the character
+			// definition's own race, the raw race index is unused on this pipeline.
 		}
 
 		public void SetIdleAction(string idleAction)
 		{
-			_idleAction = ActionIndexCache.Create(idleAction);
-			_isVisualsDirty = true;
+			if (_idleActionName != idleAction)
+			{
+				_idleActionName = idleAction;
+				PlayIdleAction();
+			}
+		}
+
+		private void PlayIdleAction()
+		{
+			_idleAnimationTimer = 0f;
+			if (_fake == null || string.IsNullOrEmpty(_idleActionName)) return;
+			// Resolve the VM's name against the character's own action set: an action-type name
+			// ("act_inventory_idle") gives the race's clip, a raw clip name passes through.
+			string clip = AllianceData.Instance.GetAnimationOfAction(_fake.BodyActionSetId, _idleActionName) ?? _idleActionName;
+			_fake.PlayClip(clip, loop: true);
 		}
 
 		public void SetCustomAnimation(string animation)
@@ -608,38 +555,23 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void StartCustomAnimation()
 		{
-			if (_isVisualsDirty || _agentVisuals == null || string.IsNullOrEmpty(_customAnimationName))
+			if (_fake == null || string.IsNullOrEmpty(_customAnimationName))
 			{
 				_customAnimationStartScheduled = true;
 				return;
 			}
 
-			StopCustomAnimation();
-			_customAnimation = ActionIndexCache.Create(_customAnimationName);
-			if (_customAnimation.Index >= 0)
-			{
-				AnimationSystem.Instance.PlayAnimation(_agentVisuals, _customAnimationName);
-				_customAnimationStartScheduled = false;
-				_customAnimationTimer = 0f;
-			}
-			else
-			{
-				Debug.FailedAssert("Invalid custom animation in character tableau: " + _customAnimationName, "C:\\Develop\\MB3\\Source\\Bannerlord\\TaleWorlds.MountAndBlade.View\\Tableaus\\CharacterTableau.cs", "StartCustomAnimation", 599);
-			}
+			_customAnimation = _customAnimationName;
+			_fake.PlayClip(_customAnimationName, loop: false);
+			_customAnimationStartScheduled = false;
+			_customAnimationTimer = 0f;
 		}
 
 		public void StopCustomAnimation()
 		{
-			if (_agentVisuals != null && _customAnimation != ActionIndexCache.act_none)
-			{
-				if (MBActionSet.GetActionAnimationContinueToAction(_characterActionSet, in _customAnimation).Index < 0)
-				{
-					AgentVisuals agentVisuals = _agentVisuals;
-					ActionIndexCache idleAction = GetIdleAction();
-					AnimationSystem.Instance.PlayAnimation(agentVisuals, idleAction.GetName());
-				}
-				_customAnimation = ActionIndexCache.act_none;
-			}
+			_customAnimation = null;
+			_customAnimationStartScheduled = false;
+			PlayIdleAction();
 		}
 
 		public void SetIdleFaceAnim(string idleFaceAnim)
@@ -647,7 +579,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (!string.IsNullOrEmpty(idleFaceAnim))
 			{
 				_idleFaceAnim = idleFaceAnim;
-				_isVisualsDirty = true;
+				try
+				{
+					_fake?.RiderSkeleton?.SetFacialAnimation(Agent.FacialAnimChannel.Mid, _idleFaceAnim, playSound: false, loop: true);
+				}
+				catch { }
 			}
 		}
 
@@ -656,31 +592,26 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (_equipmentCode != equipmentCode && !string.IsNullOrEmpty(equipmentCode))
 			{
 				_equipmentCode = equipmentCode;
-				_equipment = Equipment.CreateFromEquipmentCode(equipmentCode);
-				_bannerItem = GetAndRemoveBannerFromEquipment(ref _equipment);
-				_agentVisuals.GetVisuals().SetWieldedWeaponIndices(4, 1);
+				_bannerItem = null;
 				_isVisualsDirty = true;
+				UpdateBannerItem();
 			}
 		}
 
 		public void SetIsEquipmentAnimActive(bool value)
 		{
-			_isEquipmentAnimActive = value;
+			// Equipment-change animations are not replayed on the FakeAgent pipeline.
 		}
 
 		public void SetMountCreationKey(string value)
 		{
-			if (_mountCreationKey != value)
-			{
-				_mountCreationKey = value;
-				_isVisualsDirty = true;
-			}
+			// Mount pelt keys are derived deterministically by the FakeAgent itself.
 		}
 
 		public void SetBannerCode(string value)
 		{
 			_banner = string.IsNullOrEmpty(value) ? null : new Banner(value);
-			_isVisualsDirty = true;
+			UpdateBannerItem();
 		}
 
 		public void SetArmorColor1(uint clothColor1)
@@ -701,75 +632,127 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		private ActionIndexCache GetIdleAction()
+		/// <summary>(Re)spawns the FakeAgent dressed from the catalog definition of
+		/// <see cref="_charStringId"/>, with slot overrides from the equipment code when present.</summary>
+		private void RebuildFake()
 		{
-			if (_idleAction == ActionIndexCache.act_none)
+			ReturnFakeToPool();
+			ForceRenderOnce();
+
+			if (_tableauScene == null || string.IsNullOrEmpty(_charStringId)) return;
+
+			AllianceData.CharacterDefinition definition = BuildDefinition();
+			if (definition == null || definition.EquipmentRosters.Count == 0) return;
+
+			MatrixFrame frame = _isCharacterMountPlacesSwapped ? _mountSpawnPoint : _characterSpawnPoint;
+			frame.rotation.RotateAboutUp(_mainCharacterRotation);
+
+			// Native inventory-preview convention: the mount stands at its dedicated slot BESIDE
+			// the character (never under the camera), and the rider stays on foot.
+			MatrixFrame mountFrame = _isCharacterMountPlacesSwapped ? _characterSpawnPoint : _mountSpawnPoint;
+
+			// Simple-skeleton pipeline on purpose: the same one cinematics use, proven in every
+			// context (kit included). The native AgentVisuals pipeline deadlocks the kit editor on
+			// materials whose shader variants are missing from the kit's shader sack (runtime
+			// shader compilation hangs the render thread), and its deferred resource queue is
+			// never pumped there (invisible previews). No facial animations on previews - accepted.
+			// Colors come from the definition's own culture (FakeAgent resolves them).
+			// Fakes are pooled per character key: a formation refresh recreates every widget, and
+			// rebuilding each fake from scratch reloads all their meshes (the add-agent lag).
+			_fakePoolKey = $"{definition.Id}|{definition.CultureId}|{definition.IsFemale}|{_equipmentSeed}";
+			_fake = FakeAgentPool.Acquire(_fakePoolKey, () => new FakeAgent(_tableauScene, frame, definition, definition.CultureId,
+				name: "Tableau_" + _charStringId,
+				useFullAgentVisuals: false,
+				weaponsDrawn: false,
+				equipmentSeed: _equipmentSeed,
+				register: false,
+				mountFrame: mountFrame));
+			if (!_fake.IsValid)
 			{
-				return ActionIndexCache.act_inventory_idle_start;
+				FakeAgentPool.Return(_fakePoolKey, _fake);
+				_fake = null;
+				return;
 			}
-			return _idleAction;
+			// Place the fake at this widget's slot (pooled fakes come back from their old slot)
+			// and show it right away: the kit never pumps the deferred resource queue, so a
+			// CheckResources gate left previews invisible forever (meshes are loaded synchronously
+			// by the simple pipeline; face textures pop in as they finish instead).
+			_fake.Teleport(frame);
+			_fake.SetVisible(true);
+			PlayIdleAction();
+			if (IsLightEnabled)
+			{
+				// The stale light went back to the pool with the previous fake - re-arm it on the
+				// newly acquired one.
+				IsLightEnabled = false;
+				EnableLightInner();
+			}
+			if (_pendingLightEnable)
+			{
+				_pendingLightEnable = false;
+				EnableLightInner();
+			}
+			_customAnimationStartScheduled = IsRunningCustomAnimation;
+			if (!string.IsNullOrEmpty(_idleFaceAnim)) SetIdleFaceAnim(_idleFaceAnim);
 		}
 
-		private void RefreshCharacterTableau(Equipment oldEquipment = null)
+		private void ReturnFakeToPool()
 		{
-			UpdateMount(_stanceIndex == CharacterViewModel.StanceTypes.OnMount);
-			UpdateBannerItem();
-			if (_mountVisuals == null && _isCharacterMountPlacesSwapped)
-			{
-				_isCharacterMountPlacesSwapped = false;
-				_mainCharacterRotation = 0f;
-			}
-
-			if (_agentVisuals != null)
-			{
-				AgentVisuals agentVisuals = _agentVisuals;
-				_agentVisualLoadingCounter = 1;
-				AgentVisualsData copyAgentVisualsData = _agentVisuals.GetCopyAgentVisualsData();
-				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _characterSpawnPointSwapped : _characterSpawnPoint;
-				if (!_isCharacterMountPlacesSwapped)
-				{
-					frame.rotation.RotateAboutUp(_mainCharacterRotation);
-				}
-
-				_characterActionSet = MBGlobals.GetActionSetWithSuffix(copyAgentVisualsData.MonsterData, _isFemale, "_warrior");
-				copyAgentVisualsData.BodyProperties(_bodyProperties).SkeletonType(_isFemale ? SkeletonType.Female : SkeletonType.Male).Frame(frame)
-					.ActionSet(_characterActionSet)
-					.Equipment(_equipment)
-					.Banner(_banner)
-					.UseMorphAnims(useMorphAnims: true)
-					.ClothColor1(_clothColor1)
-					.ClothColor2(_clothColor2)
-					.Race(_race);
-				if (_initialLoadingCounter > 0)
-				{
-					_initialLoadingCounter--;
-				}
-
-				_agentVisuals.Refresh(needBatchedVersionForWeaponMeshes: false, copyAgentVisualsData);
-				_agentVisuals.SetVisible(value: false);
-
-				if (oldEquipment != null && _animationFrequencyThreshold <= _animationGap && _isEquipmentAnimActive)
-				{
-					if (_equipment[EquipmentIndex.Gloves].Item != null && oldEquipment[EquipmentIndex.Gloves].Item != _equipment[EquipmentIndex.Gloves].Item)
-					{
-						_agentVisuals.GetVisuals().GetSkeleton().SetAgentActionChannel(0, act_inventory_glove_equip);
-						_animationGap = 0f;
-					}
-					else if (_equipment[EquipmentIndex.Body].Item != null && oldEquipment[EquipmentIndex.Body].Item != _equipment[EquipmentIndex.Body].Item)
-					{
-						_agentVisuals.GetVisuals().GetSkeleton().SetAgentActionChannel(0, act_inventory_cloth_equip);
-						_animationGap = 0f;
-					}
-				}
-				UpdateWieldedWeapons();
-			}
-
-			AdjustCharacterForStanceIndex();
+			if (_fake != null) FakeAgentPool.Return(_fakePoolKey, _fake);
+			_fake = null;
 		}
 
-		private void UpdateWieldedWeapons()
+		/// <summary>Builds the FakeAgent input: the catalog definition of the character, cloned with
+		/// an equipment roster derived from the equipment code when one was set (perk alternatives...).
+		/// The catalog object is never mutated. Unknown ids fall back to dressing from the equipment
+		/// code alone (e.g. code-registered characters).</summary>
+		private AllianceData.CharacterDefinition BuildDefinition()
 		{
-			_agentVisuals.GetVisuals().SetWieldedWeaponIndices(_rightHandEquipmentIndex, _leftHandEquipmentIndex);
+			AllianceData.CharacterDefinition template = AllianceData.Instance.GetCharacter(_charStringId);
+			if (template == null && !string.IsNullOrEmpty(_equipmentCode))
+			{
+				template = new AllianceData.CharacterDefinition { Id = _charStringId, RaceId = "human", IsFemale = _isFemale };
+			}
+			if (template == null) return null;
+
+			if (string.IsNullOrEmpty(_equipmentCode)) return template;
+
+			Dictionary<int, string> slots = new Dictionary<int, string>();
+			try
+			{
+				Equipment equipment = Equipment.CreateFromEquipmentCode(_equipmentCode);
+				_bannerItem = GetBannerFromEquipment(equipment);
+				for (EquipmentIndex index = EquipmentIndex.Weapon0; index <= EquipmentIndex.ArmorItemEndSlot; index++)
+				{
+					ItemObject item = equipment[index].Item;
+					if (item != null) slots[(int)index] = item.StringId;
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"[AL_CharacterTableau] Failed to parse equipment code of '{_charStringId}' ({ex.Message}).", LogLevel.Warning);
+				return template;
+			}
+			if (slots.Count == 0) return template;
+
+			AllianceData.CharacterDefinition definition = new AllianceData.CharacterDefinition
+			{
+				Id = template.Id,
+				Name = template.Name,
+				CultureId = template.CultureId,
+				RaceId = template.RaceId,
+				IsFemale = _isFemale || template.IsFemale,
+				IsMultiplayer = template.IsMultiplayer,
+				ClassTypes = template.ClassTypes
+			};
+			definition.EquipmentRosters.Add(slots);
+			return definition;
+		}
+
+		private ItemObject GetBannerFromEquipment(Equipment equipment)
+		{
+			ItemObject item = equipment[EquipmentIndex.ExtraWeaponSlot].Item;
+			return item != null && item.IsBannerItem ? item : null;
 		}
 
 		public void RotateCharacter(bool value)
@@ -791,23 +774,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private void UpdateCharacterRotation(int mouseMoveX)
 		{
-			if (_agentVisuals != null)
-			{
-				float num = mouseMoveX * 0.005f;
-				_mainCharacterRotation += num;
-				if (_isCharacterMountPlacesSwapped)
-				{
-					MatrixFrame frame = _mountVisuals.GetEntity().GetFrame();
-					frame.rotation.RotateAboutUp(num);
-					_mountVisuals.GetEntity().SetFrame(ref frame);
-				}
-				else
-				{
-					MatrixFrame frame2 = _agentVisuals.GetEntity().GetFrame();
-					frame2.rotation.RotateAboutUp(num);
-					_agentVisuals.GetEntity().SetFrame(ref frame2);
-				}
-			}
+			GameEntity entity = _fake?.Root;
+			if (entity == null) return;
+			float num = mouseMoveX * 0.005f;
+			_mainCharacterRotation += num;
+			MatrixFrame frame = entity.GetGlobalFrame();
+			frame.rotation.RotateAboutUp(num);
+			entity.SetGlobalFrame(frame);
+		}
+
+		private void ForceRenderOnce()
+		{
+			_forceRenderOnce = true;
 		}
 
 		private void FirstTimeInit()
@@ -815,11 +793,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (_continuousRenderCamera == null)
 			{
 				_continuousRenderCamera = Camera.CreateCamera();
-			}
-
-			if (_equipment == null)
-			{
-				return;
 			}
 
 			if (_tableauScene == null)
@@ -843,91 +816,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				_camTargetFrame = slot.CameraFrame;
 			}
 
-			InitializeAgentVisuals();
 			_isVisualsDirty = true;
-		}
-
-		private void InitializeAgentVisuals()
-		{
-			Monster baseMonsterFromRace = TaleWorlds.Core.FaceGen.GetBaseMonsterFromRace(_race);
-			_characterActionSet = MBGlobals.GetActionSetWithSuffix(baseMonsterFromRace, _isFemale, "_warrior");
-
-			_agentVisuals = AgentVisuals.Create(new AgentVisualsData().Banner(_banner).Equipment(_equipment).BodyProperties(_bodyProperties)
-				.Race(_race)
-				.Frame(_characterSpawnPoint)
-				.UseMorphAnims(useMorphAnims: true)
-				.ActionSet(_characterActionSet)
-				.ActionCode(GetIdleAction())
-				.Scene(_tableauScene)
-				.Monster(baseMonsterFromRace)
-				.PrepareImmediately(prepareImmediately: false)
-				.SkeletonType(_isFemale ? SkeletonType.Female : SkeletonType.Male)
-				.ClothColor1(_clothColor1)
-				.ClothColor2(_clothColor2)
-				.CharacterObjectStringId(_charStringId), "AL_AgentVisuals_" + _slotIndex, isRandomProgress: false, needBatchedVersionForWeaponMeshes: false, forceUseFaceCache: false);
-			_agentVisuals.SetAgentLodZeroOrMaxExternal(makeZero: true);
-			_agentVisuals.SetVisible(value: false);
-			_initialLoadingCounter = 2;
-			if (!string.IsNullOrEmpty(_idleFaceAnim))
-			{
-				_agentVisuals.GetVisuals().GetSkeleton().SetFacialAnimation(Agent.FacialAnimChannel.Mid, _idleFaceAnim, playSound: false, loop: true);
-			}
-		}
-
-		private void UpdateMount(bool isRiderAgentMounted = false)
-		{
-			if (_mountVisuals != null)
-			{
-				_mountVisuals.ResetNextFrame();
-				_mountVisuals = null;
-				_mountVisualLoadingCounter = 0;
-			}
-
-			if (_equipment[EquipmentIndex.ArmorItemEndSlot].Item?.HorseComponent != null)
-			{
-				ItemObject item = _equipment[EquipmentIndex.ArmorItemEndSlot].Item;
-				Monster monster = item.HorseComponent.Monster;
-				Equipment equipment = new Equipment
-				{
-					[EquipmentIndex.ArmorItemEndSlot] = _equipment[EquipmentIndex.ArmorItemEndSlot],
-					[EquipmentIndex.HorseHarness] = _equipment[EquipmentIndex.HorseHarness]
-				};
-				MatrixFrame frame = _isCharacterMountPlacesSwapped ? _mountSpawnPointSwapped : _mountSpawnPoint;
-				if (_isCharacterMountPlacesSwapped)
-				{
-					frame.rotation.RotateAboutUp(_mainCharacterRotation);
-				}
-
-				_mountVisualLoadingCounter = 3;
-				_characterActionSet = MBGlobals.GetActionSet(monster.ActionSetCode);
-				ActionIndexCache idleAction = ActionIndexCache.act_none;
-				AgentVisualsData agentVisualsData = new AgentVisualsData();
-				agentVisualsData.Banner(_banner).Equipment(equipment).Frame(frame)
-					.Scale(item.ScaleFactor)
-					.ActionSet(MBGlobals.GetActionSet(monster.ActionSetCode))
-					.ActionCode(idleAction)
-					.Scene(_tableauScene)
-					.Monster(monster)
-					.PrepareImmediately(prepareImmediately: false)
-					.ClothColor1(_clothColor1)
-					.ClothColor2(_clothColor2)
-					.MountCreationKey(_mountCreationKey);
-				_mountVisuals = AgentVisuals.Create(agentVisualsData, "MountTableau", isRandomProgress: false, needBatchedVersionForWeaponMeshes: false, forceUseFaceCache: false);
-				_mountVisuals.SetAgentLodZeroOrMaxExternal(makeZero: true);
-				_mountVisuals.SetVisible(value: false);
-				_mountVisuals.GetEntity().CheckResources(addToQueue: true, checkFaceResources: true);
-			}
 		}
 
 		private void UpdateBannerItem()
 		{
 			if (_bannerEntity != null)
 			{
-				_tableauScene.RemoveEntity(_bannerEntity, 0);
+				_tableauScene?.RemoveEntity(_bannerEntity, 0);
 				_bannerEntity = null;
 			}
 
-			if (!_isBannerShownInBackground || _bannerItem == null)
+			if (!_isBannerShownInBackground || _bannerItem == null || _tableauScene == null)
 			{
 				return;
 			}
@@ -985,19 +885,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		private ItemObject GetAndRemoveBannerFromEquipment(ref Equipment equipment)
-		{
-			ItemObject result = null;
-			ItemObject item = equipment[EquipmentIndex.ExtraWeaponSlot].Item;
-			if (item != null && item.IsBannerItem)
-			{
-				result = equipment[EquipmentIndex.ExtraWeaponSlot].Item;
-				equipment[EquipmentIndex.ExtraWeaponSlot] = EquipmentElement.Invalid;
-			}
-
-			return result;
-		}
-
 		internal void CharacterTableauContinuousRenderFunction(Texture sender, EventArgs e)
 		{
 			TableauView tableauView = View;
@@ -1008,13 +895,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			if (_continuousRenderCamera != null)
 			{
-				// use custom animated FOV and frame
+				// use custom animated FOV, and aim the camera at the character's chest (the
+				// procedural scene provides no authored camera rotation - LookAt removes the guesswork)
 				_continuousRenderCamera.SetFovVertical(
 					_verticalFov,
 					_cameraRatio,
 					0.2f, 200f
 				);
-				_continuousRenderCamera.Frame = _camPos;
+				Vec3 lookTarget = _characterSpawnPoint.origin + new Vec3(0f, 0f, 0.9f);
+				_continuousRenderCamera.LookAt(_camPos.origin, lookTarget, new Vec3(0f, 0f, 1f));
 
 				tableauView.SetCamera(_continuousRenderCamera);
 				tableauView.SetSceneUsesSkybox(value: false);
@@ -1033,7 +922,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private void EnableLightInner()
 		{
-			if (_agentVisuals == null || _agentVisuals.GetEntity() == null)
+			GameEntity entity = _fake?.Root;
+			if (entity == null)
 			{
 				return;
 			}
@@ -1041,8 +931,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (IsLightEnabled) return;
 
 			IsLightEnabled = true;
-
-			GameEntity entity = _agentVisuals.GetEntity();
 
 			_light = Light.CreatePointLight(4f);
 			_light.Intensity = 0.2f;
@@ -1060,7 +948,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			IsLightEnabled = false;
 
-			GameEntity entity = _agentVisuals?.GetEntity();
+			GameEntity entity = _fake?.Root;
 			if (entity == null) return;
 
 			if (_light != null && _light.IsValid && entity.HasComponent(_light))
@@ -1091,75 +979,76 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (_scene != null)
 				return;
 
-			SceneInitializationData initData = new SceneInitializationData(true)
-			{
-				InitPhysicsWorld = true,
-				DoNotUseLoadingScreen = true
-			};
-
-			_scene = Scene.CreateNewScene();
+			// Procedural empty scene: reading the native inventory_character_scene deadlocks
+			// intermittently in the kit editor (its resource pipeline is not pumped there), and the
+			// preview only needs the agent, a fill light and camera slots - all built here. The
+			// backdrop is lost (black background), the previews stay functional everywhere.
+			_scene = Scene.CreateNewScene(initialize_physics: false, enable_decals: false);			
 			_scene.SetName("AL_CharacterTableau");
 			_scene.DisableStaticShadows(value: true);
-			_scene.SetClothSimulationState(state: true);
-			_scene.Read("inventory_character_scene", ref initData);
+			// Same atmosphere as the native inventory scene (bright neutral ambient, no fog):
+			// without it the scene renders dark and hazy - the "blurry" look.
+			//_scene.SetAtmosphereWithName("scene_atmosphere");
+			//Vec3 sceneAmbient = new Vec3(0.63f, 0.66f, 0.71f);
+			//_scene.SetFogAmbientColor(ref sceneAmbient);
+			// A fresh scene carries a default fog that hazes everything the tableau renders.
+			//Vec3 fogColor = Vec3.Zero;
+			//_scene.SetFog(0f, ref fogColor, 0f);
 
-			_controller = MBAgentRendererSceneController.CreateNewAgentRendererSceneController(_scene);
-			_controller.SetDoTimerBasedForcedSkeletonUpdates(false);
+			//_controller = MBAgentRendererSceneController.CreateNewAgentRendererSceneController(_scene);
+			//_controller.SetDoTimerBasedForcedSkeletonUpdates(false);
 
 			_characterSlots = new MatrixFrame[SlotCount];
 			_mountSlots = new MatrixFrame[SlotCount];
 			_bannerSlots = new MatrixFrame[SlotCount];
 			_cameraSlots = new MatrixFrame[SlotCount];
-			_slotUsed = new bool[SlotCount];
 
-			GenerateSlots();
-		}
-
-		public static void OnFinalize()
-		{
-			if (_controller != null)
+			// The scene has no sun and (in the kit) no registered atmosphere: fill lights along the
+			// slot line plus frontal lights (camera side) so every agent is evenly and brightly lit.
+			for (int i = 0; i < SlotCount; i += 2)
 			{
-				MBAgentRendererSceneController.DestructAgentRendererSceneController(_scene, _controller, deleteThisFrame: false);
-				_controller = null;
+				GameEntity lightEntity = GameEntity.CreateEmpty(_scene, true, false, false);
+				Light fill = Light.CreatePointLight(10f);
+				fill.Intensity = 0.5f;
+				fill.LightColor = new Vec3(240f, 240f, 240f);
+				fill.Frame = new MatrixFrame(Mat3.Identity, new Vec3(1.2f, i * SlotSpacing, 2.2f));
+				lightEntity.AddLight(fill);
 			}
-			if (_scene != null)
-			{
-				_scene.ManualInvalidate();
-				_scene = null;
-			}
-		}
 
-		private static void GenerateSlots()
-		{
-			MatrixFrame baseCharacter = _scene.FindEntityWithTag("agent_inv").GetGlobalFrame();
-			MatrixFrame baseMount = _scene.FindEntityWithTag("horse_inv").GetGlobalFrame();
-			MatrixFrame baseBanner = _scene.FindEntityWithTag("banner_inv").GetGlobalFrame();
-			MatrixFrame baseCamera = _scene.FindEntityWithTag("camera_instance").GetGlobalFrame();
+			// Frontal lights (camera side of the slots): light the agents' faces/details.
+			for (int i = 0; i < 4; i++)
+			{
+				GameEntity frontEntity = GameEntity.CreateEmpty(_scene, true, false, false);
+				Light front = Light.CreatePointLight(12f);
+				front.Intensity = 0.6f;
+				front.LightColor = new Vec3(255f, 245f, 225f);
+				front.Frame = new MatrixFrame(Mat3.Identity, new Vec3(0f, 2.5f + i * 16f, 2.4f));
+				frontEntity.AddLight(front);
+			}
 
 			for (int i = 0; i < SlotCount; i++)
 			{
-				float offset = i * SlotSpacing;
-
-				// Character
-				MatrixFrame character = baseCharacter;
-				character.origin.y += offset;
+				MatrixFrame character = MatrixFrame.Identity;
+				character.origin.y += i * SlotSpacing;
 				_characterSlots[i] = character;
 
-				// Mount
-				MatrixFrame mount = baseMount;
-				mount.origin.y += offset;
+				MatrixFrame mount = character;
+				mount.origin.x -= 3f;
 				_mountSlots[i] = mount;
 
-				// Banner
-				MatrixFrame banner = baseBanner;
-				banner.origin.y += offset;
+				MatrixFrame banner = character;
+				banner.origin.x += 2f;
+				banner.origin.y -= 0.5f;
 				_bannerSlots[i] = banner;
 
-				// Camera
-				MatrixFrame camera = baseCamera;
-				camera.origin.y += offset;
+				// Characters face +Y with identity rotation - the camera sits on their facing side.
+				MatrixFrame camera = character;
+				camera.origin.y += 3.6f;
+				camera.origin.z += 1.15f;
 				_cameraSlots[i] = camera;
 			}
+
+			_slotUsed = new bool[SlotCount];
 		}
 
 		public struct SlotData
@@ -1180,18 +1069,28 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				if (!_slotUsed[i])
 				{
 					_slotUsed[i] = true;
-					return new SlotData
-					{
-						Index = i,
-						CharacterFrame = _characterSlots[i],
-						MountFrame = _mountSlots[i],
-						BannerFrame = _bannerSlots[i],
-						CameraFrame = _cameraSlots[i]
-					};
+					return SlotDataOf(i);
 				}
 			}
 
-			throw new Exception("ALCharacterTableauSceneCache: All slots are in use.");
+			// Exhausted (a list refresh can create the new widgets before finalizing the old
+			// ones): share a slot instead of crashing - the two previews briefly overlap.
+			Log("ALCharacterTableauSceneCache: all slots in use - sharing a slot.", LogLevel.Warning);
+			return SlotDataOf(_sharedCursor++ % SlotCount);
+		}
+
+		private static int _sharedCursor;
+
+		private static SlotData SlotDataOf(int index)
+		{
+			return new SlotData
+			{
+				Index = index,
+				CharacterFrame = _characterSlots[index],
+				MountFrame = _mountSlots[index],
+				BannerFrame = _bannerSlots[index],
+				CameraFrame = _cameraSlots[index]
+			};
 		}
 
 		public static void ReleaseSlot(int index)
@@ -1201,10 +1100,58 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				_slotUsed[index] = false;
 			}
 
-			if (_slotUsed.All(x => !x))
+			// The shared scene intentionally stays alive for the whole session (like the native
+			// ThumbnailCacheManager inventory scene): destroying it when the last slot frees -
+			// while list refreshes recreate widgets in the same frame - deadlocks the render
+			// thread on the next CreateNewScene/Read of the same scene.
+		}
+	}
+
+	/// <summary>
+	/// Pool of dressed tableaus fakes, keyed by character (id + culture + gender + equipment seed).
+	/// Formation/team refreshes recreate every widget: without the pool, each refresh destroyed and
+	/// recreated all the fakes, reloading all their meshes (the add-agent lag). Parked fakes stay
+	/// invisible in the tableau scene until a widget showing the same character acquires them.
+	/// </summary>
+	public static class FakeAgentPool
+	{
+		private const int Capacity = 64;
+
+		private static readonly Dictionary<string, List<FakeAgent>> _byKey = new Dictionary<string, List<FakeAgent>>();
+		private static readonly Queue<(string Key, FakeAgent Fake)> _parked = new Queue<(string, FakeAgent)>();
+
+		/// <summary>Returns a parked fake for the key, or creates a new one through <paramref name="create"/>.</summary>
+		public static FakeAgent Acquire(string key, Func<FakeAgent> create)
+		{
+			if (_byKey.TryGetValue(key, out List<FakeAgent> parked))
 			{
-				// all slots are free, we can finalize the scene
-				OnFinalize();
+				while (parked.Count > 0)
+				{
+					FakeAgent fake = parked[parked.Count - 1];
+					parked.RemoveAt(parked.Count - 1);
+					if (fake.IsValid) return fake;
+				}
+			}
+			return create();
+		}
+
+		/// <summary>Parks a fake invisible under its key, ready for the next acquire. Evicts the
+		/// oldest parked fake past the capacity (despawned - its meshes reload on next use).</summary>
+		public static void Return(string key, FakeAgent fake)
+		{
+			if (fake == null || !fake.IsValid) return;
+			fake.SetVisible(false);
+			if (!_byKey.TryGetValue(key, out List<FakeAgent> parked))
+			{
+				_byKey[key] = parked = new List<FakeAgent>();
+			}
+			parked.Add(fake);
+			_parked.Enqueue((key, fake));
+			while (_parked.Count > Capacity)
+			{
+				(string evictedKey, FakeAgent evicted) = _parked.Dequeue();
+				evicted.Despawn();
+				_byKey[evictedKey]?.Remove(evicted);
 			}
 		}
 	}

@@ -8,6 +8,11 @@
 		<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" SuggestedWidth="1920" SuggestedHeight="1080" VerticalAlignment="Center" Brush="Alliance.UniformFrame" Sprite="BlankWhiteSquare_9" Brush.AlphaFactor="0.6">
 			<Children>
 
+				<!-- Shared formation preview: one scene, one camera, one render for the whole character
+				     row. First child = drawn behind every panel (the officer part stays on top and
+				     clickable); DoNotAcceptEvents so it never steals input. -->
+				<AL_FormationTableauWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="1000" HorizontalAlignment="Right" VerticalAlignment="Bottom" MarginLeft="480" IsVisible="@ShowTroops" DoNotAcceptEvents="true" CharactersData="@FormationTableauCharacters" SelectedX="@FormationTableauSelectedX" />
+
 				<!-- Top Center : Team & Formation names -->
 				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="48" HorizontalAlignment="Center" VerticalAlignment="Top" Brush="MPLobby.TopHeader.Background" Brush.AlphaFactor="0.8">
 					<Children>
@@ -164,10 +169,10 @@
 					</Children>
 				</BrushWidget>
 
-				<!-- Bottom right part : Character choice -->
-				<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="480" IsVisible="@ShowTroops">
-					<Children>
-						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="580" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="60" StackLayout.LayoutMethod="HorizontalCentered">
+			<!-- Bottom right part : Character choice -->
+			<BrushWidget WidthSizePolicy="StretchToParent" SuggestedHeight="640" HorizontalAlignment="Left" VerticalAlignment="Bottom" MarginLeft="480" IsVisible="@ShowTroops">
+				<Children>
+					<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="580" VerticalAlignment="Center" HorizontalAlignment="Center" MarginTop="60" StackLayout.LayoutMethod="HorizontalCentered">
 							<Children>
 								<Widget DataSource="{Characters}" WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" HorizontalAlignment="Center" >
 									<ItemTemplate>

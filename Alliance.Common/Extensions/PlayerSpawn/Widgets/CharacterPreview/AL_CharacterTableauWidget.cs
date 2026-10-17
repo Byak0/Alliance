@@ -34,6 +34,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private float _customAnimationProgressRatio;
 		private float _customRenderScale;
 		private float _customAnimationWaitDuration;
+		private bool _continuousRendering = true;
 		private float _cameraFov;
 		private float _cameraZoom;
 		private float _cameraElevation;
@@ -546,6 +547,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					_isBannerShownInBackground = value;
 					OnPropertyChanged(value, "IsBannerShownInBackground");
 					SetTextureProviderProperty("IsBannerShownInBackground", value);
+				}
+			}
+		}
+
+		/// <summary>Continuous tableaus render every frame; the others share the frame's render
+		/// budget (round-robin). Bind to item selection so only the selected preview animates
+		/// smoothly. Defaults to true (legacy behavior).</summary>
+		[Editor(false)]
+		public bool ContinuousRendering
+		{
+			get
+			{
+				return _continuousRendering;
+			}
+			set
+			{
+				if (value != _continuousRendering)
+				{
+					_continuousRendering = value;
+					OnPropertyChanged(value, nameof(ContinuousRendering));
+					SetTextureProviderProperty(nameof(ContinuousRendering), value);
 				}
 			}
 		}
