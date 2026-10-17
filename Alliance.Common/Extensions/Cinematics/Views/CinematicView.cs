@@ -40,6 +40,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		private readonly List<Agent> _hiddenAgents = new List<Agent>();
 		/// <summary>Fake agents spawned for staged-extras tracks of the current cinematic (per-machine).</summary>
 		private readonly Dictionary<AgentActionTrack, List<FakeAgent>> _stagedFakes = new Dictionary<AgentActionTrack, List<FakeAgent>>();
+		// Staged formations still filling (streamed over frames with a time budget - see OnPreDisplayMissionTick)
+		private readonly StagedFillQueue _pendingFills = new StagedFillQueue();
 
 		private CinematicPlayer _player;
 		private bool _skippable;
@@ -59,7 +61,18 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public SceneView EditorSceneView { get => _editorSceneView; set => _editorSceneView = value; }
 		public bool IsEditorMode => MissionScreen == null && _editorSceneView != null;
-		public bool IsPlaying => _player != null && _player.IsPlaying;
+		// Playback is deferred until every staged formation has finished spawning: initial keyframes
+		// must reach the whole crowd, not just the fakes spawned in the first frames.
+		private bool _waitingForSpawn;
+		private Cinematic _pendingStartCinematic;
+		private float _pendingStartTime;
+		/// <summary>External spawn pending check for hosts that fill staged puppets themselves
+		/// (the editor preview spawns outside this view - playback waits on it too).</summary>
+		public Func<bool> HasPendingExternalSpawns;
+
+		private bool HasPendingSpawns => _pendingFills.PendingCount > 0 || (HasPendingExternalSpawns?.Invoke() ?? false);
+
+		public bool IsPlaying => (_player != null && _player.IsPlaying) || _waitingForSpawn;
 		public float CurrentTime => _player?.CurrentTime ?? 0f;
 		/// <summary>Name of the currently playing cinematic, or null. Used for stop-by-name matching.</summary>
 		public string PlayingCinematicName => _player?.Cinematic?.Name;
@@ -113,11 +126,24 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (Mission != null && !IsEditorMode && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Space))
 				Skip();
 
+			// Stream the staged formations in with a per-frame time budget (no multi-second freeze).
+			// Runs whether or not playback started: playback is deferred until the fill completes.
+			if (_pendingFills.Pump(10, 12))
+			{
+				Log($"[Cinematic] {_pendingFills.BatchPlanned} staged extras spawned in {_pendingFills.BatchElapsedMs}ms.", LogLevel.Debug);
+			}
+			// All formations (internal or external, e.g. the editor preview) are in: start playback.
+			if (_waitingForSpawn && !HasPendingSpawns) StartPlayback(_pendingStartCinematic, _pendingStartTime);
+
 			if (_player != null && _player.IsPlaying)
 			{
 				_player.Tick(dt);
 				HideOtherUiLayers();
-				// Staged extras move on their own blockout locomotion (client-deterministic).
+			}
+			// Staged extras move on their own blockout locomotion (client-deterministic) - they also
+			// tick while still filling (idle before playback starts).
+			if ((_player != null && _player.IsPlaying) || _waitingForSpawn)
+			{
 				FakeAgent.TickAll(dt, MissionScreen?.CombatCamera?.Frame.origin);
 			}
 		}
@@ -133,17 +159,26 @@ namespace Alliance.Common.Extensions.Cinematics
 			catch { }
 			Log($"[Cinematic] Mission context: Game.Current={Game.Current != null}, BasicCharacters={characterCount}", LogLevel.Debug);
 
+			// Relaunching while a previous fill is still streaming: cancel the non-persistent
+			// fills (their partial crowd is despawned - pumping them would stack orphans on top
+			// of the new formation). Persistent groups keep streaming.
+			_pendingFills.Cancel(t => t?.Target?.Persist != true);
+
 			for (int i = 0; i < cinematic.Tracks.Count; i++)
 			{
 				if (cinematic.Tracks[i] is not AgentActionTrack track || track.Target?.IsStagedMode != true) continue;
 				// Key matches the server-side persistent group key (cinematic name # track index).
 				string key = $"{cinematic.Name}#{i}";
-				List<FakeAgent> fakes = track.Target.SpawnFakes(Mission.Scene);
-				if (fakes.Count > 0)
-				{
-					_stagedFakes[track] = fakes;
-					FakeAgentStore.Track(key, fakes);
-				}
+				// Streaming spawn: the fill is pumped with a per-frame time budget in OnPreDisplayMissionTick,
+				// so a 2000-agent crowd streams in instead of freezing one frame for seconds.
+				CinematicAgent.StagedFormationFill fill = track.Target.BeginFill(Mission.Scene);
+				_stagedFakes[track] = fill.Fakes;
+				_pendingFills.Enqueue(track, fill);
+				FakeAgentStore.Track(key, fill.Fakes);
+			}
+			if (_pendingFills.PendingCount > 0)
+			{
+				Log($"[Cinematic] Streaming {_pendingFills.BatchPlanned} staged extras...", LogLevel.Debug);
 			}
 		}
 
@@ -156,6 +191,9 @@ namespace Alliance.Common.Extensions.Cinematics
 					foreach (FakeAgent fake in kv.Value) fake?.Despawn();
 			}
 			_stagedFakes.Clear();
+			// Drop the fills of despawned groups, despawning their partial crowd (pumping into a
+			// dead scene would crash); persistent fills keep streaming.
+			_pendingFills.Cancel(t => evenPersistent || t?.Target?.Persist != true);
 		}
 
 #if DEBUG
@@ -235,7 +273,10 @@ namespace Alliance.Common.Extensions.Cinematics
 		public void PlayCinematic(Cinematic cinematic, float startTimeInSeconds, bool isSkippable, List<object> dynamicValues)
 		{
 			if (cinematic == null) return;
+			System.Diagnostics.Stopwatch phaseWatch = System.Diagnostics.Stopwatch.StartNew();
 			StopCinematic();
+			Log($"[Cinematic] previous cinematic stopped in {phaseWatch.ElapsedMilliseconds}ms (despawn of the previous crowd happens here).", LogLevel.Debug);
+			phaseWatch.Restart();
 
 			_skippable = isSkippable;
 			// Rewrite the local copy's dynamic slots with the server-resolved values
@@ -247,6 +288,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			TakeCamera();
 			ApplyAgentBehaviorOnStart(cinematic.AgentBehavior);
 			SpawnStagedFakes(cinematic);
+			Log($"[Cinematic] staged spawn setup took {phaseWatch.ElapsedMilliseconds}ms (streaming starts now - playback deferred until all fakes are in).", LogLevel.Debug);
 			// Free mode: keep player input alive while the cinematic camera renders.
 			if (MissionScreen != null)
 			{
@@ -255,11 +297,27 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 			StartEffects();
 
+			if (HasPendingSpawns)
+			{
+				// Defer playback until the staged crowd finished spawning (pumped in OnPreDisplayMissionTick).
+				_waitingForSpawn = true;
+				_pendingStartCinematic = cinematic;
+				_pendingStartTime = startTimeInSeconds;
+				return;
+			}
+
+			StartPlayback(cinematic, startTimeInSeconds);
+		}
+
+		private void StartPlayback(Cinematic cinematic, float startTimeInSeconds)
+		{
+			_waitingForSpawn = false;
 			_player = new CinematicPlayer(cinematic, this, this);
 			_player.Start();
 
 			// Catch-up from the shared anchor: elapsed = mission time now - mission time at cinematic start.
-			// (except if we're within the leniency window).
+			// (except if we're within the leniency window). Computed at the real start, after the
+			// spawn fill, so machines that finished filling at slightly different times stay in sync.
 			if (!IsEditorMode && Mission.Current != null && startTimeInSeconds > 0f)
 			{
 				float elapsed = (MissionTime.Now.NumberOfTicks / 10000000f) - startTimeInSeconds;
@@ -271,6 +329,8 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public void StopCinematic()
 		{
+			_waitingForSpawn = false;
+			_pendingStartCinematic = null;
 			if (_player != null) { _player.Stop(); _player = null; }
 			if (MissionScreen != null) MissionScreen.AllowInputWithCustomCamera = _savedAllowInputWithCustomCamera;
 			_viewerCameraFrame = null;
@@ -641,7 +701,7 @@ namespace Alliance.Common.Extensions.Cinematics
 							{
 								MatrixFrame member = kf.KeepFormationOffset ? track.Target.GetMemberFrame(destination.Value, i) : destination.Value;
 								fake.MoveTo(member, kf.Speed == AgentMoveSpeed.Run, kf.MoveAnimation,
-									kf.Speed == AgentMoveSpeed.Custom ? kf.CustomSpeed : (float?)null, kf.MountMoveAnimation);
+									kf.Speed == AgentMoveSpeed.Custom ? kf.CustomSpeed : (float?)null, kf.MountMoveAnimation, kf.FollowGround);
 							}
 							break;
 						case AgentActionKind.PlayAnimation:

@@ -1,25 +1,22 @@
 using Alliance.Common.Core.Configuration.Models;
-using Alliance.Common.GameModes.Story.Attributes;
-using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 {
 	/// <summary>
-	/// Stages the subject defined by the track's <see cref="Target"/> (existing agents resolved from
-	/// variables, or staged extras spawned as FakeAgents) over the cinematic: teleport, scripted move,
-	/// body/facial animations, visibility. True-agent commands execute server-side and replicate
-	/// through native agent sync; staged extras are per-machine and run deterministically from the
-	/// shared cinematic clock. One lane per track.
+	/// A cinematic track to manipulate a Target (can be existing agents resolved from variables, 
+	/// or FakeAgents spawned for the occasion) over the cinematic time line: 
+	/// teleport, scripted move, body/facial animations, visibility. 
+	/// True-agent commands execute server-side and replicate through native agent sync; 
+	/// FakeAgents are run deterministically per-machine. 
+	/// One lane per target (but a target can be multiple agents).
 	/// </summary>
 	[Serializable]
 	public class AgentActionTrack : CinematicTrack
 	{
-		[ConfigProperty(label: "Agent target", tooltip: "The subject this lane stages. Click to edit: true agents from variables, or a staged extras formation (per-client fake agents).")]
+		[ConfigProperty(label: "Agent target", tooltip: "The target manipulated by this track. Can be true agents from variables, or new fake agents.")]
 		public CinematicAgent Target = new CinematicAgent();
 
 		[ConfigProperty(label: "Keyframes")]
@@ -31,17 +28,15 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	}
 
 	/// <summary>
-	/// A typed command applied to the track's agent when its time is reached. Teleport and MoveTo
-	/// destinations are positions/faces; MoveTo uses the native scripted movement (real locomotion,
-	/// avoids obstacles) so its arrival time is approximate - author follow-up keyframes with margin.
+	/// A specific command applied to the track's target when the cinematic timeline reads it.
 	/// </summary>
 	[Serializable]
 	public class AgentActionKeyframe : CinematicKeyframe
 	{
-		[ConfigProperty(label: "Action", tooltip: "Teleport: instant reposition. MoveTo: walk/run to a destination. PlayAnimation: body action. PlayFacial: facial animation. SetVisible: hide/show the agent (local per receiver).")]
+		[ConfigProperty(label: "Action", tooltip: "Teleport: instant reposition. MoveTo: walk/run to a destination. PlayAnimation: body action. PlayFacial: facial animation. SetVisible: hide/show the agent.")]
 		public AgentActionKind Kind = AgentActionKind.PlayAnimation;
 
-		[ConfigProperty(label: "Destination", tooltip: "Where to teleport/move: a position with facing, the frame of a marker/variable entity, or an agent's position. MoveTo arrival time is approximate.", dependency: "?Kind!=PlayAnimation&?Kind!=PlayFacial&?Kind!=SetVisible")]
+		[ConfigProperty(label: "Destination", tooltip: "Where to teleport/move: can be an absolute or relative position. MoveTo arrival time is approximate.", dependency: "?Kind!=PlayAnimation&?Kind!=PlayFacial&?Kind!=SetVisible")]
 		public CinematicTarget Destination = new CinematicTarget(CinematicTargetType.Position);
 
 		[ConfigProperty(label: "Keep formation offset", tooltip: "Each agent keeps its spot relative to the group: true agents keep their current arrangement (centroid + facing, rotated to face the destination), fake agents keep their slot in the authored formation. Unchecked: every agent converges on the exact destination point.", dependency: "?Kind!=PlayAnimation&?Kind!=PlayFacial&?Kind!=SetVisible")]
@@ -61,6 +56,9 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 
 		[ConfigProperty(label: "Mount move clip", tooltip: "Animation clip played on the MOUNT while moving (fake agents only). Leave empty to auto-pick the horse walk/trot from the pace.", dependency: "?Kind=MoveTo")]
 		public string MountMoveAnimation = "";
+
+		[ConfigProperty(label: "Follow ground", tooltip: "Snap the fakes to the terrain height while moving (fake agents only).", dependency: "?Kind=MoveTo")]
+		public bool FollowGround = false;
 
 		[ConfigProperty(label: "Action", tooltip: "Native body action played by TRUE agents (e.g. act_cheer). Pick precise shots with the timeline: the action starts when this keyframe is crossed.", dependency: "?Kind=PlayAnimation")]
 		public string ActionName = "";

@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions.Cinematics;
+using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.GameModes.Story.Interfaces;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.Extensions.Cinematics.Models;
@@ -6,7 +6,6 @@ using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Views;
-using Alliance.Editor.Extensions.Cinematics;
 using Alliance.Editor.Extensions.Cinematics.ViewModels;
 using Alliance.Editor.GameModes.Story.ViewModels;
 using Alliance.Common.Extensions.AnimationPlayer;
@@ -31,6 +30,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		private PlayerSpawnMenuView _playerSpawnMenuView;
 		private readonly CinematicView _cinematicView;
 		private readonly Dictionary<AgentActionTrack, List<FakeAgent>> _previewPuppets = new Dictionary<AgentActionTrack, List<FakeAgent>>();
+		private readonly StagedFillQueue _pendingPreviewFills = new StagedFillQueue();
 		private Action<float> _onPreviewTime;
 		private Action _onPreviewFinished;
 		private bool _previewPaused;
@@ -47,6 +47,11 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		public void Tick(float dt)
 		{
 			PumpEditorGameLoad();
+			// Stream the staged formations in with a per-frame time budget (no multi-second freeze)
+			if (_pendingPreviewFills.Pump(10, 10))
+			{
+				Log($"[Cinematic] {_pendingPreviewFills.BatchPlanned} staged extras spawned in {_pendingPreviewFills.BatchElapsedMs}ms.", LogLevel.Debug);
+			}
 			_playerSpawnMenuView.OnMissionTick(dt);
 			TickPreview(dt);
 			DrawCameraPath();
@@ -69,18 +74,17 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		public void EnsureEditorGame()
 		{
 			if (_editorGameLoaded) return;
+			if (_editorGameLoadStarted) return; // our manager is loading - Pump advances it
 			if (Game.Current != null)
 			{
+				// A game created by another kit tool - it loads through that tool's own pump.
 				_editorGameLoaded = true;
 				AnimationSystem.Instance.Init();
 				return;
 			}
-			if (!_editorGameLoadStarted)
-			{
-				_editorGameLoadStarted = true;
-				_editorGameManager = new EditorGameManager();
-				Log("Loading editor game (characters, items, animations)...", LogLevel.Debug);
-			}
+			_editorGameLoadStarted = true;
+			_editorGameManager = new EditorGameManager();
+			Log("Loading editor game (characters, items, animations)...", LogLevel.Debug);
 		}
 
 		private void PumpEditorGameLoad()
@@ -97,13 +101,22 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 				{
 					if (!MBObjectManager.Instance.HasType(typeof(BasicCharacterObject)))
 						MBObjectManager.Instance.RegisterType<BasicCharacterObject>("NPCCharacter", "MPCharacters", 43U, true, false);
+					// The editor game loads SPCultures, which registers BasicCultureObject under the
+					// "SPCultures" root only - the module MP cultures (Rohan, Isengard...) use the
+					// "BasicCultures" root (native MultiplayerGame recipe). RegisterType simply adds
+					// a record (no duplicate protection needed), so register the root unconditionally
+					// and load - otherwise LoadXML("BasicCultures") finds no record and loads nothing.
+					MBObjectManager.Instance.RegisterType<BasicCultureObject>("Culture", "BasicCultures", 17U, true, false);
+					MBObjectManager.Instance.LoadXML("BasicCultures", true, "", false);
 					Game.Current?.ObjectManager?.LoadXML("MPCharacters");
-					Characters.Instance.RefreshAvailableCharacters();
+					// The game's manager replaced the early bootstrap one - refresh the culture lists
+					// from the objects that just loaded.
+					Factions.Instance.RefreshAvailablecultures();
 					Log("MPCharacters loaded.", LogLevel.Debug);
 				}
 				catch (Exception ex)
 				{
-					Log($"Failed to load MPCharacters in the editor game: {ex.Message}", LogLevel.Error);
+					Log($"Failed to load MPCharacters in the editor game: {ex}", LogLevel.Error);
 				}
 				Log("Editor game loaded.", LogLevel.Debug);
 			}
@@ -176,6 +189,9 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 		public void OpenPlayerSpawnMenu(PlayerSpawnMenu playerSpawnMenu, Action<PlayerSpawnMenu> onCloseCallback)
 		{
+			// The spawn menu needs the same data as the cinematic flow (characters, items,
+			// cultures, previews) - make sure the editor game is loading before it opens.
+			EnsureEditorGame();
 			_playerSpawnMenuView.OpenMenu(playerSpawnMenu, onCloseCallback, true);
 		}
 
@@ -273,6 +289,9 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 			Patch_SceneEditorScreen.ActiveCinematicView = _cinematicView;
 			CinematicPreviewBridge.PreviewAgentActionHandler = HandlePreviewAgentAction;
 			SpawnPreviewPuppets(cinematic);
+			// The editor fills its staged puppets itself (no Mission -> the view's own staged spawn
+			// no-ops): playback must wait on those fills before starting.
+			_cinematicView.HasPendingExternalSpawns = () => _pendingPreviewFills.PendingCount > 0;
 			_cinematicView.PlayCinematic(cinematic, 0f, false, null);
 		}
 
@@ -289,6 +308,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 			_previewPaused = false;
 
 			_cinematicView.StopCinematic();
+			_cinematicView.HasPendingExternalSpawns = null;
 			_cinematicView.EditorSceneView = null;
 			Patch_SceneEditorScreen.ActiveCinematicView = null;
 			CinematicPreviewBridge.PreviewAgentActionHandler = null;
@@ -318,14 +338,6 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 			// yet this preview runs with raw-entity fakes and the next one uses AgentVisuals).
 			EnsureEditorGame();
 
-			// Context diagnostic: reports what the kit test-mission / scene-editing mode provides.
-			// Debug-level: stripped from Release builds.
-			int characterCount = -1;
-			try { characterCount = MBObjectManager.Instance?.GetObjectTypeList<BasicCharacterObject>()?.Count ?? -1; }
-			catch { }
-			Log($"[Cinematic] Preview context: Game.Current={Game.Current != null}, Mission.Current={Mission.Current != null}, " +
-				$"BasicCharacters={characterCount}, Monster 'human'={MBObjectManager.Instance?.GetObject<Monster>("human") != null}", LogLevel.Debug);
-
 			Scene scene = MBEditor._editorScene;
 			DespawnPreviewPuppets();
 			if (scene == null)
@@ -343,14 +355,22 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 				if (track.Target?.IsStagedMode == true)
 				{
-					fakes.AddRange(track.Target.SpawnFakes(scene));
+					// Streaming spawn: the fill is pumped with a per-frame time budget in Tick,
+					// so a 2000-agent crowd streams in instead of freezing one frame for seconds.
+					CinematicAgent.StagedFormationFill fill = track.Target.BeginFill(scene);
+					fakes = fill.Fakes;
+					_pendingPreviewFills.Enqueue(track, fill);
 				}
 				else
 				{
-					NativeMpData.CharacterDefinition standIn = NativeMpData.Instance.GetCharacter(track.Target?.PreviewCharacterId);
+					AllianceData.CharacterDefinition standIn = AllianceData.Instance.GetCharacter(track.Target?.PreviewCharacterId);
 					fakes.Add(new FakeAgent(scene, frame, standIn, name: $"Stand-in - {track.Name}"));
 				}
 				_previewPuppets[track] = fakes;
+			}
+			if (_pendingPreviewFills.PendingCount > 0)
+			{
+				Log($"[Cinematic] Streaming {_pendingPreviewFills.BatchPlanned} staged extras...", LogLevel.Debug);
 			}
 		}
 
@@ -376,8 +396,10 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 		private void DespawnPreviewPuppets()
 		{
 			// Batched: removing the shared parent entity clears all bodies in one engine call.
-			FakeAgent.DespawnAll();
+			FakeAgent.DespawnAll(MBEditor._editorScene);
 			_previewPuppets.Clear();
+			// The registry sweep above already despawned the partial crowds - just drop the fills.
+			_pendingPreviewFills.Clear();
 		}
 
 		/// <summary>Executes agent action keyframes against the track's preview stand-ins. MoveTo is
@@ -398,7 +420,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 					MatrixFrame? destination = kf.Destination?.ResolveWorldFrame(null);
 					if (destination.HasValue)
 						for (int i = 0; i < fakes.Count; i++) fakes[i]?.MoveTo(kf.KeepFormationOffset ? track.Target.GetMemberFrame(destination.Value, i) : destination.Value, kf.Speed == AgentMoveSpeed.Run, kf.MoveAnimation,
-							kf.Speed == AgentMoveSpeed.Custom ? Math.Max(0.1f, kf.CustomSpeed) : (float?)null, kf.MountMoveAnimation);
+							kf.Speed == AgentMoveSpeed.Custom ? Math.Max(0.1f, kf.CustomSpeed) : (float?)null, kf.MountMoveAnimation, kf.FollowGround);
 					break;
 				case AgentActionKind.PlayAnimation:
 					foreach (FakeAgent fake in fakes)

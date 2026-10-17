@@ -1027,6 +1027,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public float ArrivalFacingDeg { get => Kf.ArrivalFacingDeg; set { Kf.ArrivalFacingDeg = value; OnPropertyChanged(); } }
 		public string MoveAnimation { get => Kf.MoveAnimation; set { Kf.MoveAnimation = value; OnPropertyChanged(); } }
 		public string MountMoveAnimation { get => Kf.MountMoveAnimation; set { Kf.MountMoveAnimation = value; OnPropertyChanged(); } }
+		public bool FollowGround { get => Kf.FollowGround; set { Kf.FollowGround = value; OnPropertyChanged(); } }
 		public string[] MoveClipOptions => AllianceData.AvailableClips();
 		public string[] MountMoveClipOptions => AllianceData.AvailableClips();
 

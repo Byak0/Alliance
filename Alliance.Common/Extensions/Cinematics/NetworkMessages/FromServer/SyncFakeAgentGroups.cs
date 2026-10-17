@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using Alliance.Common.Extensions.Cinematics.Models;
@@ -13,6 +12,7 @@ namespace Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer
 		public string Key { get; set; }
 		public string CharacterId { get; set; }
 		public string CultureId { get; set; }
+		public bool SwapColors { get; set; }
 		public int Count { get; set; }
 		public CinematicFormationLayout Layout { get; set; }
 		public int Rows { get; set; }
@@ -62,6 +62,7 @@ namespace Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer
 					Key = ReadStringFromPacket(ref bufferReadValid),
 					CharacterId = ReadStringFromPacket(ref bufferReadValid),
 					CultureId = ReadStringFromPacket(ref bufferReadValid),
+					SwapColors = ReadBoolFromPacket(ref bufferReadValid),
 					Count = ReadIntFromPacket(FormationCountCompressionInfo, ref bufferReadValid),
 					Layout = (CinematicFormationLayout)ReadIntFromPacket(LayoutCompressionInfo, ref bufferReadValid),
 					Rows = ReadIntFromPacket(RowsCompressionInfo, ref bufferReadValid),
@@ -85,6 +86,7 @@ namespace Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer
 				WriteStringToPacket(group.Key ?? "");
 				WriteStringToPacket(group.CharacterId ?? "");
 				WriteStringToPacket(group.CultureId ?? "");
+				WriteBoolToPacket(group.SwapColors);
 				WriteIntToPacket(group.Count, FormationCountCompressionInfo);
 				WriteIntToPacket((int)group.Layout, LayoutCompressionInfo);
 				WriteIntToPacket(group.Rows, RowsCompressionInfo);

@@ -271,6 +271,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			public string Key;
 			public string CharacterId;
 			public string CultureId;
+			public bool SwapColors;
 			public int Count;
 			public CinematicFormationLayout Layout;
 			public int Rows;
@@ -480,13 +481,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					Key = key,
 					CharacterId = track.Target.CharacterId,
 					CultureId = track.Target.CultureId,
+					SwapColors = track.Target.SwapColors,
 					Count = track.Target.Count,
 					Layout = track.Target.Layout,
 					Rows = track.Target.Rows,
-				Spacing = track.Target.Spacing,
-				WeaponsDrawn = track.Target.WeaponsDrawn,
-				// The group stands at its last ordered destination (fallback: authored origin).
-				FinalFrame = ComputeFinalStagingFrame(track, record)
+					Spacing = track.Target.Spacing,
+					WeaponsDrawn = track.Target.WeaponsDrawn,
+					// The group stands at its last ordered destination (fallback: authored origin).
+					FinalFrame = ComputeFinalStagingFrame(track, record)
 				};
 				// Everyone gets a fresh snapshot (clients holding this key locally deduplicate).
 				_fakeGroupsSynced.Clear();
@@ -517,19 +519,20 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			{
 				if (peer == null || !peer.IsSynchronized || _fakeGroupsSynced.Contains(peer)) continue;
 				List<FakeAgentGroupData> groups = new List<FakeAgentGroupData>();
-				foreach (PersistentFakeGroup group in _persistentFakeGroups.Values)
+			foreach (PersistentFakeGroup group in _persistentFakeGroups.Values)
 				{
 					groups.Add(new FakeAgentGroupData
 					{
 						Key = group.Key,
 						CharacterId = group.CharacterId,
 						CultureId = group.CultureId,
+						SwapColors = group.SwapColors,
 						Count = group.Count,
 						Layout = group.Layout,
 						Rows = group.Rows,
-					Spacing = group.Spacing,
-					WeaponsDrawn = group.WeaponsDrawn,
-					X = group.FinalFrame.origin.x,
+						Spacing = group.Spacing,
+						WeaponsDrawn = group.WeaponsDrawn,
+						X = group.FinalFrame.origin.x,
 						Y = group.FinalFrame.origin.y,
 						Z = group.FinalFrame.origin.z,
 						Yaw = group.FinalFrame.rotation.f.AsVec2.RotationInRadians

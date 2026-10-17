@@ -41,8 +41,9 @@ Accepted limitations (not in scope):
 - Chat and server announcements remain visible during a cinematic. Fine for now — they are the least
   intrusive UIs; hiding them would also hide legitimately useful info.
 
-Backlog (not in this release): `AudioTrack` volume/loop. Agent and entity staging tracks are the
-next block — items 7 and 8 below.
+Backlog (not in this release): `AudioTrack` volume/loop — `CinematicView.OnAudio` receives both
+parameters but plays the event with defaults (native `SoundEvent` volume/loop wiring needed).
+Agent and entity staging tracks (items 7 and 8) are implemented.
 
 ---
 
@@ -283,8 +284,16 @@ authoritative execution in `CinematicServerBehavior` via `SetScriptedPositionAnd
 (`DoNotRun` = Walk) and `SetActionChannel`; clients re-apply visibility/facial locally (the rest
 replicates natively); the modding-kit preview spawns one real-character `AgentVisuals` puppet per
 track (character selectable per track) and stages commands against it with straight-line movement.
-Follow-ups: action-name picker dropdown (typed by name for now), timeline estimated-arrival marker
-for MoveTo, facial animation on the puppet, body-action looping semantics.
+Since then, the track target grew a second staging mode: **`NewFakeAgents`** — per-machine
+`FakeAgent` formations (layout/rows/spacing/count, character + culture, deterministic equipment
+variety, *Weapons drawn* option) run by every client from the shared clock; groups flagged
+*Persist after cinematic* are synced to late joiners (`SyncFakeAgentGroups` + `FakeAgentStore`).
+`Teleport`/`MoveTo` share a *Keep formation offset* keyframe option (true agents keep their live
+arrangement, fakes their authored slots); mounted true agents move as a pair (orders target the
+mount). Follow-ups remaining: timeline estimated-arrival marker for MoveTo, facial animation on
+the kit puppet (fake-agent previews cannot play facial anims). Done meanwhile: action-name and
+clip pickers are filterable dropdowns (`FilterableComboBox` + `AllianceData` catalogs), body
+actions carry the authored loop flag, and mount move clips (authored or auto walk/trot).
 
 **Current**: `AgentAnimationTrack` is a stub (`TargetRole`, `ActionName`, `FacialAnimation`, `Loop`):
 role resolution is not implemented and there is no movement or positioning — agents cannot be staged

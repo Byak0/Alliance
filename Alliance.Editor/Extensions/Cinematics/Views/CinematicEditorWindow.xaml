@@ -468,6 +468,11 @@
 											<widgets:FilterableComboBox  FontSize="11" ItemsSource="{Binding MountMoveClipOptions}" Text="{Binding MountMoveAnimation, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,6"
 																	  ToolTip="Clip played on the MOUNT of fake agents while moving. Leave empty to auto-pick the horse walk/trot by pace.">
 											</widgets:FilterableComboBox>
+											<StackPanel Orientation="Horizontal" Margin="0,0,0,6">
+												<CheckBox FontSize="11" IsChecked="{Binding FollowGround}" VerticalAlignment="Center" Margin="0,0,4,0"
+														  ToolTip="Snap the fakes to the terrain height while moving (fake agents only)." />
+												<TextBlock Text="Follow ground" FontSize="11" Foreground="#FF6B7480" VerticalAlignment="Center" />
+											</StackPanel>
 										</StackPanel>
 											<StackPanel Visibility="{Binding IsPlayAnimation, Converter={StaticResource BoolToVisibilityConverter}}">
 											<StackPanel Visibility="{Binding TrueTarget, Converter={StaticResource BoolToVisibilityConverter}}">
