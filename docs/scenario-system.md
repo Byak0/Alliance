@@ -87,6 +87,7 @@ State transitions are synchronized to clients with `UpdateScenarioMessage`. The 
 
 - `InitScenarioMessage` selects the same local `Scenario` and `Act` on the client;
 - `UpdateScenarioMessage` updates the client act state and timer;
+- `WaitingScreenStateMessage` drives the act-start waiting screen (visibility + ready/total player counter, see *Act start flow*);
 - `ObjectivesProgressMessage` synchronizes objective counters and mission timer data;
 - `SyncScenarioLivesMessage` updates remaining lives in the client scenario state;
 - `ExecuteActionMessage` runs the client-side part of an action the server executed (fields marked `[SyncToClient]` are injected first);
@@ -142,10 +143,10 @@ The settings contain:
 | `PlayerSpawnMenu` | Team/formation/character menu. Used in `PlayerSelection` mode, and as the character pool for `RandomFromMenu`. |
 | `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Characters used by the `DefaultUnits` auto rule (only visible for that rule in the editor). |
 | `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote` (PlayerSelection mode only). |
-| `IntroCinematicName` | Optional cinematic (by scenario name) played when the act starts, after teams and characters are set and agents spawned. |
+| `IntroCinematicName` | Optional intro cinematic (referenced by name, defined on the scenario) played when the act starts, after teams and characters are set and agents spawned. |
 | `TimeBeforeSpawn`, `TimeWhenSpawnIsAllowed` | Selection/spawn window timings (Start flow). |
-| `DefaultSpawnTagAttacker`, `DefaultSpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
-| `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `OnlyTags`, `OnlyFlags`, `TagsThenFlags` or `PlayerChoice`. |
+| `SpawnTagAttacker`, `SpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
+| `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `Spawnpoint` (random matching spawnpoint entity), `Banners` (allied banner) or `Zones` (random zone from the configured list). |
 | `RespawnStrategyAttacker`, `RespawnStrategyDefender` | Respawn policy: `NoRespawn`, `MaxLivesPerTeam` or `MaxLivesPerPlayer`. |
 | `MaxLivesAttacker`, `MaxLivesDefender` | Lives/tickets used by the selected respawn strategy. |
 | `KeepLivesFromPreviousAct` | Adds the new act lives to remaining lives instead of resetting them. |

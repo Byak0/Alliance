@@ -404,7 +404,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				case AgentBehaviorMode.Lock:
 					LockLocalAgent();
 					break;
-				// Free: agent stays player-controlled; input stays live via Patch_MissionScreen.
+				// Free: agent stays player-controlled; input stays live via MissionScreen.AllowInputWithCustomCamera.
 			}
 		}
 
