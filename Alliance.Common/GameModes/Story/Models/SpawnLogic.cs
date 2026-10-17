@@ -160,10 +160,10 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		// Runtime properties
 		[XmlIgnore]
-		public BasicCharacterObject DefaultCharacterObjectAttacker => Characters.Instance.GetCharacterObject(DefaultCharacterAttacker.Resolve());
-		
+		public BasicCharacterObject DefaultCharacterObjectAttacker => AllianceData.Instance.GetCharacterObject(DefaultCharacterAttacker.Resolve());
+
 		[XmlIgnore]
-		public BasicCharacterObject DefaultCharacterObjectDefender => Characters.Instance.GetCharacterObject(DefaultCharacterDefender.Resolve());
+		public BasicCharacterObject DefaultCharacterObjectDefender => AllianceData.Instance.GetCharacterObject(DefaultCharacterDefender.Resolve());
 
 		[XmlIgnore]
 		public BasicCharacterObject[] DefaultCharacterObjects => new[] { DefaultCharacterObjectDefender, DefaultCharacterObjectAttacker };

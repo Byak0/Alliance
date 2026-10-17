@@ -525,9 +525,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				{
 					foreach (AvailableCharacter character in formation.AvailableCharacters)
 					{
-						if(character.CharacterStub == null)
+						if(character.Definition == null)
 						{
-							Log($"Character {character.Name} in formation {formation.Name} of team {team.Name} is invalid (CharacterStub is null).", LogLevel.Error);
+							Log($"Character {character.CharacterId} in formation {formation.Name} of team {team.Name} is invalid (unknown character id).", LogLevel.Error);
 							return false;
 						}
 					}

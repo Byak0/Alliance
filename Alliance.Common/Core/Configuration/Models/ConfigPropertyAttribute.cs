@@ -1,4 +1,5 @@
-﻿using System;
+using Alliance.Common.Core.Utils;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace Alliance.Common.Core.Configuration.Models
 		public string Tooltip { get; }
 		public float MinValue { get; }
 		public float MaxValue { get; }
-		public string[] PossibleValues => AllianceData.GetData(DataType);
+		public string[] PossibleValues => AllianceData.GetAvailableValuesForType(DataType);
 		public AllianceData.DataTypes DataType { get; }
 
 		// A string representing a dependency condition for this property. The format is:

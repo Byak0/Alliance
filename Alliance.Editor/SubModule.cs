@@ -1,7 +1,6 @@
-﻿using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
-using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
@@ -16,7 +15,6 @@ using Alliance.Editor.Patch;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;

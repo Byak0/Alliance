@@ -1,10 +1,9 @@
-﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using System;
 using System.Xml.Serialization;
 using TaleWorlds.Core;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
-using static Alliance.Common.Core.Utils.Characters;
+using static Alliance.Common.Core.Utils.AllianceData;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Models
 {
@@ -25,13 +24,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 
 		// Runtime properties
 		[XmlIgnore]
-		public BasicCharacterObject Character => Characters.Instance.GetCharacterObject(CharacterId);
+		public BasicCharacterObject Character => AllianceData.Instance.GetCharacterObject(CharacterId);
 		[XmlIgnore]
-		public BasicCharacterStub CharacterStub => Characters.Instance.GetCharacterStub(CharacterId);
+		public AllianceData.CharacterDefinition Definition => AllianceData.Instance.GetCharacter(CharacterId);
 		[XmlIgnore]
-		public string Name => Character?.Name.ToString() ?? CharacterStub?.Name.ToString() ?? "";
+		public string Name => Character?.Name.ToString() ?? Definition?.DisplayName ?? "";
 		[XmlIgnore]
-		public BasicCultureObject Culture => Character?.Culture ?? CharacterStub?.Culture;
+		public BasicCultureObject Culture => Character?.Culture ?? Definition?.Culture;
 		[XmlIgnore]
 		public int MaxSlots => IsPercentage ? SpawnHelper.GetTroopCountFromPercentage(SpawnCount) : SpawnCount;
 		[XmlIgnore]

@@ -1,10 +1,11 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
 using static TaleWorlds.MountAndBlade.ArrangementOrder;
 

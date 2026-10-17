@@ -1,9 +1,10 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using TaleWorlds.Core;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 
 namespace Alliance.Common.GameModes.Story.Actions
 {
