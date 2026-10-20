@@ -53,10 +53,10 @@ namespace Alliance.Client.Core.Console
 			}
 
 			int soundDuration = 300;
-			if (int.TryParse(args[args.Count], out int duration))
+			if (int.TryParse(args[args.Count - 1], out int duration))
 			{
 				soundDuration = duration;
-				args.RemoveAt(args.Count);
+				args.RemoveAt(args.Count - 1);
 			}
 			int soundIndex = SoundEvent.GetEventIdFromString(ConcatenateString(args));
 
