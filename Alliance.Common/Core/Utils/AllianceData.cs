@@ -45,6 +45,7 @@ namespace Alliance.Common.Core.Utils
 			Item,
 			GameMode,
 			Sounds,
+			NativeSounds,
 			Difficulty,
 			Prefab,
 			Font,
@@ -62,6 +63,9 @@ namespace Alliance.Common.Core.Utils
 			Bannerlord = 4
 		}
 
+		private static string[] _nativeSoundEvents;
+		private static string[] _facialAnimations;
+
 		public static string[] AvailableMaps() => SceneList.Scenes.ConvertAll(s => s.Name).ToArray();
 
 		public static string[] AvailableCultures() => Factions.Instance.OrderedCultureKeys.ToArray();
@@ -72,19 +76,54 @@ namespace Alliance.Common.Core.Utils
 
 		public static string[] AvailableSounds() => AudioPlayer.Instance.GetAvailableSounds();
 
+		public static string[] AvailableNativeSoundEvents()
+		{
+			if (_nativeSoundEvents != null) return _nativeSoundEvents;
+			HashSet<string> names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			try
+			{
+				// Native module declare sounds in sound_event_data.xml (and its module_sound.xml is empty)
+				foreach (string path in GetNativeXmlPaths("sound_event_data"))
+				{
+					XmlDocument catalog = new XmlDocument();
+					catalog.Load(path);
+					foreach (XmlNode node in catalog.SelectNodes("//events/event"))
+					{
+						string eventPath = node.Attributes?["path"]?.Value;
+						if (!string.IsNullOrEmpty(eventPath)) names.Add(eventPath);
+					}
+				}
+				// Other modules usually declare them in module_sound.xml
+				foreach (string path in GetNativeXmlPaths("module_sound"))
+				{
+					XmlDocument sounds = new XmlDocument();
+					sounds.Load(path);
+					foreach (XmlNode node in sounds.SelectNodes("//module_sound"))
+					{
+						string name = node.Attributes?["name"]?.Value;
+						if (!string.IsNullOrEmpty(name)) names.Add(name);
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to read the native sound event catalogs: {ex.Message}", LogLevel.Debug);
+			}
+			List<string> sorted = names.ToList();
+			sorted.Sort(StringComparer.OrdinalIgnoreCase);
+			_nativeSoundEvents = sorted.ToArray();
+			return _nativeSoundEvents;
+		}
+
 		public static string[] AvailablePrefabs() => BuildPrefabCatalogManager.AllPrefabNames;
 
 		public static string[] AvailableAnimations() => AnimationSystem.Instance.DefaultAnimations?.Select(a => a.Action.GetName()).ToArray() ?? Array.Empty<string>();
 
 		public static string[] AvailableClips() => Instance._clips.OrderBy(c => c).ToArray();
 
-		// TODO - cache this list
-		/// <summary>Facial animation ids from the voices.xml files (face_animation_record entries).
-		/// These are consumed by the native engine and are NOT registered as managed Xmls in any
-		/// SubModule.xml, so MBObjectManager merging can't see them - parse each active module's
-		/// voice files (paths from project.mbproj) directly instead.</summary>
 		public static string[] AvailableFacialAnimations()
 		{
+			if (_facialAnimations != null) return _facialAnimations;
 			try
 			{
 				List<string> ids = new List<string>();
@@ -99,7 +138,8 @@ namespace Alliance.Common.Core.Utils
 						if (!string.IsNullOrEmpty(id) && known.Add(id)) ids.Add(id);
 					}
 				}
-				return ids.ToArray();
+				_facialAnimations = ids.ToArray();
+				return _facialAnimations;
 			}
 			catch
 			{
@@ -141,6 +181,7 @@ namespace Alliance.Common.Core.Utils
 				DataTypes.Item => AvailableItems(),
 				DataTypes.GameMode => AvailableGameModes,
 				DataTypes.Sounds => AvailableSounds(),
+				DataTypes.NativeSounds => AvailableNativeSoundEvents(),
 				DataTypes.Difficulty => AvailableDifficulties,
 				DataTypes.Prefab => AvailablePrefabs(),
 				DataTypes.Font => AvailableFonts(),
