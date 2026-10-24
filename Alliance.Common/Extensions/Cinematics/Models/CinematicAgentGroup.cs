@@ -15,13 +15,13 @@ using TaleWorlds.MountAndBlade;
 namespace Alliance.Common.Extensions.Cinematics.Models
 {
 	/// <summary>
-	/// Target of an AgentActionTrack. Exclusive modes:
+	/// Target(s) of an AgentActionTrack. Exclusive modes:
 	/// - AgentsFromScene: existing agents resolved from agent variables (server-side, synched natively).
 	/// - NewFakeAgents: per-machine FakeAgents spawned from a formation definition - visuals only,
 	///   every client spawns its own from this authored data and runs commands deterministically from the shared cinematic clock.
 	/// </summary>
 	[Serializable]
-	public class CinematicAgent
+	public class CinematicAgentGroup
 	{
 		[ConfigProperty(label: "Target mode", tooltip: "AgentsFromScene: stage existing agents resolved from variables. NewFakeAgents: spawn per-client fake agents (visuals only, never replicated) from the formation definition below.")]
 		public CinematicAgentMode Mode = CinematicAgentMode.AgentsFromScene;
@@ -63,13 +63,9 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		[ConfigProperty(label: "Persist after cinematic", tooltip: "Keep the fake agents alive after the cinematic ends. Persistent groups are synced to late joiners.", dependency: "?Mode=NewFakeAgents")]
 		public bool Persist;
 
-		/// <summary>Fake agents currently spawned for this target (per-machine, never serialized).</summary>
-		[XmlIgnore]
-		internal readonly List<FakeAgent> SpawnedFakes = new List<FakeAgent>();
-
-		/// <summary>The fill currently streaming (or streamed) by <see cref="BeginFill"/> -
+		/// <summary>The crowd spawn job of this target's last <see cref="StartCrowdSpawn"/> -
 		/// despawned by <see cref="DespawnFakes"/> so relaunches never stack crowds.</summary>
-		internal StagedFormationFill ActiveFill { get; set; }
+		internal CrowdSpawnJob ActiveJob { get; set; }
 
 		[XmlIgnore]
 		public bool IsTrueMode => Mode == CinematicAgentMode.AgentsFromScene;
@@ -96,8 +92,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 			}
 		}
 
-		/// <summary>AgentsFromScene mode: resolves the variable slots. Server passes its context store;
-		/// tools pass null (globals / authored defaults).</summary>
+		/// <summary>AgentsFromScene mode: resolves the variable slots. Server passes its context store; tools pass null (globals / authored defaults).</summary>
 		public List<Agent> ResolveAgents(VariableStore context)
 		{
 			List<Agent> result = new List<Agent>();
@@ -109,50 +104,40 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 			return result;
 		}
 
-		/// <summary>NewFakeAgents mode: spawns Count FakeAgents in the configured layout at the authored origin (per-machine).</summary>
-		public List<FakeAgent> SpawnFakes(Scene scene)
+		/// <summary>NewFakeAgents mode: starts spawning this target's crowd and returns its job.
+		/// The fake agents are created over several frames (see <see cref="CrowdSpawnJob.SpawnBatch"/>),
+		/// so a large crowd never freezes a frame.</summary>
+		public CrowdSpawnJob StartCrowdSpawn(Scene scene)
 		{
 			DespawnFakes();
-			StagedFormationFill fill = BeginFormation(scene, null, CharacterId, CultureId, Count, Layout, Rows, Spacing, WeaponsDrawn, Origin.ToFrame(), SwapColors);
-			fill.Pump(int.MaxValue);
-			SpawnedFakes.AddRange(fill.Fakes);
-			return fill.Fakes;
+			ActiveJob = CreateCrowdSpawnJob(scene, null, CharacterId, CultureId, Count, Layout, Rows, Spacing, WeaponsDrawn, Origin.ToFrame(), SwapColors);
+			return ActiveJob;
 		}
 
-		/// <summary>Streaming variant of <see cref="SpawnFakes"/> for playback: the formation can be
-		/// pumped over several frames (see <see cref="StagedFormationFill.Pump"/>) instead of freezing
-		/// one frame on large crowds.</summary>
-		public StagedFormationFill BeginFill(Scene scene)
+		/// <summary>Creates a crowd spawn job from raw definition data; a non-empty key also registers
+		/// the crowd in <see cref="FakeAgentStore"/> (late-join sync).</summary>
+		private static CrowdSpawnJob CreateCrowdSpawnJob(Scene scene, string key, string characterId, string cultureId, int count, CinematicFormationLayout layout, int rows, float spacing, bool weaponsDrawn, MatrixFrame originFrame, bool swapColors = false)
 		{
-			DespawnFakes();
-			ActiveFill = BeginFormation(scene, null, CharacterId, CultureId, Count, Layout, Rows, Spacing, WeaponsDrawn, Origin.ToFrame(), SwapColors);
-			return ActiveFill;
+			CrowdSpawnJob job = new CrowdSpawnJob(scene, characterId, cultureId, count, layout, rows, spacing, weaponsDrawn, originFrame, swapColors);
+			if (!string.IsNullOrEmpty(key)) FakeAgentStore.Track(key, job.SpawnedFakeAgents);
+			return job;
 		}
 
-		/// <summary>Starts a staged-extras formation fill. The fakes land in <see cref="StagedFormationFill.Fakes"/>
-		/// (a stable list, safe to track/store before completion) and can be pumped incrementally
-		/// through <see cref="StagedFormationFill.Pump"/>; the order and equipment seeds are identical
-		/// to a one-shot spawn, so late joiners see the same crowd.</summary>
-		public static StagedFormationFill BeginFormation(Scene scene, string key, string characterId, string cultureId, int count, CinematicFormationLayout layout, int rows, float spacing, bool weaponsDrawn, MatrixFrame originFrame, bool swapColors = false)
-		{
-			StagedFormationFill fill = new StagedFormationFill(scene, characterId, cultureId, count, layout, rows, spacing, weaponsDrawn, originFrame, swapColors);
-			if (!string.IsNullOrEmpty(key)) FakeAgentStore.Track(key, fill.Fakes);
-			return fill;
-		}
-
-		/// <summary>Spawns a staged-extras formation from raw definition data (used by both the model
-		/// and the late-join sync, which has no CinematicAgent instance on the joining client).</summary>
+		/// <summary>Spawns a whole crowd at once from raw definition data (used by the late-join
+		/// sync, which has no CinematicAgent instance on the joining client).</summary>
 		public static List<FakeAgent> SpawnFormation(Scene scene, string key, string characterId, string cultureId, int count, CinematicFormationLayout layout, int rows, float spacing, bool weaponsDrawn, MatrixFrame originFrame, bool swapColors = false)
 		{
-			StagedFormationFill fill = BeginFormation(scene, key, characterId, cultureId, count, layout, rows, spacing, weaponsDrawn, originFrame, swapColors);
-			fill.Pump(int.MaxValue);
-			return fill.Fakes;
+			CrowdSpawnJob job = CreateCrowdSpawnJob(scene, key, characterId, cultureId, count, layout, rows, spacing, weaponsDrawn, originFrame, swapColors);
+			job.SpawnBatch(int.MaxValue);
+			return job.SpawnedFakeAgents;
 		}
 
-		/// <summary>Incremental formation spawner: <see cref="Pump"/> creates at most maxCount fakes
-		/// per call, so a 2000-agent formation streams in over several frames instead of stalling
-		/// one frame for seconds.</summary>
-		public class StagedFormationFill
+		/// <summary>Incremental spawner for one staged crowd: <see cref="SpawnBatch"/> creates at
+		/// most maxCount fake agents per call (optionally bounded by a millisecond budget), so a
+		/// large crowd spawns over several frames instead of stalling one frame for seconds.
+		/// Placement and equipment are index-derived, so every machine - late joiners included -
+		/// spawns the exact same crowd in the same order.</summary>
+		public class CrowdSpawnJob
 		{
 			private readonly Scene _scene;
 			private readonly string _characterId;
@@ -167,15 +152,15 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 			private readonly AllianceData.CharacterDefinition _character;
 			private int _next;
 
-			/// <summary>Fakes spawned so far (stable list reference - track it before the fill completes).</summary>
-			public List<FakeAgent> Fakes { get; } = new List<FakeAgent>();
+			/// <summary>Fake agents spawned so far (stable list - safe to track before completion).</summary>
+			public List<FakeAgent> SpawnedFakeAgents { get; } = new List<FakeAgent>();
 
-			/// <summary>Total fakes this fill will have spawned when done (at least 1).</summary>
-			public int PlannedCount => Math.Max(1, _count);
+			/// <summary>Total fake agents this job will have spawned when complete (at least 1).</summary>
+			public int TotalCount => Math.Max(1, _count);
 
-			public bool Done => _next >= Math.Max(1, _count);
+			public bool IsComplete => _next >= Math.Max(1, _count);
 
-			internal StagedFormationFill(Scene scene, string characterId, string cultureId, int count, CinematicFormationLayout layout, int rows, float spacing, bool weaponsDrawn, MatrixFrame originFrame, bool swapColors)
+			internal CrowdSpawnJob(Scene scene, string characterId, string cultureId, int count, CinematicFormationLayout layout, int rows, float spacing, bool weaponsDrawn, MatrixFrame originFrame, bool swapColors)
 			{
 				_scene = scene;
 				_characterId = characterId;
@@ -190,17 +175,19 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 				_character = AllianceData.Instance.GetCharacter(characterId);
 			}
 
-			public void Pump(int maxCount, double budgetMs = -1)
+			/// <summary>Spawns the next up-to-maxCount fake agents of the crowd (all of them with
+			/// int.MaxValue). With a budget, stops early once it is exceeded.</summary>
+			public void SpawnBatch(int maxCount, double budgetMs = -1)
 			{
 				System.Diagnostics.Stopwatch budgetWatch = budgetMs > 0 ? System.Diagnostics.Stopwatch.StartNew() : null;
-				while (!Done && maxCount-- > 0)
+				while (!IsComplete && maxCount-- > 0)
 				{
 					int i = _next++;
 					MatrixFrame frame = _originFrame;
 					frame.origin += GetFormationOffset(_originFrame, _layout, _rows, _spacing, _count, i);
-					Fakes.Add(new FakeAgent(_scene, frame, _character, cultureId: _cultureId, name: $"{(string.IsNullOrEmpty(_characterId) ? "extra" : _characterId)} {i + 1}", useFullAgentVisuals: false, weaponsDrawn: _weaponsDrawn, equipmentSeed: i, swapColors: _swapColors));
+					SpawnedFakeAgents.Add(new FakeAgent(_scene, frame, _character, cultureId: _cultureId, name: $"{(string.IsNullOrEmpty(_characterId) ? "extra" : _characterId)} {i + 1}", useFullAgentVisuals: false, weaponsDrawn: _weaponsDrawn, equipmentSeed: i, swapColors: _swapColors));
 					// Budget checked every 16 fakes: a heavy fake (first-time resource loads) can
-					// overshoot a frame, but the fill stays bounded overall.
+					// overshoot a frame, but the job stays bounded overall.
 					if (budgetWatch != null && (maxCount & 15) == 0 && budgetWatch.Elapsed.TotalMilliseconds > budgetMs) break;
 				}
 			}
@@ -291,18 +278,15 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 			return value - (float)Math.Floor(value);
 		}
 
-		public void DespawnFakes()
+		/// <summary>Despawns the fake agents of the current spawn job, if any - relaunching a
+		/// cinematic must never stack a new crowd on top of the previous one.</summary>
+		private void DespawnFakes()
 		{
-			// The streaming fill bypasses SpawnedFakes (fakes land in its own list) - despawn it too,
-			// otherwise relaunching a cinematic (persistent tracks keep their fakes through the stop)
-			// stacks a new crowd on top of the previous one.
-			if (ActiveFill != null)
+			if (ActiveJob != null)
 			{
-				foreach (FakeAgent fake in ActiveFill.Fakes) fake?.Despawn();
-				ActiveFill = null;
+				foreach (FakeAgent fake in ActiveJob.SpawnedFakeAgents) fake?.Despawn();
+				ActiveJob = null;
 			}
-			foreach (FakeAgent fake in SpawnedFakes) fake?.Despawn();
-			SpawnedFakes.Clear();
 		}
 	}
 
@@ -314,78 +298,75 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 
 	public enum CinematicFormationLayout
 	{
-		/// <summary>Rows lines of agents, agent spacing = Spacing, line spacing = Spacing x2.</summary>
 		Grid,
-		/// <summary>Rows concentric rings around a center member, agent and ring spacing = Spacing,
-		/// every ring rotated by half a slot for a staggered look.</summary>
 		Circle,
-		/// <summary>Grid base placement with deterministic jitter for an organic crowd look.</summary>
 		Loose
 	}
 
-	/// <summary>Time-budgeted pump queue for streamed formation fills (shared by the in-game
-	/// cinematic view and the editor preview): each <see cref="Pump"/> call gives every pending
-	/// fill a slice of the frame budget, so large crowds stream in without freezing the frame.</summary>
-	public class StagedFillQueue
+	/// <summary>Spreads crowd spawn jobs across frames (shared by the in-game cinematic view and
+	/// the editor preview): every <see cref="Tick"/> gives each pending job a slice of the frame
+	/// budget, so several large crowds stream in together without freezing a frame.</summary>
+	public class CrowdSpawnScheduler
 	{
-		private readonly List<(AgentActionTrack Track, CinematicAgent.StagedFormationFill Fill)> _fills = new List<(AgentActionTrack, CinematicAgent.StagedFormationFill)>();
+		private readonly List<(AgentActionTrack Track, CinematicAgentGroup.CrowdSpawnJob Job)> _jobs = new List<(AgentActionTrack, CinematicAgentGroup.CrowdSpawnJob)>();
 		private readonly System.Diagnostics.Stopwatch _budgetWatch = new System.Diagnostics.Stopwatch();
-		private readonly System.Diagnostics.Stopwatch _batchWatch = new System.Diagnostics.Stopwatch();
-		private int _batchPlanned;
+		private readonly System.Diagnostics.Stopwatch _groupWatch = new System.Diagnostics.Stopwatch();
+		private int _groupPlanned;
 
-		/// <summary>Fills still streaming.</summary>
-		public int PendingCount => _fills.Count;
+		/// <summary>Crowds still spawning.</summary>
+		public int PendingCount => _jobs.Count;
 
-		/// <summary>Total fakes planned by the current batch (valid once every fill has been enqueued).</summary>
-		public int BatchPlanned => _batchPlanned;
+		/// <summary>Total fake agents planned by the current group of jobs (valid once every job
+		/// has been added - resets when the queue drains).</summary>
+		public int TotalPlanned => _groupPlanned;
 
-		/// <summary>Ms elapsed since the current batch started streaming (for completion reports).</summary>
-		public long BatchElapsedMs => _batchWatch.ElapsedMilliseconds;
+		/// <summary>Ms elapsed since the current group started spawning (for completion reports).</summary>
+		public long ElapsedMs => _groupWatch.ElapsedMilliseconds;
 
-		/// <summary>Registers a fill in the queue. The first fill of a batch restarts the batch counters.</summary>
-		public void Enqueue(AgentActionTrack track, CinematicAgent.StagedFormationFill fill)
+		/// <summary>Registers a spawn job. The first job of a group resets the group counters.</summary>
+		public void Add(AgentActionTrack track, CinematicAgentGroup.CrowdSpawnJob job)
 		{
-			if (_fills.Count == 0)
+			if (_jobs.Count == 0)
 			{
-				_batchPlanned = 0;
-				_batchWatch.Restart();
+				_groupPlanned = 0;
+				_groupWatch.Restart();
 			}
-			_fills.Add((track, fill));
-			_batchPlanned += fill.PlannedCount;
+			_jobs.Add((track, job));
+			_groupPlanned += job.TotalCount;
 		}
 
-		/// <summary>Pumps every pending fill within the frame budget. Returns true when the
-		/// queue just drained (read <see cref="BatchPlanned"/> / <see cref="BatchElapsedMs"/>
-		/// for the completion report - they reset on the next batch).</summary>
-		public bool Pump(double perFillBudgetMs, double frameBudgetMs)
+		/// <summary>Advances every pending job within the frame budget. Returns true when all
+		/// jobs just completed (read <see cref="TotalPlanned"/> / <see cref="ElapsedMs"/> for the
+		/// completion report - they reset with the next group).</summary>
+		public bool Tick(double perJobBudgetMs, double frameBudgetMs)
 		{
-			if (_fills.Count == 0) return false;
+			if (_jobs.Count == 0) return false;
 			_budgetWatch.Restart();
 			int index = 0;
-			while (index < _fills.Count)
+			while (index < _jobs.Count)
 			{
-				CinematicAgent.StagedFormationFill fill = _fills[index].Fill;
-				fill.Pump(int.MaxValue, perFillBudgetMs);
-				if (fill.Done) _fills.RemoveAt(index);
+				CinematicAgentGroup.CrowdSpawnJob job = _jobs[index].Job;
+				job.SpawnBatch(int.MaxValue, perJobBudgetMs);
+				if (job.IsComplete) _jobs.RemoveAt(index);
 				else index++;
-				if (_fills.Count > 0 && _budgetWatch.ElapsedMilliseconds > frameBudgetMs) break;
+				if (_jobs.Count > 0 && _budgetWatch.ElapsedMilliseconds > frameBudgetMs) break;
 			}
-			return _fills.Count == 0;
+			return _jobs.Count == 0;
 		}
 
-		/// <summary>Despawns the partial crowd of every matching fill and drops it from the queue
-		/// (pumping a cancelled fill would stack orphans on top of the replacement formation).</summary>
+		/// <summary>Cancels matching jobs: despawns their partial crowd and drops them from the
+		/// queue (left in, they would keep spawning an obsolete crowd on top of its replacement).</summary>
 		public void Cancel(Func<AgentActionTrack, bool> cancelIf)
 		{
-			for (int i = _fills.Count - 1; i >= 0; i--)
+			for (int i = _jobs.Count - 1; i >= 0; i--)
 			{
-				if (!cancelIf(_fills[i].Track)) continue;
-				foreach (FakeAgent fake in _fills[i].Fill.Fakes) fake?.Despawn();
-				_fills.RemoveAt(i);
+				if (!cancelIf(_jobs[i].Track)) continue;
+				foreach (FakeAgent fake in _jobs[i].Job.SpawnedFakeAgents) fake?.Despawn();
+				_jobs.RemoveAt(i);
 			}
 		}
 
-		/// <summary>Drops every fill without despawning (the caller already disposed of the fakes).</summary>
-		public void Clear() => _fills.Clear();
+		/// <summary>Drops every job without despawning (the caller already disposed of the fakes).</summary>
+		public void Clear() => _jobs.Clear();
 	}
 }

@@ -26,7 +26,8 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		void OnSubtitles(List<SubtitleState> subtitles);
 
-		void OnAudio(string soundEvent, float volume, bool loop);
+		/// <summary>Audio command fired once on crossing. Audio is local: the server sink ignores it.</summary>
+		void OnAudio(AudioKeyframe keyframe);
 
 		/// <summary>Instant entity command (SetVisible / Teleport / Fx) - fired once on crossing.
 		/// MoveTo is continuous and arrives through <see cref="OnEntityMove"/> instead.</summary>

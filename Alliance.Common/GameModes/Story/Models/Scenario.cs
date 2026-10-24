@@ -143,6 +143,7 @@ namespace Alliance.Common.GameModes.Story.Models
 					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Cinematics", "A cinematic has no name."));
 				else if (!cinematicNames.Add(cinematic.Name))
 					issues.Add(new ValidationIssue(ValidationSeverity.Error, "Scenario > Cinematics", $"Duplicate cinematic name '{cinematic.Name}'. Cinematic names must be unique."));
+				issues.AddRange(cinematic.Validate());
 			}
 
 			for (int i = 0; i < Acts.Count; i++)

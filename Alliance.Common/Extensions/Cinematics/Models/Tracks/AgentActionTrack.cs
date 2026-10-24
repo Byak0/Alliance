@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models.Tracks
 	public class AgentActionTrack : CinematicTrack
 	{
 		[ConfigProperty(label: "Agent target", tooltip: "The target manipulated by this track. Can be true agents from variables, or new fake agents.")]
-		public CinematicAgent Target = new CinematicAgent();
+		public CinematicAgentGroup Target = new CinematicAgentGroup();
 
 		[ConfigProperty(label: "Keyframes")]
 		public List<AgentActionKeyframe> Keyframes = new List<AgentActionKeyframe>();

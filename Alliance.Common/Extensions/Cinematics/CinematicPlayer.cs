@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Extensions.Cinematics.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using System;
 using System.Collections.Generic;
@@ -52,12 +52,10 @@ namespace Alliance.Common.Extensions.Cinematics
 			_playing = _cinematic != null && Duration > 0f;
 		}
 
-		public void Stop()
-		{
-			if (!_playing) return;
-			_playing = false;
-			_sink?.OnFinished();
-		}
+		/// <summary>Halts playback silently: the sink is not notified - whoever stops the clock owns
+		/// the consequences (e.g. the view tears itself down). Natural end still announces through
+		/// Tick -> OnFinished.</summary>
+		public void Stop() => _playing = false;
 
 		public void Seek(float time)
 		{
@@ -380,7 +378,7 @@ namespace Alliance.Common.Extensions.Cinematics
 						Fire(et.Keyframes, prevTime, currentTime, kf => _sink.OnEventActions(kf.Actions));
 						break;
 					case AudioTrack at:
-						Fire(at.Keyframes, prevTime, currentTime, kf => _sink.OnAudio(kf.SoundEvent, kf.Volume, kf.Loop));
+						Fire(at.Keyframes, prevTime, currentTime, kf => _sink.OnAudio(kf));
 						break;
 					case EntityTrack vt:
 						// MoveTo is continuous (SampleEntities) - only instant kinds cross.

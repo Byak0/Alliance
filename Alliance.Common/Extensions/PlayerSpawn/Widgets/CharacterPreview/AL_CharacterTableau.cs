@@ -632,8 +632,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		/// <summary>(Re)spawns the FakeAgent dressed from the catalog definition of
-		/// <see cref="_charStringId"/>, with slot overrides from the equipment code when present.</summary>
+		/// <summary>(Re)spawns the FakeAgent dressed from the catalog definition of <see cref="_charStringId"/>
+		/// TODO : equipment code is actually ignored, it should be used when defined (ie native Lobby armory needs it to properly display characters).</summary>
 		private void RebuildFake()
 		{
 			ReturnFakeToPool();

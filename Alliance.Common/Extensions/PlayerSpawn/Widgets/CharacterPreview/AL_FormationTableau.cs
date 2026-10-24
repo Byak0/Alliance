@@ -25,6 +25,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		/// <summary>Normalized row position of the hovered character (-1 = none), driven by the character item widgets.</summary>
 		public static float HoveredX { get; set; } = -1f;
 
+		private FakeAgent _selectedFake;
 		private readonly List<FakeAgent> _fakes = new List<FakeAgent>();
 		private readonly List<float> _fractions = new List<float>();
 		private readonly List<Light> _stateLights = new List<Light>();
@@ -96,7 +97,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				stateLight.LightColor = new Vec3(255f, 235f, 190f);
 				stateLight.Frame = new MatrixFrame(Mat3.Identity, new Vec3(0f, 1.0f, .5f));
 				fake.Root?.AddLight(stateLight);
-
+				PlayIdle(fake);
 				_fakes.Add(fake);
 				_fractions.Add(characters[i].X);
 				_stateLights.Add(stateLight);
@@ -105,11 +106,38 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_isVisualsDirty = false;
 		}
 
+		private void PlayIdle(FakeAgent fake)
+		{
+			// TODO, variants if fake is mounted, has shield, 2h, bow, etc.
+			fake?.PlayClip(AllianceData.Instance.GetAnimationOfAction(fake.BodyActionSetId, "act_idle_1h_with_shield_5"), loop: true);
+		}
+
+		private void PlaySpecialAnim(FakeAgent fake)
+		{
+			// TODO, variants if fake is mounted, has shield, 2h, bow, etc.
+			fake?.PlayClip(AllianceData.Instance.GetAnimationOfAction(fake.BodyActionSetId, "act_arena_winner_2"), loop: true);
+		}
+
 		/// <summary>Highlights the selected character (normalized row position, -1 = none).</summary>
 		public void SetSelected(float x)
 		{
 			_selectionX = x;
 			UpdateLights();
+			UpdateSelectedFake();
+		}
+
+		private void UpdateSelectedFake()
+		{
+			PlayIdle(_selectedFake);
+			for (int i = 0; i < _fractions.Count; i++)
+			{
+				if (MathF.Abs(_fractions[i] - _selectionX) < 0.02f)
+				{
+					_selectedFake = _fakes[i];
+					break;
+				}
+			}
+			PlaySpecialAnim(_selectedFake);
 		}
 
 		/// <summary>Toggles each agent's state light: off, dim (hovered) or bright (selected).</summary>

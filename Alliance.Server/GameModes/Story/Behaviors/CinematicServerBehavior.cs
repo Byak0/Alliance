@@ -61,7 +61,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			public void OnCameraState(in CameraState state) { }
 			public void OnScreen(float letterbox, float fadeAlpha) { }
 			public void OnSubtitles(List<SubtitleState> subtitles) { }
-			public void OnAudio(string soundEvent, float volume, bool loop) { }
+			public void OnAudio(AudioKeyframe keyframe) { }
 			public void OnEntityAction(EntityActionKeyframe keyframe) { }
 			public void OnEntityMove(EntityActionKeyframe keyframe, MatrixFrame startFrame, float t) { }
 

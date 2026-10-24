@@ -107,4 +107,16 @@
 		Run,
 		Custom
 	}
+
+	public enum AudioSoundSource
+	{
+		CustomFile,
+		NativeEvent
+	}
+
+	public enum AudioActionKind
+	{
+		Play,
+		Stop
+	}
 }

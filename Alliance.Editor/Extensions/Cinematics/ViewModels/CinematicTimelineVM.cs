@@ -3,6 +3,7 @@ using Alliance.Editor.GameModes.Story.Views;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Core.Utils;
@@ -17,6 +18,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using TaleWorlds.Library;
@@ -301,6 +303,20 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 				SelectedGenericKeyframe = newVm;
 			}
 			RecomputeKeyframePositions();
+			RefreshOwningLane((CinematicKeyframe)target);
+		}
+
+		public void RefreshOwningLane(CinematicKeyframe keyframe)
+		{
+			if (keyframe == null) return;
+			foreach (TrackLaneVM lane in OtherTracks)
+			{
+				if (lane.Track?.GetKeyframes()?.Contains(keyframe) == true)
+				{
+					lane.RefreshSegments();
+					return;
+				}
+			}
 		}
 
 		public CameraTrack CameraTrack => _cinematic.FindTrack<CameraTrack>();
@@ -437,8 +453,6 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			float ct = Math.Min(_currentTime, dur);
 			PlayheadX = TimelinePadding + (ct / dur) * UsableWidth;
 		}
-
-		// -- Other-track management ----------------------------------------------------------
 
 		private void RebuildTracks()
 		{
@@ -660,12 +674,15 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		protected void OnPropertyChanged([CallerMemberName] string name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 	}
 
-	/// <summary>A lane for a non-camera track (Overlay, LookAt, etc.) showing keyframe markers.</summary>
+	/// <summary>A lane for a non-camera track (Overlay, LookAt, etc.) showing keyframe markers.
+	/// Audio lanes additionally draw their sound duration/fades as segments with ramps.</summary>
 	public class TrackLaneVM : INotifyPropertyChanged
 	{
 		public CinematicTrack Track { get; }
 		internal readonly CinematicTimelineVM _parent;
 		public ObservableCollection<KeyframeMarkerVM> Markers { get; } = new();
+		/// <summary>Sounding extents of audio keyframes (empty for other track types).</summary>
+		public ObservableCollection<AudioSegmentVM> Segments { get; } = new();
 
 		public string DisplayName => string.IsNullOrWhiteSpace(Track?.Name)
 			? Track?.GetType().Name.Replace("Track", "") ?? "Track"
@@ -718,7 +735,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			CinematicKeyframe kf = Track switch
 			{
 				OverlayTrack _ => new OverlayKeyframe(t) { Letterbox = 0.1f },
-				AudioTrack _ => new AudioKeyframe(t) { Volume = 1f },
+				AudioTrack _ => new AudioKeyframe(t),
 				SubtitleTrack _ => new SubtitleKeyframe(t) { Duration = 3f },
 				EntityTrack _ => new EntityActionKeyframe(t),
 				AgentActionTrack _ => new AgentActionKeyframe(t),
@@ -735,6 +752,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public void RebuildMarkers()
 		{
 			Markers.Clear();
+			RebuildSegments();
 			if (Track == null) return;
 			var kfs = Track.GetKeyframes();
 			if (kfs == null) return;
@@ -745,10 +763,96 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 		public void RecomputePositions(float dur, float usable, float pad)
 		{
 			foreach (var m in Markers) m.RecomputeX(dur, usable, pad);
+			foreach (var s in Segments) s.Recompute(dur, usable, pad);
+		}
+
+		public void RefreshSegments()
+		{
+			RebuildSegments();
+			_parent?.RecomputeKeyframePositions();
+		}
+
+		/// <summary>Rebuilds the audio extent segments from the lane's keyframes.</summary>
+		private void RebuildSegments()
+		{
+			Segments.Clear();
+			if (Track is not AudioTrack audioTrack || audioTrack.Keyframes == null) return;
+
+			foreach (AudioKeyframe kf in audioTrack.Keyframes.Where(k => k != null && k.Kind == AudioActionKind.Play))
+			{
+				float? duration = null;
+				if (!kf.Loop)
+				{
+					if (kf.SoundSource == AudioSoundSource.CustomFile) duration = AudioPlayer.Instance.GetSoundDuration(kf.SoundName);
+					else if (AllianceData.TryGetNativeSoundLength(kf.SoundName, out float nativeLength)) duration = nativeLength;
+				}
+				string extent;
+				if (duration.HasValue) extent = $"{duration.Value:0.0}s";
+				else if (kf.Loop) extent = "looping (until stopped)";
+				else if (kf.Persist) extent = "persists after cinematic";
+				else extent = "unknown duration (until next key/end)";
+				Segments.Add(new AudioSegmentVM(audioTrack, kf, duration, extent, NormalFill));
+			}
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		protected void OnPropertyChanged([CallerMemberName] string name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+	}
+
+	/// <summary>Sounding extent of one audio Play keyframe, drawn as a trapezoid behind the markers:
+	/// fade-in/out ramps are the slanted sides. The end (next keyframe + the sounding keyframe's
+	/// fade-out, or the known custom-file duration) is re-derived on every recompute so dragging
+	/// keyframes keeps the extents truthful.</summary>
+	public class AudioSegmentVM : INotifyPropertyChanged
+	{
+		private const float TopY = 7f;
+		private const float BottomY = 29f;
+
+		private readonly AudioTrack _track;
+		private readonly AudioKeyframe _kf;
+		private readonly float? _duration;
+
+		private PointCollection _points;
+		public PointCollection Points { get => _points; private set { _points = value; OnPropertyChanged(); } }
+		public Brush Fill { get; }
+		public string Tooltip { get; }
+
+		public AudioSegmentVM(AudioTrack track, AudioKeyframe kf, float? duration, string extent, SolidColorBrush laneBrush)
+		{
+			_track = track;
+			_kf = kf;
+			_duration = duration;
+			Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0x55, laneBrush.Color.R, laneBrush.Color.G, laneBrush.Color.B));
+			Fill.Freeze();
+			Tooltip = $"{kf.SoundName} - {extent}";
+		}
+
+		public void Recompute(float dur, float usable, float pad)
+		{
+			float end = _duration.HasValue ? _kf.Time + _duration.Value : float.PositiveInfinity;
+			AudioKeyframe next = _track?.Keyframes?
+				.Where(k => k != null && k.Time > _kf.Time)
+				.OrderBy(k => k.Time)
+				.FirstOrDefault();
+			if (next != null) end = Math.Min(end, next.Time + _kf.FadeOutSec);
+			end = Math.Min(end, dur);
+
+			float x0 = pad + (Math.Min(_kf.Time, dur) / dur) * usable;
+			float x1 = pad + (Math.Min(end, dur) / dur) * usable;
+			float fadeIn = pad + (Math.Min(_kf.Time + _kf.FadeInSec, dur) / dur) * usable;
+			float fadeOut = pad + (Math.Min(Math.Max(_kf.Time, end - _kf.FadeOutSec), dur) / dur) * usable;
+
+			Points = new PointCollection
+			{
+				new Point(x0, BottomY),
+				new Point(Math.Max(x0, Math.Min(x1, fadeIn)), TopY),
+				new Point(Math.Max(x0, Math.Min(x1, fadeOut)), TopY),
+				new Point(x1, BottomY),
+			};
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void OnPropertyChanged([CallerMemberName] string name = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 	}
 
 	/// <summary>A lightweight keyframe marker (time + X position) for non-camera tracks.</summary>
@@ -844,7 +948,7 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 			switch (kf)
 			{
 				case OverlayKeyframe ov: return new OverlayKeyframeVM(ov);
-				case AudioKeyframe au: return new AudioKeyframeVM(au);
+				case AudioKeyframe au: return new AudioKeyframeVM(au, timeline);
 				case EntityActionKeyframe ea: return new EntityActionKeyframeVM(ea, timeline);
 				case AgentActionKeyframe ak: return new AgentActionKeyframeVM(ak, timeline);
 				case SubtitleKeyframe st: return new SubtitleKeyframeVM(st, timeline);
@@ -869,10 +973,138 @@ namespace Alliance.Editor.Extensions.Cinematics.ViewModels
 	public class AudioKeyframeVM : GenericKeyframeVM
 	{
 		private AudioKeyframe Kf => (AudioKeyframe)Model;
-		public string SoundEvent { get => Kf.SoundEvent; set { Kf.SoundEvent = value; OnPropertyChanged(); } }
-		public float Volume { get => Kf.Volume; set { Kf.Volume = value; OnPropertyChanged(); } }
-		public bool Loop { get => Kf.Loop; set { Kf.Loop = value; OnPropertyChanged(); } }
-		public AudioKeyframeVM(AudioKeyframe kf) : base(kf) { }
+		private readonly CinematicTimelineVM _parent;
+
+		public AudioActionKind Kind
+		{
+			get => Kf.Kind;
+			set { Kf.Kind = value; OnPropertyChanged(); RefreshVisibilities(); }
+		}
+		public Array KindOptions => Enum.GetValues(typeof(AudioActionKind));
+		public bool IsPlay => Kf.Kind == AudioActionKind.Play;
+
+		public AudioSoundSource SoundSource
+		{
+			get => Kf.SoundSource;
+			set { Kf.SoundSource = value; OnPropertyChanged(); RefreshVisibilities(); _parent?.RefreshOwningLane(Kf); }
+		}
+		public Array SourceOptions => Enum.GetValues(typeof(AudioSoundSource));
+		public bool IsCustom => Kf.SoundSource == AudioSoundSource.CustomFile;
+		public bool IsNative => !IsCustom;
+
+		public string[] SoundOptions => AllianceData.AvailableSounds();
+		/// <summary>Engine-playable native sounds: FMOD events (event:/... paths from the generated
+		/// sound_event_data.gen.xml catalogs) and module sounds (engine-registered names from each
+		/// active module's module_sounds.xml) - editable combo, so anything missing from the
+		/// catalogs can still be typed by hand.</summary>
+		public string[] NativeSoundOptions => AllianceData.AvailableNativeSoundEvents();
+		public string SoundName
+		{
+			get => Kf.SoundName;
+			set
+			{
+				Kf.SoundName = value;
+				OnPropertyChanged();
+				_parent?.RefreshOwningLane(Kf);
+			}
+		}
+
+		/// <summary>Literal part of the volume slot; writing it replaces any expression with a literal.
+		/// The ƒ button opens the value source editor for variables/functions.</summary>
+		public float VolumeValue
+		{
+			get => Kf.Volume is LiteralValue<float> literal ? literal.Value : 1f;
+			set { Kf.Volume = new LiteralValue<float>(value); OnPropertyChanged(); }
+		}
+		public ICommand EditVolumeCommand { get; }
+
+		public float FadeInSec { get => Kf.FadeInSec; set { Kf.FadeInSec = Math.Max(0f, value); OnPropertyChanged(); _parent?.RefreshOwningLane(Kf); } }
+		public float FadeOutSec { get => Kf.FadeOutSec; set { Kf.FadeOutSec = Math.Max(0f, value); OnPropertyChanged(); _parent?.RefreshOwningLane(Kf); } }
+
+		public bool Loop { get => Kf.Loop; set { Kf.Loop = value; OnPropertyChanged(); _parent?.RefreshOwningLane(Kf); } }
+		public string LoopLabel => IsNative ? "Loop (retrigger)" : "Loop (gapless)";
+
+		/// <summary>Keep sounding after the cinematic ends or is skipped (music continuing into
+		/// gameplay). Cut by any full stop: another cinematic, stop-by-name, mission end.</summary>
+		public bool Persist { get => Kf.Persist; set { Kf.Persist = value; OnPropertyChanged(); _parent?.RefreshOwningLane(Kf); } }
+
+		public float DuckMainMusic
+		{
+			get => Kf.DuckMainMusic;
+			set { Kf.DuckMainMusic = Math.Max(0f, Math.Min(100f, value)); OnPropertyChanged(); OnPropertyChanged(nameof(IsDuckOn)); }
+		}
+		public bool IsDuckOn => Kf.DuckMainMusic > 0f;
+		public float DuckReleaseSec { get => Kf.DuckReleaseSec; set { Kf.DuckReleaseSec = Math.Max(0.1f, value); OnPropertyChanged(); } }
+
+		public CinematicTargetType PositionType
+		{
+			get => Kf.Position.Type;
+			set { Kf.Position.Type = value; OnPropertyChanged(); RefreshPositionVisibilities(); }
+		}
+		/// <summary>Meaningful audio origins: none (2D), a world position, a specific agent/entity
+		/// (followed every tick) or the viewer's own agent.</summary>
+		public CinematicTargetType[] PositionTypeOptions { get; } =
+			{ CinematicTargetType.None, CinematicTargetType.Position, CinematicTargetType.ViewerAgent, CinematicTargetType.SpecificAgent, CinematicTargetType.SpecificEntity };
+		public bool IsPositionNone => Kf.Position.Type == CinematicTargetType.None;
+		public bool IsPositionWorld => Kf.Position.Type == CinematicTargetType.Position;
+		public bool IsPositionAgent => Kf.Position.Type == CinematicTargetType.SpecificAgent;
+		public bool IsPositionEntity => Kf.Position.Type == CinematicTargetType.SpecificEntity;
+		public string PositionAgentDisplay => CinematicTargetEditing.DescribeAgent(Kf.Position.AgentVariable);
+		public string PositionEntityDisplay => CinematicTargetEditing.DescribeEntity(Kf.Position.Entity);
+		public ICommand EditPositionAgentCommand { get; }
+		public ICommand EditPositionEntityCommand { get; }
+		public ICommand PickPositionCommand { get; }
+		public float PosX { get => Kf.Position.Position.Px; set { Kf.Position.Position.Px = value; OnPropertyChanged(); } }
+		public float PosY { get => Kf.Position.Position.Py; set { Kf.Position.Position.Py = value; OnPropertyChanged(); } }
+		public float PosZ { get => Kf.Position.Position.Pz; set { Kf.Position.Position.Pz = value; OnPropertyChanged(); } }
+
+		public AudioKeyframeVM(AudioKeyframe kf, CinematicTimelineVM parent = null) : base(kf)
+		{
+			_parent = parent;
+			EditVolumeCommand = new RelayCommand(_ => TimelineValueSourceEditor.Open(_parent,
+				new VolumeEditor { Volume = Kf.Volume ?? new LiteralValue<float>(1f) },
+				nameof(VolumeEditor.Volume),
+				value => { Kf.Volume = (ValueSource<float>)value; OnPropertyChanged(nameof(VolumeValue)); }));
+			EditPositionAgentCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditAgent(_parent, Kf.Position.AgentVariable,
+					value => { Kf.Position.AgentVariable = value; OnPropertyChanged(nameof(PositionAgentDisplay)); }));
+			EditPositionEntityCommand = new RelayCommand(_ =>
+				CinematicTargetEditing.EditEntity(_parent, Kf.Position.Entity,
+					value => { Kf.Position.Entity = value; OnPropertyChanged(nameof(PositionEntityDisplay)); }));
+			PickPositionCommand = new RelayCommand(_ => EditFrameView.BeginPlace(
+				owner: Model,
+				onPlaced: frameValue =>
+				{
+					Kf.Position.Position.CopyFrom(frameValue);
+					OnPropertyChanged(nameof(PosX));
+					OnPropertyChanged(nameof(PosY));
+					OnPropertyChanged(nameof(PosZ));
+				},
+				baseFrame: Kf.Position.Position.ToFrame()));
+		}
+
+		private void RefreshVisibilities()
+		{
+			OnPropertyChanged(nameof(IsPlay));
+			OnPropertyChanged(nameof(IsCustom));
+			OnPropertyChanged(nameof(IsNative));
+			OnPropertyChanged(nameof(LoopLabel));
+		}
+
+		private void RefreshPositionVisibilities()
+		{
+			OnPropertyChanged(nameof(IsPositionNone));
+			OnPropertyChanged(nameof(IsPositionWorld));
+			OnPropertyChanged(nameof(IsPositionAgent));
+			OnPropertyChanged(nameof(IsPositionEntity));
+		}
+
+		/// <summary>Single-field wrapper for the volume value source popup.</summary>
+		private class VolumeEditor
+		{
+			[ConfigProperty(label: "Volume", tooltip: "0..2, resolved when the keyframe fires. Exact for custom files; native events best-effort through the FMOD \"volume\" parameter.")]
+			public ValueSource<float> Volume = new LiteralValue<float>(1f);
+		}
 	}
 
 	public class EntityActionKeyframeVM : GenericKeyframeVM

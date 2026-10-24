@@ -207,7 +207,7 @@ namespace Alliance.Common.Extensions.Audio
 			{
 				CacheSound(audioId);
 			}
-			CachedSound mainMusicSound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint);
+			CachedSound mainMusicSound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint) { AudioId = audioId };
 
 			float startingVolume = mustFade ? 0f : volume * defaultMusicVolume;
 			mainMusicProvider = new VolumeSampleProvider(mainMusicSound) { Volume = startingVolume };
@@ -296,14 +296,15 @@ namespace Alliance.Common.Extensions.Audio
 				{
 					CacheSound(audioId);
 				}
-				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint);
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startingPoint) { AudioId = audioId };
 
 				if (!activeStreams.ContainsKey(audioId))
 				{
 					activeStreams[audioId] = new List<CachedSound>();
 				}
 
-				mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin, volume, maxHearingDistance));
+				sound.MixerInput = Apply3DSpatialization(sound, soundOrigin, volume, maxHearingDistance);
+				mixer.AddMixerInput(sound.MixerInput);
 
 				activeStreams[audioId].Add(sound);
 
@@ -369,7 +370,7 @@ namespace Alliance.Common.Extensions.Audio
 				{
 					CacheSound(audioId);
 				}
-				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat);
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat) { AudioId = audioId };
 
 				if (!activeStreams.ContainsKey(audioId))
 				{
@@ -378,14 +379,14 @@ namespace Alliance.Common.Extensions.Audio
 
 				if (soundOrigin.HasValue)
 				{
-					mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin.Value, volume, maxHearingDistance));
+					sound.MixerInput = Apply3DSpatialization(sound, soundOrigin.Value, volume, maxHearingDistance);
 				}
 				else
 				{
 					var volumeProvider = new VolumeSampleProvider(sound) { Volume = defaultSoundVolume * volume };
-					ISampleProvider convertedInput = ConvertToCommonFormat(volumeProvider);
-					mixer.AddMixerInput(convertedInput);
+					sound.MixerInput = ConvertToCommonFormat(volumeProvider);
 				}
+				mixer.AddMixerInput(sound.MixerInput);
 				activeStreams[audioId].Add(sound);
 			}
 			catch (Exception ex)
@@ -399,13 +400,11 @@ namespace Alliance.Common.Extensions.Audio
 			Play(GetAudioId(fileName), volume, stackable, maxHearingDistance, soundOrigin, synchronize);
 		}
 
-		private ISampleProvider Apply3DSpatialization(ref CachedSound reader, Vec3 soundOrigin, float initialVolume, int maxHearingDistance)
+		private ISampleProvider Apply3DSpatialization(CachedSound reader, Vec3 soundOrigin, float initialVolume, int maxHearingDistance, MatrixFrame? listenerFrame = null)
 		{
-			Vec3 myPosition = GameNetwork.MyPeer.ControlledAgent != null ? GameNetwork.MyPeer.ControlledAgent.Position : Mission.Current.GetCameraFrame().origin;
-			Mat3 myRotation = GameNetwork.MyPeer.ControlledAgent != null ? GameNetwork.MyPeer.ControlledAgent.Frame.rotation : Mission.Current.GetCameraFrame().rotation;
-
-			float volume = defaultSoundVolume * initialVolume * AudioHelper.CalculateVolume(myPosition, soundOrigin, maxHearingDistance);
-			float pan = AudioHelper.CalculatePan(soundOrigin, myPosition, myRotation);
+			MatrixFrame listener = listenerFrame ?? GetPlayerFrame();
+			float pan = AudioHelper.CalculatePan(soundOrigin, listener.origin, listener.rotation);
+			float volume = defaultSoundVolume * initialVolume * AudioHelper.CalculateVolume(listener.origin, soundOrigin, maxHearingDistance);
 
 			ISampleProvider sampleProvider = EnsureMono(reader);
 			var panningProvider = new PanningSampleProvider(sampleProvider) { Pan = pan };
@@ -416,6 +415,13 @@ namespace Alliance.Common.Extensions.Audio
 			reader.SetSpatialProviders(soundOrigin, initialVolume, maxHearingDistance, panningProvider, volumeProvider);
 
 			return convertedInput;
+		}
+
+		private MatrixFrame GetPlayerFrame()
+		{
+			Agent agent = GameNetwork.MyPeer?.ControlledAgent;
+			if (agent != null) return agent.Frame;
+			return Mission.Current.GetCameraFrame();
 		}
 
 		public float GetSoundTickFromTimer(float timerInSeconds, CachedSound cachedSound)
@@ -434,19 +440,19 @@ namespace Alliance.Common.Extensions.Audio
 		{
 			if (mainMusicProvider != null && !isFading)
 			{
-				(mainMusicProvider as VolumeSampleProvider).Volume = Math.Max(0f, defaultMusicVolume - musicVolumeOffset);
-				Log($"New volume for main music is {(mainMusicProvider as VolumeSampleProvider).Volume}", LogLevel.Debug);
+				float duckOffset = duckCurrent * defaultMusicVolume;
+				(mainMusicProvider as VolumeSampleProvider).Volume = Math.Max(0f, defaultMusicVolume - musicVolumeOffset - duckOffset);
 			}
 		}
 
 		private void UpdateSoundPositions()
 		{
-			Vec3 currentPosition = GameNetwork.MyPeer.ControlledAgent != null ? GameNetwork.MyPeer.ControlledAgent.Position : Mission.Current.GetCameraFrame().origin;
-			Mat3 currentRotation = GameNetwork.MyPeer.ControlledAgent != null ? GameNetwork.MyPeer.ControlledAgent.Frame.rotation : Mission.Current.GetCameraFrame().rotation;
+			MatrixFrame listener = GetPlayerFrame();
 			foreach (var activeSounds in activeStreams.Values)
 			{
 				foreach (CachedSound sound in activeSounds)
 				{
+					if (sound.Managed) continue;
 					if (sound.PanningProvider == null && sound.VolumeProvider != null)
 					{
 						sound.VolumeProvider.Volume = defaultSoundVolume * sound.InitialVolume;
@@ -455,8 +461,8 @@ namespace Alliance.Common.Extensions.Audio
 					else if (sound.SoundOrigin != null && sound.PanningProvider != null && sound.VolumeProvider != null)
 					{
 						Vec3 soundOrigin = sound.SoundOrigin.Value;
-						sound.PanningProvider.Pan = AudioHelper.CalculatePan(soundOrigin, currentPosition, currentRotation);
-						sound.VolumeProvider.Volume = defaultSoundVolume * sound.InitialVolume * AudioHelper.CalculateVolume(currentPosition, soundOrigin, sound.MaxHearingDistance);
+						sound.PanningProvider.Pan = AudioHelper.CalculatePan(soundOrigin, listener.origin, listener.rotation);
+						sound.VolumeProvider.Volume = defaultSoundVolume * sound.InitialVolume * AudioHelper.CalculateVolume(listener.origin, soundOrigin, sound.MaxHearingDistance);
 						//Log($"New pan/volume for 3d sound {soundOrigin} is {sound.PanningProvider.Pan}/{sound.VolumeProvider.Volume}", LogLevel.Debug);
 					}
 				}
@@ -499,7 +505,7 @@ namespace Alliance.Common.Extensions.Audio
 				{
 					CacheSound(audioId);
 				}
-				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat);
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat) { AudioId = audioId };
 				sound.Loop = true;
 
 				if (!activeStreams.ContainsKey(audioId))
@@ -509,14 +515,14 @@ namespace Alliance.Common.Extensions.Audio
 
 				if (soundOrigin.HasValue)
 				{
-					mixer.AddMixerInput(Apply3DSpatialization(ref sound, soundOrigin.Value, volume, maxHearingDistance));
+					sound.MixerInput = Apply3DSpatialization(sound, soundOrigin.Value, volume, maxHearingDistance);
 				}
 				else
 				{
 					var volumeProvider = new VolumeSampleProvider(sound) { Volume = defaultSoundVolume * volume };
-					ISampleProvider convertedInput = ConvertToCommonFormat(volumeProvider);
-					mixer.AddMixerInput(convertedInput);
+					sound.MixerInput = ConvertToCommonFormat(volumeProvider);
 				}
+				mixer.AddMixerInput(sound.MixerInput);
 				activeStreams[audioId].Add(sound);
 				return sound;
 			}
@@ -532,13 +538,145 @@ namespace Alliance.Common.Extensions.Audio
 			return PlayLooping(GetAudioId(fileName), volume, maxHearingDistance, soundOrigin);
 		}
 
+		/// <summary>
+		/// Play a custom sound and return its handle so the caller can manage it.
+		/// TickAudio will not touch its volume/pan - the owner must drive them every tick.
+		/// </summary>
+		public CachedSound PlayHandled(string fileName, float volume, bool loop = false, float startTimeInSeconds = 0f, Vec3? soundOrigin = null, int maxHearingDistance = 100, MatrixFrame? listenerFrame = null)
+		{
+			if (mixer == null) return null;
+			int audioId = GetAudioId(fileName);
+			if (audioId < 0 || !audioIdToFileName.TryGetValue(audioId, out string foundName))
+			{
+				Log($"ERROR : Audio file '{fileName}' not found in mappings.", LogLevel.Error);
+				return null;
+			}
+
+			try
+			{
+				if (!cachedSounds.ContainsKey(audioId))
+				{
+					CacheSound(audioId);
+				}
+				CachedSound sound = new CachedSound(cachedSounds[audioId].AudioData, cachedSounds[audioId].WaveFormat, startTimeInSeconds)
+				{
+					AudioId = audioId,
+					Loop = loop,
+					Managed = true
+				};
+
+				if (soundOrigin.HasValue && listenerFrame.HasValue)
+				{
+					sound.MixerInput = Apply3DSpatialization(sound, soundOrigin.Value, 1f, maxHearingDistance, listenerFrame);
+				}
+				else
+				{
+					var volumeProvider = new VolumeSampleProvider(sound) { Volume = 0f };
+					sound.SetSpatialProviders(null, volume, maxHearingDistance, null, volumeProvider);
+					sound.MixerInput = ConvertToCommonFormat(volumeProvider);
+				}
+				mixer.AddMixerInput(sound.MixerInput);
+
+				if (!activeStreams.ContainsKey(audioId))
+				{
+					activeStreams[audioId] = new List<CachedSound>();
+				}
+				activeStreams[audioId].Add(sound);
+				return sound;
+			}
+			catch (Exception ex)
+			{
+				Log($"An error occurred when playing handled audio: {ex.Message}", LogLevel.Debug);
+				return null;
+			}
+		}
+
+		/// <summary>Remove a managed sound from the mixer immediately (no fade) and stop it.</summary>
+		public void RemoveSound(CachedSound sound)
+		{
+			if (sound == null) return;
+			if (sound.MixerInput != null) mixer?.RemoveMixerInput(sound.MixerInput);
+			sound.Stop();
+			if (activeStreams.TryGetValue(sound.AudioId, out List<CachedSound> streams)) streams.Remove(sound);
+		}
+
+		/// <summary>Update a managed sound : the caller's fade envelope (0..1)
+		/// applied to the base volume, optionally spatialized against the listener frame.</summary>
+		public void UpdateHandledSound(CachedSound sound, float baseVolume, float envelope, MatrixFrame? listenerFrame, MatrixFrame? targetFrame)
+		{
+			if (sound?.VolumeProvider == null) return;
+			float volume = defaultSoundVolume * baseVolume * envelope;
+			if (targetFrame.HasValue)
+			{
+				sound.SetSoundOrigin(targetFrame.Value.origin);
+				if (listenerFrame.HasValue && sound.PanningProvider != null)
+				{
+					sound.PanningProvider.Pan = AudioHelper.CalculatePan(targetFrame.Value.origin, listenerFrame.Value.origin, listenerFrame.Value.rotation);
+					volume *= AudioHelper.CalculateVolume(listenerFrame.Value.origin, targetFrame.Value.origin, sound.MaxHearingDistance);
+				}
+			}
+			sound.VolumeProvider.Volume = volume;
+		}
+
+		public float? GetSoundDuration(string fileName)
+		{
+			int audioId = GetAudioId(fileName);
+			if (audioId < 0 || !audioIdToFileName.ContainsKey(audioId)) return null;
+			try
+			{
+				if (!cachedSounds.ContainsKey(audioId))
+				{
+					CacheSound(audioId);
+				}
+				CachedSound cached = cachedSounds[audioId];
+				return cached.AudioData.Length / ((float)cached.WaveFormat.SampleRate * cached.WaveFormat.Channels);
+			}
+			catch (Exception ex)
+			{
+				Log($"Could not read duration of '{fileName}': {ex.Message}", LogLevel.Debug);
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Duck the main music to the given fraction (0..1 of its volume removed), ramped both ways over rampSeconds. 
+		/// Call every tick through <see cref="TickDuck"/> while a ducking sound plays, then target 0 to release.
+		/// Multiple callers: the last target wins (cinematic lanes pass the maximum of their active ducks).
+		/// </summary>
+		public void DuckMainMusic(float fraction, float rampSeconds)
+		{
+			duckTarget = Math.Max(0f, Math.Min(1f, fraction));
+			duckRampSeconds = Math.Max(0.01f, rampSeconds);
+		}
+
+		/// <summary>Advance the duck ramp. Call every frame while cinematics play.</summary>
+		public void TickDuck(float dt)
+		{
+			if (Math.Abs(duckCurrent - duckTarget) < 0.0005f) return;
+			float step = dt / duckRampSeconds;
+			duckCurrent = duckCurrent < duckTarget ? Math.Min(duckTarget, duckCurrent + step) : Math.Max(duckTarget, duckCurrent - step);
+			UpdateMainMusic();
+		}
+
+		public void ResetDuck()
+		{
+			duckTarget = 0f;
+			duckCurrent = 0f;
+			UpdateMainMusic();
+		}
+
+		private float duckTarget;
+		private float duckCurrent;
+		private float duckRampSeconds = 1f;
+
 		public void Stop(int audioId)
 		{
 			if (activeStreams.TryGetValue(audioId, out var readers))
 			{
 				foreach (var reader in readers)
 				{
-					mixer.RemoveMixerInput(reader);
+					if (reader.MixerInput != null) mixer?.RemoveMixerInput(reader.MixerInput);
+					reader.Stop();
 				}
 				activeStreams.Remove(audioId);
 			}
@@ -614,6 +752,12 @@ namespace Alliance.Common.Extensions.Audio
 		public float InitialVolume { get; private set; }
 		public int MaxHearingDistance { get; private set; }
 		public int ReadProgress => (int)(_readPosition * _channels);
+		/// <summary>True when this sound is managed by external code (ie cinematics).</summary>
+		public bool Managed { get; set; }
+		/// <summary>The exact provider added to the mixer for this instance (chains wrap the sound,
+		/// so removal must target this, not the CachedSound itself).</summary>
+		public ISampleProvider MixerInput { get; set; }
+		public int AudioId { get; internal set; } = -1;
 		private bool _stopped;
 		private float _readPosition; // current position in frames
 		private int _channels;
@@ -625,7 +769,6 @@ namespace Alliance.Common.Extensions.Audio
 			WaveFormat = waveFormat;
 			_channels = waveFormat.Channels;
 			_totalFrames = audioData.Length / _channels;
-
 			float soundLength = _totalFrames / (float)WaveFormat.SampleRate;
 			float startingPoint = startTimeInSeconds % soundLength;
 			_readPosition = startingPoint * WaveFormat.SampleRate;

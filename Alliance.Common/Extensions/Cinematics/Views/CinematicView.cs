@@ -9,6 +9,7 @@ using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Engine.GauntletUI;
@@ -20,6 +21,7 @@ using TaleWorlds.ObjectSystem;
 using TaleWorlds.ScreenSystem;
 using static Alliance.Common.Utilities.Logger;
 using TaleWorlds.InputSystem;
+using Alliance.Common.Utilities;
 
 namespace Alliance.Common.Extensions.Cinematics
 {
@@ -30,9 +32,7 @@ namespace Alliance.Common.Extensions.Cinematics
 	/// </summary>
 	public class CinematicView : MissionView, ICinematicPlaybackSink, ICinematicBindings
 	{
-		private const float Deg2Rad = 0.017453292f;
-		/// <summary>Below this elapsed time, receivers start the cinematic from the beginning instead of
-		/// seeking (see the catch-up logic in PlayCinematic).</summary>
+		/// <summary>Below this elapsed time, receivers start the cinematic from the beginning instead of seeking (see the catch-up logic in PlayCinematic).</summary>
 		private const float CatchUpLeniencySec = 0.2f;
 
 		private Camera _camera;
@@ -40,48 +40,39 @@ namespace Alliance.Common.Extensions.Cinematics
 		private readonly List<Agent> _hiddenAgents = new List<Agent>();
 		/// <summary>Fake agents spawned for staged-extras tracks of the current cinematic (per-machine).</summary>
 		private readonly Dictionary<AgentActionTrack, List<FakeAgent>> _stagedFakes = new Dictionary<AgentActionTrack, List<FakeAgent>>();
-		// Staged formations still filling (streamed over frames with a time budget - see OnPreDisplayMissionTick)
-		private readonly StagedFillQueue _pendingFills = new StagedFillQueue();
+		/// <summary> Staged formations still filling (streamed over frames with a time budget - see OnPreDisplayMissionTick)</summary>
+		private readonly CrowdSpawnScheduler _crowdScheduler = new CrowdSpawnScheduler();
 
 		private CinematicPlayer _player;
+		private readonly CinematicAudioLanes _audioLanes = new CinematicAudioLanes();
 		private bool _skippable;
 		private bool _mainAgentControllerDisabled;
 		private bool _savedMainAgentControllerDisabled;
 		private bool _savedAllowInputWithCustomCamera;
-		/// <summary>The pose the player was watching from when the cinematic started (ViewerCamera target).</summary>
+		/// <summary>The frame the player was watching from when the cinematic started (ViewerCamera target).</summary>
 		private MatrixFrame? _viewerCameraFrame;
-
 		private GauntletLayer _overlayLayer;
 		private ScreenBase _overlayScreen;
 		private CinematicOverlayVM _overlayVM;
 		private bool _photoModeOn;
 		private readonly HashSet<GauntletLayer> _hiddenUiLayers = new HashSet<GauntletLayer>();
-
 		private SceneView _editorSceneView;
 
 		public SceneView EditorSceneView { get => _editorSceneView; set => _editorSceneView = value; }
 		public bool IsEditorMode => MissionScreen == null && _editorSceneView != null;
-		// Playback is deferred until every staged formation has finished spawning: initial keyframes
-		// must reach the whole crowd, not just the fakes spawned in the first frames.
-		private bool _waitingForSpawn;
+		private bool _waitingForFakesCompletion;
 		private Cinematic _pendingStartCinematic;
 		private float _pendingStartTime;
 		/// <summary>External spawn pending check for hosts that fill staged puppets themselves
 		/// (the editor preview spawns outside this view - playback waits on it too).</summary>
-		public Func<bool> HasPendingExternalSpawns;
+		public Func<bool> HasPendingExternalFakes;
 
-		private bool HasPendingSpawns => _pendingFills.PendingCount > 0 || (HasPendingExternalSpawns?.Invoke() ?? false);
+		private bool HasPendingFakes => _crowdScheduler.PendingCount > 0 || (HasPendingExternalFakes?.Invoke() ?? false);
 
-		public bool IsPlaying => (_player != null && _player.IsPlaying) || _waitingForSpawn;
+		public bool IsPlaying => (_player != null && _player.IsPlaying) || _waitingForFakesCompletion;
 		public float CurrentTime => _player?.CurrentTime ?? 0f;
 		/// <summary>Name of the currently playing cinematic, or null. Used for stop-by-name matching.</summary>
 		public string PlayingCinematicName => _player?.Cinematic?.Name;
-
-		public void ReapplyEditorCamera()
-		{
-			if (_camera != null && _editorSceneView != null)
-				_editorSceneView.SetCamera(_camera);
-		}
 
 		public CinematicView() { ViewOrderPriority = 30; }
 
@@ -89,6 +80,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		{
 			base.OnRemoveBehavior();
 			StopCinematic();
+			CutAllCinematicAudio();
 			// Mission end: nothing survives the scene (entities die with it) - drop the registries.
 			FakeAgent.DespawnAll();
 			FakeAgentStore.Clear();
@@ -106,8 +98,6 @@ namespace Alliance.Common.Extensions.Cinematics
 						PlayTestCinematic();
 					else if (TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.End))
 					{
-						// Kit test missions: play the cinematic currently open in the editor for real
-						// (staged extras, agent actions, camera - the full pipeline in a live mission).
 						Cinematic active = EditorToolsManager.ActiveEditingCinematic;
 						if (active != null)
 						{
@@ -122,63 +112,60 @@ namespace Alliance.Common.Extensions.Cinematics
 				}
 			}
 #endif
-			// Skip is local-only by design: never broadcast, other players keep watching.
-			if (Mission != null && !IsEditorMode && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Space))
+			if (Mission != null && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Escape))
 				Skip();
 
 			// Stream the staged formations in with a per-frame time budget (no multi-second freeze).
 			// Runs whether or not playback started: playback is deferred until the fill completes.
-			if (_pendingFills.Pump(10, 12))
+			if (_crowdScheduler.Tick(10, 12))
 			{
-				Log($"[Cinematic] {_pendingFills.BatchPlanned} staged extras spawned in {_pendingFills.BatchElapsedMs}ms.", LogLevel.Debug);
+				Log($"[Cinematic] {_crowdScheduler.TotalPlanned} staged extras spawned in {_crowdScheduler.ElapsedMs}ms.", LogLevel.Debug);
 			}
-			// All formations (internal or external, e.g. the editor preview) are in: start playback.
-			if (_waitingForSpawn && !HasPendingSpawns) StartPlayback(_pendingStartCinematic, _pendingStartTime);
+
+			if (_waitingForFakesCompletion && !HasPendingFakes) StartPlayback(_pendingStartCinematic, _pendingStartTime);
 
 			if (_player != null && _player.IsPlaying)
 			{
+				CinematicPlayer player = _player;
 				_player.Tick(dt);
-				HideOtherUiLayers();
+				if (_player.IsPlaying)
+				{
+					_audioLanes.Tick(dt, _player.CurrentTime);
+					HideOtherUiLayers();
+				}
 			}
-			// Staged extras move on their own blockout locomotion (client-deterministic) - they also
-			// tick while still filling (idle before playback starts).
-			if ((_player != null && _player.IsPlaying) || _waitingForSpawn)
+
+			if ((_player != null && _player.IsPlaying) || _waitingForFakesCompletion)
 			{
 				FakeAgent.TickAll(dt, MissionScreen?.CombatCamera?.Frame.origin);
 			}
 		}
 
-		/// <summary>Spawns per-machine FakeAgents for every staged-extras track of the cinematic.
-		/// Staged commands are then executed locally by every client, deterministically.</summary>
+		public void ReapplyEditorCamera()
+		{
+			if (_camera != null && _editorSceneView != null)
+				_editorSceneView.SetCamera(_camera);
+		}
+
+		/// <summary>Prepare to spawn the cinematic's crowds: each staged-extras track gets a spawn job whose fake agents 
+		/// are created over several frames (budgeted in OnPreDisplayMissionTick) so a large crowd never freezes a frame.</summary>
 		private void SpawnStagedFakes(Cinematic cinematic)
 		{
 			if (Mission?.Scene == null) return;
-			// Context diagnostic: what the kit test-mission provides vs the in-game mission.
-			int characterCount = -1;
-			try { characterCount = MBObjectManager.Instance?.GetObjectTypeList<BasicCharacterObject>()?.Count ?? -1; }
-			catch { }
-			Log($"[Cinematic] Mission context: Game.Current={Game.Current != null}, BasicCharacters={characterCount}", LogLevel.Debug);
-
-			// Relaunching while a previous fill is still streaming: cancel the non-persistent
-			// fills (their partial crowd is despawned - pumping them would stack orphans on top
-			// of the new formation). Persistent groups keep streaming.
-			_pendingFills.Cancel(t => t?.Target?.Persist != true);
 
 			for (int i = 0; i < cinematic.Tracks.Count; i++)
 			{
 				if (cinematic.Tracks[i] is not AgentActionTrack track || track.Target?.IsStagedMode != true) continue;
 				// Key matches the server-side persistent group key (cinematic name # track index).
 				string key = $"{cinematic.Name}#{i}";
-				// Streaming spawn: the fill is pumped with a per-frame time budget in OnPreDisplayMissionTick,
-				// so a 2000-agent crowd streams in instead of freezing one frame for seconds.
-				CinematicAgent.StagedFormationFill fill = track.Target.BeginFill(Mission.Scene);
-				_stagedFakes[track] = fill.Fakes;
-				_pendingFills.Enqueue(track, fill);
-				FakeAgentStore.Track(key, fill.Fakes);
+				CinematicAgentGroup.CrowdSpawnJob job = track.Target.StartCrowdSpawn(Mission.Scene);
+				_stagedFakes[track] = job.SpawnedFakeAgents;
+				_crowdScheduler.Add(track, job);
+				FakeAgentStore.Track(key, job.SpawnedFakeAgents);
 			}
-			if (_pendingFills.PendingCount > 0)
+			if (_crowdScheduler.PendingCount > 0)
 			{
-				Log($"[Cinematic] Streaming {_pendingFills.BatchPlanned} staged extras...", LogLevel.Debug);
+				Log($"[Cinematic] Streaming {_crowdScheduler.TotalPlanned} staged extras...", LogLevel.Debug);
 			}
 		}
 
@@ -191,9 +178,7 @@ namespace Alliance.Common.Extensions.Cinematics
 					foreach (FakeAgent fake in kv.Value) fake?.Despawn();
 			}
 			_stagedFakes.Clear();
-			// Drop the fills of despawned groups, despawning their partial crowd (pumping into a
-			// dead scene would crash); persistent fills keep streaming.
-			_pendingFills.Cancel(t => evenPersistent || t?.Target?.Persist != true);
+			_crowdScheduler.Cancel(t => evenPersistent || t?.Target?.Persist != true);
 		}
 
 #if DEBUG
@@ -275,17 +260,16 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (cinematic == null) return;
 			System.Diagnostics.Stopwatch phaseWatch = System.Diagnostics.Stopwatch.StartNew();
 			StopCinematic();
+			CutAllCinematicAudio();
 			Log($"[Cinematic] previous cinematic stopped in {phaseWatch.ElapsedMilliseconds}ms (despawn of the previous crowd happens here).", LogLevel.Debug);
 			phaseWatch.Restart();
 
 			_skippable = isSkippable;
 			// Rewrite the local copy's dynamic slots with the server-resolved values
 			ApplyDynamicValues(cinematic, dynamicValues);
-			// ViewerCamera targets resolve to the pose the player was watching from when the cinematic
-			// started - captured before the cinematic camera takes over.
 			_viewerCameraFrame = MissionScreen?.CombatCamera?.Frame;
 
-			TakeCamera();
+			PrepareCamera();
 			ApplyAgentBehaviorOnStart(cinematic.AgentBehavior);
 			SpawnStagedFakes(cinematic);
 			Log($"[Cinematic] staged spawn setup took {phaseWatch.ElapsedMilliseconds}ms (streaming starts now - playback deferred until all fakes are in).", LogLevel.Debug);
@@ -297,10 +281,10 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 			StartEffects();
 
-			if (HasPendingSpawns)
+			if (HasPendingFakes)
 			{
 				// Defer playback until the staged crowd finished spawning (pumped in OnPreDisplayMissionTick).
-				_waitingForSpawn = true;
+				_waitingForFakesCompletion = true;
 				_pendingStartCinematic = cinematic;
 				_pendingStartTime = startTimeInSeconds;
 				return;
@@ -311,9 +295,10 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		private void StartPlayback(Cinematic cinematic, float startTimeInSeconds)
 		{
-			_waitingForSpawn = false;
+			_waitingForFakesCompletion = false;
 			_player = new CinematicPlayer(cinematic, this, this);
 			_player.Start();
+			_audioLanes.Begin(cinematic, this, () => Scene, ListenerFrame);
 
 			// Catch-up from the shared anchor: elapsed = mission time now - mission time at cinematic start.
 			// (except if we're within the leniency window). Computed at the real start, after the
@@ -321,17 +306,25 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (!IsEditorMode && Mission.Current != null && startTimeInSeconds > 0f)
 			{
 				float elapsed = (MissionTime.Now.NumberOfTicks / 10000000f) - startTimeInSeconds;
-				if (elapsed > CatchUpLeniencySec) _player.Seek(elapsed);
+				if (elapsed > CatchUpLeniencySec)
+				{
+					_player.Seek(elapsed);
+					_audioLanes.SyncToTime(elapsed);
+				}
 			}
 
 			if (!_player.IsPlaying) StopCinematic();
 		}
 
-		public void StopCinematic()
+		public void StopCinematic(bool keepSoundingAudio = false)
 		{
-			_waitingForSpawn = false;
+			if (_player == null && !_waitingForFakesCompletion) return;
+
+			_waitingForFakesCompletion = false;
 			_pendingStartCinematic = null;
-			if (_player != null) { _player.Stop(); _player = null; }
+			_player?.Stop();
+			_player = null;
+			_audioLanes.StopAll(persistSounding: keepSoundingAudio);
 			if (MissionScreen != null) MissionScreen.AllowInputWithCustomCamera = _savedAllowInputWithCustomCamera;
 			_viewerCameraFrame = null;
 			ReleaseCamera();
@@ -349,12 +342,23 @@ namespace Alliance.Common.Extensions.Cinematics
 			StopEffects();
 		}
 
-		/// <summary>Local, immediate stop - never broadcast: skipping only affects the local player.</summary>
+		/// <summary>Cuts every cinematic sound, including persistent ones.
+		/// Call where cinematic state must be wiped regardless of playback: another cinematic
+		/// starting, stop-by-name, mission end, stopping the editor preview.</summary>
+		public void CutAllCinematicAudio() => _audioLanes.StopAll(persistSounding: false);
+
+		/// <summary>Local, immediate stop : skipping only affects the local player.</summary>
 		public void Skip() { if (_skippable) StopCinematic(); }
-		public void Seek(float time) => _player?.Seek(time);
+
+		public void Seek(float time)
+		{
+			if (_player == null) return;
+			_player.Seek(time);
+			_audioLanes.SyncToTime(time);
+		}
 		public void SampleOnce() => _player?.SampleOnce();
 
-		private void TakeCamera()
+		private void PrepareCamera()
 		{
 			if (_camera == null)
 			{
@@ -462,7 +466,7 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		/// <summary>Scene receiving visual effects (color grade, photo-mode DoF): the mission scene in
 		/// live play, the modding-kit scene in editor preview (Mission is null there).</summary>
-		private Scene EffectsScene => Mission?.Scene ?? (IsEditorMode ? MBEditor._editorScene : null);
+		private Scene Scene => Mission?.Scene ?? (IsEditorMode ? MBEditor._editorScene : null);
 
 		public bool RequiresVisualSampling => true;
 
@@ -473,12 +477,12 @@ namespace Alliance.Common.Extensions.Cinematics
 			MatrixFrame frame = state.Frame;
 			if (state.Roll != 0f) frame.rotation.RotateAboutForward(state.Roll);
 			_camera.Frame = frame;
-			_camera.SetFovVertical(state.Fov * Deg2Rad, Screen.AspectRatio, state.Near, state.Far);
+			_camera.SetFovVertical(MathHelper.ToRadian(state.Fov), Screen.AspectRatio, state.Near, state.Far);
 
 			if (IsEditorMode)
 				_editorSceneView?.SetCamera(_camera);
 
-			Scene scene = EffectsScene;
+			Scene scene = Scene;
 			if (scene != null)
 			{
 				if (state.DoFEnabled)
@@ -520,7 +524,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				_subtitleWidgets = null;
 				_subtitleWidgetsVersion = -1;
 			}
-			Scene restoreScene = EffectsScene;
+			Scene restoreScene = Scene;
 			if (_photoModeOn && restoreScene != null) { restoreScene.SetPhotoModeOn(false); _photoModeOn = false; }
 		}
 
@@ -610,11 +614,19 @@ namespace Alliance.Common.Extensions.Cinematics
 			for (int i = 0; i < widget.ChildCount; i++) CollectWidgetsById(widget.GetChild(i), id, found);
 		}
 
-		public void OnAudio(string soundEvent, float volume, bool loop)
+		public void OnAudio(AudioKeyframe keyframe)
 		{
-			if (string.IsNullOrEmpty(soundEvent) || Mission?.Scene == null) return;
-			try { SoundEvent.CreateEventFromString(soundEvent, Mission.Scene).Play(); }
-			catch (Exception ex) { Log($"Cinematic audio '{soundEvent}' failed: {ex.Message}", LogLevel.Warning); }
+			if (keyframe == null) return;
+			AudioTrack lane = _player?.Cinematic?.Tracks?.OfType<AudioTrack>()
+				.FirstOrDefault(t => t.Keyframes != null && t.Keyframes.Contains(keyframe));
+			_audioLanes.OnKeyframe(lane, keyframe);
+		}
+
+		/// <summary>Audio listener pose: the cinematic camera when one drives the view, the combat camera otherwise.</summary>
+		private MatrixFrame? ListenerFrame()
+		{
+			if (_camera != null) return _camera.Frame;
+			return MissionScreen?.CombatCamera?.Frame;
 		}
 
 		/// <summary>Entity held by a ValueSource slot: literal scene-entity slots resolve locally through
@@ -754,7 +766,8 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 		}
 
-		public void OnFinished() => StopCinematic();
+		/// <summary>Natural end of playback: sounds flagged Persist keep sounding afterward.</summary>
+		public void OnFinished() => StopCinematic(keepSoundingAudio: true);
 
 		private readonly HashSet<CinematicTargetType> _warnedTargetTypes = new HashSet<CinematicTargetType>();
 		private readonly HashSet<CinematicKeyframe> _warnedEntityKeyframes = new HashSet<CinematicKeyframe>();

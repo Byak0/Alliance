@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Validation;
 using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using System;
 using System.Collections.Generic;
@@ -74,5 +75,28 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public T FindTrack<T>() where T : CinematicTrack
 			=> (Tracks ?? Enumerable.Empty<CinematicTrack>())
 				.OfType<T>().FirstOrDefault(t => t != null && t.Enabled && !t.Muted);
+
+		/// <summary>Cinematic validation</summary>
+		public List<ValidationIssue> Validate()
+		{
+			var issues = new List<ValidationIssue>();
+			string path = $"Scenario > Cinematics > {(string.IsNullOrWhiteSpace(Name) ? "unnamed" : Name)}";
+			foreach (AudioTrack track in (Tracks ?? Enumerable.Empty<CinematicTrack>()).OfType<AudioTrack>())
+			{
+				if (track?.Keyframes == null) continue;
+				foreach (AudioKeyframe kf in track.Keyframes)
+				{
+					if (kf == null) continue;
+					string at = $"audio keyframe at {kf.Time:0.##}s";
+					if (kf.Kind != AudioActionKind.Play) continue;
+
+					if (string.IsNullOrWhiteSpace(kf.SoundName))
+					{
+						issues.Add(new ValidationIssue(ValidationSeverity.Error, path, $"The {at} has no sound name."));
+					}
+				}
+			}
+			return issues;
+		}
 	}
 }

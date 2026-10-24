@@ -49,7 +49,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 				MatrixFrame frame = MatrixFrame.Identity;
 				frame.origin = new Vec3(group.X, group.Y, group.Z);
 				frame.rotation.ApplyEulerAngles(new Vec3(0f, 0f, group.Yaw));
-				List<FakeAgent> fakes = CinematicAgent.SpawnFormation(scene, group.Key, group.CharacterId, group.CultureId, group.Count, group.Layout, group.Rows, group.Spacing, group.WeaponsDrawn, frame, group.SwapColors);
+				List<FakeAgent> fakes = CinematicAgentGroup.SpawnFormation(scene, group.Key, group.CharacterId, group.CultureId, group.Count, group.Layout, group.Rows, group.Spacing, group.WeaponsDrawn, frame, group.SwapColors);
 				Log($"Synced persistent staged extras '{group.Key}' ({fakes.Count} agents).", LogLevel.Debug);
 			}
 		}
@@ -179,7 +179,10 @@ namespace Alliance.Client.GameModes.Story.Handlers
 				if (view == null) return;
 				// Empty id = wildcard (e.g. scenario abort); otherwise only stop the named cinematic.
 				if (string.IsNullOrEmpty(message.CinematicName) || view.PlayingCinematicName == message.CinematicName)
+				{
 					view.StopCinematic();
+					view.CutAllCinematicAudio();
+				}
 			}
 			catch (Exception ex)
 			{

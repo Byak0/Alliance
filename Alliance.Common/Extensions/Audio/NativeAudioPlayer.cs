@@ -1,4 +1,5 @@
 ﻿using Alliance.Common.Extensions.Audio.NetworkMessages.FromServer;
+using System;
 using System.Threading.Tasks;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
@@ -8,7 +9,7 @@ using static Alliance.Common.Utilities.Logger;
 namespace Alliance.Common.Extensions.Audio
 {
 	/// <summary>
-	/// Audio player for native sounds. Sucks a bit. 
+	/// Audio player for native sounds. Sucks a bit.
 	/// Prefer using AudioPlayer for custom sounds.
 	/// </summary>
 	public class NativeAudioPlayer
@@ -29,6 +30,55 @@ namespace Alliance.Common.Extensions.Audio
 
 		public NativeAudioPlayer()
 		{
+		}
+
+		/// <summary>
+		/// Supposed to play a native sound (FMOD event path or module_sounds name) and return its handle for lifecycle control: 
+		/// Actually garbage since it relies on native sound API.
+		/// </summary>
+		public SoundEvent PlayHandled(string soundName, float volume = 1f, Vec3? position = null, Scene scene = null)
+		{
+			if (string.IsNullOrEmpty(soundName)) return null;
+			try
+			{
+				int soundIndex = SoundEvent.GetEventIdFromString(soundName);
+				if (soundIndex < 0)
+				{
+					Log($"Native sound '{soundName}' not found.", LogLevel.Warning);
+					return null;
+				}
+				SoundEvent eventRef = SoundEvent.CreateEvent(soundIndex, scene ?? Mission.Current?.Scene);
+				if (eventRef == null || eventRef.IsNullSoundEvent()) return null;
+				eventRef.SetParameter("volume", volume); // doesn't seem to work ?
+				Vec3 pos = position ?? Vec3.Zero;
+				eventRef.SetPosition(pos);
+				// TODO : find a way to play these fucking sounds in editor. MBSoundEvent.PlaySound and this one seems to work on some rare sounds :
+				if (MBEditor.IsEditModeOn) SoundEvent.PlaySound2D(soundIndex);
+				if (eventRef.Play()) return eventRef; // doesn't seem to work in editor
+				eventRef.Release();
+				return null;
+			}
+			catch (Exception ex)
+			{
+				Log($"Native sound '{soundName}' failed: {ex.Message}", LogLevel.Warning);
+				return null;
+			}
+		}
+
+		public void UpdateHandledSound(SoundEvent soundEvent, Vec3? position)
+		{
+			if (position.HasValue) soundEvent?.SetPosition(position.Value);
+		}
+
+		public void StopHandled(SoundEvent soundEvent)
+		{
+			if (soundEvent == null) return;
+			try
+			{
+				soundEvent.Stop();
+				soundEvent.Release();
+			}
+			catch { }
 		}
 
 		/// <summary>

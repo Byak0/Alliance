@@ -7,6 +7,7 @@ using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
+
 #if !SERVER
 using TaleWorlds.MountAndBlade.View.Tableaus.Thumbnails;
 #endif
@@ -258,7 +259,11 @@ namespace Alliance.Common.Core.Utils
 			uint color1 = uint.MaxValue;
 			uint color2 = uint.MaxValue;
 			_cultureId = string.IsNullOrEmpty(cultureId) ? character.CultureId : cultureId;
-			Factions.Instance.AvailableCultures.TryGetValue(_cultureId, out BasicCultureObject culture);
+			BasicCultureObject culture = null;
+			if(Factions.Instance.AvailableCultures.ContainsKey(cultureId))
+			{
+				culture = Factions.Instance.AvailableCultures[cultureId];
+			}
 			if (culture != null)
 			{
 				color1 = swapColors ? culture.Color : culture.Color2;

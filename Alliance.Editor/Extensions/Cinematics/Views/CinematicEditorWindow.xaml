@@ -163,6 +163,15 @@
 										</Button>
 										<Border Height="36" Background="#FFEDEFF2" ClipToBounds="True" MouseLeftButtonDown="Lane_MouseLeftButtonDown">
 											<Canvas Height="36">
+												<!-- Audio extents: trapezoids behind the markers (fade ramps as slanted sides). -->
+												<ItemsControl ItemsSource="{Binding Segments}">
+													<ItemsControl.ItemsPanel><ItemsPanelTemplate><Canvas Height="36" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
+													<ItemsControl.ItemTemplate>
+														<DataTemplate>
+															<Polygon Points="{Binding Points}" Fill="{Binding Fill}" ToolTip="{Binding Tooltip}" />
+														</DataTemplate>
+													</ItemsControl.ItemTemplate>
+												</ItemsControl>
 												<ItemsControl ItemsSource="{Binding Markers}">
 													<ItemsControl.ItemsPanel><ItemsPanelTemplate><Canvas Height="36" /></ItemsPanelTemplate></ItemsControl.ItemsPanel>
 													<ItemsControl.ItemContainerStyle>
@@ -362,14 +371,84 @@
 									</DataTemplate>
 									<DataTemplate DataType="{x:Type vm:AudioKeyframeVM}">
 										<StackPanel>
-											<TextBlock Text="Sound event" FontSize="11" Foreground="#FF6B7480" />
-											<TextBox Text="{Binding SoundEvent}" Margin="0,0,0,6" />
-											<TextBlock Text="Volume" FontSize="11" Foreground="#FF6B7480" />
-											<DockPanel>
-												<TextBox Text="{Binding Volume, StringFormat={}{0:F2}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
-												<Slider Value="{Binding Volume}" Minimum="0" Maximum="2" SmallChange="0.05" VerticalAlignment="Center" />
-											</DockPanel>
-											<CheckBox Content="Loop" IsChecked="{Binding Loop}" Margin="0,6,0,0" />
+											<TextBlock Text="Action" FontSize="11" Foreground="#FF6B7480" />
+											<ComboBox FontSize="11" ItemsSource="{Binding KindOptions}" SelectedItem="{Binding Kind}" Margin="0,0,0,6" />
+
+											<StackPanel Visibility="{Binding IsPlay, Converter={StaticResource BoolToVisibilityConverter}}">
+												<TextBlock Text="Source" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+											<ComboBox FontSize="11" ItemsSource="{Binding SourceOptions}" SelectedItem="{Binding SoundSource}" Margin="0,0,0,4"
+													  ToolTip="Custom file: ModuleSounds asset - exact volume, fades, gapless loop. Native event: FMOD event - best-effort volume, no fades, loop = retrigger." />
+											<TextBlock Text="Sound" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<widgets:FilterableComboBox FontSize="11" ItemsSource="{Binding SoundOptions}" Text="{Binding SoundName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,4"
+																			Visibility="{Binding IsCustom, Converter={StaticResource BoolToVisibilityConverter}}"
+																			ToolTip="Custom file from any module's ModuleSounds - pick from the list. The source follows the name." />
+												<widgets:FilterableComboBox FontSize="11" ItemsSource="{Binding NativeSoundOptions}" Text="{Binding SoundName, UpdateSourceTrigger=LostFocus}" Margin="0,0,0,4"
+																			Visibility="{Binding IsNative, Converter={StaticResource BoolToVisibilityConverter}}"
+																			ToolTip="Engine-playable native sound: FMOD events (event:/... paths, from the generated sound_event_data.gen.xml catalogs) and module sounds (engine-registered names, from each active module's module_sounds.xml). Type by hand for anything missing from the catalogs." />
+
+												<TextBlock Text="Volume" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<DockPanel Margin="0,0,0,4">
+													<Button DockPanel.Dock="Right" Content="ƒ" Width="24" Height="22" FontSize="13" Padding="0" Margin="4,0,0,0"
+															Command="{Binding EditVolumeCommand}" ToolTip="Edit the volume as a value source (variable / function)" />
+													<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding VolumeValue}"
+																			  ToolTip="0..2. Exact for custom files. Native events: best-effort through the FMOD volume parameter - events without it play at authored loudness." />
+												</DockPanel>
+
+												<Grid Margin="0,0,0,4" Visibility="{Binding IsCustom, Converter={StaticResource BoolToVisibilityConverter}}">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0">
+														<TextBlock Text="Fade in (s)" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FadeInSec}" />
+													</StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,0,0">
+														<TextBlock Text="Fade out (s)" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding FadeOutSec}"
+																				  ToolTip="Applied when replaced by the next Play or ended by a Stop (0 = cut)." />
+													</StackPanel>
+												</Grid>
+
+												<CheckBox Content="{Binding LoopLabel}" IsChecked="{Binding Loop}" Margin="0,4,0,4"
+														  ToolTip="Custom files: true gapless loop. Native events: retrigger - the event is re-fired from the top each time it finishes." />
+
+												<CheckBox Content="Persist after cinematic" IsChecked="{Binding Persist}" Margin="0,0,0,6"
+														  ToolTip="Keep sounding after the cinematic ends or is skipped (e.g. music started during an intro and continuing into gameplay). Custom loops keep looping; native sounds play out their current iteration. Stopped by anything that fully stops the cinematic: another cinematic starting, a stop-by-name, or the mission ending." />
+
+												<StackPanel Margin="0,0,0,6" Visibility="{Binding IsCustom, Converter={StaticResource BoolToVisibilityConverter}}">
+													<TextBlock Text="Duck main music (%)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+													<DockPanel>
+														<TextBox Text="{Binding DuckMainMusic, StringFormat={}{0:F0}, UpdateSourceTrigger=LostFocus}" Width="44" DockPanel.Dock="Right" Margin="4,0,0,0" VerticalAlignment="Center" TextAlignment="Center" Padding="2" />
+														<Slider Value="{Binding DuckMainMusic}" Minimum="0" Maximum="100" SmallChange="5" VerticalAlignment="Center"
+																ToolTip="Lower the game's main music by this percentage while this sound plays (ramped both ways)." />
+													</DockPanel>
+													<StackPanel Margin="0,4,0,0" Visibility="{Binding IsDuckOn, Converter={StaticResource BoolToVisibilityConverter}}">
+														<TextBlock Text="Duck release (s)" FontSize="11" Foreground="#FF6B7480" />
+														<widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DuckReleaseSec}"
+																				  ToolTip="Ramp duration of the ducking, both when engaging and when releasing." />
+													</StackPanel>
+												</StackPanel>
+
+												<TextBlock Text="Position (3D)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2" />
+												<ComboBox FontSize="11" ItemsSource="{Binding PositionTypeOptions}" SelectedItem="{Binding PositionType}" Margin="0,0,0,4"
+														  ToolTip="None = 2D on the cinematic listener (the camera). Other values = 3D sound following the target every tick." />
+												<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+														Visibility="{Binding IsPositionAgent, Converter={StaticResource BoolToVisibilityConverter}}"
+														Command="{Binding EditPositionAgentCommand}" ToolTip="Open value source editor">
+													<TextBlock Text="{Binding PositionAgentDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+												</Button>
+												<Button Background="Transparent" BorderThickness="0" Padding="0" Margin="0,0,0,4" HorizontalAlignment="Left"
+														Visibility="{Binding IsPositionEntity, Converter={StaticResource BoolToVisibilityConverter}}"
+														Command="{Binding EditPositionEntityCommand}" ToolTip="Open entity editor">
+													<TextBlock Text="{Binding PositionEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
+												</Button>
+												<Grid Margin="0,0,0,6" Visibility="{Binding IsPositionWorld, Converter={StaticResource BoolToVisibilityConverter}}">
+													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+													<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PosX}" /></StackPanel>
+													<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PosY}" /></StackPanel>
+													<StackPanel Grid.Column="2" Margin="4,0,4,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding PosZ}" /></StackPanel>
+													<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
+															Command="{Binding PickPositionCommand}" ToolTip="Click a ground position in the scene (wheel = rotate, right-click = cancel)" />
+												</Grid>
+											</StackPanel>
 										</StackPanel>
 									</DataTemplate>
 									<DataTemplate DataType="{x:Type vm:EntityActionKeyframeVM}">
@@ -391,11 +470,11 @@
 													<TextBlock Text="{Binding DestinationEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
 												</Button>
 												<Grid Margin="0,0,0,6" Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}">
-													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+														<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
 													<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestX}" /></StackPanel>
 													<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestY}" /></StackPanel>
 													<StackPanel Grid.Column="2" Margin="4,0,4,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DestZ}" /></StackPanel>
-													<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
+														<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
 															Command="{Binding PickDestinationCommand}" ToolTip="Click a ground position in the scene (wheel = rotate, right-click = cancel)" />
 												</Grid>
 												<TextBlock Text="Facing (yaw °)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2"
@@ -429,11 +508,11 @@
 													<TextBlock Text="{Binding DestinationEntityDisplay}" Foreground="CornflowerBlue" TextDecorations="Underline" FontSize="13" />
 												</Button>
 												<Grid Margin="0,0,0,6" Visibility="{Binding IsDestinationPosition, Converter={StaticResource BoolToVisibilityConverter}}">
-													<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
+														<Grid.ColumnDefinitions><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="*" /><ColumnDefinition Width="Auto" /></Grid.ColumnDefinitions>
 													<StackPanel Grid.Column="0" Margin="0,0,4,0"><TextBlock Text="X" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstX}" /></StackPanel>
 													<StackPanel Grid.Column="1" Margin="4,0,4,0"><TextBlock Text="Y" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstY}" /></StackPanel>
 													<StackPanel Grid.Column="2" Margin="4,0,4,0"><TextBlock Text="Z" FontSize="11" Foreground="#FF6B7480" /><widgets:NumericUpDownBox Style="{StaticResource InlineNumericUpDownStyle}" Value="{Binding DstZ}" /></StackPanel>
-													<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
+														<Button Grid.Column="3" Content="Pick" Height="22" Padding="6,0" FontSize="10" VerticalAlignment="Bottom"
 															Command="{Binding PickDestinationCommand}" ToolTip="Click a ground position in the scene (wheel = rotate, right-click = cancel)" />
 												</Grid>
 												<TextBlock Text="Facing (yaw °)" FontSize="11" Foreground="#FF6B7480" Margin="0,0,0,2"

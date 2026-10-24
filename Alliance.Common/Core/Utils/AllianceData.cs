@@ -4,6 +4,7 @@ using Alliance.Common.Extensions.BuildSystem.Configuration;
 using Alliance.Common.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -63,8 +64,9 @@ namespace Alliance.Common.Core.Utils
 			Bannerlord = 4
 		}
 
-		private static string[] _nativeSoundEvents;
-		private static string[] _facialAnimations;
+		private string[] _nativeSoundEvents;
+		private Dictionary<string, float> _nativeSoundEventLengths;
+		private string[] _facialAnimations;
 
 		public static string[] AvailableMaps() => SceneList.Scenes.ConvertAll(s => s.Name).ToArray();
 
@@ -76,44 +78,7 @@ namespace Alliance.Common.Core.Utils
 
 		public static string[] AvailableSounds() => AudioPlayer.Instance.GetAvailableSounds();
 
-		public static string[] AvailableNativeSoundEvents()
-		{
-			if (_nativeSoundEvents != null) return _nativeSoundEvents;
-			HashSet<string> names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-			try
-			{
-				// Native module declare sounds in sound_event_data.xml (and its module_sound.xml is empty)
-				foreach (string path in GetNativeXmlPaths("sound_event_data"))
-				{
-					XmlDocument catalog = new XmlDocument();
-					catalog.Load(path);
-					foreach (XmlNode node in catalog.SelectNodes("//events/event"))
-					{
-						string eventPath = node.Attributes?["path"]?.Value;
-						if (!string.IsNullOrEmpty(eventPath)) names.Add(eventPath);
-					}
-				}
-				// Other modules usually declare them in module_sound.xml
-				foreach (string path in GetNativeXmlPaths("module_sound"))
-				{
-					XmlDocument sounds = new XmlDocument();
-					sounds.Load(path);
-					foreach (XmlNode node in sounds.SelectNodes("//module_sound"))
-					{
-						string name = node.Attributes?["name"]?.Value;
-						if (!string.IsNullOrEmpty(name)) names.Add(name);
-					}
-				}
-			}
-			catch (Exception ex)
-			{
-				Log($"Failed to read the native sound event catalogs: {ex.Message}", LogLevel.Debug);
-			}
-			List<string> sorted = names.ToList();
-			sorted.Sort(StringComparer.OrdinalIgnoreCase);
-			_nativeSoundEvents = sorted.ToArray();
-			return _nativeSoundEvents;
-		}
+		public static string[] AvailableNativeSoundEvents() => Instance._nativeSoundEvents;
 
 		public static string[] AvailablePrefabs() => BuildPrefabCatalogManager.AllPrefabNames;
 
@@ -121,31 +86,7 @@ namespace Alliance.Common.Core.Utils
 
 		public static string[] AvailableClips() => Instance._clips.OrderBy(c => c).ToArray();
 
-		public static string[] AvailableFacialAnimations()
-		{
-			if (_facialAnimations != null) return _facialAnimations;
-			try
-			{
-				List<string> ids = new List<string>();
-				HashSet<string> known = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-				foreach (string path in GetNativeXmlPaths("face_animation_record"))
-				{
-					XmlDocument voices = new XmlDocument();
-					voices.Load(path);
-					foreach (XmlNode node in voices.SelectNodes("//face_animation_record"))
-					{
-						string id = node.Attributes?["id"]?.Value;
-						if (!string.IsNullOrEmpty(id) && known.Add(id)) ids.Add(id);
-					}
-				}
-				_facialAnimations = ids.ToArray();
-				return _facialAnimations;
-			}
-			catch
-			{
-				return Array.Empty<string>();
-			}
-		}
+		public static string[] AvailableFacialAnimations() => Instance._facialAnimations;
 
 		public static string[] AvailableFonts()
 		{
@@ -388,14 +329,104 @@ namespace Alliance.Common.Core.Utils
 				foreach (string typeId in ItemTypeIds) LoadItems(typeId);
 				LoadSkins();
 				LoadActionSets();
+				LoadFacialAnims();
 				LoadMonsters();
 				LoadMonsterUsages();
 				LoadHolsters();
 				LoadMPClassDivisions();
+				LoadSounds();
 				RebuildCultureIndex();
 			}
 
 			Log($"[AllianceData] Loaded {_characters.Count} characters, {_items.Count} items, {Factions.Instance.AvailableCultures.Count} cultures, {_skins.Count} skins, {_clips.Count} clips, {_monsters.Count} monsters, {_monsterUsages.Count} monster usages, {_holsters.Count} holsters.", LogLevel.Debug);
+		}
+
+		private void LoadFacialAnims()
+		{
+			try
+			{
+				List<string> ids = new List<string>();
+				HashSet<string> known = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+				foreach (string path in GetNativeXmlPaths("face_animation_record"))
+				{
+					XmlDocument voices = new XmlDocument();
+					voices.Load(path);
+					foreach (XmlNode node in voices.SelectNodes("//face_animation_record"))
+					{
+						string id = node.Attributes?["id"]?.Value;
+						if (!string.IsNullOrEmpty(id) && known.Add(id)) ids.Add(id);
+					}
+				}
+				_facialAnimations = ids.ToArray();
+			}
+			catch (Exception ex)
+			{
+				Log($"[AllianceData] Failed to read the native facial animation catalog : {ex.Message}", LogLevel.Debug);
+				_facialAnimations = Array.Empty<string>();
+			}
+		}
+
+		private void LoadSounds()
+		{
+			HashSet<string> names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			Dictionary<string, float> lengths = new Dictionary<string, float>(StringComparer.OrdinalIgnoreCase);
+			try
+			{
+				// Native module declare sounds in sound_event_data.xml (and its module_sound.xml is empty)
+				foreach (string path in GetNativeXmlPaths("sound_event_data"))
+				{
+					XmlDocument catalog = new XmlDocument();
+					catalog.Load(path);
+					foreach (XmlNode node in catalog.SelectNodes("//events/event"))
+					{
+						string eventPath = node.Attributes?["path"]?.Value;
+						if (string.IsNullOrEmpty(eventPath)) continue;
+						names.Add(eventPath);
+						if (float.TryParse(node.Attributes?["length"]?.Value, NumberStyles.Float, CultureInfo.InvariantCulture, out float length) && length > 0f)
+							lengths[eventPath] = length;
+					}
+				}
+				// Other modules usually declare them in module_sound.xml
+				foreach (string path in GetNativeXmlPaths("module_sound"))
+				{
+					XmlDocument sounds = new XmlDocument();
+					sounds.Load(path);
+					ModuleInfo module = null;
+					foreach (XmlNode node in sounds.SelectNodes("//module_sound"))
+					{
+						string name = node.Attributes?["name"]?.Value;
+						if (string.IsNullOrEmpty(name)) continue;
+						names.Add(name);
+						string file = node.Attributes?["path"]?.Value;
+						if (string.IsNullOrEmpty(file))
+						{
+							foreach (XmlNode variation in node.SelectNodes("variation"))
+							{
+								string variationPath = variation.Attributes?["path"]?.Value;
+								if (!string.IsNullOrEmpty(variationPath))
+								{
+									file = variationPath;
+									break;
+								}
+							}
+						}
+						if (string.IsNullOrEmpty(file)) continue;
+						module = module ?? GetModuleOfPath(path);
+						if (module == null) continue;
+						string catalogKey = $"{module.Id}/{file.Replace('\\', '/')}".ToLowerInvariant();
+						float? duration = AudioPlayer.Instance.GetSoundDuration(catalogKey);
+						if (duration.HasValue) lengths[name] = duration.Value;
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to read the native sound event catalogs: {ex.Message}", LogLevel.Debug);
+			}
+			List<string> sorted = names.ToList();
+			sorted.Sort(StringComparer.OrdinalIgnoreCase);
+			_nativeSoundEvents = sorted.ToArray();
+			_nativeSoundEventLengths = lengths;
 		}
 
 		public CharacterDefinition GetCharacter(string characterId)
@@ -492,6 +523,13 @@ namespace Alliance.Common.Core.Utils
 			}
 			_clipDurations[clipName] = duration;
 			return duration;
+		}
+
+		public static bool TryGetNativeSoundLength(string name, out float length)
+		{
+			length = 0f;
+			if (string.IsNullOrEmpty(name)) return false;
+			return Instance._nativeSoundEventLengths != null && Instance._nativeSoundEventLengths.TryGetValue(name, out length);
 		}
 
 		public MonsterDefinition GetMonster(string monsterId)
@@ -693,6 +731,16 @@ namespace Alliance.Common.Core.Utils
 				}
 			}
 			return paths;
+		}
+
+		/// <summary>The active module owning the given file path (module root prefix match), or null.</summary>
+		private static ModuleInfo GetModuleOfPath(string filePath)
+		{
+			foreach (ModuleInfo module in ModuleHelper.GetActiveModules() ?? new List<ModuleInfo>())
+			{
+				if (!string.IsNullOrEmpty(module.FolderPath) && filePath.StartsWith(module.FolderPath, StringComparison.OrdinalIgnoreCase)) return module;
+			}
+			return null;
 		}
 
 		/// <summary>item_holsters.xml is consumed by the native engine (no SubModule.xml managed-xml entry),
