@@ -127,10 +127,10 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (_player != null && _player.IsPlaying)
 			{
 				CinematicPlayer player = _player;
-				_player.Tick(dt);
-				if (_player.IsPlaying)
+				player.Tick(dt);
+				if (player.IsPlaying)
 				{
-					_audioLanes.Tick(dt, _player.CurrentTime);
+					_audioLanes.Tick(dt, player.CurrentTime);
 					HideOtherUiLayers();
 				}
 			}
