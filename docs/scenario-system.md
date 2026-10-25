@@ -261,6 +261,7 @@ Actions derive from `ActionBase`. Side-specific implementations are selected at 
 | `ResetGlobalVariableAction` | Resets a scenario variable to its default. |
 | `ToggleVariableAction` | Toggles a boolean scenario variable. |
 | `PlaySoundAction` | Plays a sound or music event by name/category. |
+| `SetAtmosphereAction` | Changes the scene atmosphere (lighting/weather/time of day) by name; the list of atmospheres comes from every active module's `Atmospheres` folder. |
 
 When adding a new action type in code, create the common class in `Alliance.Common/GameModes/Story/Actions/` and, when it needs side-specific behavior, a `Server_X`/`Client_X` subclass annotated with `[OverrideAction]`.
 
