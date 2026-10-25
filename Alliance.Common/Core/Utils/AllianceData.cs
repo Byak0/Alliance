@@ -52,7 +52,8 @@ namespace Alliance.Common.Core.Utils
 			Font,
 			Color,
 			Animation,
-			FacialAnimation
+			FacialAnimation,
+			Atmosphere
 		}
 
 		public enum Difficulty
@@ -67,6 +68,7 @@ namespace Alliance.Common.Core.Utils
 		private string[] _nativeSoundEvents;
 		private Dictionary<string, float> _nativeSoundEventLengths;
 		private string[] _facialAnimations;
+		private string[] _atmospheres;
 
 		public static string[] AvailableMaps() => SceneList.Scenes.ConvertAll(s => s.Name).ToArray();
 
@@ -87,6 +89,8 @@ namespace Alliance.Common.Core.Utils
 		public static string[] AvailableClips() => Instance._clips.OrderBy(c => c).ToArray();
 
 		public static string[] AvailableFacialAnimations() => Instance._facialAnimations;
+
+		public static string[] AvailableAtmospheres() => Instance._atmospheres;
 
 		public static string[] AvailableFonts()
 		{
@@ -128,6 +132,7 @@ namespace Alliance.Common.Core.Utils
 				DataTypes.Font => AvailableFonts(),
 				DataTypes.Animation => AvailableAnimations(),
 				DataTypes.FacialAnimation => AvailableFacialAnimations(),
+				DataTypes.Atmosphere => AvailableAtmospheres(),
 				_ => Array.Empty<string>(),
 			};
 		}
@@ -335,10 +340,11 @@ namespace Alliance.Common.Core.Utils
 				LoadHolsters();
 				LoadMPClassDivisions();
 				LoadSounds();
+				LoadAtmospheres();
 				RebuildCultureIndex();
 			}
 
-			Log($"[AllianceData] Loaded {_characters.Count} characters, {_items.Count} items, {Factions.Instance.AvailableCultures.Count} cultures, {_skins.Count} skins, {_clips.Count} clips, {_monsters.Count} monsters, {_monsterUsages.Count} monster usages, {_holsters.Count} holsters.", LogLevel.Debug);
+			Log($"[AllianceData] Loaded {_characters.Count} characters, {_items.Count} items, {Factions.Instance.AvailableCultures.Count} cultures, {_skins.Count} skins, {_clips.Count} clips, {_monsters.Count} monsters, {_monsterUsages.Count} monster usages, {_holsters.Count} holsters, {_atmospheres.Length} atmospheres.", LogLevel.Debug);
 		}
 
 		private void LoadFacialAnims()
@@ -364,6 +370,35 @@ namespace Alliance.Common.Core.Utils
 				Log($"[AllianceData] Failed to read the native facial animation catalog : {ex.Message}", LogLevel.Debug);
 				_facialAnimations = Array.Empty<string>();
 			}
+		}
+
+		/// <summary>Atmospheres are plain XML files under each module's Atmospheres folder, consumed
+		/// directly by the engine - there is no native API to enumerate them.</summary>
+		private void LoadAtmospheres()
+		{
+			HashSet<string> names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			foreach (ModuleInfo module in ModuleHelper.GetActiveModules() ?? new List<ModuleInfo>())
+			{
+				try
+				{
+					string atmosphereFolder = Path.Combine(module.FolderPath, "Atmospheres");
+					if (!Directory.Exists(atmosphereFolder)) continue;
+					foreach (string path in Directory.GetFiles(atmosphereFolder, "*.xml", SearchOption.AllDirectories))
+					{
+						XmlDocument xml = new XmlDocument();
+						xml.Load(path);
+						string name = xml.SelectSingleNode("//values/value[@name='name']")?.Attributes?["value"]?.Value;
+						if (!string.IsNullOrEmpty(name)) names.Add(name);
+					}
+				}
+				catch (Exception ex)
+				{
+					Log($"[AllianceData] Failed to read atmospheres of module '{module.Id}' ({ex.Message}).", LogLevel.Warning);
+				}
+			}
+			List<string> sorted = names.ToList();
+			sorted.Sort(StringComparer.OrdinalIgnoreCase);
+			_atmospheres = sorted.ToArray();
 		}
 
 		private void LoadSounds()
