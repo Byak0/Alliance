@@ -37,7 +37,7 @@ namespace Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer
 		private static readonly CompressionInfo.Integer LayoutCompressionInfo = new CompressionInfo.Integer(0, 8, true);
 		private static readonly CompressionInfo.Integer RowsCompressionInfo = new CompressionInfo.Integer(1, 16, true);
 		private static readonly CompressionInfo.Float SpacingCompressionInfo = new CompressionInfo.Float(0f, 10, 0.01f);
-		private static readonly CompressionInfo.Float PositionCompressionInfo = new CompressionInfo.Float(float.MinValue, float.MaxValue, 2);
+		private static readonly CompressionInfo.Float PositionCompressionInfo = CompressionInfo.Float.FullPrecision;
 		private static readonly CompressionInfo.Float YawCompressionInfo = new CompressionInfo.Float(-180, 180, 0.1f);
 
 		public List<FakeAgentGroupData> Groups { get; private set; } = new List<FakeAgentGroupData>();

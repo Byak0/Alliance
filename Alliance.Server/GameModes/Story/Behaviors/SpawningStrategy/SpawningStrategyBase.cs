@@ -678,26 +678,24 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				};
 			}
 
-			// Team auto-assignment: reassign every peer's team according to the configured rule before
-			// any spawn happens (in PlayerSelection mode the team selection flow decides, unchanged).
-			if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
-
-			// The menu is always installed server-side when defined: it drives the selection flow in
-			// PlayerSelection mode, and provides the character pool for the RandomFromMenu auto rule.
-			if (!SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty()) PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu;
+			// Clone menu from SpawnLogic, so we avoid unintended changes to original object.
+			if (!SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty()) PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu.Clone();
 
 			// Use the player spawn menu only in PlayerSelection mode AND when it is defined.
 			// Auto mode skips menus entirely: characters are assigned by the configured auto rule.
 			UsePlayerSpawnMenu = PlayerSpawnBehavior != null
 				&& SpawnLogic.CharacterAssignment == CharacterAssignmentMode.PlayerSelection
 				&& !SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty();
-			
+
 			if (UsePlayerSpawnMenu)
 			{
-				PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu;
-				
 				// Broadcast the updated player spawn menu to all players
 				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+
+				// Team auto-assignment runs after the menu sync: it notifies PlayerSpawnMenu through
+				// MissionPeer.OnTeamChanged -> SetPlayerTeam, which makes the client open the menu -
+				// clients must have the new menu before those team notifications arrive.
+				if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
 
 				if(SpawnLogic.OfficerSelection == OfficerSelectionStrategy.PlayerVote)
 				{
@@ -712,6 +710,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			}
 			else
 			{
+				if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
 				SpawnComponent.ToggleUpdatingSpawnEquipment(true);
 			}
 

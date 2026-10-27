@@ -37,7 +37,7 @@ A `Cinematic` is a named timeline of tracks. Each track holds keyframes sampled 
 
 ### Tracks and keyframes
 
-Every keyframe has a `Time` (seconds), an `Interpolation` mode (`CatmullRom` smooth, `Linear`, `Constant` hold-until-reached) and a `Tension` for Catmull-Rom paths.
+Every keyframe has a `Time` (seconds), an `Interpolation` mode (`CatmullRom` smooth, `Linear`, `Constant` hold-until-reached) and a `Tension` for Catmull-Rom paths. `Tension` scales the spline tangent at that keyframe, so it shapes both the path and the speed there (`0` = smooth, `1` = straight with the camera easing to a stop at the keyframe, negative = curvier and faster). When a Catmull-Rom segment meets a `Linear` or `Constant` neighbour, its endpoint tangent adapts — velocity-matched to the linear segment (capped at the segment chord), or eased to rest at a hold — so mixed sequences transition without kinks.
 
 | Track | Keyframe values | Status |
 |---|---|---|

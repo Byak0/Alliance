@@ -15,6 +15,8 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 		private const int TagFloat = 2;
 		private const int TagString = 3;
 
+		private static readonly CompressionInfo.Float BarValueCompression = new CompressionInfo.Float(0f, 100000f, 20);
+
 		public struct ElementData
 		{
 			public byte Type;
@@ -23,7 +25,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			public float Current;
 			public float Min;
 			public float Max;
-			public float EndTime;
+			public float RemainingTime;
 		}
 
 		public struct ObjectiveData
@@ -67,14 +69,14 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 					else if (el.Type == 1) // BarElement
 					{
 						WriteStringToPacket(el.Text ?? "");
-						WriteFloatToPacket(el.Current, new CompressionInfo.Float(0f, 100000f, 2));
-						WriteFloatToPacket(el.Min, new CompressionInfo.Float(0f, 100000f, 2));
-						WriteFloatToPacket(el.Max, new CompressionInfo.Float(0f, 100000f, 2));
+						WriteFloatToPacket(el.Current, BarValueCompression);
+						WriteFloatToPacket(el.Min, BarValueCompression);
+						WriteFloatToPacket(el.Max, BarValueCompression);
 					}
 					else if (el.Type == 2) // TimerElement
 					{
 						WriteStringToPacket(el.Text ?? "");
-						WriteFloatToPacket(el.EndTime, new CompressionInfo.Float(0f, 100000f, 2));
+						WriteFloatToPacket(el.RemainingTime, BarValueCompression);
 					}
 				}
 			}
@@ -118,15 +120,15 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 					else if (elements[j].Type == 1)
 					{
 						elements[j].Text = ReadStringFromPacket(ref valid);
-						elements[j].Current = ReadFloatFromPacket(new CompressionInfo.Float(0f, 100000f, 2), ref valid);
-						elements[j].Min = ReadFloatFromPacket(new CompressionInfo.Float(0f, 100000f, 2), ref valid);
-						elements[j].Max = ReadFloatFromPacket(new CompressionInfo.Float(0f, 100000f, 2), ref valid);
+						elements[j].Current = ReadFloatFromPacket(BarValueCompression, ref valid);
+						elements[j].Min = ReadFloatFromPacket(BarValueCompression, ref valid);
+						elements[j].Max = ReadFloatFromPacket(BarValueCompression, ref valid);
 						if (!valid) return false;
 					}
 					else if (elements[j].Type == 2)
 					{
 						elements[j].Text = ReadStringFromPacket(ref valid);
-						elements[j].EndTime = ReadFloatFromPacket(new CompressionInfo.Float(0f, 100000f, 2), ref valid);
+						elements[j].RemainingTime = ReadFloatFromPacket(BarValueCompression, ref valid);
 						if (!valid) return false;
 					}
 				}
@@ -149,7 +151,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			else if (value is float f)
 			{
 				WriteIntToPacket(TagFloat, new CompressionInfo.Integer(0, 3, true));
-				WriteFloatToPacket(f, new CompressionInfo.Float(float.MinValue, float.MaxValue, 2));
+				WriteFloatToPacket(f, CompressionInfo.Float.FullPrecision);
 			}
 			else
 			{
@@ -166,7 +168,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			{
 				case TagNull: return null;
 				case TagInt: return ReadIntFromPacket(new CompressionInfo.Integer(int.MinValue, int.MaxValue, true), ref valid);
-				case TagFloat: return ReadFloatFromPacket(new CompressionInfo.Float(float.MinValue, float.MaxValue, 2), ref valid);
+				case TagFloat: return ReadFloatFromPacket(CompressionInfo.Float.FullPrecision, ref valid);
 				case TagString: return ReadStringFromPacket(ref valid);
 				default: valid = false; return null;
 			}

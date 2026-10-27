@@ -189,7 +189,7 @@ namespace Alliance.Common.Extensions.Cinematics
 			MatrixFrame beforeFrame = EffectiveFrame(before);
 			MatrixFrame afterFrame = EffectiveFrame(after);
 
-			CameraState state = KeyframeEvaluator.EvaluateCamera(prev, next, localT, prevFrame, nextFrame, beforeFrame, afterFrame);
+			CameraState state = KeyframeEvaluator.EvaluateCamera(prev, next, before, after, localT, prevFrame, nextFrame, beforeFrame, afterFrame);
 			state = ApplyLookAt(state, time);
 			_sink?.OnCameraState(state);
 		}

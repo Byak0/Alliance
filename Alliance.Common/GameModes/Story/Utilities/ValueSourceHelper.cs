@@ -213,7 +213,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 
 		public static void CollectTriggerVariablesFromObject(object obj, Type variableType, List<string> collectedVar, HashSet<object> visited)
 		{
-			if (obj == null || !visited.Add(obj)) return;
+			if (obj == null || (!obj.GetType().IsValueType && !visited.Add(obj))) return;
 
 			Type type = obj.GetType();
 			if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType) return;
@@ -319,7 +319,7 @@ namespace Alliance.Common.GameModes.Story.Utilities
 
 		private static void CollectDynamicSlots(object obj, List<DynamicSlot> slots, HashSet<object> visited)
 		{
-			if (obj == null || !visited.Add(obj)) return;
+			if (obj == null || (!obj.GetType().IsValueType && !visited.Add(obj))) return;
 
 			Type type = obj.GetType();
 			if (type.IsPrimitive || type == typeof(string) || type.IsEnum || type.IsValueType) return;

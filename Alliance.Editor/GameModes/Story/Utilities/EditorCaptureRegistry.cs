@@ -32,7 +32,7 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 		private static void Collect(object obj, HashSet<object> visited)
 		{
-			if (obj == null || !visited.Add(obj)) return;
+			if (obj == null || (!obj.GetType().IsValueType && !visited.Add(obj))) return;
 			if (obj is SpawnEntityAction sea && !string.IsNullOrWhiteSpace(sea.CaptureAs))
 			{
 				_captureToPrefab[sea.CaptureAs] = sea.Prefab;

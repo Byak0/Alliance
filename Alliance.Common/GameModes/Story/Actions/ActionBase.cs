@@ -84,7 +84,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		private static void AssignActionIdsRecursive(object obj, int scopeId, HashSet<object> visited, ref int nextId)
 		{
-			if (obj == null || !visited.Add(obj)) return;
+			if (obj == null || (!obj.GetType().IsValueType && !visited.Add(obj))) return;
 
 			if (obj is ActionBase action)
 			{

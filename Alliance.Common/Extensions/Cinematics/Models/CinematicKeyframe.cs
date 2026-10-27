@@ -17,7 +17,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		[ConfigProperty(label: "Interpolation", tooltip: "How the value moves from the previous keyframe to this one.", category: "Curve")]
 		public Interpolation Interpolation = Interpolation.CatmullRom;
 
-		[ConfigProperty(label: "Tension", tooltip: "CatmullRom only. 0 = smooth, 1 = straight, negative = curvier.", minValue: -1, maxValue: 1, category: "Curve")]
+		[ConfigProperty(label: "Tension", tooltip: "CatmullRom only. Shapes the curve and the speed at this keyframe: 0 = smooth, 1 = straight (camera eases to a stop here), negative = curvier and faster through it.", minValue: -1, maxValue: 1, category: "Curve")]
 		public float Tension;
 
 		public CinematicKeyframe() { }

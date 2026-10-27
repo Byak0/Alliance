@@ -27,6 +27,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
         private MissionTimer _missionTimer;
         private float _objectiveTick;
         private bool _objectiveIsOver;
+        private float _timerAnchorSec = -1f;
 
         public override MissionBehaviorType BehaviorType => MissionBehaviorType.Other;
 
@@ -88,6 +89,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
         private void Register()
         {
             Reset();
+            _timerAnchorSec = Mission.Current?.CurrentTime ?? 0f;
             ScenarioManager.RegisterObjectives();
         }
 
@@ -119,8 +121,8 @@ namespace Alliance.Common.GameModes.Story.Behaviors
             GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
         }
 
-        private SyncObjectiveProgressMessage.ElementData[] EvaluateProgressElements(
-            Objective objective, VariableStore context, VariableStore globals)
+		private SyncObjectiveProgressMessage.ElementData[] EvaluateProgressElements(
+			Objective objective, VariableStore context, VariableStore globals)
         {
             if (objective.Progress == null || objective.Progress.Count == 0)
                 return Array.Empty<SyncObjectiveProgressMessage.ElementData>();
@@ -151,7 +153,9 @@ namespace Alliance.Common.GameModes.Story.Behaviors
                 {
                     d.Type = 2;
                     d.Text = timer.Label?.LocalizedText;
-                    d.EndTime = timer.EndTime?.Resolve(context, globals) ?? 0f;
+                    float duration = timer.EndTime?.Resolve(context, globals) ?? 0f;
+                    float elapsed = _timerAnchorSec >= 0f ? Mission.Current.CurrentTime - _timerAnchorSec : 0f;
+                    d.RemainingTime = MathF.Max(0f, duration - elapsed);
                 }
             }
             return result;

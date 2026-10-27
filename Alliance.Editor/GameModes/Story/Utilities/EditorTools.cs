@@ -229,13 +229,17 @@ namespace Alliance.Editor.GameModes.Story.Utilities
 
 				if (interp == Interpolation.CatmullRom)
 				{
-					Vec3 p0 = i > 0 ? frames[i - 1].origin : p1;
-					Vec3 p3 = i + 2 < frames.Count ? frames[i + 2].origin : p2;
+					CameraKeyframe kfPrev = track.Keyframes[i];
+					CameraKeyframe kfNext = track.Keyframes[i + 1];
+					CameraKeyframe kfBefore = i > 0 ? track.Keyframes[i - 1] : kfPrev;
+					CameraKeyframe kfAfter = i + 2 < track.Keyframes.Count ? track.Keyframes[i + 2] : kfNext;
+					Vec3 oBefore = i > 0 ? frames[i - 1].origin : p1;
+					Vec3 oAfter = i + 2 < frames.Count ? frames[i + 2].origin : p2;
 					Vec3 last = p1;
 					for (int j = 1; j <= 16; j++)
 					{
 						float t = (float)j / 16;
-						Vec3 pt = KeyframeEvaluator.CatmullRom(p0, p1, p2, p3, t, track.Keyframes[i + 1].Tension);
+						Vec3 pt = KeyframeEvaluator.CameraPathOrigin(kfBefore, kfPrev, kfNext, kfAfter, oBefore, p1, p2, oAfter, t);
 						Debug.RenderDebugLine(last, pt - last, pathColor, true);
 						last = pt;
 					}

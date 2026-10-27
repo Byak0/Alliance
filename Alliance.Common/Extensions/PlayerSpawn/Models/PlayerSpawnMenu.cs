@@ -486,6 +486,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			Log("PlayerSpawnMenu cleared.", LogLevel.Debug);
 		}
 
+		private static readonly XmlSerializer CloneSerializer = new XmlSerializer(typeof(PlayerSpawnMenu));
+
+		public PlayerSpawnMenu Clone()
+		{
+			using (StringWriter writer = new StringWriter())
+			{
+				CloneSerializer.Serialize(writer, this);
+				using (StringReader reader = new StringReader(writer.ToString()))
+				{
+					return (PlayerSpawnMenu)CloneSerializer.Deserialize(reader);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Try loading the PlayerSpawnMenu from file. Returns true if successful, false otherwise.
 		/// </summary>

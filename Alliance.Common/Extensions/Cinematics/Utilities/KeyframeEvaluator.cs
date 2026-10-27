@@ -27,15 +27,70 @@ namespace Alliance.Common.Extensions.Cinematics
 			}
 		}
 
+		/// <summary>Hermite interpolation with explicit endpoint tangents. Catmull-Rom is the special
+		/// case where the tangents are the neighbour chords scaled by half.</summary>
+		public static Vec3 Hermite(Vec3 p1, Vec3 p2, Vec3 m1, Vec3 m2, float t)
+		{
+			float t2 = t * t;
+			float t3 = t2 * t;
+			return (2f * t3 - 3f * t2 + 1f) * p1 + (t3 - 2f * t2 + t) * m1 + (-2f * t3 + 3f * t2) * p2 + (t3 - t2) * m2;
+		}
+
 		/// <summary>Standard Catmull-Rom spline interpolation for a Vec3 control polyline.</summary>
 		public static Vec3 CatmullRom(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, float t, float tension = 0f)
 		{
 			float k = 0.5f * (1f - tension);
-			Vec3 m1 = k * (p2 - p0);
-			Vec3 m2 = k * (p3 - p1);
-			float t2 = t * t;
-			float t3 = t2 * t;
-			return (2*t3 - 3*t2 + 1) * p1 + (t3 - 2*t2 + t) * m1 + (-2*t3 + 3*t2) * p2 + (t3 - t2) * m2;
+			return Hermite(p1, p2, k * (p2 - p0), k * (p3 - p1), t);
+		}
+
+		/// <summary>Position on a camera track's Catmull-Rom segment [prev, next]. Endpoint tangents
+		/// adapt to the neighbouring segments' interpolation (velocity-matched to Linear, zero at
+		/// Constant) and are scaled by their own endpoint's Tension, so mixed tracks stay smooth.</summary>
+		public static Vec3 CameraPathOrigin(
+			CameraKeyframe before, CameraKeyframe prev, CameraKeyframe next, CameraKeyframe after,
+			Vec3 beforeOrigin, Vec3 prevOrigin, Vec3 nextOrigin, Vec3 afterOrigin, float localT)
+		{
+			float chord = (nextOrigin - prevOrigin).Length;
+
+			Vec3 m1;
+			if (!ReferenceEquals(before, prev) && prev.Interpolation == Interpolation.Constant)
+			{
+				m1 = Vec3.Zero;
+			}
+			else if (!ReferenceEquals(before, prev) && prev.Interpolation == Interpolation.Linear)
+			{
+				m1 = MatchedTangent(prevOrigin - beforeOrigin, prev.Time - before.Time, next.Time - prev.Time, chord);
+			}
+			else
+			{
+				m1 = 0.5f * (1f - prev.Tension) * (nextOrigin - beforeOrigin);
+			}
+
+			Vec3 m2;
+			if (!ReferenceEquals(after, next) && after.Interpolation == Interpolation.Constant)
+			{
+				m2 = Vec3.Zero;
+			}
+			else if (!ReferenceEquals(after, next) && after.Interpolation == Interpolation.Linear)
+			{
+				m2 = MatchedTangent(afterOrigin - nextOrigin, after.Time - next.Time, next.Time - prev.Time, chord);
+			}
+			else
+			{
+				m2 = 0.5f * (1f - next.Tension) * (afterOrigin - prevOrigin);
+			}
+
+			return Hermite(prevOrigin, nextOrigin, m1, m2, localT);
+		}
+
+		/// <summary>Linear neighbour's velocity converted to this segment's parameter space, capped at the chord.</summary>
+		private static Vec3 MatchedTangent(Vec3 neighbourDelta, float neighbourSpan, float span, float chord)
+		{
+			if (neighbourSpan <= 0f || span <= 0f) return Vec3.Zero;
+			Vec3 tangent = neighbourDelta * (span / neighbourSpan);
+			if (chord <= 0f) return Vec3.Zero;
+			float length = tangent.Length;
+			return length > chord ? tangent * (chord / length) : tangent;
 		}
 
 		/// <summary>
@@ -82,7 +137,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		/// through prev/next (clamped at track ends). All other values blend between prev and next only.
 		/// </summary>
 		public static CameraState EvaluateCamera(
-			CameraKeyframe prev, CameraKeyframe next, float localT,
+			CameraKeyframe prev, CameraKeyframe next, CameraKeyframe before, CameraKeyframe after, float localT,
 			MatrixFrame prevFrame, MatrixFrame nextFrame, MatrixFrame beforeFrame, MatrixFrame afterFrame)
 		{
 			// Single keyframe (segment endpoints identical).
@@ -98,7 +153,8 @@ namespace Alliance.Common.Extensions.Cinematics
 			Vec3 origin;
 			if (interp == Interpolation.CatmullRom)
 			{
-				origin = CatmullRom(beforeFrame.origin, prevFrame.origin, nextFrame.origin, afterFrame.origin, localT, next.Tension);
+				origin = CameraPathOrigin(before, prev, next, after,
+					beforeFrame.origin, prevFrame.origin, nextFrame.origin, afterFrame.origin, localT);
 			}
 			else if (constant)
 			{

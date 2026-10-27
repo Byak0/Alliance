@@ -260,7 +260,7 @@ namespace Alliance.Common.Core.Utils
 			uint color2 = uint.MaxValue;
 			_cultureId = string.IsNullOrEmpty(cultureId) ? character.CultureId : cultureId;
 			BasicCultureObject culture = null;
-			if(Factions.Instance.AvailableCultures.ContainsKey(cultureId))
+			if (cultureId != null && Factions.Instance.AvailableCultures.ContainsKey(cultureId))
 			{
 				culture = Factions.Instance.AvailableCultures[cultureId];
 			}
@@ -1249,6 +1249,7 @@ namespace Alliance.Common.Core.Utils
 					_frame.origin += direction * step;
 					if (_followGround && _body?.Scene != null)
 					{
+						// This can throw AV exceptions if terrain is not generated						
 						_body.Scene.GetTerrainHeightAndNormal(_frame.origin.AsVec2, out float height, out _);
 						_frame.origin.z = height;
 					}
