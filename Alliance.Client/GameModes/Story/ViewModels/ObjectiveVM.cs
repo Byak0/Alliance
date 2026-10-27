@@ -5,7 +5,6 @@ using Alliance.Common.GameModes.Story.Objectives;
 using System;
 using System.Text;
 using TaleWorlds.Library;
-using TaleWorlds.MountAndBlade;
 
 namespace Alliance.Client.GameModes.Story.ViewModels
 {
@@ -62,9 +61,7 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 				}
 				else if (el.Type == 2) // TimerElement
 				{
-					float now = Mission.Current?.GetMissionTimeInSeconds() ?? 0f;
-					float remaining = Math.Max(0, el.EndTime - now);
-					sb.Append($"{el.Text}: {TimeSpan.FromSeconds(remaining):mm\\:ss}");
+					sb.Append($"{el.Text}: {TimeSpan.FromSeconds(el.RemainingTime):mm\\:ss}");
 				}
 			}
 			return sb.ToString();
