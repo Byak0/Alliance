@@ -1,6 +1,7 @@
 using Alliance.Common.Extensions;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Client.GameModes.Story.Views;
 using Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;

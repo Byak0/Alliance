@@ -1,4 +1,3 @@
-#if !SERVER
 using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 using TaleWorlds.ScreenSystem;
 
-namespace Alliance.Common.GameModes.Story.Behaviors
+namespace Alliance.Client.GameModes.Story.Views
 {
 	/// <summary>
 	/// Full-black waiting screen shown while the scenario waits for players to load:
@@ -137,4 +136,3 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 		}
 	}
 }
-#endif

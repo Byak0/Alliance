@@ -1,6 +1,7 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Extensions.FakeArmy.Behaviors;
 using Alliance.Client.Extensions.VOIP.Behaviors;
+using Alliance.Client.GameModes.Story.Views;
 using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;

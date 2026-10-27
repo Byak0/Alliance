@@ -1,4 +1,6 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels;
+using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,23 +181,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		{
 			_disabledTeams = disabledTeams;
 
-			// Do not open Team Select menu. Instead assign players based on PvC roles.
-			// TODO : make this work with other cases (CvC / PvP)
-			// Also should make a way for admin to switch teams
+			// Scenario acts with TeamAssignment = Auto assign teams server-side at spawn start:
+			// the menu would open on sync (team still null) and never close.
+			if (ScenarioManager.Instance?.CurrentAct?.SpawnLogic?.TeamAssignment == TeamAssignmentMode.Auto) return;
+
 			_toOpen = true;
-			//Team spectator = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.None);
-			//Team attacker = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.Attacker);
-			//Team defender = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.Defender);
-			//if (PvCRoles.Instance.Commanders.Contains(GameNetwork.MyPeer.UserName))
-			//{
-			//    OnChangeTeamTo(attacker);
-			//} else if (PvCRoles.Instance.Officers.Contains(GameNetwork.MyPeer.UserName))
-			//{
-			//    OnChangeTeamTo(defender);
-			//} else
-			//{
-			//    OnChangeTeamTo(defender);
-			//}
 		}
 
 		private void MissionLobbyComponentOnFriendsUpdated()
@@ -215,6 +205,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		{
 			if (!_isActive)
 			{
+				return;
+			}
+			// Server-side assignment (TeamAssignment = Auto, admin switch): close the menu once we
+			// got a team - OnMyTeamChange only fires for client-initiated changes.
+			if (GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null)
+			{
+				OnClose();
 				return;
 			}
 			List<Team> disabledTeams = _multiplayerTeamSelectComponent.GetDisabledTeams();
