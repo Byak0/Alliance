@@ -36,7 +36,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 		protected override void OnWrite()
 		{
 			WriteStringToPacket(CinematicName);
-			WriteFloatToPacket(TimeInSeconds, StoryMessages.CinematicTimeCompressionInfo);
+			WriteFloatToPacket(TimeInSeconds, StoryMessages.FullRangeFloatCompressionInfo);
 		}
 
 		protected override bool OnRead()
@@ -44,7 +44,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			bool bufferReadValid = true;
 			CinematicName = ReadStringFromPacket(ref bufferReadValid);
 			if (!bufferReadValid) return false;
-			TimeInSeconds = ReadFloatFromPacket(StoryMessages.CinematicTimeCompressionInfo, ref bufferReadValid);
+			TimeInSeconds = ReadFloatFromPacket(StoryMessages.FullRangeFloatCompressionInfo, ref bufferReadValid);
 			return bufferReadValid;
 		}
 

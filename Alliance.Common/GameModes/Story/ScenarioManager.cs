@@ -68,6 +68,16 @@ namespace Alliance.Common.GameModes.Story
 			CurrentWinner = BattleSideEnum.None;
 			InitGlobals();
 			ActionBase.AssignActionIds(act, CurrentActIndex);
+			if (CurrentScenario?.Cinematics != null)
+			{
+				for (int i = 0; i < CurrentScenario.Cinematics.Count; i++)
+				{
+					if (CurrentScenario.Cinematics[i] != null)
+					{
+						ActionBase.AssignActionIds(CurrentScenario.Cinematics[i], ActionBase.CinematicScopeBase + i);
+					}
+				}
+			}
 			PrewarmCinematics();
 			OnStartScenario?.Invoke();
 		}

@@ -25,19 +25,21 @@ namespace Alliance.Common.GameModes.Story.Actions
 	{
 		// ── Scope identity ────────────────────────────────────────────────
 		//
-		// Each action source (an Act or an AL_TriggerAction entity) occupies its
-		// own ID space.  The runtime lookup key is (ScopeId, ActionId):
+		// Each action source (an Act, an AL_TriggerAction entity, or a scenario cinematic) occupies its own ID space.
+		// The runtime lookup key is (ScopeId, ActionId):
 		//
-		//   Act scope:    actIndex
-		//   Entity scope: MakeEntityScopeId(MissionObject.Id)
+		//   Act scope:      actIndex
+		//   Entity scope:   MakeEntityScopeId(MissionObject.Id)
+		//   Cinematic scope: CinematicScopeBase + cinematic index
 		//
 		// Both ScopeId and ActionId are assigned at registration time — no XML
 		// persistence needed.  Determinism comes from the scope being derived
-		// from deterministic data (act index or MissionObject.Id) and ActionId
-		// being assigned by a deterministic graph walk within that scope.
+		// from deterministic data (act index, MissionObject.Id or cinematic index)
+		// and ActionId being assigned by a deterministic graph walk within that scope.
 
 		public const int EntityScopeBase = DirtyCommonPatcher.MAX_MISSION_OBJECTS + 1;
 		private const int SceneEntityRange = DirtyCommonPatcher.MAX_MISSION_OBJECTS + 1;
+		public const int CinematicScopeBase = EntityScopeBase + 2 * SceneEntityRange;
 
 		public static int MakeEntityScopeId(MissionObjectId id) =>
 			EntityScopeBase + (id.CreatedAtRuntime ? SceneEntityRange : 0) + id.Id;

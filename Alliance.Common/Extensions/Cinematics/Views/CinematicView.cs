@@ -76,6 +76,16 @@ namespace Alliance.Common.Extensions.Cinematics
 
 		public CinematicView() { ViewOrderPriority = 30; }
 
+		// Try to clean up everything early on mission end to prevent invalid or corrupted scene entities.
+		protected override void OnEndMission()
+		{
+			base.OnEndMission();
+			StopCinematic();
+			CutAllCinematicAudio();
+			FakeAgent.DespawnAll();
+			FakeAgentStore.Clear();
+		}
+
 		public override void OnRemoveBehavior()
 		{
 			base.OnRemoveBehavior();
@@ -152,12 +162,16 @@ namespace Alliance.Common.Extensions.Cinematics
 		private void SpawnStagedFakes(Cinematic cinematic)
 		{
 			if (Mission?.Scene == null) return;
+			// Rebuild the crafted weapon cache
+			FakeAgent.ClearCraftedWeaponCache();
 
 			for (int i = 0; i < cinematic.Tracks.Count; i++)
 			{
 				if (cinematic.Tracks[i] is not AgentActionTrack track || track.Target?.IsStagedMode != true) continue;
 				// Key matches the server-side persistent group key (cinematic name # track index).
 				string key = $"{cinematic.Name}#{i}";
+				// Cancel any previous spawn job for this track (e.g. if the cinematic is restarted before the previous fill completed).
+				_crowdScheduler.Cancel(t => t == track);
 				CinematicAgentGroup.CrowdSpawnJob job = track.Target.StartCrowdSpawn(Mission.Scene);
 				_stagedFakes[track] = job.SpawnedFakeAgents;
 				_crowdScheduler.Add(track, job);
@@ -759,6 +773,8 @@ namespace Alliance.Common.Extensions.Cinematics
 		public void OnEventActions(List<ActionBase> actions)
 		{
 			if (actions == null) return;
+			// Execute actions only in modding-kit preview/singleplayer : the server otherwise execute and syncs them
+			if (GameNetwork.IsMultiplayer) return;
 			foreach (ActionBase action in actions)
 			{
 				try { action?.ExecuteClient(); }

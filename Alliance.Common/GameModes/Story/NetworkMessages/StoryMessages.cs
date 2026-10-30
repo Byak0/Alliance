@@ -1,3 +1,4 @@
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.BuildSystem;
 using Alliance.Common.Patch;
 using System;
@@ -13,17 +14,16 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages
 	{
 		// ── Shared compression infos ───────
 
-		public static readonly CompressionInfo.Integer ScopeIdCompressionInfo = new(0, DirtyCommonPatcher.MAX_MISSION_OBJECTS * 3 + 2, true);
+		public static readonly CompressionInfo.Integer ScopeIdCompressionInfo = new(0, DirtyCommonPatcher.MAX_MISSION_OBJECTS * 4 + 3, true);
 		public static readonly CompressionInfo.Integer ActionIdCompressionInfo = new(1, 100000, true);
 		public static readonly CompressionInfo.Integer DynamicSlotCountCompressionInfo = new(0, 512, true);
 		public static readonly CompressionInfo.Integer ValueTagCompressionInfo = new(0, 10, true);
 		public static readonly CompressionInfo.Integer EnumValueCompressionInfo = new(0, 100, true);
 		public static readonly CompressionInfo.Integer AgentListCountCompressionInfo = new(0, 100, true);
 		public static readonly CompressionInfo.Integer FullRangeIntCompressionInfo = new(int.MinValue, int.MaxValue, true);
-		public static readonly CompressionInfo.Float FullRangeFloatCompressionInfo = new(float.MinValue, float.MaxValue, 4);
-		public static readonly CompressionInfo.Float ZonePositionCompressionInfo = new(float.MinValue, float.MaxValue, 2);
-		public static readonly CompressionInfo.Float ZoneRadiusCompressionInfo = new(0f, 1000f, 2);
-		public static readonly CompressionInfo.Float CinematicTimeCompressionInfo = new(0f, 86400f, 32);
+		public static readonly CompressionInfo.Float FullRangeFloatCompressionInfo = CompressionInfo.Float.FullPrecision;
+		public static readonly CompressionInfo.Float ZonePositionCompressionInfo = CompressionInfo.Float.FullPrecision;
+		public static readonly CompressionInfo.Float ZoneRadiusCompressionInfo = new(0f, 1000f, 17);
 
 		// ── Shared dynamic-data codec (positional values over the network) ─────────
 		//

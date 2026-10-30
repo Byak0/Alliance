@@ -754,8 +754,10 @@ namespace Alliance.Common.Core.Utils
 		}
 
 #if !SERVER
-		// Composed crafted-weapon meshes, cached per design.
+		/// <summary>Composed crafted-weapon meshes, cached per design</summary>
 		private static readonly Dictionary<WeaponDesign, TaleWorlds.MountAndBlade.View.CraftedDataView> _craftedViews = new Dictionary<WeaponDesign, TaleWorlds.MountAndBlade.View.CraftedDataView>();
+
+		public static void ClearCraftedWeaponCache() => _craftedViews.Clear();
 
 		// Generate and attach crafted weapon meshes.
 		private void AttachCraftedWeapon(AllianceData.ItemDefinition item, string skeletonName, AllianceData.MonsterDefinition monster, uint color1, uint color2, bool drawn, HashSet<string> usedHolsters)
@@ -1216,6 +1218,17 @@ namespace Alliance.Common.Core.Utils
 
 		private void Tick(float dt, Vec3? cameraOrigin = null)
 		{
+			// Remove fakes whose entities have been destroyed (scene removed, or the fake was despawned).
+			if (_body != null && !_body.WeakEntity.IsValid)
+			{
+				_activeAgents.Remove(this);
+				return;
+			}
+			if (_mountEntity != null && !_mountEntity.WeakEntity.IsValid)
+			{
+				_activeAgents.Remove(this);
+				return;
+			}
 			bool nearCamera = !cameraOrigin.HasValue || (cameraOrigin.Value - _frame.origin).Length < FarCameraDistance;
 			_tickCounter++;
 			if (nearCamera || (_tickCounter >= 3))
@@ -1247,7 +1260,7 @@ namespace Alliance.Common.Core.Utils
 				{
 					Vec3 direction = delta / distance;
 					_frame.origin += direction * step;
-					if (_followGround && _body?.Scene != null)
+					if (_followGround && _body?.Scene != null && _body.Scene.HasTerrainHeightmap)
 					{
 						// This can throw AV exceptions if terrain is not generated						
 						_body.Scene.GetTerrainHeightAndNormal(_frame.origin.AsVec2, out float height, out _);
@@ -1298,9 +1311,11 @@ namespace Alliance.Common.Core.Utils
 		{
 			// When seated, the mount is the hierarchy root - removing it takes the rider with it.
 			// Unseated (preview mounts standing beside) the two entities are separate siblings.
-			if (!_seatedOnMount) _body?.Remove(0);
-			if (_mountEntity != null) _mountEntity.Remove(0);
-			else if (_seatedOnMount) _body?.Remove(0);
+			// Only remove valid entities.
+			bool bodyAlive = _body != null && _body.WeakEntity.IsValid;
+			bool mountAlive = _mountEntity != null && _mountEntity.WeakEntity.IsValid;
+			if (bodyAlive && (!_seatedOnMount || !mountAlive)) _body.Remove(0);
+			if (mountAlive) _mountEntity.Remove(0);
 #if !SERVER
 			ReleaseAgentVisuals();
 #endif
@@ -1314,6 +1329,9 @@ namespace Alliance.Common.Core.Utils
 		/// they are unregistered - otherwise TickAll would keep ticking destroyed entities.</summary>
 		public static void DespawnAll(Scene scene = null)
 		{
+#if !SERVER
+			ClearCraftedWeaponCache();
+#endif
 			for (int i = _activeAgents.Count - 1; i >= 0; i--)
 			{
 				FakeAgent fake = _activeAgents[i];
@@ -1330,15 +1348,15 @@ namespace Alliance.Common.Core.Utils
 			{
 				if (_roots.TryGetValue(scene, out GameEntity root))
 				{
-					root.Remove(0);
+					if (root != null && root.WeakEntity.IsValid) root.Remove(0);
 					_roots.Remove(scene);
 				}
 			}
 			else
 			{
-				foreach (GameEntity root in _roots.Values)
+				foreach (KeyValuePair<Scene, GameEntity> entry in _roots)
 				{
-					root.Remove(0);
+					if (entry.Value != null && entry.Value.WeakEntity.IsValid) entry.Value.Remove(0);
 				}
 				_roots.Clear();
 			}

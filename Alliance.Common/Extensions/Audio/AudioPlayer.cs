@@ -27,6 +27,7 @@ namespace Alliance.Common.Extensions.Audio
 		private Dictionary<int, string> audioIdToFile = new Dictionary<int, string>();
 		private Dictionary<int, string> audioIdToFileName = new Dictionary<int, string>();
 		private Dictionary<string, int> fileNameToAudioId = new Dictionary<string, int>();
+		private Dictionary<string, int> relativeNameToAudioId = new Dictionary<string, int>();
 		private Dictionary<int, CachedSound> cachedSounds = new Dictionary<int, CachedSound>();
 		private Dictionary<int, List<CachedSound>> activeStreams = new Dictionary<int, List<CachedSound>>();
 		private ISampleProvider mainMusicProvider;
@@ -101,8 +102,16 @@ namespace Alliance.Common.Extensions.Audio
 
 		public int GetAudioId(string fileName)
 		{
-			if (fileNameToAudioId.TryGetValue(fileName.ToLowerInvariant(), out var audioId))
+			string key = fileName.ToLowerInvariant();
+			if (fileNameToAudioId.TryGetValue(key, out var audioId))
 			{
+				return audioId;
+			}
+			// Fallback: drop the module prefix and resolve the relative path from any module.
+			int separatorIndex = key.IndexOf('/');
+			if (separatorIndex >= 0 && relativeNameToAudioId.TryGetValue(key.Substring(separatorIndex + 1), out audioId))
+			{
+				Log($"Audio file '{fileName}' resolved as '{audioIdToFileName[audioId]}' from another module.", LogLevel.Debug);
 				return audioId;
 			}
 			return -1;
@@ -141,6 +150,9 @@ namespace Alliance.Common.Extensions.Audio
 				audioIdToFile[i] = allFiles[i].filePath;
 				audioIdToFileName[i] = prefixedKey;
 				fileNameToAudioId[prefixedKey] = i;
+				// First module (deterministic order) wins a conflicting relative path.
+				string relativeKey = relativeFileName.ToLowerInvariant();
+				if (!relativeNameToAudioId.ContainsKey(relativeKey)) relativeNameToAudioId[relativeKey] = i;
 			}
 
 			Log($"Registered {allFiles.Count} audio files from {allFiles.Select(x => x.moduleName).Distinct().Count()} modules.", LogLevel.Debug);

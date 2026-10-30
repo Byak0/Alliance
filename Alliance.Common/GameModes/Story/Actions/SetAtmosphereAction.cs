@@ -1,8 +1,8 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story.Attributes;
-using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
+using System.Linq;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.Utils.AllianceData;
@@ -40,6 +40,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 			if (string.IsNullOrEmpty(AtmosphereName)) return;
 			Scene scene = Mission.Current?.Scene ?? MBEditor._editorScene;
 			if (scene == null) return;
+			// Check atmosphere validity before applying it, might crash otherwise.
+			if (!AvailableAtmospheres().Contains(AtmosphereName))
+			{
+				Log($"Atmosphere '{AtmosphereName}' doesn't exist in any active module - skipping.", LogLevel.Warning);
+				return;
+			}
 			scene.SetAtmosphereWithName(AtmosphereName);
 			Log($"Atmosphere changed to {AtmosphereName}", LogLevel.Debug);
 		}

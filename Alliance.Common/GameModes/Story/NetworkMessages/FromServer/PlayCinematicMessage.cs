@@ -13,74 +13,43 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class PlayCinematicMessage : GameNetworkMessage
 	{
-		private string _cinematicName;
-		private int _scopeId;
-		private int _actionId;
-		private bool _useActionRef;
-		private float _startTimeInSeconds;
-		private List<object> _dynamicValues;
-
 		/// <summary>Name of the scenario cinematic to play (when not using the action ref).</summary>
-		public string CinematicName
-		{
-			get => _cinematicName;
-			private set => _cinematicName = value;
-		}
+		public string CinematicName { get; private set; }
 
-		public int ScopeId
-		{
-			get => _scopeId;
-			private set => _scopeId = value;
-		}
+		public int ScopeId { get; private set; }
 
-		public int ActionId
-		{
-			get => _actionId;
-			private set => _actionId = value;
-		}
+		public int ActionId { get; private set; }
 
 		/// <summary>True when addressing the inline cinematic of the referenced action (entity-scoped).</summary>
-		public bool UseActionRef
-		{
-			get => _useActionRef;
-			private set => _useActionRef = value;
-		}
+		public bool UseActionRef { get; private set; }
 
-		public float StartTimeInSeconds
-		{
-			get => _startTimeInSeconds;
-			private set => _startTimeInSeconds = value;
-		}
+		public float StartTimeInSeconds { get; private set; }
 
 		/// <summary>Resolved values for the cinematic's dynamic slots, in walk order. May be null.</summary>
-		public List<object> DynamicValues
-		{
-			get => _dynamicValues;
-			private set => _dynamicValues = value;
-		}
+		public List<object> DynamicValues { get; private set; }
 
 		public PlayCinematicMessage() { }
 
 		/// <summary>Scenario-scoped cinematic, resolved by name on the receiving client.</summary>
 		public PlayCinematicMessage(string cinematicName, long startTimeInTicks, List<object> dynamicValues)
 		{
-			_useActionRef = false;
-			_cinematicName = cinematicName;
-			_scopeId = 0;
-			_actionId = 0;
-			_startTimeInSeconds = startTimeInTicks / 10000000f;
-			_dynamicValues = dynamicValues;
+			UseActionRef = false;
+			CinematicName = cinematicName;
+			ScopeId = 0;
+			ActionId = 0;
+			StartTimeInSeconds = startTimeInTicks / 10000000f;
+			DynamicValues = dynamicValues;
 		}
 
 		/// <summary>Entity-scoped inline cinematic, resolved from the action registry on the receiving client.</summary>
 		public PlayCinematicMessage(int scopeId, int actionId, long startTimeInTicks, List<object> dynamicValues)
 		{
-			_useActionRef = true;
-			_cinematicName = null;
-			_scopeId = scopeId;
-			_actionId = actionId;
-			_startTimeInSeconds = startTimeInTicks / 10000000f;
-			_dynamicValues = dynamicValues;
+			UseActionRef = true;
+			CinematicName = null;
+			ScopeId = scopeId;
+			ActionId = actionId;
+			StartTimeInSeconds = startTimeInTicks / 10000000f;
+			DynamicValues = dynamicValues;
 		}
 
 		protected override void OnWrite()
@@ -95,7 +64,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			{
 				WriteStringToPacket(CinematicName);
 			}
-			WriteFloatToPacket(StartTimeInSeconds, StoryMessages.CinematicTimeCompressionInfo);
+			WriteFloatToPacket(StartTimeInSeconds, StoryMessages.FullRangeFloatCompressionInfo);
 			WriteIntToPacket(DynamicValues?.Count ?? 0, StoryMessages.DynamicSlotCountCompressionInfo);
 			foreach (object value in DynamicValues ?? new List<object>())
 			{
@@ -122,7 +91,7 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 				if (!bufferReadValid) return false;
 			}
 
-			StartTimeInSeconds = ReadFloatFromPacket(StoryMessages.CinematicTimeCompressionInfo, ref bufferReadValid);
+			StartTimeInSeconds = ReadFloatFromPacket(StoryMessages.FullRangeFloatCompressionInfo, ref bufferReadValid);
 			if (!bufferReadValid) return false;
 			int count = ReadIntFromPacket(StoryMessages.DynamicSlotCountCompressionInfo, ref bufferReadValid);
 			if (!bufferReadValid) return false;
