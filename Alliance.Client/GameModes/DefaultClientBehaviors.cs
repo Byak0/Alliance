@@ -53,8 +53,7 @@ namespace Alliance.Client.GameModes
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
 				new BuildBehavior(),
-				new CinematicView(),
-				new IntroWaitingView()
+				new CinematicView()
 			};
 		}
 	}

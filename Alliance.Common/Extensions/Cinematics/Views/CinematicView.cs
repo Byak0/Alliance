@@ -513,7 +513,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		{
 			try
 			{
-				_overlayVM = new CinematicOverlayVM { IsSkippable = _skippable };
+				_overlayVM = new CinematicOverlayVM { IsSkippable = _skippable, FadeAlpha = 1f };
 				_overlayScreen = MissionScreen ?? ScreenManager.TopScreen;
 				if (_overlayScreen != null)
 				{

@@ -3,6 +3,7 @@ using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story.Objectives;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -21,6 +22,10 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		private bool _showLives;
 		private string _livesLabel;
 		private string _livesValue;
+		private string _waitingTitle = "Waiting for players";
+		private bool _isBlackoutVisible;
+		private bool _isWaiting = true;
+		private string _waitingCounter;
 		private MBBindingList<ObjectiveVM> _objectives;
 		private float _lastRefresh;
 		private SyncObjectiveProgressMessage.ObjectiveData[] _syncedProgress;
@@ -225,6 +230,74 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 				{
 					_objectives = value;
 					OnPropertyChangedWithValue(value, "Objectives");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool IsBlackoutVisible
+		{
+			get
+			{
+				return _isBlackoutVisible;
+			}
+			set
+			{
+				if (value != _isBlackoutVisible)
+				{
+					_isBlackoutVisible = value;
+					OnPropertyChangedWithValue(value, "IsBlackoutVisible");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool IsWaiting
+		{
+			get
+			{
+				return _isWaiting;
+			}
+			set
+			{
+				if (value != _isWaiting)
+				{
+					_isWaiting = value;
+					OnPropertyChangedWithValue(value, "IsWaiting");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WaitingTitle
+		{
+			get
+			{
+				return _waitingTitle;
+			}
+			set
+			{
+				if (value != _waitingTitle)
+				{
+					_waitingTitle = value;
+					OnPropertyChangedWithValue(value, "WaitingTitle");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WaitingCounter
+		{
+			get
+			{
+				return _waitingCounter;
+			}
+			set
+			{
+				if (value != _waitingCounter)
+				{
+					_waitingCounter = value;
+					OnPropertyChangedWithValue(value, "WaitingCounter");
 				}
 			}
 		}

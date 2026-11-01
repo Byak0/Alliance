@@ -3,6 +3,7 @@ using Alliance.Common.Extensions.Cinematics.Models.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaleWorlds.Core;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 
@@ -163,7 +164,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				float fade = prev == next ? prev.FadeAlpha : prev.FadeAlpha + (next.FadeAlpha - prev.FadeAlpha) * curveT;
 				_sink.OnScreen(letterbox, fade);
 			}
-			else if (track == null && (_cinematic.FadeInSec > 0f || _cinematic.FadeOutSec > 0f))
+			else if (track == null || track.Keyframes.IsEmpty())
 			{
 				_sink.OnScreen(0f, ComputeFadeAlpha(time, duration));
 			}

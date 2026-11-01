@@ -87,7 +87,7 @@ State transitions are synchronized to clients with `UpdateScenarioMessage`. The 
 
 - `InitScenarioMessage` selects the same local `Scenario` and `Act` on the client;
 - `UpdateScenarioMessage` updates the client act state and timer;
-- `WaitingScreenStateMessage` drives the act-start waiting screen (visibility + ready/total player counter, see *Act start flow*);
+- `WaitingScreenStateMessage` drives the act-start waiting screen (visibility, ready/total player counter and the scene-holding mode used until an intro cinematic starts, see *Act start flow*);
 - `ObjectivesProgressMessage` synchronizes objective counters and mission timer data;
 - `SyncScenarioLivesMessage` updates remaining lives in the client scenario state;
 - `ExecuteActionMessage` runs the client-side part of an action the server executed (fields marked `[SyncToClient]` are injected first);
@@ -143,7 +143,7 @@ The settings contain:
 | `PlayerSpawnMenu` | Team/formation/character menu. Used in `PlayerSelection` mode, and as the character pool for `RandomFromMenu`. |
 | `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Characters used by the `DefaultUnits` auto rule (only visible for that rule in the editor). |
 | `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote` (PlayerSelection mode only). |
-| `IntroCinematicName` | Optional intro cinematic (referenced by name, defined on the scenario) played when the act starts, after teams and characters are set and agents spawned. |
+| `IntroCinematicName` | Optional intro cinematic (referenced by name, defined on the scenario) played when the act starts, after teams and characters are set and agents spawned. The scene stays hidden behind the waiting screen until it starts; set its `FadeOutSec` to 0 to cut straight to the player instead of fading back to black at the end. |
 | `TimeBeforeSpawn`, `TimeWhenSpawnIsAllowed` | Selection/spawn window timings (Start flow). |
 | `SpawnTagAttacker`, `SpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
 | `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `Spawnpoint` (random matching spawnpoint entity), `Banners` (allied banner) or `Zones` (random zone from the configured list). |
@@ -155,19 +155,38 @@ Spawn points are read from scene entities tagged `spawnpoint`. Additional tags s
 
 #### Act start flow
 
-The waiting screen is always enabled: while the server is in `AwaitingPlayerJoin`, clients show a
-full-black screen (hiding all other mission UI) with the ready/total player counter, driven by
-`WaitingScreenStateMessage`. Once enough players are loaded: team assignment runs (menu selection or
-auto rule), then character assignment (menu session or auto rule), then the act starts and the
-optional intro cinematic is played to everyone — combine it with viewer-relative camera targets so
-the cinematic ends on each player's own character (see `docs/cinematics.md`).
+`ScenarioView` owns the whole act-start presentation through a single Gauntlet layer (order 21, so
+the menus render above it): the full-black waiting screen (black quad + ready/total player
+counter), the act title/description, the objectives board (Tab), the lives display and the result
+screen. While the server is in
+`AwaitingPlayerJoin`, clients show the black screen with the counter, driven by
+`WaitingScreenStateMessage` (routed through `StoryHandler`). Once enough players are loaded: team
+assignment runs (menu selection or auto rule), then character assignment (menu session or auto
+rule), then the act starts and the optional intro cinematic is played to everyone — combine it
+with viewer-relative camera targets so the cinematic ends on each player's own character (see
+`docs/cinematics.md`).
+
+When the act has an intro cinematic, the black screen stays visible after the wait is over (holding
+mode, without the counter) so the scene stays hidden until the cinematic starts: the introduction is
+the cinematic, not a free-camera view of the map. The team selection, player spawn and escape
+menus render on top of the black screen, so the whole pre-game flow happens behind it. The screen is
+released
+when the cinematic starts (the cinematic overlay takes over, starting fully black for a seamless
+handoff), and a server-side safety net releases it a few seconds later if a client never received
+the cinematic (e.g. restricted audience).
+
+The act is *revealed* to the player when the intro cinematic ends - or right after the act starts
+when there is none: that is when the act title/description is displayed and the Tab board becomes
+available. Nothing of the scenario UI shows over the black screen before that. Acts without an
+intro cinematic keep the old behavior: the black screen disappears as soon as players are ready.
 
 Two reference flows:
 1. *Cinematic-first*: waiting screen → `TeamAssignment = Auto` + `CharacterAssignment = Auto`
-   (everything assigned in the background) → intro cinematic ending on each player's character →
-   control handed over.
+   (everything assigned in the background, behind the held black screen) → intro cinematic ending
+   on each player's character → control handed over, act title displayed.
 2. *Menu-driven*: waiting screen → team selection → spawn menu (characters, officers) → optional
-   intro cinematic → gameplay.
+   intro cinematic → gameplay. With an intro cinematic configured, all of it happens behind the
+   held black screen, with the menus on top.
 
 ## Objectives and victory
 

@@ -40,6 +40,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		private float _minimumStateDuration = 5f;
 		private float _stateDuration;
 		private float _checkStateDelay = 1f;
+		private bool _holdWaitingScreenForIntroCinematic;
 
 		public bool EnableStateChange { get; private set; }
 
@@ -102,6 +103,20 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				timerStart,
 				timerDuration));
 			GameNetwork.EndModuleEventAsServer();
+
+			if (State == ActState.AwaitingPlayerJoin)
+			{
+				CountSynchronizedPlayers(out int ready, out int total);
+				GameNetwork.BeginModuleEventAsServer(networkPeer);
+				GameNetwork.WriteMessage(new WaitingScreenStateMessage(true, false, ready, total));
+				GameNetwork.EndModuleEventAsServer();
+			}
+			else if (State == ActState.SpawningParticipants && _holdWaitingScreenForIntroCinematic)
+			{
+				GameNetwork.BeginModuleEventAsServer(networkPeer);
+				GameNetwork.WriteMessage(new WaitingScreenStateMessage(true, true, 0, 0));
+				GameNetwork.EndModuleEventAsServer();
+			}
 		}
 
 		public override void OnMissionTick(float dt)
@@ -145,7 +160,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				case ActState.AwaitingPlayerJoin:
 					if (EnoughPlayersJoined())
 					{
-						BroadcastWaitingScreen(false, 0, 0);
+						if (HasIntroCinematic())
+						{
+							_holdWaitingScreenForIntroCinematic = true;
+							BroadcastWaitingScreen(true, true, 0, 0);
+						}
+						else
+						{
+							BroadcastWaitingScreen(false, false, 0, 0);
+						}
 						ChangeState(ActState.SpawningParticipants);
 						StartSpawn();
 					}
@@ -161,6 +184,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					}
 					break;
 				case ActState.InProgress:
+					if (_holdWaitingScreenForIntroCinematic)
+					{
+						_holdWaitingScreenForIntroCinematic = false;
+						BroadcastWaitingScreen(false, false, 0, 0);
+					}
 					if (CheckObjectives())
 					{
 						ChangeState(ActState.DisplayingResults);
@@ -205,32 +233,41 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		private bool EnoughPlayersJoined()
 		{
+			CountSynchronizedPlayers(out int playersReady, out int playersTotal);
 			int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
-			int playersReady = 0;
-			int playersTotal = 0;
+			Log("Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")");
+			BroadcastWaitingScreen(true, false, playersReady, playersTotal);
+			return playersReady >= minPlayersForStart;
+		}
+
+		private static void CountSynchronizedPlayers(out int playersReady, out int playersTotal)
+		{
+			playersReady = 0;
+			playersTotal = 0;
 			foreach (ICommunicator peer in GameNetwork.NetworkPeers)
 			{
 				playersTotal++;
 				if (peer.IsSynchronized) playersReady++;
 			}
-			Log("Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")");
-			// Drive the client waiting screen (full-black, ready/total counter) while in this state.
-			BroadcastWaitingScreen(true, playersReady, playersTotal);
-			return playersReady >= minPlayersForStart;
 		}
 
-		private void BroadcastWaitingScreen(bool visible, int ready, int total)
+		private void BroadcastWaitingScreen(bool visible, bool holdingForCinematic, int ready, int total)
 		{
 			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new WaitingScreenStateMessage(visible, ready, total));
+			GameNetwork.WriteMessage(new WaitingScreenStateMessage(visible, holdingForCinematic, ready, total));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
+
+		private bool HasIntroCinematic()
+		{
+			return !string.IsNullOrEmpty(Act?.SpawnLogic?.IntroCinematicName);
 		}
 
 		private bool InitialSpawnFinished()
 		{
 			//return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			// TODO check if this fix the act starting before spawn ended
-			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + Act.SpawnLogic.TimeBeforeSpawn.Resolve();
+			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 5f + Act.SpawnLogic.TimeBeforeSpawn.Resolve();
 		}
 
 		private bool CheckObjectives()

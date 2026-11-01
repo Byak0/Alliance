@@ -1,12 +1,16 @@
 ﻿using Alliance.Client.GameModes.Story.ViewModels;
+using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using TaleWorlds.Engine.GauntletUI;
+using TaleWorlds.GauntletUI.BaseTypes;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.View.MissionViews;
+using TaleWorlds.ScreenSystem;
 using static Alliance.Common.Utilities.Logger;
+using System.Collections.Generic;
 
 namespace Alliance.Client.GameModes.Story.Views
 {
@@ -17,9 +21,32 @@ namespace Alliance.Client.GameModes.Story.Views
 	/// </summary>
 	public class ScenarioView : MissionView
 	{
+		// Layers allowed to render above the waiting screen blackout (order must be > 21).
+		private static readonly HashSet<string> LayersAboveBlackoutWhitelist = new HashSet<string>
+		{
+			// Scenario pre-game menus
+			"AL_MultiplayerTeamSelection",
+			"PlayerSpawnMenu",
+			"CharacterEditorPopup",
+			"FormationEditorPopup",
+			"TeamEditorPopup",
+			// Escape menu and its submenus
+			"MissionEscapeMenu",
+			"MissionOptions",
+			"KeyBindingPopup",
+			"GameModeMenu",
+			"MultiplayerAdminPanel",
+			// Inquiry popups (e.g. quit confirmation)
+			"QueryManager",
+			"ChatLog"
+		};
+
+		private const float ActRevealGraceSec = 1f;
+
 		private GauntletLayer _gauntletLayer;
 		private ScenarioVM _dataSource;
 		private ScenarioClientBehavior _scenarioClientBehavior;
+		private CinematicView _cinematicView;
 
 		private bool _showBoard;
 		private bool _mouseRequestedWhileBoardActive;
@@ -31,9 +58,17 @@ namespace Alliance.Client.GameModes.Story.Views
 		private float _resultTimeElapsed;
 		private bool _resultRequested;
 
+		private bool _actRevealPending;
+		private float _actRevealTimeElapsed;
+
+		private bool _blackoutVisible;
+		private readonly HashSet<ScreenLayer> _hiddenLayers = new HashSet<ScreenLayer>();
+
 		public ScenarioView()
 		{
-			ViewOrderPriority = 25;
+			// Below the team selection (22), spawn menu (26) and editor popups (30) so they
+			// render above the waiting screen blackout.
+			ViewOrderPriority = 21;
 		}
 
 		public ScenarioVM GetDataSource() => _dataSource;
@@ -47,6 +82,8 @@ namespace Alliance.Client.GameModes.Story.Views
 			{
 				MissionScreen.SceneLayer.Input.RegisterHotKeyCategory(category);
 			}
+
+			_cinematicView = Mission.GetMissionBehavior<CinematicView>();
 
 			RegisterScenarioEvents();
 		}
@@ -83,6 +120,66 @@ namespace Alliance.Client.GameModes.Story.Views
 			_scenarioClientBehavior.State.OnLivesChanged -= RefreshLivesDisplay;
 		}
 
+		public void SetWaitingState(bool visible, bool holdingForCinematic, int ready, int total)
+		{
+			if (visible != _blackoutVisible)
+			{
+				_blackoutVisible = visible;
+				_dataSource.IsBlackoutVisible = visible;
+				if (visible)
+				{
+					_actRevealPending = false;
+					_scenarioIntroRequested = false;
+					_dataSource.ShowIntro = false;
+					_resultRequested = false;
+					_dataSource.ShowResult = false;
+					ToggleScoreboard(false);
+					HideOtherLayers();
+				}
+				else
+				{
+					RestoreLayers();
+					RefreshLivesDisplay();
+				}
+			}
+			if (visible)
+			{
+				_dataSource.IsWaiting = !holdingForCinematic;
+				_dataSource.WaitingCounter = ready + " / " + total;
+			}
+		}
+
+		private void HideOtherLayers()
+		{
+			if (_gauntletLayer == null) return;
+			foreach (ScreenLayer layer in MissionScreen.Layers)
+			{
+				if (layer == _gauntletLayer || !(layer is GauntletLayer gauntletLayer)) continue;
+				if (LayersAboveBlackoutWhitelist.Contains(layer.Name)) continue;
+				Widget root = gauntletLayer.UIContext?.Root;
+				if (root == null || !root.IsVisible) continue;
+				root.IsVisible = false;
+				_hiddenLayers.Add(layer);
+			}
+		}
+
+		private void RestoreLayers()
+		{
+			foreach (ScreenLayer layer in _hiddenLayers)
+			{
+				if (layer.IsFinalized) continue;
+				Widget root = (layer as GauntletLayer)?.UIContext?.Root;
+				if (root != null) root.IsVisible = true;
+			}
+			_hiddenLayers.Clear();
+		}
+
+		public override void OnPreDisplayMissionTick(float dt)
+		{
+			base.OnPreDisplayMissionTick(dt);
+			if (_blackoutVisible) HideOtherLayers();
+		}
+
 		private void SetObjectives(NetworkCommunicator peer, Team previousTeam, Team newTeam)
 		{
 			if (peer == null || !peer.IsMine || ScenarioPlayer.Instance.CurrentAct == null) return;
@@ -97,32 +194,26 @@ namespace Alliance.Client.GameModes.Story.Views
 		{
 			_dataSource.SetAct(ScenarioPlayer.Instance.CurrentAct);
 			RefreshLivesDisplay();
-
-			_scenarioIntroRequested = true;
-			_scenarioIntroTimeElapsed = 0;
-			_dataSource.ShowIntro = true;
-			Log("Hello I'm InitialScreen", LogLevel.Debug);
+			_actRevealPending = false;
 		}
 
 		public void ShowSpawnScreen()
 		{
-			Log("Hello I'm SpawnScreen", LogLevel.Debug);
 		}
 
 		public void ShowStartScreen()
 		{
-			Log("Hello I'm StartScreen", LogLevel.Debug);
-			_dataSource.ShowLives = true;
+			RefreshLivesDisplay();
+			_actRevealPending = true;
+			_actRevealTimeElapsed = 0f;
 		}
 
 		public void ShowEndScreen()
 		{
-			Log("Hello I'm EndScreen", LogLevel.Debug);
 		}
 
 		public void ShowResultScreen(string title, string description, Color color)
 		{
-			Log("Hello I'm ResultScreen", LogLevel.Debug);
 			_resultRequested = true;
 			_dataSource.ShowResult = true;
 			_dataSource.ResultTitle = title;
@@ -142,6 +233,18 @@ namespace Alliance.Client.GameModes.Story.Views
 		{
 			base.OnMissionTick(dt);
 
+			if (_actRevealPending)
+			{
+				_actRevealTimeElapsed += dt;
+				if (_actRevealTimeElapsed >= ActRevealGraceSec && !IsCinematicPlaying && !_blackoutVisible)
+				{
+					_actRevealPending = false;
+					_scenarioIntroRequested = true;
+					_scenarioIntroTimeElapsed = 0f;
+					_dataSource.ShowIntro = true;
+				}
+			}
+
 			// Intro screen
 			if (_scenarioIntroRequested)
 			{
@@ -149,9 +252,11 @@ namespace Alliance.Client.GameModes.Story.Views
 				{
 					_dataSource.ShowIntro = false;
 					_scenarioIntroRequested = false;
-					return;
 				}
-				_scenarioIntroTimeElapsed += dt;
+				else
+				{
+					_scenarioIntroTimeElapsed += dt;
+				}
 			}
 
 			// Refresh VM
@@ -171,7 +276,8 @@ namespace Alliance.Client.GameModes.Story.Views
 			}
 
 			// Toggle board depending on hotkeys
-			bool activateBoard = isTabPressed && !MissionScreen.IsRadialMenuActive && !Mission.IsOrderMenuOpen;
+			bool boardAllowed = !_blackoutVisible && !IsCinematicPlaying;
+			bool activateBoard = boardAllowed && isTabPressed && !MissionScreen.IsRadialMenuActive && !Mission.IsOrderMenuOpen;
 			ToggleScoreboard(activateBoard);
 
 			// Check to show mouse cursor
@@ -182,6 +288,8 @@ namespace Alliance.Client.GameModes.Story.Views
 			bool showCursor = _showBoard && _mouseRequestedWhileBoardActive;
 			SetMouseState(showCursor);
 		}
+
+		private bool IsCinematicPlaying => _cinematicView != null && _cinematicView.IsPlaying;
 
 		private void ToggleScoreboard(bool isActive)
 		{
@@ -221,7 +329,7 @@ namespace Alliance.Client.GameModes.Story.Views
 
 		private void RefreshLivesDisplay()
 		{
-			_dataSource.ShowLives = ScenarioPlayer.Instance.ActState == ActState.InProgress;
+			_dataSource.ShowLives = ScenarioPlayer.Instance.ActState == ActState.InProgress && !_blackoutVisible;
 
 			_dataSource?.SetLives(
 				_scenarioClientBehavior.State.RespawnStrategy,
@@ -231,6 +339,9 @@ namespace Alliance.Client.GameModes.Story.Views
 
 		private void FinalizeLayer()
 		{
+			RestoreLayers();
+			_blackoutVisible = false;
+			_cinematicView = null;
 			_dataSource.OnFinalize();
 			MissionScreen.RemoveLayer(_gauntletLayer);
 			_gauntletLayer = null;

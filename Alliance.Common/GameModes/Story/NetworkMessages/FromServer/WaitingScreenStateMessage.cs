@@ -11,40 +11,25 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 	[DefineGameNetworkMessageTypeForMod(GameNetworkMessageSendType.FromServer)]
 	public sealed class WaitingScreenStateMessage : GameNetworkMessage
 	{
-		private bool _visible;
-		private int _readyPlayers;
-		private int _totalPlayers;
+		public bool Visible { get; private set; }
+		public bool HoldingForCinematic { get; private set; }
 
-		public bool Visible
-		{
-			get => _visible;
-			private set => _visible = value;
-		}
-
-		public int ReadyPlayers
-		{
-			get => _readyPlayers;
-			private set => _readyPlayers = value;
-		}
-
-		public int TotalPlayers
-		{
-			get => _totalPlayers;
-			private set => _totalPlayers = value;
-		}
-
+		public int ReadyPlayers { get; private set; }
+		public int TotalPlayers { get; private set; }
 		public WaitingScreenStateMessage() { }
 
-		public WaitingScreenStateMessage(bool visible, int readyPlayers, int totalPlayers)
+		public WaitingScreenStateMessage(bool visible, bool holdingForCinematic, int readyPlayers, int totalPlayers)
 		{
-			_visible = visible;
-			_readyPlayers = readyPlayers;
-			_totalPlayers = totalPlayers;
+			Visible = visible;
+			HoldingForCinematic = holdingForCinematic;
+			ReadyPlayers = readyPlayers;
+			TotalPlayers = totalPlayers;
 		}
 
 		protected override void OnWrite()
 		{
 			WriteBoolToPacket(Visible);
+			WriteBoolToPacket(HoldingForCinematic);
 			WriteIntToPacket(ReadyPlayers, new CompressionInfo.Integer(0, 200, true));
 			WriteIntToPacket(TotalPlayers, new CompressionInfo.Integer(0, 200, true));
 		}
@@ -54,6 +39,8 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 			bool valid = true;
 			Visible = ReadBoolFromPacket(ref valid);
 			if (!valid) return false;
+			HoldingForCinematic = ReadBoolFromPacket(ref valid);
+			if (!valid) return false;
 			ReadyPlayers = ReadIntFromPacket(new CompressionInfo.Integer(0, 200, true), ref valid);
 			if (!valid) return false;
 			TotalPlayers = ReadIntFromPacket(new CompressionInfo.Integer(0, 200, true), ref valid);
@@ -62,6 +49,6 @@ namespace Alliance.Common.GameModes.Story.NetworkMessages.FromServer
 
 		protected override MultiplayerMessageFilter OnGetLogFilter() => MultiplayerMessageFilter.Mission;
 
-		protected override string OnGetLogFormat() => $"Waiting screen visible={Visible} ({ReadyPlayers}/{TotalPlayers} ready)";
+		protected override string OnGetLogFormat() => $"Waiting screen visible={Visible} holding={HoldingForCinematic} ({ReadyPlayers}/{TotalPlayers} ready)";
 	}
 }

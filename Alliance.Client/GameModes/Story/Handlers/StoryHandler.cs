@@ -152,6 +152,8 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			try
 			{
+				Mission.Current?.GetMissionBehavior<Views.ScenarioView>()?.SetWaitingState(false, false, 0, 0);
+
 				Cinematic cinematic = message.UseActionRef
 					? TryGetCinematicFromAction(message.ScopeId, message.ActionId)
 					: ScenarioManager.Instance.CurrentScenario?.Cinematics?.Find(c => c != null && c.Name == message.CinematicName);
@@ -210,8 +212,8 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			try
 			{
-				IntroWaitingView view = Mission.Current?.GetMissionBehavior<IntroWaitingView>();
-				view?.SetState(message.Visible, message.ReadyPlayers, message.TotalPlayers);
+				ScenarioView view = Mission.Current?.GetMissionBehavior<ScenarioView>();
+				view?.SetWaitingState(message.Visible, message.HoldingForCinematic, message.ReadyPlayers, message.TotalPlayers);
 			}
 			catch (Exception ex)
 			{

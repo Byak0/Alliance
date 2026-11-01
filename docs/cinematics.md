@@ -107,7 +107,7 @@ Re-triggering a cinematic with the same Id replaces the running record.
 
 `StoryHandler` receives `PlayCinematicMessage` and hands the cinematic to `CinematicView` (a mission view present in every game mode):
 
-1. The view takes over the camera (`MissionScreen.CustomCamera`), handles the agent behavior mode, hides other mission UI layer (only the cinematic overlay stays visible) and shows the Gauntlet overlay layer (letterbox bars, fade quad, subtitles, skip hint).
+1. The view takes over the camera (`MissionScreen.CustomCamera`), handles the agent behavior mode, hides other mission UI layer (only the cinematic overlay stays visible) and shows the Gauntlet overlay layer (letterbox bars, fade quad, subtitles, skip hint). The overlay starts fully black so the handoff from the scenario waiting screen is seamless and staged-crowd streaming stays hidden; the first track sample takes over from there. In scenarios, receiving this message also releases the act-start waiting screen when it was holding the scene hidden for the intro cinematic (see `docs/scenario-system.md`, *Act start flow*).
 2. Each frame, `CinematicPlayer` samples the tracks and pushes camera/overlay/subtitle state to the view. Targets resolve at sample time through the view (viewer targets locally, specific agents through their rewritten literal slots, entities through the marker index).
 3. Playback ends on its own clock, when a `StopCinematicMessage` names this cinematic, or when the player skips (Space, local-only). The camera, agent state, first-person mode and scene effects are then restored.
 
