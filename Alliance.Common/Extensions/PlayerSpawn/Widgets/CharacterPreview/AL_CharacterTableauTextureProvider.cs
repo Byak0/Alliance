@@ -11,78 +11,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private TaleWorlds.Engine.Texture _texture;
 		private Texture _providedTexture;
 		private bool _isVisible;
-		private float _cameraElevation, _cameraStrafe, _cameraYaw, _cameraPitch, _cameraRoll;
 
 		public AL_CharacterTableau CharacterTableau => _characterTableau;
-
-		public float CameraZoom { get; set; }
-
-		public float CameraElevation
-		{
-			set => _cameraElevation = value;
-		}
-
-		public float CameraStrafe
-		{
-			set => _cameraStrafe = value;
-		}
-
-		public float CameraYaw
-		{
-			set => _cameraYaw = value;
-		}
-
-		public float CameraPitch
-		{
-			set => _cameraPitch = value;
-		}
-
-		public float CameraRoll
-		{
-			set => _cameraRoll = value;
-		}
-
-		public float CameraAnimDuration { get; set; }
-
-		public bool ApplyCameraChange
-		{
-			set
-			{
-				if (!value) return;
-				ApplyCamera();
-			}
-		}
-
-		private void ApplyCamera()
-		{
-			_characterTableau.AnimateCamera(_cameraElevation, _cameraStrafe, CameraZoom, _cameraPitch, _cameraYaw, _cameraRoll, CameraFov, CameraAnimDuration);
-		}
-
-		public float CameraFov
-		{
-			get => _characterTableau.CameraFov;
-			set => _characterTableau.CameraFov = value;
-		}
-
-
-		public bool EnableLight
-		{
-			get
-			{
-				return _characterTableau?.IsLightEnabled ?? false;
-			}
-			set
-			{
-				if (value)
-				{
-					_characterTableau.EnableLight();
-				}
-				else
-				{
-					_characterTableau.DisableLight();
-				}
-			}
-		}
 
 		public float CustomAnimationProgressRatio => _characterTableau.GetCustomAnimationProgressRatio();
 

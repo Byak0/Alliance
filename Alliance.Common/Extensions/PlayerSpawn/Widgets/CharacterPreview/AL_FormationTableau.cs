@@ -143,13 +143,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private void PlayIdle(FakeAgent fake)
 		{
 			// TODO, variants if fake is mounted, has shield, 2h, bow, etc.
-			fake?.PlayClip(AllianceData.Instance.GetAnimationOfAction(fake.BodyActionSetId, "act_idle_1h_with_shield_5"), loop: true);
+			fake?.PlayClip(AllianceData.Instance.GetAnimationOfActionCompatible(fake?.BodyActionSetId, "act_idle_1h_with_shield_5"), loop: true);
 		}
 
 		private void PlaySpecialAnim(FakeAgent fake)
 		{
 			// TODO, variants if fake is mounted, has shield, 2h, bow, etc.
-			fake?.PlayClip(AllianceData.Instance.GetAnimationOfAction(fake.BodyActionSetId, "act_arena_winner_2"), loop: true);
+			fake?.PlayClip(AllianceData.Instance.GetAnimationOfActionCompatible(fake?.BodyActionSetId, "act_arena_winner_2"), loop: true);
 		}
 
 		/// <summary>Highlights the selected character (normalized row position, -1 = none).</summary>

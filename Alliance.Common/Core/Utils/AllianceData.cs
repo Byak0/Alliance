@@ -326,6 +326,9 @@ namespace Alliance.Common.Core.Utils
 		private readonly Dictionary<(string Race, bool Female), SkinDefinition> _skins = new Dictionary<(string, bool), SkinDefinition>();
 		private readonly Dictionary<string, string> _skeletonOfActionSet = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, Dictionary<string, string>> _actionsByActionSet = new Dictionary<string, Dictionary<string, string>>(StringComparer.OrdinalIgnoreCase);
+		private readonly Dictionary<string, string> _baseSetOfActionSet = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		private readonly Dictionary<string, List<string>> _actionSetIdsBySkeleton = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+		private readonly List<string> _actionSetIdsInOrder = new List<string>();
 		private readonly HashSet<string> _clips = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, float> _clipDurations = new Dictionary<string, float>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, MonsterDefinition> _monsters = new Dictionary<string, MonsterDefinition>(StringComparer.OrdinalIgnoreCase);
@@ -639,6 +642,31 @@ namespace Alliance.Common.Core.Utils
 			return !string.IsNullOrEmpty(actionSetId) && !string.IsNullOrEmpty(actionType)
 				&& _actionsByActionSet.TryGetValue(actionSetId, out Dictionary<string, string> actions)
 				&& actions.TryGetValue(actionType, out string animation) ? animation : null;
+		}
+
+		/// <summary>Resolves an action type to a clip like <see cref="GetAnimationOfAction"/>, then
+		/// falls back to any other action set built for the same skeleton - action types are spread
+		/// across compatible sets (e.g. "act_childhood_toddler_vigor" is declared by
+		/// "as_human_facegen", not by the warrior set, but both animate the human skeleton).
+		/// Returns null when no compatible set defines the action.</summary>
+		public string GetAnimationOfActionCompatible(string actionSetId, string actionType)
+		{
+			string clip = GetAnimationOfAction(actionSetId, actionType);
+			if (clip != null || string.IsNullOrEmpty(actionSetId) || string.IsNullOrEmpty(actionType)) return clip;
+			if (!_skeletonOfActionSet.TryGetValue(actionSetId, out string skeleton)
+				|| !_actionSetIdsBySkeleton.TryGetValue(skeleton, out List<string> compatibleIds))
+			{
+				return null;
+			}
+			foreach (string compatibleId in compatibleIds)
+			{
+				if (_actionsByActionSet.TryGetValue(compatibleId, out Dictionary<string, string> actions)
+					&& actions.TryGetValue(actionType, out string compatibleClip))
+				{
+					return compatibleClip;
+				}
+			}
+			return null;
 		}
 
 		/// <summary>Native duration (seconds) of an animation clip, queried directly from the engine.
@@ -1009,8 +1037,17 @@ namespace Alliance.Common.Core.Utils
 					{
 						string id = setNode.Attributes?["id"]?.Value;
 						string skeleton = setNode.Attributes?["skeleton"]?.Value;
-						if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(skeleton) && !_skeletonOfActionSet.ContainsKey(id))
-							_skeletonOfActionSet[id] = skeleton;
+						string baseSet = setNode.Attributes?["base_set"]?.Value;
+						if (!string.IsNullOrEmpty(id))
+						{
+							if (!string.IsNullOrEmpty(skeleton) && !_skeletonOfActionSet.ContainsKey(id))
+								_skeletonOfActionSet[id] = skeleton;
+							if (!string.IsNullOrEmpty(baseSet))
+								_baseSetOfActionSet[id] = baseSet;
+							// Load order is kept (roots are declared before their derived sets) for
+							// the post-parse passes and deterministic compatible-set resolution.
+							if (!_actionSetIdsInOrder.Contains(id)) _actionSetIdsInOrder.Add(id);
+						}
 						foreach (XmlNode actionNode in setNode.SelectNodes("action"))
 					{
 						string clip = actionNode.Attributes?["animation"]?.Value;
@@ -1033,6 +1070,69 @@ namespace Alliance.Common.Core.Utils
 				{
 					Log($"[AllianceData] Failed to load action set file '{path}' ({ex.Message}).", LogLevel.Warning);
 				}
+			}
+			MergeBaseActionSets();
+			ResolveActionSetSkeletons();
+			BuildCompatibleActionSetIndex();
+		}
+
+		/// <summary>Native derived action sets (base_set="...") only declare overrides or
+		/// additions: merge each base chain into the derived set so actions defined up the
+		/// chain resolve locally. Roots load before their derived sets, so one pass in load
+		/// order is enough.</summary>
+		private void MergeBaseActionSets()
+		{
+			foreach (string id in _actionSetIdsInOrder)
+			{
+				if (!_actionsByActionSet.TryGetValue(id, out Dictionary<string, string> actions)) continue;
+				_baseSetOfActionSet.TryGetValue(id, out string baseId);
+				HashSet<string> visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { id };
+				while (!string.IsNullOrEmpty(baseId) && visited.Add(baseId))
+				{
+					if (_actionsByActionSet.TryGetValue(baseId, out Dictionary<string, string> baseActions))
+					{
+						foreach (KeyValuePair<string, string> entry in baseActions)
+						{
+							if (!actions.ContainsKey(entry.Key)) actions[entry.Key] = entry.Value;
+						}
+					}
+					_baseSetOfActionSet.TryGetValue(baseId, out baseId);
+				}
+			}
+		}
+
+		/// <summary>Only root action sets declare a skeleton - derived sets inherit it through
+		/// their base chain (as_human_facegen -> as_human_warrior -> human_skeleton). Must run
+		/// after parsing, in load order (parents first).</summary>
+		private void ResolveActionSetSkeletons()
+		{
+			foreach (string id in _actionSetIdsInOrder)
+			{
+				if (_skeletonOfActionSet.ContainsKey(id)) continue;
+				_baseSetOfActionSet.TryGetValue(id, out string baseId);
+				HashSet<string> visited = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { id };
+				while (!string.IsNullOrEmpty(baseId) && visited.Add(baseId))
+				{
+					if (_skeletonOfActionSet.TryGetValue(baseId, out string skeleton))
+					{
+						_skeletonOfActionSet[id] = skeleton;
+						break;
+					}
+					_baseSetOfActionSet.TryGetValue(baseId, out baseId);
+				}
+			}
+		}
+
+		/// <summary>Indexes every action set under its (resolved) skeleton, in load order, for
+		/// <see cref="GetAnimationOfActionCompatible"/>.</summary>
+		private void BuildCompatibleActionSetIndex()
+		{
+			foreach (string id in _actionSetIdsInOrder)
+			{
+				if (!_skeletonOfActionSet.TryGetValue(id, out string skeleton)) continue;
+				if (!_actionSetIdsBySkeleton.TryGetValue(skeleton, out List<string> ids))
+					_actionSetIdsBySkeleton[skeleton] = ids = new List<string>();
+				if (!ids.Contains(id)) ids.Add(id);
 			}
 		}
 

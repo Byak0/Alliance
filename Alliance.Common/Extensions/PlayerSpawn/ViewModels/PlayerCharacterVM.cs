@@ -383,12 +383,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (_characterViewModel == null || _advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h_left_stance");
-			_characterViewModel.CameraZoom = -1.2f;
-			_characterViewModel.CameraElevation = 0f;
-			_characterViewModel.CameraPitch = 0f;
-			_characterViewModel.CameraAnimDuration = 1.2f;
-			_characterViewModel.ApplyCameraChange = true;
-			_characterViewModel.EnableLight = true;
 			_advanced = true;
 		}
 
@@ -396,12 +390,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (_characterViewModel == null || !_advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_backward_1h");
-			_characterViewModel.CameraZoom = 1.2f;
-			_characterViewModel.CameraElevation = 0f;
-			_characterViewModel.CameraPitch = 0f;
-			_characterViewModel.CameraAnimDuration = 1.2f;
-			_characterViewModel.ApplyCameraChange = true;
-			_characterViewModel.EnableLight = false;
 			_advanced = false;
 		}
 
@@ -415,11 +403,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (CharacterViewModel == null) return;
 			CharacterViewModel.IdleAction = "inventory_idle";
-			CharacterViewModel.CameraZoom = 0f;
-			CharacterViewModel.CameraElevation = 0f;
-			CharacterViewModel.CameraPitch = 0f;
-			CharacterViewModel.CameraAnimDuration = 0f;
-			CharacterViewModel.ApplyCameraChange = true;
 		}
 
 		[UsedImplicitly]
