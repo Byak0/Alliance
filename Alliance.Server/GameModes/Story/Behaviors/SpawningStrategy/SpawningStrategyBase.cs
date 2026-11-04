@@ -79,6 +79,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			CheckForPlayersRespawning();
 
+			// Peers joining after the spawn session started are not covered by the initial
+			// ApplyTeamAssignment, and the client team-select screen is suppressed in Auto mode:
+			// assign them a team so they can open the spawn menu and spawn.
+			if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) CheckForLateJoinersWithoutTeam();
+
 			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
 			{
 				if (player.ControlledAgent == null)
@@ -554,6 +559,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					position = GetFlagLocation(playerTeam);
 					break;
 				case LocationStrategy.Zones:
+					// TODO : correctly assign position to defined zones
 					position = firstSpawn ? GetTagLocation(playerTeam, hasMount) : GetFlagLocation(playerTeam);
 					break;
 				//case LocationStrategy.PlayerChoice:
@@ -787,6 +793,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 				case TeamAutoAssignmentRule.Balanced:
 					{
+						// Team select is suppressed in Auto mode, so peers have no team yet unless an
+						// admin moved them: assign every teamless peer first, always to the side with
+						// the fewest players, so both sides fill up evenly.
+						foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+						{
+							MissionPeer mp = peer?.GetComponent<MissionPeer>();
+							if (mp != null && mp.Team == null) mp.Team = GetAutoAssignTargetTeam();
+						}
+
 						// Move players from the bigger side to the smaller one until both differ by at most one.
 						List<MissionPeer> attackers = new List<MissionPeer>();
 						List<MissionPeer> defenders = new List<MissionPeer>();
@@ -813,6 +828,60 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 						}
 					}
 					break;
+			}
+		}
+
+		/// <summary>Returns the team a peer should be auto-assigned to: the side with the fewest
+		/// human players. Ties go to attackers so a batch assignment alternates sides.</summary>
+		private Team GetAutoAssignTargetTeam()
+		{
+			int attackers = 0;
+			int defenders = 0;
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				MissionPeer mp = peer?.GetComponent<MissionPeer>();
+				if (mp?.Team == null) continue;
+				if (mp.Team == Mission.Current.AttackerTeam) attackers++;
+				else if (mp.Team == Mission.Current.DefenderTeam) defenders++;
+			}
+			return defenders < attackers ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
+		}
+
+		/// <summary>Assigns a team to peers joining while the spawn session is already running
+		/// (TeamAssignment = Auto), following TeamAutoRule like the initial ApplyTeamAssignment.</summary>
+		private void CheckForLateJoinersWithoutTeam()
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				// Only synchronized peers: they already received the spawn menu from
+				// PlayerSpawnBehavior.HandleLateNewClientAfterSynchronized, which must arrive before
+				// the team notifications below (they make the client open the spawn menu).
+				if (!peer.IsSynchronized) continue;
+
+				MissionPeer mp = peer?.GetComponent<MissionPeer>();
+				if (mp == null || mp.Team != null) continue;
+
+				switch (SpawnLogic.TeamAutoRule)
+				{
+					case TeamAutoAssignmentRule.AllAttackers:
+						mp.Team = Mission.Current.AttackerTeam;
+						break;
+					case TeamAutoAssignmentRule.AllDefenders:
+						mp.Team = Mission.Current.DefenderTeam;
+						break;
+					default:
+						mp.Team = GetAutoAssignTargetTeam();
+						break;
+				}
+
+				// The team change creates the peer's assignment with spawn disabled: mirror
+				// StartSpawnSession so the late joiner can actually spawn once it picks a character.
+				if (UsePlayerSpawnMenu && PlayerSpawnBehavior.SpawnInProgress)
+				{
+					PlayerSpawnMenu.Instance.UpdateSpawnStatus(peer, true, PlayerSpawnBehavior.SpawnWaitTimeAfterSelection);
+				}
+
+				Log($"{peer.UserName} joined mid-session - auto-assigned to team {mp.Team.Side}", LogLevel.Debug);
 			}
 		}
 
