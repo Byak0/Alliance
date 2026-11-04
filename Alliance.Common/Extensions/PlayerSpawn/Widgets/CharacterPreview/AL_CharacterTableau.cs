@@ -97,6 +97,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private int _latestHeight = -1;
 		private string _bodyPropertiesCode;
 		private bool _isFemale;
+		private int _raceIndex = -1;
 		private CharacterViewModelStance _stanceIndex;
 		private Banner _banner;
 		private bool _isBannerShownInBackground;
@@ -381,7 +382,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			Texture?.Release();
 			Texture = TableauView.AddTableau("AL_CharacterTableau_" + _lastTableauIndex++, new RenderTargetComponent.TextureUpdateEventHandler(CharacterTableauContinuousRenderFunction), _tableauScene, _tableauSizeX, _tableauSizeY);
 			Texture.TableauView.SetSceneUsesContour(value: false);
-			Texture.TableauView.SetFocusedShadowmap(enable: true, ref _characterSpawnPoint.origin, 2.55f);
 
 			View.SetCamera(_continuousRenderCamera);
 			View.SetScene(_tableauScene);
@@ -525,8 +525,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void SetRace(int race)
 		{
-			// No-op kept for prefab/VM compatibility: the FakeAgent dresses from the character
-			// definition's own race, the raw race index is unused on this pipeline.
+			if (_raceIndex == race) return;
+			_raceIndex = race;
+			_isVisualsDirty = true;
 		}
 
 		public void SetIdleAction(string idleAction)
@@ -589,13 +590,12 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		public void SetEquipmentCode(string equipmentCode)
 		{
-			if (_equipmentCode != equipmentCode && !string.IsNullOrEmpty(equipmentCode))
-			{
-				_equipmentCode = equipmentCode;
-				_bannerItem = null;
-				_isVisualsDirty = true;
-				UpdateBannerItem();
-			}
+			if (string.IsNullOrEmpty(equipmentCode)) equipmentCode = null;
+			if (_equipmentCode == equipmentCode) return;
+			_equipmentCode = equipmentCode;
+			_bannerItem = null;
+			_isVisualsDirty = true;
+			UpdateBannerItem();
 		}
 
 		public void SetIsEquipmentAnimActive(bool value)
@@ -632,8 +632,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		/// <summary>(Re)spawns the FakeAgent dressed from the catalog definition of <see cref="_charStringId"/>
-		/// TODO : equipment code is actually ignored, it should be used when defined (ie native Lobby armory needs it to properly display characters).</summary>
+		/// <summary>(Re)spawns the FakeAgent dressed for display: the equipment code's outfit when
+		/// one is set (perk alternatives, native Lobby armory...), the catalog outfit of
+		/// <see cref="_charStringId"/> otherwise.</summary>
 		private void RebuildFake()
 		{
 			ReturnFakeToPool();
@@ -644,6 +645,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			AllianceData.CharacterDefinition definition = BuildDefinition();
 			if (definition == null || definition.EquipmentRosters.Count == 0) return;
 
+			// The code's banner item (when any) is known only after BuildDefinition parsed it - (re)create the background banner now.
+			UpdateBannerItem();
+
 			MatrixFrame frame = _isCharacterMountPlacesSwapped ? _mountSpawnPoint : _characterSpawnPoint;
 			frame.rotation.RotateAboutUp(_mainCharacterRotation);
 
@@ -651,22 +655,15 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			// the character (never under the camera), and the rider stays on foot.
 			MatrixFrame mountFrame = _isCharacterMountPlacesSwapped ? _characterSpawnPoint : _mountSpawnPoint;
 
-			// Simple-skeleton pipeline on purpose: the same one cinematics use, proven in every
-			// context (kit included). The native AgentVisuals pipeline deadlocks the kit editor on
-			// materials whose shader variants are missing from the kit's shader sack (runtime
-			// shader compilation hangs the render thread), and its deferred resource queue is
-			// never pumped there (invisible previews). No facial animations on previews - accepted.
-			// Colors come from the definition's own culture (FakeAgent resolves them).
-			// Fakes are pooled per character key: a formation refresh recreates every widget, and
-			// rebuilding each fake from scratch reloads all their meshes (the add-agent lag).
-			_fakePoolKey = $"{definition.Id}|{definition.CultureId}|{definition.IsFemale}|{_equipmentSeed}";
+			_fakePoolKey = FakeAgentPool.BuildKey(definition, _equipmentSeed, _equipmentCode, weaponsDrawn: false);
 			_fake = FakeAgentPool.Acquire(_fakePoolKey, () => new FakeAgent(_tableauScene, frame, definition, definition.CultureId,
 				name: "Tableau_" + _charStringId,
 				useFullAgentVisuals: false,
 				weaponsDrawn: false,
 				equipmentSeed: _equipmentSeed,
 				register: false,
-				mountFrame: mountFrame));
+				mountFrame: mountFrame,
+				maxSheathedItems: 5));
 			if (!_fake.IsValid)
 			{
 				FakeAgentPool.Return(_fakePoolKey, _fake);
@@ -702,57 +699,21 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_fake = null;
 		}
 
-		/// <summary>Builds the FakeAgent input: the catalog definition of the character, cloned with
-		/// an equipment roster derived from the equipment code when one was set (perk alternatives...).
-		/// The catalog object is never mutated. Unknown ids fall back to dressing from the equipment
-		/// code alone (e.g. code-registered characters).</summary>
+		/// <summary>Builds the FakeAgent input: the display definition (catalog or equipment-code
+		/// outfit, overridden by the VM's race when it differs, see
+		/// <see cref="AllianceData.GetDisplayCharacter"/>), plus the background banner item
+		/// carried by the code.</summary>
 		private AllianceData.CharacterDefinition BuildDefinition()
 		{
-			AllianceData.CharacterDefinition template = AllianceData.Instance.GetCharacter(_charStringId);
-			if (template == null && !string.IsNullOrEmpty(_equipmentCode))
+			string raceId = AllianceData.Instance.GetRaceName(_raceIndex);
+			if (raceId == null)
 			{
-				template = new AllianceData.CharacterDefinition { Id = _charStringId, RaceId = "human", IsFemale = _isFemale };
+				BasicCharacterObject characterObject = AllianceData.Instance.GetCharacterObject(_charStringId);
+				if (characterObject != null) raceId = AllianceData.Instance.GetRaceName(characterObject.Race);
 			}
-			if (template == null) return null;
-
-			if (string.IsNullOrEmpty(_equipmentCode)) return template;
-
-			Dictionary<int, string> slots = new Dictionary<int, string>();
-			try
-			{
-				Equipment equipment = Equipment.CreateFromEquipmentCode(_equipmentCode);
-				_bannerItem = GetBannerFromEquipment(equipment);
-				for (EquipmentIndex index = EquipmentIndex.Weapon0; index <= EquipmentIndex.ArmorItemEndSlot; index++)
-				{
-					ItemObject item = equipment[index].Item;
-					if (item != null) slots[(int)index] = item.StringId;
-				}
-			}
-			catch (Exception ex)
-			{
-				Log($"[AL_CharacterTableau] Failed to parse equipment code of '{_charStringId}' ({ex.Message}).", LogLevel.Warning);
-				return template;
-			}
-			if (slots.Count == 0) return template;
-
-			AllianceData.CharacterDefinition definition = new AllianceData.CharacterDefinition
-			{
-				Id = template.Id,
-				Name = template.Name,
-				CultureId = template.CultureId,
-				RaceId = template.RaceId,
-				IsFemale = _isFemale || template.IsFemale,
-				IsMultiplayer = template.IsMultiplayer,
-				ClassTypes = template.ClassTypes
-			};
-			definition.EquipmentRosters.Add(slots);
-			return definition;
-		}
-
-		private ItemObject GetBannerFromEquipment(Equipment equipment)
-		{
-			ItemObject item = equipment[EquipmentIndex.ExtraWeaponSlot].Item;
-			return item != null && item.IsBannerItem ? item : null;
+			AllianceData.ParsedEquipmentCode parsedCode = AllianceData.ParseEquipmentCode(_equipmentCode);
+			_bannerItem = parsedCode?.BannerItem;
+			return AllianceData.Instance.GetDisplayCharacter(_charStringId, parsedCode, _isFemale, raceId);
 		}
 
 		public void RotateCharacter(bool value)
@@ -900,9 +861,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				_continuousRenderCamera.SetFovVertical(
 					_verticalFov,
 					_cameraRatio,
-					0.2f, 200f
+					0.1f, 200f
 				);
-				Vec3 lookTarget = _characterSpawnPoint.origin + new Vec3(0f, 0f, 0.9f);
+
+				Vec3 lookTarget = _characterSpawnPoint.origin + new Vec3(0f, 0f, 1.2f);
 				_continuousRenderCamera.LookAt(_camPos.origin, lookTarget, new Vec3(0f, 0f, 1f));
 
 				tableauView.SetCamera(_continuousRenderCamera);
@@ -911,7 +873,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				tableauView.SetDeleteAfterRendering(value: false);
 				tableauView.SetDoNotRenderThisFrame(value: true);
 				tableauView.SetClearColor(0u);
-				tableauView.SetFocusedShadowmap(enable: true, ref _characterSpawnPoint.origin, 1.55f);
 			}
 		}
 
@@ -973,6 +934,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private const int SlotCount = 32;
 		private const float SlotSpacing = 4.0f;
+		private const float SlotLineX = -60f;
 
 		public static void Initialize()
 		{
@@ -1003,33 +965,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_bannerSlots = new MatrixFrame[SlotCount];
 			_cameraSlots = new MatrixFrame[SlotCount];
 
-			// The scene has no sun and (in the kit) no registered atmosphere: fill lights along the
-			// slot line plus frontal lights (camera side) so every agent is evenly and brightly lit.
-			for (int i = 0; i < SlotCount; i += 2)
-			{
-				GameEntity lightEntity = GameEntity.CreateEmpty(_scene, true, false, false);
-				Light fill = Light.CreatePointLight(10f);
-				fill.Intensity = 0.5f;
-				fill.LightColor = new Vec3(240f, 240f, 240f);
-				fill.Frame = new MatrixFrame(Mat3.Identity, new Vec3(1.2f, i * SlotSpacing, 2.2f));
-				lightEntity.AddLight(fill);
-			}
-
-			// Frontal lights (camera side of the slots): light the agents' faces/details.
-			for (int i = 0; i < 4; i++)
-			{
-				GameEntity frontEntity = GameEntity.CreateEmpty(_scene, true, false, false);
-				Light front = Light.CreatePointLight(12f);
-				front.Intensity = 0.6f;
-				front.LightColor = new Vec3(255f, 245f, 225f);
-				front.Frame = new MatrixFrame(Mat3.Identity, new Vec3(0f, 2.5f + i * 16f, 2.4f));
-				frontEntity.AddLight(front);
-			}
 
 			for (int i = 0; i < SlotCount; i++)
 			{
 				MatrixFrame character = MatrixFrame.Identity;
-				character.origin.y += i * SlotSpacing;
+				character.origin.x = SlotLineX - i * SlotSpacing;
 				_characterSlots[i] = character;
 
 				MatrixFrame mount = character;
@@ -1120,6 +1060,14 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private static readonly Dictionary<string, List<FakeAgent>> _byKey = new Dictionary<string, List<FakeAgent>>();
 		private static readonly Queue<(string Key, FakeAgent Fake)> _parked = new Queue<(string, FakeAgent)>();
 
+		/// <summary>Pool key of a dressed fake: character identity (id + race), equipment seed,
+		/// equipment code and weapon state - the same character displayed with a different race,
+		/// perks or drawn weapons must never swap each other's fakes through the pool.</summary>
+		public static string BuildKey(AllianceData.CharacterDefinition definition, int equipmentSeed, string equipmentCode, bool weaponsDrawn)
+		{
+			return $"{(weaponsDrawn ? "armed" : "plain")}|{definition.Id}|{definition.RaceId}|{definition.CultureId}|{definition.IsFemale}|{equipmentSeed}|{equipmentCode ?? ""}";
+		}
+
 		/// <summary>Returns a parked fake for the key, or creates a new one through <paramref name="create"/>.</summary>
 		public static FakeAgent Acquire(string key, Func<FakeAgent> create)
 		{
@@ -1145,13 +1093,23 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			{
 				_byKey[key] = parked = new List<FakeAgent>();
 			}
+			else if (parked.Contains(fake))
+			{
+				// Already parked (a refresh sequence returning the same fake twice) - double
+				// entries would double-evict and despawn fakes re-acquired in between.
+				return;
+			}
 			parked.Add(fake);
 			_parked.Enqueue((key, fake));
 			while (_parked.Count > Capacity)
 			{
 				(string evictedKey, FakeAgent evicted) = _parked.Dequeue();
-				evicted.Despawn();
-				_byKey[evictedKey]?.Remove(evicted);
+				// The queue also carries stale entries of re-acquired fakes - only despawn the
+				// fake if it is still parked under its key (an in-use fake must never die here).
+				if (_byKey.TryGetValue(evictedKey, out List<FakeAgent> evictedList) && evictedList.Remove(evicted))
+				{
+					evicted.Despawn();
+				}
 			}
 		}
 	}

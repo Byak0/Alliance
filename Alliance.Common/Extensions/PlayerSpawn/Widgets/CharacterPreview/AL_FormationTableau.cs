@@ -27,6 +27,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private FakeAgent _selectedFake;
 		private readonly List<FakeAgent> _fakes = new List<FakeAgent>();
+		private readonly List<string> _fakeKeys = new List<string>();
 		private readonly List<float> _fractions = new List<float>();
 		private readonly List<Light> _stateLights = new List<Light>();
 
@@ -36,7 +37,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private float _cameraRatio = 1.4f;
 		private bool _isFinalized;
 		private bool _isVisualsDirty = false;
-		private List<(string Id, float X)> _characters = new List<(string Id, float X)>();
+		private List<(string Id, string Code, float X)> _characters = new List<(string Id, string Code, float X)>();
 
 		public Texture Texture { get; private set; }
 
@@ -44,37 +45,36 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private float VisibleHalfWidth => CameraDistance * MathF.Tan((float)(Math.PI / 4f) * 0.5f) * _cameraRatio;
 
-		/// <summary>Parses the VM's "id@x;id@x..." row data into (id, normalized x) pairs.</summary>
-		public static List<(string Id, float X)> ParseCharactersData(string data)
+		/// <summary>Parses the VM's "id@x;id@equipmentCode@x..." row data into (id, equipment code,
+		/// normalized x) triplets. The code is optional per entry: empty keeps the character's
+		/// catalog outfit (codes carry no '@', they are dot-separated item ids).</summary>
+		public static List<(string Id, string Code, float X)> ParseCharactersData(string data)
 		{
-			List<(string Id, float X)> result = new List<(string Id, float X)>();
+			List<(string Id, string Code, float X)> result = new List<(string Id, string Code, float X)>();
 			if (string.IsNullOrEmpty(data)) return result;
 			foreach (string part in data.Split(';'))
 			{
-				int at = part.LastIndexOf('@');
-				if (at <= 0) continue;
-				string id = part.Substring(0, at);
-				if (float.TryParse(part.Substring(at + 1), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float x))
+				int lastAt = part.LastIndexOf('@');
+				if (lastAt <= 0) continue;
+				int firstAt = part.IndexOf('@');
+				string id = part.Substring(0, firstAt);
+				string code = firstAt == lastAt ? null : part.Substring(firstAt + 1, lastAt - firstAt - 1);
+				if (string.IsNullOrEmpty(code)) code = null;
+				if (float.TryParse(part.Substring(lastAt + 1), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float x))
 				{
-					result.Add((id, x));
+					result.Add((id, code, x));
 				}
 			}
 			return result;
 		}
 
-		public void SetCharacters(List<(string Id, float X)> characters)
+		public void SetCharacters(List<(string Id, string Code, float X)> characters)
 		{
 			_characters = characters;
 
 			if (_isFinalized || _scene == null) return;
 
-			foreach (FakeAgent fake in _fakes)
-			{
-				fake?.Despawn();
-			}
-			_fakes.Clear();
-			_fractions.Clear();
-			_stateLights.Clear();
+			ParkCurrentFakes();
 
 			float visibleWidth = VisibleHalfWidth * 2f;
 			for (int i = 0; i < characters.Count; i++)
@@ -82,16 +82,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				MatrixFrame frame = MatrixFrame.Identity;
 				frame.origin.x = (0.5f - characters[i].X) * visibleWidth;
 				frame.origin.y = RowY;
-				AllianceData.CharacterDefinition character = AllianceData.Instance.GetCharacter(characters[i].Id);
-				FakeAgent fake = new FakeAgent(
-					_scene, 
+				// Catalog outfit, or the equipment code's outfit (perk alternatives).
+				AllianceData.ParsedEquipmentCode parsedCode = AllianceData.ParseEquipmentCode(characters[i].Code);
+				AllianceData.CharacterDefinition character = AllianceData.Instance.GetDisplayCharacter(characters[i].Id, parsedCode);
+				if (character == null || character.EquipmentRosters.Count == 0) continue;
+				string fakeKey = FakeAgentPool.BuildKey(character, equipmentSeed: 0, characters[i].Code, weaponsDrawn: true);
+				FakeAgent fake = FakeAgentPool.Acquire(fakeKey, () => new FakeAgent(
+					_scene,
 					frame,
-					character, 
-					character.CultureId, 
-					name: "Row_" + characters[i].Id, 
+					character,
+					character.CultureId,
+					name: "Row_" + characters[i].Id,
 					useFullAgentVisuals: false,
 					weaponsDrawn: true,
-					register: false);
+					register: false,
+					maxSheathedItems: int.MaxValue));
+				if (!fake.IsValid) continue;
+				// Pooled fakes come back from their old row position - put them at this one.
+				fake.Teleport(frame);
+				fake.SetVisible(true);
 				Light stateLight = Light.CreatePointLight(2f);
 				stateLight.Intensity = 0f;
 				stateLight.LightColor = new Vec3(255f, 235f, 190f);
@@ -99,11 +108,36 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				fake.Root?.AddLight(stateLight);
 				PlayIdle(fake);
 				_fakes.Add(fake);
+				_fakeKeys.Add(fakeKey);
 				_fractions.Add(characters[i].X);
 				_stateLights.Add(stateLight);
 			}
 			UpdateLights();
 			_isVisualsDirty = false;
+		}
+
+		/// <summary>Returns the current row's fakes to the shared pool, their state lights detached
+		/// (lights are per-set and recreated on the next acquire). Identical characters (same code)
+		/// come back from the pool without reloading their meshes.</summary>
+		private void ParkCurrentFakes()
+		{
+			for (int i = 0; i < _fakes.Count; i++)
+			{
+				FakeAgent fake = _fakes[i];
+				Light stateLight = _stateLights[i];
+				GameEntity root = fake?.Root;
+				if (stateLight != null && stateLight.IsValid && root != null && root.HasComponent(stateLight))
+				{
+					root.RemoveComponent(stateLight);
+				}
+				FakeAgentPool.Return(_fakeKeys[i], fake);
+			}
+			_fakes.Clear();
+			_fakeKeys.Clear();
+			_fractions.Clear();
+			_stateLights.Clear();
+			// The selected fake went back to the pool with the others - re-resolve on next SetSelected.
+			_selectedFake = null;
 		}
 
 		private void PlayIdle(FakeAgent fake)
@@ -238,8 +272,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			if (_isFinalized) return;
 			_isFinalized = true;
-			foreach (FakeAgent fake in _fakes) fake?.Despawn();
-			_fakes.Clear();
+			ParkCurrentFakes();
 
 			if (_camera != null)
 			{

@@ -122,8 +122,7 @@ namespace Alliance.Common.Extensions.Cinematics
 				}
 			}
 #endif
-			if (Mission != null && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Escape))
-				Skip();
+			if (Mission != null && IsPlaying && _skippable && TaleWorlds.InputSystem.Input.IsKeyPressed(InputKey.Space)) Skip();
 
 			// Stream the staged formations in with a per-frame time budget (no multi-second freeze).
 			// Runs whether or not playback started: playback is deferred until the fill completes.

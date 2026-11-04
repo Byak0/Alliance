@@ -194,11 +194,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 		}
 
-		/// <summary>"id@x;id@x..." - character ids with their normalized row position (0..1),
-		/// consumed by the shared formation tableau widget (one camera for the whole row).</summary>
+		/// <summary>"id@x;id@equipmentCode@x..." - character ids with their normalized row position
+		/// (0..1) and, when the character has perk-alternative equipment, its current equipment code.
+		/// Consumed by the shared formation tableau widget (one camera for the whole row).</summary>
 		[DataSourceProperty]
-		public string FormationTableauCharacters => string.Join(";",
-			Characters.Select(c => $"{c.AvailableCharacter.CharacterId}@{c.TableauX.ToString("F4", System.Globalization.CultureInfo.InvariantCulture)}"));
+		public string FormationTableauCharacters => string.Join(";", Characters.Select(c =>
+		{
+			string x = c.TableauX.ToString("F4", System.Globalization.CultureInfo.InvariantCulture);
+			string equipmentCode = c.CharacterViewModel?.EquipmentCode;
+			return string.IsNullOrEmpty(equipmentCode)
+				? $"{c.AvailableCharacter.CharacterId}@{x}"
+				: $"{c.AvailableCharacter.CharacterId}@{equipmentCode}@{x}";
+		}));
 
 		/// <summary>Normalized row position of the selected character (-1 when none).</summary>
 		[DataSourceProperty]
@@ -703,6 +710,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
 				PlayerSpawnMenuMsg.RequestCharacterUsage(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
 			}
+
+			// The perk choice altered the character's equipment code - refresh the shared 3D row.
+			OnPropertyChanged(nameof(FormationTableauCharacters));
 		}
 
 		/// <summary>

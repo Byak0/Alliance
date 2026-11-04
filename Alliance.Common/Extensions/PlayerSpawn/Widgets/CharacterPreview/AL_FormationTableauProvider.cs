@@ -20,7 +20,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_formationTableau = new AL_FormationTableau();
 		}
 
-		/// <summary>"id@x;id@x..." - character ids with their normalized row position (0..1).</summary>
+		/// <summary>"id@x;id@equipmentCode@x..." - character ids with their normalized row position
+		/// (0..1) and an optional equipment code (perk alternatives) overriding the catalog outfit.</summary>
 		public string CharactersData
 		{
 			set => _formationTableau.SetCharacters(AL_FormationTableau.ParseCharactersData(value));

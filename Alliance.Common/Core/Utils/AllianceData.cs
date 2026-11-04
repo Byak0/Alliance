@@ -185,6 +185,23 @@ namespace Alliance.Common.Core.Utils
 				}
 				return resolved;
 			}
+
+			/// <summary>Shallow copy for display: race and gender overridden when given (null = keep).</summary>
+			public CharacterDefinition Clone(string raceId = null, bool? isFemale = null)
+			{
+				CharacterDefinition clone = new CharacterDefinition
+				{
+					Id = Id,
+					Name = Name,
+					CultureId = CultureId,
+					RaceId = string.IsNullOrEmpty(raceId) ? RaceId : raceId,
+					IsFemale = isFemale ?? IsFemale,
+					IsMultiplayer = IsMultiplayer,
+					ClassTypes = ClassTypes
+				};
+				clone.EquipmentRosters.AddRange(EquipmentRosters);
+				return clone;
+			}
 		}
 
 		public enum ItemKind
@@ -288,6 +305,8 @@ namespace Alliance.Common.Core.Utils
 			public string Id;
 			/// <summary>Bone the holster hangs on (e.g. "biped_thorax"); inherited through base_set chains.</summary>
 			public string Bone;
+			public string Skeleton;
+			public string Group;
 			public Vec3 Position;
 			public Vec3 RotationYawPitchRoll;
 			public bool ShowHolsterWhenDrawn;
@@ -313,9 +332,13 @@ namespace Alliance.Common.Core.Utils
 		private readonly Dictionary<string, MonsterUsageDefinition> _monsterUsages = new Dictionary<string, MonsterUsageDefinition>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, HolsterDefinition> _holsters = new Dictionary<string, HolsterDefinition>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, string> _holsterBaseIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		private readonly Dictionary<string, List<HolsterDefinition>> _holstersByGroup = new Dictionary<string, List<HolsterDefinition>>(StringComparer.OrdinalIgnoreCase);
+		private readonly Dictionary<string, int> _holsterRigUsage = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, string> _monsterBaseIds = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, HashSet<AgentExtensions.ClassType>> _characterClassTypes = new Dictionary<string, HashSet<AgentExtensions.ClassType>>(StringComparer.OrdinalIgnoreCase);
 		private readonly Dictionary<string, List<CharacterDefinition>> _charactersByCultureId = new Dictionary<string, List<CharacterDefinition>>(StringComparer.OrdinalIgnoreCase);
+		private string[] _raceNames;
+		private Dictionary<string, int> _raceIds;
 
 		private AllianceData()
 		{
@@ -326,10 +349,10 @@ namespace Alliance.Common.Core.Utils
 		private void LoadAll()
 		{
 			lock (_loadLock)
-			{
+			{				
 				// Also initializes MBObjectManager if it wasn't already (merged XML access needs it).
 				Factions.Instance.RefreshAvailablecultures();
-
+				BuildRaceCache();
 				foreach (string typeId in CharacterTypeIds) LoadCharacters(typeId);
 				foreach (string typeId in ItemTypeIds) LoadItems(typeId);
 				LoadSkins();
@@ -470,6 +493,61 @@ namespace Alliance.Common.Core.Utils
 			return _characters.TryGetValue(characterId, out CharacterDefinition character) ? character : null;
 		}
 
+		/// <summary>Slots of a native equipment code: slot index -> item id, plus the banner item
+		/// when the code carries one. Null when the code is empty or fails to parse.</summary>
+		public class ParsedEquipmentCode
+		{
+			public Dictionary<int, string> Slots = new Dictionary<int, string>();
+			public ItemObject BannerItem;
+		}
+
+		/// <summary>Parses a native equipment code once for all display needs (outfit + banner).</summary>
+		public static ParsedEquipmentCode ParseEquipmentCode(string equipmentCode)
+		{
+			if (string.IsNullOrEmpty(equipmentCode)) return null;
+			try
+			{
+				Equipment equipment = Equipment.CreateFromEquipmentCode(equipmentCode);
+				ParsedEquipmentCode parsed = new ParsedEquipmentCode();
+				for (EquipmentIndex index = EquipmentIndex.Weapon0; index <= EquipmentIndex.ArmorItemEndSlot; index++)
+				{
+					ItemObject item = equipment[index].Item;
+					if (item != null) parsed.Slots[(int)index] = item.StringId;
+				}
+				ItemObject banner = equipment[EquipmentIndex.ExtraWeaponSlot].Item;
+				if (banner != null && banner.IsBannerItem) parsed.BannerItem = banner;
+				return parsed;
+			}
+			catch (Exception ex)
+			{
+				Log($"[AllianceData] Failed to parse the equipment code of a display character ({ex.Message}).", LogLevel.Warning);
+				return null;
+			}
+		}
+
+		/// <summary>Character for display: the catalog character as-is when every display input
+		/// matches it, otherwise a <see cref="CharacterDefinition.Clone"/> of it. 
+		/// The parsed equipment code's outfit, when it has any slot, replaces the character's own rosters entirely.</summary>
+		public CharacterDefinition GetDisplayCharacter(string characterId, ParsedEquipmentCode code = null, bool isFemale = false, string raceId = null)
+		{
+			// Base: the catalog definition, or a bare stub for ids unknown to the catalog.
+			CharacterDefinition character = GetCharacter(characterId) ?? new CharacterDefinition { Id = characterId, RaceId = string.IsNullOrEmpty(raceId) ? "human" : raceId };
+
+			bool raceOverride = !string.IsNullOrEmpty(raceId) && raceId != character.RaceId;
+			bool female = isFemale || character.IsFemale;
+			bool dressFromCode = code != null && code.Slots.Count > 0;
+			if (!raceOverride && female == character.IsFemale && !dressFromCode) return character;
+
+			CharacterDefinition display = character.Clone(raceOverride ? raceId : null, female);
+			if (dressFromCode)
+			{
+				// The code's outfit replaces the character's own rosters entirely.
+				display.EquipmentRosters.Clear();
+				display.EquipmentRosters.Add(code.Slots);
+			}
+			return display;
+		}
+
 		public List<CharacterDefinition> GetAllCharacters()
 		{
 			return _characters.Values.ToList();
@@ -517,6 +595,29 @@ namespace Alliance.Common.Core.Utils
 		{
 			if (string.IsNullOrEmpty(raceId)) return null;
 			return _skins.TryGetValue((raceId, female), out SkinDefinition skin) ? skin : null;
+		}
+
+		private void BuildRaceCache()
+		{
+			string[] raceNames = TaleWorlds.Core.FaceGen.GetRaceNames();
+			if (raceNames == null || raceNames.Length == 0) return;
+			_raceIds = new Dictionary<string, int>(raceNames.Length, StringComparer.OrdinalIgnoreCase);
+			for (int i = 0; i < raceNames.Length; i++) _raceIds[raceNames[i]] = i;
+			_raceNames = raceNames;
+		}
+
+		public int GetRaceId(string raceId)
+		{
+			if (_raceIds != null && _raceIds.TryGetValue(raceId, out int race)) return race;
+			Log($"[AllianceData] Race '{raceId}' not found", LogLevel.Warning);
+			return -1;
+		}
+
+		public string GetRaceName(int raceIndex)
+		{
+			if (_raceNames != null && raceIndex >= 0 && raceIndex < _raceNames.Length) return _raceNames[raceIndex];
+			Log($"[AllianceData] Race id '{raceIndex}' not found", LogLevel.Warning);
+			return null;
 		}
 
 		/// <summary>Skeleton model declared by an action set (e.g. "as_horse" -> "horse_skeleton").
@@ -580,6 +681,20 @@ namespace Alliance.Common.Core.Utils
 		public HolsterDefinition GetHolster(string holsterId)
 		{
 			return string.IsNullOrEmpty(holsterId) ? null : _holsters.TryGetValue(holsterId, out HolsterDefinition holster) ? holster : null;
+		}
+
+		/// <summary>Every holster of a visual anchor group (group_name), empty when unknown.</summary>
+		public List<HolsterDefinition> GetHolstersOfGroup(string group)
+		{
+			return string.IsNullOrEmpty(group) || !_holstersByGroup.TryGetValue(group, out List<HolsterDefinition> holsters)
+				? new List<HolsterDefinition>()
+				: holsters;
+		}
+
+		/// <summary>Global usage count of a holster rig (holster_skeleton) across all holsters.</summary>
+		public int GetHolsterRigUsage(string rig)
+		{
+			return string.IsNullOrEmpty(rig) || !_holsterRigUsage.TryGetValue(rig, out int usage) ? 0 : usage;
 		}
 
 		/// <summary>Bone a holster hangs on, resolved through its base_set chain (e.g. shield_round -> thorax_back_far -> thorax -> "biped_thorax").</summary>
@@ -789,13 +904,15 @@ namespace Alliance.Common.Core.Utils
 					XmlDocument xml = new XmlDocument();
 					xml.Load(path);
 					foreach (XmlNode node in xml.SelectNodes("//item_holster"))
-					{
+				{
 						string id = node.Attributes?["id"]?.Value;
 						if (string.IsNullOrEmpty(id)) continue;
 						_holsters[id] = new HolsterDefinition
 						{
 							Id = id,
 							Bone = node.Attributes?["holster_bone"]?.Value,
+							Skeleton = node.Attributes?["holster_skeleton"]?.Value,
+							Group = node.Attributes?["group_name"]?.Value,
 							Position = ParseVec3(node.Attributes?["holster_position"]?.Value),
 							RotationYawPitchRoll = ParseVec3(node.Attributes?["holster_rotation_yaw_pitch_roll"]?.Value),
 							ShowHolsterWhenDrawn = ParseBool(node.Attributes?["show_holster_when_drawn"]?.Value)
@@ -810,6 +927,17 @@ namespace Alliance.Common.Core.Utils
 				}
 			}
 			ResolveHolsterInheritance();
+
+			// Holster group/rig indexes for FakeAgent.HolsterRigCorrection.
+			foreach (HolsterDefinition holster in _holsters.Values)
+			{
+				if (!string.IsNullOrEmpty(holster.Group))
+				{
+					if (!_holstersByGroup.TryGetValue(holster.Group, out List<HolsterDefinition> group)) _holstersByGroup[holster.Group] = group = new List<HolsterDefinition>();
+					group.Add(holster);
+				}
+				if (!string.IsNullOrEmpty(holster.Skeleton)) _holsterRigUsage[holster.Skeleton] = _holsterRigUsage.TryGetValue(holster.Skeleton, out int usage) ? usage + 1 : 1;
+			}
 		}
 
 		/// <summary>Holster entries without their own bone inherit it through their base_set chain
@@ -826,6 +954,7 @@ namespace Alliance.Common.Core.Utils
 						|| string.Equals(baseId, id, StringComparison.OrdinalIgnoreCase)
 						|| !_holsters.TryGetValue(baseId, out HolsterDefinition baseHolster)) break;
 					if (!string.IsNullOrEmpty(baseHolster.Bone)) holster.Bone = baseHolster.Bone;
+					if (string.IsNullOrEmpty(holster.Skeleton) && !string.IsNullOrEmpty(baseHolster.Skeleton)) holster.Skeleton = baseHolster.Skeleton;
 					current = baseId;
 				}
 			}

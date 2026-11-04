@@ -11,7 +11,7 @@ namespace Alliance.Common.GameModes.Story.Actions
 	{
 		[ConfigProperty(label: "Scenario ID", tooltip: "ID of the scenario to load. You can leave it empty to use current scenario.")]
 		public string ScenarioId;
-		[ConfigProperty(label: "Act index", tooltip: "Index of act to load.")]
+		[ConfigProperty(label: "Act index", tooltip: "Index of act to load. Starts at 1.")]
 		public int ActIndex;
 
 		public StartScenarioAction(string scenarioId, int actIndex)

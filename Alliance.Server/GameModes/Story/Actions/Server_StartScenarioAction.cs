@@ -13,7 +13,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 		public override ActionTask Execute(VariableStore context)
 		{
-			ScenarioManagerServer.Instance.StartScenario(ScenarioId, ActIndex);
+			ScenarioManagerServer.Instance.StartScenario(ScenarioId, ActIndex - 1);
 			return ActionTask.CompletedTask;
 		}
 	}

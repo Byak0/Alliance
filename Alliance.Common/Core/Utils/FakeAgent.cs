@@ -175,6 +175,9 @@ namespace Alliance.Common.Core.Utils
 		private readonly MatrixFrame? _mountFrame;
 		/// <summary>Offset of the unseated preview mount relative to the character frame.</summary>
 		private Vec3 _mountLocalOffset;
+		// Perf cap for crowds: at most 2 sheathed weapon/ammo meshes per fake (invisible beyond that).
+		private const int DefaultMaxSheathed = 2;
+		private readonly int _maxSheathed = DefaultMaxSheathed;
 		private readonly int _lodBiasOverride;
 		private bool _seatedOnMount;
 
@@ -215,7 +218,8 @@ namespace Alliance.Common.Core.Utils
 		/// <param name="mountFrame">When set, the mount spawns at this frame BESIDE the rider instead of carrying it
 		/// (native inventory-preview convention: standing character + horse next to it). The rider stays on foot; only seated fakes move as a mounted pair.</param>
 		/// <param name="lodBiasOverride">When >= 0, replaces the per-mesh-type LOD biases (which force degraded LODs for crowds).</param>
-		public FakeAgent(Scene scene, MatrixFrame frame, AllianceData.CharacterDefinition character, string cultureId = null, string name = null, bool useFullAgentVisuals = true, bool weaponsDrawn = false, int equipmentSeed = 0, string bodyPropertiesCode = null, uint? clothColor1 = null, uint? clothColor2 = null, bool register = true, bool swapColors = false, MatrixFrame? mountFrame = null, int lodBiasOverride = -1)
+		/// <param name="maxSheathedItems">Perf cap on sheathed weapon/ammo meshes.</param>
+		public FakeAgent(Scene scene, MatrixFrame frame, AllianceData.CharacterDefinition character, string cultureId = null, string name = null, bool useFullAgentVisuals = true, bool weaponsDrawn = false, int equipmentSeed = 0, string bodyPropertiesCode = null, uint? clothColor1 = null, uint? clothColor2 = null, bool register = true, bool swapColors = false, MatrixFrame? mountFrame = null, int lodBiasOverride = -1, int maxSheathedItems = DefaultMaxSheathed)
 		{
 			Name = name ?? $"Fake {character?.Id ?? "human"}";
 			_frame = frame;
@@ -223,6 +227,7 @@ namespace Alliance.Common.Core.Utils
 			_registered = register;
 			_mountFrame = mountFrame;
 			_lodBiasOverride = lodBiasOverride;
+			_maxSheathed = maxSheathedItems;
 
 			if (character == null)
 			{
@@ -231,7 +236,7 @@ namespace Alliance.Common.Core.Utils
 			}
 
 			string raceId = character.RaceId;
-			AllianceData.SkinDefinition skin = AllianceData.Instance.GetSkin(raceId, character.IsFemale);
+			AllianceData.SkinDefinition skin = AllianceData.Instance.GetSkin(raceId, character.IsFemale) ?? AllianceData.Instance.GetSkin(raceId, false);
 			if (string.IsNullOrEmpty(skin?.Skeleton))
 			{
 				Log($"{this}: no skins.xml entry with a skeleton for race '{raceId}' - skipped.", LogLevel.Error);
@@ -520,9 +525,8 @@ namespace Alliance.Common.Core.Utils
 			// Items with has_lower_holster_priority claim their holster after the others.
 			List<AllianceData.ItemDefinition> lowerHolsterPriority = new List<AllianceData.ItemDefinition>();
 
-			// Perf cap: at most 2 sheathed weapon/ammo meshes per fake (invisible beyond that).
 			int sheathedCount = 0;
-			int maxSheathed = 2;
+			int maxSheathed = _maxSheathed;
 
 			// Iterate the equipment roster and attach meshes correspondingly.
 			foreach (AllianceData.ItemDefinition item in roster.Values)
@@ -662,6 +666,61 @@ namespace Alliance.Common.Core.Utils
 
 		private static readonly Dictionary<string, MatrixFrame> _holsterFrameCache = new Dictionary<string, MatrixFrame>(StringComparer.OrdinalIgnoreCase);
 		private static readonly HashSet<string> _holsterLookupWarned = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+		private static readonly Dictionary<string, MatrixFrame> _holsterRigCorrectionCache = new Dictionary<string, MatrixFrame>(StringComparer.OrdinalIgnoreCase);
+
+		/// <summary>Returns the matrix frame for the given holster.</summary>
+		private static MatrixFrame HolsterRigCorrection(AllianceData.HolsterDefinition holster)
+		{
+			if (holster == null || string.IsNullOrEmpty(holster.Group) || string.IsNullOrEmpty(holster.Skeleton)) return MatrixFrame.Identity;
+			if (_holsterRigCorrectionCache.TryGetValue(holster.Id, out MatrixFrame cached)) return cached;
+
+			MatrixFrame correction = MatrixFrame.Identity;
+			try
+			{
+				AllianceData data = AllianceData.Instance;
+				AllianceData.HolsterDefinition anchor = null;
+				int anchorUsage = data.GetHolsterRigUsage(holster.Skeleton);
+				int anchorPrefix = 0;
+				foreach (AllianceData.HolsterDefinition sibling in data.GetHolstersOfGroup(holster.Group))
+				{
+					if (ReferenceEquals(sibling, holster)) continue;
+					if (string.IsNullOrEmpty(sibling.Skeleton) || string.Equals(sibling.Skeleton, holster.Skeleton, StringComparison.OrdinalIgnoreCase)) continue;
+					int prefix = CommonPrefixLength(sibling.Id, holster.Id);
+					if (prefix <= 0) continue;
+					int usage = data.GetHolsterRigUsage(sibling.Skeleton);
+					if (usage > anchorUsage || (usage == anchorUsage && prefix > anchorPrefix))
+					{
+						anchor = sibling;
+						anchorUsage = usage;
+						anchorPrefix = prefix;
+					}
+				}
+				if (anchor != null)
+				{
+					int anchorIndex = MBItem.GetItemHolsterIndex(anchor.Id);
+					int ownIndex = MBItem.GetItemHolsterIndex(holster.Id);
+					if (anchorIndex >= 0 && ownIndex >= 0)
+					{
+						correction = MBItem.GetHolsterFrameByIndex(anchorIndex).TransformToParent(MBItem.GetHolsterFrameByIndex(ownIndex).Inverse());
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"[FakeAgent] rig correction for holster '{holster.Id}' failed ({ex.Message}).", LogLevel.Warning);
+				correction = MatrixFrame.Identity;
+			}
+			_holsterRigCorrectionCache[holster.Id] = correction;
+			return correction;
+		}
+
+		private static int CommonPrefixLength(string a, string b)
+		{
+			int length = Math.Min(a?.Length ?? 0, b?.Length ?? 0);
+			int i = 0;
+			while (i < length && a[i] == b[i]) i++;
+			return i;
+		}
 
 		private void AttachOnRootFrame(MetaMesh mesh, AllianceData.HolsterDefinition holster, AllianceData.MonsterDefinition monster, string skeletonName, Vec3 shift)
 		{
@@ -686,6 +745,8 @@ namespace Alliance.Common.Core.Utils
 				MatrixFrame finalFrame = holsterFrame;
 				finalFrame.origin += holsterFrame.rotation.TransformToParent(shift);
 				finalFrame = UnscaleWeaponFrame(finalFrame);
+				// Compose the holster rig's bind pose (see HolsterRigCorrection).
+				finalFrame = HolsterRigCorrection(holster).TransformToParent(finalFrame);
 				string holsterBone = AllianceData.Instance.GetHolsterBone(holster.Id);
 				string monsterBone = HolsterBoneOnMonster(monster, holsterBone);
 				sbyte bone = 0;
@@ -994,16 +1055,24 @@ namespace Alliance.Common.Core.Utils
 			{
 				// No banner_replacement_mesh tag filter here: shield/armor meshes don't carry the
 				// banner pipeline tags, the tableau texture applies to the whole mesh and the
-				// materials' own shaders decide whether it shows.
-				for (int i = 0; i < mesh.MeshCount; i++)
+				// materials' own shaders decide whether it shows. The callback runs later on the
+				// render thread - keep it exception-free whatever the tableau produced.
+				try
 				{
-					Mesh subMesh = mesh.GetMeshAtIndex(i);
-					if (subMesh == null) continue;
-					Material material = subMesh.GetMaterial().CreateCopy();
-					material.SetTexture(Material.MBTextureType.DiffuseMap2, texture);
-					ulong blendingFlag = (ulong)material.GetShader().GetMaterialShaderFlagMask("use_tableau_blending");
-					material.SetShaderFlags(material.GetShaderFlags() | blendingFlag);
-					subMesh.SetMaterial(material);
+					for (int i = 0; i < mesh.MeshCount; i++)
+					{
+						Mesh subMesh = mesh.GetMeshAtIndex(i);
+						if (subMesh == null) continue;
+						Material material = subMesh.GetMaterial().CreateCopy();
+						material.SetTexture(Material.MBTextureType.DiffuseMap2, texture);
+						ulong blendingFlag = (ulong)material.GetShader().GetMaterialShaderFlagMask("use_tableau_blending");
+						material.SetShaderFlags(material.GetShaderFlags() | blendingFlag);
+						subMesh.SetMaterial(material);
+					}
+				}
+				catch (Exception ex)
+				{
+					Log($"{this}: applying the banner texture of culture '{cultureId}' failed ({ex.Message}).", LogLevel.Warning);
 				}
 			});
 		}
@@ -1064,16 +1133,25 @@ namespace Alliance.Common.Core.Utils
 
 		private MetaMesh GetMesh(AllianceData.ItemDefinition item, string meshName, uint color1, uint color2, string cultureId)
 		{
+			MetaMesh mesh;
 			try
 			{
-				MetaMesh mesh = MetaMesh.GetCopy(meshName, true, false);
-				if (mesh == null) return null;
-				return PaintMesh(item, mesh, color1, color2, cultureId);
+				mesh = MetaMesh.GetCopy(meshName, true, false);
 			}
 			catch (Exception ex)
 			{
 				Log($"{this}: mesh '{meshName}' unavailable ({ex.Message}).", LogLevel.Error);
 				return null;
+			}
+			if (mesh == null) return null;
+			try
+			{
+				return PaintMesh(item, mesh, color1, color2, cultureId);
+			}
+			catch (Exception ex)
+			{
+				Log($"{this}: painting mesh '{meshName}' failed ({ex.Message}) - kept unpainted.", LogLevel.Warning);
+				return mesh;
 			}
 		}
 

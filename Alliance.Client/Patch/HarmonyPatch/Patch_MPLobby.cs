@@ -67,6 +67,10 @@ namespace Alliance.Client.Patch.HarmonyPatch
 				Harmony.Patch(AccessTools.Method(typeof(MPArmoryHeroPreviewVM), nameof(MPArmoryHeroPreviewVM.SetCharacter)),
 					postfix: new HarmonyMethod(typeof(Patch_MPLobby).GetMethod(
 						nameof(Postfix_HeroPreviewSetCharacter), BindingFlags.Static | BindingFlags.NonPublic)));
+
+				Harmony.Patch(AccessTools.Method(typeof(MPArmoryHeroPreviewVM), nameof(MPArmoryHeroPreviewVM.SetCharacterClass)),
+					postfix: new HarmonyMethod(typeof(Patch_MPLobby).GetMethod(
+						nameof(Postfix_HeroPreviewSetCharacterClass), BindingFlags.Static | BindingFlags.NonPublic)));
 			}
 			catch (Exception ex)
 			{
@@ -104,6 +108,13 @@ namespace Alliance.Client.Patch.HarmonyPatch
 		private static void Postfix_HeroPreviewSetCharacter(MPArmoryHeroPreviewVM __instance)
 		{
 			__instance.HeroVisual.IdleAction = _randomLobbyAnimation.GetRandomElement();
+		}
+
+		// Update the VM when character changes so race is correct (Native only udpates equipment)
+		private static void Postfix_HeroPreviewSetCharacterClass(MPArmoryHeroPreviewVM __instance, BasicCharacterObject classCharacter)
+		{
+			__instance.HeroVisual.CharStringId = classCharacter.StringId;
+			__instance.HeroVisual.Race = classCharacter.Race;
 		}
 	}
 }

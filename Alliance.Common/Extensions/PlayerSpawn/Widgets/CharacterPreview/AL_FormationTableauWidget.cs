@@ -5,11 +5,12 @@ using TaleWorlds.Library;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 {
-	/// <summary>
-	/// Single shared preview widget for a formation's character row: one scene, one camera, one
-	/// render for all the characters (the per-character items overlay their own agent).
-	/// Bindings: CharactersData ("id@x;id@x..." from the spawn menu VM) and SelectedX.
-	/// </summary>
+		/// <summary>
+		/// Single shared preview widget for a formation's character row: one scene, one camera, one
+		/// render for all the characters (the per-character items overlay their own agent).
+		/// Bindings: CharactersData ("id@x;id@equipmentCode@x..." from the spawn menu VM, the code
+		/// being optional per character) and SelectedX.
+		/// </summary>
 	public class AL_FormationTableauWidget : TextureWidget
 	{
 		public AL_FormationTableauWidget(UIContext context)

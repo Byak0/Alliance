@@ -28,7 +28,7 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 
 		[ConfigProperty(label: "Agents", tooltip: "Variables or functions holding the Agents to stage. Resolved by the server when the cinematic starts; commands apply to every resolved agent.", dependency: "?Mode=AgentsFromScene")]
 		[SyncToClient]
-		public List<ValueSource<Agent>> Agents = new List<ValueSource<Agent>>();
+		public List<ValueSource<List<Agent>>> Agents = new List<ValueSource<List<Agent>>>();
 
 		[ConfigProperty(label: "Stand-in character", tooltip: "Character used by the kit preview stand-ins for these true agents (full fidelity requires characters to be loaded). Empty = generic human.", dataType: AllianceData.DataTypes.Character, dependency: "?Mode=AgentsFromScene")]
 		public string PreviewCharacterId = "";
@@ -96,10 +96,10 @@ namespace Alliance.Common.Extensions.Cinematics.Models
 		public List<Agent> ResolveAgents(VariableStore context)
 		{
 			List<Agent> result = new List<Agent>();
-			foreach (ValueSource<Agent> slot in Agents ?? Enumerable.Empty<ValueSource<Agent>>())
+			foreach (ValueSource<List<Agent>> slot in Agents ?? Enumerable.Empty<ValueSource<List<Agent>>>())
 			{
-				Agent agent = slot?.Resolve(context);
-				if (agent != null) result.Add(agent);
+				List<Agent> agents = slot?.Resolve(context);
+				if (agents != null) result.AddRange(agents);
 			}
 			return result;
 		}

@@ -37,6 +37,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			_missionLobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
 			_missionAdminComponent = Mission.GetMissionBehavior<MultiplayerAdminComponent>();
 			_missionTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
+			_missionTeamSelectUIHandler = Mission.GetMissionBehavior<MultiplayerTeamSelectUIHandler>();
 			_gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
 			_playerSpawnMenuView = Mission.GetMissionBehavior<PlayerSpawnMenuView>();
 			TextObject textObject = GameTexts.FindText("str_multiplayer_game_type", _gameType);
@@ -135,9 +136,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 
 			// Change Team
 			// TODO : Limit team changes once we've properly implemented the team selection UI ?
-			//if (gameType != "Scenario" || GameNetwork.MyPeer.IsAdmin())
-			//{
-			if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
+			if (_missionTeamSelectUIHandler != null && _missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
 			{
 				list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
 				{
@@ -145,15 +144,6 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 					_missionTeamSelectComponent.SelectTeam();
 				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
-			else if (_missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
-			{
-				list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
-				{
-					OnEscapeMenuToggled(false);
-					_missionTeamSelectComponent.SelectTeam();
-				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
-			}
-			//}
 
 			// Options
 			list.Add(new EscapeMenuItemVM(new TextObject("{=NqarFr4P}Options", null), delegate (object o)
@@ -196,6 +186,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 		private MultiplayerAdminComponent _missionAdminComponent;
 
 		private MultiplayerTeamSelectComponent _missionTeamSelectComponent;
+
+		private MultiplayerTeamSelectUIHandler _missionTeamSelectUIHandler;
 
 		private MissionMultiplayerGameModeBaseClient _gameModeClient;
 
