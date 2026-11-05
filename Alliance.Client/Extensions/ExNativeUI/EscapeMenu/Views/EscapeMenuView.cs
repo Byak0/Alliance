@@ -1,8 +1,11 @@
-﻿using Alliance.Client.Extensions.GameModeMenu.Views;
+using Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views;
+using Alliance.Client.Extensions.GameModeMenu.Views;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Views;
+using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using TaleWorlds.Core;
@@ -22,6 +25,15 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 	[OverrideView(typeof(MissionMultiplayerEscapeMenu))]
 	public class MissionGauntletMultiplayerEscapeMenu : MissionGauntletEscapeMenuBase
 	{
+		private MissionOptionsComponent _missionOptionsComponent;
+		private MissionLobbyComponent _missionLobbyComponent;
+		private MultiplayerAdminComponent _missionAdminComponent;
+		private MultiplayerTeamSelectComponent _missionTeamSelectComponent;
+		private TeamSelectView _missionTeamSelectUIHandler;
+		private MissionMultiplayerGameModeBaseClient _gameModeClient;
+		private readonly string _gameType;
+		private EscapeMenuItemVM _changeTroopItem;
+		private EscapeMenuItemVM _changeCultureItem;
 		private PlayerSpawnMenuView _playerSpawnMenuView;
 
 		public MissionGauntletMultiplayerEscapeMenu(string gameType)
@@ -37,7 +49,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			_missionLobbyComponent = Mission.GetMissionBehavior<MissionLobbyComponent>();
 			_missionAdminComponent = Mission.GetMissionBehavior<MultiplayerAdminComponent>();
 			_missionTeamSelectComponent = Mission.GetMissionBehavior<MultiplayerTeamSelectComponent>();
-			_missionTeamSelectUIHandler = Mission.GetMissionBehavior<MultiplayerTeamSelectUIHandler>();
+			_missionTeamSelectUIHandler = Mission.GetMissionBehavior<TeamSelectView>();
 			_gameModeClient = Mission.GetMissionBehavior<MissionMultiplayerGameModeBaseClient>();
 			_playerSpawnMenuView = Mission.GetMissionBehavior<PlayerSpawnMenuView>();
 			TextObject textObject = GameTexts.FindText("str_multiplayer_game_type", _gameType);
@@ -122,9 +134,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 					_playerSpawnMenuView.OpenMenu(PlayerSpawnMenu.Instance);
 				}, null, () => new Tuple<bool, TextObject>(false, TextObject.GetEmpty()), false));
 			}
-
 			// Change Troop (native)
-			if (_gameModeClient.IsGameModeUsingAllowTroopChange)
+			else if (_gameModeClient.IsGameModeUsingAllowTroopChange)
 			{
 				_changeTroopItem = new EscapeMenuItemVM(new TextObject("{=Yza0JYJt}Change Troop", null), delegate (object o)
 				{
@@ -136,7 +147,8 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 
 			// Change Team
 			// TODO : Limit team changes once we've properly implemented the team selection UI ?
-			if (_missionTeamSelectUIHandler != null && _missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled)
+			if (_missionTeamSelectUIHandler != null && _missionTeamSelectComponent != null && _missionTeamSelectComponent.TeamSelectionEnabled
+				&& ScenarioAllowTeamChange())
 			{
 				list.Add(new EscapeMenuItemVM(new TextObject("{=2SEofGth}Change Team", null), delegate (object o)
 				{
@@ -179,22 +191,13 @@ namespace Alliance.Client.Extensions.ExNativeUI.EscapeMenu.Views
 			return list;
 		}
 
-		private MissionOptionsComponent _missionOptionsComponent;
-
-		private MissionLobbyComponent _missionLobbyComponent;
-
-		private MultiplayerAdminComponent _missionAdminComponent;
-
-		private MultiplayerTeamSelectComponent _missionTeamSelectComponent;
-
-		private MultiplayerTeamSelectUIHandler _missionTeamSelectUIHandler;
-
-		private MissionMultiplayerGameModeBaseClient _gameModeClient;
-
-		private readonly string _gameType;
-
-		private EscapeMenuItemVM _changeTroopItem;
-
-		private EscapeMenuItemVM _changeCultureItem;
+		private bool ScenarioAllowTeamChange()
+		{
+			if (ScenarioManager.Instance.CurrentAct == null || ScenarioManager.Instance.CurrentAct.SpawnLogic.TeamAssignment != TeamAssignmentMode.Auto)
+			{
+				return true;
+			}
+			return GameNetwork.MyPeer.IsAdmin();
+		}
 	}
 }
