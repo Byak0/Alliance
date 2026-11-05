@@ -56,6 +56,9 @@ namespace Alliance.Common.Extensions.Cinematics
 		private CinematicOverlayVM _overlayVM;
 		private bool _photoModeOn;
 		private readonly HashSet<GauntletLayer> _hiddenUiLayers = new HashSet<GauntletLayer>();
+		/// <summary>UI layers present when the cinematic started (the HUD) - the only ones hidden
+		/// during playback. Layers opened mid-cinematic (escape menu, scoreboard...) stay usable.</summary>
+		private readonly HashSet<GauntletLayer> _hideableUiLayers = new HashSet<GauntletLayer>();
 		private SceneView _editorSceneView;
 
 		public SceneView EditorSceneView { get => _editorSceneView; set => _editorSceneView = value; }
@@ -519,6 +522,13 @@ namespace Alliance.Common.Extensions.Cinematics
 					_overlayLayer = new GauntletLayer("CinematicOverlay", 40);
 					_overlayLayer.LoadMovie("CinematicOverlay", _overlayVM);
 					_overlayScreen.AddLayer(_overlayLayer);
+					// Snapshot the pre-cinematic UI now: only the HUD is hidden during playback,
+					// anything the player opens later (escape menu, scoreboard...) stays visible.
+					_hideableUiLayers.Clear();
+					foreach (ScreenLayer layer in _overlayScreen.Layers)
+					{
+						if (layer is GauntletLayer gauntletLayer) _hideableUiLayers.Add(gauntletLayer);
+					}
 					HideOtherUiLayers();
 				}
 			}
@@ -528,6 +538,7 @@ namespace Alliance.Common.Extensions.Cinematics
 		private void StopEffects()
 		{
 			RestoreUiLayers();
+			_hideableUiLayers.Clear();
 			if (_overlayLayer != null && _overlayScreen != null)
 			{
 				try { _overlayScreen.RemoveLayer(_overlayLayer); } catch { }
@@ -541,16 +552,14 @@ namespace Alliance.Common.Extensions.Cinematics
 			if (_photoModeOn && restoreScene != null) { restoreScene.SetPhotoModeOn(false); _photoModeOn = false; }
 		}
 
-		/// <summary>Hides every Gauntlet layer of the screen except the cinematic overlay, so no HUD shows over
-		/// the cinematic. Restored by RestoreUiLayers when playback stops.</summary>
+		/// <summary>Hides the HUD layers captured at cinematic start (see <see cref="_hideableUiLayers"/>),
+		/// so no HUD shows over the cinematic. Restored by RestoreUiLayers when playback stops.</summary>
 		private void HideOtherUiLayers()
 		{
 			if (IsEditorMode || _overlayLayer == null) return;
-			ScreenBase screen = _overlayScreen;
-			if (screen == null) return;
-			foreach (ScreenLayer layer in screen.Layers)
+			foreach (GauntletLayer gauntletLayer in _hideableUiLayers)
 			{
-				if (layer == _overlayLayer || !(layer is GauntletLayer gauntletLayer)) continue;
+				if (gauntletLayer == _overlayLayer) continue;
 				Widget root = gauntletLayer.UIContext?.Root;
 				if (root == null || !root.IsVisible) continue;
 				root.IsVisible = false;
