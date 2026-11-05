@@ -114,6 +114,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 				return;
 			}
 			_isActive = true;
+			// Whether the player already had a team when opening: a team arriving later means a
+			// server-side assignment, not a user-initiated change.
+			_hadTeamAtOpen = GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null;
 			string strValue = MultiplayerOptions.OptionType.GameType.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
@@ -182,8 +185,11 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 			_disabledTeams = disabledTeams;
 
 			// Scenario acts with TeamAssignment = Auto assign teams server-side at spawn start:
-			// the menu would open on sync (team still null) and never close.
-			if (ScenarioManager.Instance?.CurrentAct?.SpawnLogic?.TeamAssignment == TeamAssignmentMode.Auto) return;
+			// the menu would open on sync (team still null) and never close. This only suppresses
+			// that automatic open - once the server assigned a team, opening manually from the
+			// escape menu stays possible.
+			if (ScenarioManager.Instance?.CurrentAct?.SpawnLogic?.TeamAssignment == TeamAssignmentMode.Auto
+				&& GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team == null) return;
 
 			_toOpen = true;
 		}
@@ -207,9 +213,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 			{
 				return;
 			}
-			// Server-side assignment (TeamAssignment = Auto, admin switch): close the menu once we
-			// got a team - OnMyTeamChange only fires for client-initiated changes.
-			if (GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null)
+			// Server-side assignment while the menu is open (TeamAssignment = Auto, admin switch):
+			// close once we got a team - OnMyTeamChange only fires for client-initiated changes.
+			// A menu opened with an existing team (manual change-team) must stay open.
+			if (!_hadTeamAtOpen && GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null)
 			{
 				OnClose();
 				return;
@@ -273,5 +280,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		private bool _isSynchronized;
 
 		private bool _isActive;
+
+		private bool _hadTeamAtOpen;
 	}
 }

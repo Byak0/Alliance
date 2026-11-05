@@ -90,7 +90,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			{
 				for (int i = Mission.AttackerTeam.ActiveAgents.Count; i < nbBotsToSpawnAtt; i++)
 				{
-					PlayerFormation randomFormation = teamAttack.Formations.GetRandomElement();
+					PlayerFormation randomFormation = teamAttack.Formations.Where(f => !f.AvailableCharacters.IsEmpty()).GetRandomElementInefficiently();
 					BasicCharacterObject troopCharacter = randomFormation.AvailableCharacters.GetRandomElement().Character;
 
 					// Random difficulty between 0.5 and 2.5f
@@ -105,7 +105,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			{
 				for (int i = Mission.DefenderTeam.ActiveAgents.Count; i < nbBotsToSpawnDef; i++)
 				{
-					PlayerFormation randomFormation = teamDef.Formations.GetRandomElement();
+					PlayerFormation randomFormation = teamDef.Formations.Where(f => !f.AvailableCharacters.IsEmpty()).GetRandomElementInefficiently();
 					BasicCharacterObject troopCharacter = randomFormation.AvailableCharacters.GetRandomElement()?.Character;
 					// Skip if no character available
 					if (troopCharacter == null) continue;

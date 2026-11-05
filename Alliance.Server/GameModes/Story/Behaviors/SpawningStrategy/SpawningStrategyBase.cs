@@ -496,9 +496,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				case LocationStrategy.Banners:
 					if (!FlagUsableForTeam(peer.Team)) return false;
 					break;
-				case LocationStrategy.Zones:
-					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0 && !FlagUsableForTeam(peer.Team)) return false;
-					break;
+				default: break;
 			}
 
 			return true;
@@ -548,9 +546,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			bool firstSpawn = ScenarioPersistentData.Instance.PlayerUsedLives[player] == 0;
 			MissionPeer peer = player.GetComponent<MissionPeer>();
 			Team playerTeam = peer?.Team;
-			BattleSideEnum playerSide = playerTeam?.Side ?? BattleSideEnum.None;
+			int playerSide = (int)(playerTeam?.Side ?? BattleSideEnum.None);
 
-			switch (SpawnLogic.LocationStrategies[(int)playerSide])
+			LocationStrategy locationStrategy = firstSpawn ? SpawnLogic.LocationStrategies[playerSide] : SpawnLogic.RespawnLocationStrategies[playerSide];
+
+			switch (locationStrategy)
 			{
 				case LocationStrategy.Spawnpoint:
 					position = GetTagLocation(playerTeam, hasMount, firstSpawn);
@@ -560,7 +560,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					break;
 				case LocationStrategy.Zones:
 					// TODO : correctly assign position to defined zones
-					position = firstSpawn ? GetTagLocation(playerTeam, hasMount) : GetFlagLocation(playerTeam);
+					position = GetFlagLocation(playerTeam) ?? GetTagLocation(playerTeam, hasMount);
 					break;
 				//case LocationStrategy.PlayerChoice:
 				//	position = GetPlayerSelectedLocation(peer);
@@ -698,6 +698,12 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				// Broadcast the updated player spawn menu to all players
 				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
 
+				// After an act change, re-map every player to the new menu's team of their side, otherwise their menu is empty and respawn
+				// has no valid assignment. Formation and character stay unassigned - players pick
+				// their troop in the menu. Must run after the menu sync (the client resolves the
+				// team by index in the fresh menu) and before any other team notification.
+				ReassignPlayersToMenuTeams();
+
 				// Team auto-assignment runs after the menu sync: it notifies PlayerSpawnMenu through
 				// MissionPeer.OnTeamChanged -> SetPlayerTeam, which makes the client open the menu -
 				// clients must have the new menu before those team notifications arrive.
@@ -828,6 +834,21 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 						}
 					}
 					break;
+			}
+		}
+
+		/// <summary>Re-maps every synchronized player to the new menu's team matching their native
+		/// team's side. Runs when the spawn menu is replaced (act change in PlayerSelection mode).</summary>
+		private void ReassignPlayersToMenuTeams()
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (!peer.IsSynchronized) continue;
+				BattleSideEnum side = peer.GetComponent<MissionPeer>()?.Team?.Side ?? BattleSideEnum.None;
+				if (side == BattleSideEnum.None) continue;
+				PlayerTeam team = PlayerSpawnMenu.Instance.Teams.FirstOrDefault(t => t.TeamSide == side);
+				if (team == null) continue;
+				PlayerSpawnMenu.Instance.SetPlayerTeam(peer, team);
 			}
 		}
 

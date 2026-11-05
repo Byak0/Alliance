@@ -224,6 +224,20 @@ namespace Alliance.Common.GameModes.Story.Models
 			}
 		}
 
+		[XmlIgnore]
+		public LocationStrategy[] RespawnLocationStrategies
+		{
+			get => new[] { RespawnLocationStrategyDefender, RespawnLocationStrategyAttacker };
+			set
+			{
+				if (value.Length >= 2)
+				{
+					RespawnLocationStrategyDefender = value[0];
+					RespawnLocationStrategyAttacker = value[1];
+				}
+			}
+		}
+
 		public SpawnLogic(string[] defaultCharacters, string[] spawnTags, int[] maxLives, bool keepLivesFromPreviousAct, LocationStrategy[] locationStrategies, RespawnStrategy[] respawnStrategies)
 		{
 			DefaultSpawnTags = spawnTags;
