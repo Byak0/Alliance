@@ -1,6 +1,7 @@
 using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
@@ -67,13 +68,11 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			// them, but a map change creates a new mission whose OnRemoveBehavior
 			// wipes the registry. ClearScope makes this idempotent.
 			if (Act != null)
-			{
 				ActionBase.AssignActionIds(Act, Scenario.Acts.IndexOf(Act));
 
-				// Atmosphere tracking is mission-scoped: stale names from a previous mission on
-				// the same scenario instance would leak into this one's late-joiner sync.
-				foreach (Act act in Scenario.Acts) act.CurrentAtmosphereName = null;
-			}
+			// Atmosphere tracking is mission-scoped: stale names from a previous mission on the
+			// same scenario instance would leak into this one's late-joiner sync.
+			ScenarioManager.Instance.CurrentAtmosphereName = null;
 
 			ChangeState(ActState.AwaitingPlayerJoin);
 			EnableStateChange = true;
@@ -90,15 +89,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			GameNetwork.WriteMessage(new InitScenarioMessage(scenarioId, actId));
 			GameNetwork.EndModuleEventAsServer();
 
-			// Replay the atmosphere a SetAtmosphereAction already applied to the scene - the scene
-			// keeps it across acts, so the last act up to the current one wins. Without this late
-			// joiners would play with the map's default atmosphere.
-			string atmosphereName = null;
-			for (int i = 0; i <= actId; i++)
-			{
-				string actAtmosphere = Scenario.Acts[i].CurrentAtmosphereName;
-				if (!string.IsNullOrEmpty(actAtmosphere)) atmosphereName = actAtmosphere;
-			}
+			// Replay the atmosphere a SetAtmosphereAction already applied to the scene. Without
+			// this late joiners would play with the map's default atmosphere.
+			string atmosphereName = ScenarioManager.Instance.CurrentAtmosphereName;
 			if (!string.IsNullOrEmpty(atmosphereName))
 			{
 				GameNetwork.BeginModuleEventAsServer(networkPeer);

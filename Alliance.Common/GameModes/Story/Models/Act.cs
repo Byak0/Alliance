@@ -7,7 +7,6 @@ using Alliance.Common.GameModes.Story.Validation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Serialization;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
 
@@ -47,11 +46,6 @@ namespace Alliance.Common.GameModes.Story.Models
 
 		[ConfigProperty(label: "Scripted events", tooltip: "You can define various events that can be triggered based on conditions.", category: "Additional events")]
 		public List<ScriptedEvent> ConditionalActions = new List<ScriptedEvent>();
-
-		/// <summary>Atmosphere applied by the last SetAtmosphereAction of this act (runtime only).
-		/// The server replays it to players joining mid-act - see ScenarioBehavior.HandleEarlyNewClientAfterLoadingFinished.</summary>
-		[XmlIgnore]
-		public string CurrentAtmosphereName;
 
 		public Act(LocalizedString name, LocalizedString desc, bool loadMap, string mapId, ScenarioGameModeSettings actSettings, SpawnLogic spawnLogic, VictoryLogic victoryLogic)
 		{

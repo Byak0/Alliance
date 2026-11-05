@@ -1,7 +1,6 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Attributes;
-using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Linq;
@@ -40,9 +39,8 @@ namespace Alliance.Common.GameModes.Story.Actions
 		private void ApplyCurrentAtmosphere()
 		{
 			if (!ApplyAtmosphere(AtmosphereName)) return;
-			// Track the act's new atmosphere: the server replays it to players joining mid-act
-			Act act = ScenarioManager.Instance?.CurrentAct;
-			if (act != null) act.CurrentAtmosphereName = AtmosphereName;
+			// Track the mission's live atmosphere: the server replays it to players joining mid mission
+			ScenarioManager.Instance.CurrentAtmosphereName = AtmosphereName;
 		}
 
 		/// <summary>Applies an atmosphere to the current scene (mission or editor).

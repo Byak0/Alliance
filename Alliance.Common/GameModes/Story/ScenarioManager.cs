@@ -51,6 +51,13 @@ namespace Alliance.Common.GameModes.Story
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
 		/// <summary>
+		/// Atmosphere applied by the last SetAtmosphereAction of the current mission. 
+		/// The server replays it to players joining mid-mission. 
+		/// Reset at mission start (ScenarioBehavior.AfterStart).
+		/// </summary>
+		public string CurrentAtmosphereName;
+
+		/// <summary>
 		/// Global variables for the current scenario. Initialized from Scenario.Variables on scenario start.		
 		/// </summary>
 		public VariableStore Globals { get; protected set; } = new VariableStore();
