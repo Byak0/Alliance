@@ -76,6 +76,19 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return _playerAssignments[player];
 		}
 
+		public bool IsOfficer(ICommunicator player)
+		{
+			if (player == null) return false;
+			foreach (PlayerTeam team in Teams)
+			{
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					if (formation.Officer == player) return true;
+				}
+			}
+			return false;
+		}
+
 		public void StartOfficerElection(float timeBeforeElection, bool randomOfficer = false)
 		{
 			ElectionInProgress = true;

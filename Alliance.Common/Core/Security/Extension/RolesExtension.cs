@@ -13,7 +13,7 @@ namespace Alliance.Common.Core.Security.Extension
 		{
 			// Commanders are always considered officers
 			if (IsCommander(player)) return true;
-			return PlayerSpawnMenu.Instance.MyAssignment?.Formation?.Officer == player.Communicator;
+			return PlayerSpawnMenu.Instance.IsOfficer(player.Communicator);
 		}
 
 		public static bool IsCommander(this NetworkCommunicator player) => IsCommander(player.VirtualPlayer);
