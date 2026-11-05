@@ -1,5 +1,7 @@
 using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Linq;
@@ -25,29 +27,40 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public override ActionTask Execute(VariableStore context)
 		{
-			ApplyAtmosphere();
+			ApplyCurrentAtmosphere();
 			ExecuteOnClient(context);
 			return ActionTask.CompletedTask;
 		}
 
 		public override void ExecuteClient()
 		{
-			ApplyAtmosphere();
+			ApplyCurrentAtmosphere();
 		}
 
-		private void ApplyAtmosphere()
+		private void ApplyCurrentAtmosphere()
 		{
-			if (string.IsNullOrEmpty(AtmosphereName)) return;
+			if (!ApplyAtmosphere(AtmosphereName)) return;
+			// Track the act's new atmosphere: the server replays it to players joining mid-act
+			Act act = ScenarioManager.Instance?.CurrentAct;
+			if (act != null) act.CurrentAtmosphereName = AtmosphereName;
+		}
+
+		/// <summary>Applies an atmosphere to the current scene (mission or editor).
+		/// Returns false when the name is empty, unknown, or there is no scene.</summary>
+		public static bool ApplyAtmosphere(string atmosphereName)
+		{
+			if (string.IsNullOrEmpty(atmosphereName)) return false;
 			Scene scene = Mission.Current?.Scene ?? MBEditor._editorScene;
-			if (scene == null) return;
+			if (scene == null) return false;
 			// Check atmosphere validity before applying it, might crash otherwise.
-			if (!AvailableAtmospheres().Contains(AtmosphereName))
+			if (!AvailableAtmospheres().Contains(atmosphereName))
 			{
-				Log($"Atmosphere '{AtmosphereName}' doesn't exist in any active module - skipping.", LogLevel.Warning);
-				return;
+				Log($"Atmosphere '{atmosphereName}' doesn't exist in any active module - skipping.", LogLevel.Warning);
+				return false;
 			}
-			scene.SetAtmosphereWithName(AtmosphereName);
-			Log($"Atmosphere changed to {AtmosphereName}", LogLevel.Debug);
+			scene.SetAtmosphereWithName(atmosphereName);
+			Log($"Atmosphere changed to {atmosphereName}", LogLevel.Debug);
+			return true;
 		}
 	}
 }

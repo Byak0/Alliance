@@ -29,6 +29,7 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<SyncObjectiveProgressMessage>(HandleSyncObjectiveProgress);
 			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
 			reg.Register<ExecuteActionMessage>(HandleExecuteActionMessage);
+			reg.Register<SetAtmosphereMessage>(HandleSetAtmosphereMessage);
 			reg.Register<PlayCinematicMessage>(HandlePlayCinematicMessage);
 			reg.Register<StopCinematicMessage>(HandleStopCinematicMessage);
 			reg.Register<SetCinematicTimeMessage>(HandleSetCinematicTimeMessage);
@@ -127,6 +128,12 @@ namespace Alliance.Client.GameModes.Story.Handlers
 		{
 			ScenarioClientBehavior scenarioClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
 			scenarioClientBehavior?.UpdateLives(message.RespawnStrategy, message.TeamRemainingLives, message.PlayerRemainingLives);
+		}
+
+		/// <summary>Replays the atmosphere the server had when this client joined the mission.</summary>
+		public void HandleSetAtmosphereMessage(SetAtmosphereMessage message)
+		{
+			SetAtmosphereAction.ApplyAtmosphere(message.AtmosphereName);
 		}
 
 		public void HandleExecuteActionMessage(ExecuteActionMessage message)
