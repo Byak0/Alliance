@@ -46,7 +46,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		// Fake dressing
 		private FakeAgent _fake;
-		private string _fakePoolKey;
 		private int _equipmentSeed;
 		private string _charStringId;
 		private string _equipmentCode = "";
@@ -141,12 +140,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			// the render rate.
 			float elapsed = _delaySinceLastUpdate;
 			_delaySinceLastUpdate = 0f;
-
-			// Rebuild BEFORE the null check below: with no fake yet (first open, or a rebuild that
-			// found nothing to dress) this is the only place that creates it - returning first would
-			// deadlock the tableau in its empty state. (The old pipeline built its visuals eagerly
-			// in FirstTimeInit; the FakeAgent rebuild is lazy now.)
-			if (_isVisualsDirty)
+						
+			if (_isVisualsDirty || _fake == null)
 			{
 				RebuildFake();
 				_isVisualsDirty = false;
@@ -318,9 +313,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_instances.Remove(this);
 			if (_rrCurrent == this) _rrCurrent = null;
 
-			// The fake goes back to the shared pool (parked invisible) - destroying it would
-			// reload all its meshes on the next widget showing the same character.
-			FakeAgentPool.Return(_fakePoolKey, _fake);
+			_fake?.Despawn();
 			_fake = null;
 
 			Camera continuousRenderCamera = _continuousRenderCamera;
@@ -546,12 +539,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		/// <summary>(Re)spawns the FakeAgent dressed for display: the equipment code's outfit when
-		/// one is set (perk alternatives, native Lobby armory...), the catalog outfit of
-		/// <see cref="_charStringId"/> otherwise.</summary>
+		/// <summary>(Re)spawns the FakeAgent dressed for display</summary>
 		private void RebuildFake()
 		{
-			ReturnFakeToPool();
+			DestroyFake();
 			ForceRenderOnce();
 
 			if (_tableauScene == null || string.IsNullOrEmpty(_charStringId)) return;
@@ -566,27 +557,23 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			frame.rotation.RotateAboutUp(_mainCharacterRotation);
 
 			// Native inventory-preview convention: the mount stands at its dedicated slot BESIDE
-			// the character (never under the camera), and the rider stays on foot.
+			// the character, and the rider stays on foot.
 			MatrixFrame mountFrame = _isCharacterMountPlacesSwapped ? _characterSpawnPoint : _mountSpawnPoint;
 
-			_fakePoolKey = FakeAgentPool.BuildKey(definition, _equipmentSeed, _equipmentCode, weaponsDrawn: false);
-			_fake = FakeAgentPool.Acquire(_fakePoolKey, () => new FakeAgent(_tableauScene, frame, definition, definition.CultureId,
+			_fake = new FakeAgent(_tableauScene, frame, definition, definition.CultureId,
 				name: "Tableau_" + _charStringId,
 				useFullAgentVisuals: false,
 				weaponsDrawn: false,
 				equipmentSeed: _equipmentSeed,
 				register: false,
 				mountFrame: mountFrame,
-				maxSheathedItems: 5));
+				maxSheathedItems: 5);
 			if (!_fake.IsValid)
 			{
-				FakeAgentPool.Return(_fakePoolKey, _fake);
+				_fake.Despawn();
 				_fake = null;
 				return;
 			}
-			// Place the fake at this widget's slot and show it right away: the kit never pumps the
-			// deferred resource queue, so a CheckResources gate left previews invisible forever.
-			// see docs/native_limitations.md#kit-resource-queue-not-pumped
 			_fake.Teleport(frame);
 			_fake.SetVisible(true);
 			PlayIdleAction();
@@ -594,9 +581,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (!string.IsNullOrEmpty(_idleFaceAnim)) SetIdleFaceAnim(_idleFaceAnim);
 		}
 
-		private void ReturnFakeToPool()
+		private void DestroyFake()
 		{
-			if (_fake != null) FakeAgentPool.Return(_fakePoolKey, _fake);
+			_fake?.Despawn();
 			_fake = null;
 		}
 

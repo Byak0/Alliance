@@ -27,7 +27,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 		private FakeAgent _selectedFake;
 		private readonly List<FakeAgent> _fakes = new List<FakeAgent>();
-		private readonly List<string> _fakeKeys = new List<string>();
 		private readonly List<float> _fractions = new List<float>();
 		private readonly List<Light> _stateLights = new List<Light>();
 
@@ -74,7 +73,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 
 			if (_isFinalized || _scene == null) return;
 
-			ParkCurrentFakes();
+			DestroyCurrentFakes();
 
 			float visibleWidth = VisibleHalfWidth * 2f;
 			for (int i = 0; i < characters.Count; i++)
@@ -86,8 +85,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				AllianceData.ParsedEquipmentCode parsedCode = AllianceData.ParseEquipmentCode(characters[i].Code);
 				AllianceData.CharacterDefinition character = AllianceData.Instance.GetDisplayCharacter(characters[i].Id, parsedCode);
 				if (character == null || character.EquipmentRosters.Count == 0) continue;
-				string fakeKey = FakeAgentPool.BuildKey(character, equipmentSeed: 0, characters[i].Code, weaponsDrawn: true);
-				FakeAgent fake = FakeAgentPool.Acquire(fakeKey, () => new FakeAgent(
+				FakeAgent fake = new FakeAgent(
 					_scene,
 					frame,
 					character,
@@ -96,10 +94,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					useFullAgentVisuals: false,
 					weaponsDrawn: true,
 					register: false,
-					maxSheathedItems: int.MaxValue));
+					maxSheathedItems: int.MaxValue);
 				if (!fake.IsValid) continue;
-				// Pooled fakes come back from their old row position - put them at this one.
-				fake.Teleport(frame);
 				fake.SetVisible(true);
 				Light stateLight = Light.CreatePointLight(2f);
 				stateLight.Intensity = 0f;
@@ -108,7 +104,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				fake.Root?.AddLight(stateLight);
 				PlayIdle(fake);
 				_fakes.Add(fake);
-				_fakeKeys.Add(fakeKey);
 				_fractions.Add(characters[i].X);
 				_stateLights.Add(stateLight);
 			}
@@ -116,10 +111,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_isVisualsDirty = false;
 		}
 
-		/// <summary>Returns the current row's fakes to the shared pool, their state lights detached
-		/// (lights are per-set and recreated on the next acquire). Identical characters (same code)
-		/// come back from the pool without reloading their meshes.</summary>
-		private void ParkCurrentFakes()
+		/// <summary>Destroys the current row's fakes, their state lights detached (lights are
+		/// per-set and recreated on the next build).</summary>
+		private void DestroyCurrentFakes()
 		{
 			for (int i = 0; i < _fakes.Count; i++)
 			{
@@ -130,13 +124,11 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				{
 					root.RemoveComponent(stateLight);
 				}
-				FakeAgentPool.Return(_fakeKeys[i], fake);
+				fake?.Despawn();
 			}
 			_fakes.Clear();
-			_fakeKeys.Clear();
 			_fractions.Clear();
 			_stateLights.Clear();
-			// The selected fake went back to the pool with the others - re-resolve on next SetSelected.
 			_selectedFake = null;
 		}
 
@@ -272,7 +264,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			if (_isFinalized) return;
 			_isFinalized = true;
-			ParkCurrentFakes();
+			DestroyCurrentFakes();
 
 			if (_camera != null)
 			{

@@ -181,7 +181,7 @@ namespace Alliance.Common.Core.Utils
 		private readonly int _lodBiasOverride;
 		private bool _seatedOnMount;
 
-		public bool IsValid => _body != null;
+		public bool IsValid => _body != null && _body.WeakEntity.IsValid && (_mountEntity == null || _mountEntity.WeakEntity.IsValid);
 		public string Name { get; }
 
 		/// <summary>Entity carrying the fake's world frame: the mount when mounted, the body otherwise.</summary>
