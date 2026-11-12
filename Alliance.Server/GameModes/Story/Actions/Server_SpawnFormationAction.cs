@@ -108,7 +108,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 					try
 					{
 						// Calculate random position in the SpawnZone
-						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(spawnCenter, spawnRadius);
+						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(spawnCenter, spawnRadius, true);
 						MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
 						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position,
 							selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
@@ -139,7 +139,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 						Zone dirZoneObj = Direction?.Resolve(context);
 						Vec3 dirCenter = dirZoneObj != null ? dirZoneObj.ResolveCenter(context) : Vec3.Zero;
 						float dirRadius = dirZoneObj?.Radius ?? 0f;
-						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(dirCenter, dirRadius);
+						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(dirCenter, dirRadius, true);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 						formation.SetMovementOrder(MovementOrder.MovementOrderMove(target));
 						break;
