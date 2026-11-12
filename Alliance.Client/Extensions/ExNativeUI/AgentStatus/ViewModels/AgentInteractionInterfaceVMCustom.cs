@@ -389,7 +389,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 				UsableMachine usableMachineFromPoint = GetUsableMachineFromPoint(usableObject);
 				if (usableMachineFromPoint != null)
 				{
-					PrimaryInteractionMessage = usableMachineFromPoint.GetDescriptionText(usableObject.GameEntity).ToString() ?? "";
+					PrimaryInteractionMessage = usableMachineFromPoint.GetDescriptionText(usableObject.GameEntity, Agent.Main).ToString() ?? "";
 					SecondaryInteractionMessage = ((!isInteractable) ? "" : (usableMachineFromPoint.GetActionTextForStandingPoint(usableObject)?.ToString() ?? ""));
 				}
 			}
@@ -399,7 +399,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 		private void SetUsableMachine(UsableMachine machine, bool isInteractable)
 		{
-			PrimaryInteractionMessage = machine.GetDescriptionText(machine.GameEntity).ToString() ?? "";
+			PrimaryInteractionMessage = machine.GetDescriptionText(machine.GameEntity, Agent.Main).ToString() ?? "";
 			SecondaryInteractionMessage = " ";
 			if (machine is CastleGate)
 			{
@@ -417,7 +417,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.AgentStatus.ViewModels
 
 		private void SetDestructibleComponent(DestructableComponent machine, bool isInteractable)
 		{
-			string descriptionText = machine.GetDescriptionText(machine.GameEntity).ToString();
+			string descriptionText = machine.GetDescriptionText(machine.GameEntity, Agent.Main).ToString();
 			bool flag = descriptionText != "" && descriptionText != null;
 			PrimaryInteractionMessage = (flag ? descriptionText : "null");
 			SecondaryInteractionMessage = " ";
