@@ -135,7 +135,7 @@ namespace Alliance.Common.GameModes.Story.Functions
 	{
 		public override Type ReturnType => typeof(int);
 
-		[ConfigProperty(label: "Left")]
+		[ConfigProperty(label: "Left", tooltip: "Result of division will be rounded up to nearest integer if necessary. So 1/3 returns 1, 3/2 returns 2...")]
 		public ValueSource<int> Left = new LiteralValue<int>(0);
 		[ConfigProperty(label: "Right")]
 		public ValueSource<int> Right = new LiteralValue<int>(1);
@@ -144,7 +144,8 @@ namespace Alliance.Common.GameModes.Story.Functions
 		{
 			int right = AddIntFunction.Resolve(Right, context);
 			if (right == 0) return 0;
-			return AddIntFunction.Resolve(Left, context) / right;
+			// Round up the result of the division to the nearest integer
+			return (int)Math.Ceiling((float)AddIntFunction.Resolve(Left, context) / right);
 		}
 	}
 
