@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -7,6 +8,7 @@ using System.IO;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.ModuleManager;
+using static Alliance.Common.GameModes.Story.Utilities.ScenarioData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.GameModes.Story
@@ -48,6 +50,18 @@ namespace Alliance.Common.GameModes.Story
 		public ActState ActState { get; protected set; }
 		public BattleSideEnum CurrentWinner { get; protected set; }
 
+		/// <summary>
+		/// Atmosphere applied by the last SetAtmosphereAction of the current mission. 
+		/// The server replays it to players joining mid-mission. 
+		/// Reset at mission start (ScenarioBehavior.AfterStart).
+		/// </summary>
+		public string CurrentAtmosphereName;
+
+		/// <summary>
+		/// Global variables for the current scenario. Initialized from Scenario.Variables on scenario start.		
+		/// </summary>
+		public VariableStore Globals { get; protected set; } = new VariableStore();
+
 		public virtual void StartScenario(string scenarioId, int actIndex, ActState state = ActState.Invalid) { }
 
 		/// <summary>
@@ -59,7 +73,93 @@ namespace Alliance.Common.GameModes.Story
 			CurrentAct = act;
 			ActState = state;
 			CurrentWinner = BattleSideEnum.None;
+			InitGlobals();
+			ActionBase.AssignActionIds(act, CurrentActIndex);
+			if (CurrentScenario?.Cinematics != null)
+			{
+				for (int i = 0; i < CurrentScenario.Cinematics.Count; i++)
+				{
+					if (CurrentScenario.Cinematics[i] != null)
+					{
+						ActionBase.AssignActionIds(CurrentScenario.Cinematics[i], ActionBase.CinematicScopeBase + i);
+					}
+				}
+			}
+			PrewarmCinematics();
 			OnStartScenario?.Invoke();
+		}
+
+		/// <summary>Load-time warm-up of the dynamic-slot field cache: scenario cinematics are referenced
+		/// by name and never walked by AssignActionIds, so warm them (and every act, since any act may
+		/// become current later) here - before any cinematic can play.</summary>
+		protected void PrewarmCinematics()
+		{
+			if (CurrentScenario?.Cinematics != null)
+			{
+				foreach (var cinematic in CurrentScenario.Cinematics)
+				{
+					if (cinematic != null) ValueSourceHelper.PrewarmDynamicSlots(cinematic);
+				}
+			}
+			if (CurrentScenario?.Acts != null)
+			{
+				foreach (var otherAct in CurrentScenario.Acts)
+				{
+					if (otherAct != null) ValueSourceHelper.PrewarmDynamicSlots(otherAct);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Initializes global variables from a scenario definition without starting it
+		/// (used by the modding kit, where no scenario is running during previews).
+		/// </summary>
+		public void LoadGlobals(Scenario scenario)
+		{
+			Globals = new VariableStore();
+			if (scenario?.Variables == null) return;
+			foreach (ScenarioVariable sv in scenario.Variables)
+			{
+				if (string.IsNullOrWhiteSpace(sv.Name)) continue;
+				object val = ParseDefaultValue(sv.DefaultValue, sv.Type);
+				Globals.Set(sv.Name, val);
+			}
+		}
+
+		/// <summary>
+		/// Initializes global variables from the current scenario definition.
+		/// Parses each ScenarioVariable.DefaultValue according to its VariableType.
+		/// </summary>
+		protected virtual void InitGlobals()
+		{
+			LoadGlobals(CurrentScenario);
+		}
+
+		/// <summary>
+		/// Parses a default value string according to VariableType.
+		/// </summary>
+		private static object ParseDefaultValue(string raw, VariableType type)
+		{
+			switch (type)
+			{
+				case VariableType.Int:
+					if (int.TryParse(raw, out int i)) return i;
+					return 0;
+				case VariableType.Float:
+					if (float.TryParse(raw, out float f)) return f;
+					return 0f;
+				case VariableType.Bool:
+					if (bool.TryParse(raw, out bool b)) return b;
+					return false;
+				case VariableType.String:
+					return raw ?? "";
+				case VariableType.Agent:
+				case VariableType.GameEntity:
+					// Runtime-only reference types have no meaningful serialized default.
+					return null;
+				default:
+					return raw;
+			}
 		}
 
 		public virtual void StopScenario()
@@ -68,6 +168,7 @@ namespace Alliance.Common.GameModes.Story
 			OnStopScenario?.Invoke();
 			ActState = ActState.Invalid;
 			CurrentWinner = BattleSideEnum.None;
+			Globals?.Reset();
 		}
 
 		/// <summary>
@@ -94,26 +195,16 @@ namespace Alliance.Common.GameModes.Story
 					OnActStateInProgress?.Invoke();
 					break;
 				case ActState.DisplayingResults:
-					CurrentAct.VictoryLogic.OnDisplayResults(CurrentWinner);
+					CurrentAct.VictoryLogic.Execute();
 					OnActStateDisplayResults?.Invoke();
 					break;
 				case ActState.Completed:
-					CurrentAct.VictoryLogic.OnActCompleted(CurrentWinner);
 					OnActStateCompleted?.Invoke();
 					break;
 			}
 		}
 
-		public virtual void OnMissionTick(float dt)
-		{
-			if (CurrentAct != null && ActState > ActState.SpawningParticipants)
-			{
-				foreach (ConditionalActionStruct conditionalActionStruct in CurrentAct.ConditionalActions)
-				{
-					conditionalActionStruct.Tick(dt);
-				}
-			}
-		}
+		public virtual void OnMissionTick(float dt) { }
 
 		/// <summary>
 		/// Sets the winner of the current act.
@@ -166,7 +257,7 @@ namespace Alliance.Common.GameModes.Story
 
 		private bool CheckObjectivesForSide(BattleSideEnum side)
 		{
-			List<ObjectiveBase> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
+			List<Objective> objectives = CurrentAct.Objectives.FindAll(o => o.Side == side && o.Active);
 
 			if (objectives.Count == 0)
 			{
@@ -174,18 +265,16 @@ namespace Alliance.Common.GameModes.Story
 				return false;
 			}
 
+			VariableStore context = Globals;
 			bool sideWin = true;
 
-			foreach (ObjectiveBase objective in objectives)
+			foreach (Objective objective in objectives)
 			{
-				bool objectiveCompleted = objective.CheckObjective();
+				bool objectiveCompleted = objective.Check(context);
 				LogObjectiveProgress(objective, objectiveCompleted);
 
 				if (objectiveCompleted)
 				{
-					objective.Active = false; // Disable objective to no longer check it
-
-					// If the objective is an instant win, the act is completed
 					if (objective.InstantActWin)
 					{
 						SetWinner(objective.Side);
@@ -199,7 +288,6 @@ namespace Alliance.Common.GameModes.Story
 				}
 			}
 
-			// If all objectives for the side are completed, the side wins
 			if (sideWin)
 			{
 				SetWinner(side);
@@ -209,16 +297,11 @@ namespace Alliance.Common.GameModes.Story
 			return false;
 		}
 
-		/// <summary>
-		/// Logs the progress of the given objective.
-		/// </summary>
-		public virtual void LogObjectiveProgress(ObjectiveBase objective, bool objectiveCompleted)
+		public virtual void LogObjectiveProgress(Objective objective, bool objectiveCompleted)
 		{
 			string logMessage = objectiveCompleted
-				? $"{objective.Name.LocalizedText} ({objective.Side}) completed : {objective.GetProgressAsString()}"
-				: $"{objective.Name.LocalizedText} ({objective.Side}) : {objective.GetProgressAsString()}";
-
-			ConsoleColor logColor = objectiveCompleted ? ConsoleColor.Green : ConsoleColor.Cyan;
+				? $"{objective.Name.LocalizedText} ({objective.Side}) completed"
+				: $"{objective.Name.LocalizedText} ({objective.Side})";
 
 			Log(logMessage, LogLevel.Debug);
 		}

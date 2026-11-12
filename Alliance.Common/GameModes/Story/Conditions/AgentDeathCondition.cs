@@ -1,5 +1,8 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Attributes;
 using Alliance.Common.GameModes.Story.Behaviors;
+using Alliance.Common.GameModes.Story.Utilities;
 using TaleWorlds.Engine;
 using TaleWorlds.MountAndBlade;
 
@@ -8,9 +11,11 @@ namespace Alliance.Common.GameModes.Story.Conditions
 	/// <summary>
 	/// Check if a specific agent (or a number of this specific agent) is dead
 	/// </summary>
+	[PhrasePreview("{DeathQuota}× {Character} dead {ConditionMayRepeat||⟲}")]
+	[PhraseTemplate("{DeathQuota} × {Character} from {Side} have died {ConditionMayRepeat||⟲}")]
 	public class AgentDeathCondition : Condition
 	{
-		[ConfigProperty(label: "Character", tooltip: "ID of the character to check death.")]
+		[ConfigProperty(label: "Character", tooltip: "ID of the character to check death.", dataType: AllianceData.DataTypes.Character)]
 		public string Character;
 		public SideType Side = SideType.All;
 		[ConfigProperty(label: "Death quota", tooltip: "How many time character need to die to trigger condition.")]
@@ -49,7 +54,7 @@ namespace Alliance.Common.GameModes.Story.Conditions
 		}
 
 		// Check if number of specific agent  is reached to trigger condition
-		public override bool Evaluate(ScenarioManager context)
+		public override bool Evaluate(VariableStore context)
 		{
 			if (_deathCount >= DeathQuota)
 			{

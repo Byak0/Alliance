@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#if !SERVER
+using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection.Selector;
@@ -132,3 +133,4 @@ namespace Alliance.Common.Core.UI.VM.Options
 		}
 	}
 }
+#endif

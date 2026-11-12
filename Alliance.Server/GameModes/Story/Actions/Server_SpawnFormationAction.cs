@@ -1,7 +1,10 @@
 ﻿using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
+using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,21 +23,27 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// <summary>
 	/// Action for spawning agents.
 	/// </summary>
+	[OverrideAction(typeof(SpawnFormationAction))]
 	public class Server_SpawnFormationAction : SpawnFormationAction
 	{
 		public Server_SpawnFormationAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
-			_ = SpawnAsync();
+			_ = SpawnAsync(context);
+			return ActionTask.CompletedTask;
 		}
 
-		private async Task SpawnAsync()
+		private async Task SpawnAsync(VariableStore context)
 		{
 			Team team = Side == BattleSideEnum.Defender ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
 			string cultureId = Side == BattleSideEnum.Defender ? MultiplayerOptions.OptionType.CultureTeam2.GetStrValue() : MultiplayerOptions.OptionType.CultureTeam1.GetStrValue();
 			BasicCultureObject culture = MBObjectManager.Instance.GetObject<BasicCultureObject>(cultureId);
 			Formation formation = null;
+
+			Zone spawnZoneObj = SpawnZone?.Resolve(context);
+			Vec3 spawnCenter = spawnZoneObj != null ? spawnZoneObj.ResolveCenter(context) : Vec3.Zero;
+			float spawnRadius = spawnZoneObj?.Radius ?? 0f;
 
 			// Check if a player control this formation
 			MissionPeer playerInCharge = FormationControlModel.Instance.GetControllerOfFormation(Formation, team);
@@ -89,16 +98,17 @@ namespace Alliance.Server.GameModes.Story.Actions
 			{
 				BasicCharacterObject character = MBObjectManager.Instance.GetObject<BasicCharacterObject>(characterToSpawn.CharacterId);
 				float difficulty = SpawnHelper.DifficultyMultiplierFromLevel(characterToSpawn.Difficulty);
+				int spawnCount = characterToSpawn.SpawnCount?.Resolve(context) ?? 0;
 				int numberToSpawn = characterToSpawn.IsPercentage ? 
-					SpawnHelper.GetTroopCountFromPercentage(characterToSpawn.SpawnCount) : 
-					characterToSpawn.SpawnCount;
+					SpawnHelper.GetTroopCountFromPercentage(spawnCount) : 
+					spawnCount;
 
 				for (int i = 0; i < numberToSpawn; i++)
 				{
 					try
 					{
 						// Calculate random position in the SpawnZone
-						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(SpawnZone.GlobalPosition, SpawnZone.Radius);
+						Vec3 randomSpawnPosition = CoreUtils.GetRandomPositionWithinRadius(spawnCenter, spawnRadius, true);
 						MatrixFrame position = new MatrixFrame(Mat3.Identity, randomSpawnPosition);
 						Agent agent = await SpawnHelper.SpawnBotAsync(team, culture, character, position,
 							selectedFormation: (int)Formation, botDifficulty: difficulty, healthMultiplier: characterToSpawn.HealthMultiplier);
@@ -126,7 +136,10 @@ namespace Alliance.Server.GameModes.Story.Actions
 				switch (MoveOrder)
 				{
 					case MoveOrderType.Move:
-						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(Direction.GlobalPosition, Direction.Radius);
+						Zone dirZoneObj = Direction?.Resolve(context);
+						Vec3 dirCenter = dirZoneObj != null ? dirZoneObj.ResolveCenter(context) : Vec3.Zero;
+						float dirRadius = dirZoneObj?.Radius ?? 0f;
+						Vec3 randomTargetPosition = CoreUtils.GetRandomPositionWithinRadius(dirCenter, dirRadius, true);
 						WorldPosition target = randomTargetPosition.ToWorldPosition(Mission.Current.Scene);
 						formation.SetMovementOrder(MovementOrder.MovementOrderMove(target));
 						break;

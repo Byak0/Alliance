@@ -1,0 +1,10 @@
+-fontpath "C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\Alliance.Editor\GUI\Fonts\aquiline_two\AquilineTwo.ttf"
+-outputpath "C:\Program Files (x86)\Steam\steamapps\common\Mount & Blade II Bannerlord\Modules\Alliance.Editor\GUI\Fonts\aquiline_two\AquilineTwo.png"
+-atlassize 2048 2048
+-size 64
+-angle 8
+-range 16
+-padding 16
+-smooth 0
+-smoothingConstant 0.5
+-mode 1

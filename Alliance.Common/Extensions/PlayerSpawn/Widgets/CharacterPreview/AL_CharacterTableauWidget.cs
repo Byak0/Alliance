@@ -34,141 +34,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private float _customAnimationProgressRatio;
 		private float _customRenderScale;
 		private float _customAnimationWaitDuration;
-		private float _cameraFov;
-		private float _cameraZoom;
-		private float _cameraElevation;
-		private float _cameraStrafe;
-		private float _cameraYaw;
-		private float _cameraPitch;
-		private float _cameraRoll;
-		private float _cameraAnimDuration;
-		private bool _enableLight;
-
-		[Editor(false)]
-		public float CameraFov
-		{
-			get => _cameraFov;
-			set
-			{
-				_cameraFov = value;
-				OnPropertyChanged(value, nameof(CameraFov));
-				SetTextureProviderProperty("CameraFov", value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraZoom
-		{
-			get => _cameraZoom;
-			set
-			{
-				_cameraZoom = value;
-				OnPropertyChanged(value, nameof(CameraZoom));
-				SetTextureProviderProperty(nameof(CameraZoom), value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraElevation
-		{
-			get => _cameraElevation;
-			set
-			{
-				_cameraElevation = value;
-				OnPropertyChanged(value, nameof(CameraElevation));
-				SetTextureProviderProperty(nameof(CameraElevation), value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraStrafe
-		{
-			get => _cameraStrafe;
-			set
-			{
-				_cameraStrafe = value;
-				OnPropertyChanged(value, nameof(CameraStrafe));
-				SetTextureProviderProperty(nameof(CameraStrafe), value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraYaw
-		{
-			get => _cameraYaw;
-			set
-			{
-				_cameraYaw = value;
-				OnPropertyChanged(value, nameof(CameraYaw));
-				SetTextureProviderProperty(nameof(CameraYaw), value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraPitch
-		{
-			get => _cameraPitch;
-			set
-			{
-				_cameraPitch = value;
-				OnPropertyChanged(value, nameof(CameraPitch));
-				SetTextureProviderProperty(nameof(CameraPitch), value);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraRoll
-		{
-			get => _cameraRoll;
-			set
-			{
-				_cameraRoll = value;
-				OnPropertyChanged(value, nameof(CameraRoll));
-				SetTextureProviderProperty(nameof(CameraRoll), value);
-			}
-		}
-
-		[Editor(false)]
-		public bool ApplyCameraChange
-		{
-			get => true;
-			set
-			{
-				if (!value) return;
-
-				SetTextureProviderProperty(nameof(ApplyCameraChange), true);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraAnimDuration
-		{
-			get => _cameraAnimDuration;
-			set
-			{
-				_cameraAnimDuration = value;
-				OnPropertyChanged(value, nameof(CameraAnimDuration));
-				SetTextureProviderProperty(nameof(CameraAnimDuration), value);
-			}
-		}
-
-		[Editor(false)]
-		public bool EnableLight
-		{
-			get
-			{
-				return _enableLight;
-			}
-			set
-			{
-				if (value != _enableLight)
-				{
-					_enableLight = value;
-					OnPropertyChanged(value, "EnableLight");
-					SetTextureProviderProperty("EnableLight", value);
-				}
-			}
-		}
+		private bool _continuousRendering = true;
 
 		[Editor(false)]
 		public string BannerCodeText
@@ -546,6 +412,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					_isBannerShownInBackground = value;
 					OnPropertyChanged(value, "IsBannerShownInBackground");
 					SetTextureProviderProperty("IsBannerShownInBackground", value);
+				}
+			}
+		}
+
+		/// <summary>Continuous tableaus render every frame; the others share the frame's render
+		/// budget (round-robin). Bind to item selection so only the selected preview animates
+		/// smoothly. Defaults to true (legacy behavior).</summary>
+		[Editor(false)]
+		public bool ContinuousRendering
+		{
+			get
+			{
+				return _continuousRendering;
+			}
+			set
+			{
+				if (value != _continuousRendering)
+				{
+					_continuousRendering = value;
+					OnPropertyChanged(value, nameof(ContinuousRendering));
+					SetTextureProviderProperty(nameof(ContinuousRendering), value);
 				}
 			}
 		}

@@ -1,7 +1,9 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story.Objectives;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
+using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -20,8 +22,13 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		private bool _showLives;
 		private string _livesLabel;
 		private string _livesValue;
+		private string _waitingTitle = "Waiting for players";
+		private bool _isBlackoutVisible;
+		private bool _isWaiting = true;
+		private string _waitingCounter;
 		private MBBindingList<ObjectiveVM> _objectives;
 		private float _lastRefresh;
+		private SyncObjectiveProgressMessage.ObjectiveData[] _syncedProgress;
 
 		[DataSourceProperty]
 		public bool ShowBoard
@@ -227,6 +234,74 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 			}
 		}
 
+		[DataSourceProperty]
+		public bool IsBlackoutVisible
+		{
+			get
+			{
+				return _isBlackoutVisible;
+			}
+			set
+			{
+				if (value != _isBlackoutVisible)
+				{
+					_isBlackoutVisible = value;
+					OnPropertyChangedWithValue(value, "IsBlackoutVisible");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool IsWaiting
+		{
+			get
+			{
+				return _isWaiting;
+			}
+			set
+			{
+				if (value != _isWaiting)
+				{
+					_isWaiting = value;
+					OnPropertyChangedWithValue(value, "IsWaiting");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WaitingTitle
+		{
+			get
+			{
+				return _waitingTitle;
+			}
+			set
+			{
+				if (value != _waitingTitle)
+				{
+					_waitingTitle = value;
+					OnPropertyChangedWithValue(value, "WaitingTitle");
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public string WaitingCounter
+		{
+			get
+			{
+				return _waitingCounter;
+			}
+			set
+			{
+				if (value != _waitingCounter)
+				{
+					_waitingCounter = value;
+					OnPropertyChangedWithValue(value, "WaitingCounter");
+				}
+			}
+		}
+
 		public ScenarioVM()
 		{
 		}
@@ -243,10 +318,15 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		{
 			Log("Setting Objectives in VM : ", LogLevel.Debug);
 			Objectives = new MBBindingList<ObjectiveVM>();
-			foreach (ObjectiveBase objective in act?.Objectives.FindAll(obj => obj.Side == side))
+			if (act?.Objectives == null) return;
+			for (int i = 0; i < act.Objectives.Count; i++)
 			{
-				Log(objective.Name.LocalizedText + " - " + objective.Description.LocalizedText, LogLevel.Debug);
-				Objectives.Add(new ObjectiveVM(objective));
+				var obj = act.Objectives[i];
+				if (obj.Side == side)
+				{
+					Log(obj.Name.LocalizedText + " - " + obj.Description.LocalizedText, LogLevel.Debug);
+					Objectives.Add(new ObjectiveVM(obj, i));
+				}
 			}
 		}
 
@@ -292,15 +372,19 @@ namespace Alliance.Client.GameModes.Story.ViewModels
 		public void RefreshProgress(float dt)
 		{
 			_lastRefresh += dt;
-			if (_lastRefresh < 1f) return;
+			if (_lastRefresh < 0.5f) return;
 			_lastRefresh = 0;
-			if (_objectives != null)
+			if (_objectives == null || _syncedProgress == null) return;
+			foreach (ObjectiveVM vm in _objectives)
 			{
-				foreach (ObjectiveVM objective in _objectives)
-				{
-					objective.RefreshProgress();
-				}
+				if (vm.Index < _syncedProgress.Length)
+					vm.UpdateFromSync(_syncedProgress[vm.Index]);
 			}
+		}
+
+		public void SetSyncedProgress(SyncObjectiveProgressMessage.ObjectiveData[] data)
+		{
+			_syncedProgress = data;
 		}
 
 		internal void SetMouseState(bool isMouseVisible)

@@ -5,7 +5,7 @@
 			<Children>
 
 				<!-- Character Select Button -->
-				<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="CharacterButton"
+				<AL_SpawnCharacterButtonWidget Id="CharacterButton"
 								WidthSizePolicy="Fixed"
 								HeightSizePolicy="Fixed"
 								SuggestedWidth="@Width"
@@ -13,59 +13,12 @@
 								DoNotPassEventsToChildren="true"
 								UpdateChildrenStates="true"
 								IsSelected="@IsSelected"
+								TableauX="@TableauX"
 								Command.Click="SelectCharacter">
 					<Children>
 
-						<!-- Character Tableau -->
-						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@EnableCharacterPreview">
-							<Children>
-								<CharacterTableauWidget DataSource="{CharacterViewModel}"
-														WidthSizePolicy="Fixed"
-														HeightSizePolicy="Fixed"
-														SuggestedWidth="800"
-														SuggestedHeight="800"
-														HorizontalAlignment="Center"
-														VerticalAlignment="Center"
-
-														BodyProperties="@BodyProperties"
-														IsFemale="@IsFemale"
-														EquipmentCode="@EquipmentCode"
-														CharStringId="@CharStringId"
-														StanceIndex="@StanceIndex"
-														BannerCodeText="@BannerCodeText"
-														MountCreationKey="@MountCreationKey"
-														ArmorColor1="@ArmorColor1"
-														ArmorColor2="@ArmorColor2"
-														Race="@Race"
-
-														IdleAction="@IdleAction"
-														IdleFaceAnim="@IdleFaceAnim"
-
-														CustomAnimation="@CustomAnimation"
-														IsPlayingCustomAnimations="@IsPlayingCustomAnimations"
-														ShouldLoopCustomAnimation="@ShouldLoopCustomAnimation"
-														CustomAnimationWaitDuration="@CustomAnimationWaitDuration"
-														CustomAnimationProgressRatio="@CustomAnimationProgressRatio"
-
-														LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex"
-														RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex"
-
-														CameraFov="@CameraFov"
-														CameraZoom="@CameraZoom"
-														CameraElevation="@CameraElevation"
-														CameraStrafe="@CameraStrafe"
-														CameraYaw="@CameraYaw"
-														CameraPitch="@CameraPitch"
-														CameraRoll="@CameraRoll"
-														CameraAnimDuration="@CameraAnimDuration"
-														ApplyCameraChange="@ApplyCameraChange"
-
-														EnableLight="@EnableLight"
-														CustomRenderScale="@CustomRenderScale"
-														IsBannerShownInBackground="true"
-														DoNotUseCustomScale="true" />
-							</Children>
-						</Widget>
+						<!-- The 3D characters are rendered by the shared AL_FormationTableauWidget
+						     behind this list (one scene, one camera for the whole row). -->
 
 						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="360" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.TopHeader.HoverGlow.Centered" MarginBottom="-120" />
 
@@ -91,7 +44,7 @@
 						</ButtonWidget>
 
 					</Children>
-				</MultiplayerClassLoadoutTroopSubclassButtonWidget>
+				</AL_SpawnCharacterButtonWidget>
 
 				<!-- Edit Button -->
 				<ButtonWidget WidthSizePolicy="Fixed"

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.GameModes.Story.Conditions;
+﻿using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Conditions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
@@ -18,7 +19,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		[EditableScriptComponentVariable(true)]
 		public SimpleButton EDIT;
 
-		// ConditionalActionStruct is serialized, split and stored as chunks to bypass 255 character limit of editor
+		// ScriptedEvent is serialized, split and stored as chunks to bypass 255 character limit of editor
 		public string Chunk1;
 		public string Chunk2;
 		public string Chunk3;
@@ -31,7 +32,7 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		public string Chunk10;
 
 		// Struct for the conditions and actions, retrieved from the serialized string
-		private ConditionalActionStruct _conditionalActionStruct = new ConditionalActionStruct();
+		private ScriptedEvent _scriptedEvent = new ScriptedEvent();
 
 		public AL_TriggerAction()
 		{
@@ -39,8 +40,9 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public void Init()
 		{
-			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks(), GetEntityContextForLogs());
-			_conditionalActionStruct.Register(GameEntity);
+			_scriptedEvent = ScenarioSerializer.DeserializeScriptedEvent(GetCombinedChunks(), GetEntityContextForLogs());
+			_scriptedEvent.Register(GameEntity);
+			ActionBase.AssignActionIds(_scriptedEvent, ActionBase.MakeEntityScopeId(Id));
 		}
 
 		public override void AfterMissionStart()
@@ -58,9 +60,16 @@ namespace Alliance.Common.GameModes.Story.Scripts
 		protected override void OnRemoved(int removeReason)
 		{
 			base.OnRemoved(removeReason);
-			foreach (Condition condition in _conditionalActionStruct?.Conditions)
+			if (_scriptedEvent != null)
 			{
-				condition.Unregister();
+				foreach (Condition condition in _scriptedEvent.Conditions)
+				{
+					condition.Unregister();
+				}
+				foreach (var action in _scriptedEvent.Actions)
+				{
+					action.UnassignActionId();
+				}
 			}
 		}
 
@@ -104,12 +113,12 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public void Enable()
 		{
-			_conditionalActionStruct.Enabled = true;
+			_scriptedEvent.Enabled = true;
 		}
 
 		public void Disable()
 		{
-			_conditionalActionStruct.Enabled = false;
+			_scriptedEvent.Enabled = false;
 		}
 
 		protected override void OnEditorVariableChanged(string variableName)
@@ -124,14 +133,14 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public void OpenEditor()
 		{
-			_conditionalActionStruct = ScenarioSerializer.DeserializeConditionalActionStruct(GetCombinedChunks(), GetEntityContextForLogs());
-			_conditionalActionStruct.Register(GameEntity);
-			EditorToolsManager.OpenEditor(_conditionalActionStruct, modifiedObject =>
+			_scriptedEvent = ScenarioSerializer.DeserializeScriptedEvent(GetCombinedChunks(), GetEntityContextForLogs());
+			_scriptedEvent.Register(GameEntity);
+			EditorToolsManager.OpenEditor(_scriptedEvent, modifiedObject =>
 			{
 				if (modifiedObject != null)
 				{
-					_conditionalActionStruct = (ConditionalActionStruct)modifiedObject;
-					UpdateChunks(ScenarioSerializer.SerializeConditionalActionStruct(_conditionalActionStruct));
+					_scriptedEvent = (ScriptedEvent)modifiedObject;
+					UpdateChunks(ScenarioSerializer.SerializeScriptedEvent(_scriptedEvent));
 				}
 			});
 		}
@@ -143,12 +152,13 @@ namespace Alliance.Common.GameModes.Story.Scripts
 
 		public override TickRequirement GetTickRequirement()
 		{
-			return TickRequirement.TickParallel | base.GetTickRequirement();
+			if(GameNetwork.IsServer) return TickRequirement.TickParallel | base.GetTickRequirement();
+			else return TickRequirement.None;			
 		}
 
 		protected override void OnTickParallel(float dt)
 		{
-			_conditionalActionStruct.Tick(dt);
+			_scriptedEvent.Tick(dt);
 		}
 	}
 }

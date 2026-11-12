@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<NPCCharacters>
+<MPCharacters>
 	<NPCCharacter
 		id="mp_character"
 		level="36"
@@ -12875,4 +12875,4 @@
 		<Resistances
 			dismount="75" />
 	</NPCCharacter>
-</NPCCharacters>
+</MPCharacters>

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.AnimationPlayer.Models;
+﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.AnimationPlayer.NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ using System.Reflection;
 using System.Threading.Tasks;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.View;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.AnimationPlayer
@@ -23,7 +23,6 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 		public Dictionary<int, float> IndexToDurationDictionary;
 		public List<Animation> DefaultAnimations;
 		public Dictionary<string, Animation> ActionNameToAnimation;
-
 		private static AnimationSystem _instance;
 		private bool _initialized;
 
@@ -93,7 +92,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 
 			// Initialize default store
 			AnimationDefaultStore.Instance.Init();
-			// Compare default store to number of actions to determine whether we can use it or it needs a refresh
+			// Determine whether the stored durations can be used: the count must match AND the store
+			// layout version must be current (v2 fixed the +1 duration skew of the original file).
 			bool refreshDefaultDurations = AnimationDefaultStore.Instance.DefaultDurations.Count != IndexToActionSetDictionary.Count;
 			if (refreshDefaultDurations)
 			{
@@ -106,8 +106,13 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				if (refreshDefaultDurations)
 				{
 					//!\\ This call is randomly prone to AccessViolationException
-					//float duration = MBActionSet.GetActionAnimationDuration(IndexToActionSetDictionary[i].First(), IndexToActionDictionary[i]);
-					float duration = MBAnimation.GetAnimationDuration(i);
+					float duration = 0f;
+					ActionIndexCache action = IndexToActionDictionary[i];
+					List<MBActionSet> compatibleSets = IndexToActionSetDictionary[i];
+					if (i > 0 && compatibleSets != null && compatibleSets.Count > 0)
+					{
+						duration = MBActionSet.GetActionAnimationDuration(compatibleSets[0], action);
+					}
 					AnimationDefaultStore.Instance.DefaultDurations.Add(duration);
 				}
 
@@ -134,7 +139,9 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 		/// Play animation on specified agent.
 		/// </summary>
 		/// <param name="synchronize">Set to true to synchronize with all clients</param>
-		public void PlayAnimation(Agent agent, Animation animation, bool synchronize = false)
+		/// <param name="loop">Set to true to apply the cyclic flag, keeping the action looping until another action replaces it.</param>
+		/// <param name="channel">Action channel to play on (0 = replaces locomotion, 1+ = overlays it).</param>
+		public void PlayAnimation(Agent agent, Animation animation, bool synchronize = false, bool loop = false, int channel = 0)
 		{
 			//Log($"Alliance - Playing animation {animation.Name} for player {agent.Name}", LogLevel.Debug);
 			// TODO : add part to hold item in hand       
@@ -181,7 +188,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			{
 				try
 				{
-					agent.SetActionChannel(0, animation.Action, true, 0UL, 0f, animation.Speed, -0.2f, 0.4f, 0f, false, -0.2f, 0, true);
+					AnimFlags additionalFlags = loop ? AnimFlags.anf_cyclic : 0UL;
+					agent.SetActionChannel(channel, animation.Action, true, additionalFlags, 0f, animation.Speed, -0.2f, 0.4f, 0f, false, -0.2f, 0, true);
 					if (GameNetwork.IsServer && synchronize)
 					{
 						GameNetwork.BeginBroadcastModuleEvent();
@@ -197,7 +205,8 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			}
 		}
 
-		public void PlayAnimation(AgentVisuals agentVisuals, string actionName)
+#if !SERVER
+		public void PlayAnimation(TaleWorlds.MountAndBlade.View.AgentVisuals agentVisuals, string actionName)
 		{
 			if (ActionNameToAnimation.TryGetValue(actionName, out Animation animation))
 			{
@@ -209,7 +218,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 			}
 		}
 
-		public void PlayAnimation(AgentVisuals agentVisuals, Animation animation)
+		public void PlayAnimation(TaleWorlds.MountAndBlade.View.AgentVisuals agentVisuals, Animation animation)
 		{
 			if (agentVisuals == null)
 			{
@@ -269,6 +278,7 @@ namespace Alliance.Common.Extensions.AnimationPlayer
 				}
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Play animation on specified formation with a random wait time for each agent.

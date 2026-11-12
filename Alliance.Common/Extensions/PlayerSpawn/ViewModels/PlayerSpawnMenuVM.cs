@@ -1,4 +1,4 @@
-﻿#if !SERVER
+#if !SERVER
 using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
@@ -189,9 +189,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				{
 					_selectedCharacterVM = value;
 					OnPropertyChangedWithValue(value, nameof(SelectedCharacterVM));
+					OnPropertyChanged(nameof(FormationTableauSelectedX));
 				}
 			}
 		}
+
+		/// <summary>"id@x;id@equipmentCode@x..." - character ids with their normalized row position
+		/// (0..1) and, when the character has perk-alternative equipment, its current equipment code.
+		/// Consumed by the shared formation tableau widget (one camera for the whole row).</summary>
+		[DataSourceProperty]
+		public string FormationTableauCharacters => string.Join(";", Characters.Select(c =>
+		{
+			string x = c.TableauX.ToString("F4", System.Globalization.CultureInfo.InvariantCulture);
+			string equipmentCode = c.CharacterViewModel?.EquipmentCode;
+			return string.IsNullOrEmpty(equipmentCode)
+				? $"{c.AvailableCharacter.CharacterId}@{x}"
+				: $"{c.AvailableCharacter.CharacterId}@{equipmentCode}@{x}";
+		}));
+
+		/// <summary>Normalized row position of the selected character (-1 when none).</summary>
+		[DataSourceProperty]
+		public float FormationTableauSelectedX => SelectedCharacterVM?.TableauX ?? -1f;
 
 		[DataSourceProperty]
 		public OptionVM PreferredLanguage
@@ -692,6 +710,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
 				PlayerSpawnMenuMsg.RequestCharacterUsage(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
 			}
+
+			// The perk choice altered the character's equipment code - refresh the shared 3D row.
+			OnPropertyChanged(nameof(FormationTableauCharacters));
 		}
 
 		/// <summary>
@@ -871,13 +892,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			PlayerCharacterVM characterToSelect = null;
 			if (SelectedFormationVM != null)
 			{
-				int width = 1440 / (SelectedFormationVM.Formation.AvailableCharacters.Count + 1);
+				int count = SelectedFormationVM.Formation.AvailableCharacters.Count;
+				int width = 1440 / (count + 1);
+				// The ListPanel centers the item group in the panel: the first item does not start
+				// at the left edge - account for that offset so the 3D row matches the items.
+				float leftOffset = (1440f - count * width) / 2f;
 				int marginLeft = 0;
 				foreach (AvailableCharacter availableCharacter in SelectedFormationVM.Formation.AvailableCharacters)
 				{
 					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedTeamVM, SelectedFormationVM, availableCharacter, TrySelectCharacter, UpdateCharacterPerks, EditCharacter, DeleteCharacter, EditMode);
 					characterVM.Width = width;
 					characterVM.MarginLeft = marginLeft;
+					characterVM.TableauX = (leftOffset + marginLeft + width / 2f) / 1440f;
 					if (PlayerSpawnMenu.Instance.MyAssignment != null && availableCharacter == PlayerSpawnMenu.Instance.MyAssignment.Character)
 					{
 						characterToSelect = characterVM;
@@ -891,6 +917,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					marginLeft += width;
 				}
 			}
+
+			// Notify the shared formation tableau (its data is computed from the list above).
+			OnPropertyChanged(nameof(FormationTableauCharacters));
+			OnPropertyChanged(nameof(FormationTableauSelectedX));
 
 			if (characterToSelect != null) SelectCharacter(characterToSelect);
 		}

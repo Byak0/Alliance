@@ -7,17 +7,26 @@
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Common</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<ServerFolder>$(BANNERLORD_SERVER_DIR)</ServerFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 	</PropertyGroup>
 
-	<!-- Include SERVER constant when building for net6.0 -->
+	<!-- SERVER build - net6.0 -->
+	<!-- Define SERVER constant -->
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<DefineConstants>$(DefineConstants);SERVER</DefineConstants>		
 	</PropertyGroup>
-	
-	<!-- Reference TaleWorlds dll -->
-	<ItemGroup>
+	<!-- Reference TaleWorlds DLL from ServerFolder -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="$(ServerFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll">
+			<HintPath>%(Identity)</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!-- CLIENT/EDITOR build - net472 -->
+	<!-- Reference TaleWorlds DLL from GameFolder -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
@@ -25,10 +34,7 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
-	</ItemGroup>
-
-	<!-- DLL required for GUI (only for net472) -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<!-- Include DLL required for GUI -->
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
@@ -40,7 +46,8 @@
 			<HintPath>$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-	
+
+	<!-- Additional package references for both builds -->
 	<ItemGroup>
 		<PackageReference Include="Concentus" Version="1.1.7" />
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />

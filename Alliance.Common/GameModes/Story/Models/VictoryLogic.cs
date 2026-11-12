@@ -3,47 +3,74 @@ using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
-using TaleWorlds.Core;
-using static Alliance.Common.Utilities.Logger;
+using System.Xml.Serialization;
 
 namespace Alliance.Common.GameModes.Story.Models
 {
-	/// <summary>
-	/// Logic for handling victory conditions and results.
-	/// </summary>
 	[Serializable]
 	public class VictoryLogic
 	{
-		[ConfigProperty(label: "Actions on victory", tooltip: "These actions will be triggered as soon as one side completed its objectives.")]
-		public List<ActionBase> ActionsOnDisplayResults;
+		[ConfigProperty(label: "Actions on victory", tooltip: "Actions executed sequentially when objectives are completed.", category: "Victory conditions")]
+		public List<ActionBase> ActionsOnVictory;
 
-		[ConfigProperty(label: "Actions delayed", tooltip: "Actions triggered after a short delay")]
-		public List<ActionBase> ActionsOnActCompleted;
+		private int _actionIndex;
+		private ActionTask _currentTask;
+		private bool _isExecuting;
+		private VariableStore _localContext;
 
-		public VictoryLogic(List<ActionBase> displayResultsActions, List<ActionBase> actionsOnActCompleted)
+		[XmlIgnore]
+		public bool IsCompleted { get; private set; }
+
+		public VictoryLogic() { }
+
+		public VictoryLogic(List<ActionBase> actionsOnVictory)
 		{
-			ActionsOnDisplayResults = displayResultsActions;
-			ActionsOnActCompleted = actionsOnActCompleted;
+			ActionsOnVictory = actionsOnVictory;
 		}
 
-		public VictoryLogic()
+		public void Execute()
 		{
-		}
+			_actionIndex = 0;
+			_isExecuting = true;
+			IsCompleted = false;
+			_currentTask = null;
+			_localContext = new VariableStore();
 
-		public void OnDisplayResults(BattleSideEnum winner)
-		{
-			Log($"Winner is : {winner}", LogLevel.Debug);
-			foreach (ActionBase action in ActionsOnDisplayResults)
+			if (ActionsOnVictory != null && ActionsOnVictory.Count > 0)
 			{
-				action.Execute();
+				_currentTask = ActionsOnVictory[0].Execute(_localContext);
+				_currentTask?.Tick(0f, _localContext);
+				if (_currentTask != null && _currentTask.IsCompleted)
+					AdvancePipeline();
+			}
+			else
+			{
+				IsCompleted = true;
+				_isExecuting = false;
 			}
 		}
 
-		public void OnActCompleted(BattleSideEnum winner)
+		public void Tick(float dt)
 		{
-			foreach (ActionBase action in ActionsOnActCompleted)
+			if (!_isExecuting || ActionsOnVictory == null) return;
+
+			_currentTask?.Tick(dt, _localContext);
+			if (_currentTask != null && _currentTask.IsCompleted)
+				AdvancePipeline();
+		}
+
+		private void AdvancePipeline()
+		{
+			_actionIndex++;
+			if (_actionIndex < ActionsOnVictory.Count)
 			{
-				action.Execute();
+				_currentTask = ActionsOnVictory[_actionIndex].Execute(_localContext);
+			}
+			else
+			{
+				IsCompleted = true;
+				_isExecuting = false;
+				_currentTask = null;
 			}
 		}
 	}

@@ -10,11 +10,12 @@ namespace Alliance.Client.GameModes.Story.Actions
 	/// <summary>
 	/// Action for showing a result screen with text.
 	/// </summary>
+	[OverrideAction(typeof(ShowResultScreenAction))]
 	public class Client_ShowResultScreenAction : ShowResultScreenAction
 	{
 		public Client_ShowResultScreenAction() : base() { }
 
-		public override void Execute()
+		public override void ExecuteClient()
 		{
 			if (Mission.Current.PlayerTeam == null)
 			{

@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Core.ViewModelCollection.Information;
+﻿#if !SERVER
+using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 
@@ -105,3 +106,4 @@ namespace Alliance.Common.Core.UI.VM.Options
 		}
 	}
 }
+#endif

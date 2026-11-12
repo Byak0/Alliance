@@ -1,4 +1,5 @@
-﻿using Alliance.Editor.GameModes.Story.ViewModels;
+﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Editor.GameModes.Story.ViewModels;
 using System;
 using System.Windows;
 using System.Windows.Interop;
@@ -22,12 +23,12 @@ namespace Alliance.Editor.GameModes.Story.Views
 			Topmost = true; // Keep it on top
 		}
 
-		public ObjectEditorWindow(object obj, FieldViewModel fieldVM = null, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor")
+		public ObjectEditorWindow(object obj, FieldViewModel fieldVM = null, ScenarioEditorViewModel parentViewModel = null, string title = "Object Editor", Scenario explicitScenario = null)
 		{
 			InitializeComponent();
 
 			// Pass the object to the ObjectEditorViewModel
-			DataContext = new ObjectEditorViewModel(obj, fieldVM, parentViewModel, title, WeakGameEntity.Invalid);
+			DataContext = new ObjectEditorViewModel(obj, fieldVM, parentViewModel, title, WeakGameEntity.Invalid, explicitScenario);
 
 			// Disable hardware acceleration for this window to prevent Steam overlay detection
 			RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;

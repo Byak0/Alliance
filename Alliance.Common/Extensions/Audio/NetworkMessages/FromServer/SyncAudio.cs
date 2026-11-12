@@ -1,4 +1,4 @@
-﻿using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
 namespace Alliance.Common.Extensions.Audio.NetworkMessages.FromServer
@@ -7,7 +7,7 @@ namespace Alliance.Common.Extensions.Audio.NetworkMessages.FromServer
     public sealed class SyncAudio : GameNetworkMessage
     {
         static readonly CompressionInfo.Integer SoundIndexCompressionInfo = new CompressionInfo.Integer(0, 2000, true);
-        static readonly CompressionInfo.Float VolumeCompressionInfo = new CompressionInfo.Float(0f, 1f, 2);
+        static readonly CompressionInfo.Float VolumeCompressionInfo = new CompressionInfo.Float(0f, 2f, 8);
 
         public int SoundIndex { get; private set; }
         public float Volume { get; private set; }
