@@ -118,6 +118,9 @@ namespace Alliance.Common.GameModes.Story.Utilities
 				case ValueSourceOrigin.Literal:
 					return CreateLiteralSource(valueType);
 				case ValueSourceOrigin.Variable:
+					// Named zones live on the Act, not in variable stores: a "named zone" pick
+					// is serialized as a NamedZoneFunction call so it resolves at runtime.
+					if (valueType == typeof(Zone)) return new FunctionCall<Zone>(new NamedZoneFunction());
 					return Activator.CreateInstance(typeof(VariableValue<>).MakeGenericType(valueType));
 				case ValueSourceOrigin.Function:
 					return Activator.CreateInstance(typeof(FunctionCall<>).MakeGenericType(valueType));

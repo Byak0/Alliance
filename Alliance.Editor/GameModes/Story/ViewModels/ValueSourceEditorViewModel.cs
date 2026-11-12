@@ -130,16 +130,24 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 			bool hasVariables = ValueSourceHelper.CollectAvailableVariables(_valueType, scenario, act, localObject, _owner.ParentObject).Length > 0;
 			bool hasFunctions = ValueSourceHelper.DiscoverConcreteTypes(typeof(Function))
 				.Any(t => ValueSourceHelper.FunctionReturns(t, _valueType));
+			bool isZone = _valueType == typeof(Zone);
 
 			_origins = new List<ValueSourceOriginOption>
 			{
 				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Literal, "Literal", ValueSourceHelper.SupportsLiteral(_valueType)),
-				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Variable, "Variable", hasVariables),
+				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Variable, isZone ? "Named zone" : "Variable", hasVariables),
 				new ValueSourceOriginOption(ValueSourceHelper.ValueSourceOrigin.Function, "Function", hasFunctions)
 			};
 			_closeCommand = new RelayCommand(CloseWindow);
 
 			ValueSourceHelper.ValueSourceOrigin? currentOrigin = ValueSourceHelper.GetCurrentOrigin(CurrentValue);
+			// Named-zone picks are FunctionCall<Zone> wrapping NamedZoneFunction; display them as "Named zone".
+			if (currentOrigin == ValueSourceHelper.ValueSourceOrigin.Function
+				&& CurrentValue is FunctionCall<Zone> zoneCall
+				&& zoneCall.Function is NamedZoneFunction)
+			{
+				currentOrigin = ValueSourceHelper.ValueSourceOrigin.Variable;
+			}
 			if (currentOrigin.HasValue)
 			{
 				_selectedOrigin = _origins.FirstOrDefault(option => option.Origin == currentOrigin.Value && option.IsAvailable);

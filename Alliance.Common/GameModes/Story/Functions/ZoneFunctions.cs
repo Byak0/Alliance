@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.GameModes.Story.Conditions.Condition;
@@ -178,6 +179,29 @@ namespace Alliance.Common.GameModes.Story.Functions
 				if (d < bestDist) { bestDist = d; best = named.Zone; }
 			}
 			return best;
+		}
+	}
+
+	/// <summary>
+	/// Returns the zone with the given name from the current act's Zones list.
+	/// This is how "named zone" picks resolve at runtime: named zones live on the Act, not in variable stores.
+	/// </summary>
+	[Serializable]
+	[PhrasePreview("zone {ZoneName}")]
+	[PhraseTemplate("zone {ZoneName}")]
+	public class NamedZoneFunction : Function
+	{
+		public override Type ReturnType => typeof(Zone);
+
+		[ConfigProperty(label: "Zone", tooltip: "Name of a zone from this act's Zones list.")]
+		[VariableRef(typeof(Zone))]
+		public string ZoneName = "";
+
+		public NamedZoneFunction() { }
+
+		public override object Evaluate(VariableStore context)
+		{
+			return ScenarioManager.Instance.CurrentAct?.Zones.FirstOrDefault(z => z?.Name == ZoneName)?.Zone;
 		}
 	}
 
