@@ -1,4 +1,5 @@
 ﻿#if !SERVER
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using System;
 using TaleWorlds.Core;
@@ -42,152 +43,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private uint _armorColor2;
 		private int _leftHandWieldedEquipmentIndex;
 		private int _rightHandWieldedEquipmentIndex;
-		private float _cameraFov = (float)(Math.PI / 4);
-		private float _cameraZoom;
-		private float _cameraElevation;
-		private float _cameraStrafe;
-		private float _cameraYaw;
-		private float _cameraPitch;
-		private float _cameraRoll;
-		private float _cameraAnimDuration;
-		private bool _enableLight;
-
-		[DataSourceProperty]
-		public float CameraFov
-		{
-			get => _cameraFov;
-			set
-			{
-				if (_cameraFov != value)
-				{
-					_cameraFov = value;
-					OnPropertyChangedWithValue(value, nameof(CameraFov));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraZoom
-		{
-			get => _cameraZoom;
-			set
-			{
-				if (_cameraZoom != value)
-				{
-					_cameraZoom = value;
-					OnPropertyChangedWithValue(value, nameof(CameraZoom));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraElevation
-		{
-			get => _cameraElevation;
-			set
-			{
-				if (_cameraElevation != value)
-				{
-					_cameraElevation = value;
-					OnPropertyChangedWithValue(value, nameof(CameraElevation));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraStrafe
-		{
-			get => _cameraStrafe;
-			set
-			{
-				if (_cameraStrafe != value)
-				{
-					_cameraStrafe = value;
-					OnPropertyChangedWithValue(value, nameof(CameraStrafe));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraYaw
-		{
-			get => _cameraYaw;
-			set
-			{
-				if (_cameraYaw != value)
-				{
-					_cameraYaw = value;
-					OnPropertyChangedWithValue(value, nameof(CameraYaw));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraPitch
-		{
-			get => _cameraPitch;
-			set
-			{
-				if (_cameraPitch != value)
-				{
-					_cameraPitch = value;
-					OnPropertyChangedWithValue(value, nameof(CameraPitch));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public float CameraRoll
-		{
-			get => _cameraRoll;
-			set
-			{
-				if (_cameraRoll != value)
-				{
-					_cameraRoll = value;
-					OnPropertyChangedWithValue(value, nameof(CameraRoll));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public bool ApplyCameraChange
-		{
-			get => true;
-			// Write-only : this property is used to propage camera changes to the widget
-			set => OnPropertyChangedWithValue(value, nameof(ApplyCameraChange));
-		}
-
-		[DataSourceProperty]
-		public float CameraAnimDuration
-		{
-			get => _cameraAnimDuration;
-			set
-			{
-				if (_cameraAnimDuration != value)
-				{
-					_cameraAnimDuration = value;
-					OnPropertyChangedWithValue(value, nameof(CameraAnimDuration));
-				}
-			}
-		}
-
-		[DataSourceProperty]
-		public bool EnableLight
-		{
-			get
-			{
-				return _enableLight;
-			}
-			set
-			{
-				if (value != _enableLight)
-				{
-					_enableLight = value;
-					OnPropertyChangedWithValue(value, "EnableLight");
-				}
-			}
-		}
 
 		[DataSourceProperty]
 		public string BannerCodeText
@@ -587,6 +442,19 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		{
 			AvailableCharacter = availableCharacter;
 			FillFrom(availableCharacter.Character, seed);
+		}
+
+		/// <summary>Catalog-based fill for contexts without live character objects (e.g. the editor):
+		/// the tableau dresses itself from the character definition through the FakeAgent pipeline.</summary>
+		public void FillFrom(AllianceData.CharacterDefinition definition)
+		{
+			if (definition == null) return;
+
+			CharStringId = definition.Id;
+			IsFemale = definition.IsFemale;
+			BasicCultureObject culture = !string.IsNullOrEmpty(definition.CultureId) && Factions.Instance.AvailableCultures.TryGetValue(definition.CultureId, out culture) ? culture : null;
+			ArmorColor1 = culture?.Color ?? uint.MaxValue;
+			ArmorColor2 = culture?.Color2 ?? uint.MaxValue;
 		}
 
 		public void FillFrom(BasicCharacterObject character, int seed = -1)

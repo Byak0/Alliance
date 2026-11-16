@@ -20,20 +20,6 @@ namespace Alliance.Common.Core.Utils
 			None
 		}
 
-		public static int GetRaceIdSafe(string raceId)
-		{
-			try
-			{
-				return TaleWorlds.Core.FaceGen.GetRaceOrDefault(raceId);
-			}
-			catch (KeyNotFoundException)
-			{
-				// Race not loaded yet or doesn't exist, return invalid ID
-				Log($"Race {raceId} not found", LogLevel.Error);
-				return -1;
-			}
-		}
-
 		public static void DealDamage(this Agent agent, Agent victim, int damage, float magnitude = 50f, bool knockDown = false)
 		{
 			CoreUtils.TakeDamage(victim, agent, damage, magnitude, knockDown);

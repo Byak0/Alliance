@@ -1,4 +1,6 @@
 ﻿using Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels;
+using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +114,9 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 				return;
 			}
 			_isActive = true;
+			// Whether the player already had a team when opening: a team arriving later means a
+			// server-side assignment, not a user-initiated change.
+			_hadTeamAtOpen = GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null;
 			string strValue = MultiplayerOptions.OptionType.GameType.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			SpriteData spriteData = UIResourceManager.SpriteData;
 			TwoDimensionEngineResourceContext resourceContext = UIResourceManager.ResourceContext;
@@ -179,23 +184,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		{
 			_disabledTeams = disabledTeams;
 
-			// Do not open Team Select menu. Instead assign players based on PvC roles.
-			// TODO : make this work with other cases (CvC / PvP)
-			// Also should make a way for admin to switch teams
+			// Scenario acts with TeamAssignment = Auto assign teams server-side at spawn start:
+			// the menu would open on sync (team still null) and never close. This only suppresses
+			// that automatic open - once the server assigned a team, opening manually from the
+			// escape menu stays possible.
+			if (ScenarioManager.Instance?.CurrentAct?.SpawnLogic?.TeamAssignment == TeamAssignmentMode.Auto
+				&& GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team == null) return;
+
 			_toOpen = true;
-			//Team spectator = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.None);
-			//Team attacker = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.Attacker);
-			//Team defender = Mission.Teams.FirstOrDefault((t) => t.Side == BattleSideEnum.Defender);
-			//if (PvCRoles.Instance.Commanders.Contains(GameNetwork.MyPeer.UserName))
-			//{
-			//    OnChangeTeamTo(attacker);
-			//} else if (PvCRoles.Instance.Officers.Contains(GameNetwork.MyPeer.UserName))
-			//{
-			//    OnChangeTeamTo(defender);
-			//} else
-			//{
-			//    OnChangeTeamTo(defender);
-			//}
 		}
 
 		private void MissionLobbyComponentOnFriendsUpdated()
@@ -215,6 +211,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		{
 			if (!_isActive)
 			{
+				return;
+			}
+			// Server-side assignment while the menu is open (TeamAssignment = Auto, admin switch):
+			// close once we got a team - OnMyTeamChange only fires for client-initiated changes.
+			// A menu opened with an existing team (manual change-team) must stay open.
+			if (!_hadTeamAtOpen && GameNetwork.MyPeer?.GetComponent<MissionPeer>()?.Team != null)
+			{
+				OnClose();
 				return;
 			}
 			List<Team> disabledTeams = _multiplayerTeamSelectComponent.GetDisabledTeams();
@@ -276,5 +280,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.Views
 		private bool _isSynchronized;
 
 		private bool _isActive;
+
+		private bool _hadTeamAtOpen;
 	}
 }

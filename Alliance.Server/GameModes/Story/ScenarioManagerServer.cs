@@ -43,8 +43,12 @@ namespace Alliance.Server.GameModes.Story
 		{
 			base.StartScenario(scenario, act, state);
 
-			// If LoadMap enabled or current map is different from act map, start a complete new mission with act settings
-			if (Mission.Current == null || act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
+			// Start a complete new mission with act settings when :
+			// - Current game type is not a scenario
+			// - The act requires a map load
+			// - The act has a different map than the current one
+			bool currentMissionIsScenario = OptionType.GameType.GetStrValue() == "Scenario";
+			if (Mission.Current == null || !currentMissionIsScenario || act.LoadMap || (act.MapID != null && OptionType.Map.GetValueText() != act.MapID))
 			{
 				// If currently in a Scenario, prevent it from changing state
 				Mission.Current?.GetMissionBehavior<ScenarioBehavior>()?.StopScenario();

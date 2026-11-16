@@ -5,6 +5,7 @@ using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Objectives;
 using System.Collections.Generic;
 using TaleWorlds.Core;
+using static Alliance.Common.GameModes.Story.Conditions.Condition;
 using static TaleWorlds.MountAndBlade.MultiplayerOptions;
 
 namespace Alliance.Common.GameModes.Story.Scenarios
@@ -34,8 +35,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 1 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.NoRespawn }
@@ -48,17 +49,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1ActionsDisplayResults = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1ActionActComplete = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_lobby",lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1ActionsDisplayResults, act1ActionActComplete);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1ActionsDisplayResults);
 			Act act1 = new Act(
 				name: new LocalizedString("BFHD act 1 name"),
 				desc: new LocalizedString("BFHD act 1 description"),
@@ -68,21 +67,21 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			TimerObjective act1objective1 = new TimerObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 1 timer objective"),
-				new LocalizedString("BFHD act 1 timer objective desc"),
-				true, true, 3600);
-			KillCountObjective act1objective2 = new KillCountObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 1 killcount objective"),
-				new LocalizedString("BFHD act 1 killcount objective desc"),
-				true, true, 10000);
-			KillAllObjective act1objective3 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("BFHD act 1 KillAllObjective"),
-				new LocalizedString("BFHD act 1 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 1 timer objective"),
+			new LocalizedString("BFHD act 1 timer objective desc"),
+			true, true, new TimerCondition { WaitTime = 3600, TypeOfTimer = TimerCondition.TimerType.TriggerOnce });
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 1 killcount objective"),
+			new LocalizedString("BFHD act 1 killcount objective desc"),
+			true, true, new KillCountCondition(SideType.Attacker, 10000));
+		Objective act1objective3 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("BFHD act 1 KillAllObjective"),
+			new LocalizedString("BFHD act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			act1.Objectives.Add(act1objective3);
@@ -100,8 +99,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 3, 1 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.MaxLivesPerPlayer,
 					RespawnStrategy.NoRespawn }
@@ -109,13 +108,11 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act2ActionsDisplayResults = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act2ActionActComplete = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new StartGameAction("bfhd_helms_deep_lobby", lobbyGameModeSettings)
 			};
-			VictoryLogic act2VictoryLogic = new VictoryLogic(act2ActionsDisplayResults, act2ActionActComplete);
+			VictoryLogic act2VictoryLogic = new VictoryLogic(act2ActionsDisplayResults);
 			Act act2 = new Act(
 				name: new LocalizedString("BFHD act2 name"),
 				desc: new LocalizedString("BFHD act2 desc"),
@@ -125,16 +122,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act2SpawnLogic,
 				victoryLogic: act2VictoryLogic
 				);
-			KillAllObjective act2objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("BFHD act 2 KillAllObjective"),
-				new LocalizedString("BFHD act 2 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act2objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("BFHD act 2 KillAllObjective2"),
-				new LocalizedString("BFHD act 2 KillAllObjective2 desc"),
-				true, false);
+		Objective act2objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("BFHD act 2 KillAllObjective"),
+			new LocalizedString("BFHD act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act2objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("BFHD act 2 KillAllObjective2"),
+			new LocalizedString("BFHD act 2 KillAllObjective2 desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act2.Objectives.Add(act2objective1);
 			act2.Objectives.Add(act2objective2);
 			bfhd.Acts.Add(act2);
@@ -167,8 +164,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 1500 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.TagsThenFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Zones },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -181,16 +178,14 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 1))
 			};
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("GP act 1 name"),
 				desc: new LocalizedString("GP act 1 description"),
@@ -200,16 +195,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			KillAllObjective act1objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 1 KillAllObjective"),
-				new LocalizedString("GP act 1 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act1objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 1 CaptureObjective"),
-				new LocalizedString("GP act 1 CaptureObjective desc"),
-				true, false, "farm");
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 1 KillAllObjective"),
+			new LocalizedString("GP act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 1 CaptureObjective"),
+			new LocalizedString("GP act 1 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("farm", SideType.Attacker));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			Test.Acts.Add(act1);
@@ -231,8 +226,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -240,17 +235,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act2DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act2CompletedActions = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 2))
 			};
 
-			VictoryLogic act2VictoryLogic = new VictoryLogic(act2DisplayResultsActions, act2CompletedActions);
+			VictoryLogic act2VictoryLogic = new VictoryLogic(act2DisplayResultsActions);
 			Act act2 = new Act(
 				name: new LocalizedString("GP act 2 name"),
 				desc: new LocalizedString("GP act 2 description"),
@@ -260,16 +253,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act2SpawnLogic,
 				victoryLogic: act2VictoryLogic
 				);
-			KillAllObjective act2objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 2 KillAllObjective"),
-				new LocalizedString("GP act 2 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act2objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 2 CaptureObjective"),
-				new LocalizedString("GP act 2 CaptureObjective desc"),
-				true, false, "camp");
+		Objective act2objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 2 KillAllObjective"),
+			new LocalizedString("GP act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act2objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 2 CaptureObjective"),
+			new LocalizedString("GP act 2 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("camp", SideType.Attacker));
 			act2.Objectives.Add(act2objective1);
 			act2.Objectives.Add(act2objective2);
 			Test.Acts.Add(act2);
@@ -290,8 +283,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -299,17 +292,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act3DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act3CompletedActions = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Defender),
 					new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings),
 					new StartScenarioAction(scenarioId, 3))
 			};
 
-			VictoryLogic act3VictoryLogic = new VictoryLogic(act3DisplayResultsActions, act3CompletedActions);
+			VictoryLogic act3VictoryLogic = new VictoryLogic(act3DisplayResultsActions);
 			Act act3 = new Act(
 				name: new LocalizedString("GP act 3 name"),
 				desc: new LocalizedString("GP act 3 description"),
@@ -319,16 +310,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act3SpawnLogic,
 				victoryLogic: act3VictoryLogic
 				);
-			KillAllObjective act3objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 3 KillAllObjective"),
-				new LocalizedString("GP act 3 KillAllObjective desc"),
-				true, false);
-			CaptureObjective act3objective2 = new CaptureObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 3 CaptureObjective"),
-				new LocalizedString("GP act 3 CaptureObjective desc"),
-				true, false, "castle");
+		Objective act3objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 3 KillAllObjective"),
+			new LocalizedString("GP act 3 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act3objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 3 CaptureObjective"),
+			new LocalizedString("GP act 3 CaptureObjective desc"),
+			true, false, new ZoneCapturedCondition("castle", SideType.Attacker));
 			act3.Objectives.Add(act3objective1);
 			act3.Objectives.Add(act3objective2);
 			Test.Acts.Add(act3);
@@ -349,8 +340,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 1, 0 },
 				keepLivesFromPreviousAct: true,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Banners },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -358,14 +349,12 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act4DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act4CompletedActions = new List<ActionBase>()
-			{
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
 				new StartGameAction("FrenchCastlePathEdC", lobbyGameModeSettings)
 			};
 
-			VictoryLogic act4VictoryLogic = new VictoryLogic(act4DisplayResultsActions, act4CompletedActions);
+			VictoryLogic act4VictoryLogic = new VictoryLogic(act4DisplayResultsActions);
 			Act act4 = new Act(
 				name: new LocalizedString("GP act 4 name"),
 				desc: new LocalizedString("GP act 4 description"),
@@ -375,16 +364,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act4SpawnLogic,
 				victoryLogic: act4VictoryLogic
 				);
-			KillAllObjective act4objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GP act 4 KillAllObjective"),
-				new LocalizedString("GP act 4 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act4objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GP act 4 KillAllObjective2"),
-				new LocalizedString("GP act 4 KillAllObjective2 desc"),
-				true, false);
+		Objective act4objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GP act 4 KillAllObjective"),
+			new LocalizedString("GP act 4 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act4objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GP act 4 KillAllObjective2"),
+			new LocalizedString("GP act 4 KillAllObjective2 desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act4.Objectives.Add(act4objective1);
 			act4.Objectives.Add(act4objective2);
 			Test.Acts.Add(act4);
@@ -417,8 +406,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 200, 4000 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.OnlyTags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Spawnpoint },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.MaxLivesPerTeam,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -436,17 +425,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings),
 					new StartGameAction("bfhd_helms_deep_v2", lobbyGameModeSettings2))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("GdCFinal act 1 name"),
 				desc: new LocalizedString("GdCFinal act 1 description"),
@@ -456,16 +443,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			TimerObjective act1objective1 = new TimerObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("GdCFinal act 1 TimerObjective"),
-				new LocalizedString("GdCFinal act 1 TimerObjective desc"),
-				true, false, 3600);
-			KillAllObjective act1objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("GdCFinal act 1 KillAllObjective"),
-				new LocalizedString("GdCFinal act 1 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("GdCFinal act 1 TimerObjective"),
+			new LocalizedString("GdCFinal act 1 TimerObjective desc"),
+			true, false, new TimerCondition { WaitTime = 3600, TypeOfTimer = TimerCondition.TimerType.TriggerOnce });
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("GdCFinal act 1 KillAllObjective"),
+			new LocalizedString("GdCFinal act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenarGdCFinal.Acts.Add(act1);
@@ -499,8 +486,8 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				maxLives: new int[] { 0, 1000 },
 				keepLivesFromPreviousAct: false,
 				locationStrategies: new LocationStrategy[] {
-					LocationStrategy.OnlyTags,
-					LocationStrategy.TagsThenFlags },
+					LocationStrategy.Spawnpoint,
+					LocationStrategy.Zones },
 				respawnStrategies: new RespawnStrategy[] {
 					RespawnStrategy.NoRespawn,
 					RespawnStrategy.MaxLivesPerTeam }
@@ -518,17 +505,15 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 
 			List<ActionBase> act1DisplayResultsActions = new List<ActionBase>()
 			{
-				new ShowResultScreenAction()
-			};
-			List<ActionBase> act1CompletedActions = new List<ActionBase>()
-			{
-				new ConditionalAction(
+				new ShowResultScreenAction(),
+				new WaitAction() { Duration = new LiteralValue<float>(15f) },
+				new IfElseAction(
 					new VictoryCondition(BattleSideEnum.Attacker),
 					new StartGameAction("Amazonia", lobbyGameModeSettings),
 					new StartGameAction("Amazonia", lobbyGameModeSettings2))
 			};
 
-			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions, act1CompletedActions);
+			VictoryLogic act1VictoryLogic = new VictoryLogic(act1DisplayResultsActions);
 			Act act1 = new Act(
 				name: new LocalizedString("OrgaDefault act 1 name"),
 				desc: new LocalizedString("OrgaDefault act 1 description"),
@@ -538,16 +523,16 @@ namespace Alliance.Common.GameModes.Story.Scenarios
 				spawnLogic: act1SpawnLogic,
 				victoryLogic: act1VictoryLogic
 				);
-			KillAllObjective act1objective1 = new KillAllObjective(
-				BattleSideEnum.Defender,
-				new LocalizedString("OrgaDefault act 1 KillAllObjective"),
-				new LocalizedString("OrgaDefault act 1 KillAllObjective desc"),
-				true, false);
-			KillAllObjective act1objective2 = new KillAllObjective(
-				BattleSideEnum.Attacker,
-				new LocalizedString("OrgaDefault act 2 KillAllObjective"),
-				new LocalizedString("OrgaDefault act 2 KillAllObjective desc"),
-				true, false);
+		Objective act1objective1 = new Objective(
+			BattleSideEnum.Defender,
+			new LocalizedString("OrgaDefault act 1 KillAllObjective"),
+			new LocalizedString("OrgaDefault act 1 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Attacker));
+		Objective act1objective2 = new Objective(
+			BattleSideEnum.Attacker,
+			new LocalizedString("OrgaDefault act 2 KillAllObjective"),
+			new LocalizedString("OrgaDefault act 2 KillAllObjective desc"),
+			true, false, new SideEliminatedCondition(SideType.Defender));
 			act1.Objectives.Add(act1objective1);
 			act1.Objectives.Add(act1objective2);
 			scenarOrgaDefault.Acts.Add(act1);

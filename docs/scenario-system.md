@@ -2,19 +2,23 @@
 
 This document explains how Alliance scenarios are authored, loaded and played, and how the internal runtime structure is organized.
 
-The Scenario game mode lets creators build multi-act scripted missions with custom objectives, spawn rules, events, victory logic and transitions. Scenarios are stored as XML files and can be shipped by Alliance or by any enabled multiplayer module.
+The Scenario game mode lets creators build multi-act scripted missions with custom objectives, spawn rules, events, victory logic, cinematics and transitions. Scenarios are stored as XML files and can be shipped by Alliance or by any enabled multiplayer module.
+
+Cinematics (keyframed cutscenes playable from scenarios or scene entities) are documented separately in `docs/cinematics.md`.
 
 ## Source-of-truth files
 
 | Area | Main files |
 |---|---|
-| Data model | `Alliance.Common/GameModes/Story/Models/Scenario.cs`, `Act.cs`, `SpawnLogic.cs`, `VictoryLogic.cs`, `ConditionalActionStruct.cs` |
+| Data model | `Alliance.Common/GameModes/Story/Models/Scenario.cs`, `Act.cs`, `SpawnLogic.cs`, `VictoryLogic.cs`, `ScriptedEvent.cs`, `ScenarioVariable.cs` |
 | Serialization | `Alliance.Common/GameModes/Story/Utilities/ScenarioSerializer.cs` |
 | Runtime manager | `Alliance.Common/GameModes/Story/ScenarioManager.cs`, `Alliance.Server/GameModes/Story/ScenarioManagerServer.cs`, `Alliance.Client/GameModes/Story/ScenarioPlayer.cs` |
 | Game mode behaviors | `Alliance.Server/GameModes/Story/ScenarioGameMode.cs`, `Alliance.Client/GameModes/Story/ScenarioGameMode.cs` |
 | Server state machine | `Alliance.Server/GameModes/Story/Behaviors/ScenarioBehavior.cs` |
 | Spawn system | `Alliance.Common/GameModes/Story/Models/SpawnLogic.cs`, `Alliance.Server/GameModes/Story/Behaviors/ScenarioSpawningBehavior.cs`, `Alliance.Server/GameModes/Story/Behaviors/SpawningStrategy/SpawningStrategyBase.cs`, `Alliance.Server/GameModes/Story/Behaviors/ScenarioDefaultSpawnFrameBehavior.cs` |
 | Objectives, actions, conditions | `Alliance.Common/GameModes/Story/Objectives/`, `Alliance.Common/GameModes/Story/Actions/`, `Alliance.Common/GameModes/Story/Conditions/` |
+| Functions and expressions | `Alliance.Common/GameModes/Story/Functions/` |
+| Cinematics | `Alliance.Common/Extensions/Cinematics/` (see `docs/cinematics.md`) |
 | Client synchronization | `Alliance.Client/GameModes/Story/Handlers/StoryHandler.cs`, `Alliance.Common/GameModes/Story/NetworkMessages/` |
 | Editor | `Alliance.Editor/GameModes/Story/`, `Alliance.Editor/SubModule.cs` |
 | Bundled scenarios | `Alliance.Common/_Module/Scenarios/` |
@@ -83,8 +87,11 @@ State transitions are synchronized to clients with `UpdateScenarioMessage`. The 
 
 - `InitScenarioMessage` selects the same local `Scenario` and `Act` on the client;
 - `UpdateScenarioMessage` updates the client act state and timer;
+- `WaitingScreenStateMessage` drives the act-start waiting screen (visibility, ready/total player counter and the scene-holding mode used until an intro cinematic starts, see *Act start flow*);
 - `ObjectivesProgressMessage` synchronizes objective counters and mission timer data;
-- `SyncScenarioLivesMessage` updates remaining lives in the client scenario state.
+- `SyncScenarioLivesMessage` updates remaining lives in the client scenario state;
+- `ExecuteActionMessage` runs the client-side part of an action the server executed (fields marked `[SyncToClient]` are injected first);
+- `PlayCinematicMessage` / `StopCinematicMessage` / `SetCinematicTimeMessage` drive client-side cinematic playback (see `docs/cinematics.md`).
 
 ## Data model
 
@@ -98,6 +105,8 @@ A scenario is the top-level XML root.
 | `Version`, `LastEditedAt`, `LastEditedBy` | Editor metadata updated on save. |
 | `Name`, `Description` | Localized text displayed to players and tools. |
 | `Acts` | Ordered list of playable scenario chapters. |
+| `Variables` | Global scenario variables available to conditions, actions and ValueSources. |
+| `Cinematics` | Cinematics defined on this scenario, playable by name through `PlayCinematicAction` (see `docs/cinematics.md`). |
 
 ### `Act`
 
@@ -124,21 +133,60 @@ The settings contain:
 
 ### `SpawnLogic`
 
-`SpawnLogic` defines how players and AI enter the act.
+`SpawnLogic` defines how players and AI enter the act. The editor groups it into clear categories:
+**Team assignment** → **Character assignment** → **Start flow** → per-side initial spawn / respawn.
 
 | Field group | Purpose |
 |---|---|
-| `PlayerSpawnMenu` | Optional team/formation/character selection menu. If configured, it is broadcast to clients at spawn session start. |
-| `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Fallback characters when no player spawn menu assignment is available. |
-| `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote`. |
-| `TimeBeforeSpawn`, `TimeBeforeRespawn` | Initial spawn preparation delay and respawn delay. |
-| `DefaultSpawnTagAttacker`, `DefaultSpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
-| `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `OnlyTags`, `OnlyFlags`, `TagsThenFlags` or `PlayerChoice`. |
+| `TeamAssignment` | `PlayerSelection` = players choose their side in the team selection flow. `Auto` = the server assigns teams at spawn start, using `TeamAutoRule`: `Balanced` (sides evened out, difference of at most one), `AllAttackers` or `AllDefenders`. |
+| `CharacterAssignment` | `PlayerSelection` = players pick formation/character in the `PlayerSpawnMenu` (with `OfficerSelection` strategy). `Auto` = no menus, characters assigned by `CharacterAutoRule`: `DefaultUnits` (the per-side default units) or `RandomFromMenu` (random pick from the player's side pool in the menu, officers excluded). |
+| `PlayerSpawnMenu` | Team/formation/character menu. Used in `PlayerSelection` mode, and as the character pool for `RandomFromMenu`. |
+| `DefaultCharacterAttacker`, `DefaultCharacterDefender` | Characters used by the `DefaultUnits` auto rule (only visible for that rule in the editor). |
+| `OfficerSelectionStrategy` | `NoOfficer`, `RandomOfficer` or `PlayerVote` (PlayerSelection mode only). |
+| `IntroCinematicName` | Optional intro cinematic (referenced by name, defined on the scenario) played when the act starts, after teams and characters are set and agents spawned. The scene stays hidden behind the waiting screen until it starts; set its `FadeOutSec` to 0 to cut straight to the player instead of fading back to black at the end. |
+| `TimeBeforeSpawn`, `TimeWhenSpawnIsAllowed` | Selection/spawn window timings (Start flow). |
+| `SpawnTagAttacker`, `SpawnTagDefender` | Scene tags used to select spawn points for each side. Empty tags fall back to `attacker` and `defender`. |
+| `LocationStrategyAttacker`, `LocationStrategyDefender` | Spawn location strategy: `Spawnpoint` (random matching spawnpoint entity), `Banners` (allied banner) or `Zones` (random zone from the configured list). |
 | `RespawnStrategyAttacker`, `RespawnStrategyDefender` | Respawn policy: `NoRespawn`, `MaxLivesPerTeam` or `MaxLivesPerPlayer`. |
 | `MaxLivesAttacker`, `MaxLivesDefender` | Lives/tickets used by the selected respawn strategy. |
 | `KeepLivesFromPreviousAct` | Adds the new act lives to remaining lives instead of resetting them. |
 
 Spawn points are read from scene entities tagged `spawnpoint`. Additional tags select a side or custom spawn group. Parent zones tagged `starting` are preferred for initial spawn. Spawn points tagged `exclude_mounted` are penalized for mounted agents.
+
+#### Act start flow
+
+`ScenarioView` owns the whole act-start presentation through a single Gauntlet layer (order 21, so
+the menus render above it): the full-black waiting screen (black quad + ready/total player
+counter), the act title/description, the objectives board (Tab), the lives display and the result
+screen. While the server is in
+`AwaitingPlayerJoin`, clients show the black screen with the counter, driven by
+`WaitingScreenStateMessage` (routed through `StoryHandler`). Once enough players are loaded: team
+assignment runs (menu selection or auto rule), then character assignment (menu session or auto
+rule), then the act starts and the optional intro cinematic is played to everyone — combine it
+with viewer-relative camera targets so the cinematic ends on each player's own character (see
+`docs/cinematics.md`).
+
+When the act has an intro cinematic, the black screen stays visible after the wait is over (holding
+mode, without the counter) so the scene stays hidden until the cinematic starts: the introduction is
+the cinematic, not a free-camera view of the map. The team selection, player spawn and escape
+menus render on top of the black screen, so the whole pre-game flow happens behind it. The screen is
+released
+when the cinematic starts (the cinematic overlay takes over, starting fully black for a seamless
+handoff), and a server-side safety net releases it a few seconds later if a client never received
+the cinematic (e.g. restricted audience).
+
+The act is *revealed* to the player when the intro cinematic ends - or right after the act starts
+when there is none: that is when the act title/description is displayed and the Tab board becomes
+available. Nothing of the scenario UI shows over the black screen before that. Acts without an
+intro cinematic keep the old behavior: the black screen disappears as soon as players are ready.
+
+Two reference flows:
+1. *Cinematic-first*: waiting screen → `TeamAssignment = Auto` + `CharacterAssignment = Auto`
+   (everything assigned in the background, behind the held black screen) → intro cinematic ending
+   on each player's character → control handed over, act title displayed.
+2. *Menu-driven*: waiting screen → team selection → spawn menu (characters, officers) → optional
+   intro cinematic → gameplay. With an intro cinematic configured, all of it happens behind the
+   held black screen, with the menus on top.
 
 ## Objectives and victory
 
@@ -165,7 +213,7 @@ Available objective types:
 
 ## Scripted events
 
-Scripted events are represented by `ConditionalActionStruct`:
+Scripted events are represented by `ScriptedEvent`:
 
 | Field | Purpose |
 |---|---|
@@ -178,7 +226,7 @@ Scripted events are represented by `ConditionalActionStruct`:
 
 Act-level `ConditionalActions` are registered through `Act.RegisterObjectives()` together with objectives, then ticked while the act state is after `SpawningParticipants`.
 
-Map makers can also place `AL_TriggerAction` on a scene entity. This script stores a compressed serialized `ConditionalActionStruct` in editor-safe chunks and executes it independently of act-level events. It is useful for local map interactions such as traps, toggles, sounds or object-triggered logic.
+Map makers can also place `AL_TriggerAction` on a scene entity. This script stores a compressed serialized `ScriptedEvent` in editor-safe chunks and executes it independently of act-level events. It is useful for local map interactions such as traps, toggles, sounds or object-triggered logic. Scripted events tick **server-side only**; actions that need a client-side effect use the `[SyncToClient]` + `ExecuteActionMessage` flow.
 
 ## Conditions
 
@@ -187,7 +235,8 @@ Available condition types:
 | Condition | Purpose |
 |---|---|
 | `AgentDeathCondition` | Checks deaths of a configured character, with optional repeat behavior. |
-| `AgentEnteredZoneCondition` | Checks whether matching agents entered a `SerializableZone`; can filter by side, target type and count. |
+| `AgentCountCondition` | Checks whether a matching number of agents are present, with side and target-type filters. |
+| `ExpressionCondition` | Evaluates a boolean expression tree built from functions (see below). |
 | `ObjectUsedCondition` | Listens to `CS_UsableObject` usage by object ID, optionally restricted to the parent entity hierarchy. |
 | `TimerCondition` | Becomes true after a delay, optionally repeating at an interval. |
 | `VictoryCondition` | Checks the current act winner; useful in victory/completion action branches. |
@@ -195,31 +244,45 @@ Available condition types:
 Shared condition enums include:
 
 - `TargetType`: `All`, `Bots`, `Players`, `Officers`;
-- `SideType`: `All`, `Defender`, `Attacker`;
-- `MoveOrderType`: `Charge`, `Move`, `Retreat`, `Stop`, `Advance`, `FallBack`.
+- `SideType`: `All`, `Defender`, `Attacker`.
+
+### Functions and expressions
+
+`ExpressionCondition` evaluates function trees from `Alliance.Common/GameModes/Story/Functions/` (`AgentFunctions`, `EntityFunctions`, `ZoneFunctions`, `IntegerFunctions`, `FloatFunctions`, `BooleanFunctions`, `StringFunctions`, `Vec3Functions`). Functions can query agents, zones and entities — for example counting agents matching filters, or testing an entity variable — without adding a one-off condition class per comparison.
 
 ## Actions
 
-Actions derive from `ActionBase`. Some actions have common behavior, while others are replaced with client-side or server-side implementations during deserialization through `ActionFactory`.
+Actions derive from `ActionBase`. Side-specific implementations are selected at load time through `[OverrideAction]` and `ActionOverrideRegistry`: a server or client subclass annotated with `[OverrideAction(typeof(BaseAction))]` replaces the base instance in that process (e.g. `Server_PlayCinematicAction`).
 
 | Action | Purpose |
 |---|---|
-| `ConditionalAction` | Executes one list of actions when conditions are true, otherwise another list; supports delay for true actions. |
+| `IfElseAction` | Executes one list of actions when conditions are true, otherwise another list; supports delay for true actions. |
+| `WaitAction` | Pauses the action pipeline for a duration. |
 | `ShowMessageAction` | Displays localized information to the client. |
 | `ShowResultScreenAction` | Displays win/loss result text; implemented on the client by `Client_ShowResultScreenAction`. |
 | `StartGameAction` | Starts another game mode/map from the server. |
 | `StartScenarioAction` | Starts a scenario act by scenario ID and zero-based act index; an empty scenario ID reuses the current scenario. |
 | `EndScenarioAction` | Ends the scenario flow and starts the configured post-match transition. |
+| `PlayCinematicAction` | Plays a cinematic by scenario Id or inline copy (see `docs/cinematics.md`). |
 | `SpawnAgentAction` | Spawns one or more agents of a character at a zone. |
 | `SpawnFormationAction` | Spawns a configured formation with movement and arrangement orders. |
-| `DamageAgentInZoneAction` | Damages matching agents in a zone. |
-| `MortalityStateZoneAction` | Changes mortality state for matching agents in a zone. |
+| `SpawnEntityAction` | Spawns a prefab entity at a precise frame, optionally capturing it into a variable. |
+| `MoveEntityAction` | Moves an entity to a destination frame (synced to clients). |
+| `DeleteEntityAction` | Deletes an entity (synced to clients). |
 | `ShowOrHideEntitiesAction` | Shows, hides or toggles entities by tag, optionally restricted to a parent entity. |
-| `TeleportAgentAction` | Teleports matching agents from one zone to another. |
-| `VOIPRangeInZoneAction` | Changes VOIP range for matching agents in a zone. |
+| `DamageAgentAction` | Deals damage to matching agents. |
+| `TeleportAgentAction` | Teleports matching agents to a destination. |
+| `SetAgentMortalityAction` | Changes the mortality state of matching agents. |
+| `SetVoipRangeAction` | Changes the VOIP range for matching agents. |
+| `SetZoneEnabledAction` | Enables or disables a named zone. |
+| `SetGlobalVariableAction` | Sets a scenario variable. |
+| `IncrementGlobalVariableAction` | Increments a scenario variable by an amount. |
+| `ResetGlobalVariableAction` | Resets a scenario variable to its default. |
+| `ToggleVariableAction` | Toggles a boolean scenario variable. |
 | `PlaySoundAction` | Plays a sound or music event by name/category. |
+| `SetAtmosphereAction` | Changes the scene atmosphere (lighting/weather/time of day) by name; the list of atmospheres comes from every active module's `Atmospheres` folder. |
 
-When adding a new action type in code, add it to `ActionFactory` and to the client/server factories when it needs side-specific behavior.
+When adding a new action type in code, create the common class in `Alliance.Common/GameModes/Story/Actions/` and, when it needs side-specific behavior, a `Server_X`/`Client_X` subclass annotated with `[OverrideAction]`.
 
 ## Creating a custom playable scenario
 
@@ -351,9 +414,6 @@ When adding new scenario building blocks:
 1. Add common serializable data to `Alliance.Common/GameModes/Story/`.
 2. Decorate editor-facing fields with `[ConfigProperty]` where appropriate.
 3. For actions, implement common state in `Alliance.Common/GameModes/Story/Actions/`.
-4. If the action needs runtime behavior only on server or client, add the concrete implementation under the matching project and register it in `Server_ActionFactory` or `Client_ActionFactory`.
+4. If the action needs runtime behavior only on server or client, add a `Server_`/`Client_` subclass in the matching project, annotated with `[OverrideAction(typeof(...))]`.
 5. Keep networked behavior server-authoritative; synchronize clients with explicit messages if UI or state must update.
 6. Test XML serialization/deserialization with existing scenario files.
-
-
-

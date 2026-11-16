@@ -8,6 +8,7 @@ using Alliance.Common.GameModes.PvC;
 using Alliance.Common.GameModes.Siege;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Server.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
@@ -17,11 +18,12 @@ namespace Alliance.Server.GameModes.Story.Actions
 	/// <summary>
 	/// Action for starting a game.
 	/// </summary>
+	[OverrideAction(typeof(StartGameAction))]
 	public class Server_StartGameAction : StartGameAction
 	{
 		public Server_StartGameAction() : base() { }
 
-		public override void Execute()
+		public override ActionTask Execute(VariableStore context)
 		{
 			GameModeStarter.Instance.StartMission(Settings);
 
@@ -54,6 +56,7 @@ namespace Alliance.Server.GameModes.Story.Actions
 
 			Log(log, LogLevel.Information);
 			SendMessageToAll(log);
+			return ActionTask.CompletedTask;
 		}
 	}
 }

@@ -52,7 +52,7 @@
 											<Children>
 												<HintWidget DataSource="{Hint}" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Command.HoverBegin="ExecuteBeginHint" Command.HoverEnd="ExecuteEndHint" />
 												<!-- Display faction icon using our custom BannerWidget -->
-												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode"/>
+												<BannerWidget DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" CultureID="@CultureCode" Brush="ButtonSimpleBrush"/>
 											</Children>
 										</MultiplayerLobbyClassFilterFactionItemButtonWidget>
 									</ItemTemplate>

@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
@@ -9,7 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.ObjectSystem;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages

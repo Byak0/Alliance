@@ -9,7 +9,6 @@ namespace Alliance.Common.GameModes.Story.Actions
 	[Serializable]
 	public class EndScenarioAction : ActionBase
 	{
-		public override void Execute() { }
 	}
 }
 

@@ -1,4 +1,4 @@
-﻿using TaleWorlds.Library;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
@@ -9,7 +9,7 @@ namespace Alliance.Common.Extensions.Audio.NetworkMessages.FromServer
     {
         static readonly CompressionInfo.Integer SoundIndexCompressionInfo = new CompressionInfo.Integer(0, 2000, true);
         static readonly CompressionInfo.Integer MaxHearingDistanceCompressionInfo = new CompressionInfo.Integer(-1, 10000, true);
-        static readonly CompressionInfo.Float VolumeCompressionInfo = new CompressionInfo.Float(0f, 1f, 2);
+        static readonly CompressionInfo.Float VolumeCompressionInfo = new CompressionInfo.Float(0f, 2f, 8);
 
         public int SoundIndex { get; private set; }
         public float Volume { get; private set; }

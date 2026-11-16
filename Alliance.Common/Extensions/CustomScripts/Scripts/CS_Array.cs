@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
+﻿#if !SERVER
+using Alliance.Common.Core.Utils;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -290,3 +291,4 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		}
 	}
 }
+#endif

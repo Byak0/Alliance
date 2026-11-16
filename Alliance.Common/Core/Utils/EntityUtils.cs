@@ -139,6 +139,7 @@ namespace Alliance.Common.Core.Utils
 			}
 		}
 
+#if !SERVER
 		/// <summary>
 		/// Try to create an editable copy of a Game Entity.
 		/// </summary>
@@ -181,12 +182,16 @@ namespace Alliance.Common.Core.Utils
 				return false;
 			}
 		}
+#endif
 
 		/// <summary>
 		/// Return entity local size (max - min); falls back to (1,1,1).
 		/// </summary>
 		public static Vec3 GetLocalSizeOrFallback(GameEntity entity)
 		{
+#if SERVER
+			return new Vec3(1f, 1f, 1f);
+#else
 			try
 			{
 				Vec3 min = entity.GetBoundingBoxMin();
@@ -203,6 +208,7 @@ namespace Alliance.Common.Core.Utils
 				Log($"[EditorUtils] Failed to get local size of entity: {ex.Message}. Using default size.", LogLevel.Error);
 				return new Vec3(1f, 1f, 1f);
 			}
+#endif
 		}
 
 		/// <summary>

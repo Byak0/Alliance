@@ -8,6 +8,21 @@
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 			<Children>
 
+				<!-- Waiting screen (full-black, server-driven; hides the scene until players are ready or the intro cinematic starts) -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsBlackoutVisible">
+					<Children>
+						<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="WhiteSquareBrush" Brush.Color="#000000FF" />
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsWaiting">
+							<Children>
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center"
+											Text="@WaitingTitle" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFFFFFFF" Brush.FontSize="36" />
+							<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80"
+										Text="@WaitingCounter" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFDDDDDD" Brush.FontSize="28" />
+							</Children>
+						</Widget>
+					</Children>
+				</Widget>
+
 				<!-- Scenario intro -->
 				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowIntro">
 					<Children>

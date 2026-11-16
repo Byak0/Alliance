@@ -1,4 +1,6 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 
 namespace Alliance.Common.GameModes.Story.Actions
@@ -23,6 +25,6 @@ namespace Alliance.Common.GameModes.Story.Actions
 
 		public StartGameAction() { }
 
-		public override void Execute() { }
+		public override ActionTask Execute(VariableStore context) => ActionTask.CompletedTask;
 	}
 }

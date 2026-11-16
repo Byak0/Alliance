@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using TaleWorlds.Core;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 
 namespace Alliance.Common.Core.Configuration.Models
 {

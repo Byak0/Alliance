@@ -1,9 +1,19 @@
-﻿using Alliance.Common.Extensions;
+using Alliance.Common.Extensions;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.AnimationPlayer;
+using Alliance.Client.GameModes.Story.Views;
+using Alliance.Common.Extensions.Cinematics.NetworkMessages.FromServer;
 using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.Extensions.Cinematics.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
+using Alliance.Common.Extensions.Cinematics;
 using System;
+using System.Collections.Generic;
+using TaleWorlds.Engine;
+using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Utilities.Logger;
 
@@ -16,7 +26,34 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			reg.Register<InitScenarioMessage>(HandleServerEventInitScenarioMessage);
 			reg.Register<UpdateScenarioMessage>(HandleServerEventUpdateScenarioMessage);
 			reg.Register<ObjectivesProgressMessage>(HandleServerEventObjectivesProgressMessage);
+			reg.Register<SyncObjectiveProgressMessage>(HandleSyncObjectiveProgress);
 			reg.Register<SyncScenarioLivesMessage>(HandleServerEventSyncScenarioLivesMessage);
+			reg.Register<ExecuteActionMessage>(HandleExecuteActionMessage);
+			reg.Register<SetAtmosphereMessage>(HandleSetAtmosphereMessage);
+			reg.Register<PlayCinematicMessage>(HandlePlayCinematicMessage);
+			reg.Register<StopCinematicMessage>(HandleStopCinematicMessage);
+			reg.Register<SetCinematicTimeMessage>(HandleSetCinematicTimeMessage);
+			reg.Register<WaitingScreenStateMessage>(HandleWaitingScreenStateMessage);
+			reg.Register<SyncFakeAgentGroups>(HandleSyncFakeAgentGroups);
+		}
+
+		/// <summary>Late joiners receive a snapshot of the persistent staged-extras groups standing in
+		/// the world (definition + current frame). Locally staged keys (the client played the cinematic
+		/// itself) are skipped to avoid duplicates.</summary>
+		public void HandleSyncFakeAgentGroups(SyncFakeAgentGroups message)
+		{
+			Scene scene = Mission.Current?.Scene;
+			if (scene == null) return;
+
+			foreach (FakeAgentGroupData group in message.Groups)
+			{
+				if (string.IsNullOrEmpty(group?.Key) || FakeAgentStore.Has(group.Key)) continue;
+				MatrixFrame frame = MatrixFrame.Identity;
+				frame.origin = new Vec3(group.X, group.Y, group.Z);
+				frame.rotation.ApplyEulerAngles(new Vec3(0f, 0f, group.Yaw));
+				List<FakeAgent> fakes = CinematicAgentGroup.SpawnFormation(scene, group.Key, group.CharacterId, group.CultureId, group.Count, group.Layout, group.Rows, group.Spacing, group.WeaponsDrawn, frame, group.SwapColors);
+				Log($"Synced persistent staged extras '{group.Key}' ({fakes.Count} agents).", LogLevel.Debug);
+			}
 		}
 
 		public void HandleServerEventInitScenarioMessage(InitScenarioMessage message)
@@ -78,10 +115,134 @@ namespace Alliance.Client.GameModes.Story.Handlers
 			}
 		}
 
+		public void HandleSyncObjectiveProgress(SyncObjectiveProgressMessage message)
+		{
+			var view = Mission.Current.GetMissionBehavior<Views.ScenarioView>();
+			if (view != null)
+			{
+				view.GetDataSource()?.SetSyncedProgress(message.Objectives);
+			}
+		}
+
 		public void HandleServerEventSyncScenarioLivesMessage(SyncScenarioLivesMessage message)
 		{
 			ScenarioClientBehavior scenarioClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
 			scenarioClientBehavior?.UpdateLives(message.RespawnStrategy, message.TeamRemainingLives, message.PlayerRemainingLives);
+		}
+
+		/// <summary>Replays the atmosphere the server had when this client joined the mission.</summary>
+		public void HandleSetAtmosphereMessage(SetAtmosphereMessage message)
+		{
+			SetAtmosphereAction.ApplyAtmosphere(message.AtmosphereName);
+		}
+
+		public void HandleExecuteActionMessage(ExecuteActionMessage message)
+		{
+			try
+			{
+				ActionBase action = ActionBase.FindById(message.ScopeId, message.ActionId);
+				if (action == null)
+				{
+					Log($"ExecuteActionMessage: no action with scope {message.ScopeId}, id {message.ActionId}", LogLevel.Warning);
+					return;
+				}
+				action.InjectSyncData(message.DynamicValues);
+				action.ExecuteClient();
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to execute action: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandlePlayCinematicMessage(PlayCinematicMessage message)
+		{
+			try
+			{
+				Mission.Current?.GetMissionBehavior<Views.ScenarioView>()?.SetWaitingState(false, false, 0, 0);
+
+				Cinematic cinematic = message.UseActionRef
+					? TryGetCinematicFromAction(message.ScopeId, message.ActionId)
+					: ScenarioManager.Instance.CurrentScenario?.Cinematics?.Find(c => c != null && c.Name == message.CinematicName);
+				if (cinematic == null)
+				{
+					Log($"PlayCinematicMessage: cinematic not found ({(message.UseActionRef ? $"scope={message.ScopeId}, action={message.ActionId}" : $"'{message.CinematicName}'")}).", LogLevel.Warning);
+					return;
+				}
+
+				// The server-resolved dynamic values (one per dynamic slot of the cinematic, in walk
+				// order): the view rewrites its local copy's slots to literals with them.
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				view?.PlayCinematic(cinematic, message.StartTimeInSeconds, cinematic.IsSkippable, message.DynamicValues);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to play cinematic: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleStopCinematicMessage(StopCinematicMessage message)
+		{
+			try
+			{
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				if (view == null) return;
+				// Empty id = wildcard (e.g. scenario abort); otherwise only stop the named cinematic.
+				if (string.IsNullOrEmpty(message.CinematicName) || view.PlayingCinematicName == message.CinematicName)
+				{
+					view.StopCinematic();
+					view.CutAllCinematicAudio();
+				}
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to stop cinematic: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleSetCinematicTimeMessage(SetCinematicTimeMessage message)
+		{
+			try
+			{
+				CinematicView view = Mission.Current?.GetMissionBehavior<CinematicView>();
+				if (view == null) return;
+				if (view.PlayingCinematicName == message.CinematicName)
+					view.Seek(message.TimeInSeconds);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to set cinematic time: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		public void HandleWaitingScreenStateMessage(WaitingScreenStateMessage message)
+		{
+			try
+			{
+				ScenarioView view = Mission.Current?.GetMissionBehavior<ScenarioView>();
+				view?.SetWaitingState(message.Visible, message.HoldingForCinematic, message.ReadyPlayers, message.TotalPlayers);
+			}
+			catch (Exception ex)
+			{
+				Log($"Failed to update waiting screen: {ex.Message}", LogLevel.Error);
+			}
+		}
+
+		/// <summary>Resolves the inline cinematic of an entity- or act-scoped PlayCinematicAction
+		/// through the (ScopeId, ActionId) action registry.</summary>
+		private Cinematic TryGetCinematicFromAction(int scopeId, int actionId)
+		{
+			try
+			{
+				if (ActionBase.FindById(scopeId, actionId) is PlayCinematicAction action && action.Cinematic != null)
+					return action.Cinematic;
+				return null;
+			}
+			catch (Exception ex)
+			{
+				Log($"Error getting cinematic from action (scope={scopeId}, id={actionId}): {ex.Message}", LogLevel.Error);
+				return null;
+			}
 		}
 	}
 }

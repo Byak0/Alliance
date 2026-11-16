@@ -76,6 +76,19 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return _playerAssignments[player];
 		}
 
+		public bool IsOfficer(ICommunicator player)
+		{
+			if (player == null) return false;
+			foreach (PlayerTeam team in Teams)
+			{
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					if (formation.Officer == player) return true;
+				}
+			}
+			return false;
+		}
+
 		public void StartOfficerElection(float timeBeforeElection, bool randomOfficer = false)
 		{
 			ElectionInProgress = true;
@@ -486,6 +499,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			Log("PlayerSpawnMenu cleared.", LogLevel.Debug);
 		}
 
+		private static readonly XmlSerializer CloneSerializer = new XmlSerializer(typeof(PlayerSpawnMenu));
+
+		public PlayerSpawnMenu Clone()
+		{
+			using (StringWriter writer = new StringWriter())
+			{
+				CloneSerializer.Serialize(writer, this);
+				using (StringReader reader = new StringReader(writer.ToString()))
+				{
+					return (PlayerSpawnMenu)CloneSerializer.Deserialize(reader);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Try loading the PlayerSpawnMenu from file. Returns true if successful, false otherwise.
 		/// </summary>
@@ -525,9 +552,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				{
 					foreach (AvailableCharacter character in formation.AvailableCharacters)
 					{
-						if(character.CharacterStub == null)
+						if(character.Definition == null)
 						{
-							Log($"Character {character.Name} in formation {formation.Name} of team {team.Name} is invalid (CharacterStub is null).", LogLevel.Error);
+							Log($"Character {character.CharacterId} in formation {formation.Name} of team {team.Name} is invalid (unknown character id).", LogLevel.Error);
 							return false;
 						}
 					}

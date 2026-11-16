@@ -44,7 +44,7 @@ namespace Alliance.Common.Utilities
 		{
 			CreateGameTypeInformations();
 			LoadMultiplayerSceneInformations();
-			_ = LoadAllScenesAsync();
+			_ = LoadAllScenesAsync(); // TODO : rework/optimize, this gets executed every time the mission is loaded and sometimes takes several dozens seconds.
 		}
 
 		public static bool CheckGameTypeInfoExists(string gameType)

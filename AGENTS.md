@@ -137,6 +137,7 @@ Log("Warning", LogLevel.Warning);
 
 ## Key Files & Directories
 - `docs/scenario-system.md` – scenario authoring and internal runtime documentation
+- `docs/cinematics.md` – cinematic authoring and runtime documentation
 - `Alliance.Common/Core/Configuration/Models/DefaultConfig.cs` – all configurable settings
 - `Alliance.Common/Extensions/IHandlerRegister.cs` – mission-scoped and global network handler registration contracts
 - `Alliance.Client/Core/ClientGlobalAutoHandler.cs` / `Alliance.Server/Core/ServerGlobalAutoHandler.cs` – global handler auto-registration

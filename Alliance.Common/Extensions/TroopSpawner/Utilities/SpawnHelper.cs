@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Models;
@@ -13,7 +13,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
 using TaleWorlds.ObjectSystem;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MPPerkObject;
 using Debug = TaleWorlds.Library.Debug;
@@ -447,7 +447,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			while (goldToUse > 0 && nbAgents < 1000)
 			{
 				BasicCharacterObject bco;
-				BasicCharacterObject defaultChar = Characters.Instance.GetCharactersByCulture(culture1, AgentExtensions.ClassType.Troop).FirstOrDefault()?.CharacterObject;
+				BasicCharacterObject defaultChar = AllianceData.Instance.GetCharactersByCulture(culture1, AgentExtensions.ClassType.Troop).FirstOrDefault()?.CharacterObject;
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{

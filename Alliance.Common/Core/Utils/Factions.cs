@@ -30,8 +30,8 @@ namespace Alliance.Common.Core.Utils
 			}
 			if (!MBObjectManager.Instance.HasType(typeof(BasicCultureObject)))
 			{
-				MBObjectManager.Instance.RegisterType<BasicCultureObject>("Culture", "SPCultures", 17U, true, false);
-				MBObjectManager.Instance.LoadXML("SPCultures", true, "", false);
+				MBObjectManager.Instance.RegisterType<BasicCultureObject>("Culture", "BasicCultures", 17U, true, false);
+				MBObjectManager.Instance.LoadXML("BasicCultures", true, "", false);
 			}
 
 			// Refresh the list of available cultures

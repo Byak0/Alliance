@@ -1,11 +1,14 @@
 ﻿using Alliance.Client.Core;
 using Alliance.Client.Extensions.FakeArmy.Behaviors;
 using Alliance.Client.Extensions.VOIP.Behaviors;
+using Alliance.Client.GameModes.Story.Views;
 using Alliance.Client.Patch.Behaviors;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
 using Alliance.Common.Extensions.BuildSystem.Behaviors;
+using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Extensions.UsableEntity.Behaviors;
+using Alliance.Common.GameModes.Story.Behaviors;
 using System.Collections.Generic;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Source.Missions;
@@ -49,7 +52,8 @@ namespace Alliance.Client.GameModes
 				new FakeArmyBehavior(),
 				new AllianceAgentVisualSpawnComponent(),
 				new AdvancedCombatBehavior(),
-				new BuildBehavior()
+				new BuildBehavior(),
+				new CinematicView()
 			};
 		}
 	}

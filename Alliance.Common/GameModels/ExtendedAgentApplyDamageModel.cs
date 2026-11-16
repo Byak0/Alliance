@@ -172,7 +172,7 @@ namespace Alliance.Common.GameModels
 			return ManagedParameters.Instance.GetManagedParameter(managedParametersEnum);
 		}
 
-		public override float CalculatePassiveAttackDamage(BasicCharacterObject attackerCharacter, in AttackCollisionData collisionData, float baseDamage)
+		public override float CalculatePassiveAttackDamage(in AttackInformation attackInformation, in AttackCollisionData collisionData, float baseDamage)
 		{
 			return baseDamage;
 		}

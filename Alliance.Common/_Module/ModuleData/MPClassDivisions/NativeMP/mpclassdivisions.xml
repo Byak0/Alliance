@@ -7,7 +7,7 @@
 <!-- acceleration:          Goes from 0.0 to 1.0. This will be multiplied with 'bipedal_acceleration_multiplier'. Human only. -->
 <!-- hitpoints:             Goes from 1 to infinity. Default is 100. Human only. -->
 <MPClassDivisions>
-	<!-- VLANDIA -->	
+	<!-- VLANDIA -->
 	<MPClassDivision
 		id="mp_light_infantry_vlandia"
 		hero="mp_light_infantry_vlandia_hero"
@@ -6291,27 +6291,6 @@
 					</Effects>
 				</ConditionalEffect>
 			</Perk>
-			<!-- Third perk (for Banner Bearer) -->
-			<Perk game_mode="all"
-					name="{=*}Banner Bearer"
-					description="{=*}Add a banner bearer to the formation."
-					icon="PerkGeneral"
-					perk_list="3">
-				<ConditionalEffect>
-					<Conditions>
-						<Condition type="BannerBearer" />
-					</Conditions>
-					<Effects>
-						<!-- Put the effects you want here -->
-						<Effect type="DamageDealt"
-								value="0.10"
-								hit_type="Melee" />
-						<Effect type="DrivenProperty"
-								driven_property="MaxSpeedMultiplier"
-								value="0.10" />
-					</Effects>
-				</ConditionalEffect>
-			</Perk>
 		</Perks>
 	</MPClassDivision>
 	<MPClassDivision
@@ -7782,27 +7761,6 @@
 					value="0.05"
 					driven_property="MaxSpeedMultiplier"
 					is_ratio="true" />
-			</Perk>
-			<!-- Third perk (for Banner Bearer) -->
-			<Perk game_mode="all"
-					name="{=*}Banner Bearer"
-					description="{=*}Add a banner bearer to the formation."
-					icon="PerkGeneral"
-					perk_list="3">
-				<ConditionalEffect>
-					<Conditions>
-						<Condition type="BannerBearer" />
-					</Conditions>
-					<Effects>
-						<!-- Put the effects you want here -->
-						<Effect type="DamageDealt"
-								value="0.10"
-								hit_type="Melee" />
-						<Effect type="DrivenProperty"
-								driven_property="MaxSpeedMultiplier"
-								value="0.10" />
-					</Effects>
-				</ConditionalEffect>
 			</Perk>
 			<!-- Third perk (for Banner Bearer) -->
 			<Perk game_mode="all"

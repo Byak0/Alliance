@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.Network.Messages;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.BuildSystem.Behaviors
@@ -23,10 +24,81 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 			public GameEntity Entity;
 		}
 
+		public const int MAX_BUILD_ENTRIES = 10000;
+
 		private readonly Dictionary<int, BuildEntry> _builtEntities = new();
+		private readonly HashSet<UIntPtr> _trackedPointers = new();
 		private int _nextBuildIndex;
 
 		public IReadOnlyDictionary<int, BuildEntry> BuiltEntities => _builtEntities;
+
+		public bool IsTracked(GameEntity entity) => entity != null && _trackedPointers.Contains(entity.WeakEntity.Pointer);
+
+		/// <summary>Finds the BuildIndex of a tracked entity, if any. Linear scan (moves/deletes are infrequent).</summary>
+		public bool TryGetBuildIndex(WeakGameEntity entity, out int buildIndex)
+		{
+			foreach (var kvp in _builtEntities)
+			{
+				if (kvp.Value.Entity != null && kvp.Value.Entity.WeakEntity == entity)
+				{
+					buildIndex = kvp.Key;
+					return true;
+				}
+			}
+			buildIndex = -1;
+			return false;
+		}
+
+		public void BroadcastCreation(int buildIndex, string prefabName, MatrixFrame frame, GameEntity entity)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			if (TryGetRootMissionObjectId(entity, out MissionObjectId moId))
+				GameNetwork.WriteMessage(new SyncPrefabCreation(buildIndex, prefabName, frame, moId));
+			else
+				GameNetwork.WriteMessage(new SyncPrefabCreation(buildIndex, prefabName, frame));
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
+
+		public void BroadcastMove(WeakGameEntity entity, MatrixFrame frame)
+		{
+			if (TryGetBuildIndex(entity, out int buildIndex))
+			{
+				SendBroadcast(new SyncEntityMove(buildIndex, frame));
+				return;
+			}
+			AL_EntityMarker marker = entity.GetFirstScriptOfType<AL_EntityMarker>();
+			if (marker != null && !string.IsNullOrEmpty(marker.RefId))
+			{
+				SendBroadcast(new SyncEntityMove(marker.RefId, frame));
+				return;
+			}
+			Log("[BuildBehavior] Cannot sync move: entity is neither build-tracked nor marked.", LogLevel.Warning);
+		}
+
+		public void BroadcastDelete(int buildIndex) => SendBroadcast(new SyncEntityDelete(buildIndex));
+
+		public void BroadcastDelete(WeakGameEntity entity)
+		{
+			if (TryGetBuildIndex(entity, out int buildIndex))
+			{
+				SendBroadcast(new SyncEntityDelete(buildIndex));
+				return;
+			}
+			AL_EntityMarker marker = entity.GetFirstScriptOfType<AL_EntityMarker>();
+			if (marker != null && !string.IsNullOrEmpty(marker.RefId))
+			{
+				SendBroadcast(new SyncEntityDelete(marker.RefId));
+				return;
+			}
+			Log("[BuildBehavior] Cannot sync delete: entity is neither build-tracked nor marked.", LogLevel.Warning);
+		}
+
+		private static void SendBroadcast(GameNetworkMessage message)
+		{
+			GameNetwork.BeginBroadcastModuleEvent();
+			GameNetwork.WriteMessage(message);
+			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+		}
 
 		/// <summary>
 		/// Raised after an entity has been fully built/tracked AND its scripts
@@ -39,6 +111,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 		{
 			base.OnBehaviorInitialize();
 			_builtEntities.Clear();
+			_trackedPointers.Clear();
 			_nextBuildIndex = 0;
 			// If mission has rounds, add a listener to disable UsableMachines at the end of each round.
 			MultiplayerRoundController roundComponent = Mission.Current?.GetMissionBehavior<MultiplayerRoundController>();
@@ -84,6 +157,11 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 
 		public int AllocateBuildIndex()
 		{
+			if (_nextBuildIndex >= MAX_BUILD_ENTRIES)
+			{
+				Log($"AllocateBuildIndex failed: reached maximum build entries ({MAX_BUILD_ENTRIES}).", LogLevel.Error);
+				return -1;
+			}
 			return _nextBuildIndex++;
 		}
 
@@ -180,6 +258,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 				Frame = frame,
 				Entity = entity
 			};
+			if (entity != null) _trackedPointers.Add(entity.WeakEntity.Pointer);
 
 			if (buildIndex >= _nextBuildIndex)
 			{
@@ -347,6 +426,7 @@ namespace Alliance.Common.Extensions.BuildSystem.Behaviors
 
 			if (entry.Entity != null)
 			{
+				_trackedPointers.Remove(entry.Entity.WeakEntity.Pointer);
 				DisableUsableMachines(entry.Entity);
 				entry.Entity.SetVisibilityExcludeParents(false);
 				entry.Entity.RemoveAllChildren();

@@ -19,6 +19,7 @@ namespace Alliance.Editor.Patch
 			patchSuccess &= Patch_LessUselessErrors.Patch();
 			patchSuccess &= Patch_BodyGeneratorView.Patch();
 			patchSuccess &= Patch_SafeGetTypes.Patch();
+			patchSuccess &= Patch_SceneEditorScreen.Patch();
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);
 			return patchSuccess;

@@ -1,13 +1,13 @@
-﻿using Alliance.Common.Core.KeyBinder;
+using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.AdvancedCombat.Behaviors;
-using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.GameModes.Story;
 using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
 using Alliance.Common.Patch;
+using Alliance.Common.Extensions.Cinematics;
 using Alliance.Common.Utilities;
 using Alliance.Editor.GameModes.Story.Utilities;
 using Alliance.Editor.GameModes.Story.Views;
@@ -15,7 +15,6 @@ using Alliance.Editor.Patch;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using TaleWorlds.Core;
 using TaleWorlds.InputSystem;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
@@ -47,7 +46,7 @@ namespace Alliance.Editor
 
 			KeyBinder.RegisterContexts();
 
-			ActionFactory.Initialize();
+			ActionOverrideRegistry.Initialize();
 			ScenarioManager.Instance = new ScenarioManager();
 			SceneList.Initialize();
 
@@ -61,16 +60,13 @@ namespace Alliance.Editor
 			Log("Alliance.Editor initialized", LogLevel.Debug);
 		}
 
-		protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
-		{
-			// Initialize animation system and all the game animations
-			AnimationSystem.Instance.Init();
-		}
-
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
 		{
 			mission.AddMissionBehavior(new CoreBehavior());
 			mission.AddMissionBehavior(new AdvancedCombatBehavior());
+			// Cinematics in kit test missions: real mission context (camera, agents for staged extras,
+			// debug keys Home/End to play the cinematic's authored/test timelines).
+			mission.AddMissionBehavior(new CinematicView());
 		}
 
 		private void GenerateScenarioExamples()
