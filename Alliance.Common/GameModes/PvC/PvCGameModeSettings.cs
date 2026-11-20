@@ -34,9 +34,6 @@ namespace Alliance.Common.GameModes.PvC
 			ModOptions.UseTroopCost = true;
 			ModOptions.GoldMultiplier = 1.3f;
 			ModOptions.StartingGold = 0;
-			ModOptions.GoldPerKill = 0;
-			ModOptions.GoldPerAssist = 0;
-			ModOptions.GoldPerAllyDead = 0;
 			ModOptions.AllowSpawnInRound = false;
 			ModOptions.ShowFlagMarkers = true;
 			ModOptions.ShowScore = true;
@@ -54,12 +51,15 @@ namespace Alliance.Common.GameModes.PvC
 			{
 				OptionType.CultureTeam1,
 				OptionType.CultureTeam2,
+				OptionType.NumberOfBotsPerFormation,
 				OptionType.NumberOfBotsTeam1,
 				OptionType.NumberOfBotsTeam2,
+				OptionType.AutoTeamBalanceThreshold,
+				OptionType.WarmupTimeLimitInSeconds,
 				OptionType.RoundPreparationTimeLimit,
 				OptionType.RoundTimeLimit,
 				OptionType.RoundTotal,
-				OptionType.WarmupTimeLimit,
+				OptionType.UnlimitedGold,
 				OptionType.FriendlyFireDamageMeleeFriendPercent,
 				OptionType.FriendlyFireDamageMeleeSelfPercent,
 				OptionType.FriendlyFireDamageRangedFriendPercent,

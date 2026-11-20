@@ -1,0 +1,725 @@
+<prefabs>
+	<game_entity name="vehicle_sportcar" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<scripts>
+			<script name="CS_Car">
+				<variables>
+					<variable name="BackWheelRadius" value="0.550"/>
+					<variable name="FrontWheelRadius" value="0.550"/>
+					<variable name="Description" value="Frazer Supersport"/>
+					<variable name="PilotInteraction" value="Drive"/>
+					<variable name="PassengerInteraction" value="Sit"/>
+					<variable name="MaxForwardSpeed" value="100.000"/>
+					<variable name="TimeToAttainMaxForwardSpeed" value="6.000"/>
+					<variable name="MaxBackwardSpeed" value="10.000"/>
+					<variable name="TimeToAttainMaxBackwardSpeed" value="2.000"/>
+					<variable name="MaxUpwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxUpwardSpeed" value="1.000"/>
+					<variable name="MaxDownwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxDownwardSpeed" value="1.000"/>
+					<variable name="MaxTurnAngle" value="35.000"/>
+					<variable name="TimeToAttainMaxTurn" value="0.500"/>
+					<variable name="DecelerationRate" value="6.000"/>
+					<variable name="TurnSlowdownRate" value="35.000"/>
+					<variable name="CanFly" value="true"/>
+					<variable name="FollowTerrain" value="true"/>
+					<variable name="PilotStandingPointTag" value="Pilot"/>
+					<variable name="AmmoPickUpTag" value="ammopickup"/>
+					<variable name="WaitStandingPointTag" value="Wait"/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+		<children>
+			<game_entity name="empty_object" old_prefab_name="" mobility="1">
+				<transform rotation_euler="0.000, 0.000, 0.000" scale="1.270, 1.270, 1.270"/>
+				<children>
+					<game_entity name="car_frazer_nash_carosserie" old_prefab_name="" mobility="1">
+						<transform position="0.000, 1.008, -0.446"/>
+						<physics shape="bo_car"/>
+						<components>
+							<meta_mesh_component name="car_frazer_nash_carosserie"/>
+						</components>
+					</game_entity>
+					<game_entity name="wheels_back" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="wheels_back"/>
+						</tags>
+						<children>
+							<game_entity name="car_frazer_nash_roues_ars" old_prefab_name="" mobility="1">
+								<transform position="0.000, 1.003, -0.440"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_roues_ars"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="pivot_front_left" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="pivot_front_left"/>
+						</tags>
+						<transform position="-0.570, 2.804, -0.010"/>
+						<children>
+							<game_entity name="car_frazer_nash_roue_av__gauche" old_prefab_name="" mobility="1">
+								<transform position="0.570, -1.796, -0.436"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_roue_av__gauche"/>
+								</components>
+							</game_entity>
+							<game_entity name="wheel_front_left" old_prefab_name="" mobility="1">
+								<tags>
+									<tag name="wheel_front_left"/>
+								</tags>
+								<transform position="-0.192, 0.000, 0.000"/>
+								<children>
+									<game_entity name="car_frazer_nash_roue_ga" old_prefab_name="" mobility="1">
+										<transform position="0.763, -1.796, -0.436"/>
+										<components>
+											<meta_mesh_component name="car_frazer_nash_roue_ga"/>
+										</components>
+									</game_entity>
+								</children>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="pivot_front_right" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="pivot_front_right"/>
+						</tags>
+						<transform position="0.570, 2.808, -0.006"/>
+						<children>
+							<game_entity name="wheel_front_right" old_prefab_name="" mobility="1">
+								<tags>
+									<tag name="wheel_front_right"/>
+								</tags>
+								<transform position="0.190, 0.000, 0.000"/>
+								<children>
+									<game_entity name="car_frazer_nash_roue_dr" old_prefab_name="" mobility="1">
+										<transform position="-0.760, -1.800, -0.440"/>
+										<components>
+											<meta_mesh_component name="car_frazer_nash_roue_dr"/>
+										</components>
+									</game_entity>
+								</children>
+							</game_entity>
+							<game_entity name="car_frazer_nash_roue_av_droite" old_prefab_name="" mobility="1">
+								<transform position="-0.570, -1.800, -0.440"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_roue_av_droite"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="pivot_steering_wheel" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="pivot_steering_wheel"/>
+						</tags>
+						<transform position="0.218, 0.752, 0.577" rotation_euler="-0.278, 0.000, 0.000"/>
+						<children>
+							<game_entity name="car_frazer_nash_volant" old_prefab_name="" mobility="1">
+								<transform position="-0.225, 0.525, -0.913" rotation_euler="0.278, 0.005, 0.005"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_volant"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="Pilot" old_prefab_name="" mobility="1">
+						<flags>
+							<flag name="record_to_scene_replay" value="true"/>
+						</flags>
+						<visibility_masks>
+							<visibility_mask name="visible_only_when_editing" value="true"/>
+						</visibility_masks>
+						<tags>
+							<tag name="Pilot"/>
+						</tags>
+						<transform position="0.084, 0.362, 0.257" rotation_euler="0.350, 0.000, -0.004"/>
+						<components>
+							<meta_mesh_component name="icon_man"/>
+						</components>
+						<scripts>
+							<script name="CS_StandingPoint">
+								<variables>
+									<variable name="AnimationName" value="act_car_pilot"/>
+									<variable name="AnimationNameOnStop" value="act_none"/>
+									<variable name="AutoSheathWeapons" value="false"/>
+									<variable name="AutoEquipWeaponsOnUseStopped" value="false"/>
+									<variable name="AutoWieldWeapons" value="false"/>
+									<variable name="TranslateUser" value="true"/>
+									<variable name="HasRecentlyBeenRechecked" value="false"/>
+									<variable name="NavMeshPrefabName" value=""/>
+								</variables>
+							</script>
+						</scripts>
+					</game_entity>
+					<game_entity name="oil_count" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="oil_count"/>
+						</tags>
+						<transform position="0.320, 0.868, 0.611"/>
+						<children>
+							<game_entity name="car_frazer_nash_jauge_oil" old_prefab_name="" mobility="1">
+								<transform position="-0.320, 0.140, -1.057"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_jauge_oil">
+										<mesh name="car_frazer_nash_jauge_oil" argument="2.000, 0.000, 0.000, 0.000"/>
+									</meta_mesh_component>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="speed_count" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="speed_count"/>
+						</tags>
+						<transform position="0.082, 0.868, 0.621"/>
+						<children>
+							<game_entity name="car_frazer_nash_jauge_vitesse" old_prefab_name="" mobility="1">
+								<transform position="-0.082, 0.140, -1.067"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_jauge_vitesse"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="rpm_count" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="rpm_count"/>
+						</tags>
+						<transform position="-0.076, 0.868, 0.630"/>
+						<children>
+							<game_entity name="car_frazer_nash_jauge_tourpm" old_prefab_name="" mobility="1">
+								<transform position="0.076, 0.140, -1.076"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_jauge_tourpm"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="first_stage_count" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="first_stage_count"/>
+						</tags>
+						<transform position="-0.201, 0.868, 0.622"/>
+						<children>
+							<game_entity name="car_frazer_nash_jauge_stage1" old_prefab_name="" mobility="1">
+								<transform position="0.200, 0.140, -1.068"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_jauge_stage1"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="second_stage_count" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="second_stage_count"/>
+						</tags>
+						<transform position="-0.315, 0.868, 0.602"/>
+						<children>
+							<game_entity name="car_frazer_nash_jauge_stage2" old_prefab_name="" mobility="1">
+								<transform position="0.314, 0.140, -1.048"/>
+								<components>
+									<meta_mesh_component name="car_frazer_nash_jauge_stage2"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="collision_points" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="collision_point"/>
+						</tags>
+						<transform position="0.635, 0.016, -0.412" rotation_euler="0.000, 0.000, 0.000" scale="0.787, 0.787, 0.787"/>
+					</game_entity>
+					<game_entity name="collision_points" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="collision_point"/>
+						</tags>
+						<transform position="-0.641, 0.005, -0.412" rotation_euler="0.000, 0.000, 0.000" scale="0.787, 0.787, 0.787"/>
+					</game_entity>
+					<game_entity name="collision_points" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="collision_point"/>
+						</tags>
+						<transform position="0.753, 2.803, -0.411" rotation_euler="0.000, 0.000, 0.000" scale="0.787, 0.787, 0.787"/>
+					</game_entity>
+					<game_entity name="collision_points" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="collision_point"/>
+						</tags>
+						<transform position="-0.793, 2.792, -0.411" rotation_euler="0.000, 0.000, 0.000" scale="0.787, 0.787, 0.787"/>
+					</game_entity>
+					<game_entity name="light_right" old_prefab_name="" visible="false" mobility="1">
+						<tags>
+							<tag name="light_right"/>
+						</tags>
+						<transform position="0.301, 2.770, 0.434" rotation_euler="0.000, 0.000, 0.000" scale="1.180, 0.021, 1.148"/>
+						<children>
+							<game_entity name="spot_right" old_prefab_name="" mobility="1">
+								<transform position="0.006, 1.693, 0.021" non_orthogonal_rotation_mat="1.000000, 0.000000, 0.000000, 0.000000, 0.994817, 0.101679, 0.000000, -0.999995, 0.003178" scale="0.668, 6.645, 37.493"/>
+								<components>
+									<light_component flags="128" intensity="15000.000" radius="80.000" local_frame_rot="56.016602, 0.000000, 0.000000, 0.000000, 56.016602, 0.000000, 0.000000, 0.000000, 80.000000" hotspot_angle="3.000" falloff_angle="35.000" shadow="2" mobility="1" shadow_size_multiplier="1" shadow_radius="64.000"/>
+								</components>
+							</game_entity>
+							<game_entity name="light_inside_right" old_prefab_name="" mobility="1">
+								<transform rotation_euler="0.000, 0.000, 0.000" scale="0.350, 0.300, 0.350"/>
+								<components>
+									<meta_mesh_component name="barrier_sphere">
+										<mesh name="barrier_sphere" material="emisive_sphere" factor="4294943016"/>
+									</meta_mesh_component>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="light_left" old_prefab_name="" visible="false" mobility="1">
+						<tags>
+							<tag name="light_left"/>
+						</tags>
+						<transform position="-0.302, 2.770, 0.434" rotation_euler="0.000, 0.000, 0.000" scale="1.180, 0.021, 1.148"/>
+						<children>
+							<game_entity name="spot_left" old_prefab_name="" mobility="1">
+								<transform position="0.006, 1.693, 0.021" non_orthogonal_rotation_mat="1.000000, 0.000000, 0.000000, 0.000000, 0.994817, 0.101679, 0.000000, -0.999995, 0.003178" scale="0.668, 6.645, 37.493"/>
+								<components>
+									<light_component flags="128" intensity="15000.000" radius="80.000" local_frame_rot="56.016602, 0.000000, 0.000000, 0.000000, 56.016602, 0.000000, 0.000000, 0.000000, 80.000000" hotspot_angle="3.000" falloff_angle="35.000" shadow="2" mobility="1" shadow_size_multiplier="1" shadow_radius="64.000"/>
+								</components>
+							</game_entity>
+							<game_entity name="light_inside_left" old_prefab_name="" mobility="1">
+								<transform rotation_euler="0.000, 0.000, 0.000" scale="0.350, 0.300, 0.350"/>
+								<components>
+									<meta_mesh_component name="barrier_sphere">
+										<mesh name="barrier_sphere" material="emisive_sphere" factor="4294943016"/>
+									</meta_mesh_component>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+				</children>
+			</game_entity>
+		</children>
+	</game_entity>
+
+	<game_entity name="vehicle_chariot" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<tags>
+			<tag name="pivot_back_main"/>
+		</tags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<scripts>
+			<script name="CS_Carriage">
+				<variables>
+					<variable name="BackWheelRadius" value="0.770"/>
+					<variable name="FrontWheelRadius" value="0.670"/>
+					<variable name="Description" value="Chariot"/>
+					<variable name="PilotInteraction" value="Drive"/>
+					<variable name="PassengerInteraction" value="Sit"/>
+					<variable name="MaxForwardSpeed" value="10.000"/>
+					<variable name="TimeToAttainMaxForwardSpeed" value="2.000"/>
+					<variable name="MaxBackwardSpeed" value="2.000"/>
+					<variable name="TimeToAttainMaxBackwardSpeed" value="0.250"/>
+					<variable name="MaxUpwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxUpwardSpeed" value="1.000"/>
+					<variable name="MaxDownwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxDownwardSpeed" value="1.000"/>
+					<variable name="MaxTurnAngle" value="15.000"/>
+					<variable name="TimeToAttainMaxTurn" value="1.000"/>
+					<variable name="DecelerationRate" value="1.000"/>
+					<variable name="TurnSlowdownRate" value="30.000"/>
+					<variable name="CanFly" value="true"/>
+					<variable name="FollowTerrain" value="true"/>
+					<variable name="PilotStandingPointTag" value="Pilot"/>
+					<variable name="AmmoPickUpTag" value="ammopickup"/>
+					<variable name="WaitStandingPointTag" value="Wait"/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+		<children>
+			<game_entity name="habitacle_avant" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_habitacle_avant"/>
+				<components>
+					<meta_mesh_component name="chariot_habitacle_avant"/>
+				</components>
+			</game_entity>
+			<game_entity name="marche" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.731" rotation_euler="0.000, 0.000, 0.000" scale="1.000, 1.000, 2.002"/>
+				<physics shape="bo_chariot_marche"/>
+				<components>
+					<meta_mesh_component name="chariot_marche"/>
+				</components>
+			</game_entity>
+			<game_entity name="siege" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_siege"/>
+				<components>
+					<meta_mesh_component name="chariot_siege"/>
+				</components>
+			</game_entity>
+			<game_entity name="sol" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_sol"/>
+				<components>
+					<meta_mesh_component name="chariot_sol"/>
+				</components>
+			</game_entity>
+			<game_entity name="poutre_metalique_h_arriere" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_poutre_h_arriere"/>
+				<components>
+					<meta_mesh_component name="chariot_poutre_h_arriere"/>
+				</components>
+			</game_entity>
+			<game_entity name="poutre_metalique_h_avant" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_poutre_h_avant"/>
+				<components>
+					<meta_mesh_component name="chariot_poutre_h_avant"/>
+				</components>
+			</game_entity>
+			<game_entity name="poutre_metalique_v_immobile" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_poutre_v_immobile"/>
+				<components>
+					<meta_mesh_component name="chariot_poutre_v_immobile"/>
+				</components>
+			</game_entity>
+			<game_entity name="arceau" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_arceau"/>
+				<components>
+					<meta_mesh_component name="chariot_arceau"/>
+				</components>
+			</game_entity>
+			<game_entity name="toile" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.295, -0.550"/>
+				<physics shape="bo_chariot_toile"/>
+				<components>
+					<meta_mesh_component name="chariot_toile"/>
+				</components>
+			</game_entity>
+			<game_entity name="wheel_back_left" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="wheel_back_left"/>
+				</tags>
+				<transform position="-1.266, -0.003, -0.001"/>
+				<children>
+					<game_entity name="roue_arriere" old_prefab_name="" mobility="1">
+						<transform rotation_euler="0.000, 0.000, 0.000" scale="-1.000, 1.000, 1.000"/>
+						<physics shape="bo_chariot_roue"/>
+						<components>
+							<meta_mesh_component name="chariot_roue"/>
+						</components>
+					</game_entity>
+				</children>
+			</game_entity>
+			<game_entity name="pivot_front_main" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="pivot_front_main"/>
+				</tags>
+				<transform position="0.000, 2.704, -0.037"/>
+				<children>
+					<game_entity name="essieu_bois_arriere" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.591, -0.512"/>
+						<physics shape="bo_chariot_essieu_arriere"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_arriere"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_bois_avant" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.591, -0.512"/>
+						<physics>
+							<body_flags>
+								<body_flag name="missile_only"/>
+							</body_flags>
+						</physics>
+						<components>
+							<meta_mesh_component name="chariot_essieu_avant"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_mobile_h" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.591, -0.512"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_mobile_h"/>
+						</components>
+					</game_entity>
+					<game_entity name="wheel_front_right" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="wheel_front_right"/>
+						</tags>
+						<transform position="1.270, 0.000, -0.003"/>
+						<children>
+							<game_entity name="roue" old_prefab_name="" mobility="1">
+								<transform rotation_euler="0.000, 0.000, 0.000" scale="1.000, 0.936, 0.936"/>
+								<physics shape="bo_chariot_roue"/>
+								<components>
+									<meta_mesh_component name="chariot_roue"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="wheel_front_left" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="wheel_front_left"/>
+						</tags>
+						<transform position="-1.266, 0.003, -0.004"/>
+						<children>
+							<game_entity name="roue" old_prefab_name="" mobility="1">
+								<transform rotation_euler="0.000, 0.000, 0.000" scale="-1.000, 0.940, 0.940"/>
+								<physics shape="bo_chariot_roue"/>
+								<components>
+									<meta_mesh_component name="chariot_roue"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="essieu_metalique_pivot_central" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.590, -0.510"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_pivot_central"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_clou_pivot_bois_central" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.590, -0.510"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_clou_pivot_central"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_clou_accroche_avant_v" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.590, -0.510"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_clou_accroche_avant_v"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_clou_accroche_avant_h" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.590, -0.510"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_clou_accroche_avant_h"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_clou_pivot_central" old_prefab_name="" mobility="1">
+						<transform position="0.000, 3.590, -0.510"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_clou_pivot_central"/>
+						</components>
+					</game_entity>
+					<game_entity name="horse_position" old_prefab_name="" mobility="1">
+						<visibility_masks>
+							<visibility_mask name="visible_only_when_editing" value="true"/>
+						</visibility_masks>
+						<tags>
+							<tag name="horse_position"/>
+						</tags>
+						<transform position="-0.600, 3.205, -0.733"/>
+						<components>
+							<meta_mesh_component name="visualtest_horse_black"/>
+						</components>
+					</game_entity>
+					<game_entity name="horse_position" old_prefab_name="" mobility="1">
+						<visibility_masks>
+							<visibility_mask name="visible_only_when_editing" value="true"/>
+						</visibility_masks>
+						<tags>
+							<tag name="horse_position"/>
+						</tags>
+						<transform position="0.582, 3.205, -0.733"/>
+						<components>
+							<meta_mesh_component name="visualtest_horse_black"/>
+						</components>
+					</game_entity>
+					<game_entity name="essieu_mobile_h" old_prefab_name="" mobility="1">
+						<transform position="0.000, 4.684, -0.469" rotation_euler="0.000, 0.000, 0.000" scale="0.852, 1.000, 1.000"/>
+						<components>
+							<meta_mesh_component name="chariot_essieu_mobile_h"/>
+						</components>
+					</game_entity>
+					<game_entity name="pivot_front_right" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="pivot_front_right"/>
+						</tags>
+						<transform position="1.145, 1.103, 0.030"/>
+						<children>
+							<game_entity name="arnachement_lateral_r" old_prefab_name="" mobility="1">
+								<transform position="-1.007, 2.285, -0.729"/>
+								<physics shape="bo_chariot_arnachement_lateral_r"/>
+								<components>
+									<meta_mesh_component name="chariot_arnachement_lateral_r"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+					<game_entity name="pivot_front_left" old_prefab_name="" mobility="1">
+						<tags>
+							<tag name="pivot_front_left"/>
+						</tags>
+						<transform position="-1.150, 1.100, 0.030"/>
+						<children>
+							<game_entity name="arnachement_lateral_l" old_prefab_name="" mobility="1">
+								<transform position="1.010, 2.290, -0.730"/>
+								<physics shape="bo_chariot_arnachement_lateral_l"/>
+								<components>
+									<meta_mesh_component name="chariot_arnachement_lateral_l"/>
+								</components>
+							</game_entity>
+						</children>
+					</game_entity>
+				</children>
+			</game_entity>
+			<game_entity name="wheel_back_right" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="wheel_back_right"/>
+				</tags>
+				<transform position="1.270, -0.005, 0.000"/>
+				<children>
+					<game_entity name="roue" old_prefab_name="" mobility="1">
+						<physics shape="bo_chariot_roue"/>
+						<components>
+							<meta_mesh_component name="chariot_roue"/>
+						</components>
+					</game_entity>
+				</children>
+			</game_entity>
+			<game_entity name="Pilot" old_prefab_name="" mobility="1">
+				<flags>
+					<flag name="record_to_scene_replay" value="true"/>
+				</flags>
+				<visibility_masks>
+					<visibility_mask name="visible_only_when_editing" value="true"/>
+				</visibility_masks>
+				<tags>
+					<tag name="Pilot"/>
+				</tags>
+				<transform position="-0.020, 3.712, 0.685" rotation_euler="0.000, 0.000, -0.004"/>
+				<components>
+					<meta_mesh_component name="icon_man"/>
+				</components>
+				<scripts>
+					<script name="CS_StandingPoint">
+						<variables>
+							<variable name="AnimationName" value="act_car_pilot"/>
+							<variable name="AnimationNameOnStop" value="act_none"/>
+							<variable name="AutoSheathWeapons" value="false"/>
+							<variable name="AutoEquipWeaponsOnUseStopped" value="false"/>
+							<variable name="AutoWieldWeapons" value="false"/>
+							<variable name="TranslateUser" value="true"/>
+							<variable name="HasRecentlyBeenRechecked" value="false"/>
+							<variable name="NavMeshPrefabName" value=""/>
+						</variables>
+					</script>
+				</scripts>
+			</game_entity>
+			<game_entity name="habitacle_v_l" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.300, -0.550"/>
+				<physics shape="bo_chariot_habitacle_v_l"/>
+				<components>
+					<meta_mesh_component name="chariot_habitacle_v_l"/>
+				</components>
+			</game_entity>
+			<game_entity name="habitacle_v_r" old_prefab_name="" mobility="1">
+				<transform position="0.000, 6.300, -0.550"/>
+				<physics shape="bo_chariot_habitacle_v_r"/>
+				<components>
+					<meta_mesh_component name="chariot_habitacle_v_r"/>
+				</components>
+			</game_entity>
+		</children>
+	</game_entity>
+
+	<game_entity name="vehicle_ship" old_prefab_name="" mobility="1">
+		<flags>
+			<flag name="record_to_scene_replay" value="true"/>
+		</flags>
+		<transform position="0.000, 0.000, 0.000" rotation_euler="0.000, 0.000, 0.000"/>
+		<physics shape="bo_ship_a"/>
+		<components>
+			<meta_mesh_component name="ship_a"/>
+		</components>
+		<scripts>
+			<script name="CS_Boat">
+				<variables>
+					<variable name="Description" value="Ship"/>
+					<variable name="PilotInteraction" value="Drive"/>
+					<variable name="PassengerInteraction" value="Sit"/>
+					<variable name="MaxForwardSpeed" value="6.000"/>
+					<variable name="TimeToAttainMaxForwardSpeed" value="2.000"/>
+					<variable name="MaxBackwardSpeed" value="2.000"/>
+					<variable name="TimeToAttainMaxBackwardSpeed" value="0.250"/>
+					<variable name="MaxUpwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxUpwardSpeed" value="1.000"/>
+					<variable name="MaxDownwardSpeed" value="1.000"/>
+					<variable name="TimeToAttainMaxDownwardSpeed" value="1.000"/>
+					<variable name="MaxTurnAngle" value="25.000"/>
+					<variable name="TimeToAttainMaxTurn" value="2.000"/>
+					<variable name="DecelerationRate" value="1.000"/>
+					<variable name="TurnSlowdownRate" value="10.000"/>
+					<variable name="CanFly" value="false"/>
+					<variable name="FollowTerrain" value="true"/>
+					<variable name="PilotStandingPointTag" value="Pilot"/>
+					<variable name="AmmoPickUpTag" value="ammopickup"/>
+					<variable name="WaitStandingPointTag" value="Wait"/>
+					<variable name="NavMeshPrefabName" value=""/>
+				</variables>
+			</script>
+		</scripts>
+		<children>
+			<game_entity name="icon_man" old_prefab_name="" mobility="1">
+				<flags>
+					<flag name="record_to_scene_replay" value="true"/>
+				</flags>
+				<visibility_masks>
+					<visibility_mask name="visible_only_when_editing" value="true"/>
+				</visibility_masks>
+				<tags>
+					<tag name="Pilot"/>
+				</tags>
+				<transform position="0.083, -5.048, 0.538" rotation_euler="0.000, 0.000, -0.010"/>
+				<components>
+					<meta_mesh_component name="icon_man"/>
+				</components>
+				<scripts>
+					<script name="CS_StandingPoint">
+						<variables>
+							<variable name="AnimationName" value="act_guard_staff_shield"/>
+							<variable name="AnimationNameOnStop" value="act_none"/>
+							<variable name="AutoSheathWeapons" value="true"/>
+							<variable name="AutoEquipWeaponsOnUseStopped" value="false"/>
+							<variable name="AutoWieldWeapons" value="false"/>
+							<variable name="TranslateUser" value="true"/>
+							<variable name="HasRecentlyBeenRechecked" value="false"/>
+							<variable name="NavMeshPrefabName" value=""/>
+						</variables>
+					</script>
+				</scripts>
+			</game_entity>
+			<game_entity name="collision_point" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="FollowsTerrain"/>
+				</tags>
+				<transform position="1.791, 2.973, 0.001" rotation_euler="0.000, 0.000, 0.008"/>
+			</game_entity>
+			<game_entity name="collision_point" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="FollowsTerrain"/>
+				</tags>
+				<transform position="-1.651, 2.934, 0.001" rotation_euler="0.000, 0.000, 0.008"/>
+			</game_entity>
+			<game_entity name="collision_point" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="FollowsTerrain"/>
+				</tags>
+				<transform position="1.859, -2.822, 0.001" rotation_euler="0.000, 0.000, 0.008"/>
+			</game_entity>
+			<game_entity name="collision_point" old_prefab_name="" mobility="1">
+				<tags>
+					<tag name="FollowsTerrain"/>
+				</tags>
+				<transform position="-1.611, -2.861, 0.001" rotation_euler="0.000, 0.000, 0.008"/>
+			</game_entity>
+		</children>
+	</game_entity>
+</prefabs>
+

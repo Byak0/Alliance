@@ -10,11 +10,11 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="ConstructionAnimation" Duration="1" Loop="true">
+      <Animation Name="ConstructionAnimation" Duration="0.5" Loop="true">
         <AnimationProperty LayerName="Default" PropertyName="OverlayXOffset">
           <KeyFrame Time="0" Value="-40" />
-          <KeyFrame Time="0.5" Value="-80" />
-          <KeyFrame Time="1" Value="-160" />
+          <KeyFrame Time="0.25" Value="-80" />
+          <KeyFrame Time="0.5" Value="-160" />
         </AnimationProperty>
       </Animation>
     </Animations>
@@ -66,11 +66,11 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="DefaultAnimation" Duration="0.5" Loop="true">
+      <Animation Name="DefaultAnimation" Duration="0.25" Loop="true">
         <AnimationProperty LayerName="Default" PropertyName="Sprite">
           <KeyFrame Time="0" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
-          <KeyFrame Time="0.4" Value="SPGeneral\TownManagement\project_popup_hammer_icon_down" />
-          <KeyFrame Time="0.5" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
+          <KeyFrame Time="0.2" Value="SPGeneral\TownManagement\project_popup_hammer_icon_down" />
+          <KeyFrame Time="0.25" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
         </AnimationProperty>
       </Animation>
     </Animations>

@@ -18,10 +18,10 @@ namespace Alliance.Client.Extensions.ExNativeUI.KillNotification.Views
 		{
 			base.OnMissionScreenInitialize();
 			ViewOrderPriority = 2;
-			_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
+			_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.KillFeedVisualType < 2;
 			_isPersonalFeedEnabled = BannerlordConfig.ReportPersonalDamage;
 			_dataSource = new MPKillFeedVM();
-			_gauntletLayer = new GauntletLayer(ViewOrderPriority, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("MultiplayerKillFeed", ViewOrderPriority);
 			_gauntletLayer.LoadMovie("MultiplayerKillFeed", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 			CombatLogManager.OnGenerateCombatLog += OnCombatLogManagerOnPrintCombatLog;
@@ -32,7 +32,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.KillNotification.Views
 		{
 			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportCasualtiesType)
 			{
-				_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.ReportCasualtiesType < 2;
+				_isGeneralFeedEnabled = _doesGameModeAllowGeneralFeed && BannerlordConfig.KillFeedVisualType < 2;
 				return;
 			}
 			if (changedManagedOptionsType == ManagedOptions.ManagedOptionsType.ReportPersonalDamage)

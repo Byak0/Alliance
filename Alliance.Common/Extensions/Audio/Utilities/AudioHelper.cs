@@ -36,6 +36,7 @@ namespace Alliance.Common.Extensions.Audio.Utilities
 		{
 			// Calculate the vector from speaker to listener
 			Vec3 speakerToListener = speakerPosition - listenerPosition;  // Correct the direction
+			if (speakerToListener.Length < 1f) return 0f; // Don't pan if sound is too close?
 
 			// Project the speaker-to-listener vector onto the horizontal plane defined by the listener's right and forward vectors
 			Vec3 listenerRight = listenerRotation.s;  // Assuming 's' is the right vector in the rotation matrix

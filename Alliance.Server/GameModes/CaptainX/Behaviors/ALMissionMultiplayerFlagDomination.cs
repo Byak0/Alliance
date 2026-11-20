@@ -1,6 +1,8 @@
 ﻿using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.FormationEnforcer.Component;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Server.Core;
 using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
@@ -59,8 +61,6 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 		protected (int, int)[] _defenderAttackerCountsInFlagArea;
 		protected float _lastPerkTickTime;
 		private PlayerSpawnBehavior _playerSpawnBehavior;
-
-		public string PlayerSpawnMenuFile { get; protected set; } = "spawn_preset_20_aserai_def_vs_vlandia_att.xml";
 
 		public override bool IsGameModeHidingAllAgentVisuals
 		{
@@ -193,8 +193,8 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 			BasicCultureObject @object = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 			BasicCultureObject object2 = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
-			Banner banner = new Banner(@object.BannerKey, @object.BackgroundColor1, @object.ForegroundColor1);
-			Banner banner2 = new Banner(object2.BannerKey, object2.BackgroundColor2, object2.ForegroundColor2);
+			Banner banner = new Banner(@object.Banner, @object.BackgroundColor1, @object.ForegroundColor1);
+			Banner banner2 = new Banner(object2.Banner, object2.BackgroundColor2, object2.ForegroundColor2);
 			Mission.Teams.Add(BattleSideEnum.Attacker, @object.BackgroundColor1, @object.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
 			Mission.Teams.Add(BattleSideEnum.Defender, object2.BackgroundColor2, object2.ForegroundColor2, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
 
@@ -215,13 +215,27 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 		public virtual void InitPlayerSpawnMenu()
 		{
+			// Generate default spawn menu if none exists
+			if (PlayerSpawnMenu.Instance.Teams.IsEmpty())
+			{
+				PlayerSpawnMenu.Instance.GenerateDefaultMenu(new List<KeyValuePair<BattleSideEnum, BasicCultureObject>>
+				{
+					new(BattleSideEnum.Attacker, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue())),
+					new(BattleSideEnum.Defender, MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue()))
+				});
+
+				// Broadcast the updated player spawn menu to all players
+				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+			}
+
 			// Make use of the warmup to let players elect their officers
-			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(MultiplayerOptions.OptionType.WarmupTimeLimit.GetIntValue() * 60);
+			if (WarmupComponent != null) _playerSpawnBehavior.StartElectionCountdown(Config.Instance.ElectionTimer);
 		}
 
 		private void StartPlayerSpawnSession()
 		{
-			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
+			float maxSpawnTime = Math.Max(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), Config.Instance.FreeRespawnTimer);
+			_playerSpawnBehavior.StartSpawnSession(MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(), maxSpawnTime);
 		}
 
 		protected override void AddRemoveMessageHandlers(GameNetwork.NetworkMessageHandlerRegistererContainer registerer)
@@ -347,7 +361,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					botAgent.Formation.PlayerOwner = botAgent;
 				}
 
-				botAgent.OwningAgentMissionPeer = null;
+				botAgent.SetOwningAgentMissionPeer(null);
 				botAgent.MissionPeer = missionPeer;
 				botAgent.Formation = missionPeer.ControlledFormation;
 				AgentFlag agentFlags = botAgent.GetAgentFlags();
@@ -814,10 +828,10 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 
 		private void OnPostRoundEnd()
 		{
-			// Go back to Lobby on match end
+			// Start the configured post-match transition
 			if (RoundController.IsMatchEnding)
 			{
-				GameModeStarter.Instance.StartLobby(MultiplayerOptions.OptionType.Map.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(), MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
+				GameModeStarter.Instance.StartPostMatchTransition();
 			}
 			else if (UseGold())
 			{
@@ -1024,7 +1038,7 @@ namespace Alliance.Server.GameModes.CaptainX.Behaviors
 					// Prevent capturing when in rambo
 					FormationComponent formationComponent = lastFoundAgent?.MissionPeer?.GetComponent<FormationComponent>();
 					bool agentIsAuthorizedToCap = !(formationComponent != null && formationComponent.State == FormationState.Rambo);
-					if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap)
+					if (lastFoundAgent.IsHuman && lastFoundAgent.IsActive() && agentIsAuthorizedToCap && lastFoundAgent.Team.Side != BattleSideEnum.None)
 					{
 						_agentCountsOnSide[(int)lastFoundAgent.Team.Side]++;
 						float num2 = lastFoundAgent.Position.DistanceSquared(allCapturePoint.Position);

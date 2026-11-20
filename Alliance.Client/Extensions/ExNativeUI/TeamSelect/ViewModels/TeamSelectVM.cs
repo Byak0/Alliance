@@ -48,14 +48,14 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 			BasicCultureObject basicCultureObject = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			uint color = basicCultureObject.BackgroundColor1;
 			uint color2 = basicCultureObject.ForegroundColor1;
-			BannerCode bannerCode = BannerCode.CreateFrom(BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2));
+			string bannerCode = BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2);
 			Team1 = new TeamSelectTeamVM(missionBehavior, team2, basicCultureObject, bannerCode, onChangeTeamTo, false);
 
 			Team team3 = teams.FirstOrDefault((t) => t.Side == BattleSideEnum.Defender);
 			basicCultureObject = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
 			color = basicCultureObject.BackgroundColor2;
 			color2 = basicCultureObject.ForegroundColor2;
-			bannerCode = BannerCode.CreateFrom(BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2));
+			bannerCode = BannerToCultureHelper.GetBannerCodeFromCulture(basicCultureObject.StringId, color, color2);
 			Team2 = new TeamSelectTeamVM(missionBehavior, team3, basicCultureObject, bannerCode, onChangeTeamTo, false);
 
 			if (GameNetwork.IsMyPeerReady)

@@ -21,7 +21,7 @@ namespace Alliance.Client.Extensions.CustomScripts.Handlers
 			if (message.MissionObjectId != null)
 			{
 				MissionObject missionObject = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-				missionObject?.GameEntity?.GetFirstScriptOfType<CS_StateObject>()?.SetState(message.State);
+				missionObject?.GameEntity.GetFirstScriptOfType<CS_StateObject>()?.SetState(message.State);
 			}
 		}
 	}

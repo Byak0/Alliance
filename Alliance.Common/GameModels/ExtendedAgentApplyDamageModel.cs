@@ -1,29 +1,22 @@
-﻿using Alliance.Common.Core.Utils;
-using System;
+﻿using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.ComponentInterfaces;
 
 namespace Alliance.Common.GameModels
 {
-	public class ExtendedAgentApplyDamageModel : AgentApplyDamageModel
+	public class ExtendedAgentApplyDamageModel : CustomAgentApplyDamageModel
 	{
 		public ExtendedAgentApplyDamageModel()
 		{
 		}
 
-		public override float CalculateDamage(in AttackInformation attackInformation, in AttackCollisionData collisionData, in MissionWeapon weapon, float baseDamage)
+		public override float ApplyGeneralDamageModifiers(in AttackInformation attackInformation, in AttackCollisionData collisionData, float baseDamage)
 		{
 			if (attackInformation.VictimAgent == null) return baseDamage;
 
-			if (collisionData.IsFallDamage && attackInformation.VictimAgent.IsWarg())
-			{
-				return baseDamage * 0.1f;
-			}
-
-			MissionWeapon missionWeapon = weapon;
-			WeaponComponentData currentUsageItem = missionWeapon.CurrentUsageItem;
+			MissionWeapon attackerWeapon = attackInformation.AttackerWeapon;
+			WeaponComponentData currentUsageItem = attackerWeapon.CurrentUsageItem;
 			AttackCollisionData attackCollisionData = collisionData;
 			if (currentUsageItem != null && currentUsageItem.IsMeleeWeapon && attackCollisionData.StrikeType == (int)StrikeType.Thrust && !attackCollisionData.IsAlternativeAttack && baseDamage < currentUsageItem.ThrustDamage)
 			{
@@ -39,42 +32,15 @@ namespace Alliance.Common.GameModels
 				// Ensure baseDamage does not exceed thrustDamage
 				baseDamage = Math.Min(baseDamage, thrustDamage);
 			}
-			else if (attackInformation.AttackerAgent.IsTroll() || attackInformation.AttackerAgent.IsEnt())
-			{
-				if (attackInformation.VictimAgent.IsMount) // Make  sure to one shot mounts
-				{
-					return Math.Max(baseDamage, attackInformation.VictimAgent.Health);
-				}
-				if (weapon.IsEmpty) // Fist damage
-				{
-					return baseDamage * 40;
-				}
-				if (collisionData.AttackBlockedWithShield) // Make sure to one shot shields
-				{
-					return Math.Max(baseDamage, attackInformation.VictimShield.ModifiedMaxHitPoints);
-				}
-				return Math.Max(attackCollisionData.BaseMagnitude * 8, baseDamage);
-			}
 			return baseDamage;
-		}
-
-		public override float CalculateAlternativeAttackDamage(BasicCharacterObject attackerCharacter, WeaponComponentData weapon)
-		{
-			return 1f; // random default value
-		}
-
-		public override void DecideMissileWeaponFlags(Agent attackerAgent, MissionWeapon missileWeapon, ref WeaponFlags missileWeaponFlags)
-		{
 		}
 
 		public override bool DecideCrushedThrough(Agent attackerAgent, Agent defenderAgent, float totalAttackEnergy, Agent.UsageDirection attackDirection, StrikeType strikeType, WeaponComponentData defendItem, bool isPassiveUsage)
 		{
-			if ((attackerAgent.IsTroll() || attackerAgent.IsEnt()) && !defenderAgent.HasShieldCached) return true;
-
-			EquipmentIndex equipmentIndex = attackerAgent.GetWieldedItemIndex(Agent.HandIndex.OffHand);
+			EquipmentIndex equipmentIndex = attackerAgent.GetOffhandWieldedItemIndex();
 			if (equipmentIndex == EquipmentIndex.None)
 			{
-				equipmentIndex = attackerAgent.GetWieldedItemIndex(Agent.HandIndex.MainHand);
+				equipmentIndex = attackerAgent.GetPrimaryWieldedItemIndex();
 			}
 			WeaponComponentData weaponComponentData = equipmentIndex != EquipmentIndex.None ? attackerAgent.Equipment[equipmentIndex].CurrentUsageItem : null;
 			if (weaponComponentData == null || isPassiveUsage || !weaponComponentData.WeaponFlags.HasAnyFlag(WeaponFlags.CanCrushThrough) || strikeType != StrikeType.Swing || attackDirection != Agent.UsageDirection.AttackUp)
@@ -91,43 +57,37 @@ namespace Alliance.Common.GameModels
 
 		public override bool CanWeaponDismount(Agent attackerAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
-
 			return MBMath.IsBetween((int)blow.VictimBodyPart, 0, 6) && (blow.StrikeType == StrikeType.Swing && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanHook) || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.CanDismount));
 		}
 
-		public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
-		{
-			if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
-			{
-				attackerStunMultiplier = 1f;
-				defenderStunMultiplier = 0f;
-			}
-			else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
-			{
-				attackerStunMultiplier = 0f;
-				defenderStunMultiplier = 1f;
-			}
-			else
-			{
-				attackerStunMultiplier = 1f;
-				defenderStunMultiplier = 1f;
-			}
-		}
+		// todo check : Not available anymore in 1.3 ?
+		//public override void CalculateDefendedBlowStunMultipliers(Agent attackerAgent, Agent defenderAgent, CombatCollisionResult collisionResult, WeaponComponentData attackerWeapon, WeaponComponentData defenderWeapon, out float attackerStunMultiplier, out float defenderStunMultiplier)
+		//{
+		//	if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
+		//	{
+		//		attackerStunMultiplier = 1f;
+		//		defenderStunMultiplier = 0f;
+		//	}
+		//	else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
+		//	{
+		//		attackerStunMultiplier = 0f;
+		//		defenderStunMultiplier = 1f;
+		//	}
+		//	else
+		//	{
+		//		attackerStunMultiplier = 1f;
+		//		defenderStunMultiplier = 1f;
+		//	}
+		//}
 
 		public override bool CanWeaponKnockback(Agent attackerAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
-
 			AttackCollisionData attackCollisionData = collisionData;
 			return MBMath.IsBetween((int)attackCollisionData.VictimHitBodyPart, 0, 6) && !attackerWeapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanKnockDown) && (attackerWeapon.IsConsumable || (blow.BlowFlag & BlowFlags.CrushThrough) != BlowFlags.None || blow.StrikeType == StrikeType.Thrust && blow.WeaponRecord.WeaponFlags.HasAnyFlag(WeaponFlags.WideGrip));
 		}
 
 		public override bool CanWeaponKnockDown(Agent attackerAgent, Agent victimAgent, WeaponComponentData attackerWeapon, in Blow blow, in AttackCollisionData collisionData)
 		{
-			if (victimAgent.IsTroll() || victimAgent.IsEnt()) return false;
-			if (attackerAgent.IsTroll() || attackerAgent.IsEnt()) return true;
-
 			if (attackerWeapon.WeaponClass == WeaponClass.Boulder)
 			{
 				return true;
@@ -209,14 +169,10 @@ namespace Alliance.Common.GameModels
 			{
 				managedParametersEnum = ManagedParametersEnum.DamageInterruptAttackThresholdBlunt;
 			}
-			if (defenderAgent.IsTroll() || defenderAgent.IsEnt())
-			{
-				return 100f;
-			}
 			return ManagedParameters.Instance.GetManagedParameter(managedParametersEnum);
 		}
 
-		public override float CalculatePassiveAttackDamage(BasicCharacterObject attackerCharacter, in AttackCollisionData collisionData, float baseDamage)
+		public override float CalculatePassiveAttackDamage(in AttackInformation attackInformation, in AttackCollisionData collisionData, float baseDamage)
 		{
 			return baseDamage;
 		}
@@ -228,10 +184,6 @@ namespace Alliance.Common.GameModels
 
 		public override float CalculateShieldDamage(in AttackInformation attackInformation, float baseDamage)
 		{
-			if (attackInformation.AttackerAgent.IsTroll() || attackInformation.AttackerAgent.IsEnt())
-			{
-				return Math.Min(baseDamage * 50, attackInformation.VictimShield.ModifiedMaxHitPoints);
-			}
 			return baseDamage;
 		}
 
@@ -318,57 +270,28 @@ namespace Alliance.Common.GameModels
 			return weapon != null && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.CanPenetrateShield) && weapon.WeaponFlags.HasAnyFlag(WeaponFlags.MultiplePenetration);
 		}
 
-		public override bool DecideAgentShrugOffBlow(Agent victimAgent, AttackCollisionData collisionData, in Blow blow)
+		public override bool DecideAgentShrugOffBlow(Agent victimAgent, in AttackCollisionData collisionData, in Blow blow)
 		{
-			if (victimAgent.IsTroll() || victimAgent.IsEnt())
-			{
-				return true;
-			}
-
 			return MissionCombatMechanicsHelper.DecideAgentShrugOffBlow(victimAgent, collisionData, blow);
 		}
 
 		public override bool DecideAgentDismountedByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
-			{
-				return true;
-			}
-
 			return MissionCombatMechanicsHelper.DecideAgentDismountedByBlow(attackerAgent, victimAgent, collisionData, attackerWeapon, blow);
 		}
 
 		public override bool DecideAgentKnockedBackByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (victimAgent.IsTroll() || victimAgent.IsEnt())
-			{
-				return false;
-			}
-
 			return MissionCombatMechanicsHelper.DecideAgentKnockedBackByBlow(attackerAgent, victimAgent, collisionData, attackerWeapon, blow);
 		}
 
 		public override bool DecideAgentKnockedDownByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (victimAgent.IsTroll() || victimAgent.IsTroll())
-			{
-				return false;
-			}
-			else if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
-			{
-				return true;
-			}
-
 			return MissionCombatMechanicsHelper.DecideAgentKnockedDownByBlow(attackerAgent, victimAgent, collisionData, attackerWeapon, blow);
 		}
 
 		public override bool DecideMountRearedByBlow(Agent attackerAgent, Agent victimAgent, in AttackCollisionData collisionData, WeaponComponentData attackerWeapon, in Blow blow)
 		{
-			if (attackerAgent.IsTroll() || attackerAgent.IsEnt())
-			{
-				return true;
-			}
-
 			return MissionCombatMechanicsHelper.DecideMountRearedByBlow(attackerAgent, victimAgent, collisionData, attackerWeapon, blow);
 		}
 	}

@@ -4,7 +4,6 @@ using Alliance.Common.Extensions.AnimationPlayer;
 using Alliance.Common.Extensions.AnimationPlayer.Models;
 using Alliance.Common.Extensions.Audio;
 using Alliance.Common.Extensions.UsableItems.NetworkMessages.FromClient;
-using Alliance.Server.Extensions.Zevent;
 using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.ExtendedXML.Extension.ExtendedXMLExtension;
@@ -57,10 +56,7 @@ namespace Alliance.Server.Extensions.UsableItem.Handlers
 			{
 				itemEx.Effects.ForEach(async effect =>
 				{
-					if (effect.Type == "ZEVENT")
-					{
-						await ZeventService.Instance.RefreshZeventGoldPileAsync();
-					}
+					// to add effect 
 				});
 			}
 

@@ -1,4 +1,6 @@
-﻿using TaleWorlds.Core;
+﻿using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
+using TaleWorlds.Core;
 using TaleWorlds.Engine;
 
 namespace Alliance.Common.GameModes.Story.Conditions
@@ -34,8 +36,23 @@ namespace Alliance.Common.GameModes.Story.Conditions
 			FallBack
 		}
 
-		public abstract bool Evaluate(ScenarioManager context);
-		public virtual void Register(GameEntity entity = null) { }
+		public abstract bool Evaluate(VariableStore context);
+
+		public virtual void Register(WeakGameEntity entity)
+		{
+			RegisterZones(entity);
+		}
+
+		/// <summary>
+		/// Walks this condition's field graph and registers every embedded <see cref="Zone"/> with its host
+		/// entity. Handles <c>ValueSource&lt;Zone&gt;</c> expression trees (zones nested inside functions,
+		/// literal zone values, etc.).
+		/// </summary>
+		protected void RegisterZones(WeakGameEntity entity)
+		{
+			ZoneRegistrar.RegisterAll(this, entity);
+		}
+
 		public virtual void Unregister() { }
 	}
 }

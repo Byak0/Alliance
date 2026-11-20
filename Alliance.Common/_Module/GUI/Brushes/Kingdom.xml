@@ -214,7 +214,7 @@
     </Styles>
   </Brush>
 
-  <Brush Name="Kingdom.Voter.Tuple" TransitionDuration="0.2">
+  <Brush Name="Kingdom.Voter.Tuple" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPKingdom\Decision\option" />
       <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\option_selected" />
@@ -248,7 +248,7 @@
     </SoundProperties>
   </Brush>
 
-  <Brush Name="Kingdom.Voter.Abstain.Tuple" TransitionDuration="0.2">
+  <Brush Name="Kingdom.Voter.Abstain.Tuple" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPKingdom\Decision\option"  />
       <BrushLayer Name="Selected" Sprite="SPKingdom\Decision\option_selected" />
@@ -655,10 +655,10 @@
     </Layers>
     <Styles>
       <Style Name="Default">
-        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Default" ColorFactor="1" />
       </Style>
       <Style Name="Hovered">
-        <BrushLayer Name="Default" ColorFactor="1.6" />
+        <BrushLayer Name="Default" ColorFactor="1.4" />
       </Style>
       <Style Name="Pressed">
         <BrushLayer Name="Default" ColorFactor="0.8" />
@@ -707,7 +707,7 @@
       <Style Name="Default" FontColor="#FFFFFFFF" TextOutlineAmount="0" TextGlowRadius="0.0" TextBlur="0" TextShadowOffset="0" FontSize="24" />
       <Style Name="Hovered" FontColor="#FFD77CFF" />
       <Style Name="Pressed" FontColor="#D8BA77FF" />
-      <Style Name="Disabled" FontColor="#D1D1D1FF" TextAlphaFactor="0.8" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" TextAlphaFactor="0.6" />
     </Styles>
   </Brush>
   <Brush Name="Kingdom.SortButtons.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Center">
@@ -782,18 +782,19 @@
   <Brush Name="Kingdom.ParagraphSmall.Text" Font="FiraSansExtraCondensed-Light" TextHorizontalAlignment="Center">
     <Styles>
       <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+      <Style Name="Disabled" FontColor="#D1D1D1FF" TextAlphaFactor="0.6" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
     </Styles>
   </Brush>
 
   <Brush Name="Kingdom.Tribute.Text.Left" Font="FiraSansExtraCondensed-Light" TextVerticalAlignment="Center" TextHorizontalAlignment="Left">
     <Styles>
-      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="17" />
     </Styles>
   </Brush>
 
   <Brush Name="Kingdom.Tribute.Text.Right" Font="FiraSansExtraCondensed-Light" TextVerticalAlignment="Center" TextHorizontalAlignment="Right">
     <Styles>
-      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="20" />
+      <Style Name="Default" FontColor="#F4E1C4FF" TextOutlineAmount="0.1" TextGlowRadius="0" TextBlur="0" TextShadowOffset="1" TextShadowAngle="60" FontSize="17" />
     </Styles>
   </Brush>
 

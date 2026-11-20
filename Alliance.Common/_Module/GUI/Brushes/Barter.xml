@@ -162,6 +162,7 @@
       <BrushLayer Name="lift_siege_barterable" Sprite="Barter\LiftSiege" IsHidden="true" />
       <BrushLayer Name="start_siege_barterable" Sprite="Barter\StartSiege" IsHidden="true" />
       <BrushLayer Name="safe_passage_barterable" Sprite="Barter\Peace" IsHidden="true" />
+      <BrushLayer Name="no_attack_barterable" Sprite="Barter\Peace" IsHidden="true" />
     </Layers>
     <Styles>
       <Style Name="Default">
@@ -184,6 +185,9 @@
       </Style>
       <Style Name="safe_passage_barterable">
         <BrushLayer Name="safe_passage_barterable" IsHidden="false" />
+      </Style>
+      <Style Name="no_attack_barterable">
+        <BrushLayer Name="no_attack_barterable" IsHidden="false" />
       </Style>
     </Styles>
   </Brush>

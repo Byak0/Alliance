@@ -8,6 +8,21 @@
 		<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent">
 			<Children>
 
+				<!-- Waiting screen (full-black, server-driven; hides the scene until players are ready or the intro cinematic starts) -->
+				<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsBlackoutVisible">
+					<Children>
+						<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="WhiteSquareBrush" Brush.Color="#000000FF" />
+						<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" IsVisible="@IsWaiting">
+							<Children>
+								<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center"
+											Text="@WaitingTitle" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFFFFFFF" Brush.FontSize="36" />
+							<TextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="80"
+										Text="@WaitingCounter" Brush="Alliance.IntroWaiting.Text" Brush.FontColor="#FFDDDDDD" Brush.FontSize="28" />
+							</Children>
+						</Widget>
+					</Children>
+				</Widget>
+
 				<!-- Scenario intro -->
 				<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy ="Fixed" SuggestedHeight="200" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowIntro">
 					<Children>
@@ -19,17 +34,17 @@
 				<!-- Scenario board -->
 				<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="900" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="90" Brush="Alliance.MainFrame" IsVisible="@ShowBoard">
 					<Children>
-						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop">
+						<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom">
 							<Children>
 								<!-- Act title -->
-								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="120">
 									<Children>
 										<RichTextWidget WidthSizePolicy="CoverChildren" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="60" Text="@ActTitle"  />
 										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="Alliance.HeaderGlow" />
 									</Children>
 								</Widget>
 								<!-- Act description -->
-								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="200">
+								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="160">
 									<Children>
 										<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="1000" HeightSizePolicy="StretchToParent" HorizontalAlignment="Center" Brush="MPEscapeMenu.ButtonText" Brush.FontColor="#F4E1C4FF"  Brush.FontSize="36" Text="@ActDescription"  />
 										<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="800" HeightSizePolicy="Fixed" SuggestedHeight="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="-40" Brush="Alliance.HeaderGlowFlip" />
@@ -38,13 +53,20 @@
 								<!-- Objectives -->
 								<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500">
 									<Children>
-										<ListPanel DataSource="{Objectives}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="100" StackLayout.LayoutMethod="VerticalBottomToTop">
+										<ListPanel DataSource="{Objectives}" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="500" HorizontalAlignment="Center" VerticalAlignment="Center" MarginTop="100" StackLayout.LayoutMethod="VerticalTopToBottom">
 											<ItemTemplate>
 												<ObjectiveItem/>
 											</ItemTemplate>
 										</ListPanel>
 									</Children>
 								</Widget>
+								<!-- Lives -->
+								<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="90" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom" IsVisible="@ShowLives">
+									<Children>
+										<!-- Objective name -->
+										<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="50" HorizontalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="32" Text="@LivesLabel" />
+									</Children>
+								</ListPanel>
 							</Children>
 						</ListPanel>
 					</Children>

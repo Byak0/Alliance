@@ -4,7 +4,7 @@
 		<Constant Name="PowerBar.Flag.Height" BrushLayer="Default" BrushName="Alliance.Parchment" BrushValueType="Height" Value="50"/>
 	</Constants>
 	<Window>
-		<MultiplayerMissionMarkerListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" CloseDistanceCutoff="25" Distance="@Distance" FarAlphaTarget="0.5" FarDistanceCutoff="250" FlagWidget="FlagWidget" SiegeEngineWidget="SiegeEngineWidget" IsMarkerEnabled="@IsEnabled" IsVisible="@IsVisible" StackLayout.LayoutMethod="VerticalBottomToTop" MarkerType="@MarkerType" PeerWidget="PeerWidget" Position="@ScreenPosition" IsSpawnFlag="@IsSpawnAffectorFlag" >
+		<MultiplayerMissionMarkerListPanel WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" CloseDistanceCutoff="25" Distance="@Distance" FarAlphaTarget="0.5" FarDistanceCutoff="250" FlagWidget="FlagWidget" SiegeEngineWidget="SiegeEngineWidget" IsMarkerEnabled="@IsEnabled" IsVisible="@IsVisible" StackLayout.LayoutMethod="VerticalTopToBottom" MarkerType="@MarkerType" PeerWidget="PeerWidget" Position="@ScreenPosition" IsSpawnFlag="@IsSpawnAffectorFlag" >
 			<Children>
 
 				<Widget Id="FlagWidget" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="!PowerBar.Flag.Width" SuggestedHeight="!PowerBar.Flag.Height"  HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="@IsVisible">

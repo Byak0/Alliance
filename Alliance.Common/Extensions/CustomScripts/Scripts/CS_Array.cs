@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Utils;
+﻿#if !SERVER
+using Alliance.Common.Core.Utils;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Engine;
@@ -259,7 +260,10 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 					}
 
 					clone.SetGlobalFrame(cloneFrame);
-					GameEntity.AddChild(clone);
+
+					// Parent under this tool entity for easy cleanup
+					GameEntity.AddChild(clone.WeakEntity);
+
 					clone.Name = $"{SuffixStartingIndex + i}_{EntityToDuplicate}";
 
 					if (ApplyTag)
@@ -267,7 +271,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 				}
 
 				Log($"[CS_Array] Generated {Count} entities{(usePath ? " along path" : "")}.", LogLevel.Information);
-				MBEditor.UpdateSceneTree();
+				MBEditor.UpdateSceneTree(true); // Refresh editor tree to show new entities
 			}
 			finally
 			{
@@ -287,3 +291,4 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		}
 	}
 }
+#endif

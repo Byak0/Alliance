@@ -19,7 +19,6 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 	{
 		private PlayerSpawnBehavior _playerSpawnBehavior;
 		private float _lastSpawnCheck;
-		private float _timeBeforeSpawn;
 		private static Random _random = new Random();
 		private static List<float> _values = new List<float> { 0.5f, 1f, 1.5f, 2f, 2.5f };
 
@@ -46,7 +45,6 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 		{
 			base.Initialize(spawnComponent);
 			_playerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
-			_timeBeforeSpawn = MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue();
 		}
 
 		protected override void SpawnAgents()
@@ -73,11 +71,13 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 
 				if (peer.IsSynchronized && (missionPeer.Team == Mission.AttackerTeam || missionPeer.Team == Mission.DefenderTeam))
 				{
-					BasicCultureObject culture = playerAssignment.Formation.MainCulture;
-					BasicCharacterObject basicCharacterObject = playerAssignment.Character.Character;
 					MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = playerAssignment.Character.Character.GetHeroClass();
 					MPOnSpawnPerkHandler onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
-					SpawnHelper.SpawnPlayer(peer, onSpawnPerkHandler, basicCharacterObject, customCulture: culture);
+					SpawnHelper.SpawnPlayer(peer, 
+						onSpawnPerkHandler, 
+						playerAssignment.Character.Character, 
+						customCulture: playerAssignment.Formation.MainCulture, 
+						healthMultiplier: playerAssignment.Character.HealthMultiplier);
 					playersSpawn++;
 				}
 				if (playersSpawn >= 20) break;
@@ -90,7 +90,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			{
 				for (int i = Mission.AttackerTeam.ActiveAgents.Count; i < nbBotsToSpawnAtt; i++)
 				{
-					PlayerFormation randomFormation = teamAttack.Formations.GetRandomElement();
+					PlayerFormation randomFormation = teamAttack.Formations.Where(f => !f.AvailableCharacters.IsEmpty()).GetRandomElementInefficiently();
 					BasicCharacterObject troopCharacter = randomFormation.AvailableCharacters.GetRandomElement().Character;
 
 					// Random difficulty between 0.5 and 2.5f
@@ -105,7 +105,7 @@ namespace Alliance.Server.GameModes.Lobby.Behaviors
 			{
 				for (int i = Mission.DefenderTeam.ActiveAgents.Count; i < nbBotsToSpawnDef; i++)
 				{
-					PlayerFormation randomFormation = teamDef.Formations.GetRandomElement();
+					PlayerFormation randomFormation = teamDef.Formations.Where(f => !f.AvailableCharacters.IsEmpty()).GetRandomElementInefficiently();
 					BasicCharacterObject troopCharacter = randomFormation.AvailableCharacters.GetRandomElement()?.Character;
 					// Skip if no character available
 					if (troopCharacter == null) continue;

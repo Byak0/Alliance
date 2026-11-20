@@ -32,5 +32,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		bool CanPlayerSelectLocation(NetworkCommunicator player, SpawnLocation location);
 		void OnSpawn(Agent agent);
 		void OnDespawn(Agent agent);
+		void SyncLivesToPeer(NetworkCommunicator peer);
 	}
 }

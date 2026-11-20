@@ -10,9 +10,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 	public sealed class SetElectionStatus : GameNetworkMessage
 	{
 		public bool Enable { get; private set; }
-		public float Timer { get; private set; }
+		public int Timer { get; private set; }
 
-		public SetElectionStatus(bool enable, float timer)
+		public SetElectionStatus(bool enable, int timer)
 		{
 			Enable = enable;
 			Timer = timer;
@@ -27,7 +27,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 			WriteBoolToPacket(Enable);
 			if (Enable)
 			{
-				WriteFloatToPacket(Timer, CompressionBasic.IntermissionTimerCompressionInfo);
+				WriteIntToPacket(Timer, CompressionBasic.WarmupTimeLimitCompressionInfo);
 			}
 		}
 
@@ -37,7 +37,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer
 			Enable = ReadBoolFromPacket(ref bufferReadValid);
 			if (Enable)
 			{
-				Timer = ReadFloatFromPacket(CompressionBasic.IntermissionTimerCompressionInfo, ref bufferReadValid);
+				Timer = ReadIntFromPacket(CompressionBasic.WarmupTimeLimitCompressionInfo, ref bufferReadValid);
 			}
 			return bufferReadValid;
 		}

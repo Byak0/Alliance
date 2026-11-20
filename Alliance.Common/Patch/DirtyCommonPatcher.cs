@@ -19,6 +19,9 @@ namespace Alliance.Common.Patch
 
 			// Increase map time limit (in minutes)
 			CompressionBasic.MapTimeLimitCompressionInfo = new CompressionInfo.Integer(0, 360, true);
+			
+			// Increase warmup time limit (in seconds)
+			CompressionBasic.WarmupTimeLimitCompressionInfo = new CompressionInfo.Integer(0, 3600, true);
 
 			// Increase network message size for round time (in seconds)
 			CompressionMission.RoundTimeCompressionInfo = new CompressionInfo.Integer(0, 4000, true);
@@ -30,10 +33,13 @@ namespace Alliance.Common.Patch
 			CompressionBasic.RoundGoldAmountCompressionInfo = new CompressionInfo.Integer(-1, 50000, true);
 
 			// Increase max number of mission object
-			CompressionBasic.MissionObjectIDCompressionInfo = new CompressionInfo.Integer(-1, MAX_MISSION_OBJECTS, maximumValueGiven: true);
+			CompressionBasic.MissionObjectIDCompressionInfo = new CompressionInfo.Integer(-1, MAX_MISSION_OBJECTS, true);
 
 			// Increase max health of objects to 104856.5 instead of 26213.3
 			CompressionMission.UsableGameObjectHealthCompressionInfo = new CompressionInfo.Float(-1f, 20, 0.1f);
+
+			// Doubles max speed of missiles (204.75 -> 409.5) by slightly reducing precision (same payload)
+			CompressionMission.MissileSpeedCompressionInfo = new CompressionInfo.Float(0f, 12, 0.1f);
 
 			// TODO : Check if still necessary with 1.2 optimisation
 			// Fix native lag when lot of arrows
@@ -58,11 +64,11 @@ namespace Alliance.Common.Patch
 			patchSuccess &= Patch_MultiplayerClassDivisions.Patch();
 			patchSuccess &= Patch_AddTeam.Patch();
 			patchSuccess &= Patch_GameNetworkMessage.Patch();
-			patchSuccess &= Patch_AdvancedCombat.Patch();
 			patchSuccess &= Patch_MissionPeer.Patch();
 			patchSuccess &= Patch_ActionSetCode.Patch();
+			patchSuccess &= Patch_AgentStatCalculateModel.Patch();
 #if !SERVER && DEBUG
-			patchSuccess &= Patch_WidgetExtensions.Patch();
+			//patchSuccess &= Patch_WidgetExtensions.Patch();
 #endif
 
 			if (patchSuccess) Log(SubModule.ModuleId + " - Patches successful", LogLevel.Information);

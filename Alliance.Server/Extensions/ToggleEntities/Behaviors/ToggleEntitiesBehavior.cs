@@ -38,7 +38,7 @@ namespace Alliance.Server.Extensions.ToggleEntities.Behaviors
 			if (Mission.Current?.Scene == null || missionObject == null) return;
 			var key = new KeyValuePair<MissionObjectId, string>(missionObject.Id, tag);
 			_localTagVisibility[key] = visible;
-			foreach (GameEntity entity in missionObject.GameEntity.CollectChildrenEntitiesWithTag(tag))
+			foreach (WeakGameEntity entity in missionObject.GameEntity.CollectChildrenEntitiesWithTag(tag))
 			{
 				entity.SetVisibilityExcludeParents(visible);
 			}

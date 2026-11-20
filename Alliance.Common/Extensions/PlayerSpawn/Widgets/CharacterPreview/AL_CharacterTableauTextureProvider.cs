@@ -1,8 +1,6 @@
 ﻿#if !SERVER
-using System;
 using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.GauntletUI;
-using TaleWorlds.Library;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
@@ -11,95 +9,10 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 	{
 		private AL_CharacterTableau _characterTableau;
 		private TaleWorlds.Engine.Texture _texture;
-		private TaleWorlds.TwoDimension.Texture _providedTexture;
-		private bool _isHidden;
-		private float _cameraZoom, _cameraElevation, _cameraStrafe, _cameraYaw, _cameraPitch, _cameraRoll;
+		private Texture _providedTexture;
+		private bool _isVisible;
 
 		public AL_CharacterTableau CharacterTableau => _characterTableau;
-
-		public float CameraZoom
-		{
-			set => _cameraZoom = value;
-		}
-
-		public float CameraElevation
-		{
-			set => _cameraElevation = value;
-		}
-
-		public float CameraStrafe
-		{
-			set => _cameraStrafe = value;
-		}
-
-		public float CameraYaw
-		{
-			set => _cameraYaw = value;
-		}
-
-		public float CameraPitch
-		{
-			set => _cameraPitch = value;
-		}
-
-		public float CameraRoll
-		{
-			set => _cameraRoll = value;
-		}
-
-		public float CameraAnimDuration { get; set; }
-
-		public bool ApplyCameraChange
-		{
-			set
-			{
-				if (!value) return;
-
-				MatrixFrame newCameraFrame = CameraFrame;
-				newCameraFrame.Advance(_cameraElevation);
-				newCameraFrame.Strafe(_cameraStrafe);
-				newCameraFrame.Elevate(_cameraZoom);
-				newCameraFrame.rotation.ApplyEulerAngles(new Vec3(_cameraPitch, _cameraYaw, _cameraRoll));
-				AnimateCamera(newCameraFrame, CameraFov, CameraAnimDuration);
-			}
-		}
-
-		public void AnimateCamera(MatrixFrame targetFrame, float targetFov, float duration)
-		{
-			_characterTableau.AnimateCamera(targetFrame, targetFov, duration);
-		}
-
-		public MatrixFrame CameraFrame
-		{
-			get => _characterTableau.CameraFrame;
-			set => _characterTableau.CameraFrame = value;
-		}
-
-		public float CameraFov
-		{
-			get => _characterTableau.CameraFov;
-			set => _characterTableau.CameraFov = value;
-		}
-
-
-		public bool EnableLight
-		{
-			get
-			{
-				return _characterTableau?.IsLightEnabled ?? false;
-			}
-			set
-			{
-				if (value)
-				{
-					_characterTableau.EnableLight();
-				}
-				else
-				{
-					_characterTableau.DisableLight();
-				}
-			}
-		}
 
 		public float CustomAnimationProgressRatio => _characterTableau.GetCustomAnimationProgressRatio();
 
@@ -302,18 +215,29 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		public bool IsHidden
+		public bool IsVisible
 		{
 			get
 			{
-				return _isHidden;
+				return _isVisible;
 			}
 			set
 			{
-				if (_isHidden != value)
+				if (_isVisible != value)
 				{
-					_isHidden = value;
+					_isVisible = value;
+					_characterTableau.SetEnabled(value);
 				}
+			}
+		}
+
+		/// <summary>Continuous tableaus render every frame; the others share the frame's render
+		/// budget (round-robin). Bind to item selection so only the selected preview renders at full rate.</summary>
+		public bool ContinuousRendering
+		{
+			set
+			{
+				_characterTableau.Continuous = value;
 			}
 		}
 
@@ -336,7 +260,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 				if (_texture != null)
 				{
 					EngineTexture platformTexture = new EngineTexture(_texture);
-					_providedTexture = new TaleWorlds.TwoDimension.Texture(platformTexture);
+					_providedTexture = new Texture(platformTexture);
 				}
 				else
 				{
@@ -345,7 +269,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
-		public override TaleWorlds.TwoDimension.Texture GetTexture(TwoDimensionContext twoDimensionContext, string name)
+		protected override Texture OnGetTextureForRender(TwoDimensionContext twoDimensionContext, string name)
 		{
 			CheckTexture();
 			return _providedTexture;

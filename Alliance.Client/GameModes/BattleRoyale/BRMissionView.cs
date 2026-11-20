@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Multiplayer.View.MissionViews;
-using TaleWorlds.MountAndBlade.View;
 using TaleWorlds.MountAndBlade.View.MissionViews;
 
 namespace Alliance.Client.GameModes.BattleRoyale
@@ -24,7 +23,7 @@ namespace Alliance.Client.GameModes.BattleRoyale
 				new AgentStatusView(),
 
 				// Native FFA views
-				MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
+				//MultiplayerViewCreator.CreateMissionMultiplayerFFAView(),
 				MultiplayerViewCreator.CreateMissionScoreBoardUIHandler(mission, true),
 				MultiplayerViewCreator.CreateMultiplayerMissionDeathCardUIHandler()
 			});

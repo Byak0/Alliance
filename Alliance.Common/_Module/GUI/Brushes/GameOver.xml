@@ -125,11 +125,11 @@
 		<Animations>
 			<Animation Name="TextureAnim" Duration="60.0" Loop="true">
 				<AnimationProperty PropertyName="XOffset" LayerName="Default">
-					<KeyFrame Time="0.0" Value="-120" />
-					<KeyFrame Time="15.0" Value="-145" />
-					<KeyFrame Time="30.0" Value="-120" />
-					<KeyFrame Time="45.0" Value="-95" />
-					<KeyFrame Time="60.0" Value="-120" />
+					<KeyFrame Time="0.0" Value="-0" />
+					<KeyFrame Time="15.0" Value="-25" />
+					<KeyFrame Time="30.0" Value="0" />
+					<KeyFrame Time="45.0" Value="25" />
+					<KeyFrame Time="60.0" Value="0" />
 				</AnimationProperty>
 			</Animation>
 		</Animations>
@@ -155,7 +155,7 @@
 		</Styles>
 	</Brush>
 
-	<Brush Name="GameOver.Category.Button" TransitionDuration="0.3">
+	<Brush Name="GameOver.Category.Button" TransitionDuration="0.15">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\tab_item_hover_effect" Color="#A37D39FF"/>
 		</Layers>
@@ -187,7 +187,7 @@
     </SoundProperties>
 	</Brush>
 
-	<Brush Name="GameOver.Category.Visual.Base" TransitionDuration="0.3">
+	<Brush Name="GameOver.Category.Visual.Base" TransitionDuration="0.15">
 		<Layers>
 			<BrushLayer Name="Default"/>
 		</Layers>
@@ -210,7 +210,7 @@
 		</Styles>
 	</Brush>
 
-	<Brush Name="GameOver.Category.Visual" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Effect">
+	<Brush Name="GameOver.Category.Visual" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Effect">
 		<Layers>
 			<BrushLayer Name="Default" Color="#fec157ff"/>
 		</Layers>
@@ -236,31 +236,31 @@
 		</Styles>
 	</Brush>
 
-	<Brush Name="GameOver.Category.Visual.General" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+	<Brush Name="GameOver.Category.Visual.General" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Base">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\general" Color="#fec157ff"/>
 		</Layers>
 	</Brush>
 
-	<Brush Name="GameOver.Category.Visual.Battle" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+	<Brush Name="GameOver.Category.Visual.Battle" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Base">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\battles" Color="#fec157ff"/>
 		</Layers>
 	</Brush>
 	
-	<Brush Name="GameOver.Category.Visual.Finance" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+	<Brush Name="GameOver.Category.Visual.Finance" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Base">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\finances" Color="#fec157ff"/>
 		</Layers>
 	</Brush>
 	
-	<Brush Name="GameOver.Category.Visual.Crafting" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+	<Brush Name="GameOver.Category.Visual.Crafting" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Base">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\smithing" Color="#fec157ff"/>
 		</Layers>
 	</Brush>
 	
-	<Brush Name="GameOver.Category.Visual.Companion" TransitionDuration="0.3" BaseBrush="GameOver.Category.Visual.Base">
+	<Brush Name="GameOver.Category.Visual.Companion" TransitionDuration="0.15" BaseBrush="GameOver.Category.Visual.Base">
 		<Layers>
 			<BrushLayer Name="Default" Sprite="GameOver\companions" Color="#fec157ff"/>
 		</Layers>

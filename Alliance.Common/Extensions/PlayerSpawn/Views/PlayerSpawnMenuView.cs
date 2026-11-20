@@ -1,7 +1,5 @@
 ﻿#if !SERVER
-using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
-using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.PlayerSpawn.ViewModels;
 using System;
 using TaleWorlds.Core;
@@ -135,22 +133,21 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Views
 			}
 			try
 			{
-				Characters.Instance.TryRefreshCharacters();
 				_dataSource = new PlayerSpawnMenuVM(playerSpawnMenu);
 				_onMenuClosed += onCloseCallback;
 				_dataSource.OnCloseMenu += CloseMenu;
 
-				_layer = new GauntletLayer(26, "GauntletLayer");
+				_layer = new GauntletLayer("PlayerSpawnMenu", 26);
 				_layer.InputRestrictions.SetInputRestrictions();
 				_layer.Input.RegisterHotKeyCategory(HotKeyManager.GetCategory("MultiplayerHotkeyCategory"));
 				_layer.LoadMovie("PlayerSpawnMenu", _dataSource);
 
-				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_kingdom"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_facegen"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
-				UIResourceManager.SpriteData.SpriteCategories["ui_conversation"].Load(UIResourceManager.ResourceContext, UIResourceManager.UIResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mplobby"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_mpintermission"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_order"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_kingdom"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_facegen"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
+				UIResourceManager.SpriteData.SpriteCategories["ui_conversation"].Load(UIResourceManager.ResourceContext, UIResourceManager.ResourceDepot);
 
 				ScreenManager.TopScreen?.AddLayer(_layer);
 				ScreenManager.TrySetFocus(_layer);

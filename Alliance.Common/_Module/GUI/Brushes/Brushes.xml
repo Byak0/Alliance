@@ -285,29 +285,29 @@
 
 	<Brush Name="Alliance.Button.Checkbox" BaseBrush="Item.Type.Icon.BaseBrush">
 		<Layers>
-			<BrushLayer Name="Default" Sprite="StdAssets\checkbox_empty" />
-			<BrushLayer Name="Selected" Sprite="StdAssets\checkbox_full" />
+			<BrushLayer Name="empty" Sprite="StdAssets\checkbox_empty" />
+			<BrushLayer Name="full" Sprite="StdAssets\checkbox_full" />
 		</Layers>
 		<Styles>
 			<Style Name="Default">
-				<BrushLayer Name="Default" AlphaFactor="1" />
-				<BrushLayer Name="Selected" IsHidden="true" />
+				<BrushLayer Name="empty" AlphaFactor="1" />
+				<BrushLayer Name="full" IsHidden="true" />
 			</Style>
 			<Style Name="Hovered">
-				<BrushLayer Name="Default" AlphaFactor="1" />
-				<BrushLayer Name="Selected" AlphaFactor="0.4" />
+				<BrushLayer Name="empty" AlphaFactor="1" />
+				<BrushLayer Name="full" AlphaFactor="0.2" />
 			</Style>
 			<Style Name="Pressed">
-				<BrushLayer Name="Default" AlphaFactor="1" />
-				<BrushLayer Name="Selected" AlphaFactor="1" />
+				<BrushLayer Name="empty" AlphaFactor="1" />
+				<BrushLayer Name="full" AlphaFactor="1" />
 			</Style>
 			<Style Name="Selected">
-				<BrushLayer Name="Default" AlphaFactor="1" />
-				<BrushLayer Name="Selected" AlphaFactor="0.8" />
+				<BrushLayer Name="empty" AlphaFactor="1" />
+				<BrushLayer Name="full" AlphaFactor="1" />
 			</Style>
 			<Style Name="Disabled">
-				<BrushLayer Name="Default" AlphaFactor="0.5" />
-				<BrushLayer Name="Selected" IsHidden="true" />
+				<BrushLayer Name="empty" AlphaFactor="0.5" />
+				<BrushLayer Name="full" IsHidden="true" />
 			</Style>
 		</Styles>
 	</Brush>
@@ -402,13 +402,31 @@
 
 	<Brush Name="Alliance.BannerBackgroundLeft">
 		<Layers>
-			<BrushLayer Name="Default" Sprite="MPHud\banner_left" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_left" ExtendTop="0" ExtendLeft="4" ExtendRight="4" ExtendBottom="4" OverlayXOffset="4" OverlayYOffset="0" ColorFactor="0.6"/>
 		</Layers>
 	</Brush>
 
 	<Brush Name="Alliance.BannerBackgroundRight">
 		<Layers>
-			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="7" ExtendLeft="10" ExtendRight="10" ExtendBottom="13" OverlayXOffset="0" OverlayYOffset="0" ColorFactor="0.6"/>
+			<BrushLayer Name="Default" Sprite="MPHud\banner_right" ExtendTop="0" ExtendLeft="4" ExtendRight="4" ExtendBottom="4" OverlayXOffset="4" OverlayYOffset="0" ColorFactor="0.6"/>
 		</Layers>
+	</Brush>
+
+	<Brush Name="Alliance.Cinematic.Subtitle" Font="Galahad">
+		<Layers>
+			<BrushLayer Name="Default" Color="#FFFFFFFF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0" TextBlur="0" TextShadowOffset="0" TextOutlineAmount="0" TextOutlineColor="#00000000" FontSize="24" />
+		</Styles>
+	</Brush>
+	
+	<Brush Name="Alliance.IntroWaiting.Text" Font="Galahad">
+		<Layers>
+			<BrushLayer Name="Default" Color="#FFFFFFFF" />
+		</Layers>
+		<Styles>
+			<Style Name="Default" FontColor="#FFFFFFFF" TextGlowRadius="0.1" TextBlur="0.1" TextShadowOffset="0.2" TextOutlineAmount="0.1" TextOutlineColor="#00000000" FontSize="24" />
+		</Styles>
 	</Brush>
 </Brushes>

@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+﻿#if !SERVER
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
@@ -11,7 +12,6 @@ using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.MountAndBlade;
 using static Alliance.Common.Core.Utils.AgentExtensions;
-using static Alliance.Common.Core.Utils.Characters;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 {
@@ -369,12 +369,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 		{
 			TroopGroups.Clear();
 
-			// If MPClassDivisions have not been initialized, try to initialize them
-			if (MultiplayerClassDivisions.MultiplayerHeroClassGroups == null && Game.Current != null)
-			{
-				MultiplayerClassDivisions.Initialize();
-			}
-
 			// Add troops from multiplayer class divisions
 			if (MultiplayerClassDivisions.MultiplayerHeroClassGroups != null)
 			{
@@ -387,28 +381,22 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			}
 
 			// Add troops from the culture's default classes
-			List<BasicCharacterStub> characterStubs = Instance.CharacterStubs
-				.Where(c => c.Culture?.Id == culture.Id)
-				.ToList();
-			if (characterStubs.Count > 0)
+			if (TroopGroups.IsEmpty())
 			{
-				MBBindingList<TroopVM> troopVMs = new MBBindingList<TroopVM>();
-				foreach (BasicCharacterStub characterStub in characterStubs)
+				List<AllianceData.CharacterDefinition> characters = AllianceData.Instance.GetCharactersByCulture(culture)
+					.Where(c => !c.HasClassType(ClassType.None))
+					.ToList();
+				if (characters.Count > 0)
 				{
-					TroopVM troopVM;
-					BasicCharacterObject trueCharacter = Instance.GetCharacterObject(characterStub.StringId);
-					if (trueCharacter != null)
+					MBBindingList<TroopVM> troopVMs = new MBBindingList<TroopVM>();
+					foreach (AllianceData.CharacterDefinition character in characters)
 					{
-						troopVM = new TroopVM(trueCharacter, SelectTroop);
+						if (character.HasClassType(ClassType.Troop) && ShowTroops) troopVMs.Add(new TroopVM(character, ClassType.Troop, SelectTroop));
+						if (character.HasClassType(ClassType.Hero) && ShowHeroes) troopVMs.Add(new TroopVM(character, ClassType.Hero, SelectTroop));
+						if (character.HasClassType(ClassType.BannerBearer) && ShowBannerBearers) troopVMs.Add(new TroopVM(character, ClassType.BannerBearer, SelectTroop));
 					}
-					else
-					{
-						troopVM = new TroopVM(characterStub, SelectTroop);
-					}
-
-					troopVMs.Add(troopVM);
+					TroopGroups.Add(new TroopGroupVM(culture.Name.ToString(), culture.StringId, troopVMs));
 				}
-				TroopGroups.Add(new TroopGroupVM(culture.Name.ToString(), culture.StringId, troopVMs));
 			}
 
 			foreach (TroopGroupVM groupVM in TroopGroups)
@@ -644,11 +632,22 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			_onTroopSelected = onSelect;
 		}
 
-		public TroopVM(BasicCharacterStub characterStub, Action<TroopVM> onSelect)
+		public TroopVM(AllianceData.CharacterDefinition character, ClassType troopType, Action<TroopVM> onSelect)
 		{
 			IsSelected = false;
-			StringId = characterStub.StringId;
-			Name = characterStub.Name.ToString() + " (" + StringId + ")";
+			TroopType = troopType;
+			StringId = character.Id;
+			Troop = character.CharacterObject;
+			Name = character.DisplayName;
+			switch (TroopType)
+			{
+				case ClassType.Hero:
+					Name = character.DisplayName + " (Hero)";
+					break;
+				case ClassType.BannerBearer:
+					Name = character.DisplayName + " (Banner Bearer)";
+					break;
+			}
 			_onTroopSelected = onSelect;
 		}
 
@@ -659,3 +658,4 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 		}
 	}
 }
+#endif

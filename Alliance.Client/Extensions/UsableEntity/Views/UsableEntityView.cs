@@ -28,7 +28,7 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 		{
 			_entityInteractionBehavior = Mission.Current.GetMissionBehavior<UsableEntityBehavior>();
 			_dataSource = new EntityInteractionVM();
-			_gauntletLayer = new GauntletLayer(1, "GauntletLayer", false);
+			_gauntletLayer = new GauntletLayer("EntityInteractionHUD", 1);
 			_gauntletLayer.LoadMovie("EntityInteractionHUD", _dataSource);
 			MissionScreen.AddLayer(_gauntletLayer);
 		}
@@ -81,7 +81,8 @@ namespace Alliance.Client.Extensions.UsableEntity.Views
 		{
 			target.Entity.SetContourColor(Colors.Green.ToUnsignedInteger(), true);
 			_dataSource.InteractionInterface.IsActive = true;
-			_dataSource.InteractionInterface.PrimaryInteractionMessage = target.Handler.GetInteractionText(Agent.Main, target.Entity).ToString();
+			// todo fix interaction text
+			//_dataSource.InteractionInterface.PrimaryInteractionMessages = target.Handler.GetInteractionText(Agent.Main, target.Entity).ToString();
 		}
 
 		private void DisableInteraction(InteractionTarget target)

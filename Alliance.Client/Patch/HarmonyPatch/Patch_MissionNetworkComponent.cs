@@ -4,8 +4,10 @@ using Alliance.Common.Core.Configuration.Models;
 using HarmonyLib;
 using NetworkMessages.FromServer;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using TaleWorlds.Core;
+using TaleWorlds.Engine;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
@@ -40,6 +42,16 @@ namespace Alliance.Client.Patch.HarmonyPatch
 						BindingFlags.Instance | BindingFlags.NonPublic),
 					prefix: new HarmonyMethod(typeof(Patch_MissionNetworkComponent).GetMethod(
 						nameof(Prefix_HandleServerEventCreateAgentVisuals), BindingFlags.Static | BindingFlags.Public)));
+               Harmony.Patch(
+					typeof(MissionNetworkComponent).GetMethod("HandleServerEventCreateMissionObject",
+						BindingFlags.Instance | BindingFlags.NonPublic),
+					prefix: new HarmonyMethod(typeof(Patch_MissionNetworkComponent).GetMethod(
+						nameof(Prefix_HandleServerEventCreateMissionObject), BindingFlags.Static | BindingFlags.Public)));
+				Harmony.Patch(
+					typeof(MissionNetworkComponent).GetMethod("HandleServerEventAddTeam",
+						BindingFlags.Instance | BindingFlags.NonPublic),
+					prefix: new HarmonyMethod(typeof(Patch_MissionNetworkComponent).GetMethod(
+						nameof(Prefix_HandleServerEventAddTeam), BindingFlags.Static | BindingFlags.Public)));
 			}
 			catch (Exception e)
 			{
@@ -103,7 +115,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
 			}
 			else
 			{
-				agentBuildData3.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData3.AgentRace, agentBuildData3.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData3.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData3.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
+				agentBuildData3.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData3.AgentRace, agentBuildData3.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData3.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData3.AgentEquipmentSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 			}
 
 			Agent mountAgent = Mission.Current.SpawnAgent(agentBuildData3, false).MountAgent;
@@ -129,7 +141,7 @@ namespace Alliance.Client.Patch.HarmonyPatch
 			}
 			else
 			{
-				agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, message.BodyPropertiesSeed, character.HairTags, character.BeardTags, character.TattooTags));
+				agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, message.BodyPropertiesSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 			}
 			Mission.Current.GetMissionBehavior<AllianceAgentVisualSpawnComponent>().SpawnAgentVisualsForPeer(component, agentBuildData, message.SelectedEquipmentSetIndex, false, message.TroopCountInFormation);
 
@@ -138,6 +150,63 @@ namespace Alliance.Client.Patch.HarmonyPatch
 				component.HasSpawnedAgentVisuals = true;
 				component.EquipmentUpdatingExpired = false;
 			}
+
+			return false;
+		}
+
+		// Patch the CreateMissionObject message to assign the correct ids to ALL MissionObjects children in the prefab
+		// In native only the direct children get their ids correctly assigned
+		public static bool Prefix_HandleServerEventCreateMissionObject(GameNetworkMessage baseMessage)
+		{
+			CreateMissionObject createMissionObject = (CreateMissionObject)baseMessage;
+			GameEntity gameEntity = GameEntity.Instantiate(Mission.Current.Scene, createMissionObject.Prefab, createMissionObject.Frame, true);
+
+			MissionObject rootMissionObject = gameEntity.GetFirstScriptOfType<MissionObject>();
+			if (rootMissionObject == null)
+			{
+				return false;
+			}
+
+			rootMissionObject.Id = createMissionObject.ObjectId;
+
+			List<MissionObject> childMissionObjects = new List<MissionObject>();
+			CollectMissionObjectsRecursive(gameEntity, childMissionObjects);
+
+			int childCount = Math.Min(childMissionObjects.Count, createMissionObject.ChildObjectIds.Count);
+			for (int i = 0; i < childCount; i++)
+			{
+				childMissionObjects[i].Id = createMissionObject.ChildObjectIds[i];
+			}
+
+			if (childMissionObjects.Count != createMissionObject.ChildObjectIds.Count)
+			{
+				Log($"[Client] CreateMissionObject '{createMissionObject.Prefab}' child id mismatch: prefab has {childMissionObjects.Count} recursive MissionObjects, message has {createMissionObject.ChildObjectIds.Count} ids.", LogLevel.Warning);
+			}
+
+			return false;
+		}
+
+		private static void CollectMissionObjectsRecursive(GameEntity entity, List<MissionObject> missionObjects)
+		{
+			foreach (GameEntity child in entity.GetChildren())
+			{
+				MissionObject missionObject = child.GetFirstScriptOfType<MissionObject>();
+				if (missionObject != null)
+				{
+					missionObjects.Add(missionObject);
+				}
+
+				CollectMissionObjectsRecursive(child, missionObjects);
+			}
+		}
+
+		// Fix some banners who were wrongly recolored when they shouldn't
+		public static bool Prefix_HandleServerEventAddTeam(GameNetworkMessage baseMessage)
+		{
+			AddTeam addTeam = (AddTeam)baseMessage;
+			// No need to pass colors to Banner ctor since our BannerCode already contains the colors (see BannerHelper.GetBannerCodeFromCulture)
+			Banner banner = (string.IsNullOrEmpty(addTeam.BannerCode) ? null : new Banner(addTeam.BannerCode/*, addTeam.Color, addTeam.Color2*/));
+			Mission.Current?.Teams.Add(addTeam.Side, addTeam.Color, addTeam.Color2, banner, addTeam.IsPlayerGeneral, addTeam.IsPlayerSergeant, true);
 
 			return false;
 		}

@@ -162,7 +162,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			float bestSpawnScore = float.MinValue;
 			int bestSpawnIndex = -1;
 			int nbAgentsAtBest = 0;
-			MBList<Agent> agents = (MBList<Agent>)Mission.Current.Agents;
+			MBList<Agent> agents = new MBList<Agent>();
 			for (int i = 0; i < spawnPointList.Count; i++)
 			{
 				if (!spawnPointList[i].IsVisibleIncludeParents())
@@ -227,7 +227,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			float bestSpawnScore = float.MinValue;
 			int bestSpawnIndex = -1;
 			int nbAgentsAtBest = 0;
-			MBList<Agent> agents = (MBList<Agent>)Mission.Current.Agents;
+			MBList<Agent> agents = new MBList<Agent>();
 
 			for (int i = 0; i < spawnPoints.Count; i++)
 			{

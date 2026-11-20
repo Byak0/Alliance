@@ -44,6 +44,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		public bool ElectionInProgress { get; private set; } = false;
 		[XmlIgnore]
 		public float TimeBeforeOfficerElection { get; set; } = 0f;
+		[XmlIgnore]
+		public bool RandomOfficer { get; private set; } = false;
 
 		// Lookup properties
 		[XmlIgnore]
@@ -74,10 +76,24 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			return _playerAssignments[player];
 		}
 
-		public void StartOfficerElection(float timeBeforeElection)
+		public bool IsOfficer(ICommunicator player)
+		{
+			if (player == null) return false;
+			foreach (PlayerTeam team in Teams)
+			{
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					if (formation.Officer == player) return true;
+				}
+			}
+			return false;
+		}
+
+		public void StartOfficerElection(float timeBeforeElection, bool randomOfficer = false)
 		{
 			ElectionInProgress = true;
 			TimeBeforeOfficerElection = timeBeforeElection;
+			RandomOfficer = randomOfficer;
 			OnElectionStatusChanged?.Invoke(true);
 			Log($"Officer election started, will end in {timeBeforeElection} seconds.", LogLevel.Debug);
 		}
@@ -93,7 +109,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				{
 					foreach (PlayerFormation formation in team.Formations)
 					{
-						ElectOfficer(team, formation);
+						ElectOfficer(team, formation, RandomOfficer);
 					}
 				}
 			}
@@ -189,24 +205,32 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		/// Elects an officer for the given team and formation based on the votes received by candidates.
 		/// Elected officer's character will be set as the officer of the formation. Other candidates will be dispatched to characters with available slots.
 		/// </summary>
-		public void ElectOfficer(PlayerTeam team, PlayerFormation formation)
+		public void ElectOfficer(PlayerTeam team, PlayerFormation formation, bool randomOfficer = false)
 		{
 			if (!GameNetwork.IsServer) return;
 
 			CandidateInfo electedCandidate = null;
-			int maxVotes = 0;
-			foreach (CandidateInfo candidate in formation.Candidates)
+			if (randomOfficer)
 			{
-				if (candidate.Votes > maxVotes)
+				electedCandidate = formation.Candidates.GetRandomElementInefficiently();
+				if(electedCandidate != null) Log($"Officer randomly selected: {electedCandidate.Candidate.UserName}", LogLevel.Information);
+			}
+			else
+			{
+				int maxVotes = 0;
+				foreach (CandidateInfo candidate in formation.Candidates)
 				{
-					maxVotes = candidate.Votes;
-					electedCandidate = candidate;
+					if (candidate.Votes > maxVotes)
+					{
+						maxVotes = candidate.Votes;
+						electedCandidate = candidate;
+					}
 				}
+				if(electedCandidate != null) Log($"Officer elected: {electedCandidate.Candidate.UserName} with {maxVotes} votes.", LogLevel.Information);
 			}
 			if (electedCandidate != null)
 			{
 				SetFormationOfficer(team, formation, electedCandidate.Candidate);
-				Log($"Officer elected: {formation.Officer.UserName} with {maxVotes} votes.", LogLevel.Information);
 
 				// Set officer's character
 				SelectCharacter(electedCandidate.Candidate, team, formation, GetPlayerAssignment(formation.Officer).Character);
@@ -475,6 +499,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			Log("PlayerSpawnMenu cleared.", LogLevel.Debug);
 		}
 
+		private static readonly XmlSerializer CloneSerializer = new XmlSerializer(typeof(PlayerSpawnMenu));
+
+		public PlayerSpawnMenu Clone()
+		{
+			using (StringWriter writer = new StringWriter())
+			{
+				CloneSerializer.Serialize(writer, this);
+				using (StringReader reader = new StringReader(writer.ToString()))
+				{
+					return (PlayerSpawnMenu)CloneSerializer.Deserialize(reader);
+				}
+			}
+		}
+
 		/// <summary>
 		/// Try loading the PlayerSpawnMenu from file. Returns true if successful, false otherwise.
 		/// </summary>
@@ -491,7 +529,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 					Log($"Loading PlayerSpawnMenu from {filePath}");
 					playerSpawnMenu = SerializeHelper.LoadClassFromFile(filePath, new PlayerSpawnMenu());
 					playerSpawnMenu.RefreshIndices(); // Ensure indices are unique and valid
-					return true;
+					return playerSpawnMenu.CheckCharacterValidity();
 				}
 				else
 				{
@@ -503,6 +541,26 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				Log($"Failed to load PlayerSpawnMenu from {filePath}: {ex.Message}", LogLevel.Error);
 			}
 			return false;
+		}
+
+		private bool CheckCharacterValidity()
+		{
+			bool validity = true;
+			foreach (PlayerTeam team in Teams)
+			{				
+				foreach (PlayerFormation formation in team.Formations)
+				{
+					foreach (AvailableCharacter character in formation.AvailableCharacters)
+					{
+						if(character.Definition == null)
+						{
+							Log($"Character {character.CharacterId} in formation {formation.Name} of team {team.Name} is invalid (unknown character id).", LogLevel.Error);
+							return false;
+						}
+					}
+				}
+			}
+			return validity;
 		}
 
 		/// <summary>
@@ -522,6 +580,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				Log($"Failed to save PlayerSpawnMenu to {filePath}: {ex.Message}", LogLevel.Error);
 			}
 			return false;
+		}
+
+		public void GenerateDefaultMenu(List<KeyValuePair<BattleSideEnum, BasicCultureObject>> teamList)
+		{
+			Clear();
+			foreach (var teamInfo in teamList)
+			{
+				BattleSideEnum side = teamInfo.Key;
+				BasicCultureObject culture = teamInfo.Value;
+				PlayerTeam team = AddTeam(side, culture.StringId);
+				team.AutoFillFromCulture(culture);
+			}
 		}
 	}
 }

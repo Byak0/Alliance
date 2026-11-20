@@ -25,7 +25,7 @@
 									<Children>
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 											<Children>
-												<ListPanel Id="GameModes" DataSource="{GameModes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+												<ListPanel Id="GameModes" DataSource="{GameModes}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" >
 													<ItemTemplate>
 														<GameModeCard/>
 													</ItemTemplate>
@@ -62,7 +62,7 @@
 									<Children>
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 											<Children>
-												<ListPanel Id="Maps" DataSource="{Maps}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+												<ListPanel Id="Maps" DataSource="{Maps}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" >
 													<ItemTemplate>
 														<MapCard/>
 													</ItemTemplate>
@@ -94,7 +94,7 @@
 										<Widget Id="ClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center" >
 											<Children>
 
-												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalBottomToTop" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
+												<ListPanel Id="AllOptions" LayoutImp.LayoutMethod="VerticalTopToBottom" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="800" HorizontalAlignment="Left" MarginLeft="10" MarginTop="10" >
 													<Children>
 
 														<!-- Player Spawn Menu short description-->
@@ -106,6 +106,29 @@
 																<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" Text="Edit spawn menu" />
 															</Children>
 														</ButtonWidget>
+
+														<!-- Load / Save  gameoption from/to file -->
+														<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginBottom="2" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPIntermission.Voting.Title.Text" Brush.FontColor="#F4E1C4FF" Brush.FontSize="30" MarginTop="16" Text="Load or Save Map Preset" />
+
+														<BrushWidget SuggestedWidth="560" SuggestedHeight="60" VerticalAlignment="Top" HorizontalAlignment="Right" MarginRight="104" IsVisible="@IsAdmin" >
+															<Children>
+
+																<!-- Load button -->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="288" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Load">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Load" />
+																	</Children>
+																</ButtonWidget>
+
+																<!-- Save button -->
+																<ButtonWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="128" HeightSizePolicy="Fixed" SuggestedHeight="56" HorizontalAlignment="Right" VerticalAlignment="Top" MarginRight="160" Brush="Popup.Done.Button" UpdateChildrenStates="true" GamepadNavigationIndex="1" Command.Click="Save">
+																	<Children>
+																		<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.FontSize="24" Brush.TextHorizontalAlignment="Center" Brush.TextVerticalAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Save" />
+																	</Children>
+																</ButtonWidget>
+																
+															</Children>
+														</BrushWidget>
 
 														<!-- Native options -->
 														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="8" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\NativeOptions" ListPanel="..\NativeOptions" RenderLate="true" UpdateChildrenStates="true">
@@ -126,34 +149,56 @@
 																</ListPanel>
 															</Children>
 														</PartyHeaderToggleWidget>
-														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
+														<ListPanel Id="NativeOptions" DataSource="{NativeOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalTopToBottom" >
 															<ItemTemplate>
 																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 
-														<!-- Mod options -->
-														<PartyHeaderToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="10" MarginRight="10" MarginTop="5" MarginBottom="20" CollapseIndicator="Description\CollapseParent\GroupTitle\CollapseIndicator" WidgetToClose="..\ModOptions" ListPanel="..\ModOptions" RenderLate="true" UpdateChildrenStates="true">
-															<Children>
-																<ListPanel Id="Description" DoNotAcceptEvents="true" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" LayoutImp.LayoutMethod="HorizontalLeftToRight" UpdateChildrenStates="true">
+														<!-- Mod options with categories -->
+														<ListPanel Id="ModOptionCategoriesContainer" DataSource="{ModOptionCategories}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="10" StackLayout.LayoutMethod="VerticalTopToBottom">
+															<ItemTemplate>
+																<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginBottom="10" StackLayout.LayoutMethod="VerticalTopToBottom">
 																	<Children>
-																		<Widget Id="CollapseParent" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" UpdateChildrenStates="true">
+																		<!-- Category header (clickable button with transparent style) -->
+																		<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="750" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center" MarginLeft="0" MarginTop="5" MarginBottom="5" Command.Click="ToggleExpanded">
 																			<Children>
-																				<TextWidget Text="Mod settings" Id="GroupTitle" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																				<ListPanel WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" VerticalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
 																					<Children>
-																						<ImageWidget Id="CollapseIndicator" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Brush="SPOptions.GameKeysgroup.ExpandIndicator" OverrideDefaultStateSwitchingEnabled="true" />
+																						<!-- Collapse parent container -->
+																						<Widget WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Left" VerticalAlignment="Center">
+																							<Children>
+																								<!-- Category name -->
+																								<TextWidget Text="@Name" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Right" VerticalAlignment="Center" Brush="SPOptions.GameKeysGroup.Title.Text" ClipContents="false" MarginLeft="30">
+																									<Children>
+																										<!-- Closed icon -->
+																										<ImageWidget IsHidden="@IsExpanded" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Sprite="SPGeneral\SPOptions\collapser_indicator_closed" OverrideDefaultStateSwitchingEnabled="true" />
+																										<!-- Opened icon -->
+																										<ImageWidget IsVisible="@IsExpanded" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedHeight="19" SuggestedWidth="19" VerticalAlignment="Center" PositionXOffset="-26" PositionYOffset="-3" Sprite="SPGeneral\SPOptions\collapser_indicator_open" OverrideDefaultStateSwitchingEnabled="true" />
+																									</Children>
+																								</TextWidget>
+																							</Children>
+																						</Widget>
+
+																						<!-- Separator line -->
+																						<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine" />
 																					</Children>
-																				</TextWidget>
+																				</ListPanel>
+																			</Children>
+																		</ButtonWidget>
+
+																		<!-- Options list for this category -->
+																		<Widget IsVisible="@IsExpanded" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren">
+																			<Children>
+																				<ListPanel Id="CategoryOptions" DataSource="{Options}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="40" MarginBottom="10" StackLayout.LayoutMethod="VerticalTopToBottom">
+																					<ItemTemplate>
+																						<GenericOption/>
+																					</ItemTemplate>
+																				</ListPanel>
 																			</Children>
 																		</Widget>
-																		<ImageWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" VerticalAlignment="Center" MarginLeft="15" Brush="SPOptions.CollapserLine" />
 																	</Children>
 																</ListPanel>
-															</Children>
-														</PartyHeaderToggleWidget>
-														<ListPanel Id="ModOptions" DataSource="{ModOptions}" WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginLeft="50" MarginBottom="20" StackLayout.LayoutMethod="VerticalBottomToTop" >
-															<ItemTemplate>
-																<GenericOption/>
 															</ItemTemplate>
 														</ListPanel>
 

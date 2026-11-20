@@ -1,4 +1,5 @@
-﻿using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
+﻿using Alliance.Common.Extensions.BuildSystem.Behaviors;
+using Alliance.Common.Extensions.CustomScripts.NetworkMessages.FromServer;
 using Alliance.Common.Extensions.CustomScripts.Scripts;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.UsableEntity.Handlers;
@@ -54,15 +55,13 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 			Mission.Current.Scene.GetEntities(ref entitiesInScene);
 			foreach (GameEntity entity in entitiesInScene)
 			{
-				IInteractionHandler handler = _registry.FindMatch(entity);
-				if (handler != null)
-				{
-					// Generate a unique ID for the entity
-					Guid id = entity.GetDeterministicID();
-					InteractionTarget target = new InteractionTarget(id, entity, handler);
-					_usableEntities.Add(target);
-					_usableEntitiesById[id] = target;
-				}
+				RegisterEntityRecursive(entity);
+			}
+
+			BuildBehavior buildBehavior = Mission.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt += OnPrefabBuilt;
 			}
 
 			MultiplayerRoundController roundController = Mission.GetMissionBehavior<MultiplayerRoundController>();
@@ -84,6 +83,12 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 
 		public override void OnRemoveBehavior()
 		{
+			BuildBehavior buildBehavior = Mission.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt -= OnPrefabBuilt;
+			}
+
 			if (_roundController != null)
 			{
 				_roundController.OnRoundStarted -= ResetItemsWithTagRespawnEachRound;
@@ -175,6 +180,52 @@ namespace Alliance.Common.Extensions.UsableEntity.Behaviors
 				}
 			}
 			return closestTarget;
+		}
+
+		private void OnPrefabBuilt(int buildIndex, GameEntity entity)
+		{
+			RegisterEntityRecursive(entity);
+		}
+
+		private void RegisterEntityRecursive(GameEntity rootEntity)
+		{
+			if (rootEntity == null || _registry == null)
+			{
+				return;
+			}
+
+			RegisterEntity(rootEntity);
+
+			List<GameEntity> children = new();
+			rootEntity.GetChildrenRecursive(ref children);
+			foreach (GameEntity child in children)
+			{
+				RegisterEntity(child);
+			}
+		}
+
+		private void RegisterEntity(GameEntity entity)
+		{
+			if (entity == null)
+			{
+				return;
+			}
+
+			IInteractionHandler handler = _registry.FindMatch(entity);
+			if (handler == null)
+			{
+				return;
+			}
+
+			Guid id = entity.GetDeterministicID();
+			if (_usableEntitiesById.ContainsKey(id))
+			{
+				return;
+			}
+
+			InteractionTarget target = new InteractionTarget(id, entity, handler);
+			_usableEntities.Add(target);
+			_usableEntitiesById[id] = target;
 		}
 
 		private bool IsEntityInLookDirection(GameEntity entity, Vec3 eyePosition, Vec3 lookDirection, out float distanceSquared)

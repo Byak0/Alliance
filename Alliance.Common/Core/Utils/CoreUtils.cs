@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using TaleWorlds.Core;
@@ -12,7 +13,7 @@ using MathF = TaleWorlds.Library.MathF;
 
 namespace Alliance.Common.Core.Utils
 {
-	public delegate void RegisterBlowDelegate(Mission mission, Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData, in MissionWeapon attackerWeapon, ref CombatLogData combatLogData);
+	public delegate void RegisterBlowDelegate(Mission mission, Agent attacker, Agent victim, WeakGameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData, in MissionWeapon attackerWeapon, ref CombatLogData combatLogData);
 	public delegate Agent GetClosestEnemyAgentDelegate(Mission mission, MBTeam team, Vec3 position, float radius);
 	public delegate Agent GetClosestAllyAgentDelegate(Mission mission, MBTeam team, Vec3 position, float radius);
 	public delegate int GetNearbyEnemyAgentCountDelegate(Mission mission, MBTeam team, Vec2 position, float radius);
@@ -46,7 +47,7 @@ namespace Alliance.Common.Core.Utils
 		/// <summary>
 		/// Wrapper to access private Mission.RegisterBlow.
 		/// </summary>
-		public static void RegisterBlow(Agent attacker, Agent victim, GameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData, in MissionWeapon attackerWeapon, ref CombatLogData combatLogData)
+		public static void RegisterBlow(Agent attacker, Agent victim, WeakGameEntity realHitEntity, Blow b, ref AttackCollisionData collisionData, in MissionWeapon attackerWeapon, ref CombatLogData combatLogData)
 		{
 			_registerBlow(Mission.Current, attacker, victim, realHitEntity, b, ref collisionData, attackerWeapon, ref combatLogData);
 		}
@@ -157,8 +158,8 @@ namespace Alliance.Common.Core.Utils
 				Vec3.Up
 			);
 
-			CombatLogData combatLogData = new CombatLogData(false, attacker.IsHuman, attacker.IsMine, attacker.RiderAgent != null, attacker.RiderAgent != null && attacker.RiderAgent.IsMine, attacker.IsMount, victim.IsHuman, victim.IsMine, victim.Health <= 0f, victim.HasMount, victim.RiderAgent != null && victim.RiderAgent.IsMine, victim.IsMount, false, victim.RiderAgent == victim, knockDown, false, 0f);
-			RegisterBlow(attacker, victim, null, blow, ref attackCollisionDataForDebugPurpose, MissionWeapon.Invalid, ref combatLogData);
+			CombatLogData combatLogData = new CombatLogData(false, attacker.IsHuman, attacker.IsMine, attacker.RiderAgent != null, attacker.RiderAgent != null && attacker.RiderAgent.IsMine, attacker.IsMount, victim.IsHuman, victim.IsMine, victim.Health <= 0f, victim.HasMount, victim.RiderAgent != null && victim.RiderAgent.IsMine, victim.IsMount, null, victim.RiderAgent == victim, knockDown, false, 0f);
+			RegisterBlow(attacker, victim, WeakGameEntity.Invalid, blow, ref attackCollisionDataForDebugPurpose, MissionWeapon.Invalid, ref combatLogData);
 		}
 
 		// Reusable candidate list for spatial queries.
@@ -315,7 +316,52 @@ namespace Alliance.Common.Core.Utils
 			// Return the new position (Z remains unchanged)
 			return new Vec3(x, y, center.z);
 		}
+
+		public static T? GetGameModel<T>(IGameStarter gameStarterObject) where T : GameModel
+		{
+			var models = gameStarterObject.Models.ToArray();
+
+			for (int index = models.Length - 1; index >= 0; --index)
+			{
+				if (models[index] is T gameModel1)
+					return gameModel1;
+			}
+			return default;
+		}
+
+		/// <summary>
+		/// Maps Alliance custom game modes to their corresponding native Bannerlord game mode names.
+		/// This is used for perk filtering, as perks are defined with native game mode names in XML.
+		/// </summary>
+		/// <param name="allianceGameMode">The Alliance custom game mode name (e.g., "BattleX", "PvC")</param>
+		/// <returns>The corresponding native game mode name (e.g., "Battle", "Captain")</returns>
+		public static string GetNativeGameModeForPerks(string allianceGameMode = null)
+		{
+			if (string.IsNullOrEmpty(allianceGameMode))
+			{
+				allianceGameMode = MultiplayerOptions.OptionType.GameType.GetStrValue();
+			}
+
+			// Map Alliance custom game modes to native game modes
+			return allianceGameMode switch
+			{
+				"Lobby" => "Skirmish",
+				"BattleRoyale" => "Duel",
+				"PvC" => "Battle",
+				"CvC" => "Battle",
+				"Scenario" => "Battle",
+				"CaptainX" => "Captain",
+				"BattleX" => "Battle",
+				"SiegeX" => "Siege",
+				"DuelX" => "Duel",
+
+				// If it's already a native game mode or unknown, return as-is
+				_ => allianceGameMode
+			};
+		}
 	}
+
+
 
 	public static class SpatialGrid
 	{

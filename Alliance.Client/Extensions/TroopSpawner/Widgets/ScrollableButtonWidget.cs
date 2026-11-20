@@ -308,7 +308,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.Widgets
 			{
 				(ParentWidget as Container).OnChildSelected(null);
 			}
-			OnClick();
+			//OnClick();
 			EventFired("Click", Array.Empty<object>());
 			if (Context.EventManager.Time - _lastClickTime < 0.5f)
 			{

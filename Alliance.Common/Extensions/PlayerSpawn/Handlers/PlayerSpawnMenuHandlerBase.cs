@@ -127,7 +127,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Handlers
 			}
 
 			PlayerSpawnMenu.Instance = _syncContext.Menu;
-			Log($"Alliance - PlayerSpawnMenu synched. Teams: {_syncContext.Menu.Teams.Count}", LogLevel.Information);
+			Log($"Alliance - PlayerSpawnMenu synched. Teams: {_syncContext.Menu.Teams.Count}", LogLevel.Debug);
 
 			_syncContext = new SyncContext();
 		}

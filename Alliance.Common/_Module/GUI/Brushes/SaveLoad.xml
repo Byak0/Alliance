@@ -27,19 +27,43 @@
       </Style>
     </Styles>
   </Brush>
+  <Brush Name="SaveLoad.Tuple.Invalid">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SaveLoad\load_tuple" SaturationFactor="-80" ValueFactor="-20" AlphaFactor="0.6" />
+      <BrushLayer Name="Selected" Sprite="SaveLoad\load_tuple_selected" SaturationFactor="-80" ValueFactor="-20" AlphaFactor="0.6" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8" />
+        <BrushLayer Name="Selected" IsHidden="true" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" IsHidden="true" />
+        <BrushLayer Name="Selected" SaturationFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
   <Brush Name="SaveLoad.Search.Button">
     <Layers>
       <BrushLayer Name="Default" Sprite="StdAssets\tabbar_long_namebox" />
     </Layers>
     <Styles>
       <Style Name="Default">
-        <BrushLayer Name="Default" ColorFactor="1.1" />
+        <BrushLayer Name="Default" ColorFactor="1" />
       </Style>
       <Style Name="Hovered">
         <BrushLayer Name="Default" ColorFactor="1.4" />
       </Style>
       <Style Name="Pressed">
-        <BrushLayer Name="Default" ColorFactor="0.75" />
+        <BrushLayer Name="Default" ColorFactor="0.8" />
       </Style>
       <Style Name="Disabled">
         <BrushLayer Name="Default" ColorFactor="0.4" />
@@ -189,6 +213,14 @@
       <BrushLayer Name="PartySize" Sprite="General\Icons\Party@2x" IsHidden="true" />
       <BrushLayer Name="Food" Sprite="General\Icons\Food@2x" IsHidden="true" />
       <BrushLayer Name="Fiefs" Sprite="General\Icons\Walls" IsHidden="true" />
+      <BrushLayer Name="Ships" Sprite="General\Icons\ship" IsHidden="true" />
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#2168DDFF" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="Health" Sprite="General\Icons\Health@2x" IsHidden="true" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="Gold" Sprite="General\Icons\Coin@2x" IsHidden="true" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="Influence" Sprite="General\Icons\Influence@2x" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="PartySize" Sprite="General\Icons\Party@2x" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+	  <BrushLayer Name="Food" Sprite="General\Icons\Food@2x" ExtendTop="-3" ExtendBottom="-3" ExtendRight="-3" ExtendLeft="-3" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="Fiefs" Sprite="General\Icons\Walls" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
     </Layers>
     <Styles>
       <Style Name="Default">
@@ -213,6 +245,24 @@
       <Style Name="Fiefs">
         <BrushLayer Name="Fiefs" IsHidden="false" />
       </Style>
+	  <Style Name="Ships">
+	    <BrushLayer Name="Ships" IsHidden="false" />
+	  </Style>
     </Styles>
   </Brush>
+
+  <Brush Name="Saveload.Blocker" TransitionDuration="0.3">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#000000FF" AlphaFactor="0" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="0.35" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" AlphaFactor="0" />
+      </Style>
+    </Styles>
+  </Brush>
+  
 </Brushes>

@@ -62,6 +62,11 @@ namespace Alliance.Server.Extensions.TroopSpawner.Behaviors
 			FormationControlModel.Instance.SendMappingToClient(networkPeer);
 		}
 
+		protected override void HandleEarlyPlayerDisconnect(NetworkCommunicator networkPeer)
+		{
+			FormationControlModel.Instance.RemoveAllControlFromPlayer(networkPeer.GetComponent<MissionPeer>(), true);
+		}
+
 		public override void OnAgentBuild(Agent agent, Banner banner)
 		{
 			FormationControlModel.Instance.ReassignControlToAgent(agent);
@@ -72,9 +77,9 @@ namespace Alliance.Server.Extensions.TroopSpawner.Behaviors
 			AgentsInfoModel.Instance.MarkAgentInfoAsExpiredWithDelay(affectedAgent);
 		}
 
-		protected override void OnAgentControllerChanged(Agent agent, Agent.ControllerType oldController)
+		protected override void OnAgentControllerChanged(Agent agent, AgentControllerType oldController)
 		{
-			if (oldController != Agent.ControllerType.Player && agent.IsPlayerControlled)
+			if (oldController != AgentControllerType.Player && agent.IsPlayerControlled)
 			{
 				FormationControlModel.Instance.ReassignControlToAgent(agent);
 			}

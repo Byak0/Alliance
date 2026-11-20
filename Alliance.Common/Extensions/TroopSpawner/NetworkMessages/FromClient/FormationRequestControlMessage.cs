@@ -11,11 +11,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
     public sealed class FormationRequestControlMessage : GameNetworkMessage
     {
         public NetworkCommunicator Peer { get; private set; }
-        public FormationClass Formation { get; private set; }
+        public int Formation { get; private set; }
 
         public FormationRequestControlMessage() { }
 
-        public FormationRequestControlMessage(NetworkCommunicator peer, FormationClass formation)
+        public FormationRequestControlMessage(NetworkCommunicator peer, int formation)
         {
             Peer = peer;
             Formation = formation;
@@ -24,14 +24,14 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromClient
         protected override void OnWrite()
         {
             WriteNetworkPeerReferenceToPacket(Peer);
-            WriteIntToPacket((int)Formation, CompressionMission.FormationClassCompressionInfo);
+            WriteIntToPacket(Formation, CompressionMission.FormationClassCompressionInfo);
         }
 
-        protected override bool OnRead()
+        protected override bool OnRead()    
         {
             bool bufferReadValid = true;
             Peer = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-            Formation = (FormationClass)ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
+            Formation = ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             return bufferReadValid;
         }
 

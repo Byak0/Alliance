@@ -29,8 +29,9 @@ namespace Alliance.Server.Patch.Behaviors
 
 			TaleWorlds.MountAndBlade.BotData botScores = sideSafe.BotScores;
 
-			// Remove bot from alive count in every case
-			botScores.AliveCount--;
+			// Safety check to prevent AliveCount from going under 0
+			if (botScores.AliveCount > 0) botScores.AliveCount--;
+
 			if (botScores.AliveCount >= 2048 || botScores.AliveCount < 0)
 			{
 				Log($"ERROR in AllianceLobbyComponent : AliveCount out of bounds({botScores.AliveCount})", LogLevel.Error);

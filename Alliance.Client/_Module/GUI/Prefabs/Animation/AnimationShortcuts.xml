@@ -58,7 +58,7 @@
 													<Children>
 														<Widget Id="ClipRect" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy="StretchToParent" ClipContents="true" VerticalAlignment="Center">
 															<Children>
-																<BrushListPanel Id="PrimaryUsageSelectorList" IsVisible="false" DataSource="{ItemList}" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalBottomToTop" >
+																<BrushListPanel Id="PrimaryUsageSelectorList" IsVisible="false" DataSource="{ItemList}" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy="CoverChildren" StackLayout.LayoutMethod="VerticalTopToBottom" >
 																	<ItemTemplate>
 
 																		<ButtonWidget DoNotPassEventsToChildren="true" UpdateChildrenStates="true" WidthSizePolicy="Fixed" SuggestedWidth="130" HeightSizePolicy ="Fixed" SuggestedHeight="30" HorizontalAlignment="Center" VerticalAlignment="Bottom" ButtonType="Radio" Brush="MPLobby.Matchmaking.Region.DropdownItem" >

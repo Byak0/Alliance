@@ -280,7 +280,7 @@ namespace Alliance.Server.Extensions.SAE.Behaviors
 			{
 			}
 
-			protected override void TickOccasionally()
+			public override void TickOccasionally()
 			{
 
 				foreach (Formation item in FormationsIncludingEmpty)

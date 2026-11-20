@@ -1,9 +1,14 @@
-﻿using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Security.Extension;
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Extensions.PlayerSpawn.Models;
+using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages;
 using Alliance.Common.Extensions.TroopSpawner.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
 using Alliance.Server.Extensions.FlagsTracker.Behaviors;
+using Alliance.Server.Extensions.PlayerSpawn.Behaviors;
 using Alliance.Server.GameModes.Story.Models;
 using NetworkMessages.FromServer;
 using System;
@@ -31,12 +36,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		protected ScenarioSpawningBehavior SpawnBehavior { get; set; }
 		protected SpawnFrameBehaviorBase DefaultSpawnFrameBehavior { get; set; }
 		protected FlagTrackerBehavior FlagTrackerBehavior { get; set; }
+		protected PlayerSpawnBehavior PlayerSpawnBehavior { get; set; }
+		protected bool UsePlayerSpawnMenu { get; set; }
 		protected bool SpawnEnabled { get; set; }
-		protected bool ShowRespawnPreview { get; set; }
 
+		protected List<NetworkCommunicator> _playersToRespawn = new List<NetworkCommunicator>();
 		protected BasicCultureObject[] _cultures;
 		protected float _spawningTimer;
-		protected int _spawnPreparationTimeLimit;
+		protected float _timeBeforeRespawn;
+		protected float _timeBeforeSpawn;
 		protected bool[] _haveBotsBeenSpawned;
 		private float _tickDelay;
 
@@ -45,7 +53,6 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public SpawningStrategyBase()
 		{
-			ShowRespawnPreview = true;
 		}
 
 		public virtual void Initialize(SpawnComponent spawnComponent, ScenarioSpawningBehavior spawnBehavior, SpawnFrameBehaviorBase defaultSpawnFrameBehavior)
@@ -55,6 +62,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			DefaultSpawnFrameBehavior = defaultSpawnFrameBehavior;
 
 			FlagTrackerBehavior = Mission.Current.GetMissionBehavior<FlagTrackerBehavior>();
+			PlayerSpawnBehavior = Mission.Current.GetMissionBehavior<PlayerSpawnBehavior>();
 
 			Log(GetType().Name + " initialized", LogLevel.Debug);
 		}
@@ -69,6 +77,13 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			if (_tickDelay < 0.25f) return;
 			_tickDelay = 0f;
 
+			CheckForPlayersRespawning();
+
+			// Peers joining after the spawn session started are not covered by the initial
+			// ApplyTeamAssignment, and the client team-select screen is suppressed in Auto mode:
+			// assign them a team so they can open the spawn menu and spawn.
+			if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) CheckForLateJoinersWithoutTeam();
+
 			foreach (NetworkCommunicator player in GameNetwork.NetworkPeers)
 			{
 				if (player.ControlledAgent == null)
@@ -76,33 +91,16 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					MissionPeer peer = player.GetComponent<MissionPeer>();
 					if (peer?.Team != null && CanPlayerSpawn(player, peer))
 					{
-						bool ignoreVisual = !ShowRespawnPreview && ScenarioPersistentData.Instance.PlayerUsedLives.ContainsKey(player) && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 1;
-						if (SpawnBehavior.CheckIfEnforcedSpawnTimerExpiredForPeer(player.GetComponent<MissionPeer>(), ignoreVisual))
-						{
-							SpawnPlayer(player, peer);
-						}
-						else
-						{
-							SpawnPlayerPreview(player, peer, ignoreVisual);
-						}
+						SpawnPlayer(player, peer);
 					}
 				}
 			}
 
-			if (CanBotSpawn(Mission.Current.AttackerTeam))
-			{
-				SpawnBots(Mission.Current.AttackerTeam);
-			}
-
-			if (CanBotSpawn(Mission.Current.DefenderTeam))
-			{
-				SpawnBots(Mission.Current.DefenderTeam);
-			}
-
-			CheckForPlayersSpawningAsBots();
+			if (CanBotSpawn(Mission.Current.AttackerTeam)) SpawnBots(Mission.Current.AttackerTeam);
+			if (CanBotSpawn(Mission.Current.DefenderTeam)) SpawnBots(Mission.Current.DefenderTeam);
 		}
 
-		public static bool CheckForPlayersSpawningAsBots()
+		public virtual void CheckForPlayersRespawning()
 		{
 			foreach (NetworkCommunicator networkCommunicator in GameNetwork.NetworkPeers)
 			{
@@ -112,30 +110,50 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 					if (component != null && component.ControlledAgent == null && component.Team != null && component.SpawnCountThisRound > 0)
 					{
-						if (!component.HasSpawnTimerExpired && component.SpawnTimer.Check(Mission.Current.CurrentTime))
-						{
-							component.HasSpawnTimerExpired = true;
-						}
-						if (component.HasSpawnTimerExpired && component.WantsToSpawnAsBot)
-						{
-							Agent followedAgent = component.FollowedAgent;
-
-							// Check if the followed agent is in a formation controlled by the player
-							if (followedAgent != null && followedAgent.IsActive() && followedAgent.IsAIControlled && followedAgent.Formation != null && followedAgent.Health > 0
-								&& FormationControlModel.Instance.GetControlledFormations(component).Contains(followedAgent.Formation.FormationIndex))
-							{
-								// Update player controlled formation to target
-								component.ControlledFormation = followedAgent.Formation;
-								ReplaceBotWithPlayer(followedAgent, component);
-								component.WantsToSpawnAsBot = false;
-								component.HasSpawnTimerExpired = false;
-							}
-						}
+						CheckForPlayerRespawning(networkCommunicator, component);
 					}
 				}
 			}
+		}
 
-			return false;
+		public virtual void CheckForPlayerRespawning(NetworkCommunicator networkCommunicator, MissionPeer peer)
+		{
+			// 1) Check for players wanting to respawn as bot (ie commanders)
+			if (!peer.HasSpawnTimerExpired && peer.SpawnTimer.Check(Mission.Current.CurrentTime))
+			{
+				peer.HasSpawnTimerExpired = true;
+			}
+			if (peer.HasSpawnTimerExpired && peer.WantsToSpawnAsBot)
+			{
+				Agent followedAgent = peer.FollowedAgent;
+
+				// Check if the followed agent is in a formation controlled by the player
+				if (followedAgent != null && followedAgent.IsActive() && followedAgent.IsAIControlled && followedAgent.Formation != null && followedAgent.Health > 0
+					&& FormationControlModel.Instance.GetControlledFormations(peer).Contains(followedAgent.Formation.FormationIndex))
+				{
+					// Update player controlled formation to target
+					peer.ControlledFormation = followedAgent.Formation;
+					ReplaceBotWithPlayer(followedAgent, peer);
+					peer.WantsToSpawnAsBot = false;
+					peer.HasSpawnTimerExpired = false;
+				}
+			}
+
+			// 2) Classic scenario respawn
+			if (ScenarioAllowPlayerSpawn(networkCommunicator, peer)
+				&& !_playersToRespawn.Contains(networkCommunicator))
+			{
+				// Add player to the respawn queue
+				_playersToRespawn.Add(networkCommunicator);
+				PlayerSpawnBehavior.EnableSpawnForPlayer(networkCommunicator, _timeBeforeRespawn);
+			}
+			else if (!ScenarioAllowPlayerSpawn(networkCommunicator, peer)
+				&& _playersToRespawn.Contains(networkCommunicator))
+			{
+				// Remove player from the respawn queue (conditions not valid anymore)
+				_playersToRespawn.Remove(networkCommunicator);
+				PlayerSpawnBehavior.DisableSpawnForPlayer(networkCommunicator);
+			}
 		}
 
 		public static Agent ReplaceBotWithPlayer(Agent botAgent, MissionPeer missionPeer)
@@ -158,7 +176,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					botAgent.Formation.PlayerOwner = botAgent;
 				}
 
-				botAgent.OwningAgentMissionPeer = null;
+				botAgent.SetOwningAgentMissionPeer(null);
 				botAgent.MissionPeer = missionPeer;
 				botAgent.Formation = missionPeer.ControlledFormation;
 				AgentFlag agentFlags = botAgent.GetAgentFlags();
@@ -183,21 +201,21 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			return null;
 		}
 
-		public virtual void SpawnPlayerPreview(NetworkCommunicator player, MissionPeer peer, bool ignoreVisual)
-		{
-			if (player.IsSynchronized && peer != null && peer.Team != null)
-			{
-				SpawnBehavior.CreateEnforcedSpawnTimerForPeer(peer, _spawnPreparationTimeLimit);
+		//public virtual void SpawnPlayerPreview(NetworkCommunicator player, MissionPeer peer, bool ignoreVisual)
+		//{
+		//	if (player.IsSynchronized && peer != null && peer.Team != null)
+		//	{
+		//		SpawnBehavior.CreateEnforcedSpawnTimerForPeer(peer, _spawnPreparationTimeLimit);
 
-				if (ignoreVisual)
-				{
-					peer.HasSpawnedAgentVisuals = true;
-					return;
-				}
+		//		if (ignoreVisual)
+		//		{
+		//			peer.HasSpawnedAgentVisuals = true;
+		//			return;
+		//		}
 
-				SpawnHelper.SpawnPlayerPreview(player, _cultures[(int)peer.Team.Side]);
-			}
-		}
+		//		SpawnHelper.SpawnPlayerPreview(player, _cultures[(int)peer.Team.Side]);
+		//	}
+		//}
 
 		/// <summary>
 		/// If battle side was not found, return 0;
@@ -206,68 +224,99 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 		/// <returns>Number of tickets of selected side. <b>/!\ Should only be use for ATTACKER and DEFENDER sides /!\</b></returns>
 		public int GetRemainingLives(BattleSideEnum battleSide)
 		{
-			return ScenarioPersistentData.Instance.TeamRemainingLives.Where(e => e.Key == battleSide)
-				.ToList()
-				.FirstOrDefault(new KeyValuePair<BattleSideEnum, int>(BattleSideEnum.Defender, 0))
-				.Value;
+			return ScenarioPersistentData.Instance.TeamRemainingLives.FirstOrDefault(e => e.Key == battleSide, new KeyValuePair<BattleSideEnum, int>(BattleSideEnum.Defender, 0)).Value;
 		}
 
 		public virtual void SpawnPlayer(NetworkCommunicator player, MissionPeer peer)
 		{
-			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = MultiplayerClassDivisions.GetMPHeroClassForPeer(peer);
-			MPOnSpawnPerkHandler onSpawnPerkHandler = GetOnSpawnPerkHandler(peer);
-
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new SyncPerksForCurrentlySelectedTroop(player, peer.Perks[peer.SelectedTroopIndex]));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.ExcludeOtherTeamPlayers, player);
-
-			BasicCharacterObject basicCharacterObject;
-
+			BasicCharacterObject basicCharacterObject = SpawnLogic.DefaultCharacterObjects[(int)peer.Team.Side];
+			MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = basicCharacterObject.GetHeroClass();
+			MPOnSpawnPerkHandler onSpawnPerkHandler = null;
 			MatrixFrame? spawnLocation = null;
+			float healthMultiplier = 1f;
+			BasicCultureObject customCulture = null;
+			List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>();
 
-			// If player is officer, spawn hero instead of standard troop
-			if (player.IsOfficer())
+			if (UsePlayerSpawnMenu)
 			{
-				basicCharacterObject = mPHeroClassForPeer.HeroCharacter;
-				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
+				PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(player);
 
-				if (FlagTrackerBehavior != null)
+				if (playerAssignment?.Character != null)
 				{
-					bool freeBannerSlot = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty;
-					bool characterHasBanner = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].Item?.IsBannerItem ?? false;
-
-					List<(EquipmentIndex, EquipmentElement)> altEquipment = new List<(EquipmentIndex, EquipmentElement)>();
-
-					// Give banner to officer if none are present for team
-					if (!FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && freeBannerSlot)
+					basicCharacterObject = playerAssignment.Character.Character;
+					mPHeroClassForPeer = playerAssignment.Character.Character.GetHeroClass();
+					onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
+					healthMultiplier = playerAssignment.Character.HealthMultiplier;
+					customCulture = playerAssignment.Formation.MainCulture;
+				}
+			}
+			else if (SpawnLogic.CharacterAssignment == CharacterAssignmentMode.Auto
+				&& SpawnLogic.CharacterAutoRule == CharacterAutoAssignmentRule.RandomFromMenu)
+			{
+				// Random pick from the player's side pool in the spawn menu (officer characters excluded).
+				// Falls back to the default unit when the menu has no character for that side.
+				List<(PlayerFormation Formation, AvailableCharacter Character)> pool = new List<(PlayerFormation, AvailableCharacter)>();
+				foreach (PlayerTeam team in PlayerSpawnMenu.Instance?.Teams ?? new List<PlayerTeam>())
+				{
+					if (team?.TeamSide != peer.Team.Side) continue;
+					foreach (PlayerFormation formation in team.Formations ?? new List<PlayerFormation>())
 					{
-						EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
-						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+						foreach (AvailableCharacter available in formation?.AvailableCharacters ?? new List<AvailableCharacter>())
 						{
-							(EquipmentIndex.ExtraWeaponSlot, banner)
-						};
+							if (available?.Character != null && !available.Officer) pool.Add((formation, available));
+						}
 					}
-					// If banner already exist and character has a default banner, remove it
-					else if (FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && characterHasBanner)
-					{
-						altEquipment = new List<(EquipmentIndex, EquipmentElement)>
-						{
-							(EquipmentIndex.ExtraWeaponSlot, EquipmentElement.Invalid)
-						};
-					}
-					SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation, alternativeEquipment: altEquipment);
+				}
+				if (pool.Count > 0)
+				{
+					(PlayerFormation formation, AvailableCharacter pick) = pool[MBRandom.RandomInt(pool.Count)];
+					basicCharacterObject = pick.Character;
+					mPHeroClassForPeer = pick.Character.GetHeroClass();
+					healthMultiplier = pick.HealthMultiplier;
+					customCulture = formation.MainCulture;
 				}
 				else
 				{
-					SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation);
+					Log($"No character found in the spawn menu for side {peer.Team.Side} - falling back to the default unit for {player.UserName}.", LogLevel.Warning);
 				}
 			}
-			else
+
+			spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
+
+			if (FlagTrackerBehavior != null && player.IsOfficer())
 			{
-				basicCharacterObject = mPHeroClassForPeer.TroopCharacter;
-				spawnLocation = GetPlayerSpawnLocation(player, basicCharacterObject.HasMount());
-				SpawnHelper.SpawnPlayer(player, onSpawnPerkHandler, basicCharacterObject, spawnLocation);
+				bool freeBannerSlot = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].IsEmpty;
+				bool characterHasBanner = basicCharacterObject.Equipment[EquipmentIndex.ExtraWeaponSlot].Item?.IsBannerItem ?? false;
+				
+				// Give banner to officer if none are present for team
+				if (!FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && freeBannerSlot)
+				{
+					EquipmentElement banner = GetBannerItem(_cultures[(int)peer.Team.Side]);
+					altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+					{
+						(EquipmentIndex.ExtraWeaponSlot, banner)
+					};
+				}
+				// If banner already exist and character has a default banner, remove it
+				else if (FlagTrackerBehavior.FlagTrackers.Exists(flag => flag.Team == peer.Team) && characterHasBanner)
+				{
+					altEquipment = new List<(EquipmentIndex, EquipmentElement)>
+					{
+						(EquipmentIndex.ExtraWeaponSlot, EquipmentElement.Invalid)
+					};
+				}
 			}
+
+			SpawnHelper.SpawnPlayer(player,
+					onSpawnPerkHandler,
+					basicCharacterObject,
+					spawnLocation,
+					healthMultiplier: healthMultiplier,
+					customCulture: customCulture,
+					alternativeEquipment: altEquipment);
+
+			// Remove player from respawn queue if present
+			if (_playersToRespawn.Contains(player)) _playersToRespawn.Remove(player);
 
 			// TODO : rework the control state of formations
 			if (peer.ControlledFormation != null)
@@ -275,12 +324,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				UpdateBotControlState(peer, player);
 			}
 
-			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(player));
-			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-			peer.HasSpawnedAgentVisuals = false;
+			//if(peer.HasSpawnedAgentVisuals)
+			//{
+			//	GameNetwork.BeginBroadcastModuleEvent();
+			//	GameNetwork.WriteMessage(new RemoveAgentVisualsForPeer(player));
+			//	GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
+			//	peer.HasSpawnedAgentVisuals = false;
+			//}
 
-			GetPerkHandler(peer)?.OnEvent(MPPerkCondition.PerkEventFlags.SpawnEnd);
 			UpdatePlayerLives(player, peer);
 		}
 
@@ -311,19 +362,23 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			ScenarioPersistentData.Instance.PlayerUsedLives[player]++;
 
-			if (ScenarioPersistentData.Instance.PlayerUsedLives[player] <= 1) return;
+			if (ScenarioPersistentData.Instance.PlayerUsedLives[player] <= 1)
+			{
+				SyncLivesToPeer(player);
+				return;
+			}
 
 			if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam)
 			{
 				ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]--;
-				// TODO replace this with a proper UI indicator
 				string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side]} lives remaining for {_cultures[(int)peer.Team.Side].Name}.";
 				Log(log, LogLevel.Information);
-				SendMessageToAll(log);
+				SyncLivesToAllPeers(peer.Team.Side);
 			}
 			else if (respawnStrategy == RespawnStrategy.MaxLivesPerPlayer)
 			{
 				ScenarioPersistentData.Instance.PlayerRemainingLives[player]--;
+				SyncLivesToPeer(player);
 			}
 		}
 
@@ -377,10 +432,9 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				if (respawnStrategy == RespawnStrategy.MaxLivesPerTeam && _haveBotsBeenSpawned[(int)team.Side])
 				{
 					ScenarioPersistentData.Instance.TeamRemainingLives[team.Side] -= nbBotsToSpawn;
-					// TODO replace this with a proper UI indicator
 					string log = $"{ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for {_cultures[(int)team.Side].Name}.";
 					Log(log, LogLevel.Information);
-					SendMessageToAll(log);
+					SyncLivesToAllPeers(team.Side);
 
 				}
 				Log($"Spawned {nbBotsToSpawn} bots for {team.Side} side. {ScenarioPersistentData.Instance.TeamRemainingLives[team.Side]} lives remaining for team.", LogLevel.Debug);
@@ -403,10 +457,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					break;
 			}
 
-			return _spawningTimer >= _spawnPreparationTimeLimit;
+			return _spawningTimer >= _timeBeforeSpawn;
 		}
 
 		public virtual bool CanPlayerSpawn(NetworkCommunicator player, MissionPeer peer)
+		{
+			return ScenarioAllowPlayerSpawn(player, peer) && MenuAllowPlayerSpawn(player);
+		}
+
+		public virtual bool ScenarioAllowPlayerSpawn(NetworkCommunicator player, MissionPeer peer)
 		{
 			if (peer.Team.Side != BattleSideEnum.Defender && peer.Team.Side != BattleSideEnum.Attacker)
 			{
@@ -424,7 +483,8 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0) return false;
 					break;
 				case RespawnStrategy.MaxLivesPerTeam:
-					if (ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side] <= 0 && ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0) return false;
+					if (ScenarioPersistentData.Instance.TeamRemainingLives[peer.Team.Side] - _playersToRespawn.Count <= 0 
+						&& ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0) return false;
 					break;
 				case RespawnStrategy.MaxLivesPerPlayer:
 					if (ScenarioPersistentData.Instance.PlayerRemainingLives[player] <= 0) return false;
@@ -433,12 +493,24 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			switch (SpawnLogic.LocationStrategies[(int)peer.Team.Side])
 			{
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					if (!FlagUsableForTeam(peer.Team)) return false;
 					break;
-				case LocationStrategy.TagsThenFlags:
-					if (ScenarioPersistentData.Instance.PlayerUsedLives[player] > 0 && !FlagUsableForTeam(peer.Team)) return false;
-					break;
+				default: break;
+			}
+
+			return true;
+		}
+
+		public virtual bool MenuAllowPlayerSpawn(NetworkCommunicator player)
+		{
+			if (UsePlayerSpawnMenu)
+			{
+				PlayerAssignment playerAssignment = PlayerSpawnMenu.Instance.GetPlayerAssignment(player);
+				if (playerAssignment?.Character == null || !playerAssignment.CanSpawn || playerAssignment.TimeBeforeSpawn > 0f)
+				{
+					return false;
+				}
 			}
 
 			return true;
@@ -474,22 +546,25 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			bool firstSpawn = ScenarioPersistentData.Instance.PlayerUsedLives[player] == 0;
 			MissionPeer peer = player.GetComponent<MissionPeer>();
 			Team playerTeam = peer?.Team;
-			BattleSideEnum playerSide = playerTeam?.Side ?? BattleSideEnum.None;
+			int playerSide = (int)(playerTeam?.Side ?? BattleSideEnum.None);
 
-			switch (SpawnLogic.LocationStrategies[(int)playerSide])
+			LocationStrategy locationStrategy = firstSpawn ? SpawnLogic.LocationStrategies[playerSide] : SpawnLogic.RespawnLocationStrategies[playerSide];
+
+			switch (locationStrategy)
 			{
-				case LocationStrategy.OnlyTags:
+				case LocationStrategy.Spawnpoint:
 					position = GetTagLocation(playerTeam, hasMount, firstSpawn);
 					break;
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					position = GetFlagLocation(playerTeam);
 					break;
-				case LocationStrategy.TagsThenFlags:
-					position = firstSpawn ? GetTagLocation(playerTeam, hasMount) : GetFlagLocation(playerTeam);
+				case LocationStrategy.Zones:
+					// TODO : correctly assign position to defined zones
+					position = GetFlagLocation(playerTeam) ?? GetTagLocation(playerTeam, hasMount);
 					break;
-				case LocationStrategy.PlayerChoice:
-					position = GetPlayerSelectedLocation(peer);
-					break;
+				//case LocationStrategy.PlayerChoice:
+				//	position = GetPlayerSelectedLocation(peer);
+				//	break;
 			}
 
 			return position;
@@ -502,13 +577,13 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 			switch (SpawnLogic.LocationStrategies[(int)team.Side])
 			{
-				case LocationStrategy.OnlyTags:
+				case LocationStrategy.Spawnpoint:
 					position = GetTagLocation(team, hasMount, firstSpawn);
 					break;
-				case LocationStrategy.OnlyFlags:
+				case LocationStrategy.Banners:
 					position = GetFlagLocation(team);
 					break;
-				case LocationStrategy.TagsThenFlags:
+				case LocationStrategy.Zones:
 					position = firstSpawn ? GetTagLocation(team, hasMount) : GetFlagLocation(team);
 					break;
 				default:
@@ -546,13 +621,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 
 		public virtual bool AllowExternalSpawn()
 		{
-			return _spawningTimer >= _spawnPreparationTimeLimit;
+			return _spawningTimer >= _timeBeforeSpawn;
 		}
 
 		public virtual void StartSpawnSession()
 		{
-			_spawnPreparationTimeLimit = OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptionsAccessMode.CurrentMapOptions);
-
+			_spawningTimer = 0;
+			_playersToRespawn = new List<NetworkCommunicator>();
+			_timeBeforeSpawn = SpawnLogic.TimeBeforeSpawn.Resolve();
+			_timeBeforeRespawn = SpawnLogic.TimeBeforeRespawn.Resolve();
 			// Init available cultures based on current act
 			string cultureAttacker = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam1].ToString();
 			string cultureDefender = CurrentAct.ActSettings.TWOptions[OptionType.CultureTeam2].ToString();
@@ -572,7 +649,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 			ScenarioPersistentData.Instance.PlayerUsedLives = new Dictionary<NetworkCommunicator, int>();
 
 			// Reset or add lives to Players/Teams
-			if (SpawnLogic.KeepLivesFromPreviousAct)
+			if (SpawnLogic.KeepLivesFromPreviousAct.Resolve())
 			{
 				List<NetworkCommunicator> players = ScenarioPersistentData.Instance.PlayerRemainingLives.Keys.ToList();
 				foreach (NetworkCommunicator player in players)
@@ -607,28 +684,254 @@ namespace Alliance.Server.GameModes.Story.Behaviors.SpawningStrategy
 				};
 			}
 
-			SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			// Clone menu from SpawnLogic, so we avoid unintended changes to original object.
+			if (!SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty()) PlayerSpawnMenu.Instance = SpawnLogic.PlayerSpawnMenu.Clone();
+
+			// Use the player spawn menu only in PlayerSelection mode AND when it is defined.
+			// Auto mode skips menus entirely: characters are assigned by the configured auto rule.
+			UsePlayerSpawnMenu = PlayerSpawnBehavior != null
+				&& SpawnLogic.CharacterAssignment == CharacterAssignmentMode.PlayerSelection
+				&& !SpawnLogic.PlayerSpawnMenu.Teams.IsEmpty();
+
+			if (UsePlayerSpawnMenu)
+			{
+				// Broadcast the updated player spawn menu to all players
+				PlayerSpawnMenuMsg.SendPlayerSpawnMenuToAll();
+
+				// After an act change, re-map every player to the new menu's team of their side, otherwise their menu is empty and respawn
+				// has no valid assignment. Formation and character stay unassigned - players pick
+				// their troop in the menu. Must run after the menu sync (the client resolves the
+				// team by index in the fresh menu) and before any other team notification.
+				ReassignPlayersToMenuTeams();
+
+				// Team auto-assignment runs after the menu sync: it notifies PlayerSpawnMenu through
+				// MissionPeer.OnTeamChanged -> SetPlayerTeam, which makes the client open the menu -
+				// clients must have the new menu before those team notifications arrive.
+				if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
+
+				if(SpawnLogic.OfficerSelection == OfficerSelectionStrategy.PlayerVote)
+				{
+					PlayerSpawnBehavior.StartElectionCountdown(_timeBeforeSpawn, false);
+				}
+				else if (SpawnLogic.OfficerSelection == OfficerSelectionStrategy.RandomOfficer)
+				{
+					PlayerSpawnBehavior.StartElectionCountdown(_timeBeforeSpawn, true);
+				}
+
+				PlayerSpawnBehavior.StartSpawnSession(_timeBeforeSpawn, -1);
+			}
+			else
+			{
+				if (SpawnLogic.TeamAssignment == TeamAssignmentMode.Auto) ApplyTeamAssignment();
+				SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			}
+
 			SpawnEnabled = true;
 			Log(GetType().Name + " - StartSpawnSession", LogLevel.Debug);
 		}
 
+		public virtual void SyncLivesToPeer(NetworkCommunicator player)
+		{
+			MissionPeer peer = player?.GetComponent<MissionPeer>();
+			BattleSideEnum side = peer?.Team?.Side ?? BattleSideEnum.None;
+			RespawnStrategy respawnStrategy = side == BattleSideEnum.Attacker || side == BattleSideEnum.Defender
+				? SpawnLogic.RespawnStrategies[(int)side]
+				: RespawnStrategy.NoRespawn;
+
+			int teamRemainingLives = 0;
+			int playerRemainingLives = 0;
+
+			switch (respawnStrategy)
+			{
+				case RespawnStrategy.MaxLivesPerTeam:
+					teamRemainingLives = GetRemainingLives(side);
+					break;
+				case RespawnStrategy.MaxLivesPerPlayer:
+					ScenarioPersistentData.Instance.PlayerRemainingLives.TryGetValue(player, out playerRemainingLives);
+					break;
+			}
+
+			GameNetwork.BeginModuleEventAsServer(player);
+			GameNetwork.WriteMessage(new SyncScenarioLivesMessage(respawnStrategy, teamRemainingLives, playerRemainingLives));
+			GameNetwork.EndModuleEventAsServer();
+		}
+
+		public virtual void SyncLivesToAllPeers(BattleSideEnum side)
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (!peer.IsSynchronized)
+				{
+					continue;
+				}
+
+				MissionPeer missionPeer = peer.GetComponent<MissionPeer>();
+				if (missionPeer?.Team?.Side != side)
+				{
+					continue;
+				}
+
+				SyncLivesToPeer(peer);
+			}
+		}
+
+		/// <summary>Server-side team assignment (TeamAssignment = Auto), applied at spawn session start
+		/// before any player spawns. MissionPeer.Team's setter propagates the change (agents, gold, UI).</summary>
+		private void ApplyTeamAssignment()
+		{
+			switch (SpawnLogic.TeamAutoRule)
+			{
+				case TeamAutoAssignmentRule.AllAttackers:
+					foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+					{
+						MissionPeer mp = peer?.GetComponent<MissionPeer>();
+						if (mp != null) mp.Team = Mission.Current.AttackerTeam;
+					}
+					break;
+
+				case TeamAutoAssignmentRule.AllDefenders:
+					foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+					{
+						MissionPeer mp = peer?.GetComponent<MissionPeer>();
+						if (mp != null) mp.Team = Mission.Current.DefenderTeam;
+					}
+					break;
+
+				case TeamAutoAssignmentRule.Balanced:
+					{
+						// Team select is suppressed in Auto mode, so peers have no team yet unless an
+						// admin moved them: assign every teamless peer first, always to the side with
+						// the fewest players, so both sides fill up evenly.
+						foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+						{
+							MissionPeer mp = peer?.GetComponent<MissionPeer>();
+							if (mp != null && mp.Team == null) mp.Team = GetAutoAssignTargetTeam();
+						}
+
+						// Move players from the bigger side to the smaller one until both differ by at most one.
+						List<MissionPeer> attackers = new List<MissionPeer>();
+						List<MissionPeer> defenders = new List<MissionPeer>();
+						foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+						{
+							MissionPeer mp = peer?.GetComponent<MissionPeer>();
+							if (mp?.Team == null) continue;
+							if (mp.Team == Mission.Current.AttackerTeam) attackers.Add(mp);
+							else if (mp.Team == Mission.Current.DefenderTeam) defenders.Add(mp);
+						}
+						while (attackers.Count - defenders.Count > 1)
+						{
+							MissionPeer mover = attackers[attackers.Count - 1];
+							attackers.RemoveAt(attackers.Count - 1);
+							mover.Team = Mission.Current.DefenderTeam;
+							defenders.Add(mover);
+						}
+						while (defenders.Count - attackers.Count > 1)
+						{
+							MissionPeer mover = defenders[defenders.Count - 1];
+							defenders.RemoveAt(defenders.Count - 1);
+							mover.Team = Mission.Current.AttackerTeam;
+							attackers.Add(mover);
+						}
+					}
+					break;
+			}
+		}
+
+		/// <summary>Re-maps every synchronized player to the new menu's team matching their native
+		/// team's side. Runs when the spawn menu is replaced (act change in PlayerSelection mode).</summary>
+		private void ReassignPlayersToMenuTeams()
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				if (!peer.IsSynchronized) continue;
+				BattleSideEnum side = peer.GetComponent<MissionPeer>()?.Team?.Side ?? BattleSideEnum.None;
+				if (side == BattleSideEnum.None) continue;
+				PlayerTeam team = PlayerSpawnMenu.Instance.Teams.FirstOrDefault(t => t.TeamSide == side);
+				if (team == null) continue;
+				PlayerSpawnMenu.Instance.SetPlayerTeam(peer, team);
+			}
+		}
+
+		/// <summary>Returns the team a peer should be auto-assigned to: the side with the fewest
+		/// human players. Ties go to attackers so a batch assignment alternates sides.</summary>
+		private Team GetAutoAssignTargetTeam()
+		{
+			int attackers = 0;
+			int defenders = 0;
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				MissionPeer mp = peer?.GetComponent<MissionPeer>();
+				if (mp?.Team == null) continue;
+				if (mp.Team == Mission.Current.AttackerTeam) attackers++;
+				else if (mp.Team == Mission.Current.DefenderTeam) defenders++;
+			}
+			return defenders < attackers ? Mission.Current.DefenderTeam : Mission.Current.AttackerTeam;
+		}
+
+		/// <summary>Assigns a team to peers joining while the spawn session is already running
+		/// (TeamAssignment = Auto), following TeamAutoRule like the initial ApplyTeamAssignment.</summary>
+		private void CheckForLateJoinersWithoutTeam()
+		{
+			foreach (NetworkCommunicator peer in GameNetwork.NetworkPeers)
+			{
+				// Only synchronized peers: they already received the spawn menu from
+				// PlayerSpawnBehavior.HandleLateNewClientAfterSynchronized, which must arrive before
+				// the team notifications below (they make the client open the spawn menu).
+				if (!peer.IsSynchronized) continue;
+
+				MissionPeer mp = peer?.GetComponent<MissionPeer>();
+				if (mp == null || mp.Team != null) continue;
+
+				switch (SpawnLogic.TeamAutoRule)
+				{
+					case TeamAutoAssignmentRule.AllAttackers:
+						mp.Team = Mission.Current.AttackerTeam;
+						break;
+					case TeamAutoAssignmentRule.AllDefenders:
+						mp.Team = Mission.Current.DefenderTeam;
+						break;
+					default:
+						mp.Team = GetAutoAssignTargetTeam();
+						break;
+				}
+
+				// The team change creates the peer's assignment with spawn disabled: mirror
+				// StartSpawnSession so the late joiner can actually spawn once it picks a character.
+				if (UsePlayerSpawnMenu && PlayerSpawnBehavior.SpawnInProgress)
+				{
+					PlayerSpawnMenu.Instance.UpdateSpawnStatus(peer, true, PlayerSpawnBehavior.SpawnWaitTimeAfterSelection);
+				}
+
+				Log($"{peer.UserName} joined mid-session - auto-assigned to team {mp.Team.Side}", LogLevel.Debug);
+			}
+		}
+
 		public virtual void EndSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			if (!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			}
 			SpawnEnabled = false;
 			Log(GetType().Name + " - EndSpawnSession", LogLevel.Debug);
 		}
 
 		public virtual void PauseSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			if(!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(false);
+			}
 			SpawnEnabled = false;
 			Log(GetType().Name + " - PauseSpawnSession", LogLevel.Debug);
 		}
 
 		public virtual void ResumeSpawnSession()
 		{
-			SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			if(!UsePlayerSpawnMenu)
+			{
+				SpawnComponent.ToggleUpdatingSpawnEquipment(true);
+			}
 			SpawnEnabled = true;
 			Log(GetType().Name + " - ResumeSpawnSession", LogLevel.Debug);
 		}

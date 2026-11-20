@@ -1,13 +1,10 @@
 ﻿#if !SERVER
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview;
-using Alliance.Common.Patch.Utilities;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using TaleWorlds.CampaignSystem.ViewModelCollection.CharacterDeveloper;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
@@ -24,6 +21,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 	/// </summary>
 	public class PlayerCharacterVM : ViewModel
 	{
+		private static uint _defaultArmorColor = Colors.White.ToUnsignedInteger();
+
 		private bool _editMode;
 		private readonly PlayerTeamVM _teamVM;
 		private readonly PlayerFormationVM _formationVM;
@@ -32,6 +31,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private readonly Action<PlayerCharacterVM> _onCharacterPerksUpdated;
 		private readonly Action<PlayerCharacterVM> _onCharacterEdited;
 		private readonly Action<PlayerCharacterVM> _onCharacterDeleted;
+		private bool _enableCharacterPreview = false;
 		private AL_CharacterViewModel _characterViewModel;
 		private bool _isSelected;
 		private int _siblingOrder = -1;
@@ -108,6 +108,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				{
 					_width = value;
 					OnPropertyChangedWithValue(value, nameof(Width));
+					OnPropertyChanged(nameof(TableauX));
 				}
 			}
 		}
@@ -126,6 +127,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 		}
 
+		/// <summary>Normalized center of this item on the formation character row (0..1) -
+		/// computed by the spawn menu VM (accounting for the group centering) and consumed by the
+		/// shared formation tableau, which places the 3D character at the same fraction.</summary>
+		[DataSourceProperty]
+		public float TableauX
+		{
+			get => _tableauX;
+			set
+			{
+				if (value != _tableauX)
+				{
+					_tableauX = value;
+					OnPropertyChangedWithValue(value, nameof(TableauX));
+				}
+			}
+		}
+
+		private float _tableauX;
+
 		[DataSourceProperty]
 		public MBBindingList<HeroPerkVM> Perks
 		{
@@ -139,6 +159,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				{
 					_perks = value;
 					OnPropertyChangedWithValue(value, nameof(Perks));
+				}
+			}
+		}
+
+		[DataSourceProperty]
+		public bool EnableCharacterPreview
+		{
+			get => _enableCharacterPreview;
+			set
+			{
+				if (value != _enableCharacterPreview)
+				{
+					_enableCharacterPreview = value;
+					OnPropertyChangedWithValue(value, nameof(EnableCharacterPreview));
 				}
 			}
 		}
@@ -200,14 +234,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			_teamVM = teamVM;
 			_formationVM = playerFormationVM;
 			_availableCharacter = availableCharacter;
+			// Previews dress through the catalog (FakeAgent), so a live character object is no
+			// longer required - only a known character id.
+			EnableCharacterPreview = AvailableCharacter.Definition != null || AvailableCharacter.Character != null;
 			if (availableCharacter.Character != null)
 			{
 				CharacterViewModel = new AL_CharacterViewModel();
 				CharacterViewModel.FillFrom(availableCharacter);
-				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture.Color;
-				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture.Color2;
+				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture?.Color ?? _defaultArmorColor;
+				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture?.Color2 ?? _defaultArmorColor;
 				_heroClass = AvailableCharacter.Character.GetHeroClass();
-				_heroClassIndex = MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass);
+				_heroClassIndex = _heroClass != null ? MultiplayerClassDivisions.GetMPHeroClasses(_heroClass.Culture).ToList().IndexOf(_heroClass) : -1;
+			}
+			else if (AvailableCharacter.Definition != null)
+			{
+				// No live object (editor or not-yet-loaded characters) - dress from the catalog.
+				CharacterViewModel = new AL_CharacterViewModel();
+				CharacterViewModel.FillFrom(AvailableCharacter.Definition);
+				CharacterViewModel.ArmorColor1 = _formationVM.Formation.MainCulture?.Color ?? _defaultArmorColor;
+				CharacterViewModel.ArmorColor2 = _formationVM.Formation.MainCulture?.Color2 ?? _defaultArmorColor;
 			}
 			_onCharacterSelected = onCharacterSelected;
 			_onCharacterPerksUpdated = onCharacterPerksUpdated;
@@ -228,7 +273,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			// Check that the character has a hero class
 			if (_heroClass == null)
 			{
-				Log($"Character {AvailableCharacter.Name} does not have a hero class", LogLevel.Warning);
+				if (AvailableCharacter.Definition == null || AvailableCharacter.Definition.HasClassType(ClassType.None)) Log($"Character {AvailableCharacter.Name} does not have a hero class - Can't display perks", LogLevel.Warning);
+				else Log($"The hero class of character {AvailableCharacter.Name} is not loaded - Can't display perks", LogLevel.Warning);
 				return;
 			}
 
@@ -261,15 +307,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 					IReadOnlyPerkObject value = perksToShow[j][num2];
 					SelectedPerks[j] = value;
 				}
-				// Log selected perks for debug
-				string logPerks = AvailableCharacter.Name + " selected perks : ";
-				List<string> perksNames = new List<string>();
-				foreach (IReadOnlyPerkObject perkObj in SelectedPerks)
-				{
-					perksNames.Add(perkObj.Name.ToString());
-				}
-				logPerks += string.Join(", ", perksNames);
-				Log(logPerks, LogLevel.Debug);
 			}
 
 			// Create HeroPerkVM instances for each perk and add them to the MBBindingList
@@ -305,6 +342,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private void UpdateCharacterPreview()
 		{
 			if (CharacterViewModel == null) return;
+			// Equipment/perk previews need live objects - definition-based previews keep the
+			// catalog outfit and are already dressed by the tableau.
+			if (AvailableCharacter.Character == null) return;
 
 			List<IReadOnlyPerkObject> perks = Perks.Select(p => p.SelectedPerk).ToList();
 
@@ -320,7 +360,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			}
 
 			CharacterViewModel.EquipmentCode = equipment.CalculateEquipmentCode();
-			if (FormationVM.Formation.MainCulture != null) CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture.BannerKey;
+			if (FormationVM.Formation.MainCulture != null) CharacterViewModel.BannerCodeText = FormationVM.Formation.MainCulture.Banner.BannerCode;
 		}
 
 
@@ -341,48 +381,28 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 
 		public void Advance()
 		{
-
-			Log($"{AvailableCharacter.Name} is advancing", LogLevel.Debug);
 			if (_characterViewModel == null || _advanced) return;
-			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h");
-			_characterViewModel.CameraZoom = -1.2f;
-			_characterViewModel.CameraElevation = 0f;
-			_characterViewModel.CameraPitch = 0f;
-			_characterViewModel.CameraAnimDuration = 1.2f;
-			_characterViewModel.ApplyCameraChange = true;
-			_characterViewModel.EnableLight = true;
+			_characterViewModel.ExecuteStartCustomAnimation("act_walk_forward_1h_left_stance");
 			_advanced = true;
 		}
 
 		public void FallBack()
 		{
-			Log($"{AvailableCharacter.Name} is fallback", LogLevel.Debug);
 			if (_characterViewModel == null || !_advanced) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_walk_backward_1h");
-			_characterViewModel.CameraZoom = 1.2f;
-			_characterViewModel.CameraElevation = 0f;
-			_characterViewModel.CameraPitch = 0f;
-			_characterViewModel.CameraAnimDuration = 1.2f;
-			_characterViewModel.ApplyCameraChange = true;
-			_characterViewModel.EnableLight = false;
 			_advanced = false;
 		}
 
 		public void Cheer()
 		{
-			Log($"{AvailableCharacter.Name} is cheering", LogLevel.Debug);
 			if (_characterViewModel == null) return;
 			_characterViewModel.ExecuteStartCustomAnimation("act_cheer_1");
 		}
 
 		public void Idle()
 		{
-			Log($"{AvailableCharacter.Name} is idle", LogLevel.Debug);
 			if (CharacterViewModel == null) return;
-			CharacterViewModel.IdleAction = "act_walk_idle_1h_with_h_shld_left_stance";
-			CharacterViewModel.CameraElevation = 0f;
-			CharacterViewModel.CameraAnimDuration = 0f;
-			CharacterViewModel.ApplyCameraChange = true;
+			CharacterViewModel.IdleAction = "inventory_idle";
 		}
 
 		[UsedImplicitly]

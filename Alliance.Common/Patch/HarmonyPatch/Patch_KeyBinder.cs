@@ -1,5 +1,4 @@
-﻿using Alliance.Common;
-using Alliance.Common.Core.KeyBinder;
+﻿using Alliance.Common.Core.KeyBinder;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;

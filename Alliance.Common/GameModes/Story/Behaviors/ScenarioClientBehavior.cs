@@ -1,4 +1,6 @@
 ﻿using Alliance.Common.Extensions.TroopSpawner.Interfaces;
+using Alliance.Common.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Models;
 using System;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.MissionRepresentatives;
@@ -9,6 +11,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 	public class ScenarioClientBehavior : MissionMultiplayerGameModeBaseClient, IBotControllerBehavior
 	{
 		public event Action<NetworkCommunicator> OnBotsControlledChangedEvent;
+		public ScenarioClientState State { get; } = new ScenarioClientState();
 
 		public override bool IsGameModeUsingGold => false;
 		public override bool IsGameModeTactical => true;
@@ -31,11 +34,7 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 		{
 			base.OnRemoveBehavior();
 			MissionNetworkComponent.OnMyClientSynchronized -= OnMyClientSynchronized;
-		}
-
-		public override void OnMissionTick(float dt)
-		{
-			ScenarioManager.Instance.OnMissionTick(dt);
+			ActionBase.ClearRegistry();
 		}
 
 		private void OnMyClientSynchronized()
@@ -98,6 +97,11 @@ namespace Alliance.Common.GameModes.Story.Behaviors
 			}
 
 			return 0;
+		}
+
+		public void UpdateLives(RespawnStrategy respawnStrategy, int teamRemainingLives, int playerRemainingLives)
+		{
+			State.UpdateLives(respawnStrategy, teamRemainingLives, playerRemainingLives);
 		}
 
 		public void OnBotsControlledChanged(MissionPeer missionPeer, int botAliveCount, int botTotalCount)

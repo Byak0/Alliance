@@ -1,29 +1,5 @@
 <Brushes>
 
-  <Brush Name="Nameplate.FlatBanner.Big">
-    <Layers>
-      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3"/>
-    </Layers>
-  </Brush>
-
-  <Brush Name="Nameplate.FlatBanner.Normal">
-    <Layers>
-      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
-    </Layers>
-  </Brush>
-
-  <Brush Name="Nameplate.FlatBanner.Small">
-    <Layers>
-      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
-    </Layers>
-  </Brush>
-
-  <Brush Name="Nameplate.FlatBanner.Party">
-    <Layers>
-      <BrushLayer Name="Default" Sprite="StdAssets\banner_flat" OverlayXOffset="0" OverlayYOffset="-3" />
-    </Layers>
-  </Brush>
-
   <Brush Name="SettlementNameplateTextBrush" TextHorizontalAlignment="Center">
     <Layers>
       <BrushLayer Name="Default" />
@@ -148,7 +124,13 @@
     </Styles>
   </Brush>
 
-  <Brush Name="MobileTracker.Ball">
+  <Brush Name="Map.Tracker.Name" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#F5E2C4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="1" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Tracker.Ball">
     <Layers>
       <BrushLayer Name="Default" Sprite="BlankWhiteCircle" Color="#CC6E16FF"/>
     </Layers>
@@ -169,6 +151,25 @@
         <BrushLayer Name="Default" AlphaFactor="0" />
       </Style>
     </Styles>
+  </Brush>
+
+  <Brush Name="Map.Tracker.Ball.Fixed">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="BlankWhiteCircleOutlined" Color="#CC6E16FF"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" AlphaFactor="1" ColorFactor="0.5" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Tracker.Images">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="party_track_frame_9"/>
+      <BrushLayer Name="Army" Sprite="army_track_frame_9"/>
+      <BrushLayer Name="MobileParty" Sprite="party_track_frame_9"/>
+    </Layers>
   </Brush>
 
   <Brush Name="SettlementInspectedVisual" TextHorizontalAlignment="Center">
@@ -204,15 +205,23 @@
     </Styles>
   </Brush>
 
-  <Brush Name="Map.MobilePartyTracker.Name" Font="Galahad" TextHorizontalAlignment="Center">
-    <Styles>
-      <Style Name="Default" FontColor="#F5E2C4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="1" FontSize="20" />
-    </Styles>
-  </Brush>
-
   <Brush Name="Map.Party.Mencount.Number" Font="Galahad" TextHorizontalAlignment="Left">
     <Styles>
       <Style Name="Default" FontColor="#FFFFFFFF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="1" FontSize="35" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Party.Speed.Indicator">
+    <Layers>
+      <BrushLayer Name="Default" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" Sprite="General\Icons\Speed@2x" />
+      </Style>
+      <Style Name="Sailing">
+        <BrushLayer Name="Default" Sprite="Map\ship_speed" ExtendLeft="1.33" ExtendRight="0.66" ExtendTop="-2.66" ExtendBottom="-2" />
+      </Style>
     </Styles>
   </Brush>
 
@@ -307,6 +316,12 @@
       </Style>
       <Style Name="horse">
         <BrushLayer Name="Default" Sprite="General\Icons\Production\horse" Color="#8D5E48FF" />
+      </Style>
+      <Style Name="walrus_tusk">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\walrus_tusk" Color="#D7CDB2FF" />
+      </Style>
+      <Style Name="whale_oil">
+        <BrushLayer Name="Default" Sprite="General\Icons\Production\whale_oil" Color="#CC9C62FF" />
       </Style>
     </Styles>
   </Brush>

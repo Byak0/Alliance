@@ -32,7 +32,7 @@
     <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" VerticalAlignment="Center" MarginLeft="5" MarginRight="5">
       <Children>
         <NavigationTargetSwitcher FromTarget="..\." ToTarget="..\Subclasses" />
-        <NavigatableListPanel Id="Subclasses" DataSource="{SubClasses}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!TroopBanner.ItemBackground.Width" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalBottomToTop" UseSelfIndexForMinimum="true">
+        <NavigatableListPanel Id="Subclasses" DataSource="{SubClasses}" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="!TroopBanner.ItemBackground.Width" HorizontalAlignment="Center" StackLayout.LayoutMethod="VerticalTopToBottom" UseSelfIndexForMinimum="true">
           <ItemTemplate>
             <Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="CoverChildren" MarginTop="!SubClassButton.MarginTop" UpdateChildrenStates="true">
               <Children>

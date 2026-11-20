@@ -1,0 +1,152 @@
+<Brushes>
+  <Brush Name="Map.Incident.Panel.Canvas">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="MapIncidents\paper_texture_tile_colored" ColorFactor="0.7" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Map.Incident.Panel.Frame">
+    <Layers>
+      <!--<BrushLayer Name="Default" Sprite="frame_9" ExtendLeft="20" ExtendRight="20" ExtendTop="20" ExtendBottom="20" />-->
+      <BrushLayer Name="Default" Sprite="frame_9" ExtendLeft="15" ExtendRight="15" ExtendTop="15" ExtendBottom="15" />
+    </Layers>
+  </Brush>
+
+  <Brush Name="Map.Incident.Title.Text" Font="Galahad">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="0" FontSize="28" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Description.Text" Font="Galahad">
+    <Styles>
+      <Style Name="Default" FontColor="#E4E4E4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.2" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Option.Text" Font="Galahad" TextHorizontalAlignment="Left">
+    <Styles>
+      <Style Name="Default" FontColor="#E4E4E4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="0" FontSize="20" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Option.Panel" >
+    <Layers>
+      <BrushLayer Name="Default" Sprite="panel_dent_9" ValueFactor="-10" SaturationFactor="20" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_continuous"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" />
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Option.Tuple" TransitionDuration="0.085">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="rounded_canvas_9" Color="#4B2D19FF" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_continuous"/>
+      <BrushLayer Name="Frame" Sprite="rounded_frame_9" Color="#593F26FF" OverlayMethod="CoverWithTexture" OverlaySprite="stone_texture_continuous"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="0.6"/>
+        <BrushLayer Name="Default"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="0.75"/>
+        <BrushLayer Name="Frame" ColorFactor="1.2"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.6"/>
+        <BrushLayer Name="Frame" ColorFactor="0.8"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+        <BrushLayer Name="Frame" ColorFactor="1.5" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" AlphaFactor="0.8"/>
+        <BrushLayer Name="Frame" ColorFactor="0.7"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Option.Arrow" BaseBrush="Map.Incident.Option.Tuple">
+    <Layers>
+      <BrushLayer Name="Default" IsHidden="true" />
+      <BrushLayer Name="Frame" Sprite="BlankWhiteSquare_9" Rotation="45" XOffset="-15" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Frame" AlphaFactor="0"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Frame" AlphaFactor="1"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Frame" AlphaFactor="1"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Frame" AlphaFactor="1"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Frame" AlphaFactor="0"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Confirm.Button.Text" Font="Galahad" TextHorizontalAlignment="Center">
+    <Styles>
+      <Style Name="Default" FontColor="#E4E4E4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="0" FontSize="24" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Hint.Text" Font="FiraSansExtraCondensed-Regular" TextHorizontalAlignment="Right" TextVerticalAlignment="Top" BaseBrush="Info.Text">
+    <Styles>
+      <Style Name="Default" FontColor="#F4E1C4FF" TextGlowColor="#000000FF" TextOutlineColor="#000000FF" TextOutlineAmount="0.15" TextGlowRadius="0" TextBlur="0" FontSize="15" />
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Confirm.Button" TransitionDuration="0.075">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="StdAssets\Popup\done_button" />
+      <BrushLayer Name="Hovered" Sprite="StdAssets\Popup\done_button_hover" AlphaFactor="0"/>
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default"/>
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default"/>
+        <BrushLayer Name="Hovered" AlphaFactor="1" ColorFactor="0.86"/>
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.8"/>
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.2"/>
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.5" AlphaFactor="0.8"/>
+      </Style>
+    </Styles>
+  </Brush>
+
+  <Brush Name="Map.Incident.Illustrations" TransitionDuration="0.075">
+    <Layers>
+      <BrushLayer Name="TroopSettlementRelation" Sprite="MapIncidents\troop_settlement_relation" />
+      <BrushLayer Name="FoodConsumption" Sprite="MapIncidents\food_consumption" />
+      <BrushLayer Name="PlightOfCivilians" Sprite="MapIncidents\plight_of_civilians" />
+      <BrushLayer Name="PartyCampLife" Sprite="MapIncidents\party_camplife" />
+      <BrushLayer Name="AnimalIllness" Sprite="MapIncidents\animal_illness" />
+      <BrushLayer Name="Illness" Sprite="MapIncidents\illness" />
+      <BrushLayer Name="HuntingForaging" Sprite="MapIncidents\hunting_foraging" />
+      <BrushLayer Name="PostBattle" Sprite="MapIncidents\post_battle" />
+      <BrushLayer Name="HardTravel" Sprite="MapIncidents\hard_travel" />
+      <BrushLayer Name="Profit" Sprite="MapIncidents\profit" />
+      <BrushLayer Name="DreamsSongsAndSigns" Sprite="MapIncidents\dreams_songs_and_signs" />
+      <BrushLayer Name="FiefManagement" Sprite="MapIncidents\fief_management" />
+      <BrushLayer Name="Siege" Sprite="MapIncidents\siege" />
+      <BrushLayer Name="Workshop" Sprite="MapIncidents\workshop" />
+    </Layers>
+  </Brush>
+</Brushes>

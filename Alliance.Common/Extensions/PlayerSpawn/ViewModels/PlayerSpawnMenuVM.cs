@@ -1,4 +1,4 @@
-﻿#if !SERVER
+#if !SERVER
 using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
@@ -15,12 +15,10 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using TaleWorlds.Core;
-using TaleWorlds.GauntletUI;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
 using TaleWorlds.ModuleManager;
 using TaleWorlds.MountAndBlade;
-using TaleWorlds.MountAndBlade.Diamond;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
@@ -54,6 +52,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private float _timeBeforeOfficerElection;
 		private string _formationInfoText;
 		private bool _showTroops;
+		private bool _forceHidePerkPopups = true;
 		private string _playerSpawnInfo;
 		private float _timeBeforeSpawn;
 		private bool _showSpawnInfo;
@@ -164,6 +163,20 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		}
 
 		[DataSourceProperty]
+		public bool ForceHidePerkPopups
+		{
+			get => _forceHidePerkPopups;
+			set
+			{
+				if (value != _forceHidePerkPopups)
+				{
+					_forceHidePerkPopups = value;
+					OnPropertyChangedWithValue(value, nameof(ForceHidePerkPopups));
+				}
+			}
+		}
+
+		[DataSourceProperty]
 		public PlayerCharacterVM SelectedCharacterVM
 		{
 			get
@@ -176,9 +189,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				{
 					_selectedCharacterVM = value;
 					OnPropertyChangedWithValue(value, nameof(SelectedCharacterVM));
+					OnPropertyChanged(nameof(FormationTableauSelectedX));
 				}
 			}
 		}
+
+		/// <summary>"id@x;id@equipmentCode@x..." - character ids with their normalized row position
+		/// (0..1) and, when the character has perk-alternative equipment, its current equipment code.
+		/// Consumed by the shared formation tableau widget (one camera for the whole row).</summary>
+		[DataSourceProperty]
+		public string FormationTableauCharacters => string.Join(";", Characters.Select(c =>
+		{
+			string x = c.TableauX.ToString("F4", System.Globalization.CultureInfo.InvariantCulture);
+			string equipmentCode = c.CharacterViewModel?.EquipmentCode;
+			return string.IsNullOrEmpty(equipmentCode)
+				? $"{c.AvailableCharacter.CharacterId}@{x}"
+				: $"{c.AvailableCharacter.CharacterId}@{equipmentCode}@{x}";
+		}));
+
+		/// <summary>Normalized row position of the selected character (-1 when none).</summary>
+		[DataSourceProperty]
+		public float FormationTableauSelectedX => SelectedCharacterVM?.TableauX ?? -1f;
 
 		[DataSourceProperty]
 		public OptionVM PreferredLanguage
@@ -486,7 +517,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		public void AddTeam()
 		{
 			// todo check if setting default side to defender is pertinent
-			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(TaleWorlds.Core.BattleSideEnum.Defender, "New Team");
+			PlayerTeam newTeam = _playerSpawnMenu.AddTeam(BattleSideEnum.Defender, "New Team");
 			if (newTeam != null)
 			{
 				PlayerTeamVM newTeamVM = new PlayerTeamVM(newTeam, SelectTeam, EditTeam, DeleteTeam, EditMode);
@@ -655,6 +686,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		{
 			if (formationVM != null)
 			{
+				if (SelectedCharacterVM != null) ClearCharacterSelection();
 				if (SelectedFormationVM != null) SelectedFormationVM.IsSelected = false;
 				_selectedFormationVM = formationVM;
 				formationVM.IsSelected = true;
@@ -678,6 +710,9 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 				List<int> selectedPerks = characterVM.Perks.Select(p => p.CandidatePerks.IndexOf(p.SelectedPerkItem)).ToList();
 				PlayerSpawnMenuMsg.RequestCharacterUsage(SelectedTeamVM.Team, SelectedFormationVM.Formation, characterVM.AvailableCharacter, selectedPerks);
 			}
+
+			// The perk choice altered the character's equipment code - refresh the shared 3D row.
+			OnPropertyChanged(nameof(FormationTableauCharacters));
 		}
 
 		/// <summary>
@@ -834,16 +869,18 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 			SelectedCharacterVM.RefreshValues();
 			SelectedFormationVM.RefreshValues();
 			ShowSpawnInfo = true;
+			ForceHidePerkPopups = false;
 		}
 
 		private void ClearCharacterSelection()
 		{
+			ForceHidePerkPopups = true;
 			if (SelectedCharacterVM != null)
 			{
 				_previouslySelectedCharacterVM = SelectedCharacterVM;
 				_previouslySelectedCharacterVM.FallBack();
 				_previouslySelectedCharacterVM.IsSelected = false;
-				_officerCharacterWaitingForValidationVM = null;
+				_officerCharacterWaitingForValidationVM = null;				
 				SelectedCharacterVM = null;
 			}
 		}
@@ -851,26 +888,39 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels
 		private void RefreshCharacters()
 		{
 			Characters.Clear();
+			ClearCharacterSelection();
 			PlayerCharacterVM characterToSelect = null;
 			if (SelectedFormationVM != null)
 			{
-				int width = 1440 / (SelectedFormationVM.Formation.AvailableCharacters.Count + 1);
+				int count = SelectedFormationVM.Formation.AvailableCharacters.Count;
+				int width = 1440 / (count + 1);
+				// The ListPanel centers the item group in the panel: the first item does not start
+				// at the left edge - account for that offset so the 3D row matches the items.
+				float leftOffset = (1440f - count * width) / 2f;
 				int marginLeft = 0;
 				foreach (AvailableCharacter availableCharacter in SelectedFormationVM.Formation.AvailableCharacters)
 				{
 					PlayerCharacterVM characterVM = new PlayerCharacterVM(SelectedTeamVM, SelectedFormationVM, availableCharacter, TrySelectCharacter, UpdateCharacterPerks, EditCharacter, DeleteCharacter, EditMode);
 					characterVM.Width = width;
 					characterVM.MarginLeft = marginLeft;
-					characterVM.Idle();
-					Characters.Add(characterVM);
+					characterVM.TableauX = (leftOffset + marginLeft + width / 2f) / 1440f;
 					if (PlayerSpawnMenu.Instance.MyAssignment != null && availableCharacter == PlayerSpawnMenu.Instance.MyAssignment.Character)
 					{
 						characterToSelect = characterVM;
 					}
+					else
+					{
+						characterVM.Idle();
+					}
+					Characters.Add(characterVM);
 
 					marginLeft += width;
 				}
 			}
+
+			// Notify the shared formation tableau (its data is computed from the list above).
+			OnPropertyChanged(nameof(FormationTableauCharacters));
+			OnPropertyChanged(nameof(FormationTableauSelectedX));
 
 			if (characterToSelect != null) SelectCharacter(characterToSelect);
 		}

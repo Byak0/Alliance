@@ -135,9 +135,9 @@
 
   <Brush Name="SettlementWallsIconBrush">
     <Layers>
-      <BrushLayer Name="1" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl1" IsHidden="true" />
-      <BrushLayer Name="2" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl2" IsHidden="true" />
-      <BrushLayer Name="3" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl3" IsHidden="true" />
+      <BrushLayer Name="1" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl1" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="2" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl2" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
+      <BrushLayer Name="3" Sprite="SPGeneral\MapOverlay\Settlement\icon_walls_lvl3" IsHidden="true" ImageFit.Type="Contain" ImageFit.VerticalAlignment="Center" ImageFit.HorizontalAlignment="Center" />
     </Layers>
     <Styles>
       <Style Name="1">
@@ -216,7 +216,7 @@
       <Style Name="Warning" AnimationToPlayOnBegin="WarningAnim" />
     </Styles>
     <Animations>
-      <Animation Name="WarningAnim" Duration="1" Loop="true">
+      <Animation Name="WarningAnim" Duration="0.5" Loop="true">
         <AnimationProperty PropertyName="FontColor">
           <KeyFrame Time="0.0" Value="#E4E4E4FF" />
           <KeyFrame Time="0.01" Value="#F44242FF" />

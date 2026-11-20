@@ -35,10 +35,11 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 						nameof(Prefix_WeaponDesignElement_SetScale), BindingFlags.Static | BindingFlags.Public)));
 
 				// Patch GetBannerDataFromBannerCode method to remove icon count check
-				Harmony.Patch(
-					typeof(Banner).GetMethod(nameof(Banner.GetBannerDataFromBannerCode), BindingFlags.Static | BindingFlags.Public),
-					prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
-						nameof(Prefix_Banner_GetBannerDataFromBannerCode), BindingFlags.Static | BindingFlags.Public)));
+				// TODO: remove, not used anymore?
+				//Harmony.Patch(
+				//	typeof(Banner).GetMethod(nameof(Banner.GetBannerDataFromBannerCode), BindingFlags.Static | BindingFlags.Public),
+				//	prefix: new HarmonyMethod(typeof(Patch_LessUselessErrors).GetMethod(
+				//		nameof(Prefix_Banner_GetBannerDataFromBannerCode), BindingFlags.Static | BindingFlags.Public)));
 
 				// Patch BannerVisual.GetMeshMatrix method to remove useless rotation check
 				Harmony.Patch(
@@ -78,6 +79,7 @@ namespace Alliance.Editor.Patch.HarmonyPatch
 
 		/// <summary>
 		/// Replace Banner.GetBannerDataFromBannerCode method to remove icon count check
+		/// TODO : remove, not used anymore ?
 		/// </summary>
 		public static bool Prefix_Banner_GetBannerDataFromBannerCode(string bannerCode, ref List<BannerData> __result)
 		{

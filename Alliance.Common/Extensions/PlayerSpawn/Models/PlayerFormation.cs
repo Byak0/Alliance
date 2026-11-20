@@ -60,16 +60,6 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 		public event Action<PlayerFormation> OnOfficerCandidaciesUpdated;
 		public event Action<PlayerFormation> OnOfficerUpdated;
 
-		public AvailableCharacter AddCharacter(string characterId, bool officer)
-		{
-			AvailableCharacter character = new AvailableCharacter
-			{
-				CharacterId = characterId,
-				Officer = officer
-			};
-			return AddCharacter(character);
-		}
-
 		public AvailableCharacter AddCharacter(AvailableCharacter character)
 		{
 			character.Index = PlayerSpawnMenu.GetNextCharacterIndex(this);

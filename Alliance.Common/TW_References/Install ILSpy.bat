@@ -1,0 +1,1 @@
+dotnet tool install --global ilspycmd --version 8.0.0.7246-preview3

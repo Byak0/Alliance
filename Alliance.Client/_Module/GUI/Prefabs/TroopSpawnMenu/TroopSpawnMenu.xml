@@ -35,9 +35,9 @@
 						<Footer WidthSizePolicy="Fixed" SuggestedWidth="1500" HeightSizePolicy ="Fixed" SuggestedHeight="150" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
 
 						<!-- Selected perks -->
-						<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\FirstPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-220"/>
-						<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\SecondPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-220"/>
-						<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\ThirdPerk\CandidatePerks}"  MarginTop="-90" MarginLeft="-220"/>
+						<MultiplayerClassLoadoutPerkPopup Id="FirstPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\FirstPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-180"/>
+						<MultiplayerClassLoadoutPerkPopup Id="SecondPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\SecondPerk\CandidatePerks}" MarginTop="-90" MarginLeft="-180"/>
+						<MultiplayerClassLoadoutPerkPopup Id="ThirdPerks" IsEnabled="false" Parameter.DataSource="{SelectedTroopVM\ThirdPerk\CandidatePerks}"  MarginTop="-90" MarginLeft="-180"/>
 
 					</Children>
 				</BrushWidget>

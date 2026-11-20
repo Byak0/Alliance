@@ -11,7 +11,7 @@
 								<BrushWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" VerticalAlignment="Center" Brush="SPClan.RoleSelectionButton.GoldFrame" IsVisible="@IsSelected" />
 								<!-- Banner and its border -->
 								<BrushWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80" VerticalAlignment="Center" Brush="Frame1.Border"/>
-								<BannerWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80" VerticalAlignment="Center" CultureID="@MainCultureId" />
+								<BannerWidget WidthSizePolicy="Fixed" SuggestedWidth="80" HeightSizePolicy="Fixed" SuggestedHeight="80" VerticalAlignment="Center" CultureID="@MainCultureId" Brush="ButtonSimpleBrush" />
 								<!-- Formation name -->
 								<RichTextWidget WidthSizePolicy="Fixed" SuggestedWidth="240" HeightSizePolicy="Fixed" SuggestedHeight="60" HorizontalAlignment="Center" VerticalAlignment="Top" MarginTop="12" Brush="MPLobby.ClassFilter.ClassTuple.Text" Brush.TextHorizontalAlignment="Left" Brush.TextVerticalAlignment="Top" Brush.FontSize="28" Text="@Name" />
 								<!-- Occupation -->

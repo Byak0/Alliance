@@ -1,4 +1,6 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+#if !SERVER
+using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.UI.VM.Options;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using JetBrains.Annotations;
@@ -77,7 +79,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 				Settings = new FormationSettings
 				{
 					UseMorale = formation.Settings.UseMorale
-				}
+				},
+				MainCultureId = formation.MainCultureId
 			};
 			InitializeOptions();
 		}
@@ -88,6 +91,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 			// Reset the formation to its original state
 			_formation.Name = _formationCopy.Name;
 			_formation.Settings.UseMorale = _formationCopy.Settings.UseMorale;
+			_formation.MainCultureId = _formationCopy.MainCultureId;
 			OnCloseMenu(this, EventArgs.Empty);
 		}
 
@@ -156,3 +160,4 @@ namespace Alliance.Common.Extensions.PlayerSpawn.ViewModels.Popups
 		}
 	}
 }
+#endif

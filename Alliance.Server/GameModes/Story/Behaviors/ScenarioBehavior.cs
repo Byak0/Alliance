@@ -1,9 +1,12 @@
-﻿using Alliance.Client.GameModes.PvC;
+using Alliance.Client.GameModes.PvC;
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
+using Alliance.Common.GameModes.Story;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Common.GameModes.Story.Behaviors;
 using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.NetworkMessages.FromServer;
+using Alliance.Common.GameModes.Story.Utilities;
 using NetworkMessages.FromServer;
 using System;
 using System.Collections.Generic;
@@ -22,7 +25,7 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 	/// Server-side base behavior for scenario game mode.
 	/// Responsible for updating scenario state.
 	/// </summary>
-	public class ScenarioBehavior : MissionMultiplayerGameModeBase, IMissionBehavior
+	public class ScenarioBehavior : MissionMultiplayerGameModeBase
 	{
 		public Scenario Scenario => ScenarioManagerServer.Instance.CurrentScenario;
 		public Act Act => ScenarioManagerServer.Instance.CurrentAct;
@@ -38,22 +41,19 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		private float _minimumStateDuration = 5f;
 		private float _stateDuration;
 		private float _checkStateDelay = 1f;
+		private bool _holdWaitingScreenForIntroCinematic;
 
 		public bool EnableStateChange { get; private set; }
 
 		private float _checkStateDt;
-
-		public ScenarioBehavior()
-		{
-		}
 
 		public override void OnBehaviorInitialize()
 		{
 			base.OnBehaviorInitialize();
 			BasicCultureObject attacker = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 			BasicCultureObject defender = MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam2.GetStrValue());
-			Banner banner = new Banner(attacker.BannerKey, attacker.BackgroundColor1, attacker.ForegroundColor1);
-			Banner banner2 = new Banner(defender.BannerKey, defender.BackgroundColor1, defender.ForegroundColor1);
+			Banner banner = new Banner(attacker.Banner, attacker.BackgroundColor1, attacker.ForegroundColor1);
+			Banner banner2 = new Banner(defender.Banner, defender.BackgroundColor1, defender.ForegroundColor1);
 			Mission.Teams.Add(BattleSideEnum.Attacker, attacker.BackgroundColor1, attacker.ForegroundColor1, banner, isPlayerGeneral: false, isPlayerSergeant: true);
 			Mission.Teams.Add(BattleSideEnum.Defender, defender.BackgroundColor1, defender.ForegroundColor1, banner2, isPlayerGeneral: false, isPlayerSergeant: true);
 		}
@@ -63,6 +63,16 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			SpawningBehavior = (ScenarioSpawningBehavior)SpawnComponent.SpawningBehavior;
 			ObjectivesBehavior = Mission.Current.GetMissionBehavior<ObjectivesBehavior>();
 			ClientBehavior = Mission.Current.GetMissionBehavior<ScenarioClientBehavior>();
+
+			// Re-register actions for this mission. StartScenario() already registered
+			// them, but a map change creates a new mission whose OnRemoveBehavior
+			// wipes the registry. ClearScope makes this idempotent.
+			if (Act != null)
+				ActionBase.AssignActionIds(Act, Scenario.Acts.IndexOf(Act));
+
+			// Atmosphere tracking is mission-scoped: stale names from a previous mission on the
+			// same scenario instance would leak into this one's late-joiner sync.
+			ScenarioManager.Instance.CurrentAtmosphereName = null;
 
 			ChangeState(ActState.AwaitingPlayerJoin);
 			EnableStateChange = true;
@@ -78,6 +88,16 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 			GameNetwork.BeginModuleEventAsServer(networkPeer);
 			GameNetwork.WriteMessage(new InitScenarioMessage(scenarioId, actId));
 			GameNetwork.EndModuleEventAsServer();
+
+			// Replay the atmosphere a SetAtmosphereAction already applied to the scene. Without
+			// this late joiners would play with the map's default atmosphere.
+			string atmosphereName = ScenarioManager.Instance.CurrentAtmosphereName;
+			if (!string.IsNullOrEmpty(atmosphereName))
+			{
+				GameNetwork.BeginModuleEventAsServer(networkPeer);
+				GameNetwork.WriteMessage(new SetAtmosphereMessage(atmosphereName));
+				GameNetwork.EndModuleEventAsServer();
+			}
 
 			float stateRemainingTime = TimerComponent.GetRemainingTime(false);
 			GameNetwork.BeginModuleEventAsServer(networkPeer);
@@ -98,12 +118,42 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				timerStart,
 				timerDuration));
 			GameNetwork.EndModuleEventAsServer();
+
+			if (State == ActState.AwaitingPlayerJoin)
+			{
+				CountSynchronizedPlayers(out int ready, out int total);
+				GameNetwork.BeginModuleEventAsServer(networkPeer);
+				GameNetwork.WriteMessage(new WaitingScreenStateMessage(true, false, ready, total));
+				GameNetwork.EndModuleEventAsServer();
+			}
+			else if (State == ActState.SpawningParticipants && _holdWaitingScreenForIntroCinematic)
+			{
+				GameNetwork.BeginModuleEventAsServer(networkPeer);
+				GameNetwork.WriteMessage(new WaitingScreenStateMessage(true, true, 0, 0));
+				GameNetwork.EndModuleEventAsServer();
+			}
 		}
 
 		public override void OnMissionTick(float dt)
 		{
 			if (Scenario == null || Act == null) return;
 			base.OnMissionTick(dt);
+
+			// Tick ScriptedEvents during active states
+			if (State > ActState.SpawningParticipants && State < ActState.Completed)
+			{
+				foreach (ScriptedEvent scriptedEvent in Act.ConditionalActions)
+				{
+					scriptedEvent.Tick(dt);
+				}
+			}
+
+			// Tick victory pipeline every frame for precise timing
+			if (State == ActState.DisplayingResults && !Act.VictoryLogic.IsCompleted)
+			{
+				Act.VictoryLogic.Tick(dt);
+			}
+
 			if (EnableStateChange)
 			{
 				CheckScenarioState(dt);
@@ -125,6 +175,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 				case ActState.AwaitingPlayerJoin:
 					if (EnoughPlayersJoined())
 					{
+						if (HasIntroCinematic())
+						{
+							_holdWaitingScreenForIntroCinematic = true;
+							BroadcastWaitingScreen(true, true, 0, 0);
+						}
+						else
+						{
+							BroadcastWaitingScreen(false, false, 0, 0);
+						}
 						ChangeState(ActState.SpawningParticipants);
 						StartSpawn();
 					}
@@ -136,9 +195,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 						StartAct();
 						SetStartingGold();
 						SyncObjectives();
+						PlayIntroCinematic();
 					}
 					break;
 				case ActState.InProgress:
+					if (_holdWaitingScreenForIntroCinematic)
+					{
+						_holdWaitingScreenForIntroCinematic = false;
+						BroadcastWaitingScreen(false, false, 0, 0);
+					}
 					if (CheckObjectives())
 					{
 						ChangeState(ActState.DisplayingResults);
@@ -146,21 +211,15 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 					}
 					break;
 				case ActState.DisplayingResults:
-					if (CanEndAct())
+					if (Act.VictoryLogic.IsCompleted)
 					{
 						ChangeState(ActState.Completed);
-						EndAct();
 					}
 					break;
 				case ActState.Completed:
 					EnableStateChange = false;
 					break;
 			}
-		}
-
-		private bool CanEndAct()
-		{
-			return _stateDuration > 15f;
 		}
 
 		private void ChangeState(ActState newState)
@@ -189,25 +248,41 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 
 		private bool EnoughPlayersJoined()
 		{
+			CountSynchronizedPlayers(out int playersReady, out int playersTotal);
 			int minPlayersForStart = (int)MathF.Clamp((float)Math.Round(GameNetwork.NetworkPeers.Count / 1.1), 1, Math.Max(GameNetwork.NetworkPeers.Count - 1, 1));
-			int playersReady = 0;
+			Log("Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")");
+			BroadcastWaitingScreen(true, false, playersReady, playersTotal);
+			return playersReady >= minPlayersForStart;
+		}
+
+		private static void CountSynchronizedPlayers(out int playersReady, out int playersTotal)
+		{
+			playersReady = 0;
+			playersTotal = 0;
 			foreach (ICommunicator peer in GameNetwork.NetworkPeers)
 			{
+				playersTotal++;
 				if (peer.IsSynchronized) playersReady++;
 			}
-			string log = "Waiting for players to load... (" + playersReady + "/" + minPlayersForStart + ")";
-			Log(log);
+		}
+
+		private void BroadcastWaitingScreen(bool visible, bool holdingForCinematic, int ready, int total)
+		{
 			GameNetwork.BeginBroadcastModuleEvent();
-			GameNetwork.WriteMessage(new ServerMessage(log));
+			GameNetwork.WriteMessage(new WaitingScreenStateMessage(visible, holdingForCinematic, ready, total));
 			GameNetwork.EndBroadcastModuleEvent(GameNetwork.EventBroadcastFlags.None);
-			return playersReady >= minPlayersForStart;
+		}
+
+		private bool HasIntroCinematic()
+		{
+			return !string.IsNullOrEmpty(Act?.SpawnLogic?.IntroCinematicName);
 		}
 
 		private bool InitialSpawnFinished()
 		{
 			//return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions);
 			// TODO check if this fix the act starting before spawn ended
-			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 10f + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue();
+			return !SpawningBehavior.AreAgentsSpawning() || SpawningBehavior.SpawningStrategy.SpawningTimer > 5f + Act.SpawnLogic.TimeBeforeSpawn.Resolve();
 		}
 
 		private bool CheckObjectives()
@@ -225,6 +300,25 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		{
 			Log("Alliance - Starting act...", LogLevel.Debug);
 			TimerComponent.StartTimerAsServer(MultiplayerOptions.OptionType.RoundTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+		}
+
+		// Plays the act's optional intro cinematic once teams and characters are set and agents spawned.
+		private void PlayIntroCinematic()
+		{
+			string introCinematicName = Act?.SpawnLogic?.IntroCinematicName;
+			if (string.IsNullOrEmpty(introCinematicName)) return;
+			try
+			{
+				var action = new Actions.Server_PlayCinematicAction
+				{
+					CinematicName = introCinematicName
+				};
+				action.Execute(new VariableStore());
+			}
+			catch (Exception ex)
+			{
+				Log($"Intro cinematic failed: {ex.Message}", LogLevel.Warning);
+			}
 		}
 
 		private void DisplayResults()
@@ -248,12 +342,14 @@ namespace Alliance.Server.GameModes.Story.Behaviors
 		public override void OnRemoveBehavior()
 		{
 			ScenarioManagerServer.Instance.CurrentAct?.UnregisterObjectives();
+			ActionBase.ClearRegistry();
 			GameNetwork.RemoveNetworkHandler(this);
 		}
 
 		public override void OnPeerChangedTeam(NetworkCommunicator peer, Team oldTeam, Team newTeam)
 		{
 			ChangeCurrentGoldForPeer(peer.GetComponent<MissionPeer>(), Config.Instance.StartingGold);
+			SpawningBehavior.SpawningStrategy.SyncLivesToPeer(peer);
 		}
 
 		public override void OnAgentBuild(Agent agent, Banner banner)

@@ -57,7 +57,7 @@ namespace Alliance.Common.Core.Configuration.Models
 
 		private static UserConfig LoadFromFile()
 		{
-			Log("Loading user config from file: " + CONFIG_PATH);
+			Log("Loading user config from file: " + CONFIG_PATH, LogLevel.Debug);
 
 			if (!File.Exists(CONFIG_PATH))
 			{

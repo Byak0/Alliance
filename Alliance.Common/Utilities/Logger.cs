@@ -16,11 +16,11 @@ namespace Alliance.Common.Utilities
 #if DEBUG
 			// In Debug build, log everything
 #else
-            // In Release build, skip Debug logs
-            if (level == LogLevel.Debug)
-            {
-                return;
-            }
+			// In Release build, skip Debug logs
+			if (level == LogLevel.Debug)
+			{
+				return;
+			}
 #endif
 
 			if (!GameNetwork.IsServer)
@@ -28,11 +28,8 @@ namespace Alliance.Common.Utilities
 				// Print to in-game chat
 				InformationManager.DisplayMessage(new InformationMessage(message, GetColorForLogLevel(level)));
 			}
-			else
-			{
-				// Print to server console
-				Print(message, 0, GetConsoleColorForLogLevel(level));
-			}
+			// Print to server console and log file
+			Print(message, 0, GetConsoleColorForLogLevel(level));
 		}
 
 		private static Color GetColorForLogLevel(LogLevel level)

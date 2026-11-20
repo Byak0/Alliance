@@ -1,4 +1,6 @@
-﻿using Alliance.Client.GameModes.BattleRoyale;
+﻿using Alliance.Client.Core.Providers;
+using Alliance.Client.Extensions.NativeIntermissionVote.Handlers;
+using Alliance.Client.GameModes.BattleRoyale;
 using Alliance.Client.GameModes.BattleX;
 using Alliance.Client.GameModes.CaptainX;
 using Alliance.Client.GameModes.CvC;
@@ -7,19 +9,20 @@ using Alliance.Client.GameModes.Lobby;
 using Alliance.Client.GameModes.PvC;
 using Alliance.Client.GameModes.SiegeX;
 using Alliance.Client.GameModes.Story;
-using Alliance.Client.GameModes.Story.Actions;
+using Alliance.Common.GameModes.Story.Actions;
 using Alliance.Client.Patch;
 using Alliance.Common.Core.ExtendedXML;
 using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Extensions.AnimationPlayer;
-using Alliance.Common.GameModels;
 using Alliance.Common.Patch;
-using Alliance.Common.Patch.HarmonyPatch;
 using Alliance.Common.Utilities;
 using System.Collections.Generic;
 using System.Reflection;
+using Alliance.Client.Core;
 using TaleWorlds.Core;
+using TaleWorlds.Engine.GauntletUI;
 using TaleWorlds.MountAndBlade;
+using TaleWorlds.MountAndBlade.ViewModelCollection.Order.Visual;
 using Module = TaleWorlds.MountAndBlade.Module;
 
 namespace Alliance.Client
@@ -38,7 +41,7 @@ namespace Alliance.Client
 			};
 			KeyBinder.Initialize(assemblies);
 
-			Client_ActionFactory.Initialize();
+			ActionOverrideRegistry.Initialize();
 
 			// Apply Harmony patches
 			DirtyCommonPatcher.Patch();
@@ -47,6 +50,9 @@ namespace Alliance.Client
 			KeyBinder.RegisterContexts();
 
 			AddGameModes();
+
+			// Load our own list of orders for troop control (enable troop transfer)
+			VisualOrderFactory.RegisterProvider(new AllianceVisualOrderProvider());
 		}
 
 		protected override void InitializeGameStarter(Game game, IGameStarter starterObject)
@@ -54,12 +60,13 @@ namespace Alliance.Client
 			// TODO : Check which limits still need to be increased after 1.2
 			// Increase native network compression limits to prevent crashes
 			DirtyCommonPatcher.IncreaseNativeLimits();
+
+			// Initialize animation system and all the game animations
+			AnimationSystem.Instance.Init();
 		}
 
 		public override void OnBeforeMissionBehaviorInitialize(Mission mission)
 		{
-			// Initialize animation system and all the game animations
-			AnimationSystem.Instance.Init();
 		}
 
 		public override void OnGameInitializationFinished(Game game)
@@ -69,16 +76,8 @@ namespace Alliance.Client
 
 			SceneList.Initialize();
 			ScenarioPlayer.Initialize();
-		}
-
-		protected override void OnGameStart(Game game, IGameStarter gameStarter)
-		{
-			// Late patching, patching earlier causes issues with Voice type
-			Patch_AdvancedCombat.LatePatch();
-
-			// Add our custom GameModels 
-			gameStarter.AddModel(new ExtendedAgentStatCalculateModel());
-			gameStarter.AddModel(new ExtendedAgentApplyDamageModel());
+			ClientGlobalAutoHandler.Initialize();
+			UIConfig.DoNotUseGeneratedPrefabs = true;
 		}
 
 		private void AddGameModes()

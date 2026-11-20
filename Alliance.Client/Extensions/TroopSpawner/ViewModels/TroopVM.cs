@@ -2,6 +2,7 @@
 using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.ExtendedXML.Extension;
 using Alliance.Common.Core.ExtendedXML.Models;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Utilities;
 using JetBrains.Annotations;
 using System;
@@ -339,7 +340,7 @@ namespace Alliance.Client.Extensions.TroopSpawner.ViewModels
 
 		private void InitPerksList()
 		{
-			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(HeroClass);
+			List<List<IReadOnlyPerkObject>> allPerksForHeroClass = MultiplayerClassDivisions.GetAllPerksForHeroClass(HeroClass, CoreUtils.GetNativeGameModeForPerks());
 			if (SelectedPerks == null)
 			{
 				SelectedPerks = new List<IReadOnlyPerkObject>();

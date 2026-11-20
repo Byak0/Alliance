@@ -1,8 +1,6 @@
-﻿using Alliance.Common.Core.Security.Extension;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
-using TaleWorlds.MountAndBlade;
 using TaleWorlds.ObjectSystem;
 
 namespace Alliance.Common.Core.Utils
@@ -12,12 +10,11 @@ namespace Alliance.Common.Core.Utils
 	/// </summary>
 	public class Factions
 	{
-		public List<string> NativeCultures = new List<string>() { "vlandia", "battania", "empire", "sturgia", "aserai", "khuzait" };
 		public Dictionary<string, BasicCultureObject> AvailableCultures;
 		public List<string> OrderedCultureKeys;
 
 		private static readonly Factions instance = new Factions();
-		public static Factions Instance { get { return instance; } }
+		public static Factions Instance => instance;
 
 		static Factions()
 		{
@@ -33,19 +30,14 @@ namespace Alliance.Common.Core.Utils
 			}
 			if (!MBObjectManager.Instance.HasType(typeof(BasicCultureObject)))
 			{
-				MBObjectManager.Instance.RegisterType<BasicCultureObject>("Culture", "SPCultures", 17U, true, false);
-				MBObjectManager.Instance.LoadXML("SPCultures", true, "", false);
+				MBObjectManager.Instance.RegisterType<BasicCultureObject>("Culture", "BasicCultures", 17U, true, false);
+				MBObjectManager.Instance.LoadXML("BasicCultures", true, "", false);
 			}
 
 			// Refresh the list of available cultures
 			AvailableCultures = (from x in MBObjectManager.Instance.GetObjectTypeList<BasicCultureObject>().ToArray()
 								 where x.IsMainCulture
 								 select x).ToDictionary(x => x.StringId);
-			// Remove monsters from available cultures for everyone except devs
-			if (!GameNetwork.IsServer && (GameNetwork.MyPeer == null || !GameNetwork.MyPeer.IsDev()))
-			{
-				AvailableCultures.Remove("monsters");
-			}
 			OrderedCultureKeys = AvailableCultures.Keys.ToList();
 		}
 

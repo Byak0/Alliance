@@ -25,11 +25,6 @@ namespace Alliance.Common.GameModes.BattleRoyale
 			ModOptions.BRZoneLifeTime = 300;
 		}
 
-		public override List<SceneInfo> GetAvailableMaps()
-		{
-			return base.GetAvailableMaps();
-		}
-
 		public override List<OptionType> GetAvailableNativeOptions()
 		{
 			return new List<OptionType>
@@ -50,8 +45,8 @@ namespace Alliance.Common.GameModes.BattleRoyale
 				nameof(Config.ShowOfficers),
 				nameof(Config.ShowWeaponTrail),
 				nameof(Config.KillFeedEnabled),
-				nameof(Config.OfficerHPMultip),
-				nameof(Config.EnableRaceRestrictionOnStuff)
+				nameof(Config.PlayerHPMultiplier),
+				nameof(Config.BotHPMultiplier)
 			};
 		}
 	}

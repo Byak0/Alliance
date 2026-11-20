@@ -1,5 +1,6 @@
 ﻿using Alliance.Common.Core.KeyBinder;
 using Alliance.Common.Core.KeyBinder.Models;
+using Alliance.Common.Extensions.BuildSystem.Behaviors;
 using Alliance.Common.Extensions.Vehicles.Scripts;
 using System.Collections.Generic;
 using TaleWorlds.Engine;
@@ -16,224 +17,250 @@ namespace Alliance.Client.Extensions.Vehicles.Views
 	/// View responsible for the vehicle camera.
 	/// </summary>
 	[DefaultView]
-    public class VehicleView : MissionView, IUseKeyBinder
-    {
-        private static string KeyCategoryId = "vehicle";
-        BindedKeyCategory IUseKeyBinder.BindedKeys => new BindedKeyCategory()
-        {
-            CategoryId = KeyCategoryId,
-            Category = "Alliance - Vehicle",
-            Keys = new List<BindedKey>()
-                {
-                    new BindedKey()
-                    {
-                        Id = "key_vehicle_camera",
-                        Description = "Switch view",
-                        Name = "Switch view",
-                        DefaultInputKey = InputKey.V,
-                    },
-                    new BindedKey()
-                    {
-                        Id = "key_vehicle_honk",
-                        Description = "Tut tut",
-                        Name = "Honk",
-                        DefaultInputKey = InputKey.C,
-                    },
-                    new BindedKey()
-                    {
-                        Id = "key_vehicle_light",
-                        Description = "Toggle lights.",
-                        Name = "Lights",
-                        DefaultInputKey = InputKey.X,
-                    }
-                }
-        };
+	public class VehicleView : MissionView, IUseKeyBinder
+	{
+		private static string KeyCategoryId = "vehicle";
+		BindedKeyCategory IUseKeyBinder.BindedKeys => new BindedKeyCategory()
+		{
+			CategoryId = KeyCategoryId,
+			Category = "Alliance - Vehicle",
+			Keys = new List<BindedKey>()
+				{
+					new BindedKey()
+					{
+						Id = "key_vehicle_camera",
+						Description = "Switch view",
+						Name = "Switch view",
+						DefaultInputKey = InputKey.V,
+					},
+					new BindedKey()
+					{
+						Id = "key_vehicle_honk",
+						Description = "Tut tut",
+						Name = "Honk",
+						DefaultInputKey = InputKey.C,
+					},
+					new BindedKey()
+					{
+						Id = "key_vehicle_light",
+						Description = "Toggle lights.",
+						Name = "Lights",
+						DefaultInputKey = InputKey.X,
+					}
+				}
+		};
 
-        public CS_Vehicle Vehicle;
+		public CS_Vehicle Vehicle;
 
-        private Camera _camera;
-        private MatrixFrame _cameraFrame = MatrixFrame.Identity;
-        private List<Vec3> _cameraPositions = new List<Vec3>()
-        {
-            new Vec3(0.38f, 0.25f, 1.1f), // View from pilot
-            new Vec3(-5.45f, 0.0f, 5.20f), // View from behind and some height
-            new Vec3(-1f, -0.25f, 2.25f), // View from behind
+		private Camera _camera;
+		private MatrixFrame _cameraFrame = MatrixFrame.Identity;
+		private List<Vec3> _cameraPositions = new List<Vec3>()
+		{
+			new Vec3(0.38f, 0.25f, 1.1f), // View from pilot
+            new Vec3(-5.45f, 0.0f, 4.20f), // View from behind and some height
+            new Vec3(-1f, -0.25f, 1.55f), // View from behind
             new Vec3(1.5f, 0.5f, 1f), // View from front right wheel
-            new Vec3(0f, 0f, 0f)
-        };
-        private int _currentCameraIndex = 0;
-        private bool _updateCamera;
+            new Vec3(-2f, 3f, 1f)
+		};
+		private int _currentCameraIndex = 0;
+		private bool _updateCamera;
 
 
-        private GameKey cameraKey;
-        private GameKey honkKey;
-        private GameKey lightKey;
-        private float rotationDeltaX;
-        private float rotationDeltaY;
+		private GameKey cameraKey;
+		private GameKey honkKey;
+		private GameKey lightKey;
+		private float rotationDeltaX;
+		private float rotationDeltaY;
 
-        public VehicleView()
-        {
-        }
+		public VehicleView()
+		{
+		}
 
-        public override void EarlyStart()
-        {
-            cameraKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_camera");
-            honkKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_honk");
-            lightKey = HotKeyManager.GetCategory(KeyCategoryId).GetGameKey("key_vehicle_light");
-        }
+		public override void EarlyStart()
+		{
+			cameraKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_camera");
+			honkKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_honk");
+			lightKey = HotKeyManager.GetCategory(KeyCategoryId).RegisteredGameKeys.Find(gk => gk != null && gk.StringId == "key_vehicle_light");
+		}
 
-        public override void AfterStart()
-        {
-            List<GameEntity> vehicles = Mission.GetActiveEntitiesWithScriptComponentOfType<CS_Vehicle>().ToMBList();
-            foreach (GameEntity vehicle in vehicles)
-            {
-                CS_Vehicle vehicleScript = vehicle.GetFirstScriptOfType<CS_Vehicle>();
-                vehicleScript.OnUseEvent += UseVehicle;
-                vehicleScript.OnUseStoppedEvent += StopUsingVehicle;
-            }
-        }
+		public override void AfterStart()
+		{
+			// Register callbacks for vehicles already in the scene
+			List<WeakGameEntity> vehicles = Mission.GetActiveEntitiesWithScriptComponentOfType<CS_Vehicle>().ToMBList();
+			foreach (WeakGameEntity vehicle in vehicles)
+			{
+				CS_Vehicle vehicleScript = vehicle.GetFirstScriptOfType<CS_Vehicle>();
+				RegisterVehicle(vehicleScript);
+			}
 
-        public override void OnMissionScreenInitialize()
-        {
-        }
+			// Subscribe to dynamically spawned vehicles from the build system
+			BuildBehavior buildBehavior = Mission.Current?.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt += OnPrefabBuilt;
+			}
+		}
 
-        public override void OnMissionScreenFinalize()
-        {
-        }
+		public override void OnMissionScreenInitialize()
+		{
+		}
 
-        public override void OnPreDisplayMissionTick(float dt)
-        {
-            if (Vehicle != null)
-            {
-                if (_updateCamera)
-                {
-                    UpdateCamera(dt);
-                }
-            }
-        }
+		public override void OnMissionScreenFinalize()
+		{
+			BuildBehavior buildBehavior = Mission.Current?.GetMissionBehavior<BuildBehavior>();
+			if (buildBehavior != null)
+			{
+				buildBehavior.OnPrefabBuilt -= OnPrefabBuilt;
+			}
+		}
 
-        public override void OnMissionScreenTick(float dt)
-        {
-            if (Vehicle != null)
-            {
-                TickInputs();
-            }
-        }
+		public override void OnPreDisplayMissionTick(float dt)
+		{
+			if (Vehicle != null)
+			{
+				if (_updateCamera)
+				{
+					UpdateCamera(dt);
+				}
+			}
+		}
 
-        private void TickInputs()
-        {
-            if (Input.IsKeyPressed(cameraKey.KeyboardKey.InputKey) || Input.IsKeyPressed(cameraKey.ControllerKey.InputKey))
-            {
-                SwitchCameraView();
-            }
-            if (Input.IsKeyPressed(honkKey.KeyboardKey.InputKey) || Input.IsKeyPressed(honkKey.ControllerKey.InputKey))
-            {
-                Honk();
-            }
-            if (Input.IsKeyPressed(lightKey.KeyboardKey.InputKey) || Input.IsKeyPressed(lightKey.ControllerKey.InputKey))
-            {
-                ToggleLights();
-            }
-        }
+		public override void OnMissionScreenTick(float dt)
+		{
+			if (Vehicle != null)
+			{
+				TickInputs();
+			}
+		}
 
-        private void SwitchCameraView()
-        {
-            _currentCameraIndex++;
-            if (_currentCameraIndex >= _cameraPositions.Count)
-            {
-                _currentCameraIndex = 0;
-            }
-        }
+		private void OnPrefabBuilt(int buildIndex, GameEntity entity)
+		{
+			CS_Vehicle vehicleScript = entity.GetFirstScriptOfType<CS_Vehicle>();
+			if (vehicleScript != null)
+			{
+				RegisterVehicle(vehicleScript);
+			}
+		}
 
-        public void UseVehicle(CS_Vehicle vehicle, Agent agent)
-        {
-            if (agent == Agent.Main && vehicle is CS_Car)
-            {
-                MissionCameraFadeView mcfv = Mission.Current.GetMissionBehavior<MissionCameraFadeView>();
-                mcfv.BeginFadeOutAndIn(0, 0, 1);
-                Vehicle = vehicle;
-                SetupCamera();
-            }
-        }
+		private void RegisterVehicle(CS_Vehicle vehicleScript)
+		{
+			if (vehicleScript == null) return;
+			vehicleScript.OnUseEvent += UseVehicle;
+			vehicleScript.OnUseStoppedEvent += StopUsingVehicle;
+		}
 
-        public void StopUsingVehicle(CS_Vehicle vehicle, Agent agent)
-        {
-            if (Vehicle == vehicle)
-            {
-                Vehicle = null;
-                ReleaseCamera();
-            }
-        }
+		private void TickInputs()
+		{
+			if (Input.IsKeyPressed(cameraKey.KeyboardKey.InputKey) || Input.IsKeyPressed(cameraKey.ControllerKey.InputKey))
+			{
+				SwitchCameraView();
+			}
+			if (Input.IsKeyPressed(honkKey.KeyboardKey.InputKey) || Input.IsKeyPressed(honkKey.ControllerKey.InputKey))
+			{
+				Honk();
+			}
+			if (Input.IsKeyPressed(lightKey.KeyboardKey.InputKey) || Input.IsKeyPressed(lightKey.ControllerKey.InputKey))
+			{
+				ToggleLights();
+			}
+		}
 
-        private void ToggleLights()
-        {
-            if (Vehicle is CS_Car car) car.RequestLight(!car.LightOn, true);
-        }
+		private void SwitchCameraView()
+		{
+			_currentCameraIndex++;
+			if (_currentCameraIndex >= _cameraPositions.Count)
+			{
+				_currentCameraIndex = 0;
+			}
+		}
 
-        private void Honk()
-        {
-            if (Vehicle is CS_Car car) car.RequestHonk(true);
-        }
+		public void UseVehicle(CS_Vehicle vehicle, Agent agent)
+		{
+			if (agent == Agent.Main && vehicle is CS_Car)
+			{
+				Vehicle = vehicle;
+				SetupCamera();
+			}
+		}
 
-        public void SetupCamera()
-        {
-            _camera = Camera.CreateCamera();
-            Camera combatCamera = MissionScreen.CombatCamera;
-            if (combatCamera != null)
-            {
-                _camera.FillParametersFrom(combatCamera);
-            }
-            else
-            {
-                Debug.FailedAssert("Combat camera is null.", "C:\\Develop\\MB3\\Source\\Bannerlord\\SandBox.View\\Missions\\MissionHideoutCinematicView.cs", "SetupCamera", 66);
-            }
-            MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame();
-            SetCameraFrame(newCameraFrame, out _cameraFrame);
-            _camera.Frame = _cameraFrame;
-            MissionScreen.CustomCamera = _camera;
-            _updateCamera = true;
-        }
+		public void StopUsingVehicle(CS_Vehicle vehicle, Agent agent)
+		{
+			if (Vehicle == vehicle)
+			{
+				Vehicle = null;
+				ReleaseCamera();
+			}
+		}
 
-        public void SetCameraFrame(MatrixFrame newFrame, out MatrixFrame cameraFrame)
-        {
-            cameraFrame.origin = newFrame.origin;
-            cameraFrame.rotation.s = newFrame.rotation.s;//Vec3.Side;
-            cameraFrame.rotation.f = newFrame.rotation.u;
-            cameraFrame.rotation.u = -newFrame.rotation.f;
-            cameraFrame.rotation.RotateAboutSide(rotationDeltaY);
-            cameraFrame.rotation.RotateAboutForward(rotationDeltaX);
-            cameraFrame.rotation.Orthonormalize();
-        }
+		private void ToggleLights()
+		{
+			if (Vehicle is CS_Car car) car.RequestLight(!car.LightOn, true);
+		}
 
-        public void UpdateCamera(float dt)
-        {
-            Vec3 _cameraPosition = _cameraPositions[_currentCameraIndex];
-            MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame().Advance(_cameraPosition.x).Strafe(_cameraPosition.y).Elevate(_cameraPosition.z);
-            //MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame().Advance(0.38f).Strafe(0.25f).Elevate(1.10f);            
-            SetCameraFrame(newCameraFrame, out _cameraFrame);
-            HandleBasicCameraMovement(dt, ref _cameraFrame);
-            _camera.Frame = _cameraFrame;
-        }
+		private void Honk()
+		{
+			if (Vehicle is CS_Car car) car.RequestHonk(true);
+		}
 
-        public void ReleaseCamera()
-        {
-            _updateCamera = false;
-            MissionScreen.UpdateFreeCamera(MissionScreen.CustomCamera.Frame);
-            MissionScreen.CustomCamera = null;
-            _camera.ReleaseCamera();
-        }
+		public void SetupCamera()
+		{
+			_camera = Camera.CreateCamera();
+			Camera combatCamera = MissionScreen.CombatCamera;
+			if (combatCamera != null)
+			{
+				_camera.FillParametersFrom(combatCamera);
+			}
+			else
+			{
+				Debug.FailedAssert("Combat camera is null.", "C:\\Develop\\MB3\\Source\\Bannerlord\\SandBox.View\\Missions\\MissionHideoutCinematicView.cs", "SetupCamera", 66);
+			}
+			MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame();
+			SetCameraFrame(newCameraFrame, out _cameraFrame);
+			_camera.Frame = _cameraFrame;
+			MissionScreen.CustomCamera = _camera;
+			_updateCamera = true;
+		}
 
-        private void HandleBasicCameraMovement(float dt, ref MatrixFrame cameraFrame)
-        {
-            // Get mouse sensitivity
-            float mouseSensitivity = 0.2f * Input.GetMouseSensitivity();
+		public void SetCameraFrame(MatrixFrame newFrame, out MatrixFrame cameraFrame)
+		{
+			cameraFrame.origin = newFrame.origin;
+			cameraFrame.rotation.s = newFrame.rotation.s;//Vec3.Side;
+			cameraFrame.rotation.f = newFrame.rotation.u;
+			cameraFrame.rotation.u = -newFrame.rotation.f;
+			cameraFrame.rotation.RotateAboutSide(rotationDeltaY);
+			cameraFrame.rotation.RotateAboutForward(rotationDeltaX);
+			cameraFrame.rotation.Orthonormalize();
+		}
 
-            // Check if the mouse is active and calculate changes in rotation
-            if (!MissionScreen.MouseVisible && !Input.IsKeyDown(InputKey.RightMouseButton))
-            {
-                rotationDeltaX += mouseSensitivity * -dt * Input.GetMouseMoveX();
-                rotationDeltaY += mouseSensitivity * -dt * Input.GetMouseMoveY();
-            }
-        }
-    }
+		public void UpdateCamera(float dt)
+		{
+			Vec3 _cameraPosition = _cameraPositions[_currentCameraIndex];
+			MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame().Advance(_cameraPosition.x).Strafe(_cameraPosition.y).Elevate(_cameraPosition.z);
+			//MatrixFrame newCameraFrame = Vehicle.GameEntity.GetGlobalFrame().Advance(0.38f).Strafe(0.25f).Elevate(1.10f);            
+			SetCameraFrame(newCameraFrame, out _cameraFrame);
+			HandleBasicCameraMovement(dt, ref _cameraFrame);
+			_camera.Frame = _cameraFrame;
+		}
+
+		public void ReleaseCamera()
+		{
+			_updateCamera = false;
+			if(MissionScreen.CustomCamera != null) MissionScreen.UpdateFreeCamera(MissionScreen.CustomCamera.Frame);
+			MissionScreen.CustomCamera = null;
+			_camera.ReleaseCamera();
+		}
+
+		private void HandleBasicCameraMovement(float dt, ref MatrixFrame cameraFrame)
+		{
+			// Get mouse sensitivity
+			float mouseSensitivity = 0.2f * Input.GetMouseSensitivity();
+
+			// Check if the mouse is active and calculate changes in rotation
+			if (!MissionScreen.MouseVisible && !Input.IsKeyDown(InputKey.RightMouseButton))
+			{
+				rotationDeltaX += mouseSensitivity * -dt * Input.GetMouseMoveX();
+				rotationDeltaY += mouseSensitivity * -dt * Input.GetMouseMoveY();
+			}
+		}
+	}
 }

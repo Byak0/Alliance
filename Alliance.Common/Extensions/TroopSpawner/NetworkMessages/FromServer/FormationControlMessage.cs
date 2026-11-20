@@ -1,4 +1,5 @@
-﻿using TaleWorlds.Core;
+﻿using NetworkMessages.FromServer;
+using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 
@@ -11,14 +12,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
     public sealed class FormationControlMessage : GameNetworkMessage
     {
         public NetworkCommunicator Peer { get; private set; }
-        public FormationClass Formation { get; private set; }
+        public int TeamIndex { get; private set; }
+		public FormationClass Formation { get; private set; }
         public bool Delete { get; private set; }
 
         public FormationControlMessage() { }
 
-        public FormationControlMessage(NetworkCommunicator peer, FormationClass formation, bool delete = false)
+        public FormationControlMessage(NetworkCommunicator peer, int teamIndex, FormationClass formation, bool delete = false)
         {
             Peer = peer;
+            TeamIndex = teamIndex;
             Formation = formation;
             Delete = delete;
         }
@@ -26,6 +29,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
         protected override void OnWrite()
         {
             WriteNetworkPeerReferenceToPacket(Peer);
+            WriteTeamIndexToPacket(TeamIndex);
             WriteIntToPacket((int)Formation, CompressionMission.FormationClassCompressionInfo);
             WriteBoolToPacket(Delete);
         }
@@ -34,7 +38,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.NetworkMessages.FromServer
         {
             bool bufferReadValid = true;
             Peer = ReadNetworkPeerReferenceFromPacket(ref bufferReadValid);
-            Formation = (FormationClass)ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
+			TeamIndex = ReadTeamIndexFromPacket(ref bufferReadValid);
+			Formation = (FormationClass)ReadIntFromPacket(CompressionMission.FormationClassCompressionInfo, ref bufferReadValid);
             Delete = ReadBoolFromPacket(ref bufferReadValid);
             return bufferReadValid;
         }

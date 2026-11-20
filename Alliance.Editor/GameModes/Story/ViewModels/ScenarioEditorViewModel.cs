@@ -1,11 +1,13 @@
 ﻿using Alliance.Common.GameModes.Story.Models;
 using Alliance.Common.GameModes.Story.Scenarios;
 using Alliance.Common.GameModes.Story.Utilities;
+using Alliance.Common.GameModes.Story.Validation;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
@@ -56,7 +58,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ScenarioEditorViewModel(Scenario scenario)
 		{
 			Scenario = scenario;
-			ObjectEditorVM = new ObjectEditorViewModel(scenario, this, "Alliance - Scenario Editor");
+			ObjectEditorVM = new ObjectEditorViewModel(scenario, null, this, "Alliance - Scenario Editor");
 			NewCommand = new RelayCommand(NewScenario);
 			LoadCommand = new RelayCommand(LoadScenario);
 			SaveCommand = new RelayCommand(SaveScenario);
@@ -68,7 +70,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		public ScenarioEditorViewModel()
 		{
 			Scenario = ExampleScenarios.BFHD();
-			ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+			ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 			NewCommand = new RelayCommand(NewScenario);
 			LoadCommand = new RelayCommand(LoadScenario);
 			SaveCommand = new RelayCommand(SaveScenario);
@@ -81,8 +83,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		{
 			if (ConfirmUnsavedChanges())
 			{
-				Scenario = new Scenario(new LocalizedString("New scenario"), new LocalizedString());
-				ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+				Scenario = Scenario.CreateDefaultScenario();
+				ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 				_currentFilePath = null;  // New scenario, no file path yet
 				OnPropertyChanged(nameof(ObjectEditorVM));
 			}
@@ -91,7 +93,7 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 		private void SaveAsScenario(object obj)
 		{
 			// Clean the scenario name to make it filename-safe (remove illegal characters)
-			string safeScenarioName = string.Join("_", Scenario.Name.GetText().Split(Path.GetInvalidFileNameChars()));
+			string safeScenarioName = string.Join("_", Scenario.Name.GetText().Split(System.IO.Path.GetInvalidFileNameChars()));
 
 			// Merge the scenario name with the ID to ensure uniqueness
 			string fileName = $"{safeScenarioName}_{Scenario.Id}.xml";
@@ -139,7 +141,8 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 					// Deserialize the scenario from the selected file
 					Scenario = ScenarioSerializer.DeserializeScenarioFromPath(_currentFilePath);
-					ObjectEditorVM = new ObjectEditorViewModel(Scenario, this, "Alliance - Scenario Editor");
+					if (Scenario == null) return;
+					ObjectEditorVM = new ObjectEditorViewModel(Scenario, null, this, "Alliance - Scenario Editor");
 					OnPropertyChanged(nameof(ObjectEditorVM));
 				}
 			}
@@ -162,6 +165,28 @@ namespace Alliance.Editor.GameModes.Story.ViewModels
 
 		private void SaveScenarioToFile(string filePath)
 		{
+			var issues = Scenario.Validate();
+			var errors = issues.Where(i => i.Severity == ValidationSeverity.Error).ToList();
+			var warnings = issues.Where(i => i.Severity != ValidationSeverity.Error).ToList();
+
+			if (errors.Count > 0)
+			{
+				string msg = "Cannot save — the scenario has errors:\n\n" +
+					string.Join("\n", errors.Select(i => i.ToString())) +
+					"\n\nFix these before saving.";
+				MessageBox.Show(msg, "Validation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+				return;
+			}
+
+			if (warnings.Count > 0)
+			{
+				string msg = "The scenario has potential issues:\n\n" +
+					string.Join("\n", warnings.Select(i => i.ToString())) +
+					"\n\nSave anyway?";
+				if (MessageBox.Show(msg, "Validation Warning", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+					return;
+			}
+
 			try
 			{
 				Scenario.Version++;

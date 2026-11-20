@@ -5,62 +5,20 @@
 			<Children>
 
 				<!-- Character Select Button -->
-				<MultiplayerClassLoadoutTroopSubclassButtonWidget Id="CharacterButton"
+				<AL_SpawnCharacterButtonWidget Id="CharacterButton"
 								WidthSizePolicy="Fixed"
 								HeightSizePolicy="Fixed"
 								SuggestedWidth="@Width"
 								SuggestedHeight="580"
 								DoNotPassEventsToChildren="true"
 								UpdateChildrenStates="true"
+								IsSelected="@IsSelected"
+								TableauX="@TableauX"
 								Command.Click="SelectCharacter">
 					<Children>
 
-						<!-- Character Tableau -->
-						<AL_CharacterTableauWidget DataSource="{CharacterViewModel}"
-														WidthSizePolicy="Fixed"
-														HeightSizePolicy="Fixed"
-														SuggestedWidth="800"
-														SuggestedHeight="800"
-														HorizontalAlignment="Center"
-														VerticalAlignment="Center"
-
-														BodyProperties="@BodyProperties"
-														IsFemale="@IsFemale"
-														EquipmentCode="@EquipmentCode"
-														CharStringId="@CharStringId"
-														StanceIndex="@StanceIndex"
-														BannerCodeText="@BannerCodeText"
-														MountCreationKey="@MountCreationKey"
-														ArmorColor1="@ArmorColor1"
-														ArmorColor2="@ArmorColor2"
-														Race="@Race"
-
-														IdleAction="@IdleAction"
-														IdleFaceAnim="@IdleFaceAnim"
-
-														CustomAnimation="@CustomAnimation"
-														IsPlayingCustomAnimations="@IsPlayingCustomAnimations"
-														ShouldLoopCustomAnimation="@ShouldLoopCustomAnimation"
-														CustomAnimationWaitDuration="@CustomAnimationWaitDuration"
-														CustomAnimationProgressRatio="@CustomAnimationProgressRatio"
-
-														LeftHandWieldedEquipmentIndex="@LeftHandWieldedEquipmentIndex"
-														RightHandWieldedEquipmentIndex="@RightHandWieldedEquipmentIndex"
-
-														CameraFov="@CameraFov"
-														CameraZoom="@CameraZoom"
-														CameraElevation="@CameraElevation"
-														CameraStrafe="@CameraStrafe"
-														CameraYaw="@CameraYaw"
-														CameraPitch="@CameraPitch"
-														CameraRoll="@CameraRoll"
-														CameraAnimDuration="@CameraAnimDuration"
-														ApplyCameraChange="@ApplyCameraChange"
-
-														EnableLight="@EnableLight"
-														CustomRenderScale="@CustomRenderScale"
-														IsBannerShownInBackground="true"
-														DoNotUseCustomScale="true" />
+						<!-- The 3D characters are rendered by the shared AL_FormationTableauWidget
+						     behind this list (one scene, one camera for the whole row). -->
 
 						<ButtonWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="180" SuggestedHeight="360" HorizontalAlignment="Center" VerticalAlignment="Bottom" Brush="MPLobby.TopHeader.HoverGlow.Centered" MarginBottom="-120" />
 
@@ -86,7 +44,7 @@
 						</ButtonWidget>
 
 					</Children>
-				</MultiplayerClassLoadoutTroopSubclassButtonWidget>
+				</AL_SpawnCharacterButtonWidget>
 
 				<!-- Edit Button -->
 				<ButtonWidget WidthSizePolicy="Fixed"
@@ -121,23 +79,41 @@
 					<Children>
 
 						<!--Perks-->
-						<MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" PositionXOffset="2" PopupWidgetFirst="..\..\..\..\..\..\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\ThirdPerks" TroopTupleBodyWidget="..\..\CharacterButton" >
+						<MultiplayerPerkContainerPanelWidget Id="PerksPanel" WidthSizePolicy="Fixed" HeightSizePolicy="CoverChildren" SuggestedWidth="310" HorizontalAlignment="Center" PositionXOffset="2" PopupWidgetFirst="..\..\..\..\..\..\PerksContainer\FirstPerks" PopupWidgetSecond="..\..\..\..\..\..\PerksContainer\SecondPerks" PopupWidgetThird="..\..\..\..\..\..\PerksContainer\ThirdPerks" TroopTupleBodyWidget="..\..\CharacterButton" >
 							<Children>
-								<NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
-								<NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
-									<ItemTemplate>
-										<MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="80" HorizontalAlignment="Center" MarginLeft="5" Brush="MPClassLoadout.Perks.Button" ContainerPanel="..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
+								<ScrollablePanel Id="PerksScrollPanel" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="310" SuggestedHeight="120" HorizontalAlignment="Center" AutoHideScrollBars="true" HorizontalScrollbar="..\PerksScrollbarContainer\PerksScrollbar" InnerPanel="PerksClipRect\Perks" ClipRect="PerksClipRect">
+									<Children>
+										<Widget Id="PerksClipRect" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" ClipContents="true">
 											<Children>
-												<BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="18" Brush="MPClassLoadout.Perks.Icon" >
-													<Children>
-														<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
-													</Children>
-												</BrushWidget>
-												<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="8" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
+												<NavigationScopeTargeter Id="ScopeTargeter" ScopeID="ClassSelectionPerksScope" ScopeParent="..\Perks" ScopeMovements="Horizontal" />
+												<NavigatableListPanel Id="Perks" DataSource="{Perks}" WidthSizePolicy="CoverChildren" HeightSizePolicy="CoverChildren" HorizontalAlignment="Center" StackLayout.LayoutMethod="HorizontalLeftToRight">
+													<ItemTemplate>
+														<MultiplayerPerkItemToggleWidget DoNotPassEventsToChildren="true" WidthSizePolicy="Fixed" HeightSizePolicy="StretchToParent" SuggestedWidth="80" HorizontalAlignment="Center" MarginLeft="5" Brush="MPClassLoadout.Perks.Button" ContainerPanel="..\..\..\..\..\PerksPanel" IconType="@IconType" IconWidget="Icon" IsSelectable="true" UpdateChildrenStates="true">
+															<Children>
+																<BrushWidget Id="Icon" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="40" SuggestedHeight="40" HorizontalAlignment="Center" MarginTop="18" Brush="MPClassLoadout.Perks.Icon" >
+																	<Children>
+																		<BrushWidget WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="47" SuggestedHeight="47" HorizontalAlignment="Center" VerticalAlignment="Center" Brush="MPClassLoadout.Perks.Frame" />
+																	</Children>
+																</BrushWidget>
+																<TextWidget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="25" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="8" MarginLeft="5" MarginRight="5" Brush="MPClassLoadout.PerkNameText" Brush.TextVerticalAlignment="Top" Text="@Name" />
+															</Children>
+														</MultiplayerPerkItemToggleWidget>
+													</ItemTemplate>
+												</NavigatableListPanel>
 											</Children>
-										</MultiplayerPerkItemToggleWidget>
-									</ItemTemplate>
-								</NavigatableListPanel>
+										</Widget>
+									</Children>
+								</ScrollablePanel>
+								<Widget Id="PerksScrollbarContainer" WidthSizePolicy="Fixed" HeightSizePolicy="Fixed" SuggestedWidth="250" SuggestedHeight="4" HorizontalAlignment="Center" VerticalAlignment="Bottom" MarginBottom="2">
+									<Children>
+										<ScrollbarWidget Id="PerksScrollbar" WidthSizePolicy="StretchToParent" HeightSizePolicy="StretchToParent" AlignmentAxis="Horizontal" Handle="PerksScrollbarHandle" MaxValue="100" MinValue="0" UpdateChildrenStates="true">
+											<Children>
+												<Widget WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="2" HorizontalAlignment="Center" Sprite="lobby_slider_bed_9" AlphaFactor="0.2" />
+												<ImageWidget Id="PerksScrollbarHandle" WidthSizePolicy="StretchToParent" HeightSizePolicy="Fixed" SuggestedHeight="4" HorizontalAlignment="Center" Brush="MPLobby.CustomServer.ScrollHandle" MinWidth="40" />
+											</Children>
+										</ScrollbarWidget>
+									</Children>
+								</Widget>
 							</Children>
 						</MultiplayerPerkContainerPanelWidget>
 

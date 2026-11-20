@@ -46,7 +46,7 @@ namespace Alliance.Server.Extensions.AIBehavior.Behaviors
 			Mission.Current.AllowAiTicking = false;
 			AddTeamAI(Mission.Current.AttackerTeam);
 			AddTeamAI(Mission.Current.DefenderTeam);
-			EnableAIAfterTimer(Config.Instance.TimeBeforeStart * 1000 + MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue(MultiplayerOptions.MultiplayerOptionsAccessMode.CurrentMapOptions));
+			EnableAIAfterTimer(1000 * MultiplayerOptions.OptionType.RoundPreparationTimeLimit.GetIntValue());
 		}
 
 		private async void EnableAIAfterTimer(int waitTime)
@@ -72,10 +72,6 @@ namespace Alliance.Server.Extensions.AIBehavior.Behaviors
 			}
 			teamAI.OnTacticAppliedForFirstTime();
 			TeamQuerySystemUtils.SetPowerFix(Mission.Current);
-			foreach (Formation formation in team.FormationsIncludingSpecialAndEmpty)
-			{
-				teamAI.OnUnitAddedToFormationForTheFirstTime(formation);
-			}
 			team.AddTeamAI(teamAI);
 			bool playerIsControlling = !FormationControlModel.Instance.GetAllControllersFromTeam(team).IsEmpty();
 			team.SetPlayerRole(playerIsControlling, playerIsControlling);

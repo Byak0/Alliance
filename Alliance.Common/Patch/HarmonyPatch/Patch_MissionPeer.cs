@@ -39,7 +39,7 @@ namespace Alliance.Common.Patch.HarmonyPatch
 		// Fix perks not being refreshed when more than 2 are defined
 		public static bool Prefix_SelectedPerks(ref MBReadOnlyList<MPPerkObject> __result, MissionPeer __instance, (int, MBList<MPPerkObject>) ____selectedPerks)
 		{
-			if (__instance.SelectedTroopIndex < 0 || __instance.Team == null || __instance.Team.Side == BattleSideEnum.None)
+			if (__instance.SelectedTroopIndex < 0 || __instance.Culture == null || __instance.Team == null || __instance.Team.Side == BattleSideEnum.None)
 			{
 				// Return an empty list if no valid troop or side
 				__result = new MBList<MPPerkObject>();

@@ -1,4 +1,6 @@
-﻿using Alliance.Common.GameModes.Story.Models;
+﻿using Alliance.Common.GameModes.Story.Attributes;
+using Alliance.Common.GameModes.Story.Models;
+using Alliance.Common.GameModes.Story.Utilities;
 using System;
 using TaleWorlds.Core;
 using TaleWorlds.Library;
@@ -10,14 +12,28 @@ namespace Alliance.Common.GameModes.Story.Actions
 	/// Display some text.
 	/// </summary>
 	[Serializable]
+	[PhrasePreview("Show {MessageType}")]
 	public class ShowMessageAction : ActionBase
 	{
+		public enum MessageFormat
+		{
+			SystemNotification,
+			QuickInformation,
+			Message
+		}
+
 		public LocalizedString Message = new("Message");
 		public MessageFormat MessageType = MessageFormat.SystemNotification;
 
 		public ShowMessageAction() { }
 
-		public override void Execute()
+		public override ActionTask Execute(VariableStore context)
+		{
+			ExecuteOnClient(context);
+			return ActionTask.CompletedTask;
+		}
+
+		public override void ExecuteClient()
 		{
 			switch (MessageType)
 			{
@@ -25,19 +41,12 @@ namespace Alliance.Common.GameModes.Story.Actions
 					InformationManager.AddSystemNotification(Message.LocalizedText);
 					break;
 				case MessageFormat.QuickInformation:
-					MBInformationManager.AddQuickInformation(new TextObject(Message.LocalizedText, null), 0, null, "");
+					MBInformationManager.AddQuickInformation(new TextObject(Message.LocalizedText, null), 0, null);
 					break;
 				case MessageFormat.Message:
 					InformationManager.DisplayMessage(new InformationMessage(Message.LocalizedText, Color.White));
 					break;
 			}
 		}
-	}
-
-	public enum MessageFormat
-	{
-		SystemNotification,
-		QuickInformation,
-		Message
 	}
 }

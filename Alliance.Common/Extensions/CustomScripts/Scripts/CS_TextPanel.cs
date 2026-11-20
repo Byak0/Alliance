@@ -28,6 +28,7 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 		public float PanelMaxWidth = 4f; // meters; <=0 = no wrap
 		public TextHorizontalAlignment TextAlignment = TextHorizontalAlignment.Center;
 		public AvailableFonts Font = AvailableFonts.Galahad;
+		public string CustomColor = "#ffffffff"; // RGBA - default white
 
 		public SimpleButton RENDER;
 
@@ -83,7 +84,17 @@ namespace Alliance.Common.Extensions.CustomScripts.Scripts
 
 		public void Render()
 		{
+			CheckCustomColorSyntax();
 			EntityUtils.EnqueueTextPanel(this);
+		}
+
+		private void CheckCustomColorSyntax()
+		{
+			if (!CustomColor.StartsWith("#") || (CustomColor.Length != 7 && CustomColor.Length != 9))
+			{
+				Log($"[CS_TextPanel] CustomColor '{CustomColor}' has invalid syntax. Using default white.", LogLevel.Warning);
+				CustomColor = "#ffffffff";
+			}
 		}
 
 		protected override void OnEditorTick(float dt)

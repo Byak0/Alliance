@@ -65,7 +65,7 @@ namespace Alliance.Client.Patch.Behaviors
 
 			ItemObject item = equipment[10].Item;
 			MatrixFrame frame = _spawnFrameSelectionHelper.GetSpawnPointFrameForPlayer(missionPeer.Peer, missionPeer.Team.Side, buildData.AgentVisualsIndex, totalTroopCount, item != null);
-			ActionIndexCache actionIndexCache = item == null ? SpawningBehaviorBase.PoseActionInfantry : SpawningBehaviorBase.PoseActionCavalry;
+			ActionIndexCache actionIndexCache = item == null ? ActionIndexCache.act_walk_idle_unarmed : ActionIndexCache.act_horse_stand_1;
 			MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(buildData.AgentCharacter);
 			MBReadOnlyList<MPPerkObject> selectedPerks = missionPeer.SelectedPerks;
 			IAgentVisual agentVisual = null;

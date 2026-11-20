@@ -26,7 +26,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestForward(NetworkCommunicator peer, CS_VehicleRequestForward message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -42,7 +42,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestBackward(NetworkCommunicator peer, CS_VehicleRequestBackward message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -58,7 +58,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestUpward(NetworkCommunicator peer, CS_VehicleRequestUpward message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -74,7 +74,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestDownward(NetworkCommunicator peer, CS_VehicleRequestDownward message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -90,7 +90,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestTurnLeft(NetworkCommunicator peer, CS_VehicleRequestTurnLeft message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -106,7 +106,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestTurnRight(NetworkCommunicator peer, CS_VehicleRequestTurnRight message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Vehicle vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
+            CS_Vehicle vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Vehicle>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -122,7 +122,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestLight(NetworkCommunicator peer, CS_VehicleRequestLight message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Car vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Car>();
+            CS_Car vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Car>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {
@@ -138,7 +138,7 @@ namespace Alliance.Server.Extensions.Vehicles.Handlers
         public bool HandleRequestHonk(NetworkCommunicator peer, CS_VehicleRequestHonk message)
         {
             MissionObject vehicle = Mission.MissionNetworkHelper.GetMissionObjectFromMissionObjectId(message.MissionObjectId);
-            CS_Car vehicleScript = vehicle.GameEntity.GetFirstScriptOfType<CS_Car>();
+            CS_Car vehicleScript = vehicle?.GameEntity.GetFirstScriptOfType<CS_Car>();
 
             if (peer.ControlledAgent == null || vehicleScript == null || peer.ControlledAgent != vehicleScript.PilotAgent)
             {

@@ -1,4 +1,0 @@
-<!-- Not used for now. We can implement new attributes for Characters through this XML and the ExtendedCharacter class. -->
-<CharactersExtended>
-	<CharacterExtended id="NPCCharacter.mp_character"/>
-</CharactersExtended>

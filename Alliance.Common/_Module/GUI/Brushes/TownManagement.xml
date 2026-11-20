@@ -1,5 +1,5 @@
 <Brushes>
-  <Brush Name="TownManagement.Reserve.PlusButton" TransitionDuration="0.2">
+  <Brush Name="TownManagement.Reserve.PlusButton" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\reserve_plus" />
     </Layers>
@@ -21,7 +21,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.Governor.PlusButton" TransitionDuration="0.2">
+  <Brush Name="TownManagement.Governor.PlusButton" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\reserve_plus" />
     </Layers>
@@ -65,7 +65,30 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.Reserve.ConfirmButton" TransitionDuration="0.2">
+	<Brush Name="TownManagement.Development.RemoveFromVerticalQueue.Button">
+		<Layers>
+			<BrushLayer Name="Background" Sprite="BlankWhiteCircle" Color="0000000FF"/>
+			<BrushLayer Name="Foreground" Sprite="SPGeneral\TownManagement\project_hover_removefromqueue" />
+		</Layers>
+		<Styles>
+			<Style Name="Default">
+				<BrushLayer Name="Foreground" ColorFactor="1.1" />
+			</Style>
+			<Style Name="Hovered">
+				<BrushLayer Name="Foreground" ColorFactor="1.4" />
+			</Style>
+			<Style Name="Pressed">
+				<BrushLayer Name="Foreground" ColorFactor="0.85" />
+			</Style>
+			<Style Name="Disabled">
+				<BrushLayer Name="Foreground" ColorFactor="0.2" />
+			</Style>
+			<Style Name="Selected">
+				<BrushLayer Name="Foreground" ColorFactor="1.1" />
+			</Style>
+		</Styles>
+	</Brush>
+  <Brush Name="TownManagement.Reserve.ConfirmButton" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\reserve_tick" />
     </Layers>
@@ -87,7 +110,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.GovernorPopup.Governor.Background" TransitionDuration="0.2">
+  <Brush Name="TownManagement.GovernorPopup.Governor.Background" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="BlankWhiteSquare_9" Color="#312B22FF" />
     </Layers>
@@ -109,7 +132,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.GovernorPopup.GoldFrame" TransitionDuration="0.2">
+  <Brush Name="TownManagement.GovernorPopup.GoldFrame" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="gold_frame_9" ExtendLeft="5" ExtendTop="5" ExtendRight="5" ExtendBottom="6" />
     </Layers>
@@ -199,7 +222,7 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.Governor" TransitionDuration="0.2">
+  <Brush Name="TownManagement.Governor" TransitionDuration="0.1">
     <Layers>
       <BrushLayer Name="Default" Sprite="Encyclopedia\subpage_notable_portrait" />
       <BrushLayer Name="Frame" ExtendLeft="11" ExtendRight="12" ExtendTop="12" ExtendBottom="12" Sprite="subpage_slick_frame_9" />
@@ -262,14 +285,14 @@
   <Brush Name="TownManamgement.Description.Type.Brush">
     <Layers>
       <BrushLayer Name="Default" IsHidden="true" />
-      <BrushLayer Name="Gold" Sprite="General\Icons\Coin@2x" IsHidden="true" />
+      <BrushLayer Name="Gold" Sprite="General\Icons\Coin@2x" IsHidden="true"  ExtendLeft="-3" ExtendRight="-3" ExtendTop="-3" ExtendBottom="-3" />
       <BrushLayer Name="Production" Sprite="SPGeneral\TownManagement\production_icon" IsHidden="true" />
-      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" IsHidden="true" />
-      <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" IsHidden="true" />
-      <BrushLayer Name="Food" Sprite="General\Icons\Food" IsHidden="true" />
+      <BrushLayer Name="Militia" Sprite="General\Icons\Militia" IsHidden="true" ExtendLeft="-4" ExtendRight="-4" ExtendTop="-4" ExtendBottom="-4" />
+      <BrushLayer Name="Prosperity" Sprite="General\Icons\Prosperity" IsHidden="true" ExtendLeft="-3" ExtendRight="-3" ExtendTop="-3" ExtendBottom="-3" />
+      <BrushLayer Name="Food" Sprite="General\Icons\Food" IsHidden="true" ExtendLeft="-3" ExtendRight="-3" ExtendTop="-3" ExtendBottom="-3" />
       <BrushLayer Name="Loyalty" Sprite="SPGeneral\MapOverlay\Settlement\icon_loyalty" IsHidden="true" />
       <BrushLayer Name="Security" Sprite="SPGeneral\MapOverlay\Settlement\icon_security" IsHidden="true" />
-      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" IsHidden="true" />
+      <BrushLayer Name="Garrison" Sprite="General\Icons\Garrison" IsHidden="true" ExtendLeft="-2" ExtendRight="-2" ExtendTop="-2" ExtendBottom="-2"/>
     </Layers>
     <Styles>
       <Style Name="Default">
@@ -470,9 +493,9 @@
       </Style>
     </Styles>
   </Brush>
-  <Brush Name="TownManagement.Development.SetAsActive.Button">
+  <Brush Name="TownManagement.Development.RemoveFromQueue.Button">
     <Layers>
-      <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\project_hover_makefirst" />
+      <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\project_hover_removefromqueue" />
     </Layers>
     <Styles>
       <Style Name="Default">
@@ -492,6 +515,28 @@
       </Style>
     </Styles>
   </Brush>
+  <Brush Name="TownManagement.Development.SetAsActive.Button">
+    <Layers>
+      <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\project_hover_makefirst" />
+    </Layers>
+    <Styles>
+      <Style Name="Default">
+        <BrushLayer Name="Default" ColorFactor="1" />
+      </Style>
+      <Style Name="Hovered">
+        <BrushLayer Name="Default" ColorFactor="1.2" />
+      </Style>
+      <Style Name="Pressed">
+        <BrushLayer Name="Default" ColorFactor="0.85" />
+      </Style>
+      <Style Name="Disabled">
+        <BrushLayer Name="Default" ColorFactor="0.4" />
+      </Style>
+      <Style Name="Selected">
+        <BrushLayer Name="Default" ColorFactor="1.1" />
+      </Style>
+    </Styles>
+  </Brush>
   <Brush Name="TownManagement.InProgress.HammerWithAnimation">
     <Layers>
       <BrushLayer Name="Default" Sprite="SPGeneral\TownManagement\project_popup_hammer_icon" />
@@ -502,11 +547,11 @@
       </Style>
     </Styles>
     <Animations>
-      <Animation Name="DefaultAnimation" Duration="0.5" Loop="true">
+      <Animation Name="DefaultAnimation" Duration="0.25" Loop="true">
         <AnimationProperty LayerName="Default" PropertyName="Sprite">
           <KeyFrame Time="0" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
-          <KeyFrame Time="0.4" Value="SPGeneral\TownManagement\project_popup_hammer_icon_down" />
-          <KeyFrame Time="0.5" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
+          <KeyFrame Time="0.2" Value="SPGeneral\TownManagement\project_popup_hammer_icon_down" />
+          <KeyFrame Time="0.25" Value="SPGeneral\TownManagement\project_popup_hammer_icon" />
         </AnimationProperty>
       </Animation>
     </Animations>
@@ -654,7 +699,7 @@
       <Style Name="Warning" AnimationToPlayOnBegin="WarningAnim"/>
     </Styles>
     <Animations>
-      <Animation Name="WarningAnim" Duration="1" Loop="true">
+      <Animation Name="WarningAnim" Duration="0.5" Loop="true">
         <AnimationProperty PropertyName="FontColor">
           <KeyFrame Time="0.0" Value="#FFFFFFFF" />
           <KeyFrame Time="0.01" Value="#F44242FF" />

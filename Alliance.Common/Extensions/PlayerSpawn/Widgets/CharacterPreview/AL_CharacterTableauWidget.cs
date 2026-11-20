@@ -3,6 +3,7 @@ using System.Linq;
 using System.Numerics;
 using TaleWorlds.GauntletUI;
 using TaleWorlds.GauntletUI.BaseTypes;
+using TaleWorlds.Library;
 using TaleWorlds.TwoDimension;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
@@ -33,165 +34,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 		private float _customAnimationProgressRatio;
 		private float _customRenderScale;
 		private float _customAnimationWaitDuration;
-		private float _cameraFov;
-		private float _cameraZoom;
-		private float _cameraElevation;
-		private float _cameraStrafe;
-		private float _cameraYaw;
-		private float _cameraPitch;
-		private float _cameraRoll;
-		private float _cameraAnimDuration;
-		private bool _enableLight;
-
-		[Editor(false)]
-		public float CameraFov
-		{
-			get => _cameraFov;
-			set
-			{
-				if (_cameraFov != value)
-				{
-					_cameraFov = value;
-					OnPropertyChanged(value, nameof(CameraFov));
-					SetTextureProviderProperty("CameraFov", value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraZoom
-		{
-			get => _cameraZoom;
-			set
-			{
-				if (_cameraZoom != value)
-				{
-					_cameraZoom = value;
-					OnPropertyChanged(value, nameof(CameraZoom));
-					SetTextureProviderProperty(nameof(CameraZoom), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraElevation
-		{
-			get => _cameraElevation;
-			set
-			{
-				if (_cameraElevation != value)
-				{
-					_cameraElevation = value;
-					OnPropertyChanged(value, nameof(CameraElevation));
-					SetTextureProviderProperty(nameof(CameraElevation), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraStrafe
-		{
-			get => _cameraStrafe;
-			set
-			{
-				if (_cameraStrafe != value)
-				{
-					_cameraStrafe = value;
-					OnPropertyChanged(value, nameof(CameraStrafe));
-					SetTextureProviderProperty(nameof(CameraStrafe), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraYaw
-		{
-			get => _cameraYaw;
-			set
-			{
-				if (_cameraYaw != value)
-				{
-					_cameraYaw = value;
-					OnPropertyChanged(value, nameof(CameraYaw));
-					SetTextureProviderProperty(nameof(CameraYaw), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraPitch
-		{
-			get => _cameraPitch;
-			set
-			{
-				if (_cameraPitch != value)
-				{
-					_cameraPitch = value;
-					OnPropertyChanged(value, nameof(CameraPitch));
-					SetTextureProviderProperty(nameof(CameraPitch), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public float CameraRoll
-		{
-			get => _cameraRoll;
-			set
-			{
-				if (_cameraRoll != value)
-				{
-					_cameraRoll = value;
-					OnPropertyChanged(value, nameof(CameraRoll));
-					SetTextureProviderProperty(nameof(CameraRoll), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public bool ApplyCameraChange
-		{
-			get => true;
-			set
-			{
-				if (!value) return;
-
-				SetTextureProviderProperty(nameof(ApplyCameraChange), true);
-			}
-		}
-
-		[Editor(false)]
-		public float CameraAnimDuration
-		{
-			get => _cameraAnimDuration;
-			set
-			{
-				if (_cameraAnimDuration != value)
-				{
-					_cameraAnimDuration = value;
-					OnPropertyChanged(value, nameof(CameraAnimDuration));
-					SetTextureProviderProperty(nameof(CameraAnimDuration), value);
-				}
-			}
-		}
-
-		[Editor(false)]
-		public bool EnableLight
-		{
-			get
-			{
-				return _enableLight;
-			}
-			set
-			{
-				if (value != _enableLight)
-				{
-					_enableLight = value;
-					OnPropertyChanged(value, "EnableLight");
-					SetTextureProviderProperty("EnableLight", value);
-				}
-			}
-		}
+		private bool _continuousRendering = true;
 
 		[Editor(false)]
 		public string BannerCodeText
@@ -573,6 +416,27 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			}
 		}
 
+		/// <summary>Continuous tableaus render every frame; the others share the frame's render
+		/// budget (round-robin). Bind to item selection so only the selected preview animates
+		/// smoothly. Defaults to true (legacy behavior).</summary>
+		[Editor(false)]
+		public bool ContinuousRendering
+		{
+			get
+			{
+				return _continuousRendering;
+			}
+			set
+			{
+				if (value != _continuousRendering)
+				{
+					_continuousRendering = value;
+					OnPropertyChanged(value, nameof(ContinuousRendering));
+					SetTextureProviderProperty(nameof(ContinuousRendering), value);
+				}
+			}
+		}
+
 		[Editor(false)]
 		public bool IsPlayingCustomAnimations
 		{
@@ -620,7 +484,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			SetTextureProviderProperty("CurrentlyRotating", true);
 		}
 
-		protected override void OnMouseReleased()
+		protected override void OnMouseReleased(bool isFromInput)
 		{
 			SetTextureProviderProperty("CurrentlyRotating", false);
 		}
@@ -651,6 +515,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			if (TextureProvider != null)
 			{
 				CustomAnimationProgressRatio = (float)GetTextureProviderProperty("CustomAnimationProgressRatio");
+				SetTextureProviderProperty("IsVisible", IsRecursivelyVisible());
 			}
 		}
 
@@ -659,35 +524,35 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 			_isRenderRequestedPreviousFrame = true;
 			if (TextureProvider != null)
 			{
-				Texture = TextureProvider.GetTexture(twoDimensionContext, string.Empty);
+				Texture = TextureProvider.GetTextureForRender(twoDimensionContext, null);
 				SimpleMaterial simpleMaterial = drawContext.CreateSimpleMaterial();
-				StyleLayer styleLayer = ReadOnlyBrush?.GetStyleOrDefault(CurrentState).GetLayers()?.FirstOrDefault() ?? null;
+				Brush readOnlyBrush = ReadOnlyBrush;
+				StyleLayer styleLayer;
+				if (readOnlyBrush == null)
+				{
+					styleLayer = null;
+				}
+				else
+				{
+					StyleLayer[] layers = readOnlyBrush.GetStyleOrDefault(CurrentState).GetLayers();
+					styleLayer = layers != null ? layers.FirstOrDefault() : null;
+				}
+				StyleLayer styleLayer2 = styleLayer ?? null;
 				simpleMaterial.OverlayEnabled = false;
 				simpleMaterial.CircularMaskingEnabled = false;
 				simpleMaterial.Texture = Texture;
-				simpleMaterial.AlphaFactor = (styleLayer?.AlphaFactor ?? 1f) * ReadOnlyBrush.GlobalAlphaFactor * Context.ContextAlpha;
-				simpleMaterial.ColorFactor = (styleLayer?.ColorFactor ?? 1f) * ReadOnlyBrush.GlobalColorFactor;
-				simpleMaterial.HueFactor = styleLayer?.HueFactor ?? 0f;
-				simpleMaterial.SaturationFactor = styleLayer?.SaturationFactor ?? 0f;
-				simpleMaterial.ValueFactor = styleLayer?.ValueFactor ?? 0f;
-				simpleMaterial.Color = (styleLayer?.Color ?? TaleWorlds.Library.Color.White) * ReadOnlyBrush.GlobalColor;
+				simpleMaterial.NinePatchParameters = SpriteNinePatchParameters.Empty;
+				simpleMaterial.AlphaFactor = (styleLayer2 != null ? styleLayer2.AlphaFactor : 1f) * ReadOnlyBrush.GlobalAlphaFactor * Context.ContextAlpha;
+				simpleMaterial.ColorFactor = (styleLayer2 != null ? styleLayer2.ColorFactor : 1f) * ReadOnlyBrush.GlobalColorFactor;
+				simpleMaterial.HueFactor = styleLayer2 != null ? styleLayer2.HueFactor : 0f;
+				simpleMaterial.SaturationFactor = styleLayer2 != null ? styleLayer2.SaturationFactor : 0f;
+				simpleMaterial.ValueFactor = styleLayer2 != null ? styleLayer2.ValueFactor : 0f;
+				simpleMaterial.Color = (styleLayer2 != null ? styleLayer2.Color : Color.White) * ReadOnlyBrush.GlobalColor;
 				Vector2 globalPosition = GlobalPosition;
-				float x = globalPosition.X;
-				float y = globalPosition.Y;
-				_ = Size;
-				_ = Size;
-				DrawObject2D drawObject2D = null;
-				if (_cachedQuad != null && _cachedQuadSize == Size)
-				{
-					drawObject2D = _cachedQuad;
-				}
-
-				if (drawObject2D == null)
-				{
-					drawObject2D = (_cachedQuad = DrawObject2D.CreateQuad(Size));
-					_cachedQuadSize = Size;
-				}
-
+				Vector2 size = Size;
+				Vector2 size2 = Size;
+				ImageDrawObject imageDrawObject = ImageDrawObject.Create(AreaRect, Vec2.Zero, Vec2.One);
+				imageDrawObject.Scale = _scaleToUse;
 				if (drawContext.CircularMaskEnabled)
 				{
 					simpleMaterial.CircularMaskingEnabled = true;
@@ -695,8 +560,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Widgets.CharacterPreview
 					simpleMaterial.CircularMaskingRadius = drawContext.CircularMaskRadius;
 					simpleMaterial.CircularMaskingSmoothingRadius = drawContext.CircularMaskSmoothingRadius;
 				}
-
-				drawContext.Draw(x, y, simpleMaterial, drawObject2D, Size.X, Size.Y);
+				drawContext.Draw(simpleMaterial, imageDrawObject);
 			}
 		}
 	}

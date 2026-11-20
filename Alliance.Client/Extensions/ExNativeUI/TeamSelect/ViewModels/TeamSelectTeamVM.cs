@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.Core;
 using TaleWorlds.Core.ViewModelCollection;
+using TaleWorlds.Core.ViewModelCollection.ImageIdentifiers;
 using TaleWorlds.Core.ViewModelCollection.Information;
 using TaleWorlds.Library;
 using TaleWorlds.Localization;
@@ -63,7 +64,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 		private string _lockText;
 		private string _cultureId;
 		private int _score;
-		private ImageIdentifierVM _banner;
+		private BannerImageIdentifierVM _banner;
 		private MBBindingList<MPPlayerVM> _friendAvatars;
 		private bool _hasExtraFriends;
 		private bool _useSecondary;
@@ -287,7 +288,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 		}
 
 		[DataSourceProperty]
-		public ImageIdentifierVM Banner
+		public BannerImageIdentifierVM Banner
 		{
 			get
 			{
@@ -405,7 +406,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 			}
 		}
 
-		public TeamSelectTeamVM(MissionScoreboardComponent missionScoreboardComponent, Team team, BasicCultureObject culture, BannerCode bannercode, Action<Team> onSelect, bool useSecondary)
+		public TeamSelectTeamVM(MissionScoreboardComponent missionScoreboardComponent, Team team, BasicCultureObject culture, string bannercode, Action<Team> onSelect, bool useSecondary)
 		{
 			Team = team;
 			UseSecondary = useSecondary;
@@ -428,7 +429,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 				uint color2 = useSecondary ? culture.Color : culture.Color2;
 				CultureColor1 = Color.FromUint(color1);
 				CultureColor2 = Color.FromUint(color2);
-				string bannerCodeStr = bannercode?.Code ?? "";
+				string bannerCodeStr = bannercode;
 
 				// Get the default character for the culture (if any)
 				BasicCharacterObject defaultChar = MBObjectManager.Instance.GetObjectTypeList<BasicCharacterObject>().FirstOrDefault(bco => bco.Culture == culture);
@@ -470,14 +471,7 @@ namespace Alliance.Client.Extensions.ExNativeUI.TeamSelect.ViewModels
 				IsDisabled = true;
 			}
 
-			if (bannercode == null)
-			{
-				Banner = new ImageIdentifierVM();
-			}
-			else
-			{
-				Banner = new ImageIdentifierVM(bannercode, nineGrid: true);
-			}
+			Banner = new BannerImageIdentifierVM(new Banner(bannercode), nineGrid: true);
 
 			_friends = new List<MPPlayerVM>();
 			FriendAvatars = new MBBindingList<MPPlayerVM>();

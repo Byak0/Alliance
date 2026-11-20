@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Alliance.Common.Core.Utils;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TaleWorlds.Core;
+using static Alliance.Common.Core.Utils.AgentExtensions;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.Models
 {
@@ -23,7 +26,8 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 				Index = PlayerSpawnMenu.GetNextFormationIndex(this),
 				Name = name,
 				Settings = settings ?? new FormationSettings(),
-				AvailableCharacters = chars ?? new List<AvailableCharacter>()
+				AvailableCharacters = chars ?? new List<AvailableCharacter>(),
+				MainCultureId = Factions.Instance.AvailableCultures?.Keys.FirstOrDefault() ?? string.Empty
 			};
 			Formations.Add(formation);
 			return formation;
@@ -34,6 +38,25 @@ namespace Alliance.Common.Extensions.PlayerSpawn.Models
 			if (formation == null || !Formations.Contains(formation)) return;
 
 			Formations.Remove(formation);
+		}
+
+		public void AutoFillFromCulture(BasicCultureObject culture)
+		{
+			PlayerFormation infFormation = AddFormation("Infantry");
+			PlayerFormation arcFormation = AddFormation("Archers");
+			PlayerFormation cavFormation = AddFormation("Cavalry");
+			infFormation.MainCultureId = culture.StringId;
+			arcFormation.MainCultureId = culture.StringId;
+			cavFormation.MainCultureId = culture.StringId;
+			foreach (AllianceData.CharacterDefinition character in AllianceData.Instance.GetCharactersByCulture(culture, ClassType.Hero))
+			{
+				BasicCharacterObject characterObject = character.CharacterObject;
+				if (characterObject == null) continue;
+				AvailableCharacter availableCharacter = new AvailableCharacter() { CharacterId = character.Id };
+				if (characterObject.IsMounted) cavFormation.AddCharacter(availableCharacter);
+				else if (characterObject.IsRanged) arcFormation.AddCharacter(availableCharacter);
+				else if (characterObject.IsInfantry) infFormation.AddCharacter(availableCharacter);
+			}
 		}
 	}
 }

@@ -30,7 +30,6 @@ namespace Alliance.Server.GameModes.Story
 				// Custom behaviors
 				new ScenarioBehavior(),
 				new ScenarioClientBehavior(),
-				new ScenarioRespawnBehavior(),
 				new SpawnComponent(new ScenarioDefaultSpawnFrameBehavior(), new ScenarioSpawningBehavior()),
 				new FormationBehavior(),
 				new ObjectivesBehavior(ScenarioManagerServer.Instance),

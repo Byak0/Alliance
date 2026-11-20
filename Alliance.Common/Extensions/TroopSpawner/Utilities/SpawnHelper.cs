@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Configuration.Models;
+using Alliance.Common.Core.Configuration.Models;
 using Alliance.Common.Core.Security.Extension;
 using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.TroopSpawner.Models;
@@ -13,7 +13,7 @@ using TaleWorlds.Library;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Diamond;
 using TaleWorlds.ObjectSystem;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 using static TaleWorlds.MountAndBlade.MPPerkObject;
 using Debug = TaleWorlds.Library.Debug;
@@ -106,7 +106,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				initialDirection = initialDirection.Normalized();
 
 				// Define perks                
-				Equipment equipment = Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt());
+				Equipment equipment = Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, equipmentType: Equipment.EquipmentType.Battle, MBRandom.RandomInt());
 				IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: false);
 				if (perkAlternativeEquipment != null)
 				{
@@ -129,7 +129,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Formation(form)
 					.IsFemale(character.IsFemale);
 				agentBuildData2.Equipment(equipment);
-				agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
+				agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, character.GetBodyPropertiesMin(false), character.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 				agentBuildData2.Age((int)agentBuildData2.AgentBodyProperties.Age);
 
 				// Whether the agent has a mount or not
@@ -157,12 +157,16 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.MountAgent?.UpdateAgentProperties();
 
 				// Calculate health limit
+				healthMultiplier *= Config.Instance.BotHPMultiplier;
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(false) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
 				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
-				agent.HealthLimit = Math.Max(classHealth, character.MaxHitPoints());
-				agent.HealthLimit += bonusHealth;
-				agent.HealthLimit *= healthMultiplier;
+				float healthLimit = (Math.Max(classHealth, character.MaxHitPoints()) + bonusHealth) * healthMultiplier;
+				if(healthLimit != character.MaxHitPoints())
+				{
+					agent.HealthLimit = healthLimit;
+					agent.SyncHealthLimit(); // Manually sync HealthLimit since native doesn't
+				}
 				agent.Health = agent.HealthLimit;
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -193,6 +197,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 
 		public static void SpawnPlayer(NetworkCommunicator networkPeer, MPOnSpawnPerkHandler onSpawnPerkHandler, BasicCharacterObject character, MatrixFrame? origin = null, int selectedFormation = -1, float difficulty = AgentsInfoModel.DEFAULT_DIFFICULTY, IEnumerable<(EquipmentIndex, EquipmentElement)> alternativeEquipment = null, Agent.MortalityState mortalityState = Agent.MortalityState.Mortal, float healthMultiplier = 1f, BasicCultureObject customCulture = null)
 		{
+			if (character == null)
+			{
+				Log("Alliance : ERROR spawning player " + networkPeer.UserName + " - character is null", LogLevel.Error);
+				return;
+			}
+
 			try
 			{
 				MissionPeer component = networkPeer.GetComponent<MissionPeer>();
@@ -215,12 +225,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				BasicCultureObject culture = customCulture != null ? customCulture : component.Culture;
 				culture ??= MBObjectManager.Instance.GetObject<BasicCultureObject>(MultiplayerOptions.OptionType.CultureTeam1.GetStrValue());
 
-				uint color = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
-				uint color2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
-				uint color3 = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
-				uint color4 = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
+				uint clothColor1 = component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor;
+				uint clothColor2 = component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2;
+				uint bannerBackgroundColor = component.Team == Mission.Current.AttackerTeam ? culture.BackgroundColor1 : culture.BackgroundColor2;
+				uint bannerForegroundColor = component.Team == Mission.Current.AttackerTeam ? culture.ForegroundColor1 : culture.ForegroundColor2;
 
-				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, culture.BackgroundColor1, culture.ForegroundColor1);
+				Banner banner = BannerToCultureHelper.GetBannerFromCulture(culture.StringId, bannerBackgroundColor, bannerForegroundColor);
 
 				int randomSeed = Config.Instance.RandomizeAppearance ? MBRandom.RandomInt() : 0;
 				Log("Formation = " + form.FormationIndex.GetName(), LogLevel.Debug);
@@ -229,12 +239,12 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 					.Team(component.Team)
 					.TroopOrigin(new BasicBattleAgentOrigin(character))
 					.Formation(form)
-					.ClothingColor1(component.Team == Mission.Current.AttackerTeam ? culture.Color : culture.ClothAlternativeColor)
-					.ClothingColor2(component.Team == Mission.Current.AttackerTeam ? culture.Color2 : culture.ClothAlternativeColor2)
+					.ClothingColor1(clothColor1)
+					.ClothingColor2(clothColor2)
 					.Banner(banner);
 				agentBuildData.MissionPeer(component);
 				bool randomEquipement = true;
-				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, isCivilianEquipment: false, MBRandom.RandomInt()) : character.Equipment.Clone();
+				Equipment equipment = randomEquipement ? Equipment.GetRandomEquipmentElements(character, randomEquipmentModifier: false, equipmentType: Equipment.EquipmentType.Battle, MBRandom.RandomInt()) : character.Equipment.Clone();
 				IEnumerable<(EquipmentIndex, EquipmentElement)> perkAlternativeEquipment = onSpawnPerkHandler?.GetAlternativeEquipments(isPlayer: true);
 				if (perkAlternativeEquipment != null)
 				{
@@ -266,7 +276,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				else
 				{
 					agentBuildData.EquipmentSeed(missionLobbyComponent.GetRandomFaceSeedForCharacter(character, agentBuildData.AgentVisualsIndex));
-					agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyProperties(agentBuildData.AgentOverridenSpawnEquipment), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.HairTags, character.BeardTags, character.TattooTags));
+					agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, character.GetBodyProperties(agentBuildData.AgentOverridenSpawnEquipment), character.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, character.BodyPropertyRange.HairTags, character.BodyPropertyRange.BeardTags, character.BodyPropertyRange.TattooTags));
 					agentBuildData.Age((int)agentBuildData.AgentBodyProperties.Age);
 					agentBuildData.IsFemale(character.IsFemale);
 				}
@@ -287,19 +297,23 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				agent.MountAgent?.UpdateAgentProperties();
 
 				// Calculate health limit
+				healthMultiplier *= Config.Instance.PlayerHPMultiplier;
 				float bonusHealth = onSpawnPerkHandler?.GetHitpoints(true) ?? 0f;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForCharacter = MultiplayerClassDivisions.GetMPHeroClassForCharacter(agent.Character);
-				agent.HealthLimit = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : character.MaxHitPoints();
-				agent.HealthLimit += bonusHealth;
-				// Additional health for officers
-				if (networkPeer.IsOfficer()) agent.HealthLimit *= Config.Instance.OfficerHPMultip;
-				agent.HealthLimit *= healthMultiplier;
+				int classHealth = mPHeroClassForCharacter != null ? mPHeroClassForCharacter.Health : 0;
+				float healthLimit = (Math.Max(classHealth, character.MaxHitPoints()) + bonusHealth) * healthMultiplier;
+				if (healthLimit != character.MaxHitPoints())
+				{
+					agent.HealthLimit = healthLimit;
+					agent.SyncHealthLimit(); // Manually sync HealthLimit since native doesn't
+				}
 				agent.Health = agent.HealthLimit;
 
 				// Update Alliance custom agent properties
 				agent.AddAgentInfo(difficulty: difficulty, synchronize: true);
 				agent.MountAgent?.AddAgentInfo(difficulty: difficulty, synchronize: true);
 
+				agent.UpdateAgentProperties();
 				agent.WieldInitialWeapons();
 
 				if (mortalityState != Agent.MortalityState.Mortal)
@@ -416,8 +430,8 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				.ClothingColor1(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
 				.ClothingColor2(team.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2)
 				.IsFemale(troopCharacter.IsFemale);
-			agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, isCivilianEquipment: false, agentBuildData2.AgentEquipmentSeed));
-			agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.HairTags, troopCharacter.BeardTags, troopCharacter.TattooTags));
+			agentBuildData2.Equipment(Equipment.GetRandomEquipmentElements(troopCharacter, true, equipmentType: Equipment.EquipmentType.Battle, agentBuildData2.AgentEquipmentSeed));
+			agentBuildData2.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData2.AgentRace, agentBuildData2.AgentIsFemale, troopCharacter.GetBodyPropertiesMin(), troopCharacter.GetBodyPropertiesMax(), (int)agentBuildData2.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData2.AgentEquipmentSeed, troopCharacter.BodyPropertyRange.HairTags, troopCharacter.BodyPropertyRange.BeardTags, troopCharacter.BodyPropertyRange.TattooTags));
 			return agentBuildData2.AgentBodyProperties;
 		}
 
@@ -433,6 +447,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 			while (goldToUse > 0 && nbAgents < 1000)
 			{
 				BasicCharacterObject bco;
+				BasicCharacterObject defaultChar = AllianceData.Instance.GetCharactersByCulture(culture1, AgentExtensions.ClassType.Troop).FirstOrDefault()?.CharacterObject;
 				// Every 99 agents, spawn a hero
 				if (nbAgents % 99 == 0)
 				{
@@ -448,7 +463,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				{
 					bco = MultiplayerClassDivisions.GetMPHeroClasses(culture1).ToList().GetRandomElementInefficiently().TroopCharacter;
 				}
-
+				bco ??= defaultChar;
 				goldToUse -= GetTroopCost(bco, difficulty);
 				agentsToSpawn.Add(bco);
 				nbAgents++;
@@ -490,7 +505,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		public static List<IReadOnlyPerkObject> GetPerks(BasicCharacterObject troop, List<int> indices)
 		{
 			MultiplayerClassDivisions.MPHeroClass heroClass = MultiplayerClassDivisions.GetMPHeroClassForCharacter(troop);
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
@@ -510,7 +525,7 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 		/// </summary>
 		public static List<IReadOnlyPerkObject> GetPerks(MultiplayerClassDivisions.MPHeroClass heroClass, List<int> indices)
 		{
-			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass);
+			List<List<IReadOnlyPerkObject>> allPerks = MultiplayerClassDivisions.GetAllPerksForHeroClass(heroClass, CoreUtils.GetNativeGameModeForPerks());
 			List<IReadOnlyPerkObject> selectedPerks = new List<IReadOnlyPerkObject>();
 			int i = 0;
 			foreach (List<IReadOnlyPerkObject> perkList in allPerks)
@@ -572,6 +587,11 @@ namespace Alliance.Common.Extensions.TroopSpawner.Utilities
 				case 2.5f: return Difficulty.Bannerlord;
 				default: return Difficulty.Normal;
 			}
+		}
+
+		public static int GetTroopCountFromPercentage(int percentage)
+		{
+			return (int)Math.Ceiling((percentage / 100f) * CoreUtils.CurrentPlayerCount);
 		}
 	}
 

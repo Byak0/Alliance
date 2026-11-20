@@ -3,21 +3,30 @@
 	<PropertyGroup>
 		<TargetFrameworks>net472;net6.0</TargetFrameworks>
 		<LangVersion>10.0</LangVersion>
-		<Platforms>x64</Platforms>
 		<Version>$(AllianceVersion)</Version>
 		<ModuleId>$(MSBuildProjectName)</ModuleId>
 		<ModuleName>Alliance.Common</ModuleName>
 		<GameFolder>$(BANNERLORD_GAME_DIR)</GameFolder>
+		<ServerFolder>$(BANNERLORD_SERVER_DIR)</ServerFolder>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<DefineConstants>$(DefineConstants);_RGL_KEEP_ASSERTS</DefineConstants>
 	</PropertyGroup>
 
-	<!-- Include SERVER constant when building for net6.0 -->
+	<!-- SERVER build - net6.0 -->
+	<!-- Define SERVER constant -->
 	<PropertyGroup Condition="'$(TargetFramework)' == 'net6.0'">
 		<DefineConstants>$(DefineConstants);SERVER</DefineConstants>		
 	</PropertyGroup>
-	
-	<!-- Reference TaleWorlds dll -->
-	<ItemGroup>
+	<!-- Reference TaleWorlds DLL from ServerFolder -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+		<Reference Include="$(ServerFolder)\bin\Win64_Shipping_Server\TaleWorlds.*.dll">
+			<HintPath>%(Identity)</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!-- CLIENT/EDITOR build - net472 -->
+	<!-- Reference TaleWorlds DLL from GameFolder -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
 		<Reference Include="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.*.dll" Exclude="$(GameFolder)\bin\Win64_Shipping_Client\TaleWorlds.Native.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
@@ -25,10 +34,7 @@
 		<Reference Include="$(GameFolder)\Modules\Native\bin\Win64_Shipping_Client\*.dll">
 			<HintPath>%(Identity)</HintPath>
 		</Reference>
-	</ItemGroup>
-
-	<!-- DLL required for GUI (only for net472) -->
-	<ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+		<!-- Include DLL required for GUI -->
 		<Reference Include="System.Windows.Forms" />
 		<Reference Include="System.Numerics">
 			<HintPath>$(GameFolder)\bin\Win64_Shipping_Client\Microsoft.NETCore.App\System.Numerics.dll</HintPath>
@@ -40,10 +46,10 @@
 			<HintPath>$(GameFolder)\Modules\Multiplayer\bin\Win64_Shipping_Client\TaleWorlds.MountAndBlade.Multiplayer.ViewModelCollection.dll</HintPath>
 		</Reference>
 	</ItemGroup>
-	
+
+	<!-- Additional package references for both builds -->
 	<ItemGroup>
 		<PackageReference Include="Concentus" Version="1.1.7" />
-		<PackageReference Include="Enums.NET" Version="5.0.0" />
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" />
 		<PackageReference Include="NAudio" Version="2.2.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -57,17 +63,14 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Resource Include="Resources\alliance_delete.png" />
-		<Resource Include="Resources\alliance_edit.png" />
-		<Resource Include="Resources\alliance_edit2.png" />
-		<Resource Include="Resources\alliance_help.png" />
-		<Resource Include="Resources\alliance_help2.png" />
-		<Resource Include="Resources\alliance_ico.ico" />
-		<Resource Include="Resources\alliance_info.png" />
-		<Resource Include="Resources\alliance_manual.png" />
-		<Resource Include="Resources\alliance_save.png" />
-		<Resource Include="Resources\alliance_saveas.png" />
-		<Resource Include="Resources\alliance_translation.png" />
+	  <Compile Remove="TW_References\BannerlordPDB\**" />
+	  <Compile Remove="TW_References\BannerlordSource\**" />
+	  <EmbeddedResource Remove="TW_References\BannerlordPDB\**" />
+	  <EmbeddedResource Remove="TW_References\BannerlordSource\**" />
+	  <None Remove="TW_References\BannerlordPDB\**" />
+	  <None Remove="TW_References\BannerlordSource\**" />
+	  <Reference Remove="TW_References\BannerlordPDB\**" />
+	  <Reference Remove="TW_References\BannerlordSource\**" />
 	</ItemGroup>
 
 </Project>

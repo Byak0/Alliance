@@ -124,12 +124,15 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 					continue;
 				}
 
-				BasicCultureObject culture = playerAssignment.Formation.MainCulture;
-				BasicCharacterObject basicCharacterObject = playerAssignment.Character.Character;
 				MultiplayerClassDivisions.MPHeroClass mPHeroClassForPeer = playerAssignment.Character.Character.GetHeroClass();
 				MPOnSpawnPerkHandler onSpawnPerkHandler = GetOnSpawnPerkHandler(SpawnHelper.GetPerks(mPHeroClassForPeer, playerAssignment.Perks));
 				// Spawn player, make him invulnerable in the beginning to prevent TK
-				SpawnHelper.SpawnPlayer(networkPeer, onSpawnPerkHandler, basicCharacterObject, mortalityState: MortalityState.Invulnerable, customCulture: culture);
+				SpawnHelper.SpawnPlayer(networkPeer, 
+					onSpawnPerkHandler, 
+					playerAssignment.Character.Character, 
+					mortalityState: MortalityState.Invulnerable, 
+					healthMultiplier: playerAssignment.Character.HealthMultiplier, 
+					customCulture: playerAssignment.Formation.MainCulture);
 
 				// not useful anymore since our perk list is not the native one ?
 				//GameNetwork.BeginBroadcastModuleEvent();
@@ -516,7 +519,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 				.IsFemale(@object.IsFemale)
 				.ClothingColor1(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color : cultureLimit.ClothAlternativeColor)
 				.ClothingColor2(agentTeam.Side == BattleSideEnum.Attacker ? cultureLimit.Color2 : cultureLimit.ClothAlternativeColor2);
-			Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, false, false, MBRandom.RandomInt());
+			Equipment randomEquipmentElements = Equipment.GetRandomEquipmentElements(@object, false, Equipment.EquipmentType.Battle, MBRandom.RandomInt());
 			if (alternativeEquipments != null)
 			{
 				foreach (ValueTuple<EquipmentIndex, EquipmentElement> valueTuple in alternativeEquipments)
@@ -525,7 +528,7 @@ namespace Alliance.Server.GameModes.PvC.Behaviors
 				}
 			}
 			agentBuildData.Equipment(randomEquipmentElements);
-			agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, @object.GetBodyPropertiesMin(false), @object.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, @object.HairTags, @object.BeardTags, @object.TattooTags));
+			agentBuildData.BodyProperties(BodyProperties.GetRandomBodyProperties(agentBuildData.AgentRace, agentBuildData.AgentIsFemale, @object.GetBodyPropertiesMin(false), @object.GetBodyPropertiesMax(), (int)agentBuildData.AgentOverridenSpawnEquipment.HairCoverType, agentBuildData.AgentEquipmentSeed, @object.BodyPropertyRange.HairTags, @object.BodyPropertyRange.BeardTags, @object.BodyPropertyRange.TattooTags));
 			NetworkCommunicator networkPeer = missionPeer.GetNetworkPeer();
 			if (GameMode.ShouldSpawnVisualsForServer(networkPeer) && agentBuildData.AgentVisualsIndex == 0)
 			{

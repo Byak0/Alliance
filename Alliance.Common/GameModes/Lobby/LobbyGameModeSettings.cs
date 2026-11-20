@@ -57,7 +57,8 @@ namespace Alliance.Common.GameModes.Lobby
 				nameof(Config.ShowOfficers),
 				nameof(Config.ShowWeaponTrail),
 				nameof(Config.KillFeedEnabled),
-				nameof(Config.OfficerHPMultip)
+				nameof(Config.PlayerHPMultiplier),
+				nameof(Config.BotHPMultiplier)
 			};
 		}
 	}

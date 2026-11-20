@@ -1,6 +1,7 @@
-﻿using Alliance.Common.Core.Configuration;
+﻿using System.Collections.Generic;
+using Alliance.Common.Core.Configuration;
 using Alliance.Common.Core.Configuration.Models;
-using System.Collections.Generic;
+using Alliance.Common.Extensions.TroopSpawner.Models;
 using TaleWorlds.Engine;
 using TaleWorlds.InputSystem;
 using TaleWorlds.Library;
@@ -43,6 +44,11 @@ namespace Alliance.Common.Core.Utils
 				}
 #endif
 			}
+		}
+
+		protected override void OnEndMission()
+		{
+			FormationControlModel.Instance.Clear();
 		}
 	}
 }

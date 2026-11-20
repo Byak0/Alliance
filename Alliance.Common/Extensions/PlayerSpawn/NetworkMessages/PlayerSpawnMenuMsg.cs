@@ -1,4 +1,4 @@
-﻿using Alliance.Common.Core.Utils;
+using Alliance.Common.Core.Utils;
 using Alliance.Common.Extensions.PlayerSpawn.Models;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromClient;
 using Alliance.Common.Extensions.PlayerSpawn.NetworkMessages.FromServer;
@@ -9,7 +9,7 @@ using TaleWorlds.Core;
 using TaleWorlds.MountAndBlade;
 using TaleWorlds.MountAndBlade.Network.Messages;
 using TaleWorlds.ObjectSystem;
-using static Alliance.Common.Core.Configuration.Models.AllianceData;
+using static Alliance.Common.Core.Utils.AllianceData;
 using static Alliance.Common.Utilities.Logger;
 
 namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
@@ -46,13 +46,13 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		}
 
 		// From server - Sends the election timer to a specific peer.
-		public static void SendElectionStatusToPeer(bool enable, float timer, NetworkCommunicator peer)
+		public static void SendElectionStatusToPeer(bool enable, int timer, NetworkCommunicator peer)
 		{
 			SendToClient(new SetElectionStatus(enable, timer), peer);
 		}
 
 		// From server - Broadcasts the election timer to all players in the game.
-		public static void SendElectionStatusToAll(bool enable, float timer = 0f)
+		public static void SendElectionStatusToAll(bool enable, int timer = 0)
 		{
 			SendToClient(new SetElectionStatus(enable, timer));
 		}
@@ -303,7 +303,7 @@ namespace Alliance.Common.Extensions.PlayerSpawn.NetworkMessages
 		{
 			AvailableCharacter character = new AvailableCharacter();
 			character.Index = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
-			character.CharacterId = ((BasicCharacterObject)GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid)).StringId;
+			character.CharacterId = ((BasicCharacterObject)GameNetworkMessage.ReadObjectReferenceFromPacket(MBObjectManager.Instance, CompressionBasic.GUIDCompressionInfo, ref bufferReadValid))?.StringId;
 			character.Officer = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
 			character.SpawnCount = GameNetworkMessage.ReadIntFromPacket(CompressionHelper.DefaultIntValueCompressionInfo, ref bufferReadValid);
 			character.IsPercentage = GameNetworkMessage.ReadBoolFromPacket(ref bufferReadValid);
